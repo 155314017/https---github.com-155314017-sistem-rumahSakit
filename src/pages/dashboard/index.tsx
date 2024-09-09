@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import MediumCard from "../../components/medium/MediumCard";
 
@@ -16,6 +16,7 @@ import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 
 // table
 import TableRuangan from "../ruangan/TableRuangan";
+import TablePegawai from "../pegawai/TablePegawai";
 
 export default function Dashboard() {
   
@@ -32,9 +33,10 @@ export default function Dashboard() {
         <CardAdd icon={RoomPreferencesIcon} title={"Tambah ruangan"} link={"Add new"} />
       </Grid>
 
-      <Box mt={3}>
+      <Stack mt={3} spacing={3}>
         <TableRuangan />
-      </Box>
+        <TablePegawai />
+      </Stack>
     </Box>
   );
 }

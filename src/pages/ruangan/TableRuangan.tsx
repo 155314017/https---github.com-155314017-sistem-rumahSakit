@@ -1,5 +1,6 @@
 import {
   Box,
+  Stack,
   Typography,
   TableContainer,
   Table,
@@ -8,11 +9,13 @@ import {
   TableCell,
   TableBody,
   Link,
+  TablePagination,
 } from "@mui/material";
 import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
 import { styled } from "@mui/material/styles";
 import DataRuangan from "../../dummyData/dataRuangan";
+import { useState } from "react";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -47,6 +50,26 @@ const StyledTableContainer = styled(TableContainer)`
 
 export default function TableRuangan() {
   const datas = DataRuangan;
+
+  const [page, setPage] = useState(2);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number,
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const displayedData = datas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
   const sortir = [
     { value: 1, label: "Nama Gedung" },
     { value: 2, label: "Jenis Ruangan" },
@@ -72,7 +95,7 @@ export default function TableRuangan() {
       <Box
         border={"1px solid #A8A8BD"}
         p={3}
-        height={702}
+        height={800}
         sx={{ borderRadius: "24px", bgcolor: "#fff" }}
       >
         <Typography
@@ -110,7 +133,7 @@ export default function TableRuangan() {
               mt: 2,
               boxShadow: "none",
               mb: 2,
-              maxHeight: "500px",
+              maxHeight: "610px",
               border: "1px solid #A8A8BD",
               borderRadius: "16px",
             }}
@@ -119,28 +142,28 @@ export default function TableRuangan() {
               <TableHead>
                 <TableRow>
                   <TableCell
-                    width={"10%"}
+                    width={"12%"}
                     sx={{ fontSize: "16px", fontWeight: 700, color: "#292B2C" }}
                     align="left"
                   >
                     No.Ruangan
                   </TableCell>
                   <TableCell
-                    width={"8%"}
+                    width={"15%"}
                     sx={{ fontSize: "16px", fontWeight: 700, color: "#292B2C" }}
                     align="left"
                   >
                     Nama Gedung
                   </TableCell>
                   <TableCell
-                    width={"15%"}
+                    width={"12%"}
                     sx={{ fontSize: "16px", fontWeight: 700, color: "#292B2C" }}
                     align="left"
                   >
                     Jenis Ruangan
                   </TableCell>
                   <TableCell
-                    width={"15%"}
+                    width={"12%"}
                     sx={{ fontSize: "16px", fontWeight: 700, color: "#292B2C" }}
                     align="center"
                   >
@@ -154,7 +177,7 @@ export default function TableRuangan() {
                     Tarif Ruangan
                   </TableCell>
                   <TableCell
-                    width={"20%"}
+                    width={"15%"}
                     sx={{ fontSize: "16px", fontWeight: 700, color: "#292B2C" }}
                     align="center"
                   >
@@ -163,7 +186,7 @@ export default function TableRuangan() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {datas.map((data, index) => (
+                {displayedData.map((data, index) => (
                   <StyledTableRow key={index}>
                     <TableCell
                       sx={[{ color: "#292B2C", fontSize: "16px" }]}
@@ -216,6 +239,36 @@ export default function TableRuangan() {
             </Table>
           </StyledTableContainer>
         </Box>
+        <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+            <Typography sx={{ color: "#8F85F3" }}>
+              Showing {page * rowsPerPage + 1} to {Math.min(page*rowsPerPage + rowsPerPage, datas.length)} of {datas.length} entries
+            </Typography>
+            <TablePagination
+            // shape="rounded"
+            count={datas.length}
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                color: "#8F85F3",
+                "& .MuiPaginationItem-root": {
+                  color: "#8F85F3",
+                },
+                "& .Mui-selected": {
+                  backgroundColor: "#8F85F3",
+                  color: "white",
+                },
+                "& .MuiPaginationItem-ellipsis": {
+                  color: "#8F85F3",
+                }
+              }}
+            />
+          </Stack>
       </Box>
     </Box>
   );
