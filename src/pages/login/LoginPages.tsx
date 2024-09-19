@@ -150,7 +150,7 @@ export default function Login() {
                                                 </Link>
                                             </Box>
 
-                                            <Button type="submit" variant="contained" color="primary" fullWidth sx={{ width: '410px', height: '48px', marginTop: '20px', backgroundColor: '#8F85F3', ":hover": { backgroundColor: '#D5D1FB' } }}>
+                                            <Button  type="submit" variant="contained" color="primary" fullWidth sx={{ width: '410px', height: '48px', marginTop: '20px', backgroundColor: '#8F85F3', ":hover": { backgroundColor: '#D5D1FB' } }}>
                                                 Login
                                             </Button>
                                         </Box>

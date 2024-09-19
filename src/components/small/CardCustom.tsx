@@ -1,14 +1,46 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
-import HotelOutlinedIcon from '@mui/icons-material/HotelOutlined';
-import my from '../../img/String.png'
+import { SvgIconComponent } from "@mui/icons-material"; 
+import my from '../../img/String.png';
 
-export default function CardCustom() {
+interface CardCustomProps {
+  icon: SvgIconComponent;
+  title: string;
+  subtitle: string;
+}
+
+export default function CardCustom({ icon: Icon, title, subtitle }: CardCustomProps) {
   return (
-    <Card sx={{ display: 'flex', justifyContent: 'flex-end', height: '162px', width: '296px', borderRadius: '24px', position: 'relative' }} >
-      <CardContent sx={{ backgroundColor: 'transparent', zIndex: '2', width: '250px', position: 'relative', marginTop:'20px' }} >
-        <HotelOutlinedIcon sx={{ fontSize: '32px', color: '#8F85F3', marginBottom: '10px', backgroundColor:'#F1F0FE', padding:'8px', borderRadius:'12px'}} />
-        <Typography sx={{fontSize:'16px'}} >Ruangan Tersedia</Typography>
-        <Typography sx={{ color:'#8F85F3', fontSize:'16px'}} >109 Ruangan</Typography>
+    <Card
+      sx={{
+        display: 'flex',
+        justifyContent: 'flex-end',
+        height: '162px',
+        width: '296px',
+        borderRadius: '24px',
+        position: 'relative',
+      }}
+    >
+      <CardContent
+        sx={{
+          backgroundColor: 'transparent',
+          zIndex: '2',
+          width: '250px',
+          position: 'relative',
+          marginTop: '20px',
+        }}
+      >
+        <Icon
+          sx={{
+            fontSize: '32px',
+            color: '#8F85F3',
+            marginBottom: '10px',
+            backgroundColor: '#F1F0FE',
+            padding: '8px',
+            borderRadius: '12px',
+          }}
+        />
+        <Typography sx={{ fontSize: '16px' }}>{title}</Typography>
+        <Typography sx={{ color: '#8F85F3', fontSize: '16px' }}>{subtitle}</Typography>
       </CardContent>
       <CardMedia
         component="img"
@@ -18,5 +50,5 @@ export default function CardCustom() {
         alt="Example Image"
       />
     </Card>
-  )
+  );
 }
