@@ -5,7 +5,10 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import my from "../../../img/loginImg.png";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import NotListedLocationOutlinedIcon from '@mui/icons-material/NotListedLocationOutlined';
+import AlertWarning from "../../../components/small/AlertWarning";
+import AlertSuccess from "../../../components/small/AlertSuccess";
+import CustomButton from "../../../components/small/CustomButton";
+import LabelHandler from "../../../components/small/LabelHandler";
 
 const validationSchema = Yup.object({
     email: Yup.string()
@@ -31,6 +34,7 @@ export default function Login() {
     const [isCounting, setIsCounting] = useState(false);
     const [secondsLeft, setSecondsLeft] = useState(60);
     const [resendSuccess, setResendSuccess] = useState(false);
+    const [loginSuccess, setLoginSuccess] = useState(false);
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -53,11 +57,22 @@ export default function Login() {
         setShowAlert(false);
     };
 
+    const showTemporarySuccessLogin = async () => {
+        setLoginSuccess(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000)); 
+        setLoginSuccess(false);
+    };
+
+
+    const loginComponent = () => {
+        setShowLogin(true);
+    }
+
     const validationCheck = async (values: FormValues) => {
         const { email, password } = values;
 
         const emailIsValid = email === "admin@mail.com";
-        const passwordIsValid = password === "admin";
+        const passwordIsValid = password === "admin123";
         setEmailError(!emailIsValid);
         setPasswordError(!passwordIsValid);
 
@@ -89,7 +104,6 @@ export default function Login() {
         console.log("Resend clicked");
     };
 
-
     const showTemporaryAlertSuccess = async () => {
         setResendSuccess(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -114,34 +128,7 @@ export default function Login() {
             {showLogin && (
                 <>
                     {showAlert && (
-                        <Alert
-                            severity="error"
-                            icon={<NotListedLocationOutlinedIcon />}
-                            sx={{
-                                border: '2px solid #E26D6D',
-                                borderRadius: '8px',
-                                padding: '0',
-                                fontSize: '16px',
-                                margin: '0',
-                                height: '62px',
-                                width: '416px',
-                                position: 'fixed',
-                                marginLeft: '69%',
-                                animation: 'slideIn 0.5s ease-out',
-                                '@keyframes slideIn': {
-                                    '0%': {
-                                        transform: 'translateX(100%)',
-                                        opacity: 0,
-                                    },
-                                    '100%': {
-                                        transform: 'translateX(0)',
-                                        opacity: 1,
-                                    },
-                                },
-                            }}
-                        >
-                            Email atau kata sandi yang Anda masukkan salah, silahkan coba lagi.
-                        </Alert>
+                    <AlertWarning/>
                     )}
 
                     <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto' }}>
@@ -158,8 +145,10 @@ export default function Login() {
                             onSubmit={async (values) => {
                                 if (await validationCheck(values)) {
                                     console.log(values);
+                                    await showTemporarySuccessLogin(); 
                                 }
                             }}
+
                         >
                             {({ errors, touched, handleChange, handleBlur, values, isValid, dirty }) => (
                                 <Form>
@@ -249,10 +238,7 @@ export default function Login() {
                                                 label="Ingat kata sandi"
                                                 sx={{ marginRight: 'auto' }}
                                             />
-
-                                            <Link onClick={() => forgotPass()} href="#" underline="hover" sx={{ fontSize: '16px', color: '#8F85F3' }}>
-                                                Lupa kata sandi?
-                                            </Link>
+                                            <LabelHandler onClick={forgotPass} href="#" label="Lupa kata sandi?" />
                                         </Box>
 
                                         <Button
@@ -271,10 +257,15 @@ export default function Login() {
                                         >
                                             Login
                                         </Button>
+
+                                        {loginSuccess && (
+                                            <AlertSuccess label="Login Succeeded!" />
+                                        )}
                                     </Box>
                                 </Form>
                             )}
                         </Formik>
+
                     </Box>
 
                 </>
@@ -353,22 +344,8 @@ export default function Login() {
                                                     Setel ulang kata sandi
                                                 </Button>
 
-                                                <Button
-                                                    onClick={() => setShowLogin(true)}
-                                                    fullWidth
-                                                    sx={{
-                                                        width: '410px',
-                                                        height: '48px',
-                                                        marginTop: '20px',
-                                                        backgroundColor: 'transparent',
-                                                        color: '#8F85F3',
-                                                        border: '1px solid',
-                                                        borderColor: '#8F85F3',
-                                                        ":hover": { backgroundColor: '#8F85F3', color: 'white' }
-                                                    }}
-                                                >
-                                                    Kembali ke halaman masuk
-                                                </Button>
+                                                    <CustomButton onClick={loginComponent} label="Kembali ke halaman masuk" />
+
                                             </Box>
                                         </Form>
                                     )}
@@ -400,56 +377,10 @@ export default function Login() {
                                 >
                                     {isCounting ? `Kirim ulang dalam ${formatTime()}` : 'Kirim ulang tautan'}
                                 </Button>
-
-                                <Button
-                                    onClick={() => handleClick()}
-                                    fullWidth
-                                    sx={{
-                                        width: '410px',
-                                        height: '48px',
-                                        marginTop: '20px',
-                                        backgroundColor: 'transparent',
-                                        color: '#8F85F3',
-                                        border: '1px solid',
-                                        borderColor: '#8F85F3',
-                                        ":hover": { backgroundColor: '#8F85F3', color: 'white' }
-                                    }}
-                                >
-                                    Kembali ke halaman masuk
-                                </Button>
+                                <CustomButton onClick={handleClick} label="Kembali ke halaman masuk" />
 
                                 {resendSuccess && (
-                                    <Alert
-                                        severity="success"
-                                        sx={{
-                                            width: '295px',
-                                            height: '36px',
-                                            borderRadius: '8px',
-                                            border: '2px solid',
-                                            borderColor: '#77C397',
-                                            padding: '8px 16px 8px 16px',
-                                            color: '#77C397',
-                                            fontSize: '16px ',
-                                            lineHeight: '18px',
-                                            position: 'fixed',
-                                            top: '6%',
-                                            left: '81%',
-                                            // transform: 'translate(-50%, -50%)',
-                                            animation: 'slideIn 0.5s ease-out',
-                                            '@keyframes slideIn': {
-                                                '0%': {
-                                                    transform: 'translateX(100%)',
-                                                    opacity: 0,
-                                                },
-                                                '100%': {
-                                                    transform: 'translateX(0)',
-                                                    opacity: 1,
-                                                },
-                                            },
-                                        }}
-                                    >
-                                        Link tautan berhasil dikirim ulang
-                                    </Alert>
+                                    <AlertSuccess label="Link tautan berhasil dikirim ulang" />
                                 )}
                             </Box>
                         )}
