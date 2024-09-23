@@ -117,7 +117,7 @@ export default function Login() {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'row', marginLeft: '5%' }}>
             <CardMedia
                 component="img"
                 height="864"
@@ -128,7 +128,7 @@ export default function Login() {
             {showLogin && (
                 <>
                     {showAlert && (
-                    <AlertWarning/>
+                        <AlertWarning teks="Email atau kata sandi yang Anda masukkan salah, silahkan coba lagi." />
                     )}
 
                     <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto' }}>

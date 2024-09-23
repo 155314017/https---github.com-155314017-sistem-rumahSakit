@@ -1,6 +1,11 @@
 import { Alert } from "@mui/material";
 
-export default function AlertWarning() {
+interface Props {
+    teks: string;
+}
+
+
+export default function AlertWarning({ teks }: Props) {
   return (
       <Alert
           severity="error"
@@ -27,7 +32,7 @@ export default function AlertWarning() {
               },
           }}
       >
-          Email atau kata sandi yang Anda masukkan salah, silahkan coba lagi.
+          {teks}
       </Alert>
   )
 }
