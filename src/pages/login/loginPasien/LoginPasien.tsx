@@ -1,4 +1,4 @@
-import { Box, CardMedia, FormControl, FormControlLabel, FormLabel, IconButton, InputAdornment, TextField, Typography, Checkbox, Link, Button, Alert } from "@mui/material";
+import { Box, CardMedia, FormLabel, TextField, Typography, Button, } from "@mui/material";
 import { useEffect, useState } from "react";
 import logo from "../../../img/St.carolus.png";
 import patientImage from "../../../img/loginPasienImage.png";
@@ -11,6 +11,7 @@ import CustomButton from "../../../components/small/CustomButton";
 import OtpInput from 'react-otp-input';
 import 'react-phone-input-2/lib/style.css';
 import LabelHandler from "../../../components/small/LabelHandler";
+import { Link } from "react-router-dom";
 
 const validationSchema = Yup.object({
     nik: Yup.string()
@@ -40,6 +41,7 @@ export default function LoginPasien() {
     const [showEmailChanged, setShowEmailChanged] = useState(true);
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+
     const [showAlert, setShowAlert] = useState(false);
     const [isCounting, setIsCounting] = useState(false);
     const [secondsLeft, setSecondsLeft] = useState(60);
@@ -49,13 +51,10 @@ export default function LoginPasien() {
     const [otp, setOtp] = useState('');
 
     const otpFormShown = () => {
-        setShowEmailChanged(false);
+        // setShowEmailChanged(false);
+
         setOtp('');
     }
-
-    const handleClickShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
 
     const handleClick = () => {
         setShowLogin(true);
@@ -85,7 +84,7 @@ export default function LoginPasien() {
         const nikIsValid = nik === "1234567891011";
         const phoneIsValid = phone === "6289664470092";
         setEmailError(!nikIsValid);
-        setPasswordError(!phoneIsValid);
+        setPhoneError(!phoneIsValid);
 
         if (!nikIsValid || !phoneIsValid) {
             await showTemporaryAlert();
@@ -111,7 +110,7 @@ export default function LoginPasien() {
 
     const handleResendClick = () => {
         setIsCounting(true);
-        setSecondsLeft(60); 
+        setSecondsLeft(60);
         showTemporaryAlertSuccess();
         console.log("Resend clicked");
     };
@@ -129,7 +128,7 @@ export default function LoginPasien() {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'row', marginLeft:'5%' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'row', marginLeft: '5%' }}>
             <Box sx={{ marginTop: '-100px' }} >
                 <Typography sx={{ fontSize: '56px', fontWeight: '700', lineHeight: '60px', position: 'relative', zIndex: '9999', top: '798px', left: '73px', width: '715px', height: '120px', color: 'white' }} >
                     Mulai permintaan janji temu Anda di sini.
@@ -165,7 +164,6 @@ export default function LoginPasien() {
                             {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
                                 <Form>
                                     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-                                        {/* NIK Input */}
                                         <FormLabel sx={{ fontSize: '18px' }}>NIK (Nomor induk kependudukan)</FormLabel>
                                         <Field
                                             name="nik"
@@ -212,6 +210,7 @@ export default function LoginPasien() {
                                                 padding: '10px 40px 10px 60px',
                                                 fontSize: '16px',
                                                 marginTop: '10px',
+                                                backgroundColor: phoneError ? '#ffcccc' : 'inherit'
                                             }}
                                             buttonStyle={{
                                                 borderRadius: '8px 0 0 8px',
@@ -230,7 +229,6 @@ export default function LoginPasien() {
                                         )}
 
 
-                                        {/* Submit Button */}
                                         <Button
                                             type="submit"
                                             variant="contained"
@@ -250,7 +248,6 @@ export default function LoginPasien() {
 
                                         <CustomButton onClick={() => console.log("hai ")} label="Daftar pasien baru" />
 
-                                        {/* {loginSuccess && <AlertSuccess label="Login Succeeded!" />} */}
                                     </Box>
                                 </Form>
                             )}
@@ -297,7 +294,7 @@ export default function LoginPasien() {
                                                                 width: '90.5px',
                                                                 height: '48px',
                                                                 textAlign: 'center',
-                                                                border: `1px solid ${touched.otp && errors.otp ? 'red' : '#A8A8BD'}`,
+                                                                border: `1px solid ${touched.otp && errors.otp ? 'red' : '#8F85F3'}`,
                                                                 borderRadius: '8px',
                                                                 fontSize: '20px',
                                                                 margin: '0 4px',
@@ -334,23 +331,25 @@ export default function LoginPasien() {
                                                         {isCounting ? `${formatTime()}` : 'Kirim ulang tautan'}
                                                     </Typography>
                                                 </Box>
-                                                <Button
-                                                    type="submit"
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={otpFormShown}
-                                                    fullWidth
-                                                    sx={{
-                                                        width: '410px',
-                                                        height: '48px',
-                                                        marginTop: '20px',
-                                                        backgroundColor: '#8F85F3',
-                                                        ":hover": { backgroundColor: '#D5D1FB' },
-                                                    }}
-                                                    disabled={!isValid || !dirty}
-                                                >
-                                                    Verifikasi
-                                                </Button>
+                                                <Link to={"/register/pasien"} >
+                                                    <Button
+                                                        type="submit"
+                                                        variant="contained"
+                                                        color="primary"
+                                                        onClick={otpFormShown}
+                                                        fullWidth
+                                                        sx={{
+                                                            width: '410px',
+                                                            height: '48px',
+                                                            marginTop: '20px',
+                                                            backgroundColor: '#8F85F3',
+                                                            ":hover": { backgroundColor: '#D5D1FB' },
+                                                        }}
+                                                        disabled={!isValid || !dirty}
+                                                    >
+                                                        Verifikasi
+                                                    </Button>
+                                                </Link>
                                             </Box>
                                         </Form>
                                     )}
@@ -360,7 +359,7 @@ export default function LoginPasien() {
                         )}
 
                         {!showEmailChanged && (
-                            <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto' }}>
+                            <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto', display: 'flex', flexDirection: 'column' }}>
                                 <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
                                     Email pengaturan ulang kata sandi telah terkirim.
                                 </Typography>

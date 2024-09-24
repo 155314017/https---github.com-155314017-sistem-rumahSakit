@@ -8,12 +8,14 @@ import Login from './pages/login/loginPegawai/LoginPages';
 import RegisterPasien from './pages/login/loginPasien/RegisterPasien';
 import PasienLamaRawatJalanBPJS from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanBPJS';
 import PasienLamaRawatJalanUmum from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanUmum';
+import Home from './pages';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Router>
       <Routes>
-        <Route path="/login/pasien" element={<LoginPasien/>} />
+        <Route path="/dashboard" element={<Home />} />
+        <Route path="/" element={<LoginPasien/>} />
         <Route path="/login/pegawai" element={<Login />} />
         <Route path="/login/pasien" element={<LoginPasien />} />
         <Route path="/register/pasien" element={<RegisterPasien />} />

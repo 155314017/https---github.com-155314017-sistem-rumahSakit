@@ -9,6 +9,7 @@ import AlertWarning from "../../../components/small/AlertWarning";
 import AlertSuccess from "../../../components/small/AlertSuccess";
 import CustomButton from "../../../components/small/CustomButton";
 import LabelHandler from "../../../components/small/LabelHandler";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object({
     email: Yup.string()
@@ -36,6 +37,8 @@ export default function Login() {
     const [resendSuccess, setResendSuccess] = useState(false);
     const [loginSuccess, setLoginSuccess] = useState(false);
 
+    const navigate = useNavigate();
+
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
@@ -59,7 +62,7 @@ export default function Login() {
 
     const showTemporarySuccessLogin = async () => {
         setLoginSuccess(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000)); 
+        await new Promise((resolve) => setTimeout(resolve, 3000));
         setLoginSuccess(false);
     };
 
@@ -145,7 +148,7 @@ export default function Login() {
                             onSubmit={async (values) => {
                                 if (await validationCheck(values)) {
                                     console.log(values);
-                                    await showTemporarySuccessLogin(); 
+                                    await showTemporarySuccessLogin();
                                 }
                             }}
 
@@ -240,8 +243,8 @@ export default function Login() {
                                             />
                                             <LabelHandler onClick={forgotPass} href="#" label="Lupa kata sandi?" />
                                         </Box>
-
                                         <Button
+                                            onClick={() => navigate("/dashboard")}
                                             type="submit"
                                             variant="contained"
                                             color="primary"
@@ -344,7 +347,7 @@ export default function Login() {
                                                     Setel ulang kata sandi
                                                 </Button>
 
-                                                    <CustomButton onClick={loginComponent} label="Kembali ke halaman masuk" />
+                                                <CustomButton onClick={loginComponent} label="Kembali ke halaman masuk" />
 
                                             </Box>
                                         </Form>

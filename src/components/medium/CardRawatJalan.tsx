@@ -1,7 +1,6 @@
-import { Card, Typography } from '@mui/material'
-import { Box } from '@mui/system'
+import { Card, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-
 
 interface Props {
     title: string;
@@ -9,8 +8,6 @@ interface Props {
 }
 
 export default function CardRawatJalan({ title, text }: Props) {
-
-
     return (
         <Card
             sx={{
@@ -22,6 +19,7 @@ export default function CardRawatJalan({ title, text }: Props) {
                 backgroundColor: "#F1F0FE",
                 padding: "24px",
                 gap: "16px",
+                boxShadow: "none", // Remove shadow
             }}
         >
             <Typography
@@ -42,5 +40,5 @@ export default function CardRawatJalan({ title, text }: Props) {
                 <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
             </Box>
         </Card>
-    )
+    );
 }
