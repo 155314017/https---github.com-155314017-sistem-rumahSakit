@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Stack,
@@ -15,7 +16,8 @@ import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
 import { styled } from "@mui/material/styles";
 import DataRuangan from "../../dummyData/dataRuangan";
-import { useState } from "react";
+
+import bgImage from "../../assets/img/String.png";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -37,7 +39,7 @@ const StyledTableContainer = styled(TableContainer)`
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #8F85F3;
+    background-color: #8f85f3;
     border-radius: 10px;
     border: 2px solid #f1f1f1;
   }
@@ -56,19 +58,22 @@ export default function TableRuangan() {
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number,
+    newPage: number
   ) => {
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const displayedData = datas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const displayedData = datas.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
   const sortir = [
     { value: 1, label: "Nama Gedung" },
@@ -93,7 +98,7 @@ export default function TableRuangan() {
   return (
     <Box>
       <Box
-        border={"1px solid #A8A8BD"}
+        position="relative"
         p={3}
         height={800}
         sx={{ borderRadius: "24px", bgcolor: "#fff" }}
@@ -107,6 +112,68 @@ export default function TableRuangan() {
         >
           Daftar Ruangan
         </Typography>
+
+        <Box position="absolute" sx={{ top: 0, right: 0 }}>
+          <img src={bgImage} alt="bg-image" />
+        </Box>
+
+        {/* membuat bentuk lengkung atas */}
+        <Box
+          position={"absolute"}
+          sx={{
+            top: 0,
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "flex",
+          }}
+        >
+          {/* lengkung kiri */}
+          <Box
+            sx={{
+              width: "50px",
+              height: "30px",
+              bgcolor: "#F1F0FE",
+            }}
+          >
+            <Box
+              sx={{
+                width: "50px",
+                height: "30px",
+                bgcolor: "#fff",
+                borderRadius: "0px 15px 0px 0px ",
+              }}
+            />
+          </Box>
+
+          {/* kotak tengah */}
+          <Box
+            sx={{
+              width: "600px",
+              height: "50px",
+              bgcolor: "#F1F0FE",
+              borderRadius: "0px 0px 22px 22px",
+            }}
+          />
+
+          {/* lengkung kanan */}
+          <Box
+            sx={{
+              width: "50px",
+              height: "30px",
+              bgcolor: "#F1F0FE",
+            }}
+          >
+            <Box
+              sx={{
+                width: "50px",
+                height: "30px",
+                bgcolor: "#fff",
+                borderRadius: "15px 0px 0px 0px ",
+              }}
+            />
+          </Box>
+        </Box>
+        {/* ---------- */}
 
         <Box
           mt={3}
@@ -134,7 +201,6 @@ export default function TableRuangan() {
               boxShadow: "none",
               mb: 2,
               maxHeight: "610px",
-              border: "1px solid #A8A8BD",
               borderRadius: "16px",
             }}
           >
@@ -143,42 +209,72 @@ export default function TableRuangan() {
                 <TableRow>
                   <TableCell
                     width={"12%"}
-                    sx={{ fontSize: "16px", fontWeight: 700, color: "#292B2C" }}
-                    align="left"
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      color: "#292B2C",
+                      bgcolor: "#F1F0FE",
+                    }}
+                    align="center"
                   >
                     No.Ruangan
                   </TableCell>
                   <TableCell
                     width={"15%"}
-                    sx={{ fontSize: "16px", fontWeight: 700, color: "#292B2C" }}
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      color: "#292B2C",
+                      bgcolor: "#F1F0FE",
+                    }}
                     align="left"
                   >
                     Nama Gedung
                   </TableCell>
                   <TableCell
                     width={"12%"}
-                    sx={{ fontSize: "16px", fontWeight: 700, color: "#292B2C" }}
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      color: "#292B2C",
+                      bgcolor: "#F1F0FE",
+                    }}
                     align="left"
                   >
                     Jenis Ruangan
                   </TableCell>
                   <TableCell
                     width={"12%"}
-                    sx={{ fontSize: "16px", fontWeight: 700, color: "#292B2C" }}
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      color: "#292B2C",
+                      bgcolor: "#F1F0FE",
+                    }}
                     align="center"
                   >
                     Kuota Ruangan
                   </TableCell>
                   <TableCell
                     width={"15%"}
-                    sx={{ fontSize: "16px", fontWeight: 700, color: "#292B2C" }}
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      color: "#292B2C",
+                      bgcolor: "#F1F0FE",
+                    }}
                     align="center"
                   >
                     Tarif Ruangan
                   </TableCell>
                   <TableCell
                     width={"15%"}
-                    sx={{ fontSize: "16px", fontWeight: 700, color: "#292B2C" }}
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      color: "#292B2C",
+                      bgcolor: "#F1F0FE",
+                    }}
                     align="center"
                   >
                     Aksi
@@ -188,16 +284,14 @@ export default function TableRuangan() {
               <TableBody>
                 {displayedData.map((data, index) => (
                   <StyledTableRow key={index}>
-                    <TableCell
-                      sx={[{ color: "#292B2C", fontSize: "16px" }]}
-                    >
+                    <TableCell sx={[{ color: "#292B2C", fontSize: "16px" }]} align="center">
                       {data.noRuangan}
                     </TableCell>
                     <TableCell
                       sx={[
                         {
                           color: "#292B2C",
-                          fontSize: "16px",
+                          fontSize: "14px",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           whiteSpace: "nowrap",
@@ -209,29 +303,61 @@ export default function TableRuangan() {
                       {data.namaGedung}
                     </TableCell>
                     <TableCell
-                      sx={[{ color: "#292B2C", fontSize: "16px", textTransform: "capitalize" }]}
+                      sx={[
+                        {
+                          color: "#292B2C",
+                          fontSize: "14px",
+                          textTransform: "capitalize",
+                        },
+                      ]}
                     >
                       {data.jenisRuangan}
                     </TableCell>
                     <TableCell
                       align="center"
-                      sx={[{ color: "#292B2C", fontSize: "16px" }]}
+                      sx={[{ color: "#292B2C", fontSize: "14px" }]}
                     >
                       {data.kuotaRuangan} / {data.kuotaRuangan}
                     </TableCell>
                     <TableCell
                       align="center"
-                      sx={[{ color: "#292B2C", fontSize: "16px" }]}
+                      sx={[{ color: "#292B2C", fontSize: "14px" }]}
                     >
-                     Rp {data.tarifRuangan} ,-
+                      Rp {data.tarifRuangan} ,-
                     </TableCell>
                     <TableCell
                       align="center"
-                      sx={[{ color: "#292B2C", fontSize: "16px", textTransform: "capitalize" }]}
+                      sx={[
+                        {
+                          color: "#292B2C",
+                          fontSize: "14px",
+                          textTransform: "capitalize",
+                        },
+                      ]}
                     >
-                      <Link href="#" mr={2} underline="hover" sx={{textTransform: "capitalize", color: "#F04438"}}>Hapus</Link>
-                      <Link href="#" mr={2} underline="hover" sx={{textTransform: "capitalize", color: "#8F85F3"}}>Ubah</Link>
-                      <Link href="#" underline="hover" sx={{textTransform: "capitalize", color: "#8F85F3"}}>Detail</Link>
+                      <Link
+                        href="#"
+                        mr={2}
+                        underline="hover"
+                        sx={{ textTransform: "capitalize", color: "#F04438" }}
+                      >
+                        Hapus
+                      </Link>
+                      <Link
+                        href="#"
+                        mr={2}
+                        underline="hover"
+                        sx={{ textTransform: "capitalize", color: "#8F85F3" }}
+                      >
+                        Ubah
+                      </Link>
+                      <Link
+                        href="#"
+                        underline="hover"
+                        sx={{ textTransform: "capitalize", color: "#8F85F3" }}
+                      >
+                        Detail
+                      </Link>
                     </TableCell>
                   </StyledTableRow>
                 ))}
@@ -239,36 +365,43 @@ export default function TableRuangan() {
             </Table>
           </StyledTableContainer>
         </Box>
-        <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
-            <Typography sx={{ color: "#8F85F3" }}>
-              Showing {page * rowsPerPage + 1} to {Math.min(page*rowsPerPage + rowsPerPage, datas.length)} of {datas.length} entries
-            </Typography>
-            <TablePagination
+        <Stack
+          spacing={2}
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+        >
+          <Typography sx={{ color: "#8F85F3" }}>
+            Showing {page * rowsPerPage + 1} to{" "}
+            {Math.min(page * rowsPerPage + rowsPerPage, datas.length)} of{" "}
+            {datas.length} entries
+          </Typography>
+          <TablePagination
             // shape="rounded"
             count={datas.length}
-              rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              color: "#8F85F3",
+              "& .MuiPaginationItem-root": {
                 color: "#8F85F3",
-                "& .MuiPaginationItem-root": {
-                  color: "#8F85F3",
-                },
-                "& .Mui-selected": {
-                  backgroundColor: "#8F85F3",
-                  color: "white",
-                },
-                "& .MuiPaginationItem-ellipsis": {
-                  color: "#8F85F3",
-                }
-              }}
-            />
-          </Stack>
+              },
+              "& .Mui-selected": {
+                backgroundColor: "#8F85F3",
+                color: "white",
+              },
+              "& .MuiPaginationItem-ellipsis": {
+                color: "#8F85F3",
+              },
+            }}
+          />
+        </Stack>
       </Box>
     </Box>
   );
