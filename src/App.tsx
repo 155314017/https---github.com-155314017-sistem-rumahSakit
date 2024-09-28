@@ -1,9 +1,14 @@
 import "./App.css";
 import Home from "./pages";
+import LoginPasien from "./pages/login/loginPasien/LoginPasien";
+import Login from "./pages/login/loginPegawai/LoginPages";
 function App() {
   return (
     <>
-      <Home />
+      {/* <Login/> */}
+      <LoginPasien/>
+      {/* <Home/> */}
+      {/* <RawatJalan/> */}
     </>
   );
 }
