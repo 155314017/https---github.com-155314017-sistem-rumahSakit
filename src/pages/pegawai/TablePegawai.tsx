@@ -291,7 +291,7 @@ export default function TablePegawai() {
                       sx={[
                         {
                           color: "#292B2C",
-                          fontSize: "16px",
+                          fontSize: "14px",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           whiteSpace: "nowrap",
