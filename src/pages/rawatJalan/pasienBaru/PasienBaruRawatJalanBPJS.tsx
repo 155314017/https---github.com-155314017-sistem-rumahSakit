@@ -1,4 +1,4 @@
-import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField, Radio, FormControlLabel, RadioGroup } from "@mui/material";
+import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField } from "@mui/material";
 import { useState } from "react";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -12,7 +12,6 @@ import { operationalDateOptions, doctors } from "../../../dummyData/dummyData";
 import RadioButton from "../../../components/small/RadioButton";
 import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
-import CalenderPopover from "../../../components/medium/CalenderPopover";
 
 const validationSchema = Yup.object({
     fullname: Yup.string().required('Nama wajib diisi'),
@@ -31,18 +30,15 @@ interface FormValues {
     operationalDate: string;
 }
 
-const PasienLamaRawatJalanUmum: React.FC = () => {
+const PasienBaruRawatJalanBPJS: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const totalPages = 2;
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [fileBase64, setFileBase64] = useState<string | null>(null);
     const [showFormPage, setSHowFormPage] = useState(true);
-    const [selectedMethod, setSelectedMethod] = useState<string>('');
 
-    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedMethod(event.target.value);
-    };
+
     const handleFileChange = (file: File | null, base64: string | null) => {
         setUploadedFile(file);
         setFileBase64(base64);
@@ -93,8 +89,7 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                 marginLeft: '5%',
                 marginTop: '3%',
                 display: 'flex',
-                flexDirection: 'row',
-                // backgroundColor:'red',
+                flexDirection: 'row'
             }}
         >
             <Box>
@@ -131,7 +126,7 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                     />
 
                                     <Typography sx={{ fontSize: '32px', fontWeight: '600', lineHeight: '34px', marginTop: 2 }}>
-                                        Formulir pendaftaran pasien Umum
+                                        Formulir pendaftaran pasien BPPJS
                                     </Typography>
 
                                     <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2, mb: 2 }}>
@@ -168,7 +163,7 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                 />
 
                                                 <FormControl sx={{ marginTop: '50px', display: 'flex', flexDirection: 'column' }}>
-                                                    <Typography>Nama lengkap penanggung jawab  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
+                                                    <Typography>Nama lengkap penanggung jawab</Typography>
                                                     <TextField
                                                         placeholder="Masukkan nama lengkap penanggung jawab"
                                                         fullWidth
@@ -192,7 +187,7 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                         }}
                                                     />
                                                 </FormControl>
-                                                <Typography>No. Handphone penanggung jawab  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
+
                                                 <PhoneInput
                                                     country={'id'}
                                                     value={values.phone}
@@ -222,14 +217,13 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                 )}
 
                                                 <FormControl fullWidth sx={{ mt: 2, mb: 2 }}>
-                                                    <Typography>Hubungan penanggung jawab dengan pasien  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
-                                                    {/* <InputLabel id="relation-label">Hubungan</InputLabel> */}
+                                                    <InputLabel id="relation-label">Hubungan</InputLabel>
                                                     <Select
                                                         labelId="relation-label"
                                                         value={values.relation}
-                                                        // label="Hubungan"
+                                                        label="Hubungan"
                                                         onChange={(e) => setFieldValue('relation', e.target.value)}
-                                                        sx={{ width: '543px', height:'44px' }}
+                                                        sx={{ width: '544px' }}
                                                     >
                                                         <MenuItem value="anak">Anak</MenuItem>
                                                         <MenuItem value="orang tua">Orang Tua</MenuItem>
@@ -261,7 +255,6 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                         onChange={(e) => setFieldValue('poli', e.target.value)}
                                                         sx={{ width: '544px' }}
                                                     >
-                                                        {/* Add your Poli options here */}
                                                         <MenuItem value="poli1">Poli Umum</MenuItem>
                                                         <MenuItem value="poli2">Poli Gigi</MenuItem>
                                                         <MenuItem value="poli3">Poli Anak</MenuItem>
@@ -273,22 +266,36 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                     </Typography>
                                                 )}
 
-                                                <Box>
-                                                    <FormControl sx={{ mt: 2, mb: 2 }} size="small">
-                                                        <InputLabel id="doctor-label">Pilih Dokter</InputLabel>
-                                                        <Select 
+                                                <Box display={"flex"} flexDirection={"row"} gap={"15px"} >
+                                                    <FormControl sx={{ mt: 2, mb: 2 }}>
+                                                        <InputLabel id="doctor-label" >Pilih Dokter</InputLabel>
+                                                        <Select
                                                             labelId="doctor-label"
                                                             value={values.docter}
                                                             label="Pilih Dokter"
                                                             onChange={(e) => setFieldValue('docter', e.target.value)}
-                                                            sx={{ width: '258px', borderRadius: '8px' }}
+                                                            sx={{ width: '258px', height: "38px", borderRadius: '8px' }}
                                                         >
                                                             {doctors.map((doctor) => (
-                                                                <MenuItem key={doctor.value} value={doctor.value}>
+                                                                <MenuItem
+                                                                    key={doctor.value}
+                                                                    value={doctor.value}
+                                                                    sx={{
+                                                                        color: '#8F85F3',
+                                                                        borderRadius: '8px',
+                                                                        '&.Mui-selected:hover': {
+                                                                            backgroundColor: '#D5D1FB', 
+                                                                        },
+                                                                        '&:hover':{
+                                                                            backgroundColor:'#D5D1FB'
+                                                                        }
+                                                                    }}
+                                                                >
                                                                     {doctor.label}
                                                                 </MenuItem>
                                                             ))}
                                                         </Select>
+
                                                     </FormControl>
                                                     {touched.docter && errors.docter && (
                                                         <Typography sx={{ color: 'red', fontSize: '12px' }}>
@@ -296,7 +303,29 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                         </Typography>
                                                     )}
 
-                                                    <CalenderPopover/>
+                                                    <Typography mt={"20px"} >-</Typography>
+
+                                                    <FormControl sx={{ mt: 2, mb: 2 }}>
+                                                        <InputLabel id="operationalDate-label">Pilih Jadwal Operasional</InputLabel>
+                                                        <Select
+                                                            labelId="operationalDate-label"
+                                                            value={values.operationalDate}
+                                                            label="Pilih Jadwal Operasional"
+                                                            onChange={(e) => setFieldValue('operationalDate', e.target.value)}
+                                                            sx={{ width: '258px', height: "38px", borderRadius: '8px' }}
+                                                        >
+                                                            {operationalDateOptions.map((option) => (
+                                                                <MenuItem key={option.value} value={option.value}>
+                                                                    {option.label}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </Select>
+                                                    </FormControl>
+                                                    {touched.operationalDate && errors.operationalDate && (
+                                                        <Typography sx={{ color: 'red', fontSize: '12px' }}>
+                                                            {errors.operationalDate}
+                                                        </Typography>
+                                                    )}
                                                 </Box>
 
                                                 <FormControl>
@@ -305,18 +334,8 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                 </FormControl>
 
                                                 <Box>
-                                                    <RadioGroup
-                                                        aria-label="transport-method"
-                                                        name="transport-method"
-                                                        value={selectedMethod}
-                                                        onChange={handleRadioChange}
-                                                    >
-                                                        <FormControlLabel value="asuransi" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Asuransi" />
-                                                        <FormControlLabel value="uang tunai dan debit" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Uang tunai dan debit" />
-                                                    </RadioGroup>
-                                                    {selectedMethod == 'asuransi' && (
-                                                        <Typography>p</Typography>
-                                                    )}
+                                                    <RadioButton value="asuransi" label="Asuransi" />
+                                                    <RadioButton value="uang tunai dan debit" label="Uang tunai dan debit" />
                                                 </Box>
 
                                                 <FileUploader />
@@ -377,4 +396,4 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
     );
 };
 
-export default PasienLamaRawatJalanUmum;
+export default PasienBaruRawatJalanBPJS;

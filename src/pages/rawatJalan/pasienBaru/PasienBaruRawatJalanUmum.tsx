@@ -1,4 +1,4 @@
-import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField, Radio, FormControlLabel, RadioGroup } from "@mui/material";
+import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField } from "@mui/material";
 import { useState } from "react";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -12,7 +12,9 @@ import { operationalDateOptions, doctors } from "../../../dummyData/dummyData";
 import RadioButton from "../../../components/small/RadioButton";
 import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
-import CalenderPopover from "../../../components/medium/CalenderPopover";
+import { Container, width } from "@mui/system";
+import PhoneInputComponent from "../../../components/inputComponent/PhoneInputComponent";
+import DropDownListPenanggungJawab from "../../../components/inputComponent/DropDownListPenanggungJawab";
 
 const validationSchema = Yup.object({
     fullname: Yup.string().required('Nama wajib diisi'),
@@ -31,22 +33,15 @@ interface FormValues {
     operationalDate: string;
 }
 
-const PasienLamaRawatJalanUmum: React.FC = () => {
+const PasienBaruRawatJalanUmum: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const totalPages = 2;
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [fileBase64, setFileBase64] = useState<string | null>(null);
     const [showFormPage, setSHowFormPage] = useState(true);
-    const [selectedMethod, setSelectedMethod] = useState<string>('');
 
-    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedMethod(event.target.value);
-    };
-    const handleFileChange = (file: File | null, base64: string | null) => {
-        setUploadedFile(file);
-        setFileBase64(base64);
-    };
+
 
     const handleSubmit = (values: FormValues) => {
         console.log("Data yang diisi:", values);
@@ -88,13 +83,12 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
     };
 
     return (
-        <Box
+        <Container
             sx={{
                 marginLeft: '5%',
                 marginTop: '3%',
                 display: 'flex',
-                flexDirection: 'row',
-                // backgroundColor:'red',
+                flexDirection: 'row'
             }}
         >
             <Box>
@@ -159,91 +153,86 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
 
                                     <Box>
                                         {currentPage === 1 && (
-                                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                                <RadioButtonsGroup
-                                                    selectedValue={values.transportMethod}
-                                                    onChange={(value) => setFieldValue('transportMethod', value)}
-                                                    widthInput="562px"
-                                                    heightInput="82px"
-                                                />
-
-                                                <FormControl sx={{ marginTop: '50px', display: 'flex', flexDirection: 'column' }}>
-                                                    <Typography>Nama lengkap penanggung jawab  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
-                                                    <TextField
-                                                        placeholder="Masukkan nama lengkap penanggung jawab"
-                                                        fullWidth
-                                                        value={values.fullname}
-                                                        onChange={(e) => setFieldValue('fullname', e.target.value)}
-                                                        error={touched.fullname && Boolean(errors.fullname)}
-                                                        helperText={touched.fullname && errors.fullname}
-                                                        sx={{
-                                                            mt: 2, mb: 2, border: '1px solid #8F85F3', borderRadius: '8px', width: '544px',
-                                                            '& .MuiOutlinedInput-root': {
-                                                                '& fieldset': {
-                                                                    borderColor: '#8F85F3',
-                                                                },
-                                                                '&:hover fieldset': {
-                                                                    borderColor: '#8F85F3',
-                                                                },
-                                                                '&.Mui-focused fieldset': {
-                                                                    borderColor: '#8F85F',
-                                                                },
-                                                            },
-                                                        }}
-                                                    />
-                                                </FormControl>
-                                                <Typography>No. Handphone penanggung jawab  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
-                                                <PhoneInput
-                                                    country={'id'}
-                                                    value={values.phone}
-                                                    onChange={(phone) => setFieldValue('phone', phone)}
-                                                    inputStyle={{
-                                                        height: '48px',
-                                                        borderRadius: '8px',
-                                                        border: `1px solid ${touched.phone && errors.phone ? 'red' : '#ccc'}`,
-                                                        padding: '10px 40px 10px 60px',
-                                                        fontSize: '16px',
-                                                        width: '544px',
-                                                        marginTop: '10px',
-                                                    }}
-                                                    buttonStyle={{
-                                                        borderRadius: '8px 0 0 8px',
-                                                        border: '1px solid #ccc',
-                                                    }}
-                                                    containerStyle={{
-                                                        marginBottom: '10px',
-                                                        width: '100%',
-                                                    }}
-                                                />
-                                                {touched.phone && errors.phone && (
-                                                    <Typography sx={{ color: 'red', fontSize: '12px' }}>
-                                                        {errors.phone}
-                                                    </Typography>
-                                                )}
-
-                                                <FormControl fullWidth sx={{ mt: 2, mb: 2 }}>
-                                                    <Typography>Hubungan penanggung jawab dengan pasien  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
-                                                    {/* <InputLabel id="relation-label">Hubungan</InputLabel> */}
-                                                    <Select
-                                                        labelId="relation-label"
-                                                        value={values.relation}
-                                                        // label="Hubungan"
-                                                        onChange={(e) => setFieldValue('relation', e.target.value)}
-                                                        sx={{ width: '543px', height:'44px' }}
+                                            <Container sx={{ display: 'flex', flexDirection: 'column' }}>
+                                                <Box>
+                                                    <Box
+                                                        bgcolor={"#EEEEF2"}
+                                                        height={"272px"}
+                                                        width={"548px"}
+                                                        borderRadius={"16px"}
+                                                        paddingLeft={"5px"}
+                                                        display="flex"
+                                                        flexDirection="column"
+                                                        justifyContent="center"
+                                                        marginBottom={"30px"}
                                                     >
-                                                        <MenuItem value="anak">Anak</MenuItem>
-                                                        <MenuItem value="orang tua">Orang Tua</MenuItem>
-                                                        <MenuItem value="kerabat">Kerabat</MenuItem>
-                                                    </Select>
-                                                </FormControl>
-                                                {touched.relation && errors.relation && (
-                                                    <Typography sx={{ color: 'red', fontSize: '12px' }}>
-                                                        {errors.relation}
-                                                    </Typography>
-                                                )}
-                                            </Box>
-                                        )}
+                                                        <Box
+                                                            display="flex"
+                                                            flexDirection="column"
+                                                            alignItems="flex-start"
+                                                            gap={"15px"}
+                                                        >
+                                                            <Typography marginLeft={"25px"} fontSize={"20px"} fontWeight={600}>Data diri pasien</Typography>
+                                                            <Box display={"flex"} flexDirection={"column"}>
+                                                                <Typography marginLeft={"25px"} fontSize={"16px"} mb={"-10px"}>Unggah KTP pasien</Typography>
+                                                                <FileUploader />
+                                                                <Typography marginLeft={"25px"} mt={"-10px"} fontSize={"14px"} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
+                                                            </Box>
 
+                                                            <Box>
+                                                                <Typography marginLeft={"25px"}>No. Handphone pasien</Typography>
+                                                                <PhoneInputComponent widthInput="500px" heightInput="44px" />
+                                                            </Box>
+                                                        </Box>
+                                                    </Box>
+
+                                                    <Box>
+                                                        <Box
+                                                            bgcolor={"#EEEEF2"}
+                                                            height={"544px"}
+                                                            width={"548px"}
+                                                            borderRadius={"16px"}
+                                                            paddingLeft={"5px"}
+                                                            display="flex"
+                                                            flexDirection="column"
+                                                            marginBottom={"30px"}
+                                                        >
+                                                            <Box
+                                                                display="flex"
+                                                                flexDirection="column"
+                                                                gap={"15px"}
+                                                            >
+                                                                <Typography>Data diri penanggung jawab pasien</Typography>
+                                                                <RadioButtonsGroup
+                                                                    selectedValue={values.transportMethod}
+                                                                    onChange={(value) => setFieldValue('transportMethod', value)}
+                                                                    widthInput="570px"
+                                                                    heightInput="56px"
+                                                                />
+
+                                                                <Box mt={"10%"} >
+                                                                    <Typography ml={"20px"} >No. Handphone pasien</Typography>
+                                                                    <PhoneInputComponent widthInput="500px" heightInput="44px" />
+                                                                    <Typography mt={"2%"} ml={"20px"} >Nama lengkap penanggung jawab</Typography>
+                                                                    <TextField sx={{ width: '500px', maxHeight: '44px', backgroundColor: '#FAFAFA', borderRadius: '8px', marginLeft: '20px' }} InputProps={{
+                                                                        sx: {
+                                                                            height: '44px',
+                                                                            borderRadius: '8px',
+                                                                            padding: 0,
+                                                                        },
+                                                                    }} />
+                                                                    <Typography ml={"20px"} >No. Handphone penanggung jawab</Typography>
+                                                                    <PhoneInputComponent widthInput="500px" heightInput="44px" />
+                                                                    <Typography>Hubungan penanggung jawab dengan pasien</Typography>
+                                                                    <DropDownListPenanggungJawab />
+                                                                </Box>
+                                                            </Box>
+                                                        </Box>
+                                                    </Box>
+
+                                                </Box>
+                                            </Container>
+                                        )}
                                         {currentPage === 2 && (
                                             <Box sx={{ display: 'flex', flexDirection: 'column' }} >
                                                 <FormControl>
@@ -274,14 +263,14 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                 )}
 
                                                 <Box>
-                                                    <FormControl sx={{ mt: 2, mb: 2 }} size="small">
+                                                    <FormControl sx={{ mt: 2, mb: 2 }}>
                                                         <InputLabel id="doctor-label">Pilih Dokter</InputLabel>
-                                                        <Select 
+                                                        <Select
                                                             labelId="doctor-label"
                                                             value={values.docter}
                                                             label="Pilih Dokter"
                                                             onChange={(e) => setFieldValue('docter', e.target.value)}
-                                                            sx={{ width: '258px', borderRadius: '8px' }}
+                                                            sx={{ width: '258px', height: "38px", borderRadius: '8px' }}
                                                         >
                                                             {doctors.map((doctor) => (
                                                                 <MenuItem key={doctor.value} value={doctor.value}>
@@ -296,7 +285,27 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                         </Typography>
                                                     )}
 
-                                                    <CalenderPopover/>
+                                                    <FormControl sx={{ mt: 2, mb: 2 }}>
+                                                        <InputLabel id="operationalDate-label">Pilih Jadwal Operasional</InputLabel>
+                                                        <Select
+                                                            labelId="operationalDate-label"
+                                                            value={values.operationalDate}
+                                                            label="Pilih Jadwal Operasional"
+                                                            onChange={(e) => setFieldValue('operationalDate', e.target.value)}
+                                                            sx={{ width: '258px', height: "38px", borderRadius: '8px' }}
+                                                        >
+                                                            {operationalDateOptions.map((option) => (
+                                                                <MenuItem key={option.value} value={option.value}>
+                                                                    {option.label}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </Select>
+                                                    </FormControl>
+                                                    {touched.operationalDate && errors.operationalDate && (
+                                                        <Typography sx={{ color: 'red', fontSize: '12px' }}>
+                                                            {errors.operationalDate}
+                                                        </Typography>
+                                                    )}
                                                 </Box>
 
                                                 <FormControl>
@@ -305,18 +314,8 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                 </FormControl>
 
                                                 <Box>
-                                                    <RadioGroup
-                                                        aria-label="transport-method"
-                                                        name="transport-method"
-                                                        value={selectedMethod}
-                                                        onChange={handleRadioChange}
-                                                    >
-                                                        <FormControlLabel value="asuransi" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Asuransi" />
-                                                        <FormControlLabel value="uang tunai dan debit" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Uang tunai dan debit" />
-                                                    </RadioGroup>
-                                                    {selectedMethod == 'asuransi' && (
-                                                        <Typography>p</Typography>
-                                                    )}
+                                                    <RadioButton value="asuransi" label="Asuransi" />
+                                                    <RadioButton value="uang tunai dan debit" label="Uang tunai dan debit" />
                                                 </Box>
 
                                                 <FileUploader />
@@ -373,8 +372,8 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                     <InformasiTicket />
                 </Box>
             )}
-        </Box>
+        </Container>
     );
 };
 
-export default PasienLamaRawatJalanUmum;
+export default PasienBaruRawatJalanUmum;

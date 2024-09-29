@@ -7,7 +7,7 @@ interface Props {
 
 const RadioButton: React.FC<Props> = ({ value, label }) => {
   return (
-      <FormControlLabel value={value} control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label={label} />
+      <FormControlLabel value={value} control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }}  />} label={label} />
   )
 }
 

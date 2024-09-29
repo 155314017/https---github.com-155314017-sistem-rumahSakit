@@ -38,11 +38,11 @@ const FileUploader: React.FC = () => {
                 onChange={handleFileChange}
             />
             <label htmlFor="file-upload">
-                <Button variant="contained" component="span" sx={{ backgroundColor: 'purple', color: 'white' }}>
-                    Pilih File
+                <Button variant="contained" component="span" sx={{ backgroundColor: '#8F85F3', color: 'white', width:'160px', height:'44px' }}>
+                    Unggah Berkas
                 </Button>
             </label>
-            <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '20px', backgroundColor:'#FAFAFA' }}>
                 {fileName && (
                     <>
                         <Typography variant="body1" sx={{ marginRight: '10px' }}>
@@ -54,7 +54,7 @@ const FileUploader: React.FC = () => {
                     </>
                 )}
             </Box>
-            <Button
+            {/* <Button
                 variant="contained"
                 color="primary"
                 onClick={handleUpload}
@@ -62,7 +62,7 @@ const FileUploader: React.FC = () => {
                 disabled={!base64String}
             >
                 Unggah
-            </Button>
+            </Button> */}
         </Box>
     );
 };
