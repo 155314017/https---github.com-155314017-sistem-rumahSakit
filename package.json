@@ -16,15 +16,21 @@
     "@mui/material": "^6.1.1",
     "@mui/styled-engine": "^6.0.2",
     "@mui/system": "^6.0.2",
+<<<<<<< HEAD
     "@mui/x-date-pickers": "^7.18.0",
     "dayjs": "^1.11.13",
+=======
+    "formik": "^2.4.6",
+>>>>>>> d6dc46923bd7a016fdd6d582fbf1b984cff603ca
     "moment": "^2.30.1",
     "react": "^18.3.1",
     "react-big-calendar": "^1.14.1",
     "react-calendar": "^5.0.0",
     "react-dom": "^18.3.1",
     "react-otp-input": "^3.1.1",
-    "react-phone-input-2": "^2.15.1"
+    "react-phone-input-2": "^2.15.1",
+    "react-router-dom": "^6.26.2",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

@@ -15,9 +15,9 @@ import {
 import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
 import { styled } from "@mui/material/styles";
-import DataRuangan from "../../dummyData/dataRuangan";
-
 import bgImage from "../../assets/img/String.png";
+
+import DataAmbulance from "../../dummyData/dataAmbulance";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -50,8 +50,8 @@ const StyledTableContainer = styled(TableContainer)`
   }
 `;
 
-export default function TableRuangan() {
-  const datas = DataRuangan;
+export default function TableAmbulance() {
+  const datas = DataAmbulance;
 
   const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -76,19 +76,16 @@ export default function TableRuangan() {
   );
 
   const sortir = [
-    { value: 1, label: "Nama Gedung" },
-    { value: 2, label: "Jenis Ruangan" },
-    { value: 3, label: "Kuota ruangan tersedia" },
-    { value: 4, label: "Kuota ruangan penuh" },
+    { value: 1, label: "Status" },
+    { value: 2, label: "Status" },
+    { value: 3, label: "Status" },
   ];
 
   const urutkan = [
-    { value: 1, label: "Nama Gedung A-Z" },
-    { value: 2, label: "Nama Gedung Z-A" },
-    { value: 3, label: "Tarif ruangan tertinggi" },
-    { value: 4, label: "Tarif ruangan terendah" },
-    { value: 5, label: "Nomor ruangan 1-9" },
-    { value: 6, label: "Nomor ruangan 9-1" },
+    { value: 1, label: "Tarif ambulance tertinggi" },
+    { value: 2, label: "Tarif ambulance  terendah" },
+    { value: 3, label: "Nomor ambulance 1-9" },
+    { value: 4, label: "Nomor ambulance 9-1" },
   ];
 
   const handleSelectionChange = (selectedValue: string) => {
@@ -98,7 +95,7 @@ export default function TableRuangan() {
   return (
     <Box>
       <Box
-        position="relative"
+        position={"relative"}
         p={3}
         height={800}
         sx={{ borderRadius: "24px", bgcolor: "#fff" }}
@@ -110,12 +107,8 @@ export default function TableRuangan() {
             fontSize: "20px",
           }}
         >
-          Daftar Ruangan
+          Daftar Ambulance
         </Typography>
-
-        <Box position="absolute" sx={{ top: 0, right: 0 }}>
-          <img src={bgImage} alt="bg-image" />
-        </Box>
 
         {/* membuat bentuk lengkung atas */}
         <Box
@@ -175,6 +168,10 @@ export default function TableRuangan() {
         </Box>
         {/* ---------- */}
 
+        <Box position="absolute" sx={{ top: 0, right: 0 }}>
+          <img src={bgImage} alt="bg-image" />
+        </Box>
+
         <Box
           mt={3}
           display={"flex"}
@@ -208,18 +205,6 @@ export default function TableRuangan() {
               <TableHead>
                 <TableRow>
                   <TableCell
-                    width={"12%"}
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      color: "#292B2C",
-                      bgcolor: "#F1F0FE",
-                    }}
-                    align="center"
-                  >
-                    No.Ruangan
-                  </TableCell>
-                  <TableCell
                     width={"15%"}
                     sx={{
                       fontSize: "14px",
@@ -227,33 +212,9 @@ export default function TableRuangan() {
                       color: "#292B2C",
                       bgcolor: "#F1F0FE",
                     }}
-                    align="left"
-                  >
-                    Nama Gedung
-                  </TableCell>
-                  <TableCell
-                    width={"12%"}
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      color: "#292B2C",
-                      bgcolor: "#F1F0FE",
-                    }}
-                    align="left"
-                  >
-                    Jenis Ruangan
-                  </TableCell>
-                  <TableCell
-                    width={"12%"}
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      color: "#292B2C",
-                      bgcolor: "#F1F0FE",
-                    }}
                     align="center"
                   >
-                    Kuota Ruangan
+                    No. Ambulance
                   </TableCell>
                   <TableCell
                     width={"15%"}
@@ -265,7 +226,31 @@ export default function TableRuangan() {
                     }}
                     align="center"
                   >
-                    Tarif Ruangan
+                    Biaya Tarif
+                  </TableCell>
+                  <TableCell
+                    width={"15%"}
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      color: "#292B2C",
+                      bgcolor: "#F1F0FE",
+                    }}
+                    align="center"
+                  >
+                    Jam Operasional
+                  </TableCell>
+                  <TableCell
+                    width={"15%"}
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      color: "#292B2C",
+                      bgcolor: "#F1F0FE",
+                    }}
+                    align="center"
+                  >
+                    Status
                   </TableCell>
                   <TableCell
                     width={"15%"}
@@ -284,8 +269,11 @@ export default function TableRuangan() {
               <TableBody>
                 {displayedData.map((data, index) => (
                   <StyledTableRow key={index}>
-                    <TableCell sx={[{ color: "#292B2C", fontSize: "16px" }]} align="center">
-                      {data.noRuangan}
+                    <TableCell
+                      sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                      align="center"
+                    >
+                      {data.no_ambulance}
                     </TableCell>
                     <TableCell
                       sx={[
@@ -299,8 +287,9 @@ export default function TableRuangan() {
                           textTransform: "capitalize",
                         },
                       ]}
+                      align="center"
                     >
-                      {data.namaGedung}
+                      Rp {data.biaya_tarif},-
                     </TableCell>
                     <TableCell
                       sx={[
@@ -310,20 +299,35 @@ export default function TableRuangan() {
                           textTransform: "capitalize",
                         },
                       ]}
+                      align="center"
                     >
-                      {data.jenisRuangan}
+                      {data.jam_operasional}
                     </TableCell>
                     <TableCell
                       align="center"
-                      sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                      sx={[
+                        {
+                          color: "#292B2C",
+                          fontSize: "14px",
+                          display: "flex",
+                          justifyContent: "center",
+                        },
+                      ]}
                     >
-                      {data.kuotaRuangan} / {data.kuotaRuangan}
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                    >
-                      Rp {data.tarifRuangan} ,-
+                      <Box
+                        sx={{
+                          bgcolor:
+                            data.status === "available" ? "#d4edda" : "#f8d7da",
+                          color:
+                            data.status === "available" ? "#155724" : "#721c24",
+                          padding: "4px 8px",
+                          borderRadius: "8px",
+                          textTransform: "capitalize",
+                          width: "80px",
+                        }}
+                      >
+                        {data.status}
+                      </Box>
                     </TableCell>
                     <TableCell
                       align="center"

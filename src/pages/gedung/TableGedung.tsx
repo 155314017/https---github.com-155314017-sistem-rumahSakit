@@ -15,9 +15,9 @@ import {
 import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
 import { styled } from "@mui/material/styles";
-import DataRuangan from "../../dummyData/dataRuangan";
-
 import bgImage from "../../assets/img/String.png";
+
+import DataGedung from "../../dummyData/dataGedung";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -50,8 +50,8 @@ const StyledTableContainer = styled(TableContainer)`
   }
 `;
 
-export default function TableRuangan() {
-  const datas = DataRuangan;
+export default function TableGedung() {
+  const datas = DataGedung;
 
   const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -75,20 +75,11 @@ export default function TableRuangan() {
     page * rowsPerPage + rowsPerPage
   );
 
-  const sortir = [
-    { value: 1, label: "Nama Gedung" },
-    { value: 2, label: "Jenis Ruangan" },
-    { value: 3, label: "Kuota ruangan tersedia" },
-    { value: 4, label: "Kuota ruangan penuh" },
-  ];
-
   const urutkan = [
     { value: 1, label: "Nama Gedung A-Z" },
     { value: 2, label: "Nama Gedung Z-A" },
-    { value: 3, label: "Tarif ruangan tertinggi" },
-    { value: 4, label: "Tarif ruangan terendah" },
-    { value: 5, label: "Nomor ruangan 1-9" },
-    { value: 6, label: "Nomor ruangan 9-1" },
+    { value: 3, label: "Nomor Gedung 1-9" },
+    { value: 4, label: "Nomor Gedung 9-1" },
   ];
 
   const handleSelectionChange = (selectedValue: string) => {
@@ -98,7 +89,7 @@ export default function TableRuangan() {
   return (
     <Box>
       <Box
-        position="relative"
+        position={"relative"}
         p={3}
         height={800}
         sx={{ borderRadius: "24px", bgcolor: "#fff" }}
@@ -110,12 +101,8 @@ export default function TableRuangan() {
             fontSize: "20px",
           }}
         >
-          Daftar Ruangan
+          Daftar Gedung
         </Typography>
-
-        <Box position="absolute" sx={{ top: 0, right: 0 }}>
-          <img src={bgImage} alt="bg-image" />
-        </Box>
 
         {/* membuat bentuk lengkung atas */}
         <Box
@@ -175,6 +162,10 @@ export default function TableRuangan() {
         </Box>
         {/* ---------- */}
 
+        <Box position="absolute" sx={{ top: 0, right: 0 }}>
+          <img src={bgImage} alt="bg-image" />
+        </Box>
+
         <Box
           mt={3}
           display={"flex"}
@@ -182,11 +173,6 @@ export default function TableRuangan() {
           sx={{ gap: 3 }}
         >
           <SearchBar />
-          <DropdownList
-            options={sortir}
-            placeholder="Sortir"
-            onChange={handleSelectionChange}
-          />
           <DropdownList
             options={urutkan}
             placeholder="Urutkan"
@@ -217,7 +203,7 @@ export default function TableRuangan() {
                     }}
                     align="center"
                   >
-                    No.Ruangan
+                    No. Gedung
                   </TableCell>
                   <TableCell
                     width={"15%"}
@@ -232,7 +218,7 @@ export default function TableRuangan() {
                     Nama Gedung
                   </TableCell>
                   <TableCell
-                    width={"12%"}
+                    width={"15%"}
                     sx={{
                       fontSize: "14px",
                       fontWeight: 700,
@@ -241,31 +227,7 @@ export default function TableRuangan() {
                     }}
                     align="left"
                   >
-                    Jenis Ruangan
-                  </TableCell>
-                  <TableCell
-                    width={"12%"}
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      color: "#292B2C",
-                      bgcolor: "#F1F0FE",
-                    }}
-                    align="center"
-                  >
-                    Kuota Ruangan
-                  </TableCell>
-                  <TableCell
-                    width={"15%"}
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      color: "#292B2C",
-                      bgcolor: "#F1F0FE",
-                    }}
-                    align="center"
-                  >
-                    Tarif Ruangan
+                    Alamat Gedung
                   </TableCell>
                   <TableCell
                     width={"15%"}
@@ -284,8 +246,11 @@ export default function TableRuangan() {
               <TableBody>
                 {displayedData.map((data, index) => (
                   <StyledTableRow key={index}>
-                    <TableCell sx={[{ color: "#292B2C", fontSize: "16px" }]} align="center">
-                      {data.noRuangan}
+                    <TableCell
+                      sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                      align="center"
+                    >
+                      {data.no_gedung}
                     </TableCell>
                     <TableCell
                       sx={[
@@ -300,30 +265,22 @@ export default function TableRuangan() {
                         },
                       ]}
                     >
-                      {data.namaGedung}
+                      {data.name}
                     </TableCell>
                     <TableCell
                       sx={[
                         {
                           color: "#292B2C",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          maxWidth: "150px",
                           fontSize: "14px",
                           textTransform: "capitalize",
                         },
                       ]}
                     >
-                      {data.jenisRuangan}
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                    >
-                      {data.kuotaRuangan} / {data.kuotaRuangan}
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                    >
-                      Rp {data.tarifRuangan} ,-
+                      {data.address}
                     </TableCell>
                     <TableCell
                       align="center"

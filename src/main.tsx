@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
-import App from './App';
+// import App from './App';
 import LoginPasien from './pages/login/loginPasien/LoginPasien';
 import Login from './pages/login/loginPegawai/LoginPages';
 import RegisterPasien from './pages/login/loginPasien/RegisterPasien';

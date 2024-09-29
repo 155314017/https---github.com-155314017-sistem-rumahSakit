@@ -36,6 +36,7 @@ export default function DropdownList({
         borderRadius: "8px",
         padding: "2px 4px",
         height: "38px",
+
       }}
     >
       <Select
