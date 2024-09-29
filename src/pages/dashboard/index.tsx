@@ -16,12 +16,19 @@ import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 // table
 import TableRuangan from "../ruangan/TableRuangan";
 import TablePegawai from "../pegawai/TablePegawai";
+import TableGedung from "../gedung/TableGedung";
+import TableFasilitas from "../fasilitas/TableFasilitas";
+import TableDokter from "../dokter/TableDokter";
+import TableAmbulance from "../ambulance/TableAmbulance";
+import TableKlinik from "../klinik/TableKlinik";
 
 export default function Dashboard() {
   return (
     <Box>
       <Box sx={{ py: 5 }}>
-        <Typography sx={{ fontSize: "32px", fontWeight: "700" }}>Dashboard</Typography>
+        <Typography sx={{ fontSize: "32px", fontWeight: "700" }}>
+          Dashboard
+        </Typography>
       </Box>
       <Grid container spacing={3} flex={1} justifyContent={"space-between"}>
         <MediumCard
@@ -59,8 +66,13 @@ export default function Dashboard() {
       </Grid>
 
       <Stack mt={3} spacing={3}>
+        <TableGedung />
         <TableRuangan />
         <TablePegawai />
+        <TableFasilitas />
+        <TableDokter />
+        <TableAmbulance />
+        <TableKlinik/>
       </Stack>
     </Box>
   );
