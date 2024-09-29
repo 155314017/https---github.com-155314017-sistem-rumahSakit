@@ -1,18 +1,26 @@
 import { useState, useEffect } from "react";
 import { Box, Typography, IconButton, Avatar } from "@mui/material";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import moment from "moment";
 
 // icon
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 export default function Header() {
-  const [time, setTime] = useState<string>(moment().format("h:mm a"));
+  const [time, setTime] = useState({
+    hours: moment().format("h"),
+    minutes: moment().format("mm"),
+    period: moment().format("a"),
+  });
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setTime(moment().format("h:mm a"));
+      setTime({
+        hours: moment().format("h"),
+        minutes: moment().format("mm"),
+        period: moment().format("a"),
+      });
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -33,9 +41,30 @@ export default function Header() {
         {/* time and role */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <AccessTimeIcon />
-          <Typography fontSize="18px" fontWeight={700}>
-            {time}
-          </Typography>
+
+          <Box sx={{ display: "flex", gap: 0.5 }}>
+            <Typography fontSize="18px" fontWeight={700}>
+              {time.hours}
+            </Typography>
+            <Typography
+              component="span"
+              fontSize="18px"
+              fontWeight={700}
+              sx={{
+                animation: "blink 0.5s steps(2, start) infinite",
+                "@keyframes blink": {
+                  "0%": { opacity: 0 },
+                  "50%": { opacity: 0 },
+                  "100%": { opacity: 1 },
+                },
+              }}
+            >
+              :
+            </Typography>
+            <Typography fontSize="18px" fontWeight={700}>
+              {time.minutes} {time.period}
+            </Typography>
+          </Box>
         </Box>
         <Typography fontSize="18px" sx={{ mx: 1 }}>
           -
