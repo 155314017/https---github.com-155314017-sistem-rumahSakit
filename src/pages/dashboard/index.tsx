@@ -54,13 +54,13 @@ export default function Dashboard() {
           subtitle={"10"}
         />
         <CardAdd
-          icon={PersonAddIcon}
-          title={"Tambah pegawai"}
+          icon={RoomPreferencesIcon}
+          title={"Tambah ruangan"}
           link={"Add new"}
         />
         <CardAdd
-          icon={RoomPreferencesIcon}
-          title={"Tambah ruangan"}
+          icon={PersonAddIcon}
+          title={"Tambah pegawai"}
           link={"Add new"}
         />
       </Grid>
@@ -72,7 +72,7 @@ export default function Dashboard() {
         <TableFasilitas />
         <TableDokter />
         <TableAmbulance />
-        <TableKlinik/>
+        <TableKlinik />
       </Stack>
     </Box>
   );
