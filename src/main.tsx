@@ -9,12 +9,18 @@ import RegisterPasien from './pages/login/loginPasien/RegisterPasien';
 import PasienLamaRawatJalanBPJS from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanBPJS';
 import PasienLamaRawatJalanUmum from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanUmum';
 import Home from './pages';
+import Gedung from '../src/pages/gedung/index';
+import Ambulance from './pages/ambulance';
+import DetailAmbulance from './pages/ambulance/DetailAmbulance';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Router>
       <Routes>
         <Route path="/dashboard" element={<Home />} />
+        <Route path="/gedung" element={<Gedung />} />
+        <Route path="/ambulance" element={<Ambulance />} />
+        <Route path="/detailAmbulance" element={<DetailAmbulance />} />
         <Route path="/" element={<LoginPasien/>} />
         <Route path="/login/pegawai" element={<Login />} />
         <Route path="/login/pasien" element={<LoginPasien />} />
