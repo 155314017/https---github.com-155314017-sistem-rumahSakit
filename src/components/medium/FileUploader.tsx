@@ -18,18 +18,13 @@ const FileUploader: React.FC = () => {
         }
     };
 
-    const handleUpload = () => {
-        console.log('Mengunggah file:', fileName);
-        console.log('Base64:', base64String);
-    };
-
     const handleRemoveFile = () => {
         setFileName(null);
         setBase64String(null);
     };
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', margin: '20px' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
             <input
                 accept="*"
                 style={{ display: 'none' }}
@@ -38,23 +33,47 @@ const FileUploader: React.FC = () => {
                 onChange={handleFileChange}
             />
             <label htmlFor="file-upload">
-                <Button variant="contained" component="span" sx={{ backgroundColor: '#8F85F3', color: 'white', width:'160px', height:'44px' }}>
+                <Button variant="contained" component="span" sx={{ backgroundColor: '#8F85F3', color: 'white', width: '160px', height: '44px', borderRadius: '6px 0px 0px 6px' }}>
                     Unggah Berkas
                 </Button>
             </label>
-            <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '20px', backgroundColor:'#FAFAFA' }}>
-                {fileName && (
+
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    backgroundColor: '#FAFAFA',
+                    borderRadius: '0px 6px 6px 0px',
+                    width: '388px',
+                    height: '44px',
+                    color: 'black',
+                }}
+            >
+                {fileName ? (
                     <>
-                        <Typography variant="body1" sx={{ marginRight: '10px' }}>
-                            {fileName}
-                        </Typography>
-                        <IconButton onClick={handleRemoveFile} color="error">
-                            <DeleteIcon />
-                        </IconButton>
+                        <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} width={'388px'} alignItems={'center'}>
+                            <Typography variant="body1" sx={{ marginRight: '10px', marginLeft: '15px' }}>
+                                {fileName}
+                            </Typography>
+                            <IconButton onClick={handleRemoveFile} sx={{ color: 'black' }}>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Box>
                     </>
+                ) : (
+                    <Typography variant="body1" sx={{ marginLeft: '15px' }}>
+                        Tidak ada file yang diunggah
+                    </Typography>
                 )}
             </Box>
-            {/* <Button
+        </Box>
+    );
+};
+
+export default FileUploader;
+
+
+{/* <Button
                 variant="contained"
                 color="primary"
                 onClick={handleUpload}
@@ -63,8 +82,3 @@ const FileUploader: React.FC = () => {
             >
                 Unggah
             </Button> */}
-        </Box>
-    );
-};
-
-export default FileUploader;

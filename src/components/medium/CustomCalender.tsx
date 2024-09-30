@@ -1,11 +1,18 @@
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import * as React from 'react';
+import { Dayjs } from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 export default function CustomCalender() {
+    const [value, setValue] = React.useState<Dayjs | null>(null);
+
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar />
+            <DemoContainer components={['DatePicker']}>
+                <DatePicker value={value} onChange={(newValue) => setValue(newValue)} />
+            </DemoContainer>
         </LocalizationProvider>
     );
 }

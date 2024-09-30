@@ -27,7 +27,8 @@ const RadioButtonsGroup: React.FC<RadioButtonsGroupProps> = ({ selectedValue, on
                     flexDirection: "row",
                     border: "1px solid #A8A8BD",
                     borderRadius: "16px",
-                    padding: "16px 24px",
+                    // padding: "16px 24px 16px 24px",
+                    padding:'8px'
                 }}
             >
                 <FormControlLabel value="sendiri" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Sendiri" />

@@ -23,8 +23,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/login/pasien" element={<LoginPasien />} />
         <Route path="/register/pasien" element={<RegisterPasien />} />
         <Route path="/rawatjalan/lama/bpjs" element={<PasienLamaRawatJalanBPJS />} />
-        <Route path="/rawatjalan/baru/bpjs" element={<PasienBaruRawatJalanBPJS />} />
         <Route path="/rawatjalan/lama/umum" element={<PasienLamaRawatJalanUmum />} />
+        <Route path="/rawatjalan/baru/bpjs" element={<PasienBaruRawatJalanBPJS />} />
         <Route path="/rawatjalan/baru/umum" element={<PasienBaruRawatJalanUmum />}  />
         <Route path="/ambulans" element={<AmbulancePage />} />
 

@@ -85,7 +85,7 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
     return (
         <Container
             sx={{
-                marginLeft: '5%',
+                marginLeft: '7%',
                 marginTop: '3%',
                 display: 'flex',
                 flexDirection: 'row'
@@ -333,13 +333,14 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                                                     color: 'white',
                                                     textTransform: 'none',
                                                     padding: '10px 24px',
+                                                    width:'500px',
                                                     borderRadius: '8px',
                                                     '&:hover': {
                                                         backgroundColor: '#7C75E2',
                                                     }
                                                 }}
                                             >
-                                                Lanjut
+                                                Selanjutnya
                                             </Button>
                                         ) : (
                                             <Button

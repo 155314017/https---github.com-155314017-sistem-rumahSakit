@@ -15,7 +15,7 @@ export default function RegisterPasien() {
 
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "row", marginLeft: '5%', marginTop: '3%', gap: '55px', height: '700px' }}>
+    <Box sx={{ display: "flex", flexDirection: "row", marginLeft: '7%', marginTop: '3%', gap: '55px', height: '700px' }}>
       <Box>
         <CardMedia
           component="img"
@@ -77,11 +77,11 @@ export default function RegisterPasien() {
           {!pasienBaru && (
             <>
               <Box sx={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-                <Link to="/login/pasien" style={{ textDecoration: 'none' }}>
+                <Link to="/rawatjalan/baru/bpjs" style={{ textDecoration: 'none' }}>
                   <CardRawatJalan title="Pasien BPJS" text="dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu dan berhak mendapatkan pelayanan kesehatan" />
                 </Link>
 
-                <Link to="login/pasien" style={{ textDecoration: 'none' }}>
+                <Link to="/rawatjalan/baru/umum" style={{ textDecoration: 'none' }}>
                   <CardRawatJalan title="Pasien umum" text="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan." />
                 </Link>
               </Box>

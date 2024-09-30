@@ -1,4 +1,4 @@
-import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField } from "@mui/material";
+import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField, Radio, FormControlLabel, RadioGroup } from "@mui/material";
 import { useState } from "react";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -12,6 +12,10 @@ import { operationalDateOptions, doctors } from "../../../dummyData/dummyData";
 import RadioButton from "../../../components/small/RadioButton";
 import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
+import CalenderPopover from "../../../components/medium/CalenderPopover";
+import PoliSelect from "../../../components/inputComponent/PoliSelect";
+import ImageUploader from "../../../components/inputComponent/ImageUploader";
+import CustomCalender from "../../../components/medium/CustomCalender";
 
 const validationSchema = Yup.object({
     fullname: Yup.string().required('Nama wajib diisi'),
@@ -37,8 +41,11 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [fileBase64, setFileBase64] = useState<string | null>(null);
     const [showFormPage, setSHowFormPage] = useState(true);
+    const [selectedMethod, setSelectedMethod] = useState<string>('');
 
-
+    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedMethod(event.target.value);
+    };
     const handleFileChange = (file: File | null, base64: string | null) => {
         setUploadedFile(file);
         setFileBase64(base64);
@@ -75,7 +82,7 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
 
     const getPageStyle = (page: number) => {
         if (page === currentPage) {
-            return { color: '#8F85F3', cursor: 'pointer', fontWeight: 'bold' };
+            return { color: '#8F85F3', cursor: 'pointer', fontWeight: 'bold', };
         } else if (page < currentPage) {
             return { color: '#8F85F3', cursor: 'pointer' };
         } else {
@@ -83,13 +90,50 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
         }
     };
 
+    const getBorderStyle = (page: number) => {
+        if (page === currentPage) {
+            return {
+                display: 'flex',
+                border: '1px solid #8F85F3',
+                width: '38px',
+                height: '38px',
+                borderRadius: '8px',
+                justifyContent: 'center',
+                alignItems: 'center'
+            };
+        } else if (page < currentPage) {
+            return {
+                display: 'flex',
+                border: '1px solid #8F85F3',
+                width: '38px',
+                height: '38px',
+                borderRadius: '8px',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#8F85F3',
+                color: 'white'
+            };
+        } else {
+            return {
+                display: 'flex',
+                border: '1px solid #8F85F3',
+                width: '38px',
+                height: '38px',
+                borderRadius: '8px',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: '#8F85F3'
+            };
+        }
+    }
+
     return (
         <Box
             sx={{
-                marginLeft: '5%',
+                marginLeft: '7%',
                 marginTop: '3%',
                 display: 'flex',
-                flexDirection: 'row'
+                flexDirection: 'row',
             }}
         >
             <Box>
@@ -126,24 +170,42 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                     />
 
                                     <Typography sx={{ fontSize: '32px', fontWeight: '600', lineHeight: '34px', marginTop: 2 }}>
-                                        Formulir pendaftaran pasien BPPJS
+                                        Formulir pendaftaran pasien BPJS
                                     </Typography>
 
                                     <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2, mb: 2 }}>
-                                        <Typography
-                                            onClick={() => setCurrentPage(1)}
-                                            sx={getPageStyle(1)}
-                                            mx={2}
-                                        >
-                                            Penanggung jawab pasien
-                                        </Typography>
-                                        <Typography
-                                            onClick={() => setCurrentPage(2)}
-                                            sx={getPageStyle(2)}
-                                            mx={2}
-                                        >
-                                            Jenis Kunjungan
-                                        </Typography>
+                                        <Box display={'flex'} flexDirection={'row'} width={'290px'}>
+                                            <Box
+                                                display={'flex'}
+                                                flexDirection={'row'}
+                                                alignItems="center"
+                                                onClick={() => setCurrentPage(1)}
+                                                sx={getPageStyle(1)}
+                                                mx={2}
+                                            >
+                                                <Box sx={getBorderStyle(1)}>
+                                                    1
+                                                </Box>
+                                                <Typography sx={{ ml: 1 }}>Penanggung jawab pasien</Typography>
+                                            </Box>
+                                        </Box>
+
+
+                                        <Box display={'flex'} flexDirection={'row'} width={'350px'}>
+                                            <Box
+                                                display={'flex'}
+                                                flexDirection={'row'}
+                                                alignItems="center"
+                                                onClick={() => setCurrentPage(2)}
+                                                sx={getPageStyle(2)}
+                                                mx={2}
+                                            >
+                                                <Box sx={getBorderStyle(2)}>
+                                                    2
+                                                </Box>
+                                                <Typography sx={{ ml: 1 }}>Jenis kunjungan , Keluhan dan metode pembayaran</Typography>
+                                            </Box>
+                                        </Box>
                                     </Box>
 
                                     {showAlert && (
@@ -158,12 +220,12 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                 <RadioButtonsGroup
                                                     selectedValue={values.transportMethod}
                                                     onChange={(value) => setFieldValue('transportMethod', value)}
-                                                    widthInput="562px"
-                                                    heightInput="82px"
+                                                    widthInput="543px"
+                                                    heightInput="56px"
                                                 />
 
                                                 <FormControl sx={{ marginTop: '50px', display: 'flex', flexDirection: 'column' }}>
-                                                    <Typography>Nama lengkap penanggung jawab</Typography>
+                                                    <Typography>Nama lengkap penanggung jawab  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
                                                     <TextField
                                                         placeholder="Masukkan nama lengkap penanggung jawab"
                                                         fullWidth
@@ -187,7 +249,7 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                         }}
                                                     />
                                                 </FormControl>
-
+                                                <Typography>No. Handphone penanggung jawab  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
                                                 <PhoneInput
                                                     country={'id'}
                                                     value={values.phone}
@@ -217,13 +279,14 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                 )}
 
                                                 <FormControl fullWidth sx={{ mt: 2, mb: 2 }}>
-                                                    <InputLabel id="relation-label">Hubungan</InputLabel>
+                                                    <Typography>Hubungan penanggung jawab dengan pasien  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
+                                                    {/* <InputLabel id="relation-label">Hubungan</InputLabel> */}
                                                     <Select
                                                         labelId="relation-label"
                                                         value={values.relation}
-                                                        label="Hubungan"
+                                                        // label="Hubungan"
                                                         onChange={(e) => setFieldValue('relation', e.target.value)}
-                                                        sx={{ width: '544px' }}
+                                                        sx={{ width: '543px', height: '44px' }}
                                                     >
                                                         <MenuItem value="anak">Anak</MenuItem>
                                                         <MenuItem value="orang tua">Orang Tua</MenuItem>
@@ -244,101 +307,109 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                     <Typography>
                                                         Jenis Kunjungan
                                                     </Typography>
-                                                    <TextField></TextField>
+                                                    <TextField
+                                                        variant="outlined"
+                                                        sx={{
+                                                            width: '548px',
+                                                            borderRadius: '8px',
+                                                            padding: '0',
+                                                            '& .MuiOutlinedInput-root': {
+                                                                height: '44px',
+                                                                padding: '0 12px',
+                                                                border: '1px solid #8F85F3',
+                                                                '& input': {
+                                                                    height: '44px',
+                                                                    padding: '0',
+                                                                },
+                                                                '& fieldset': {
+                                                                    borderColor: '#8F85F3',
+                                                                },
+                                                                '&:hover fieldset': {
+                                                                    borderColor: '#7A73E3',
+                                                                },
+                                                                '&.Mui-focused fieldset': {
+                                                                    borderColor: '#6B63D1',
+                                                                },
+                                                            },
+                                                        }}
+                                                    />
+
                                                 </FormControl>
-                                                <FormControl sx={{ mt: 2, mb: 2 }}>
-                                                    <InputLabel id="poli-label">Pilih Poli</InputLabel>
-                                                    <Select
-                                                        labelId="poli-label"
-                                                        value={values.poli}
-                                                        label="Pilih Poli"
-                                                        onChange={(e) => setFieldValue('poli', e.target.value)}
-                                                        sx={{ width: '544px' }}
-                                                    >
-                                                        <MenuItem value="poli1">Poli Umum</MenuItem>
-                                                        <MenuItem value="poli2">Poli Gigi</MenuItem>
-                                                        <MenuItem value="poli3">Poli Anak</MenuItem>
-                                                    </Select>
-                                                </FormControl>
+                                                <Typography>Poli yang dituju</Typography>
+                                                <PoliSelect
+                                                    value={values.poli}
+                                                    onChange={(e) => setFieldValue('poli', e.target.value)}
+                                                />
                                                 {touched.poli && errors.poli && (
                                                     <Typography sx={{ color: 'red', fontSize: '12px' }}>
                                                         {errors.poli}
                                                     </Typography>
                                                 )}
 
-                                                <Box display={"flex"} flexDirection={"row"} gap={"15px"} >
-                                                    <FormControl sx={{ mt: 2, mb: 2 }}>
-                                                        <InputLabel id="doctor-label" >Pilih Dokter</InputLabel>
+                                                <Typography>Dokter yang bertugas</Typography>
+
+                                                <Box
+                                                    display="flex"
+                                                    flexDirection="row"
+                                                    height="38px"
+                                                    width="548px"
+                                                    alignItems="center"
+                                                    mt={2}
+                                                >
+                                                    <FormControl sx={{ mt: 0, mb: 0 }} size="small">
+                                                        <InputLabel id="doctor-label">Pilih Dokter</InputLabel>
                                                         <Select
                                                             labelId="doctor-label"
                                                             value={values.docter}
                                                             label="Pilih Dokter"
                                                             onChange={(e) => setFieldValue('docter', e.target.value)}
-                                                            sx={{ width: '258px', height: "38px", borderRadius: '8px' }}
+                                                            sx={{ width: '258px', borderRadius: '8px' }}
                                                         >
                                                             {doctors.map((doctor) => (
-                                                                <MenuItem
-                                                                    key={doctor.value}
-                                                                    value={doctor.value}
-                                                                    sx={{
-                                                                        color: '#8F85F3',
-                                                                        borderRadius: '8px',
-                                                                        '&.Mui-selected:hover': {
-                                                                            backgroundColor: '#D5D1FB', 
-                                                                        },
-                                                                        '&:hover':{
-                                                                            backgroundColor:'#D5D1FB'
-                                                                        }
-                                                                    }}
-                                                                >
+                                                                <MenuItem key={doctor.value} value={doctor.value}>
                                                                     {doctor.label}
                                                                 </MenuItem>
                                                             ))}
                                                         </Select>
-
                                                     </FormControl>
                                                     {touched.docter && errors.docter && (
-                                                        <Typography sx={{ color: 'red', fontSize: '12px' }}>
+                                                        <Typography sx={{ color: 'red', fontSize: '12px', ml: 1 }}>
                                                             {errors.docter}
                                                         </Typography>
                                                     )}
 
-                                                    <Typography mt={"20px"} >-</Typography>
-
-                                                    <FormControl sx={{ mt: 2, mb: 2 }}>
-                                                        <InputLabel id="operationalDate-label">Pilih Jadwal Operasional</InputLabel>
-                                                        <Select
-                                                            labelId="operationalDate-label"
-                                                            value={values.operationalDate}
-                                                            label="Pilih Jadwal Operasional"
-                                                            onChange={(e) => setFieldValue('operationalDate', e.target.value)}
-                                                            sx={{ width: '258px', height: "38px", borderRadius: '8px' }}
-                                                        >
-                                                            {operationalDateOptions.map((option) => (
-                                                                <MenuItem key={option.value} value={option.value}>
-                                                                    {option.label}
-                                                                </MenuItem>
-                                                            ))}
-                                                        </Select>
-                                                    </FormControl>
-                                                    {touched.operationalDate && errors.operationalDate && (
-                                                        <Typography sx={{ color: 'red', fontSize: '12px' }}>
-                                                            {errors.operationalDate}
-                                                        </Typography>
-                                                    )}
+                                                    <Box sx={{ ml: 2 }}>
+                                                        {/* <CalenderPopover /> */}
+                                                        <CustomCalender/>
+                                                    </Box>
                                                 </Box>
+
 
                                                 <FormControl>
                                                     <Typography>keluhan pasien</Typography>
-                                                    <TextField></TextField>
+                                                    <TextField
+                                                        id="outlined-multiline-static"
+                                                        multiline
+                                                        rows={4}
+                                                        defaultValue="Default Value"
+                                                        variant="outlined"
+                                                        sx={{ maxHeight: '107px', maxWidth: '547px' }}
+                                                    />
                                                 </FormControl>
 
-                                                <Box>
-                                                    <RadioButton value="asuransi" label="Asuransi" />
-                                                    <RadioButton value="uang tunai dan debit" label="Uang tunai dan debit" />
-                                                </Box>
+                                                <Box mt={4} >
+                                                    <Box>
+                                                        <Typography>Unggah kartu BPJS</Typography>
+                                                        <FileUploader />
+                                                        <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran maksimal 1mb</Typography>
+                                                    </Box>
 
-                                                <FileUploader />
+                                                    <Box mt={2} >
+                                                        <Typography >Unggah surat rujukan BPJS</Typography>
+                                                        <FileUploader />
+                                                        <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran maksimal 1mb</Typography>
+                                                    </Box>
+                                                </Box>
                                             </Box>
                                         )}
                                     </Box>
@@ -352,6 +423,7 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                     backgroundColor: '#8F85F3',
                                                     color: 'white',
                                                     textTransform: 'none',
+                                                    width: '85%',
                                                     padding: '10px 24px',
                                                     borderRadius: '8px',
                                                     '&:hover': {
@@ -359,7 +431,7 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                     }
                                                 }}
                                             >
-                                                Lanjut
+                                                Selanjutnya
                                             </Button>
                                         ) : (
                                             <Button
@@ -370,13 +442,14 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                     color: 'white',
                                                     textTransform: 'none',
                                                     padding: '10px 24px',
+                                                    width: '548px',
                                                     borderRadius: '8px',
                                                     '&:hover': {
                                                         backgroundColor: '#7C75E2',
                                                     }
                                                 }}
                                             >
-                                                Daftar
+                                                Selesai
                                             </Button>
                                         )}
                                     </Box>
