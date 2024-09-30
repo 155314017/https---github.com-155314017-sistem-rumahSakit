@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, IconButton, Avatar } from "@mui/material";
+import {
+  Box,
+  Typography,
+  IconButton,
+  Avatar,
+  Popover,
+  Button,
+} from "@mui/material";
 import moment from "moment";
 
 // icon
@@ -8,6 +15,9 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 export default function Header() {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [notifyAnchorEl, setNotifyAnchorEl] =
+    useState<HTMLButtonElement | null>(null);
   const [time, setTime] = useState({
     hours: moment().format("h"),
     minutes: moment().format("mm"),
@@ -26,6 +36,27 @@ export default function Header() {
     return () => clearInterval(intervalId);
   }, []);
 
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleNotifyClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setNotifyAnchorEl(event.currentTarget);
+  };
+
+  const handleNotifyClose = () => {
+    setNotifyAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const notifyOpen = Boolean(notifyAnchorEl);
+  const id = open ? "simple-popover" : undefined;
+  const notifyId = notifyOpen ? "notify-popover" : undefined;
+
   return (
     <Box display={"flex"} gap={2} justifyContent={"space-between"}>
       <Box
@@ -42,13 +73,13 @@ export default function Header() {
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <AccessTimeIcon />
 
-          <Box sx={{ display: "flex", gap: 0.5 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
             <Typography fontSize="18px" fontWeight={700}>
               {time.hours}
             </Typography>
             <Typography
               component="span"
-              fontSize="18px"
+              fontSize="20px"
               fontWeight={700}
               sx={{
                 animation: "blink 0.5s steps(2, start) infinite",
@@ -83,10 +114,33 @@ export default function Header() {
           px: 2,
         }}
       >
-        <IconButton sx={{ color: "#8F85F3", bgcolor: "#fff" }}>
+        {/* notify icon */}
+        <IconButton
+          sx={{ color: "#8F85F3", bgcolor: "#fff" }}
+          onClick={handleNotifyClick}
+        >
           <NotificationsNoneOutlinedIcon />
         </IconButton>
+        <Popover
+          id={notifyId}
+          open={notifyOpen}
+          anchorEl={notifyAnchorEl}
+          onClose={handleNotifyClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          <Box p={2}>
+            <Typography fontWeight={700}>No new notifications</Typography>
+          </Box>
+        </Popover>
 
+        {/* avatar and menu */}
         <Box
           display="flex"
           alignItems="center"
@@ -99,8 +153,71 @@ export default function Header() {
           }}
         >
           <Avatar>AP</Avatar>
-          <KeyboardArrowDownIcon sx={{ color: "#8F85F3" }} />
+          <IconButton size="small" onClick={handleClick}>
+            <KeyboardArrowDownIcon sx={{ color: "#8F85F3" }} />
+          </IconButton>
         </Box>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          <Box p={2}>
+            <Box display="flex" alignItems="center" gap={1} pr={10}>
+              <Avatar>AP</Avatar>
+              <Box>
+                <Typography
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: 700,
+                    textTransform: "capitalize",
+                  }}
+                >
+                  full name
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "12px",
+                    textTransform: "capitalize",
+                    color: "#A8A8BD",
+                  }}
+                >
+                  role
+                </Typography>
+              </Box>
+            </Box>
+
+            <Box display="flex" flexDirection="column" gap={1} pt={2}>
+              <Button fullWidth sx={{ justifyContent: "flex-start" }}>
+                <Typography
+                  fontSize={"14px"}
+                  color="#8F85F3"
+                  sx={{ textTransform: "capitalize" }}
+                >
+                  Pengaturan
+                </Typography>
+              </Button>
+              <Button fullWidth sx={{ justifyContent: "flex-start" }}>
+                <Typography
+                  fontSize={"14px"}
+                  color="#8F85F3"
+                  sx={{ textTransform: "capitalize" }}
+                >
+                  Keluar
+                </Typography>
+              </Button>
+            </Box>
+          </Box>
+        </Popover>
       </Box>
     </Box>
   );
