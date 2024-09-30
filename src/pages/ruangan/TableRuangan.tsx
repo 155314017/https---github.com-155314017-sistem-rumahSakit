@@ -11,11 +11,16 @@ import {
   TableBody,
   Link,
   TablePagination,
+  IconButton,
 } from "@mui/material";
 import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
 import { styled } from "@mui/material/styles";
 import DataRuangan from "../../dummyData/dataRuangan";
+
+// icon
+import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import bgImage from "../../assets/img/String.png";
 
@@ -55,6 +60,7 @@ export default function TableRuangan() {
 
   const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
@@ -95,23 +101,40 @@ export default function TableRuangan() {
     console.log("Selected Value:", selectedValue);
   };
 
+  const toggleCollapse = () => {
+    setIsCollapsed((prev) => !prev);
+  };
+
   return (
     <Box>
       <Box
         position="relative"
         p={3}
-        height={800}
-        sx={{ borderRadius: "24px", bgcolor: "#fff" }}
+        sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}
       >
-        <Typography
-          sx={{
-            textTransform: "capitalize",
-            fontWeight: "700",
-            fontSize: "20px",
-          }}
-        >
-          Daftar Ruangan
-        </Typography>
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Typography
+            sx={{
+              textTransform: "capitalize",
+              fontWeight: "700",
+              fontSize: "20px",
+            }}
+          >
+            Daftar Ruangan
+          </Typography>
+          {/* collapse button */}
+          <IconButton sx={{ zIndex: 1 }} onClick={toggleCollapse}>
+            {isCollapsed ? (
+              <ChevronRightRoundedIcon
+                sx={{ fontSize: "30px", color: "#8F85F3" }}
+              />
+            ) : (
+              <ExpandMoreRoundedIcon
+                sx={{ fontSize: "30px", color: "#8F85F3" }}
+              />
+            )}
+          </IconButton>
+        </Box>
 
         <Box position="absolute" sx={{ top: 0, right: 0 }}>
           <img src={bgImage} alt="bg-image" />
@@ -175,233 +198,249 @@ export default function TableRuangan() {
         </Box>
         {/* ---------- */}
 
-        <Box
-          mt={3}
-          display={"flex"}
-          justifyContent={"space-between"}
-          sx={{ gap: 3 }}
-        >
-          <SearchBar />
-          <DropdownList
-            options={sortir}
-            placeholder="Sortir"
-            onChange={handleSelectionChange}
-          />
-          <DropdownList
-            options={urutkan}
-            placeholder="Urutkan"
-            onChange={handleSelectionChange}
-          />
-        </Box>
+        {!isCollapsed && (
+          <Box>
+            <Box
+              mt={3}
+              display={"flex"}
+              justifyContent={"space-between"}
+              sx={{ gap: 3 }}
+            >
+              <SearchBar />
+              <DropdownList
+                options={sortir}
+                placeholder="Sortir"
+                onChange={handleSelectionChange}
+              />
+              <DropdownList
+                options={urutkan}
+                placeholder="Urutkan"
+                onChange={handleSelectionChange}
+              />
+            </Box>
 
-        <Box mt={3}>
-          <StyledTableContainer
-            sx={{
-              mt: 2,
-              boxShadow: "none",
-              mb: 2,
-              maxHeight: "610px",
-              borderRadius: "16px",
-            }}
-          >
-            <Table stickyHeader sx={{ width: "100%" }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    width={"12%"}
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      color: "#292B2C",
-                      bgcolor: "#F1F0FE",
-                    }}
-                    align="center"
-                  >
-                    No.Ruangan
-                  </TableCell>
-                  <TableCell
-                    width={"15%"}
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      color: "#292B2C",
-                      bgcolor: "#F1F0FE",
-                    }}
-                    align="left"
-                  >
-                    Nama Gedung
-                  </TableCell>
-                  <TableCell
-                    width={"12%"}
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      color: "#292B2C",
-                      bgcolor: "#F1F0FE",
-                    }}
-                    align="left"
-                  >
-                    Jenis Ruangan
-                  </TableCell>
-                  <TableCell
-                    width={"12%"}
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      color: "#292B2C",
-                      bgcolor: "#F1F0FE",
-                    }}
-                    align="center"
-                  >
-                    Kuota Ruangan
-                  </TableCell>
-                  <TableCell
-                    width={"15%"}
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      color: "#292B2C",
-                      bgcolor: "#F1F0FE",
-                    }}
-                    align="center"
-                  >
-                    Tarif Ruangan
-                  </TableCell>
-                  <TableCell
-                    width={"15%"}
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      color: "#292B2C",
-                      bgcolor: "#F1F0FE",
-                    }}
-                    align="center"
-                  >
-                    Aksi
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {displayedData.map((data, index) => (
-                  <StyledTableRow key={index}>
-                    <TableCell sx={[{ color: "#292B2C", fontSize: "16px" }]} align="center">
-                      {data.noRuangan}
-                    </TableCell>
-                    <TableCell
-                      sx={[
-                        {
-                          color: "#292B2C",
+            <Box mt={3}>
+              <StyledTableContainer
+                sx={{
+                  mt: 2,
+                  boxShadow: "none",
+                  mb: 2,
+                  maxHeight: "610px",
+                  borderRadius: "16px",
+                }}
+              >
+                <Table stickyHeader sx={{ width: "100%" }}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell
+                        width={"12%"}
+                        sx={{
                           fontSize: "14px",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                          maxWidth: "150px",
-                          textTransform: "capitalize",
-                        },
-                      ]}
-                    >
-                      {data.namaGedung}
-                    </TableCell>
-                    <TableCell
-                      sx={[
-                        {
+                          fontWeight: 700,
                           color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
+                        align="center"
+                      >
+                        No.Ruangan
+                      </TableCell>
+                      <TableCell
+                        width={"15%"}
+                        sx={{
                           fontSize: "14px",
-                          textTransform: "capitalize",
-                        },
-                      ]}
-                    >
-                      {data.jenisRuangan}
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                    >
-                      {data.kuotaRuangan} / {data.kuotaRuangan}
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                    >
-                      Rp {data.tarifRuangan} ,-
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={[
-                        {
+                          fontWeight: 700,
                           color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
+                        align="left"
+                      >
+                        Nama Gedung
+                      </TableCell>
+                      <TableCell
+                        width={"12%"}
+                        sx={{
                           fontSize: "14px",
-                          textTransform: "capitalize",
-                        },
-                      ]}
-                    >
-                      <Link
-                        href="#"
-                        mr={2}
-                        underline="hover"
-                        sx={{ textTransform: "capitalize", color: "#F04438" }}
+                          fontWeight: 700,
+                          color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
+                        align="left"
                       >
-                        Hapus
-                      </Link>
-                      <Link
-                        href="#"
-                        mr={2}
-                        underline="hover"
-                        sx={{ textTransform: "capitalize", color: "#8F85F3" }}
+                        Jenis Ruangan
+                      </TableCell>
+                      <TableCell
+                        width={"12%"}
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
+                        align="center"
                       >
-                        Ubah
-                      </Link>
-                      <Link
-                        href="#"
-                        underline="hover"
-                        sx={{ textTransform: "capitalize", color: "#8F85F3" }}
+                        Kuota Ruangan
+                      </TableCell>
+                      <TableCell
+                        width={"15%"}
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
+                        align="center"
                       >
-                        Detail
-                      </Link>
-                    </TableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </StyledTableContainer>
-        </Box>
-        <Stack
-          spacing={2}
-          direction={"row"}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-        >
-          <Typography sx={{ color: "#8F85F3" }}>
-            Showing {page * rowsPerPage + 1} to{" "}
-            {Math.min(page * rowsPerPage + rowsPerPage, datas.length)} of{" "}
-            {datas.length} entries
-          </Typography>
-          <TablePagination
-            // shape="rounded"
-            count={datas.length}
-            rowsPerPageOptions={[10, 25, 100]}
-            component="div"
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              color: "#8F85F3",
-              "& .MuiPaginationItem-root": {
-                color: "#8F85F3",
-              },
-              "& .Mui-selected": {
-                backgroundColor: "#8F85F3",
-                color: "white",
-              },
-              "& .MuiPaginationItem-ellipsis": {
-                color: "#8F85F3",
-              },
-            }}
-          />
-        </Stack>
+                        Tarif Ruangan
+                      </TableCell>
+                      <TableCell
+                        width={"15%"}
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
+                        align="center"
+                      >
+                        Aksi
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {displayedData.map((data, index) => (
+                      <StyledTableRow key={index}>
+                        <TableCell
+                          sx={[{ color: "#292B2C", fontSize: "16px" }]}
+                          align="center"
+                        >
+                          {data.noRuangan}
+                        </TableCell>
+                        <TableCell
+                          sx={[
+                            {
+                              color: "#292B2C",
+                              fontSize: "14px",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                              maxWidth: "150px",
+                              textTransform: "capitalize",
+                            },
+                          ]}
+                        >
+                          {data.namaGedung}
+                        </TableCell>
+                        <TableCell
+                          sx={[
+                            {
+                              color: "#292B2C",
+                              fontSize: "14px",
+                              textTransform: "capitalize",
+                            },
+                          ]}
+                        >
+                          {data.jenisRuangan}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                        >
+                          {data.kuotaRuangan} / {data.kuotaRuangan}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                        >
+                          Rp {data.tarifRuangan} ,-
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={[
+                            {
+                              color: "#292B2C",
+                              fontSize: "14px",
+                              textTransform: "capitalize",
+                            },
+                          ]}
+                        >
+                          <Link
+                            href="#"
+                            mr={2}
+                            underline="hover"
+                            sx={{
+                              textTransform: "capitalize",
+                              color: "#F04438",
+                            }}
+                          >
+                            Hapus
+                          </Link>
+                          <Link
+                            href="#"
+                            mr={2}
+                            underline="hover"
+                            sx={{
+                              textTransform: "capitalize",
+                              color: "#8F85F3",
+                            }}
+                          >
+                            Ubah
+                          </Link>
+                          <Link
+                            href="#"
+                            underline="hover"
+                            sx={{
+                              textTransform: "capitalize",
+                              color: "#8F85F3",
+                            }}
+                          >
+                            Detail
+                          </Link>
+                        </TableCell>
+                      </StyledTableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </StyledTableContainer>
+            </Box>
+            <Stack
+              spacing={2}
+              direction={"row"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+            >
+              <Typography sx={{ color: "#8F85F3" }}>
+                Showing {page * rowsPerPage + 1} to{" "}
+                {Math.min(page * rowsPerPage + rowsPerPage, datas.length)} of{" "}
+                {datas.length} entries
+              </Typography>
+              <TablePagination
+                // shape="rounded"
+                count={datas.length}
+                rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  color: "#8F85F3",
+                  "& .MuiPaginationItem-root": {
+                    color: "#8F85F3",
+                  },
+                  "& .Mui-selected": {
+                    backgroundColor: "#8F85F3",
+                    color: "white",
+                  },
+                  "& .MuiPaginationItem-ellipsis": {
+                    color: "#8F85F3",
+                  },
+                }}
+              />
+            </Stack>
+          </Box>
+        )}
       </Box>
     </Box>
   );
