@@ -14,7 +14,8 @@ import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
 import CalenderPopover from "../../../components/medium/CalenderPopover";
 import PoliSelect from "../../../components/inputComponent/PoliSelect";
-import { minWidth } from "@mui/system";
+import ImageUploader from "../../../components/inputComponent/ImageUploader";
+import CustomCalender from "../../../components/medium/CustomCalender";
 
 const validationSchema = Yup.object({
     fullname: Yup.string().required('Nama wajib diisi'),
@@ -33,7 +34,7 @@ interface FormValues {
     operationalDate: string;
 }
 
-const PasienLamaRawatJalanUmum: React.FC = () => {
+const PasienBaruRawatJalanBPJS: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const totalPages = 2;
     const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -94,8 +95,8 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
             return {
                 display: 'flex',
                 border: '1px solid #8F85F3',
-                minWidth: '38px',
-                minHeight: '38px',
+                width: '38px',
+                height: '38px',
                 borderRadius: '8px',
                 justifyContent: 'center',
                 alignItems: 'center'
@@ -104,8 +105,8 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
             return {
                 display: 'flex',
                 border: '1px solid #8F85F3',
-                minWidth: '38px',
-                minHeight: '38px',
+                width: '38px',
+                height: '38px',
                 borderRadius: '8px',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -116,8 +117,8 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
             return {
                 display: 'flex',
                 border: '1px solid #8F85F3',
-                minWidth: '38px',
-                minHeight: '38px',
+                width: '38px',
+                height: '38px',
                 borderRadius: '8px',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -133,7 +134,6 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                 marginTop: '3%',
                 display: 'flex',
                 flexDirection: 'row',
-                // backgroundColor:'red',
             }}
         >
             <Box>
@@ -169,8 +169,8 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                         alt="Example Logo"
                                     />
 
-                                    <Typography sx={{ fontSize: '32px', fontWeight: '600', lineHeight: '34px', marginTop: 2, maxWidth: '450px' }}>
-                                        Formulir pendaftaran pasien Umum
+                                    <Typography sx={{ fontSize: '32px', fontWeight: '600', lineHeight: '34px', marginTop: 2 }}>
+                                        Formulir pendaftaran pasien BPJS
                                     </Typography>
 
                                     <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2, mb: 2 }}>
@@ -181,6 +181,7 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                 alignItems="center"
                                                 onClick={() => setCurrentPage(1)}
                                                 sx={getPageStyle(1)}
+                                                mx={2}
                                             >
                                                 <Box sx={getBorderStyle(1)}>
                                                     1
@@ -190,13 +191,14 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                         </Box>
 
 
-                                        <Box display={'flex'} flexDirection={'row'} width={'290px'}>
+                                        <Box display={'flex'} flexDirection={'row'} width={'350px'}>
                                             <Box
                                                 display={'flex'}
                                                 flexDirection={'row'}
                                                 alignItems="center"
                                                 onClick={() => setCurrentPage(2)}
                                                 sx={getPageStyle(2)}
+                                                mx={2}
                                             >
                                                 <Box sx={getBorderStyle(2)}>
                                                     2
@@ -344,8 +346,17 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                     </Typography>
                                                 )}
 
-                                                <Box>
-                                                    <FormControl sx={{ mt: 2, mb: 2 }} size="small">
+                                                <Typography>Dokter yang bertugas</Typography>
+
+                                                <Box
+                                                    display="flex"
+                                                    flexDirection="row"
+                                                    height="38px"
+                                                    width="548px"
+                                                    alignItems="center"
+                                                    mt={2}
+                                                >
+                                                    <FormControl sx={{ mt: 0, mb: 0 }} size="small">
                                                         <InputLabel id="doctor-label">Pilih Dokter</InputLabel>
                                                         <Select
                                                             labelId="doctor-label"
@@ -362,42 +373,43 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                         </Select>
                                                     </FormControl>
                                                     {touched.docter && errors.docter && (
-                                                        <Typography sx={{ color: 'red', fontSize: '12px' }}>
+                                                        <Typography sx={{ color: 'red', fontSize: '12px', ml: 1 }}>
                                                             {errors.docter}
                                                         </Typography>
                                                     )}
 
-                                                    <CalenderPopover />
+                                                    <Box sx={{ ml: 2 }}>
+                                                        {/* <CalenderPopover /> */}
+                                                        <CustomCalender/>
+                                                    </Box>
                                                 </Box>
+
 
                                                 <FormControl>
                                                     <Typography>keluhan pasien</Typography>
-                                                    <TextField></TextField>
+                                                    <TextField
+                                                        id="outlined-multiline-static"
+                                                        multiline
+                                                        rows={4}
+                                                        defaultValue="Default Value"
+                                                        variant="outlined"
+                                                        sx={{ maxHeight: '107px', maxWidth: '547px' }}
+                                                    />
                                                 </FormControl>
 
-                                                <Box>
-                                                    <RadioGroup
-                                                        aria-label="transport-method"
-                                                        name="transport-method"
-                                                        value={selectedMethod}
-                                                        onChange={handleRadioChange}
-                                                        sx={{ display: 'flex', flexDirection: 'column', border: '1px solid black', marginTop: '20px', marginBottom: '10px', borderRadius: '16px', padding: '16px 24px 16px 24px' }}
-                                                    >
-                                                        <Box display={'flex'} flexDirection={'row'} >
-                                                            <FormControlLabel value="asuransi" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Asuransi" />
-                                                            <FormControlLabel value="uang tunai dan debit" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Uang tunai dan debit" />
-                                                        </Box>
-                                                        {selectedMethod == 'asuransi' && (
-                                                            <Box>
-                                                                <Typography mb={'10px'} >Unggah kartu asuransi</Typography>
-                                                                <FileUploader/>
-                                                                <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
-                                                            </Box>
-                                                        )}
-                                                    </RadioGroup>
-                                                </Box>
+                                                <Box mt={4} >
+                                                    <Box>
+                                                        <Typography>Unggah kartu BPJS</Typography>
+                                                        <FileUploader />
+                                                        <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran maksimal 1mb</Typography>
+                                                    </Box>
 
-                                                <FileUploader />
+                                                    <Box mt={2} >
+                                                        <Typography >Unggah surat rujukan BPJS</Typography>
+                                                        <FileUploader />
+                                                        <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran maksimal 1mb</Typography>
+                                                    </Box>
+                                                </Box>
                                             </Box>
                                         )}
                                     </Box>
@@ -411,8 +423,7 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                     backgroundColor: '#8F85F3',
                                                     color: 'white',
                                                     textTransform: 'none',
-                                                    marginTop: '22%',
-                                                    width: '544px',
+                                                    width: '85%',
                                                     padding: '10px 24px',
                                                     borderRadius: '8px',
                                                     '&:hover': {
@@ -429,16 +440,16 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                 sx={{
                                                     backgroundColor: '#8F85F3',
                                                     color: 'white',
-                                                    width:'548px',
                                                     textTransform: 'none',
                                                     padding: '10px 24px',
+                                                    width: '548px',
                                                     borderRadius: '8px',
                                                     '&:hover': {
                                                         backgroundColor: '#7C75E2',
                                                     }
                                                 }}
                                             >
-                                                Daftar
+                                                Selesai
                                             </Button>
                                         )}
                                     </Box>
@@ -458,4 +469,4 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
     );
 };
 
-export default PasienLamaRawatJalanUmum;
+export default PasienBaruRawatJalanBPJS;

@@ -7,11 +7,14 @@ import FormLabel from '@mui/material/FormLabel';
 interface RadioButtonsGroupProps {
     selectedValue: string;  
     onChange: (value: string) => void;  
+    widthInput: string;
+    heightInput: string;
+
 }
 
-const RadioButtonsGroup: React.FC<RadioButtonsGroupProps> = ({ selectedValue, onChange }) => {
+const RadioButtonsGroup: React.FC<RadioButtonsGroupProps> = ({ selectedValue, onChange, widthInput, heightInput }) => {
     return (
-        <FormControl sx={{ width: '562px', height: '82px' }}>
+            <FormControl sx={{ width: widthInput, height: heightInput }}>
             <FormLabel sx={{ fontSize: '16px', lineHeight: '18px', marginBottom: '15px', color: 'black' }}>
                 Cara datang/pengantar
             </FormLabel>
@@ -24,7 +27,8 @@ const RadioButtonsGroup: React.FC<RadioButtonsGroupProps> = ({ selectedValue, on
                     flexDirection: "row",
                     border: "1px solid #A8A8BD",
                     borderRadius: "16px",
-                    padding: "16px 24px",
+                    // padding: "16px 24px 16px 24px",
+                    padding:'8px'
                 }}
             >
                 <FormControlLabel value="sendiri" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Sendiri" />

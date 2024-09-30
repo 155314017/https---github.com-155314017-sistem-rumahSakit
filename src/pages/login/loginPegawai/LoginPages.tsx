@@ -358,7 +358,7 @@ export default function Login() {
                         )}
 
                         {!showEmailChanged && (
-                            <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto' }}>
+                            <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto', display:'flex', flexDirection:'column' }}>
                                 <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
                                     Email pengaturan ulang kata sandi telah terkirim.
                                 </Typography>
