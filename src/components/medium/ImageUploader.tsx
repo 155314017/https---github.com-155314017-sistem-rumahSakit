@@ -70,7 +70,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   return (
     <div>
       <Box mt={3}>
-        <Typography>
+        <Typography sx={{mb: 1}}>
           Unggah gambar<span style={{ color: "red" }}>*</span>
         </Typography>
 
