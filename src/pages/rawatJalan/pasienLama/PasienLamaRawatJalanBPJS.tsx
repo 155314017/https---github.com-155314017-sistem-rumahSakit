@@ -283,13 +283,12 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
                           <Select
                             labelId="relation-label"
                             value={values.relation}
-                            // label="Hubungan"
                             onChange={(e) => setFieldValue('relation', e.target.value)}
                             sx={{ width: '543px', height: '44px' }}
                           >
-                            <MenuItem value="anak">Anak</MenuItem>
-                            <MenuItem value="orang tua">Orang Tua</MenuItem>
-                            <MenuItem value="kerabat">Kerabat</MenuItem>
+                            <MenuItem sx={{ color:'#8F85F3'}} value="anak">Anak</MenuItem>
+                            <MenuItem sx={{ color: '#8F85F3' }} value="orang tua">Orang Tua</MenuItem>
+                            <MenuItem sx={{ color: '#8F85F3' }} value="kerabat">Kerabat</MenuItem>
                           </Select>
                         </FormControl>
                         {touched.relation && errors.relation && (
@@ -363,7 +362,7 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
                               sx={{ width: '258px', borderRadius: '8px' }}
                             >
                               {doctors.map((doctor) => (
-                                <MenuItem key={doctor.value} value={doctor.value}>
+                                <MenuItem key={doctor.value} value={doctor.value} sx={{ color: '#8F85F3' }}>
                                   {doctor.label}
                                 </MenuItem>
                               ))}
@@ -387,7 +386,6 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
                             id="outlined-multiline-static"
                             multiline
                             rows={4}
-                            defaultValue="Default Value"
                             variant="outlined"
                             sx={{ maxHeight: '107px', maxWidth: '547px' }}
                           />
