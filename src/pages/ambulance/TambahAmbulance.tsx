@@ -1,7 +1,8 @@
 import { Container, Box } from "@mui/system";
-import { Typography } from "@mui/material";
+import { Typography, Button, InputAdornment, FormControl, OutlinedInput } from "@mui/material";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import ImageUploader from "../../components/medium/ImageUploader";
+import bgImage from "../../assets/img/String.png";
 
 interface ImageInfo {
   file: File;
@@ -46,6 +47,10 @@ export default function TambahAmbulance() {
           <Typography fontSize="20px" fontWeight="700">
             Tambah Ambulance
           </Typography>
+
+          <Box position="absolute" sx={{ top: 0, right: 0 }}>
+            <img src={bgImage} alt="bg-image" />
+          </Box>
 
           {/* membuat bentuk lengkung atas */}
           <Box
@@ -107,6 +112,43 @@ export default function TambahAmbulance() {
 
           {/* image uploader */}
           <ImageUploader onImagesSelected={handleImagesSelected} />
+
+          {/* form */}
+          <Box component="form" noValidate autoComplete="off" mt={3}>
+            <Typography sx={{ fontSize: "16px" }}>
+              Biaya Tarif<span style={{ color: "red" }}>*</span>
+            </Typography>
+            <FormControl fullWidth sx={{my: 1}}>
+              <OutlinedInput
+                id="outlined-adornment-amount"
+                size="small"
+                startAdornment={
+                  <InputAdornment position="start">Rp</InputAdornment>
+                }
+              />
+            </FormControl>
+          </Box>
+
+          {/* Button */}
+          <Button
+            variant="contained"
+            color="inherit"
+            sx={{
+              mt: 3,
+              width: "100%",
+              bgcolor: "#8F85F3",
+              color: "#fff",
+              textTransform: "none",
+              borderRadius: "8px",
+              boxShadow: "none",
+              ":hover": {
+                bgcolor: "#a098f5",
+                boxShadow: "none",
+              },
+            }}
+          >
+            Simpan
+          </Button>
         </Box>
       </Box>
     </Container>
