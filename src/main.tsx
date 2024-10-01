@@ -11,10 +11,10 @@ import PasienLamaRawatJalanUmum from './pages/rawatJalan/pasienLama/PasienLamaRa
 import Home from './pages';
 import PasienBaruRawatJalanUmum from './pages/rawatJalan/pasienBaru/PasienBaruRawatJalanUmum';
 import PasienBaruRawatJalanBPJS from './pages/rawatJalan/pasienBaru/PasienBaruRawatJalanBPJS';
-import AmbulancePage from './pages/ambulance/AmbulancePage';
 import Gedung from '../src/pages/gedung/index';
 import Ambulance from './pages/ambulance';
 import DetailAmbulance from './pages/ambulance/DetailAmbulance';
+import TambahAmbulance from './pages/ambulance/TambahAmbulance';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -24,6 +24,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/gedung" element={<Gedung />} />
         <Route path="/ambulance" element={<Ambulance />} />
         <Route path="/detailAmbulance" element={<DetailAmbulance />} />
+        <Route path="/tambahAmbulance" element={<TambahAmbulance />} />
         <Route path="/" element={<LoginPasien/>} />
         <Route path="/login/pegawai" element={<Login />} />
         <Route path="/login/pasien" element={<LoginPasien />} />
@@ -32,7 +33,6 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/rawatjalan/lama/umum" element={<PasienLamaRawatJalanUmum />} />
         <Route path="/rawatjalan/baru/bpjs" element={<PasienBaruRawatJalanBPJS />} />
         <Route path="/rawatjalan/baru/umum" element={<PasienBaruRawatJalanUmum />}  />
-        <Route path="/ambulans" element={<AmbulancePage />} />
 
         {/* <Route path="/about" element={<About />} /> */}
       </Routes>
