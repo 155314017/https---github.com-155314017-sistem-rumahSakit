@@ -1,4 +1,4 @@
-import { Box, Typography, Stack, Link } from "@mui/material";
+import { Box, Typography, Stack } from "@mui/material";
 import { ElementType } from "react";
 import bgImage from "../../assets/img/String.png";
 
@@ -20,25 +20,24 @@ export default function CardAdd({ icon: Icon, title, link }: CardAddProps) {
         }}
       >
         <Stack p={3} px={4} position="relative">
-            <Box position="absolute" sx={{ top: 0, right: 0 }}>
-              <img src={bgImage} alt="card-bg" />
-            </Box>
+          <Box position="absolute" sx={{ top: 0, right: 0 }}>
+            <img src={bgImage} alt="card-bg" />
+          </Box>
           <Icon sx={{ color: "#8F85F3", fontSize: "50px", mb: 1 }} />
           <Typography sx={{ fontSize: "16px", textTransform: "capitalize" }}>
             {title}
           </Typography>
-          <Link
+          <a
             href={link}
-            underline="none"
-            sx={{
+            style={{
               fontSize: "16px",
               color: "#8F85F3",
-              textTransform: "capitalize",
-              mt: 1,
+              marginTop: "5px",
+              textDecoration: "none",
             }}
           >
-            {link}
-          </Link>
+            Add new
+          </a>
         </Stack>
       </Box>
     </Box>
