@@ -6,6 +6,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import HotelIcon from "@mui/icons-material/Hotel";
+import MinorCrashIcon from "@mui/icons-material/MinorCrash";
 
 // image
 import Logo from "../../assets/img/Logo - St carolus.png";
@@ -34,6 +35,7 @@ export default function SideBar() {
           <Tooltip title="Dashboard" placement="right" arrow>
             <IconButton
               size="large"
+              href="/dashboard"
               sx={{
                 color: "#8F85F3",
                 bgcolor: "#fff",
@@ -102,6 +104,22 @@ export default function SideBar() {
               }}
             >
               <LocalHospitalIcon />
+            </IconButton>
+          </Tooltip>
+
+          {/* ambulance */}
+          <Tooltip title="Ambulance" placement="right" arrow>
+            <IconButton
+              size="large"
+              href="/ambulance"
+              sx={{
+                color: "#8F85F3",
+                bgcolor: "#fff",
+                width: "50px",
+                height: "50px",
+              }}
+            >
+              <MinorCrashIcon />
             </IconButton>
           </Tooltip>
         </Stack>
