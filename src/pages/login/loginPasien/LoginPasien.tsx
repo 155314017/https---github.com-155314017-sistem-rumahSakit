@@ -128,7 +128,7 @@ export default function LoginPasien() {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'row', marginLeft: '5%' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'row', marginLeft: '10%', marginTop: '1%' }}>
             <Box sx={{ marginTop: '-100px' }} >
                 <Typography sx={{ fontSize: '56px', fontWeight: '700', lineHeight: '60px', position: 'relative', zIndex: '9999', top: '798px', left: '73px', width: '715px', height: '120px', color: 'white' }} >
                     Mulai permintaan janji temu Anda di sini.
@@ -141,256 +141,265 @@ export default function LoginPasien() {
                     alt="Example Image"
                 />
             </Box>
-            {showLogin && (
-                <>
-                    {showAlert && <AlertWarning teks="NIK atau No Handphone yang Anda masukkan salah, silahkan coba lagi." />}
-
-                    <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto', width: '27%' }}>
-                        <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
-                        <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px' }}>
-                            Silakan masukkan nomor NIK dan nomor HP Anda untuk melanjutkan.
-                        </Typography>
-
-                        <Formik
-                            initialValues={{ nik: '', phone: '' }}
-                            validationSchema={validationSchema}
-                            onSubmit={async (values) => {
-                                if (await validationCheck(values)) {
-                                    console.log(values);
-                                    await showTemporarySuccessLogin();
-                                }
-                            }}
-                        >
-                            {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
-                                <Form>
-                                    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-                                        <FormLabel sx={{ fontSize: '18px' }}>NIK (Nomor induk kependudukan)</FormLabel>
-                                        <Field
-                                            name="nik"
-                                            as={TextField}
-                                            placeholder="Masukkan NIK (Nomor induk kependudukan)"
-                                            variant="outlined"
-                                            fullWidth
-                                            sx={{
-                                                width: '410px',
-                                                height: '48px',
-                                                marginTop: '10px',
-                                                '& .MuiOutlinedInput-root': {
-                                                    borderRadius: '8px',
-                                                    backgroundColor: emailError ? '#ffcccc' : 'inherit',
-                                                },
-                                                '& .MuiOutlinedInput-notchedOutline': {
-                                                    border: '1px solid #ccc',
-                                                },
-                                                '& .MuiOutlinedInput-input': {
-                                                    padding: '10px',
-                                                    fontSize: '16px',
-                                                },
-                                            }}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            value={values.nik}
-                                            error={touched.nik && Boolean(errors.nik)}
-                                            helperText={touched.nik && errors.nik}
-                                        />
-
-                                        <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Nomor HP</FormLabel>
-                                        <PhoneInput
-                                            country={'id'}
-                                            value={values.phone}
-                                            onChange={(phone) => {
-                                                setFieldValue('phone', phone);
-                                                setPhoneError(false);
-                                            }}
-                                            inputStyle={{
-                                                width: '410px',
-                                                height: '48px',
-                                                borderRadius: '8px',
-                                                border: `1px solid ${touched.phone && errors.phone ? 'red' : '#ccc'}`,
-                                                padding: '10px 40px 10px 60px',
-                                                fontSize: '16px',
-                                                marginTop: '10px',
-                                                backgroundColor: phoneError ? '#ffcccc' : 'inherit'
-                                            }}
-                                            buttonStyle={{
-                                                borderRadius: '8px 0 0 8px',
-                                                border: '1px solid #ccc',
-                                            }}
-                                            containerStyle={{
-                                                marginBottom: '10px',
-                                                width: '100%',
-                                            }}
-                                            inputClass="phone-input"
-                                        />
-                                        {touched.phone && errors.phone && (
-                                            <Typography sx={{ color: 'red', fontSize: '12px' }}>
-                                                {errors.phone}
-                                            </Typography>
-                                        )}
-
-
-                                        <Button
-                                            type="submit"
-                                            variant="contained"
-                                            color="primary"
-                                            fullWidth
-                                            sx={{
-                                                width: '410px',
-                                                height: '48px',
-                                                marginTop: '20px',
-                                                backgroundColor: '#8F85F3',
-                                                ":hover": { backgroundColor: '#D5D1FB' },
-                                            }}
-                                            disabled={!isValid || !dirty}
-                                        >
-                                            Lanjutkan
-                                        </Button>
-
-                                        <CustomButton onClick={() => console.log("hai ")} label="Daftar pasien baru" />
-
-                                    </Box>
-                                </Form>
-                            )}
-                        </Formik>
-                    </Box>
-                </>
-            )}
-
-            {
-                !showLogin && (
+                <Box top={'5%'} marginLeft={'42.5%'} position={'absolute'}>
+                    <CardMedia
+                        component="img"
+                        height="52"
+                        sx={{ width: "112px", objectFit: "cover" }}
+                        image={logo}
+                        alt="Example Logo"
+                    />
+                </Box>
+                {showLogin && (
                     <>
-                        {showEmailChanged && (
-                            <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto' }}>
-                                {loginSuccess && <AlertSuccess label="Login Succeeded!" />}
-                                <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
-                                    Verifikasi
-                                </Typography>
-                                <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                                    Silakan masukkan kode 4 digit yang dikirimkan ke nomor Anda .
-                                </Typography>
+                        {showAlert && <AlertWarning teks="NIK atau No Handphone yang Anda masukkan salah, silahkan coba lagi." />}
 
-                                <Formik
-                                    initialValues={{ otp: '' }}
-                                    validationSchema={otpValidationSchema}
-                                    onSubmit={(values) => {
+                        <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto', width: '27%' }}>
+                            <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
+                            <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px' }}>
+                                Silakan masukkan nomor NIK dan nomor HP Anda untuk melanjutkan.
+                            </Typography>
+
+                            <Formik
+                                initialValues={{ nik: '', phone: '' }}
+                                validationSchema={validationSchema}
+                                onSubmit={async (values) => {
+                                    if (await validationCheck(values)) {
                                         console.log(values);
-                                    }}
-                                >
-                                    {({ errors, touched, handleChange, handleBlur, values, isValid, dirty }) => (
-                                        <Form>
-                                            <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-                                                <OtpInput
-                                                    value={otp}
-                                                    onChange={(otp) => {
-                                                        setOtp(otp);
-                                                        handleChange('otp')(otp);
-                                                    }}
-                                                    numInputs={4}
-                                                    renderSeparator={<span style={{ margin: '0 4px' }}> </span>}
-                                                    renderInput={(props) => (
-                                                        <input
-                                                            {...props}
-                                                            style={{
-                                                                width: '90.5px',
-                                                                height: '48px',
-                                                                textAlign: 'center',
-                                                                border: `1px solid ${touched.otp && errors.otp ? 'red' : '#8F85F3'}`,
-                                                                borderRadius: '8px',
-                                                                fontSize: '20px',
-                                                                margin: '0 4px',
-                                                                outline: 'none',
-                                                                padding: '14px, 12px, 14px, 12px',
-                                                            }}
-                                                        />
-                                                    )}
-                                                />
-                                                {touched.otp && errors.otp && (
-                                                    <Typography sx={{ color: 'red', fontSize: '12px' }}>
-                                                        {errors.otp}
-                                                    </Typography>
-                                                )}
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        justifyContent: 'space-between',
-                                                        alignItems: 'center',
-                                                        marginTop: '10px',
-                                                        maxWidth: '92%',
-                                                    }}
-                                                >
-                                                    <Typography sx={{ fontSize: '16px', lineHeight: '18px', color: '#A8A8BD' }} >Tidak mendapatkan kode? </Typography>
-                                                    <Typography
-                                                        onClick={!isCounting ? handleResendClick : undefined}
-                                                        sx={{
-                                                            cursor: isCounting ? 'default' : 'pointer',
-                                                            color: isCounting ? '#ccc' : '#8F85F3',
-                                                            textDecoration: isCounting ? 'none' : 'underline',
-                                                            fontSize: '16px',
-                                                        }}
-                                                    >
-                                                        {isCounting ? `${formatTime()}` : 'Kirim ulang tautan'}
-                                                    </Typography>
-                                                </Box>
-                                                <Link to={"/register/pasien"} >
-                                                    <Button
-                                                        type="submit"
-                                                        variant="contained"
-                                                        color="primary"
-                                                        onClick={otpFormShown}
-                                                        fullWidth
-                                                        sx={{
-                                                            width: '410px',
-                                                            height: '48px',
-                                                            marginTop: '20px',
-                                                            backgroundColor: '#8F85F3',
-                                                            ":hover": { backgroundColor: '#D5D1FB' },
-                                                        }}
-                                                        disabled={!isValid || !dirty}
-                                                    >
-                                                        Verifikasi
-                                                    </Button>
-                                                </Link>
-                                            </Box>
-                                        </Form>
-                                    )}
-                                </Formik>
+                                        await showTemporarySuccessLogin();
+                                    }
+                                }}
+                            >
+                                {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
+                                    <Form>
+                                        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+                                            <FormLabel sx={{ fontSize: '18px' }}>NIK (Nomor induk kependudukan)</FormLabel>
+                                            <Field
+                                                name="nik"
+                                                as={TextField}
+                                                placeholder="Masukkan NIK (Nomor induk kependudukan)"
+                                                variant="outlined"
+                                                fullWidth
+                                                sx={{
+                                                    width: '410px',
+                                                    height: '48px',
+                                                    marginTop: '10px',
+                                                    '& .MuiOutlinedInput-root': {
+                                                        borderRadius: '8px',
+                                                        backgroundColor: emailError ? '#ffcccc' : 'inherit',
+                                                    },
+                                                    '& .MuiOutlinedInput-notchedOutline': {
+                                                        border: '1px solid #ccc',
+                                                    },
+                                                    '& .MuiOutlinedInput-input': {
+                                                        padding: '10px',
+                                                        fontSize: '16px',
+                                                    },
+                                                }}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                value={values.nik}
+                                                error={touched.nik && Boolean(errors.nik)}
+                                                helperText={touched.nik && errors.nik}
+                                            />
 
-                            </Box>
-                        )}
+                                            <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Nomor HP</FormLabel>
+                                            <PhoneInput
+                                                country={'id'}
+                                                value={values.phone}
+                                                onChange={(phone) => {
+                                                    setFieldValue('phone', phone);
+                                                    setPhoneError(false);
+                                                }}
+                                                inputStyle={{
+                                                    width: '410px',
+                                                    height: '48px',
+                                                    borderRadius: '8px',
+                                                    border: `1px solid ${touched.phone && errors.phone ? 'red' : '#ccc'}`,
+                                                    padding: '10px 40px 10px 60px',
+                                                    fontSize: '16px',
+                                                    marginTop: '10px',
+                                                    backgroundColor: phoneError ? '#ffcccc' : 'inherit'
+                                                }}
+                                                buttonStyle={{
+                                                    borderRadius: '8px 0 0 8px',
+                                                    border: '1px solid #ccc',
+                                                }}
+                                                containerStyle={{
+                                                    marginBottom: '10px',
+                                                    width: '100%',
+                                                }}
+                                                inputClass="phone-input"
+                                            />
+                                            {touched.phone && errors.phone && (
+                                                <Typography sx={{ color: 'red', fontSize: '12px' }}>
+                                                    {errors.phone}
+                                                </Typography>
+                                            )}
 
-                        {!showEmailChanged && (
-                            <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto', display: 'flex', flexDirection: 'column' }}>
-                                <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
-                                    Email pengaturan ulang kata sandi telah terkirim.
-                                </Typography>
-                                <Typography sx={{ color: '#16161D', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                                    Kami telah mengirimkan tautan untuk mengatur ulang kata sandi Anda. Tidak mendapat email?
-                                </Typography>
-                                <Button
-                                    onClick={handleResendClick}
-                                    variant="contained"
-                                    color="primary"
-                                    fullWidth
-                                    disabled={isCounting}
-                                    sx={{
-                                        width: '410px',
-                                        height: '48px',
-                                        backgroundColor: isCounting ? '#ccc' : '#8F85F3',
-                                        ":hover": { backgroundColor: '#D5D1FB' },
-                                    }}
-                                >
-                                    {isCounting ? `Kirim ulang dalam ${formatTime()}` : 'Kirim ulang tautan'}
-                                </Button>
-                                <CustomButton onClick={handleClick} label="Kembali ke halaman masuk" />
 
-                                {resendSuccess && (
-                                    <AlertSuccess label="Link tautan berhasil dikirim ulang" />
+                                            <Button
+                                                type="submit"
+                                                variant="contained"
+                                                color="primary"
+                                                fullWidth
+                                                sx={{
+                                                    width: '410px',
+                                                    height: '48px',
+                                                    marginTop: '20px',
+                                                    backgroundColor: '#8F85F3',
+                                                    ":hover": { backgroundColor: '#D5D1FB' },
+                                                }}
+                                                disabled={!isValid || !dirty}
+                                            >
+                                                Lanjutkan
+                                            </Button>
+
+                                            <CustomButton onClick={() => console.log("hai ")} label="Daftar pasien baru" />
+
+                                        </Box>
+                                    </Form>
                                 )}
-                            </Box>
-                        )}
+                            </Formik>
+                        </Box>
                     </>
-                )
-            }
+                )}
+
+                {
+                    !showLogin && (
+                        <>
+                            {showEmailChanged && (
+                                <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto' }}>
+                                    {loginSuccess && <AlertSuccess label="Login Succeeded!" />}
+                                    <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
+                                        Verifikasi
+                                    </Typography>
+                                    <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                                        Silakan masukkan kode 4 digit yang dikirimkan ke nomor Anda .
+                                    </Typography>
+
+                                    <Formik
+                                        initialValues={{ otp: '' }}
+                                        validationSchema={otpValidationSchema}
+                                        onSubmit={(values) => {
+                                            console.log(values);
+                                        }}
+                                    >
+                                        {({ errors, touched, handleChange, handleBlur, values, isValid, dirty }) => (
+                                            <Form>
+                                                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+                                                    <OtpInput
+                                                        value={otp}
+                                                        onChange={(otp) => {
+                                                            setOtp(otp);
+                                                            handleChange('otp')(otp);
+                                                        }}
+                                                        numInputs={4}
+                                                        renderSeparator={<span style={{ margin: '0 4px' }}> </span>}
+                                                        renderInput={(props) => (
+                                                            <input
+                                                                {...props}
+                                                                style={{
+                                                                    width: '90.5px',
+                                                                    height: '48px',
+                                                                    textAlign: 'center',
+                                                                    border: `1px solid ${touched.otp && errors.otp ? 'red' : '#8F85F3'}`,
+                                                                    borderRadius: '8px',
+                                                                    fontSize: '20px',
+                                                                    margin: '0 4px',
+                                                                    outline: 'none',
+                                                                    padding: '14px, 12px, 14px, 12px',
+                                                                }}
+                                                            />
+                                                        )}
+                                                    />
+                                                    {touched.otp && errors.otp && (
+                                                        <Typography sx={{ color: 'red', fontSize: '12px' }}>
+                                                            {errors.otp}
+                                                        </Typography>
+                                                    )}
+                                                    <Box
+                                                        sx={{
+                                                            display: 'flex',
+                                                            justifyContent: 'space-between',
+                                                            alignItems: 'center',
+                                                            marginTop: '10px',
+                                                            maxWidth: '92%',
+                                                        }}
+                                                    >
+                                                        <Typography sx={{ fontSize: '16px', lineHeight: '18px', color: '#A8A8BD' }} >Tidak mendapatkan kode? </Typography>
+                                                        <Typography
+                                                            onClick={!isCounting ? handleResendClick : undefined}
+                                                            sx={{
+                                                                cursor: isCounting ? 'default' : 'pointer',
+                                                                color: isCounting ? '#ccc' : '#8F85F3',
+                                                                textDecoration: isCounting ? 'none' : 'underline',
+                                                                fontSize: '16px',
+                                                            }}
+                                                        >
+                                                            {isCounting ? `${formatTime()}` : 'Kirim ulang tautan'}
+                                                        </Typography>
+                                                    </Box>
+                                                    <Link to={"/register/pasien"} >
+                                                        <Button
+                                                            type="submit"
+                                                            variant="contained"
+                                                            color="primary"
+                                                            onClick={otpFormShown}
+                                                            fullWidth
+                                                            sx={{
+                                                                width: '410px',
+                                                                height: '48px',
+                                                                marginTop: '20px',
+                                                                backgroundColor: '#8F85F3',
+                                                                ":hover": { backgroundColor: '#D5D1FB' },
+                                                            }}
+                                                            disabled={!isValid || !dirty}
+                                                        >
+                                                            Verifikasi
+                                                        </Button>
+                                                    </Link>
+                                                </Box>
+                                            </Form>
+                                        )}
+                                    </Formik>
+
+                                </Box>
+                            )}
+
+                            {!showEmailChanged && (
+                                <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto', display: 'flex', flexDirection: 'column' }}>
+                                    <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
+                                        Email pengaturan ulang kata sandi telah terkirim.
+                                    </Typography>
+                                    <Typography sx={{ color: '#16161D', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                                        Kami telah mengirimkan tautan untuk mengatur ulang kata sandi Anda. Tidak mendapat email?
+                                    </Typography>
+                                    <Button
+                                        onClick={handleResendClick}
+                                        variant="contained"
+                                        color="primary"
+                                        fullWidth
+                                        disabled={isCounting}
+                                        sx={{
+                                            width: '410px',
+                                            height: '48px',
+                                            backgroundColor: isCounting ? '#ccc' : '#8F85F3',
+                                            ":hover": { backgroundColor: '#D5D1FB' },
+                                        }}
+                                    >
+                                        {isCounting ? `Kirim ulang dalam ${formatTime()}` : 'Kirim ulang tautan'}
+                                    </Button>
+                                    <CustomButton onClick={handleClick} label="Kembali ke halaman masuk" />
+
+                                    {resendSuccess && (
+                                        <AlertSuccess label="Link tautan berhasil dikirim ulang" />
+                                    )}
+                                </Box>
+                            )}
+                        </>
+                    )
+                }
         </Box>
     );
 }

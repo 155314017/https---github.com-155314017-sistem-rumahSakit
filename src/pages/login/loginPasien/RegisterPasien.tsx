@@ -1,10 +1,8 @@
 import { Box } from "@mui/system";
 import regisImg from "../../../img/registerPasienImage.png";
 import logo from "../../../img/St.carolus.png";
-import { Button, Card, CardMedia, Typography } from "@mui/material";
+import { Button, CardMedia, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import CustomButton from "../../../components/small/CustomButton";
 import { useState } from "react";
 import CardRawatJalan from "../../../components/medium/CardRawatJalan";
 
@@ -15,7 +13,7 @@ export default function RegisterPasien() {
 
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "row", marginLeft: '7%', marginTop: '3%', gap: '55px', height: '700px' }}>
+    <Box sx={{ display: "flex", flexDirection: "row", marginLeft: '10%', marginTop: '2%', gap: '55px', height: '700px' }}>
       <Box>
         <CardMedia
           component="img"
@@ -26,14 +24,16 @@ export default function RegisterPasien() {
         />
       </Box>
 
-      <Box sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-between' }}>
-        <CardMedia
-          component="img"
-          height="52"
-          sx={{ width: "112px", objectFit: "cover" }}
-          image={logo}
-          alt="Example Image"
-        />
+      <Box sx={{ display: "flex", flexDirection: "column", justifyContent: 'flex-start', width:'500px', alignItems:'center', marginTop:'10%', marginLeft:'-2%' }}>
+        <Box position={'absolute'} top={'5%'} left={'52.5%'} >
+          <CardMedia
+            component="img"
+            height="52"
+            sx={{ width: "112px", objectFit: "cover" }}
+            image={logo}
+            alt="Example Image"
+          />
+        </Box>
         <Box sx={{ display: "flex", flexDirection: "column", gap: "14px" }}>
           <Typography sx={{ fontSize: "32px", fontWeight: "600", lineHeight: "34px" }}>
             Pilih kategori pasien

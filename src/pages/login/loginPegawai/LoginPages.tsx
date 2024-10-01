@@ -131,7 +131,7 @@ export default function Login() {
             />
 
             <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'}>
-                <Box top={'5%'} marginLeft={'2%'} position={'absolute'}>
+                <Box top={'5%'} marginLeft={'1.2%'} position={'absolute'}>
                     <CardMedia
                         component="img"
                         height="52"
