@@ -30,7 +30,7 @@ export default function Ambulance() {
             <CardAdd
               icon={AddBoxIcon}
               title="Tambah Ambulance"
-              link="Add new"
+              link="/tambahAmbulance"
             />
           </Grid>
 
