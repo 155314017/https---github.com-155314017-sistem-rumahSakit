@@ -15,9 +15,9 @@ const PoliSelect: React.FC<PoliSelectProps> = ({ value, onChange }) => {
                 onChange={onChange}
                 sx={{  height:'38px'}}
             >
-                <MenuItem value="poli1">Poli Umum</MenuItem>
-                <MenuItem value="poli2">Poli Gigi</MenuItem>
-                <MenuItem value="poli3">Poli Anak</MenuItem>
+                <MenuItem sx={{ color: '#8F85F3' }} value="poli1">Poli Umum</MenuItem>
+                <MenuItem sx={{ color: '#8F85F3' }} value="poli2">Poli Gigi</MenuItem>
+                <MenuItem sx={{ color: '#8F85F3' }} value="poli3">Poli Anak</MenuItem>
             </Select>
         </FormControl>
     );

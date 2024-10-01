@@ -15,6 +15,7 @@ import InformasiTicket from "../../../components/small/InformasiTicket";
 import CalenderPopover from "../../../components/medium/CalenderPopover";
 import PoliSelect from "../../../components/inputComponent/PoliSelect";
 import { minWidth } from "@mui/system";
+import CustomDateTimePicker from "../../../components/medium/CustomDateTimePicker";
 
 const validationSchema = Yup.object({
     fullname: Yup.string().required('Nama wajib diisi'),
@@ -344,15 +345,15 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                     </Typography>
                                                 )}
 
-                                                <Box>
-                                                    <FormControl sx={{ mt: 2, mb: 2 }} size="small">
+                                                <Box display={'flex'} flexDirection={'row'} justifyItems={'center'}>
+                                                    <FormControl sx={{ mt: 2, mb: 2, mr: 2 }} size="small">
                                                         <InputLabel id="doctor-label">Pilih Dokter</InputLabel>
                                                         <Select
                                                             labelId="doctor-label"
                                                             value={values.docter}
                                                             label="Pilih Dokter"
                                                             onChange={(e) => setFieldValue('docter', e.target.value)}
-                                                            sx={{ width: '258px', borderRadius: '8px' }}
+                                                            sx={{ width: '258px', borderRadius: '8px', height: '38px' }}
                                                         >
                                                             {doctors.map((doctor) => (
                                                                 <MenuItem key={doctor.value} value={doctor.value}>
@@ -362,13 +363,15 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                         </Select>
                                                     </FormControl>
                                                     {touched.docter && errors.docter && (
-                                                        <Typography sx={{ color: 'red', fontSize: '12px' }}>
+                                                        <Typography sx={{ color: 'red', fontSize: '12px', mt: 1, mr: 2 }}>
                                                             {errors.docter}
                                                         </Typography>
                                                     )}
-
-                                                    <CalenderPopover />
+                                                    <Box mt={1} >
+                                                        <CustomDateTimePicker />
+                                                    </Box>
                                                 </Box>
+
 
                                                 <FormControl>
                                                     <Typography>keluhan pasien</Typography>
@@ -390,7 +393,7 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                         {selectedMethod == 'asuransi' && (
                                                             <Box>
                                                                 <Typography mb={'10px'} >Unggah kartu asuransi</Typography>
-                                                                <FileUploader/>
+                                                                <FileUploader />
                                                                 <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
                                                             </Box>
                                                         )}
@@ -429,7 +432,7 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                                                 sx={{
                                                     backgroundColor: '#8F85F3',
                                                     color: 'white',
-                                                    width:'548px',
+                                                    width: '548px',
                                                     textTransform: 'none',
                                                     padding: '10px 24px',
                                                     borderRadius: '8px',
