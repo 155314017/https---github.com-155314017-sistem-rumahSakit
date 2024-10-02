@@ -82,6 +82,43 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
         }
     };
 
+    const getBorderStyle = (page: number) => {
+        if (page === currentPage) {
+            return {
+                display: 'flex',
+                border: '1px solid #8F85F3',
+                minWidth: '38px',
+                minHeight: '38px',
+                borderRadius: '8px',
+                justifyContent: 'center',
+                alignItems: 'center'
+            };
+        } else if (page < currentPage) {
+            return {
+                display: 'flex',
+                border: '1px solid #8F85F3',
+                minWidth: '38px',
+                minHeight: '38px',
+                borderRadius: '8px',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#8F85F3',
+                color: 'white'
+            };
+        } else {
+            return {
+                display: 'flex',
+                border: '1px solid #8F85F3',
+                minWidth: '38px',
+                minHeight: '38px',
+                borderRadius: '8px',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: '#8F85F3'
+            };
+        }
+    }
+
     return (
         <Container
             sx={{
@@ -129,20 +166,36 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                                     </Typography>
 
                                     <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2, mb: 2 }}>
-                                        <Typography
-                                            onClick={() => setCurrentPage(1)}
-                                            sx={getPageStyle(1)}
-                                            mx={2}
-                                        >
-                                            Penanggung jawab pasien
-                                        </Typography>
-                                        <Typography
-                                            onClick={() => setCurrentPage(2)}
-                                            sx={getPageStyle(2)}
-                                            mx={2}
-                                        >
-                                            Jenis Kunjungan
-                                        </Typography>
+                                        <Box display={'flex'} flexDirection={'row'} width={'290px'}>
+                                            <Box
+                                                display={'flex'}
+                                                flexDirection={'row'}
+                                                alignItems="center"
+                                                onClick={() => setCurrentPage(1)}
+                                                sx={getPageStyle(1)}
+                                            >
+                                                <Box sx={getBorderStyle(1)}>
+                                                    1
+                                                </Box>
+                                                <Typography sx={{ ml: 1 }}>Penanggung jawab pasien</Typography>
+                                            </Box>
+                                        </Box>
+
+
+                                        <Box display={'flex'} flexDirection={'row'} width={'290px'}>
+                                            <Box
+                                                display={'flex'}
+                                                flexDirection={'row'}
+                                                alignItems="center"
+                                                onClick={() => setCurrentPage(2)}
+                                                sx={getPageStyle(2)}
+                                            >
+                                                <Box sx={getBorderStyle(2)}>
+                                                    2
+                                                </Box>
+                                                <Typography sx={{ ml: 1 }}>Jenis kunjungan , Keluhan dan metode pembayaran</Typography>
+                                            </Box>
+                                        </Box>
                                     </Box>
 
                                     {showAlert && (
@@ -223,8 +276,10 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                                                                     }} />
                                                                     <Typography ml={"20px"} >No. Handphone penanggung jawab</Typography>
                                                                     <PhoneInputComponent widthInput="500px" heightInput="44px" />
-                                                                    <Typography>Hubungan penanggung jawab dengan pasien</Typography>
-                                                                    <DropDownListPenanggungJawab />
+                                                                    <Box ml={2} mt={1} >
+                                                                        <Typography>Hubungan penanggung jawab dengan pasien</Typography>
+                                                                        <DropDownListPenanggungJawab />
+                                                                    </Box>
                                                                 </Box>
                                                             </Box>
                                                         </Box>
@@ -332,8 +387,9 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                                                     backgroundColor: '#8F85F3',
                                                     color: 'white',
                                                     textTransform: 'none',
+                                                    marginLeft:'27px',
                                                     padding: '10px 24px',
-                                                    width:'500px',
+                                                    width: '500px',
                                                     borderRadius: '8px',
                                                     '&:hover': {
                                                         backgroundColor: '#7C75E2',
@@ -349,6 +405,7 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                                                 sx={{
                                                     backgroundColor: '#8F85F3',
                                                     color: 'white',
+                                                    width:'500px',
                                                     textTransform: 'none',
                                                     padding: '10px 24px',
                                                     borderRadius: '8px',

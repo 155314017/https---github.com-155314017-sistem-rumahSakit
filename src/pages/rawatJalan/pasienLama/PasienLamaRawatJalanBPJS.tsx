@@ -126,8 +126,8 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
   return (
     <Box
       sx={{
-        marginLeft: '10%',
-        marginTop: '2%',
+        marginLeft: '7%',
+        marginTop: '3%',
         display: 'flex',
         flexDirection: 'row',
       }}
