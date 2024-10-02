@@ -156,14 +156,16 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
               <Box sx={{ display: 'flex', flexDirection: 'row' }}>
 
 
-                <Box sx={{ marginLeft: '55px' }}>
-                  <CardMedia
-                    component="img"
-                    height="52"
-                    sx={{ width: "112px", objectFit: "cover" }}
-                    image={logo}
-                    alt="Example Logo"
-                  />
+                <Box sx={{ marginLeft: '60px', marginTop:'1.9%' }}>
+                  <Box sx={{marginLeft:'-5%'}} >
+                    <CardMedia
+                      component="img"
+                      height="52"
+                      sx={{ width: "112px", objectFit: "cover", marginTop:'-2.2%' }}
+                      image={logo}
+                      alt="Example Logo"
+                    />
+                  </Box>
 
                   <Typography sx={{ fontSize: '32px', fontWeight: '600', lineHeight: '34px', marginTop: 2 }}>
                     Formulir pendaftaran pasien BPJS
@@ -283,7 +285,7 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
                             onChange={(e) => setFieldValue('relation', e.target.value)}
                             sx={{ width: '543px', height: '44px' }}
                           >
-                            <MenuItem sx={{ color:'#8F85F3'}} value="anak">Anak</MenuItem>
+                            <MenuItem sx={{ color: '#8F85F3' }} value="anak">Anak</MenuItem>
                             <MenuItem sx={{ color: '#8F85F3' }} value="orang tua">Orang Tua</MenuItem>
                             <MenuItem sx={{ color: '#8F85F3' }} value="kerabat">Kerabat</MenuItem>
                           </Select>

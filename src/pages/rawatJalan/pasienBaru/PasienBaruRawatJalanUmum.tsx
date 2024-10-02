@@ -1,4 +1,4 @@
-import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField } from "@mui/material";
+import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField, RadioGroup, FormControlLabel, Radio } from "@mui/material";
 import { useState } from "react";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -40,6 +40,7 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [fileBase64, setFileBase64] = useState<string | null>(null);
     const [showFormPage, setSHowFormPage] = useState(true);
+    const [selectedMethod, setSelectedMethod] = useState<string>('');
 
 
 
@@ -47,6 +48,10 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
         console.log("Data yang diisi:", values);
         console.log("File yang diunggah:", uploadedFile);
         console.log("Base64:", fileBase64);
+    };
+
+    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedMethod(event.target.value);
     };
 
 
@@ -120,7 +125,7 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
     }
 
     return (
-        <Container
+        <Box
             sx={{
                 marginLeft: '7%',
                 marginTop: '3%',
@@ -132,7 +137,7 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                 <CardMedia
                     component="img"
                     height="864"
-                    sx={{ width: "793px", objectFit: "cover" }}
+                    sx={{ width: "793px", position:'fixed' }}
                     image={img}
                     alt="Example Image"
                 />
@@ -152,11 +157,11 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
 
 
-                                <Box sx={{ marginLeft: '55px' }}>
+                                <Box sx={{ marginLeft: '850px' }}>
                                     <CardMedia
                                         component="img"
                                         height="52"
-                                        sx={{ width: "112px", objectFit: "cover" }}
+                                        sx={{ width: "112px", objectFit: "cover", marginLeft:'-30px' }}
                                         image={logo}
                                         alt="Example Logo"
                                     />
@@ -206,7 +211,7 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
 
                                     <Box>
                                         {currentPage === 1 && (
-                                            <Container sx={{ display: 'flex', flexDirection: 'column' }}>
+                                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                                 <Box>
                                                     <Box
                                                         bgcolor={"#EEEEF2"}
@@ -225,11 +230,11 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                                                             alignItems="flex-start"
                                                             gap={"15px"}
                                                         >
-                                                            <Typography marginLeft={"25px"} fontSize={"20px"} fontWeight={600}>Data diri pasien</Typography>
-                                                            <Box display={"flex"} flexDirection={"column"}>
-                                                                <Typography marginLeft={"25px"} fontSize={"16px"} mb={"-10px"}>Unggah KTP pasien</Typography>
+                                                            <Typography marginLeft={"15px"} fontSize={"20px"} fontWeight={600}>Data diri pasien</Typography>
+                                                            <Box display={"flex"} flexDirection={"column"} gap={'5px'} padding={'5px'}>
+                                                                <Typography marginLeft={"15px"} fontSize={"16px"} mb={"-10px"}>Unggah KTP pasien</Typography>
                                                                 <FileUploader />
-                                                                <Typography marginLeft={"25px"} mt={"-10px"} fontSize={"14px"} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
+                                                                <Typography marginLeft={"15px"} mt={"-10px"} fontSize={"14px"} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
                                                             </Box>
 
                                                             <Box>
@@ -254,8 +259,9 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                                                                 display="flex"
                                                                 flexDirection="column"
                                                                 gap={"15px"}
+                                                                padding={'20px'}
                                                             >
-                                                                <Typography>Data diri penanggung jawab pasien</Typography>
+                                                                <Typography fontSize={'20px'} fontWeight={600} >Data diri penanggung jawab pasien</Typography>
                                                                 <RadioButtonsGroup
                                                                     selectedValue={values.transportMethod}
                                                                     onChange={(value) => setFieldValue('transportMethod', value)}
@@ -286,7 +292,7 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                                                     </Box>
 
                                                 </Box>
-                                            </Container>
+                                            </Box>
                                         )}
                                         {currentPage === 2 && (
                                             <Box sx={{ display: 'flex', flexDirection: 'column' }} >
@@ -305,7 +311,6 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                                                         onChange={(e) => setFieldValue('poli', e.target.value)}
                                                         sx={{ width: '544px' }}
                                                     >
-                                                        {/* Add your Poli options here */}
                                                         <MenuItem value="poli1">Poli Umum</MenuItem>
                                                         <MenuItem value="poli2">Poli Gigi</MenuItem>
                                                         <MenuItem value="poli3">Poli Anak</MenuItem>
@@ -369,8 +374,25 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                                                 </FormControl>
 
                                                 <Box>
-                                                    <RadioButton value="asuransi" label="Asuransi" />
-                                                    <RadioButton value="uang tunai dan debit" label="Uang tunai dan debit" />
+                                                    <RadioGroup
+                                                        aria-label="transport-method"
+                                                        name="transport-method"
+                                                        value={selectedMethod}
+                                                        onChange={handleRadioChange}
+                                                        sx={{ display: 'flex', flexDirection: 'column', border: '1px solid black', marginTop: '20px', marginBottom: '10px', borderRadius: '16px', padding: '16px 24px 16px 24px' }}
+                                                    >
+                                                        <Box display={'flex'} flexDirection={'row'} >
+                                                            <FormControlLabel value="asuransi" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Asuransi" />
+                                                            <FormControlLabel value="uang tunai dan debit" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Uang tunai dan debit" />
+                                                        </Box>
+                                                        {selectedMethod == 'asuransi' && (
+                                                            <Box>
+                                                                <Typography mb={'10px'} >Unggah kartu asuransi</Typography>
+                                                                <FileUploader />
+                                                                <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
+                                                            </Box>
+                                                        )}
+                                                    </RadioGroup>
                                                 </Box>
 
                                                 <FileUploader />
@@ -430,7 +452,7 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                     <InformasiTicket />
                 </Box>
             )}
-        </Container>
+        </Box>
     );
 };
 
