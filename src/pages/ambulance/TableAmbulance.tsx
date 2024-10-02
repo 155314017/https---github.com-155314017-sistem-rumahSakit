@@ -12,17 +12,33 @@ import {
   Link,
   TablePagination,
   IconButton,
+  Modal,
+  Button,
 } from "@mui/material";
 import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
 import { styled } from "@mui/material/styles";
+
 import bgImage from "../../assets/img/String.png";
+import Logo from "../../assets/img/Logo - St carolus.png";
 
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import DataAmbulance from "../../dummyData/dataAmbulance";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  borderRadius: "24px",
+  p: 4,
+};
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -57,6 +73,10 @@ const StyledTableContainer = styled(TableContainer)`
 
 export default function TableAmbulance() {
   const datas = DataAmbulance;
+
+  const [openDelete, setOpenDelete] = useState(false);
+  const handleOpen = () => setOpenDelete(true);
+  const handleClose = () => setOpenDelete(false);
 
   const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -369,12 +389,13 @@ export default function TableAmbulance() {
                           ]}
                         >
                           <Link
-                            href="#"
+                            onClick={handleOpen}
                             mr={2}
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",
                               color: "#F04438",
+                              cursor: "pointer",
                             }}
                           >
                             Hapus
@@ -406,6 +427,69 @@ export default function TableAmbulance() {
                   </TableBody>
                 </Table>
               </StyledTableContainer>
+
+              {/* modal delete */}
+              <Modal
+                open={openDelete}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style}>
+                  <img
+                    src={Logo}
+                    alt="logo"
+                    style={{ width: "100px", marginBottom: "12px" }}
+                  />
+                  <Typography
+                    id="modal-modal-title"
+                    sx={{ fontSize: "18px", fontWeight: "700" }}
+                  >
+                    Apakah anda yakin ingin menghapus data ini?
+                  </Typography>
+                  <Typography
+                    id="modal-modal-description"
+                    sx={{ mt: 2, fontSize: "16px" }}
+                  >
+                    Jika anda menghapus data ini, maka data yang anda hapus akan
+                    hilang selamanya.
+                  </Typography>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      mt: 3,
+                      gap: 2,
+                      width: "100%",
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="inherit"
+                      sx={{
+                        boxShadow: "none",
+                        textTransform: "capitalize",
+                        width: "100%",
+                      }}
+                    >
+                      cancel
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        boxShadow: "none",
+                        textTransform: "capitalize",
+                        bgcolor: "#8F85F3",
+                        color: "#fff",
+                        width: "100%",
+                      }}
+                    >
+                      hapus data
+                    </Button>
+                  </Box>
+                </Box>
+              </Modal>
             </Box>
             <Stack
               spacing={2}
