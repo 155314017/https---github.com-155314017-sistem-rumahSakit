@@ -7,14 +7,11 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import img from "../../../img/registerPasienImage.png";
 import logo from "../../../img/St.carolus.png";
-
-import { operationalDateOptions, doctors } from "../../../dummyData/dummyData";
-import RadioButton from "../../../components/small/RadioButton";
+import { doctors } from "../../../dummyData/dummyData";
 import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
 import CalenderPopover from "../../../components/medium/CalenderPopover";
 import PoliSelect from "../../../components/inputComponent/PoliSelect";
-import ImageUploader from "../../../components/inputComponent/ImageUploader";
 
 const validationSchema = Yup.object({
   fullname: Yup.string().required('Nama wajib diisi'),
