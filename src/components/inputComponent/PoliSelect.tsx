@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import { FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 
 interface PoliSelectProps {
     value: string;
@@ -8,7 +8,7 @@ interface PoliSelectProps {
 
 const PoliSelect: React.FC<PoliSelectProps> = ({ value, onChange }) => {
     return (
-        <FormControl sx={{ mb: 2, width: '548px' }}>
+        <FormControl sx={{ mb: 2, width: '100%' }}>
             <Select
                 labelId="poli-label"
                 value={value}
