@@ -323,7 +323,7 @@ export default function TableGedung() {
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",
-                              color: "#F04438",
+                              color: "#8F85F3",
                             }}
                           >
                             Hapus
@@ -347,7 +347,7 @@ export default function TableGedung() {
                               color: "#8F85F3",
                             }}
                           >
-                            Detail
+                            Lihat Selengkapnya
                           </Link>
                         </TableCell>
                       </StyledTableRow>
