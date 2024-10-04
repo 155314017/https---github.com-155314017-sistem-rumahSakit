@@ -1,4 +1,4 @@
-import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField, Radio, FormControlLabel, RadioGroup } from "@mui/material";
+import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField,} from "@mui/material";
 import { useState } from "react";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -8,14 +8,12 @@ import 'react-phone-input-2/lib/style.css';
 import img from "../../../img/registerPasienImage.png";
 import logo from "../../../img/St.carolus.png";
 
-import { operationalDateOptions, doctors } from "../../../dummyData/dummyData";
-import RadioButton from "../../../components/small/RadioButton";
+import { doctors } from "../../../dummyData/dummyData";
 import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
-import CalenderPopover from "../../../components/medium/CalenderPopover";
 import PoliSelect from "../../../components/inputComponent/PoliSelect";
-import ImageUploader from "../../../components/inputComponent/ImageUploader";
 import CustomCalender from "../../../components/medium/CustomCalender";
+import CalenderPopover from "../../../components/medium/CalenderPopover";
 
 const validationSchema = Yup.object({
     fullname: Yup.string().required('Nama wajib diisi'),
@@ -38,24 +36,7 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const totalPages = 2;
     const [showAlert, setShowAlert] = useState<boolean>(false);
-    const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-    const [fileBase64, setFileBase64] = useState<string | null>(null);
     const [showFormPage, setSHowFormPage] = useState(true);
-    const [selectedMethod, setSelectedMethod] = useState<string>('');
-
-    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedMethod(event.target.value);
-    };
-    const handleFileChange = (file: File | null, base64: string | null) => {
-        setUploadedFile(file);
-        setFileBase64(base64);
-    };
-
-    const handleSubmit = (values: FormValues) => {
-        console.log("Data yang diisi:", values);
-        console.log("File yang diunggah:", uploadedFile);
-        console.log("Base64:", fileBase64);
-    };
 
 
     const handleNext = (validateForm: any, setErrors: any, values: FormValues) => {
@@ -74,11 +55,6 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
         });
     };
 
-    const handlePrev = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
 
     const getPageStyle = (page: number) => {
         if (page === currentPage) {
@@ -93,39 +69,40 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
     const getBorderStyle = (page: number) => {
         if (page === currentPage) {
             return {
-                display: 'flex',
-                border: '1px solid #8F85F3',
-                width: '38px',
-                height: '38px',
-                borderRadius: '8px',
-                justifyContent: 'center',
-                alignItems: 'center'
+                display: "flex",
+                border: "1px solid #8F85F3",
+                minWidth: "38px",
+                minHeight: "38px",
+                borderRadius: "8px",
+                justifyContent: "center",
+                alignItems: "center",
             };
         } else if (page < currentPage) {
             return {
-                display: 'flex',
-                border: '1px solid #8F85F3',
-                width: '38px',
-                height: '38px',
-                borderRadius: '8px',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: '#8F85F3',
-                color: 'white'
+                display: "flex",
+                border: "1px solid #8F85F3",
+                minWidth: "38px",
+                minHeight: "38px",
+                borderRadius: "8px",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#8F85F3",
+                color: "white",
             };
         } else {
             return {
-                display: 'flex',
-                border: '1px solid #8F85F3',
-                width: '38px',
-                height: '38px',
-                borderRadius: '8px',
-                justifyContent: 'center',
-                alignItems: 'center',
-                color: '#8F85F3'
+                display: "flex",
+                border: "1px solid #8F85F3",
+                minWidth: "38px",
+                minHeight: "38px",
+                borderRadius: "8px",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "#8F85F3",
             };
         }
-    }
+    };
+
 
     return (
         <Box
@@ -173,37 +150,36 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                         Formulir pendaftaran pasien BPJS
                                     </Typography>
 
-                                    <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2, mb: 2 }}>
-                                        <Box display={'flex'} flexDirection={'row'} width={'290px'}>
+                                    <Box
+                                        sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2}}
+                                    >
+                                        <Box display={"flex"} flexDirection={"row"} width={"290px"}>
                                             <Box
-                                                display={'flex'}
-                                                flexDirection={'row'}
+                                                display={"flex"}
+                                                flexDirection={"row"}
                                                 alignItems="center"
                                                 onClick={() => setCurrentPage(1)}
                                                 sx={getPageStyle(1)}
-                                                mx={2}
                                             >
-                                                <Box sx={getBorderStyle(1)}>
-                                                    1
-                                                </Box>
-                                                <Typography sx={{ ml: 1 }}>Penanggung jawab pasien</Typography>
+                                                <Box sx={getBorderStyle(1)}>1</Box>
+                                                <Typography sx={{ ml: 1 }}>
+                                                    Penanggung jawab pasien
+                                                </Typography>
                                             </Box>
                                         </Box>
 
-
-                                        <Box display={'flex'} flexDirection={'row'} width={'350px'}>
+                                        <Box display={"flex"} flexDirection={"row"} width={"290px"} >
                                             <Box
-                                                display={'flex'}
-                                                flexDirection={'row'}
+                                                display={"flex"}
+                                                flexDirection={"row"}
                                                 alignItems="center"
                                                 onClick={() => setCurrentPage(2)}
                                                 sx={getPageStyle(2)}
-                                                mx={2}
                                             >
-                                                <Box sx={getBorderStyle(2)}>
-                                                    2
-                                                </Box>
-                                                <Typography sx={{ ml: 1 }}>Jenis kunjungan , Keluhan dan metode pembayaran</Typography>
+                                                <Box sx={getBorderStyle(2)}>2</Box>
+                                                <Typography sx={{ ml: 1 }}>
+                                                    Jenis kunjungan , Keluhan dan metode pembayaran
+                                                </Typography>
                                             </Box>
                                         </Box>
                                     </Box>
@@ -379,8 +355,8 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                     )}
 
                                                     <Box sx={{ ml: 2 }}>
-                                                        {/* <CalenderPopover /> */}
-                                                        <CustomCalender/>
+                                                        <CalenderPopover />
+                                                        {/* <CustomCalender/> */}
                                                     </Box>
                                                 </Box>
 
@@ -423,7 +399,7 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                     backgroundColor: '#8F85F3',
                                                     color: 'white',
                                                     textTransform: 'none',
-                                                    width: '85%',
+                                                    width: '95%',
                                                     padding: '10px 24px',
                                                     borderRadius: '8px',
                                                     '&:hover': {

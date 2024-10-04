@@ -17,6 +17,9 @@ import DetailAmbulance from './pages/ambulance/DetailAmbulance';
 import TambahAmbulance from './pages/ambulance/TambahAmbulance';
 import DetailGedung from './pages/gedung/DetailGedung';
 import TambahGedung from './pages/gedung/TambahGedung';
+import Klinik from './pages/klinik';
+import DetailKlinik from './pages/klinik/DetailKlinik';
+import TambahKlinik from './pages/klinik/TambahKlinik';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -48,6 +51,11 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/rawatjalan/lama/umum" element={<PasienLamaRawatJalanUmum />} />
         <Route path="/rawatjalan/baru/bpjs" element={<PasienBaruRawatJalanBPJS />} />
         <Route path="/rawatjalan/baru/umum" element={<PasienBaruRawatJalanUmum />}  />
+
+        {/* Page Klinik */}
+        <Route path="/klinik" element={<Klinik/>} />
+        <Route path="/detailKlinik" element={<DetailKlinik/>} />
+        <Route path="/tambahKlinik" element={<TambahKlinik/>} />
         
 
 

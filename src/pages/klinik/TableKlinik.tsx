@@ -315,7 +315,7 @@ export default function TableKlinik() {
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",
-                              color: "#F04438",
+                              color: "#8F85F3",
                             }}
                           >
                             Hapus
@@ -332,14 +332,14 @@ export default function TableKlinik() {
                             Ubah
                           </Link>
                           <Link
-                            href="#"
+                            href="/detailKlinik"
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",
                               color: "#8F85F3",
                             }}
                           >
-                            Detail
+                            Lihat selengkapnya
                           </Link>
                         </TableCell>
                       </StyledTableRow>
@@ -354,7 +354,7 @@ export default function TableKlinik() {
               justifyContent={"space-between"}
               alignItems={"center"}
             >
-              <Typography sx={{ color: "#8F85F3" }}>
+              <Typography sx={{ color: "#A8A8BD" }}>
                 Showing {page * rowsPerPage + 1} to{" "}
                 {Math.min(page * rowsPerPage + rowsPerPage, datas.length)} of{" "}
                 {datas.length} entries

@@ -244,7 +244,7 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                       </Box>
                     </Box>
 
-                    <Box display={"flex"} flexDirection={"row"} width={"290px"}>
+                    <Box display={"flex"} flexDirection={"row"} width={"290px"} >
                       <Box
                         display={"flex"}
                         flexDirection={"row"}

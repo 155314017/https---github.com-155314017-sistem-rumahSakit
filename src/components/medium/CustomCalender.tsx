@@ -54,12 +54,11 @@ export default function CustomDateTimePicker() {
 
     const handleTimeChange = (newValue: Dayjs | null) => {
         if (newValue) {
-            const startDate = newValue.format('YYYY-MM-DD');
+            const startDate = newValue.format('DD-MM-YYYY');
             const startTime = newValue.format('HH:mm');
             const endTime = newValue.add(1, 'hour').format('HH:mm');
             setInputValue(`${startDate} ${startTime} - ${endTime}`);
             setSelectedTime({ date: startDate, start: newValue.hour(), end: newValue.hour() + 1 });
-            // console.log(selectedTime);
         } else {
             setInputValue('');
             setSelectedTime(null);
@@ -74,9 +73,17 @@ export default function CustomDateTimePicker() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Box>
                 <Typography>Select Start Time</Typography>
+                <DateTimePicker
+                    value={selectedTime ? dayjs(`${selectedTime.date} ${selectedTime.start.toString().padStart(2, '0')}:00  ${selectedTime.end.toString().padStart(2, '0')}:00`) : null}
+                    sx={{ width: '100%' }}
+                    onChange={handleTimeChange}
+                    viewRenderers={{
+                        hours: (props) => renderCustomTimeViewClock({ ...props, value: selectedTime ? dayjs(`${selectedTime.date} ${selectedTime.start.toString().padStart(2, '0')}:00`) : null, handleTimeSelect }),
+                    }}
+                />
                 <InputBase
                     value={inputValue}
-                    onClick={() => setInputValue(selectedTime ? `${selectedTime.date} ${selectedTime.start.toString().padStart(2, '0')}:00 - ${selectedTime.end.toString().padStart(2, '0')}:00` : '')}
+                    onClick={() => setInputValue(selectedTime ? `${dayjs(selectedTime.date).format('DD-MM-YYYY')} ${selectedTime.start.toString().padStart(2, '0')}:00 - ${selectedTime.end.toString().padStart(2, '0')}:00` : '')}
                     placeholder="Select Date and Time"
                     readOnly
                     sx={{
@@ -91,17 +98,7 @@ export default function CustomDateTimePicker() {
                         },
                     }}
                 />
-                <DateTimePicker
-                    // value={selectedTime ? dayjs(`${selectedTime?.date} ${selectedTime?.start.toString().padStart(2, '0')}:00  ${selectedTime?.end.toString().padStart(2, '0')}:00`) : null}
-                    value={selectedTime ? dayjs(`${selectedTime?.date}`) : null }
-                    sx={{ width: '500px' }}
-                    onChange={handleTimeChange}
-                    viewRenderers={{
-                        hours: (props) => renderCustomTimeViewClock({ ...props, value: selectedTime ? dayjs(`${selectedTime.date} ${selectedTime.start.toString().padStart(2, '0')}:00`) : null, handleTimeSelect }),
-                    }}
-                />
-                {/* <Button onClick={() => console.log(`${selectedTime?.date} ${selectedTime?.start.toString().padStart(2, '0')}:00 - ${selectedTime?.end.toString().padStart(2, '0')}:00`)}>send</Button> */}
-                <Button onClick={() => console.log(selectedTime?.end) } >ssend</Button>
+                <Button onClick={() => console.log(selectedTime)}>Submit</Button>
             </Box>
         </LocalizationProvider>
     );
