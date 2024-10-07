@@ -66,7 +66,7 @@ const FileUploader: React.FC = () => {
               display={"flex"}
               flexDirection={"row"}
               justifyContent={"space-between"}
-              width={"388px"}
+              width={"100%"}
               alignItems={"center"}
             >
               <Typography

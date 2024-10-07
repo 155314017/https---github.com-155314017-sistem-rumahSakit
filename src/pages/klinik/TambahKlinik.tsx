@@ -56,8 +56,8 @@ export default function TambahKlinik() {
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
-        { label: "Gedung", href: "/gedung" },
-        { label: "Tambah Gedung", href: "/tambahGedung" },
+        { label: "Klinik", href: "/klinik" },
+        { label: "Tambah Klinik", href: "/tambahKlinik" },
     ];
 
     const formik = useFormik({
@@ -82,7 +82,7 @@ export default function TambahKlinik() {
             />
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
-                    <Typography fontSize="20px" fontWeight="700">Tambah Gedung</Typography>
+                    <Typography fontSize="20px" fontWeight="700">Tambah Klinik</Typography>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
                     </Box>

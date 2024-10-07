@@ -23,7 +23,7 @@ export default function Klinik() {
                     </Typography>
                     <Grid container spacing={3} flex={1} mb={3}>
                         <MediumCard icon={BusinessOutlinedIcon} title="Daftar Klinik" subtitle="10" />
-                        <CardAdd icon={AddBoxIcon} title="Tambah Klinik" link="Add new" />
+                        <CardAdd icon={AddBoxIcon} title="Tambah Klinik" link="/tambahKlinik" />
                     </Grid>
                     <TableKlinik/>
                 </Box>

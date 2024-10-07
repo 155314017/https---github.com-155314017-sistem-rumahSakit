@@ -1,18 +1,17 @@
-import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField,} from "@mui/material";
+import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField, } from "@mui/material";
 import { useState } from "react";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import RadioButtonsGroup from "../../../components/medium/RadoButtonsGroup";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import img from "../../../img/registerPasienImage.png";
+import imagePendaftaran from "../../../assets/img/pendaftaran.jpeg";
 import logo from "../../../img/St.carolus.png";
 
 import { doctors } from "../../../dummyData/dummyData";
 import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
 import PoliSelect from "../../../components/inputComponent/PoliSelect";
-import CustomCalender from "../../../components/medium/CustomCalender";
 import CalenderPopover from "../../../components/medium/CalenderPopover";
 
 const validationSchema = Yup.object({
@@ -107,18 +106,23 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
     return (
         <Box
             sx={{
-                marginLeft: '7%',
-                marginTop: '3%',
-                display: 'flex',
-                flexDirection: 'row',
+                position: "relative",
+                display: "flex",
+                flexDirection: "row",
             }}
         >
             <Box>
                 <CardMedia
                     component="img"
-                    height="864"
-                    sx={{ width: "793px", objectFit: "cover" }}
-                    image={img}
+                    sx={{
+                        width: "50%",
+                        height: "100vh",
+                        objectFit: "cover",
+                        position: "fixed",
+                        top: "0",
+                        left: "0",
+                    }}
+                    image={imagePendaftaran}
                     alt="Example Image"
                 />
             </Box>
@@ -132,26 +136,53 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                         console.log("Form submitted with values:", values);
                     }}
                 >
-                    {({ values, errors, touched, setFieldValue, validateForm, setErrors }) => (
+                    {({ values,
+                        errors,
+                        touched,
+                        setFieldValue,
+                        validateForm,
+                        setErrors
+                    }) => (
                         <Form>
-                            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    p: 5,
+                                    position: "absolute",
+                                    right: "0",
+                                    top: "0",
+                                    width: "50%",
+                                }}
+                            >
+                                <Box sx={{ ml: 10 }}>
+                                    <Box>
+                                        <CardMedia
+                                            component="img"
+                                            sx={{
+                                                width: "112px",
+                                                objectFit: "cover",
+                                            }}
+                                            image={logo}
+                                            alt="Example Logo"
+                                        />
+                                    </Box>
 
-
-                                <Box sx={{ marginLeft: '55px' }}>
-                                    <CardMedia
-                                        component="img"
-                                        height="52"
-                                        sx={{ width: "112px", objectFit: "cover" }}
-                                        image={logo}
-                                        alt="Example Logo"
-                                    />
-
-                                    <Typography sx={{ fontSize: '32px', fontWeight: '600', lineHeight: '34px', marginTop: 2 }}>
+                                    <Typography
+                                        sx={{
+                                            fontSize: "32px",
+                                            fontWeight: "600",
+                                            lineHeight: "34px",
+                                            marginTop: 2,
+                                            mb: 5,
+                                            maxWidth: "450px",
+                                        }}
+                                    >
                                         Formulir pendaftaran pasien BPJS
                                     </Typography>
 
                                     <Box
-                                        sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2}}
+                                        sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2 }}
                                     >
                                         <Box display={"flex"} flexDirection={"row"} width={"290px"}>
                                             <Box
@@ -192,15 +223,27 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
 
                                     <Box>
                                         {currentPage === 1 && (
-                                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                            <Box
+                                                sx={{
+                                                    display: "flex",
+                                                    flexDirection: "column",
+                                                    gap: "8px",
+                                                }}
+                                            >
                                                 <RadioButtonsGroup
                                                     selectedValue={values.transportMethod}
                                                     onChange={(value) => setFieldValue('transportMethod', value)}
-                                                    widthInput="543px"
+                                                    widthInput="100%"
                                                     heightInput="56px"
                                                 />
 
-                                                <FormControl sx={{ marginTop: '50px', display: 'flex', flexDirection: 'column' }}>
+                                                <FormControl
+                                                    sx={{
+                                                        marginTop: "50px",
+                                                        display: "flex",
+                                                        flexDirection: "column",
+                                                    }}
+                                                >
                                                     <Typography>Nama lengkap penanggung jawab  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
                                                     <TextField
                                                         placeholder="Masukkan nama lengkap penanggung jawab"
@@ -210,7 +253,7 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                         error={touched.fullname && Boolean(errors.fullname)}
                                                         helperText={touched.fullname && errors.fullname}
                                                         sx={{
-                                                            mt: 2, mb: 2, border: '1px solid #8F85F3', borderRadius: '8px', width: '544px',
+                                                            mt: 2, mb: 2, border: '1px solid #8F85F3', borderRadius: '8px', width: '100%',
                                                             '& .MuiOutlinedInput-root': {
                                                                 '& fieldset': {
                                                                     borderColor: '#8F85F3',
@@ -227,25 +270,26 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                 </FormControl>
                                                 <Typography>No. Handphone penanggung jawab  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
                                                 <PhoneInput
-                                                    country={'id'}
+                                                    country={"id"}
                                                     value={values.phone}
-                                                    onChange={(phone) => setFieldValue('phone', phone)}
+                                                    onChange={(phone) => setFieldValue("phone", phone)}
                                                     inputStyle={{
-                                                        height: '48px',
-                                                        borderRadius: '8px',
-                                                        border: `1px solid ${touched.phone && errors.phone ? 'red' : '#ccc'}`,
-                                                        padding: '10px 40px 10px 60px',
-                                                        fontSize: '16px',
-                                                        width: '544px',
-                                                        marginTop: '10px',
+                                                        height: "48px",
+                                                        borderRadius: "8px",
+                                                        border: `1px solid ${touched.phone && errors.phone ? "red" : "#ccc"
+                                                            }`,
+                                                        padding: "10px 40px 10px 60px",
+                                                        fontSize: "16px",
+                                                        width: "100%",
+                                                        marginTop: "10px",
                                                     }}
                                                     buttonStyle={{
-                                                        borderRadius: '8px 0 0 8px',
-                                                        border: '1px solid #ccc',
+                                                        borderRadius: "8px 0 0 8px",
+                                                        border: "1px solid #ccc",
                                                     }}
                                                     containerStyle={{
-                                                        marginBottom: '10px',
-                                                        width: '100%',
+                                                        marginBottom: "10px",
+                                                        width: "100%",
                                                     }}
                                                 />
                                                 {touched.phone && errors.phone && (
@@ -262,7 +306,7 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                         value={values.relation}
                                                         // label="Hubungan"
                                                         onChange={(e) => setFieldValue('relation', e.target.value)}
-                                                        sx={{ width: '543px', height: '44px' }}
+                                                        sx={{ width: '100%', height: '44px' }}
                                                     >
                                                         <MenuItem value="anak">Anak</MenuItem>
                                                         <MenuItem value="orang tua">Orang Tua</MenuItem>
@@ -286,7 +330,7 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                     <TextField
                                                         variant="outlined"
                                                         sx={{
-                                                            width: '548px',
+                                                            width: '100%',
                                                             borderRadius: '8px',
                                                             padding: '0',
                                                             '& .MuiOutlinedInput-root': {
@@ -325,21 +369,20 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                 <Typography>Dokter yang bertugas</Typography>
 
                                                 <Box
-                                                    display="flex"
-                                                    flexDirection="row"
-                                                    height="38px"
-                                                    width="548px"
-                                                    alignItems="center"
-                                                    mt={2}
+                                                    display={"flex"}
+                                                    flexDirection={"row"}
+                                                    justifyContent={"center"}
+                                                    alignItems={"center"}
+                                                    sx={{ width: "100%" }}
                                                 >
-                                                    <FormControl sx={{ mt: 0, mb: 0 }} size="small">
+                                                    <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
                                                         <InputLabel id="doctor-label">Pilih Dokter</InputLabel>
                                                         <Select
                                                             labelId="doctor-label"
                                                             value={values.docter}
                                                             label="Pilih Dokter"
                                                             onChange={(e) => setFieldValue('docter', e.target.value)}
-                                                            sx={{ width: '258px', borderRadius: '8px' }}
+                                                            sx={{ width: "100%", borderRadius: '8px' }}
                                                         >
                                                             {doctors.map((doctor) => (
                                                                 <MenuItem key={doctor.value} value={doctor.value}>
@@ -354,8 +397,8 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                         </Typography>
                                                     )}
 
-                                                    <Box sx={{ ml: 2 }}>
-                                                        <CalenderPopover />
+                                                    <Box sx={{ ml: 2, width: "100%" }}>
+                                                        <CalenderPopover title="Pilih Tanggal" />
                                                         {/* <CustomCalender/> */}
                                                     </Box>
                                                 </Box>
@@ -369,7 +412,7 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                         rows={4}
                                                         defaultValue="Default Value"
                                                         variant="outlined"
-                                                        sx={{ maxHeight: '107px', maxWidth: '547px' }}
+                                                        sx={{ maxHeight: '107px', width:'100%' }}
                                                     />
                                                 </FormControl>
 
@@ -399,7 +442,7 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                     backgroundColor: '#8F85F3',
                                                     color: 'white',
                                                     textTransform: 'none',
-                                                    width: '95%',
+                                                    width: '100%',
                                                     padding: '10px 24px',
                                                     borderRadius: '8px',
                                                     '&:hover': {
@@ -418,7 +461,7 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
                                                     color: 'white',
                                                     textTransform: 'none',
                                                     padding: '10px 24px',
-                                                    width: '548px',
+                                                    width: '100%',
                                                     borderRadius: '8px',
                                                     '&:hover': {
                                                         backgroundColor: '#7C75E2',

@@ -5,14 +5,12 @@ import * as Yup from 'yup';
 import RadioButtonsGroup from "../../../components/medium/RadoButtonsGroup";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import img from "../../../img/registerPasienImage.png";
+import imagePendaftaran from "../../../assets/img/pendaftaran.jpeg";
 import logo from "../../../img/St.carolus.png";
 
 import { operationalDateOptions, doctors } from "../../../dummyData/dummyData";
-import RadioButton from "../../../components/small/RadioButton";
 import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
-import { Container, width } from "@mui/system";
 import PhoneInputComponent from "../../../components/inputComponent/PhoneInputComponent";
 import DropDownListPenanggungJawab from "../../../components/inputComponent/DropDownListPenanggungJawab";
 
@@ -127,18 +125,23 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
     return (
         <Box
             sx={{
-                marginLeft: '7%',
-                marginTop: '3%',
-                display: 'flex',
-                flexDirection: 'row'
+                position: "relative",
+                display: "flex",
+                flexDirection: "row",
             }}
         >
             <Box>
                 <CardMedia
                     component="img"
-                    height="864"
-                    sx={{ width: "793px", position:'fixed' }}
-                    image={img}
+                    sx={{
+                        width: "50%",
+                        height: "100vh",
+                        objectFit: "cover",
+                        position: "fixed",
+                        top: "0",
+                        left: "0",
+                    }}
+                    image={imagePendaftaran}
                     alt="Example Image"
                 />
             </Box>
@@ -154,17 +157,29 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                 >
                     {({ values, errors, touched, setFieldValue, validateForm, setErrors }) => (
                         <Form>
-                            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-
-
-                                <Box sx={{ marginLeft: '850px' }}>
-                                    <CardMedia
-                                        component="img"
-                                        height="52"
-                                        sx={{ width: "112px", objectFit: "cover", marginLeft:'-30px' }}
-                                        image={logo}
-                                        alt="Example Logo"
-                                    />
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    p: 5,
+                                    position: "absolute",
+                                    right: "0",
+                                    top: "0",
+                                    width: "50%",
+                                }}
+                            >
+                                <Box sx={{ ml: 10 }}>
+                                    <Box>
+                                        <CardMedia
+                                            component="img"
+                                            sx={{
+                                                width: "112px",
+                                                objectFit: "cover",
+                                            }}
+                                            image={logo}
+                                            alt="Example Logo"
+                                        />
+                                    </Box>
 
                                     <Typography sx={{ fontSize: '32px', fontWeight: '600', lineHeight: '34px', marginTop: 2 }}>
                                         Formulir pendaftaran pasien Umum
@@ -211,12 +226,18 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
 
                                     <Box>
                                         {currentPage === 1 && (
-                                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                            <Box
+                                                sx={{
+                                                    display: "flex",
+                                                    flexDirection: "column",
+                                                    gap: "8px",
+                                                }}
+                                            >
                                                 <Box>
                                                     <Box
                                                         bgcolor={"#EEEEF2"}
                                                         height={"272px"}
-                                                        width={"548px"}
+                                                        width={"100%"}
                                                         borderRadius={"16px"}
                                                         paddingLeft={"5px"}
                                                         display="flex"
@@ -248,7 +269,7 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
                                                         <Box
                                                             bgcolor={"#EEEEF2"}
                                                             height={"544px"}
-                                                            width={"548px"}
+                                                            width={"100%"}
                                                             borderRadius={"16px"}
                                                             paddingLeft={"5px"}
                                                             display="flex"
