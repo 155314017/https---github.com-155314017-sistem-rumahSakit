@@ -1,12 +1,26 @@
-import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField, Radio, FormControlLabel, RadioGroup } from "@mui/material";
+import {
+  Button,
+  Box,
+  Typography,
+  CardMedia,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  Alert,
+  TextField,
+  Radio,
+  FormControlLabel,
+  RadioGroup,
+} from "@mui/material";
 import { useState } from "react";
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
 import RadioButtonsGroup from "../../../components/medium/RadoButtonsGroup";
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
-import img from "../../../img/registerPasienImage.png";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import logo from "../../../img/St.carolus.png";
+import imagePendaftaran from "../../../assets/img/pendaftaran.jpeg";
 import { doctors } from "../../../dummyData/dummyData";
 import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
@@ -14,10 +28,10 @@ import CalenderPopover from "../../../components/medium/CalenderPopover";
 import PoliSelect from "../../../components/inputComponent/PoliSelect";
 
 const validationSchema = Yup.object({
-  fullname: Yup.string().required('Nama wajib diisi'),
-  phone: Yup.string().required('Nomor HP wajib diisi'),
-  relation: Yup.string().required('Hubungan wajib diisi'),
-  transportMethod: Yup.string().required('Cara datang/pengantar wajib diisi')
+  fullname: Yup.string().required("Nama wajib diisi"),
+  phone: Yup.string().required("Nomor HP wajib diisi"),
+  relation: Yup.string().required("Hubungan wajib diisi"),
+  transportMethod: Yup.string().required("Cara datang/pengantar wajib diisi"),
 });
 
 interface FormValues {
@@ -37,7 +51,7 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [fileBase64, setFileBase64] = useState<string | null>(null);
   const [showFormPage, setSHowFormPage] = useState(true);
-  const [selectedMethod, setSelectedMethod] = useState<string>('');
+  const [selectedMethod, setSelectedMethod] = useState<string>("");
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedMethod(event.target.value);
@@ -53,8 +67,11 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
     console.log("Base64:", fileBase64);
   };
 
-
-  const handleNext = (validateForm: any, setErrors: any, values: FormValues) => {
+  const handleNext = (
+    validateForm: any,
+    setErrors: any,
+    values: FormValues
+  ) => {
     validateForm().then((formErrors: any) => {
       if (Object.keys(formErrors).length === 0) {
         console.log("Data yang diisi:", values);
@@ -78,220 +95,302 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
 
   const getPageStyle = (page: number) => {
     if (page === currentPage) {
-      return { color: '#8F85F3', cursor: 'pointer', fontWeight: 'bold', };
+      return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
     } else if (page < currentPage) {
-      return { color: '#8F85F3', cursor: 'pointer' };
+      return { color: "#8F85F3", cursor: "pointer" };
     } else {
-      return { color: 'black', cursor: 'pointer' };
+      return { color: "black", cursor: "pointer" };
     }
   };
 
   const getBorderStyle = (page: number) => {
     if (page === currentPage) {
       return {
-        display: 'flex',
-        border: '1px solid #8F85F3',
-        width: '38px',
-        height: '38px',
-        borderRadius: '8px',
-        justifyContent: 'center',
-        alignItems: 'center'
+        display: "flex",
+        border: "1px solid #8F85F3",
+        width: "38px",
+        height: "38px",
+        borderRadius: "8px",
+        justifyContent: "center",
+        alignItems: "center",
       };
     } else if (page < currentPage) {
       return {
-        display: 'flex',
-        border: '1px solid #8F85F3',
-        width: '38px',
-        height: '38px',
-        borderRadius: '8px',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#8F85F3',
-        color: 'white'
+        display: "flex",
+        border: "1px solid #8F85F3",
+        width: "38px",
+        height: "38px",
+        borderRadius: "8px",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#8F85F3",
+        color: "white",
       };
     } else {
       return {
-        display: 'flex',
-        border: '1px solid #8F85F3',
-        width: '38px',
-        height: '38px',
-        borderRadius: '8px',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: '#8F85F3'
+        display: "flex",
+        border: "1px solid #8F85F3",
+        width: "38px",
+        height: "38px",
+        borderRadius: "8px",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "#8F85F3",
       };
     }
-  }
+  };
 
   return (
     <Box
       sx={{
-        marginLeft: '7%',
-        marginTop: '3%',
-        display: 'flex',
-        flexDirection: 'row',
+        position: "relative",
+        display: "flex",
+        flexDirection: "row",
       }}
     >
       <Box>
         <CardMedia
           component="img"
-          height="864"
-          sx={{ width: "793px", objectFit: "cover" }}
-          image={img}
+          sx={{
+            width: "50%",
+            height: "100vh",
+            objectFit: "cover",
+            position: "fixed",
+            top: "0",
+            left: "0",
+          }}
+          image={imagePendaftaran}
           alt="Example Image"
         />
       </Box>
 
       {showFormPage && (
-
         <Formik<FormValues>
-          initialValues={{ fullname: '', phone: '', relation: '', transportMethod: '', poli: '', docter: '', operationalDate: '' }}
+          initialValues={{
+            fullname: "",
+            phone: "",
+            relation: "",
+            transportMethod: "",
+            poli: "",
+            docter: "",
+            operationalDate: "",
+          }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
             console.log("Form submitted with values:", values);
           }}
         >
-          {({ values, errors, touched, setFieldValue, validateForm, setErrors }) => (
+          {({
+            values,
+            errors,
+            touched,
+            setFieldValue,
+            validateForm,
+            setErrors,
+          }) => (
             <Form>
-              <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-
-
-                <Box sx={{ marginLeft: '60px', marginTop:'1.9%' }}>
-                  <Box sx={{marginLeft:'-5%'}} >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  p: 5,
+                  position: "absolute",
+                  right: "0",
+                  top: "0",
+                  width: "50%",
+                }}
+              >
+                <Box sx={{ ml: 10 }}>
+                  <Box>
                     <CardMedia
                       component="img"
-                      height="52"
-                      sx={{ width: "112px", objectFit: "cover", marginTop:'-2.2%' }}
+                      sx={{
+                        width: "112px",
+                        objectFit: "cover",
+                      }}
                       image={logo}
                       alt="Example Logo"
                     />
                   </Box>
 
-                  <Typography sx={{ fontSize: '32px', fontWeight: '600', lineHeight: '34px', marginTop: 2 }}>
+                  <Typography
+                    sx={{
+                      fontSize: "32px",
+                      fontWeight: "600",
+                      lineHeight: "34px",
+                      marginTop: 2,
+                      mb: 5,
+                      maxWidth: "450px",
+                    }}
+                  >
                     Formulir pendaftaran pasien BPJS
                   </Typography>
 
-                  <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2, mb: 2 }}>
-                    <Box display={'flex'} flexDirection={'row'} width={'290px'}>
+                  <Box
+                    sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2 }}
+                  >
+                    <Box display={"flex"} flexDirection={"row"} width={"290px"}>
                       <Box
-                        display={'flex'}
-                        flexDirection={'row'}
+                        display={"flex"}
+                        flexDirection={"row"}
                         alignItems="center"
                         onClick={() => setCurrentPage(1)}
                         sx={getPageStyle(1)}
                         mx={2}
                       >
-                        <Box sx={getBorderStyle(1)}>
-                          1
-                        </Box>
-                        <Typography sx={{ ml: 1 }}>Penanggung jawab pasien</Typography>
+                        <Box sx={getBorderStyle(1)}>1</Box>
+                        <Typography sx={{ ml: 1 }}>
+                          Penanggung jawab pasien
+                        </Typography>
                       </Box>
                     </Box>
 
-
-                    <Box display={'flex'} flexDirection={'row'} width={'350px'}>
+                    <Box display={"flex"} flexDirection={"row"} width={"290px"}>
                       <Box
-                        display={'flex'}
-                        flexDirection={'row'}
+                        display={"flex"}
+                        flexDirection={"row"}
                         alignItems="center"
                         onClick={() => setCurrentPage(2)}
                         sx={getPageStyle(2)}
                         mx={2}
                       >
-                        <Box sx={getBorderStyle(2)}>
-                          2
-                        </Box>
-                        <Typography sx={{ ml: 1 }}>Jenis kunjungan , Keluhan dan metode pembayaran</Typography>
+                        <Box sx={getBorderStyle(2)}>2</Box>
+                        <Typography sx={{ ml: 1 }}>
+                          Jenis kunjungan , Keluhan dan metode pembayaran
+                        </Typography>
                       </Box>
                     </Box>
                   </Box>
 
                   {showAlert && (
                     <Alert severity="warning" sx={{ mb: 2 }}>
-                      Semua field wajib diisi sebelum lanjut ke halaman berikutnya!
+                      Semua field wajib diisi sebelum lanjut ke halaman
+                      berikutnya!
                     </Alert>
                   )}
 
                   <Box>
                     {currentPage === 1 && (
-                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "8px",
+                        }}
+                      >
                         <RadioButtonsGroup
                           selectedValue={values.transportMethod}
-                          onChange={(value) => setFieldValue('transportMethod', value)}
-                          widthInput="543px"
+                          onChange={(value) =>
+                            setFieldValue("transportMethod", value)
+                          }
+                          widthInput="100%"
                           heightInput="56px"
                         />
 
-                        <FormControl sx={{ marginTop: '50px', display: 'flex', flexDirection: 'column' }}>
-                          <Typography>Nama lengkap penanggung jawab  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
+                        <FormControl
+                          sx={{
+                            marginTop: "50px",
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <Typography>
+                            Nama lengkap penanggung jawab{" "}
+                            <span style={{ color: "#d32f2f" }}>*</span>{" "}
+                          </Typography>
                           <TextField
                             placeholder="Masukkan nama lengkap penanggung jawab"
                             fullWidth
                             value={values.fullname}
-                            onChange={(e) => setFieldValue('fullname', e.target.value)}
+                            onChange={(e) =>
+                              setFieldValue("fullname", e.target.value)
+                            }
                             error={touched.fullname && Boolean(errors.fullname)}
                             helperText={touched.fullname && errors.fullname}
                             sx={{
-                              mt: 2, mb: 2, border: '1px solid #8F85F3', borderRadius: '8px', width: '544px',
-                              '& .MuiOutlinedInput-root': {
-                                '& fieldset': {
-                                  borderColor: '#8F85F3',
+                              mt: 2,
+                              mb: 2,
+                              border: "1px solid #8F85F3",
+                              borderRadius: "8px",
+                              width: "100%",
+                              "& .MuiOutlinedInput-root": {
+                                "& fieldset": {
+                                  borderColor: "#8F85F3",
                                 },
-                                '&:hover fieldset': {
-                                  borderColor: '#8F85F3',
+                                "&:hover fieldset": {
+                                  borderColor: "#8F85F3",
                                 },
-                                '&.Mui-focused fieldset': {
-                                  borderColor: '#8F85F',
+                                "&.Mui-focused fieldset": {
+                                  borderColor: "#8F85F",
                                 },
                               },
                             }}
                           />
                         </FormControl>
-                        <Typography>No. Handphone penanggung jawab  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
+                        <Typography>
+                          No. Handphone penanggung jawab{" "}
+                          <span style={{ color: "#d32f2f" }}>*</span>{" "}
+                        </Typography>
                         <PhoneInput
-                          country={'id'}
+                          country={"id"}
                           value={values.phone}
-                          onChange={(phone) => setFieldValue('phone', phone)}
+                          onChange={(phone) => setFieldValue("phone", phone)}
                           inputStyle={{
-                            height: '48px',
-                            borderRadius: '8px',
-                            border: `1px solid ${touched.phone && errors.phone ? 'red' : '#ccc'}`,
-                            padding: '10px 40px 10px 60px',
-                            fontSize: '16px',
-                            width: '544px',
-                            marginTop: '10px',
+                            height: "48px",
+                            borderRadius: "8px",
+                            border: `1px solid ${
+                              touched.phone && errors.phone ? "red" : "#ccc"
+                            }`,
+                            padding: "10px 40px 10px 60px",
+                            fontSize: "16px",
+                            width: "100%",
+                            marginTop: "10px",
                           }}
                           buttonStyle={{
-                            borderRadius: '8px 0 0 8px',
-                            border: '1px solid #ccc',
+                            borderRadius: "8px 0 0 8px",
+                            border: "1px solid #ccc",
                           }}
                           containerStyle={{
-                            marginBottom: '10px',
-                            width: '100%',
+                            marginBottom: "10px",
+                            width: "100%",
                           }}
                         />
                         {touched.phone && errors.phone && (
-                          <Typography sx={{ color: 'red', fontSize: '12px' }}>
+                          <Typography sx={{ color: "red", fontSize: "12px" }}>
                             {errors.phone}
                           </Typography>
                         )}
 
                         <FormControl fullWidth sx={{ mt: 2, mb: 2 }}>
-                          <Typography>Hubungan penanggung jawab dengan pasien  <span style={{ color: '#d32f2f' }}>*</span> </Typography>
+                          <Typography>
+                            Hubungan penanggung jawab dengan pasien{" "}
+                            <span style={{ color: "#d32f2f" }}>*</span>{" "}
+                          </Typography>
                           {/* <InputLabel id="relation-label">Hubungan</InputLabel> */}
                           <Select
                             labelId="relation-label"
                             value={values.relation}
-                            onChange={(e) => setFieldValue('relation', e.target.value)}
-                            sx={{ width: '543px', height: '44px' }}
+                            onChange={(e) =>
+                              setFieldValue("relation", e.target.value)
+                            }
+                            sx={{ width: "100%", height: "44px" }}
                           >
-                            <MenuItem sx={{ color: '#8F85F3' }} value="anak">Anak</MenuItem>
-                            <MenuItem sx={{ color: '#8F85F3' }} value="orang tua">Orang Tua</MenuItem>
-                            <MenuItem sx={{ color: '#8F85F3' }} value="kerabat">Kerabat</MenuItem>
+                            <MenuItem sx={{ color: "#8F85F3" }} value="anak">
+                              Anak
+                            </MenuItem>
+                            <MenuItem
+                              sx={{ color: "#8F85F3" }}
+                              value="orang tua"
+                            >
+                              Orang Tua
+                            </MenuItem>
+                            <MenuItem sx={{ color: "#8F85F3" }} value="kerabat">
+                              Kerabat
+                            </MenuItem>
                           </Select>
                         </FormControl>
                         {touched.relation && errors.relation && (
-                          <Typography sx={{ color: 'red', fontSize: '12px' }}>
+                          <Typography sx={{ color: "red", fontSize: "12px" }}>
                             {errors.relation}
                           </Typography>
                         )}
@@ -299,129 +398,148 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
                     )}
 
                     {currentPage === 2 && (
-                      <Box sx={{ display: 'flex', flexDirection: 'column' }} >
+                      <Box sx={{ display: "flex", flexDirection: "column" }}>
                         <FormControl>
-                          <Typography>
-                            Jenis Kunjungan
-                          </Typography>
+                          <Typography>Jenis Kunjungan</Typography>
                           <TextField
                             variant="outlined"
                             sx={{
-                              width: '548px',
-                              borderRadius: '8px',
-                              padding: '0',
-                              '& .MuiOutlinedInput-root': {
-                                height: '44px',
-                                padding: '0 12px',
-                                border: '1px solid #8F85F3',
-                                '& input': {
-                                  height: '44px',
-                                  padding: '0',
+                              width: "100%",
+                              borderRadius: "8px",
+                              mb: 2,
+                              padding: "0",
+                              "& .MuiOutlinedInput-root": {
+                                height: "44px",
+                                padding: "0 12px",
+                                border: "1px solid #8F85F3",
+                                "& input": {
+                                  height: "44px",
+                                  padding: "0",
                                 },
-                                '& fieldset': {
-                                  borderColor: '#8F85F3',
+                                "& fieldset": {
+                                  borderColor: "#8F85F3",
                                 },
-                                '&:hover fieldset': {
-                                  borderColor: '#7A73E3',
+                                "&:hover fieldset": {
+                                  borderColor: "#7A73E3",
                                 },
-                                '&.Mui-focused fieldset': {
-                                  borderColor: '#6B63D1',
+                                "&.Mui-focused fieldset": {
+                                  borderColor: "#6B63D1",
                                 },
                               },
                             }}
                           />
-
                         </FormControl>
                         <Typography>Poli yang dituju</Typography>
                         <PoliSelect
                           value={values.poli}
-                          onChange={(e) => setFieldValue('poli', e.target.value)}
+                          onChange={(e) =>
+                            setFieldValue("poli", e.target.value)
+                          }
                         />
                         {touched.poli && errors.poli && (
-                          <Typography sx={{ color: 'red', fontSize: '12px' }}>
+                          <Typography sx={{ color: "red", fontSize: "12px" }}>
                             {errors.poli}
                           </Typography>
                         )}
 
                         <Box
-                          display="flex"
-                          flexDirection="row"
-                          height="38px"
-                          width="548px"
-                          alignItems="center"
-                          mt={2}
+                         display={"flex"}
+                         flexDirection={"row"}
+                         justifyContent={"center"}
+                         alignItems={"center"}
+                         sx={{ width: "100%" }}
                         >
-                          <FormControl sx={{ mt: 0, mb: 0 }} size="small">
-                            <InputLabel id="doctor-label">Pilih Dokter</InputLabel>
+                          <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
+                            <InputLabel id="doctor-label">
+                              Pilih Dokter
+                            </InputLabel>
                             <Select
                               labelId="doctor-label"
                               value={values.docter}
                               label="Pilih Dokter"
-                              onChange={(e) => setFieldValue('docter', e.target.value)}
-                              sx={{ width: '258px', borderRadius: '8px' }}
+                              onChange={(e) =>
+                                setFieldValue("docter", e.target.value)
+                              }
+                              sx={{ width: "100%", borderRadius: "8px" }}
                             >
                               {doctors.map((doctor) => (
-                                <MenuItem key={doctor.value} value={doctor.value} sx={{ color: '#8F85F3' }}>
+                                <MenuItem
+                                  key={doctor.value}
+                                  value={doctor.value}
+                                  sx={{ color: "#8F85F3" }}
+                                >
                                   {doctor.label}
                                 </MenuItem>
                               ))}
                             </Select>
                           </FormControl>
                           {touched.docter && errors.docter && (
-                            <Typography sx={{ color: 'red', fontSize: '12px', ml: 1 }}>
+                            <Typography
+                              sx={{ color: "red", fontSize: "12px", ml: 1 }}
+                            >
                               {errors.docter}
                             </Typography>
                           )}
 
-                          <Box sx={{ ml: 2 }}>
-                            <CalenderPopover />
+                          <Box sx={{ ml: 2, width: "100%" }}>
+                            <CalenderPopover title="Pilih tanggal" />
                           </Box>
                         </Box>
 
-
                         <FormControl>
-                          <Typography>keluhan pasien</Typography>
+                          <Typography sx={{ textTransform: "capitalize" }}>keluhan pasien</Typography>
                           <TextField
                             id="outlined-multiline-static"
                             multiline
                             rows={4}
                             variant="outlined"
-                            sx={{ maxHeight: '107px', maxWidth: '547px' }}
+                            sx={{ maxHeight: "107px", maxWidth: "100%" }}
                           />
                         </FormControl>
 
-                        <Box mt={4} >
+                        <Box mt={4}>
                           <Box>
                             <Typography>Unggah kartu BPJS</Typography>
                             <FileUploader />
-                            <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran maksimal 1mb</Typography>
+                            <Typography fontSize={"14px"} color="#A8A8BD">
+                              Ukuran maksimal 1mb
+                            </Typography>
                           </Box>
 
-                          <Box mt={2} >
-                            <Typography >Unggah surat rujukan BPJS</Typography>
+                          <Box mt={2}>
+                            <Typography>Unggah surat rujukan BPJS</Typography>
                             <FileUploader />
-                            <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran maksimal 1mb</Typography>
+                            <Typography fontSize={"14px"} color="#A8A8BD">
+                              Ukuran maksimal 1mb
+                            </Typography>
                           </Box>
                         </Box>
                       </Box>
                     )}
                   </Box>
 
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
-
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mt: 4,
+                    }}
+                  >
                     {currentPage < totalPages ? (
                       <Button
-                        onClick={() => handleNext(validateForm, setErrors, values)}
+                        onClick={() =>
+                          handleNext(validateForm, setErrors, values)
+                        }
                         sx={{
-                          backgroundColor: '#8F85F3',
-                          color: 'white',
-                          textTransform: 'none',
-                          width: '85%',
-                          padding: '10px 24px',
-                          borderRadius: '8px',
-                          '&:hover': {
-                            backgroundColor: '#7C75E2',
-                          }
+                          backgroundColor: "#8F85F3",
+                          color: "white",
+                          textTransform: "none",
+                          width: "100%",
+                          padding: "10px 24px",
+                          borderRadius: "8px",
+                          "&:hover": {
+                            backgroundColor: "#7C75E2",
+                          },
                         }}
                       >
                         Selanjutnya
@@ -431,15 +549,15 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
                         type="submit"
                         onClick={() => setSHowFormPage(false)}
                         sx={{
-                          backgroundColor: '#8F85F3',
-                          color: 'white',
-                          textTransform: 'none',
-                          padding: '10px 24px',
-                          width: '80%',
-                          borderRadius: '8px',
-                          '&:hover': {
-                            backgroundColor: '#7C75E2',
-                          }
+                          backgroundColor: "#8F85F3",
+                          color: "white",
+                          textTransform: "none",
+                          padding: "10px 24px",
+                          width: "100%",
+                          borderRadius: "8px",
+                          "&:hover": {
+                            backgroundColor: "#7C75E2",
+                          },
                         }}
                       >
                         Selesai
@@ -454,7 +572,7 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
       )}
 
       {!showFormPage && (
-        <Box marginLeft={"2%"} marginTop={"10%"} >
+        <Box marginLeft={"2%"} marginTop={"10%"}>
           <InformasiTicket />
         </Box>
       )}

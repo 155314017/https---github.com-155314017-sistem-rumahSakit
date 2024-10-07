@@ -20,7 +20,7 @@ import * as Yup from "yup";
 import RadioButtonsGroup from "../../../components/medium/RadoButtonsGroup";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import imagePendaftaran from "../../../assets/img/pendaftaran.jpeg"
+import imagePendaftaran from "../../../assets/img/pendaftaran.jpeg";
 import logo from "../../../img/St.carolus.png";
 
 import { operationalDateOptions, doctors } from "../../../dummyData/dummyData";
@@ -244,7 +244,7 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
                       </Box>
                     </Box>
 
-                    <Box display={"flex"} flexDirection={"row"} width={"290px"} >
+                    <Box display={"flex"} flexDirection={"row"} width={"290px"}>
                       <Box
                         display={"flex"}
                         flexDirection={"row"}

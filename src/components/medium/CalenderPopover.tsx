@@ -1,40 +1,60 @@
-import * as React from 'react';
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import CustomCalender from './CustomCalender';
+import * as React from "react";
+import Popover from "@mui/material/Popover";
+import Button from "@mui/material/Button";
+import CustomCalender from "./CustomCalender";
+import { Box } from "@mui/system";
 
-export default function CalenderPopover() {
-    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+interface Props {
+  title: string;
+}
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
+export default function CalenderPopover({ title }: Props) {
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    return (
-        <div>
-            <Button aria-describedby={id} variant="contained" onClick={handleClick}>
-                Open Popover
-            </Button>
-            <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-            >
-                <CustomCalender/>
-            </Popover>
-        </div>
-    );
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  return (
+    <Box>
+      <Button
+        aria-describedby={id}
+        variant="contained"
+        onClick={handleClick}
+        color="inherit"
+        sx={{
+          height: "40px",
+          boxShadow: "none",
+          textTransform: "capitalize",
+          bgcolor: "#8F85F3",
+          color: "#fff",
+          fontSize: "16px",
+          ":hover": { bgcolor: "#7C75E2", boxShadow: "none" },
+        }}
+      >
+        {title}
+      </Button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <CustomCalender />
+      </Popover>
+    </Box>
+  );
 }
