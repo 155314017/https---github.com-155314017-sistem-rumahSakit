@@ -19,6 +19,12 @@ interface ImageInfo {
     size: string;
 }
 
+const jenisKonter = [
+    { value: 1, label: "Asuransi" },
+    { value: 2, label: "BPJS" },
+    { value: 3, label: "Umum" },
+];
+
 const hari = [
     { value: 1, label: "Senin" },
     { value: 2, label: "Selasa" },
@@ -28,6 +34,10 @@ const hari = [
     { value: 6, label: "Sabtu" },
     { value: 7, label: "Minggu" },
 ];
+
+const handleSelectionChange = (selectedValue: string) => {
+    console.log("Selected Value:", selectedValue);
+};
 
 export default function TambahKonter() {
     const [successAlert, setSuccessAlert] = useState(false);
@@ -57,8 +67,8 @@ export default function TambahKonter() {
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
-        { label: "Klinik", href: "/klinik" },
-        { label: "Tambah Klinik", href: "/tambahKlinik" },
+        { label: "Konter", href: "/konter" },
+        { label: "Tambah Konter", href: "/tambahKonter" },
     ];
 
     const formik = useFormik({
@@ -67,8 +77,8 @@ export default function TambahKonter() {
             deskripsiKlinik: '',
         },
         validationSchema: Yup.object({
-            namaKlinik: Yup.string().required('Nama Klinik is required'),
-            deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
+            namaKlinik: Yup.string().required('Nama Konter is required'),
+            deskripsiKlinik: Yup.string().required('Deskripsi Konter is required'),
         }),
         onSubmit: (values) => {
             console.log('Form submitted:', values);
@@ -83,7 +93,7 @@ export default function TambahKonter() {
             />
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
-                    <Typography fontSize="20px" fontWeight="700">Tambah Klinik</Typography>
+                    <Typography fontSize="20px" fontWeight="700">Tambah Konter</Typography>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
                     </Box>
@@ -92,13 +102,13 @@ export default function TambahKonter() {
                     <ImageUploaderGroup/>
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
-                        <Typography sx={{ fontSize: "16px" }}>Nama Klinik<span style={{ color: "red" }}>*</span></Typography>
+                        <Typography sx={{ fontSize: "16px" }}>Nama Konter<span style={{ color: "red" }}>*</span></Typography>
                         <FormControl fullWidth sx={{ my: 1 }}>
                             <OutlinedInput
                                 id="namaKlinik"
                                 name="namaKlinik"
                                 size="small"
-                                placeholder="Masukkan Nama klinik"
+                                placeholder="Masukkan Nama konter"
                                 value={formik.values.namaKlinik}
                                 onChange={formik.handleChange}
                                 onBlur={() => formik.setTouched({ ...formik.touched, namaKlinik: true })}
@@ -109,13 +119,20 @@ export default function TambahKonter() {
                             )}
                         </FormControl>
 
-                        <Typography sx={{ fontSize: "16px" }}>Deskripsi Klinik<span style={{ color: "red" }}>*</span></Typography>
+                        <Typography sx={{ fontSize: "16px" }}>Pilih Konter<span style={{ color: "red" }}>*</span></Typography>
+                        <DropdownList
+                            options={jenisKonter}
+                            placeholder="Pilih konter"
+                            onChange={handleSelectionChange}
+                        />
+
+                        <Typography sx={{ fontSize: "16px", mt:1 }}>Lokasi Konter<span style={{ color: "red" }}>*</span></Typography>
                         <FormControl fullWidth sx={{ my: 1 }}>
                             <OutlinedInput
                                 id="deskripsiKlinik"
                                 name="deskripsiKlinik"
                                 size="small"
-                                placeholder="Masukkan deskripsi klinik"
+                                placeholder="Masukkan lokasi konter"
                                 value={formik.values.deskripsiKlinik}
                                 onChange={formik.handleChange}
                                 onBlur={() => formik.setTouched({ ...formik.touched, deskripsiKlinik: true })}

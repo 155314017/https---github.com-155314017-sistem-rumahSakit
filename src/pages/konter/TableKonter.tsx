@@ -23,6 +23,7 @@ import DataGedung from "../../dummyData/dataGedung";
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import DataKonter from "../../dummyData/dataKonter";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -56,7 +57,8 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 export default function TableKonter() {
-    const datas = DataGedung;
+    // const datas = DataGedung;
+    const datas = DataKonter;
 
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -82,10 +84,10 @@ export default function TableKonter() {
     );
 
     const urutkan = [
-        { value: 1, label: "Nama Gedung A-Z" },
-        { value: 2, label: "Nama Gedung Z-A" },
-        { value: 3, label: "Nomor Gedung 1-9" },
-        { value: 4, label: "Nomor Gedung 9-1" },
+        { value: 1, label: "Nama Konter A-Z" },
+        { value: 2, label: "Nama Konter Z-A" },
+        { value: 3, label: "Nomor Konter 1-9" },
+        { value: 4, label: "Nomor Konter 9-1" },
     ];
 
     const handleSelectionChange = (selectedValue: string) => {
@@ -111,7 +113,7 @@ export default function TableKonter() {
                             fontSize: "20px",
                         }}
                     >
-                        Daftar Gedung
+                        Daftar Konter
                     </Typography>
 
                     {/* collapse button */}
@@ -228,7 +230,7 @@ export default function TableKonter() {
                                                 }}
                                                 align="center"
                                             >
-                                                No. Gedung
+                                                No. Konter
                                             </TableCell>
                                             <TableCell
                                                 width={"15%"}
@@ -240,7 +242,7 @@ export default function TableKonter() {
                                                 }}
                                                 align="left"
                                             >
-                                                Nama Gedung
+                                                Tipe Konter
                                             </TableCell>
                                             <TableCell
                                                 width={"15%"}
@@ -252,7 +254,31 @@ export default function TableKonter() {
                                                 }}
                                                 align="left"
                                             >
-                                                Alamat Gedung
+                                                Nama Konter
+                                            </TableCell>
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="left"
+                                            >
+                                                Jam Operasional
+                                            </TableCell>
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="left"
+                                            >
+                                                Lokasi Konter
                                             </TableCell>
                                             
                                             <TableCell
@@ -276,7 +302,7 @@ export default function TableKonter() {
                                                     sx={[{ color: "#292B2C", fontSize: "14px" }]}
                                                     align="center"
                                                 >
-                                                    {data.no_gedung}
+                                                    {data.no_konter}
                                                 </TableCell>
                                                 <TableCell
                                                     sx={[
@@ -291,7 +317,37 @@ export default function TableKonter() {
                                                         },
                                                     ]}
                                                 >
+                                                    {data.type}
+                                                </TableCell>
+                                                <TableCell
+                                                    sx={[
+                                                        {
+                                                            color: "#292B2C",
+                                                            overflow: "hidden",
+                                                            textOverflow: "ellipsis",
+                                                            whiteSpace: "nowrap",
+                                                            maxWidth: "150px",
+                                                            fontSize: "14px",
+                                                            textTransform: "capitalize",
+                                                        },
+                                                    ]}
+                                                >
                                                     {data.name}
+                                                </TableCell>
+                                                <TableCell
+                                                    sx={[
+                                                        {
+                                                            color: "#292B2C",
+                                                            overflow: "hidden",
+                                                            textOverflow: "ellipsis",
+                                                            whiteSpace: "nowrap",
+                                                            maxWidth: "150px",
+                                                            fontSize: "14px",
+                                                            textTransform: "capitalize",
+                                                        },
+                                                    ]}
+                                                >
+                                                    {data.operational}
                                                 </TableCell>
                                                 <TableCell
                                                     sx={[
@@ -341,7 +397,7 @@ export default function TableKonter() {
                                                         Ubah
                                                     </Link>
                                                     <Link
-                                                        href="#"
+                                                        href="/detailKonter"
                                                         underline="hover"
                                                         sx={{
                                                             textTransform: "capitalize",

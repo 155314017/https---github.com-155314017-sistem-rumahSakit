@@ -19,11 +19,11 @@ export default function Konter() {
                 <Header />
                 <Box>
                     <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
-                        Klinik
+                        Konter
                     </Typography>
                     <Grid container spacing={3} flex={1} mb={3}>
-                        <MediumCard icon={BusinessOutlinedIcon} title="Daftar Klinik" subtitle="10" />
-                        <CardAdd icon={AddBoxIcon} title="Tambah Klinik" link="/tambahKlinik" />
+                        <MediumCard icon={BusinessOutlinedIcon} title="Daftar Konter" subtitle="10" />
+                        <CardAdd icon={AddBoxIcon} title="Tambah Konter" link="/tambahKonter" />
                     </Grid>
                     <TableKonter/>
                 </Box>
