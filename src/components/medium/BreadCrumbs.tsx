@@ -60,7 +60,8 @@ export default function BreadCrumbs({
             <Link
               key={index}
               underline="hover"
-              color={item.isCurrent ? "#8F85F3" : "inherit"}
+              // color={item.isCurrent ? "#8F85F3" : "inherit"}
+              color="#8F85F3"
               href={item.href}
               aria-current={item.isCurrent ? "page" : undefined}
               sx={{ fontSize: "16px" }}
