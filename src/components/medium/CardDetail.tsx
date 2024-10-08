@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Typography,
   TableRow,
@@ -6,7 +7,6 @@ import {
   TableBody,
   TableHead,
   TableContainer,
-  Link,
   Box,
 } from "@mui/material";
 
@@ -14,17 +14,17 @@ import bgImage from "../../assets/img/String.png";
 
 interface DetailCardProps {
   title: string;
-  data: {
-    biaya: string;
-    waktuPelayanan: string;
-    aksi: {
-      hapusLink: string;
-      ubahLink: string;
-    };
-  };
+  columns: Array<{ id: string; label: string }>;
+  data: Array<Record<string, any>>;
+  actions?: (row: Record<string, any>) => JSX.Element;
 }
 
-const CardDetail: React.FC<DetailCardProps> = ({ title, data }) => {
+const CardDetail: React.FC<DetailCardProps> = ({
+  title,
+  columns,
+  data,
+  actions,
+}) => {
   return (
     <div>
       <Box
@@ -107,38 +107,32 @@ const CardDetail: React.FC<DetailCardProps> = ({ title, data }) => {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell align="left">Biaya</TableCell>
-                <TableCell align="left">Waktu Pelayanan</TableCell>
-                <TableCell align="left">Aksi</TableCell>
+                {columns.map((column) => (
+                  <TableCell key={column.id} align="left">
+                    {column.label}
+                  </TableCell>
+                ))}
+                {actions && <TableCell align="left">Aksi</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell sx={{ fontWeight: "700" }}>
-                  {data.biaya}
-                </TableCell>
-                <TableCell sx={{ fontWeight: "700" }}>
-                  {data.waktuPelayanan}
-                </TableCell>
-                <TableCell sx={{ display: "flex", gap: 3 }}>
-                  <Link
-                    underline="hover"
-                    sx={{ color: "#8F85F3" }}
-                    href={data.aksi.hapusLink}
-                  >
-                    Hapus
-                  </Link>
-                  <Link
-                    underline="hover"
-                    sx={{ color: "#8F85F3" }}
-                    href={data.aksi.ubahLink}
-                  >
-                    Ubah
-                  </Link>
-                </TableCell>
-              </TableRow>
+              {data.map((row, rowIndex) => (
+                <TableRow
+                  key={rowIndex}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  {columns.map((columns) => (
+                    <TableCell key={columns.id} sx={{ fontWeight: "700" }}>
+                      {row[columns.id] || "-"}
+                    </TableCell>
+                  ))}
+                  {actions && (
+                    <TableCell sx={{ display: "flex", gap: 3 }}>
+                      {actions(row)}
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>

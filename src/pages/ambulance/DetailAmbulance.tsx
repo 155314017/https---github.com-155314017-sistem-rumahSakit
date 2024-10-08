@@ -1,5 +1,5 @@
 import { Container, Box } from "@mui/system";
-
+import { Link } from "@mui/material";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import ImageGrid from "../../components/medium/ImageGrid";
 import CardDetail from "../../components/medium/CardDetail";
@@ -41,14 +41,22 @@ export default function DetailAmbulance() {
       <Box mt={3}>
         <CardDetail
           title="AB 1907 BCE"
-          data={{
-            biaya: "Rp 100.000",
-            waktuPelayanan: "10.00 - 15.00",
-            aksi: {
-              hapusLink: "#",
-              ubahLink: "#",
-            },
-          }}
+          columns={[
+            { id: "biaya", label: "Biaya" },
+            { id: "waktuPelayanan", label: "Waktu Pelayanan" },
+          ]}
+          data={[{ biaya: "Rp. 100.000", waktuPelayanan: "2 jam" },
+          { biaya: "Rp. 100.000", waktuPelayanan: "2 jam" }]}
+          actions={() => (
+            <>
+              <Link underline="hover" sx={{ color: "#8F85F3" }} href="/hapus">
+                Hapus
+              </Link>
+              <Link underline="hover" sx={{ color: "#8F85F3" }} href="/ubah">
+                Ubah
+              </Link>
+            </>
+          )}
         />
       </Box>
     </Container>
