@@ -104,76 +104,80 @@ const ImageUploaderGroup: React.FC = () => {
     };
 
     return (
-        <Grid container justifyContent="center" alignItems="center" direction="column" spacing={4} sx={{ mt: 5 }} maxHeight={'350px'} maxWidth={'100%'} >
-            {images.map((imgData, index) => (
-                <Grid item key={index}>
-                    {imgData.error && (
-                        <Alert severity="error" sx={{ mb: 3 }}>
-                            {imgData.error}
-                        </Alert>
-                    )}
-
-                    <Box
-                        onClick={() => handleBoxClick(index)} 
-                        onDragOver={handleDragOver}
-                        onDrop={(e) => handleDrop(e, index)}
-                        sx={{
-                            border: imgData.loading ? "2px dashed blue" : "2px dashed gray",
-                            borderRadius: "12px",
-                            // padding: "20px",
-                            textAlign: "center",
-                            width: "190px",
-                            height: "160px",
-                            backgroundColor: "#fafafa",
-                            // backgroundColor:'blue',
-                            transition: "background-color 0.3s ease",
-                            cursor: "pointer",
-                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                    >
-                        <input
-                            type="file"
-                            accept="image/jpeg, image/png, image/svg+xml, image/gif"
-                            ref={(el) => (inputRefs.current[index] = el!)}
-                            style={{ display: "none" }}
-                            onChange={(e) => handleFileChange(e, index)}
-                        />
-                        {imgData.loading ? (
-                            <CircularProgress />
-                        ) : imgData.image ? (
-                            <img
-                                src={imgData.image}
-                                alt={`Uploaded ${index + 1}`}
-                                style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    objectFit: "contain",
-                                    borderRadius: "8px",
-                                }}
-                            />
-                        ) : (
-                            <Box>
-                                <AddPhotoAlternateOutlinedIcon/>
-                                <Typography sx={{ color: "gray", fontSize: "18px" }}>
-                                    Foto {index + 1}
-                                </Typography>
-                            </Box>
+        <>
+            <Typography sx={{ fontSize: "16px", fontWeight: 600, mt:1 }}>Unggah Foto<span style={{ color: "red" }}>*</span></Typography>
+            <Typography fontSize={'14px'} mb={1} color='#A8A8BD' >Format foto harus .SVG, .PNG, atau .JPG dan ukuran foto maksimal 4MB.</Typography>
+            <Grid container justifyContent="center" alignItems="center" direction="column" spacing={4} maxHeight={'350px'} maxWidth={'100%'} >
+                {images.map((imgData, index) => (
+                    <Grid item key={index}>
+                        {imgData.error && (
+                            <Alert severity="error" sx={{ mb: 3 }}>
+                                {imgData.error}
+                            </Alert>
                         )}
-                    </Box>
-                </Grid>
-            ))}
 
-            {/* <Button
+                        <Box
+                            onClick={() => handleBoxClick(index)}
+                            onDragOver={handleDragOver}
+                            onDrop={(e) => handleDrop(e, index)}
+                            sx={{
+                                border: imgData.loading ? "2px dashed blue" : "2px dashed gray",
+                                borderRadius: "12px",
+                                // padding: "20px",
+                                textAlign: "center",
+                                width: "190px",
+                                height: "160px",
+                                backgroundColor: "#fafafa",
+                                // backgroundColor:'blue',
+                                transition: "background-color 0.3s ease",
+                                cursor: "pointer",
+                                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <input
+                                type="file"
+                                accept="image/jpeg, image/png, image/svg+xml, image/gif"
+                                ref={(el) => (inputRefs.current[index] = el!)}
+                                style={{ display: "none" }}
+                                onChange={(e) => handleFileChange(e, index)}
+                            />
+                            {imgData.loading ? (
+                                <CircularProgress />
+                            ) : imgData.image ? (
+                                <img
+                                    src={imgData.image}
+                                    alt={`Uploaded ${index + 1}`}
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "contain",
+                                        borderRadius: "8px",
+                                    }}
+                                />
+                            ) : (
+                                <Box>
+                                    <AddPhotoAlternateOutlinedIcon />
+                                    <Typography sx={{ color: "gray", fontSize: "18px" }}>
+                                        Foto {index + 1}
+                                    </Typography>
+                                </Box>
+                            )}
+                        </Box>
+                    </Grid>
+                ))}
+
+                {/* <Button
                 variant="contained"
                 sx={{ mt: 3, bgcolor: "#1976d2", '&:hover': { bgcolor: "#155fa0" } }}
                 onClick={handleSaveToDatabase}
             >
                 Save All to Database
             </Button> */}
-        </Grid>
+            </Grid>
+        </>
     );
 };
 

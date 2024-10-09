@@ -252,6 +252,18 @@ export default function TableRuangan() {
                           color: "#292B2C",
                           bgcolor: "#F1F0FE",
                         }}
+                        align="center"
+                      >
+                        Nama Ruangan
+                      </TableCell>
+                      <TableCell
+                        width={"15%"}
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
                         align="left"
                       >
                         Nama Gedung
@@ -267,30 +279,6 @@ export default function TableRuangan() {
                         align="left"
                       >
                         Jenis Ruangan
-                      </TableCell>
-                      <TableCell
-                        width={"12%"}
-                        sx={{
-                          fontSize: "14px",
-                          fontWeight: 700,
-                          color: "#292B2C",
-                          bgcolor: "#F1F0FE",
-                        }}
-                        align="center"
-                      >
-                        Kuota Ruangan
-                      </TableCell>
-                      <TableCell
-                        width={"15%"}
-                        sx={{
-                          fontSize: "14px",
-                          fontWeight: 700,
-                          color: "#292B2C",
-                          bgcolor: "#F1F0FE",
-                        }}
-                        align="center"
-                      >
-                        Tarif Ruangan
                       </TableCell>
                       <TableCell
                         width={"15%"}
@@ -327,6 +315,22 @@ export default function TableRuangan() {
                               textTransform: "capitalize",
                             },
                           ]}
+                          align="center"
+                        >
+                          {data.namaRuangan}
+                        </TableCell>
+                        <TableCell
+                          sx={[
+                            {
+                              color: "#292B2C",
+                              fontSize: "14px",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                              maxWidth: "150px",
+                              textTransform: "capitalize",
+                            },
+                          ]}
                         >
                           {data.namaGedung}
                         </TableCell>
@@ -343,18 +347,6 @@ export default function TableRuangan() {
                         </TableCell>
                         <TableCell
                           align="center"
-                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                        >
-                          {data.kuotaRuangan} / {data.kuotaRuangan}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                        >
-                          Rp {data.tarifRuangan} ,-
-                        </TableCell>
-                        <TableCell
-                          align="center"
                           sx={[
                             {
                               color: "#292B2C",
@@ -369,7 +361,7 @@ export default function TableRuangan() {
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",
-                              color: "#F04438",
+                              color: "#8F85F3",
                             }}
                           >
                             Hapus
@@ -386,14 +378,14 @@ export default function TableRuangan() {
                             Ubah
                           </Link>
                           <Link
-                            href="#"
+                            href="/detailRuangan"
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",
                               color: "#8F85F3",
                             }}
                           >
-                            Detail
+                            Lihat Selengkapnya
                           </Link>
                         </TableCell>
                       </StyledTableRow>

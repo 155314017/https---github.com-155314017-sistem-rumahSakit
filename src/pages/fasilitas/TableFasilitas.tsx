@@ -23,6 +23,7 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import DataPegawai from "../../dummyData/dataPegawai";
+import DataFasilitas from "../../dummyData/dataFasilitas";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -56,7 +57,7 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 export default function TableFasilitas() {
-  const datas = DataPegawai;
+  const datas = DataFasilitas;
 
   const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -238,7 +239,7 @@ export default function TableFasilitas() {
                           color: "#292B2C",
                           bgcolor: "#F1F0FE",
                         }}
-                        align="left"
+                        align="center"
                       >
                         Nama Fasilitas
                       </TableCell>
@@ -250,7 +251,7 @@ export default function TableFasilitas() {
                           color: "#292B2C",
                           bgcolor: "#F1F0FE",
                         }}
-                        align="left"
+                        align="center"
                       >
                         Deskripsi
                       </TableCell>
@@ -264,7 +265,7 @@ export default function TableFasilitas() {
                         }}
                         align="center"
                       >
-                        Gedung
+                        Biaya Penanganan
                       </TableCell>
                       <TableCell
                         width={"15%"}
@@ -276,7 +277,7 @@ export default function TableFasilitas() {
                         }}
                         align="center"
                       >
-                        Biaya Penanganan
+                        Jam Operasional
                       </TableCell>
                       <TableCell
                         width={"15%"}
@@ -299,7 +300,7 @@ export default function TableFasilitas() {
                           sx={[{ color: "#292B2C", fontSize: "14px" }]}
                           align="center"
                         >
-                          {data.nip}
+                          {data.nomorFasilitas}
                         </TableCell>
                         <TableCell
                           sx={[
@@ -313,8 +314,9 @@ export default function TableFasilitas() {
                               textTransform: "capitalize",
                             },
                           ]}
+                          align="center"
                         >
-                          {data.name}
+                          {data.namaFasilitas}
                         </TableCell>
                         <TableCell
                           sx={[
@@ -324,20 +326,21 @@ export default function TableFasilitas() {
                               textTransform: "capitalize",
                             },
                           ]}
+                          align="center"
                         >
-                          {data.role}
+                          {data.deskripsi}
                         </TableCell>
                         <TableCell
                           align="center"
                           sx={[{ color: "#292B2C", fontSize: "14px" }]}
                         >
-                          {data.menuAkses}
+                          {data.biayaPenanganan}
                         </TableCell>
                         <TableCell
                           align="center"
                           sx={[{ color: "#292B2C", fontSize: "14px" }]}
                         >
-                          {data.detailAkses}
+                          {data.jamOperasional}
                         </TableCell>
                         <TableCell
                           align="center"
@@ -372,14 +375,14 @@ export default function TableFasilitas() {
                             Ubah
                           </Link>
                           <Link
-                            href="#"
+                            href="/detailFasilitas"
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",
                               color: "#8F85F3",
                             }}
                           >
-                            Detail
+                            Lihat Selengkapnya
                           </Link>
                         </TableCell>
                       </StyledTableRow>

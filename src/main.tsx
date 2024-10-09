@@ -23,6 +23,11 @@ import TambahKlinik from './pages/klinik/TambahKlinik';
 import Konter from './pages/konter';
 import DetailKonter from './pages/konter/DetailKonter';
 import TambahKonter from './pages/konter/TambahKonter';
+import Ruangan from './pages/ruangan';
+import DetailRuangan from './pages/ruangan/detailRuangan';
+import Fasilitas from './pages/fasilitas';
+import TambahFasilitas from './pages/fasilitas/TambahFasilitas';
+import TambahRuangan from './pages/ruangan/tambahRuangan';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -31,7 +36,7 @@ createRoot(document.getElementById('root')!).render(
         {/* Gedung */}
         <Route path="/gedung" element={<Gedung />} />
         <Route path="/detailGedung" element={<DetailGedung />} />
-        <Route path="/tambahGedung" element={<TambahGedung/>} />
+        <Route path="/tambahGedung" element={<TambahGedung />} />
 
         {/* Ambulance */}
         <Route path="/ambulance" element={<Ambulance />} />
@@ -53,17 +58,27 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/rawatjalan/lama/bpjs" element={<PasienLamaRawatJalanBPJS />} />
         <Route path="/rawatjalan/lama/umum" element={<PasienLamaRawatJalanUmum />} />
         <Route path="/rawatjalan/baru/bpjs" element={<PasienBaruRawatJalanBPJS />} />
-        <Route path="/rawatjalan/baru/umum" element={<PasienBaruRawatJalanUmum />}  />
+        <Route path="/rawatjalan/baru/umum" element={<PasienBaruRawatJalanUmum />} />
 
         {/* Page Klinik */}
-        <Route path="/klinik" element={<Klinik/>} />
-        <Route path="/detailKlinik" element={<DetailKlinik/>} />
-        <Route path="/tambahKlinik" element={<TambahKlinik/>} />
-        
+        <Route path="/klinik" element={<Klinik />} />
+        <Route path="/detailKlinik" element={<DetailKlinik />} />
+        <Route path="/tambahKlinik" element={<TambahKlinik />} />
+
         {/* Page Konter */}
-        <Route path="/konter" element={<Konter/>} />
-        <Route path="/detailKonter" element={<DetailKonter/>} />
-        <Route path="/tambahKonter" element={<TambahKonter/>} />
+        <Route path="/konter" element={<Konter />} />
+        <Route path="/detailKonter" element={<DetailKonter />} />
+        <Route path="/tambahKonter" element={<TambahKonter />} />
+
+        {/* Page Ruangan */}
+        <Route path="/ruangan" element={<Ruangan/>} />
+        <Route path="/detailRuangan" element={<DetailRuangan/>} />
+        <Route path="/tambahRuangan" element={<TambahRuangan/>} />
+
+        {/* Page Fasilitas */}
+        <Route path="/fasilitas" element={<Fasilitas/>} />
+        <Route path="/detailFasilitas" element={<DetailRuangan />} />
+        <Route path="/tambahFasilitas" element={<TambahFasilitas/>} />
 
 
         {/* <Route path="/about" element={<About />} /> */}
