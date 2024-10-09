@@ -23,7 +23,7 @@ export default function Gedung() {
           </Typography>
           <Grid container spacing={3} flex={1} mb={3}>
             <MediumCard icon={BusinessOutlinedIcon} title="Total Gedung" subtitle="10" />
-            <CardAdd icon={AddBoxIcon} title="Tambah Gedung" link="Add new"/>
+            <CardAdd icon={AddBoxIcon} title="Tambah Gedung" link="/tambahGedung"/>
           </Grid>
           <TableGedung />
         </Box>

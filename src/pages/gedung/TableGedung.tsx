@@ -340,7 +340,7 @@ export default function TableGedung() {
                             Ubah
                           </Link>
                           <Link
-                            href="#"
+                            href="/detailGedung "
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",

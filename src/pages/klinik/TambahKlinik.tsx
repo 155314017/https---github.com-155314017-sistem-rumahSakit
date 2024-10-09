@@ -9,6 +9,7 @@ import AlertSuccess from "../../components/small/AlertSuccess";
 import DropdownList from "../../components/small/DropdownList";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
 import dayjs from 'dayjs';
+import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 
 
 interface ImageInfo {
@@ -87,7 +88,8 @@ export default function TambahKlinik() {
                         <img src={bgImage} alt="bg-image" />
                     </Box>
 
-                    <ImageUploader onImagesSelected={handleImagesSelected} />
+                    {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
+                    <ImageUploaderGroup/>
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Klinik<span style={{ color: "red" }}>*</span></Typography>

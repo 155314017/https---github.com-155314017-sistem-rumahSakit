@@ -7,6 +7,7 @@ import ImageUploader from "../../components/medium/ImageUploader";
 import bgImage from "../../assets/img/String.png";
 import { useState } from "react";
 import AlertSuccess from "../../components/small/AlertSuccess";
+import ImageUploaderGroup from "../../components/medium/ImageUploaderGroup";
 
 interface ImageInfo {
     file: File;
@@ -137,7 +138,8 @@ export default function TambahGedung() {
                     {/* ---------- */}
 
                     {/* image uploader */}
-                    <ImageUploader onImagesSelected={handleImagesSelected} />
+                    {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
+                    <ImageUploaderGroup/>
 
                     {/* form */}
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
