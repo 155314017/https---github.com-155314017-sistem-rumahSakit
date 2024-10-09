@@ -45,7 +45,6 @@ export default function DropdownList({
         displayEmpty
         sx={{
           flex: 1,
-          ml: 1,
           height: "43px",
           borderRadius: "8px",
           border: "1px solid #A8A8BD",

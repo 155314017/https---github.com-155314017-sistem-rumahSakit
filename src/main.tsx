@@ -22,6 +22,7 @@ import DetailKlinik from './pages/klinik/DetailKlinik';
 import TambahKlinik from './pages/klinik/TambahKlinik';
 import Konter from './pages/konter';
 import DetailKonter from './pages/konter/DetailKonter';
+import TambahKonter from './pages/konter/TambahKonter';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -62,6 +63,7 @@ createRoot(document.getElementById('root')!).render(
         {/* Page Konter */}
         <Route path="/konter" element={<Konter/>} />
         <Route path="/detailKonter" element={<DetailKonter/>} />
+        <Route path="/tambahKonter" element={<TambahKonter/>} />
 
 
         {/* <Route path="/about" element={<About />} /> */}

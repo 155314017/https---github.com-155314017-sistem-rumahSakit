@@ -3,7 +3,7 @@ import { Container, Box } from "@mui/system";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import ImageGrid from "../../components/medium/ImageGrid";
 import CardDetailKlinik from "./CardDetailKlinik";
-import CardOperasionalKlinik from "./CardOperasionalKlik";
+import CardOperasionalKlinik from "../../components/medium/CardOperasional";
 
 export default function DetailKlinik() {
     const breadcrumbItems = [

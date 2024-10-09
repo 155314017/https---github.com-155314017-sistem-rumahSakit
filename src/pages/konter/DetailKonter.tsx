@@ -2,8 +2,9 @@ import { Container, Box } from "@mui/system";
 
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import ImageGrid from "../../components/medium/ImageGrid";
-import CardDetailKlinik from "../klinik/CardDetailKlinik";
-import CardOperasionalKlinik from "../klinik/CardOperasionalKlik";
+import { Link } from "@mui/material";
+import CardOperasionalKlinik from "../../components/medium/CardOperasional";
+import CardDetail from "../../components/medium/CardDetail";
 
 export default function DetailKonter() {
     const breadcrumbItems = [
@@ -40,16 +41,25 @@ export default function DetailKonter() {
             </Box>
 
             <Box mt={3}>
-                <CardDetailKlinik
-                    title="Jam Operasional"
-                    data={{
-                        biaya: "K 204",
-                        waktuPelayanan: "Sayap Timur lt.2",
-                        aksi: {
-                            hapusLink: "#",
-                            ubahLink: "#",
-                        },
-                    }}
+                <CardDetail
+                    title="Nama Konter"
+                    columns={[
+                        { id: "nomorKonter", label: "No. Konter" },
+                        { id: "tipeKonter", label: "Tipe Konter" },
+                        { id: "lokasiKonter", label: "Lokasi Konter" },
+                        
+                    ]}
+                    data={[{ nomorKonter: "1234", tipeKonter: "Asuransi", lokasiKonter: "Paingan" }]}
+                    actions={() => (
+                        <>
+                            <Link underline="hover" sx={{ color: "#8F85F3" }} href="/hapus">
+                                Hapus
+                            </Link>
+                            <Link underline="hover" sx={{ color: "#8F85F3" }} href="/ubah">
+                                Ubah
+                            </Link>
+                        </>
+                    )}
                 />
             </Box>
 
