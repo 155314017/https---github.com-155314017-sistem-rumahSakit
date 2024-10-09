@@ -10,9 +10,9 @@ import {
 import moment from "moment";
 
 // icon
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { ClockIcon } from "../../assets/icons/ClockIcon";
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -67,11 +67,12 @@ export default function Header() {
           display: "flex",
           alignItems: "center",
           px: 2,
+          color:"#747487"
         }}
       >
         {/* time and role */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <AccessTimeIcon />
+          <ClockIcon />
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
             <Typography fontSize="18px" fontWeight={700}>
@@ -82,7 +83,7 @@ export default function Header() {
               fontSize="20px"
               fontWeight={700}
               sx={{
-                animation: "blink 0.5s steps(2, start) infinite",
+                animation: "blink 0.75s steps(2, start) infinite",
                 "@keyframes blink": {
                   "0%": { opacity: 0 },
                   "50%": { opacity: 0 },
