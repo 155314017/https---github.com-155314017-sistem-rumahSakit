@@ -19,12 +19,12 @@ const validationSchema = Yup.object({
         .min(12, 'NIK minimal 12 digit')
         .max(14, 'NIK maksimal 14 digit')
         .required('NIK wajib diisi'),
-    phone: Yup.string().required('Nomor HP wajib diisi'),
+    email: Yup.string().required('Email wajib diisi'),
 });
 
 interface FormValues {
     nik: string;
-    phone: string;
+    email: string;
 }
 
 const otpValidationSchema = Yup.object({
@@ -40,6 +40,7 @@ export default function LoginPasien() {
     const [showLogin, setShowLogin] = useState(true);
     const [showEmailChanged, setShowEmailChanged] = useState(true);
     const [emailError, setEmailError] = useState(false);
+    const [nikError, setNikError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
 
     const [showAlert, setShowAlert] = useState(false);
@@ -47,7 +48,6 @@ export default function LoginPasien() {
     const [secondsLeft, setSecondsLeft] = useState(60);
     const [resendSuccess, setResendSuccess] = useState(false);
     const [loginSuccess, setLoginSuccess] = useState(false);
-    const [phoneError, setPhoneError] = useState(false);
     const [otp, setOtp] = useState('');
 
     const otpFormShown = () => {
@@ -67,6 +67,7 @@ export default function LoginPasien() {
         setShowAlert(false);
     };
 
+
     const showTemporarySuccessLogin = async () => {
         setLoginSuccess(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -80,13 +81,13 @@ export default function LoginPasien() {
     };
 
     const validationCheck = async (values: FormValues) => {
-        const { nik, phone } = values;
+        const { nik, email } = values;
         const nikIsValid = nik === "1234567891011";
-        const phoneIsValid = phone === "6289664470092";
-        setEmailError(!nikIsValid);
-        setPhoneError(!phoneIsValid);
+        const emailIsValid = email === "chornaeld@gmail.com";
+        setNikError(!nikIsValid);
+        setEmailError(!emailIsValid);
 
-        if (!nikIsValid || !phoneIsValid) {
+        if (!nikIsValid || !emailIsValid) {
             await showTemporaryAlert();
             return false;
         }
@@ -130,38 +131,50 @@ export default function LoginPasien() {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'row', marginLeft: '10%', marginTop: '1%' }}>
             <Box sx={{ marginTop: '-100px' }} >
-                <Typography sx={{ fontSize: '56px', fontWeight: '700', lineHeight: '60px', position: 'relative', zIndex: '9999', top: '798px', left: '73px', width: '715px', height: '120px', color: 'white' }} >
+                <Typography sx={{ fontSize: '56px', fontWeight: '700', lineHeight: '60px', position: 'absolute', zIndex: '9999', top: '798px', left: '73px', width: '40%', height: '120px', color: 'white' }} >
                     Mulai permintaan janji temu Anda di sini.
                 </Typography>
-                <CardMedia
-                    component="img"
-                    height="864"
-                    sx={{ width: '793px', objectFit: 'cover' }}
-                    image={patientImage}
-                    alt="Example Image"
-                />
-            </Box>
-                <Box top={'5%'} marginLeft={'42.5%'} position={'absolute'}>
+                <Box>
                     <CardMedia
                         component="img"
-                        height="52"
-                        sx={{ width: "112px", objectFit: "cover" }}
-                        image={logo}
-                        alt="Example Logo"
+                        sx={{
+                            width: "50%",
+                            height: "100vh",
+                            objectFit: "cover",
+                            position: "fixed",
+                            top: "0",
+                            left: "0",
+                        }}
+                        image={patientImage}
+                        alt="Example Image"
                     />
                 </Box>
-                {showLogin && (
-                    <>
-                        {showAlert && <AlertWarning teks="NIK atau No Handphone yang Anda masukkan salah, silahkan coba lagi." />}
+            </Box>
+            {showLogin && (
+                <>
+                    {showAlert && <AlertWarning teks="NIK atau No Handphone yang Anda masukkan salah, silahkan coba lagi." />}
 
-                        <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto', width: '27%' }}>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            p: 5,
+                            position: "absolute",
+                            right: "0",
+                            top: "0",
+                            width: "50%",
+                            flexDirection: 'column',
+
+                        }}
+                    >
+                        <Box sx={{ ml: 16, mt: "20%", width: '52%' }}>
                             <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
-                            <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px' }}>
-                                Silakan masukkan nomor NIK dan nomor HP Anda untuk melanjutkan.
+                            <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
+                                Silakan masukkan nomor NIK (Nomor induk kependudukan) penanggung jawab.
                             </Typography>
 
                             <Formik
-                                initialValues={{ nik: '', phone: '' }}
+                                initialValues={{ nik: '', email: '' }}
                                 validationSchema={validationSchema}
                                 onSubmit={async (values) => {
                                     if (await validationCheck(values)) {
@@ -172,8 +185,8 @@ export default function LoginPasien() {
                             >
                                 {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
                                     <Form>
-                                        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-                                            <FormLabel sx={{ fontSize: '18px' }}>NIK (Nomor induk kependudukan)</FormLabel>
+                                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                            <FormLabel sx={{ fontSize: '18px' }}>NIK (Nomor induk kependudukan) Penanggung jawab</FormLabel>
                                             <Field
                                                 name="nik"
                                                 as={TextField}
@@ -181,7 +194,7 @@ export default function LoginPasien() {
                                                 variant="outlined"
                                                 fullWidth
                                                 sx={{
-                                                    width: '410px',
+                                                    width: '100%',
                                                     height: '48px',
                                                     marginTop: '10px',
                                                     '& .MuiOutlinedInput-root': {
@@ -203,37 +216,39 @@ export default function LoginPasien() {
                                                 helperText={touched.nik && errors.nik}
                                             />
 
-                                            <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Nomor HP</FormLabel>
-                                            <PhoneInput
-                                                country={'id'}
-                                                value={values.phone}
-                                                onChange={(phone) => {
-                                                    setFieldValue('phone', phone);
-                                                    setPhoneError(false);
-                                                }}
-                                                inputStyle={{
-                                                    width: '410px',
-                                                    height: '48px',
-                                                    borderRadius: '8px',
-                                                    border: `1px solid ${touched.phone && errors.phone ? 'red' : '#ccc'}`,
-                                                    padding: '10px 40px 10px 60px',
-                                                    fontSize: '16px',
-                                                    marginTop: '10px',
-                                                    backgroundColor: phoneError ? '#ffcccc' : 'inherit'
-                                                }}
-                                                buttonStyle={{
-                                                    borderRadius: '8px 0 0 8px',
-                                                    border: '1px solid #ccc',
-                                                }}
-                                                containerStyle={{
-                                                    marginBottom: '10px',
+                                            <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Email</FormLabel>
+                                            <Field
+                                                name="email"
+                                                as={TextField}
+                                                placeholder="Masukkan Email"
+                                                variant="outlined"
+                                                fullWidth
+                                                sx={{
                                                     width: '100%',
+                                                    height: '48px',
+                                                    marginTop: '10px',
+                                                    '& .MuiOutlinedInput-root': {
+                                                        borderRadius: '8px',
+                                                        backgroundColor: emailError ? '#ffcccc' : 'inherit',
+                                                    },
+                                                    '& .MuiOutlinedInput-notchedOutline': {
+                                                        border: '1px solid #ccc',
+                                                    },
+                                                    '& .MuiOutlinedInput-input': {
+                                                        padding: '10px',
+                                                        fontSize: '16px',
+                                                    },
                                                 }}
-                                                inputClass="phone-input"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                value={values.email}
+                                                error={touched.email && Boolean(errors.email)}
+                                                helperText={touched.email && errors.email}
                                             />
-                                            {touched.phone && errors.phone && (
+
+                                            {touched.email && errors.email && (
                                                 <Typography sx={{ color: 'red', fontSize: '12px' }}>
-                                                    {errors.phone}
+                                                    {errors.email}
                                                 </Typography>
                                             )}
 
@@ -244,7 +259,7 @@ export default function LoginPasien() {
                                                 color="primary"
                                                 fullWidth
                                                 sx={{
-                                                    width: '410px',
+                                                    width: '100%',
                                                     height: '48px',
                                                     marginTop: '20px',
                                                     backgroundColor: '#8F85F3',
@@ -262,14 +277,29 @@ export default function LoginPasien() {
                                 )}
                             </Formik>
                         </Box>
-                    </>
-                )}
+                    </Box>
+                </>
+            )}
 
-                {
-                    !showLogin && (
-                        <>
-                            {showEmailChanged && (
-                                <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto' }}>
+            {
+                !showLogin && (
+                    <>
+                        {showEmailChanged && (
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    p: 5,
+                                    position: "absolute",
+                                    right: "0",
+                                    top: "0",
+                                    width: "25%",
+                                    flexDirection: 'column',
+                                    mr:"18%",
+                                    mt:"15%",
+                                }}
+                            >
+                                <Box sx={{ ml: 1 }}>
                                     {loginSuccess && <AlertSuccess label="Login Succeeded!" />}
                                     <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
                                         Verifikasi
@@ -300,7 +330,7 @@ export default function LoginPasien() {
                                                             <input
                                                                 {...props}
                                                                 style={{
-                                                                    width: '90.5px',
+                                                                    width: '100%',
                                                                     height: '48px',
                                                                     textAlign: 'center',
                                                                     border: `1px solid ${touched.otp && errors.otp ? 'red' : '#8F85F3'}`,
@@ -324,7 +354,7 @@ export default function LoginPasien() {
                                                             justifyContent: 'space-between',
                                                             alignItems: 'center',
                                                             marginTop: '10px',
-                                                            maxWidth: '92%',
+                                                            width: '100%',
                                                         }}
                                                     >
                                                         <Typography sx={{ fontSize: '16px', lineHeight: '18px', color: '#A8A8BD' }} >Tidak mendapatkan kode? </Typography>
@@ -348,7 +378,7 @@ export default function LoginPasien() {
                                                             onClick={otpFormShown}
                                                             fullWidth
                                                             sx={{
-                                                                width: '410px',
+                                                                width: '100%',
                                                                 height: '48px',
                                                                 marginTop: '20px',
                                                                 backgroundColor: '#8F85F3',
@@ -365,41 +395,42 @@ export default function LoginPasien() {
                                     </Formik>
 
                                 </Box>
-                            )}
+                            </Box>
+                        )}
 
-                            {!showEmailChanged && (
-                                <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto', display: 'flex', flexDirection: 'column' }}>
-                                    <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
-                                        Email pengaturan ulang kata sandi telah terkirim.
-                                    </Typography>
-                                    <Typography sx={{ color: '#16161D', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                                        Kami telah mengirimkan tautan untuk mengatur ulang kata sandi Anda. Tidak mendapat email?
-                                    </Typography>
-                                    <Button
-                                        onClick={handleResendClick}
-                                        variant="contained"
-                                        color="primary"
-                                        fullWidth
-                                        disabled={isCounting}
-                                        sx={{
-                                            width: '410px',
-                                            height: '48px',
-                                            backgroundColor: isCounting ? '#ccc' : '#8F85F3',
-                                            ":hover": { backgroundColor: '#D5D1FB' },
-                                        }}
-                                    >
-                                        {isCounting ? `Kirim ulang dalam ${formatTime()}` : 'Kirim ulang tautan'}
-                                    </Button>
-                                    <CustomButton onClick={handleClick} label="Kembali ke halaman masuk" />
+                        {!showEmailChanged && (
+                            <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto', display: 'flex', flexDirection: 'column' }}>
+                                <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
+                                    Email pengaturan ulang kata sandi telah terkirim.
+                                </Typography>
+                                <Typography sx={{ color: '#16161D', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                                    Kami telah mengirimkan tautan untuk mengatur ulang kata sandi Anda. Tidak mendapat email?
+                                </Typography>
+                                <Button
+                                    onClick={handleResendClick}
+                                    variant="contained"
+                                    color="primary"
+                                    fullWidth
+                                    disabled={isCounting}
+                                    sx={{
+                                        width: '410px',
+                                        height: '48px',
+                                        backgroundColor: isCounting ? '#ccc' : '#8F85F3',
+                                        ":hover": { backgroundColor: '#D5D1FB' },
+                                    }}
+                                >
+                                    {isCounting ? `Kirim ulang dalam ${formatTime()}` : 'Kirim ulang tautan'}
+                                </Button>
+                                <CustomButton onClick={handleClick} label="Kembali ke halaman masuk" />
 
-                                    {resendSuccess && (
-                                        <AlertSuccess label="Link tautan berhasil dikirim ulang" />
-                                    )}
-                                </Box>
-                            )}
-                        </>
-                    )
-                }
+                                {resendSuccess && (
+                                    <AlertSuccess label="Link tautan berhasil dikirim ulang" />
+                                )}
+                            </Box>
+                        )}
+                    </>
+                )
+            }
         </Box>
     );
 }

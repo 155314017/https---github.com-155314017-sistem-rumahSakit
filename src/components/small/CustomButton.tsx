@@ -11,7 +11,7 @@ const CustomButton: React.FC<ButtonProps> = ({ onClick, label }) => {
           onClick={onClick}
           fullWidth
           sx={{
-              width: '410px',
+              width: '100%',
               height: '48px',
               marginTop: '20px',
               backgroundColor: 'transparent',

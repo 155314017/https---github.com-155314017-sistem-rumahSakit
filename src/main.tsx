@@ -27,7 +27,7 @@ import Ruangan from './pages/ruangan';
 import DetailRuangan from './pages/ruangan/detailRuangan';
 import Fasilitas from './pages/fasilitas';
 import TambahFasilitas from './pages/fasilitas/TambahFasilitas';
-import TambahRuangan from './pages/ruangan/tambahRuangan';
+import TambahRuangan from './pages/ruangan/TambahRuangan';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -1,5 +1,6 @@
 import { Box } from "@mui/system";
-import regisImg from "../../../img/registerPasienImage.png";
+// import regisImg from "../../../img/registerPasienImage.png";
+import regisImg from "../../../assets/img/registerImg.jpg";
 import logo from "../../../img/St.carolus.png";
 import { Button, CardMedia, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -13,25 +14,52 @@ export default function RegisterPasien() {
 
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "row", marginLeft: '10%', marginTop: '2%', gap: '55px', height: '700px' }}>
+    <Box
+      sx={{
+        position: "relative",
+        display: "flex",
+        flexDirection: "row",
+      }}
+    >
       <Box>
         <CardMedia
           component="img"
-          height="864"
-          sx={{ width: "793px", objectFit: "cover" }}
+          sx={{
+            width: "50%",
+            height: "100vh",
+            objectFit: "cover",
+            position: "fixed",
+            top: "0",
+            left: "0",
+          }}
           image={regisImg}
           alt="Example Image"
         />
       </Box>
 
-      <Box sx={{ display: "flex", flexDirection: "column", justifyContent: 'flex-start', width:'500px', alignItems:'center', marginTop:'10%', marginLeft:'-2%' }}>
-        <Box position={'absolute'} top={'5%'} left={'52.5%'} >
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          p: 5,
+          position: "absolute",
+          right: "0",
+          top: "0",
+          width: "43%",
+          flexDirection:'column',
+          gap:5,
+          mt:16
+        }}
+      >
+        <Box>
           <CardMedia
             component="img"
-            height="52"
-            sx={{ width: "112px", objectFit: "cover" }}
+            sx={{
+              width: "112px",
+              objectFit: "cover",
+            }}
             image={logo}
-            alt="Example Image"
+            alt="Example Logo"
           />
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", gap: "14px" }}>
@@ -69,7 +97,7 @@ export default function RegisterPasien() {
                   ":hover": { backgroundColor: '#8F85F3', color: 'white' }
                 }}
               >
-                Daftar pasien baru
+                Kembali ke halaman data pasien
               </Button>
             </>
           )}

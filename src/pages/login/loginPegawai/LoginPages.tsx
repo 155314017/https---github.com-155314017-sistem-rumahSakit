@@ -121,21 +121,50 @@ export default function Login() {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'row', marginLeft: '10%' }}>
-            <CardMedia
-                component="img"
-                height="864"
-                sx={{ width: '793px', objectFit: 'cover', marginTop: '40px' }}
-                image={my}
-                alt="Example Image"
-            />
+        <Box
+            sx={{
+                position: "relative",
+                display: "flex",
+                flexDirection: "row",
+            }}
+        >
+            <Box>
+                <CardMedia
+                    component="img"
+                    sx={{
+                        width: "50%",
+                        height: "100vh",
+                        objectFit: "cover",
+                        position: "fixed",
+                        top: "0",
+                        left: "0",
+                    }}
+                    image={my}
+                    alt="Example Image"
+                />
+            </Box>
 
-            <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'}>
-                <Box top={'5%'} marginLeft={'1.2%'} position={'absolute'}>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    p: 5,
+                    position: "absolute",
+                    right: "0",
+                    top: "0",
+                    width: "45%",
+                    flexDirection:'column',
+                    gap:3,
+                    mt:21
+                }}
+            >
+                <Box ml={6} >
                     <CardMedia
                         component="img"
-                        height="52"
-                        sx={{ width: "112px", objectFit: "cover" }}
+                        sx={{
+                            width: "112px",
+                            objectFit: "cover",
+                        }}
                         image={logo}
                         alt="Example Logo"
                     />
@@ -246,7 +275,7 @@ export default function Login() {
                                                     justifyContent: 'space-between',
                                                     alignItems: 'center',
                                                     marginTop: '10px',
-                                                    maxWidth: '92%'
+                                                    width: '50%',
                                                 }}
                                             >
                                                 <FormControlLabel
