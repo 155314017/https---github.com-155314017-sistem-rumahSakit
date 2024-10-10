@@ -1,8 +1,7 @@
 import { Box, CardMedia, FormLabel, TextField, Typography, Button, } from "@mui/material";
 import { useEffect, useState } from "react";
 import logo from "../../../img/St.carolus.png";
-import patientImage from "../../../img/loginPasienImage.png";
-import PhoneInput from 'react-phone-input-2';
+import patientImage from "../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import AlertWarning from "../../../components/small/AlertWarning";
@@ -10,7 +9,6 @@ import AlertSuccess from "../../../components/small/AlertSuccess";
 import CustomButton from "../../../components/small/CustomButton";
 import OtpInput from 'react-otp-input';
 import 'react-phone-input-2/lib/style.css';
-import LabelHandler from "../../../components/small/LabelHandler";
 import { Link } from "react-router-dom";
 
 const validationSchema = Yup.object({
@@ -19,7 +17,7 @@ const validationSchema = Yup.object({
         .min(12, 'NIK minimal 12 digit')
         .max(14, 'NIK maksimal 14 digit')
         .required('NIK wajib diisi'),
-    email: Yup.string().required('Email wajib diisi'),
+    email: Yup.string().required('Email wajib diisi')
 });
 
 interface FormValues {
@@ -150,9 +148,10 @@ export default function LoginPasien() {
                     />
                 </Box>
             </Box>
+            {loginSuccess && <AlertSuccess label="Login Succeeded!" />}
             {showLogin && (
                 <>
-                    {showAlert && <AlertWarning teks="NIK atau No Handphone yang Anda masukkan salah, silahkan coba lagi." />}
+                    {showAlert && <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />}
 
                     <Box
                         sx={{
@@ -170,7 +169,7 @@ export default function LoginPasien() {
                         <Box sx={{ ml: 16, mt: "20%", width: '52%' }}>
                             <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
                             <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
-                                Silakan masukkan nomor NIK (Nomor induk kependudukan) penanggung jawab.
+                                Silahkan masukkan nomor NIK (Nomor induk kependudukan) penanggung jawab.
                             </Typography>
 
                             <Formik
@@ -270,7 +269,7 @@ export default function LoginPasien() {
                                                 Lanjutkan
                                             </Button>
 
-                                            <CustomButton onClick={() => console.log("hai ")} label="Daftar pasien baru" />
+                                            {/* <CustomButton onClick={() => console.log("hai ")} label="Daftar pasien baru" /> */}
 
                                         </Box>
                                     </Form>
@@ -300,12 +299,11 @@ export default function LoginPasien() {
                                 }}
                             >
                                 <Box sx={{ ml: 1 }}>
-                                    {loginSuccess && <AlertSuccess label="Login Succeeded!" />}
                                     <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
                                         Verifikasi
                                     </Typography>
                                     <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                                        Silakan masukkan kode 4 digit yang dikirimkan ke nomor Anda .
+                                        Silahkan masukkan kode 4 digit yang dikirimkan ke nomor Anda .
                                     </Typography>
 
                                     <Formik
