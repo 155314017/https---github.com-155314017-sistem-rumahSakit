@@ -55,13 +55,13 @@ export default function Dashboard() {
         />
         <CardAdd
           icon={RoomPreferencesIcon}
-          title={"Tambah ruangan"}
-          link={"Add new"}
+          title= "Tambah ruangan"
+          link= "/tambahRuangan"
         />
         <CardAdd
           icon={PersonAddIcon}
-          title={"Tambah pegawai"}
-          link={"Add new"}
+          title= "Tambah pegawai"
+          link= "/tambahPegawai"
         />
       </Grid>
 
