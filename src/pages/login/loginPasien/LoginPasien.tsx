@@ -209,7 +209,7 @@ export default function LoginPasien() {
               flexDirection: "column",
             }}
           >
-            <Box sx={{ width: "90%" }}>
+            <Box sx={{ width: "80%" }}>
               <img src={logo} alt="logo-carolus" />
               <Typography sx={{ fontSize: "32px", fontWeight: "600" }}>
                 Selamat Datang
