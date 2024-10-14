@@ -1,8 +1,8 @@
 import { Container, Box } from "@mui/system";
 import { Typography, Button, InputAdornment, FormControl, OutlinedInput } from "@mui/material";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
-import ImageUploader from "../../components/medium/ImageUploader";
 import bgImage from "../../assets/img/String.png";
+import ImageUploaderGroup from "../../components/medium/ImageUploaderGroup";
 
 interface ImageInfo {
   file: File;
@@ -111,7 +111,7 @@ export default function TambahAmbulance() {
           {/* ---------- */}
 
           {/* image uploader */}
-          <ImageUploader onImagesSelected={handleImagesSelected} />
+          <ImageUploaderGroup/>
 
           {/* form */}
           <Box component="form" noValidate autoComplete="off" mt={3}>
@@ -128,6 +128,7 @@ export default function TambahAmbulance() {
               />
             </FormControl>
           </Box>
+          
 
           {/* Button */}
           <Button

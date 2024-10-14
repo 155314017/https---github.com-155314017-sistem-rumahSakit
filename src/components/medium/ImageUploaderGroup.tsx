@@ -1,5 +1,6 @@
 import React, { useState, DragEvent, ChangeEvent, useRef } from "react";
-import { Box, Typography, Button, Grid, CircularProgress, Alert } from "@mui/material";
+import { Box, Typography, CircularProgress, Alert } from "@mui/material";
+import { Grid } from "@mui/system";
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 
 interface ImageData {
@@ -109,7 +110,7 @@ const ImageUploaderGroup: React.FC = () => {
             <Typography fontSize={'14px'} mb={1} color='#A8A8BD' >Format foto harus .SVG, .PNG, atau .JPG dan ukuran foto maksimal 4MB.</Typography>
             <Grid container justifyContent="center" alignItems="center" direction="column" spacing={4} maxHeight={'350px'} maxWidth={'100%'} >
                 {images.map((imgData, index) => (
-                    <Grid item key={index}>
+                    <Grid key={index}>
                         {imgData.error && (
                             <Alert severity="error" sx={{ mb: 3 }}>
                                 {imgData.error}
