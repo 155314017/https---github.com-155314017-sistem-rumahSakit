@@ -356,13 +356,13 @@ export default function LoginPasien() {
                 position: "absolute",
                 right: "0",
                 top: "0",
-                width: "25%",
+                width: "40%",
                 flexDirection: "column",
-                mr: "18%",
+                mr: "2.5%",
                 mt: "15%",
               }}
             >
-              <Box sx={{ ml: 1 }}>
+              <Box >
                 <Typography
                   sx={{
                     fontSize: "32px",

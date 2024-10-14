@@ -138,6 +138,7 @@ export default function Login() {
         position: "relative",
         display: "flex",
         flexDirection: "row",
+        
       }}
     >
       <Box>
@@ -168,6 +169,10 @@ export default function Login() {
           flexDirection: "column",
         }}
       >
+
+        {resendSuccess && (
+          <AlertSuccess label="Link tautan berhasil dikirim ulang" />
+        )}
 
         {showLogin && (
             <>
@@ -363,13 +368,14 @@ export default function Login() {
                   marginLeft: "50px",
                   marginTop: "auto",
                   marginBottom: "auto",
+                  width:'90%'
                 }}
               >
                 <Typography
                   sx={{
                     fontSize: "32px",
                     fontWeight: "600",
-                    maxWidth: "410px",
+                    width: "100%",
                   }}
                 >
                   Masukkan alamat Email Anda
@@ -379,7 +385,7 @@ export default function Login() {
                     color: "#A8A8BD",
                     fontSize: "18px",
                     marginBottom: "30px",
-                    maxWidth: "410px",
+                    width: "100%",
                     fontWeight: "400",
                   }}
                 >
@@ -425,7 +431,7 @@ export default function Login() {
                           variant="outlined"
                           fullWidth
                           sx={{
-                            width: "410px",
+                            width: "100%",
                             height: "48px",
                             marginTop: "10px",
                             "& .MuiOutlinedInput-root": {
@@ -452,7 +458,7 @@ export default function Login() {
                           onClick={() => setShowEmailChanged(false)}
                           fullWidth
                           sx={{
-                            width: "410px",
+                            width: "100%",
                             height: "48px",
                             marginTop: "20px",
                             backgroundColor: "#8F85F3",
@@ -482,13 +488,14 @@ export default function Login() {
                   marginBottom: "auto",
                   display: "flex",
                   flexDirection: "column",
+                  width:'90%'
                 }}
               >
                 <Typography
                   sx={{
                     fontSize: "32px",
                     fontWeight: "600",
-                    maxWidth: "410px",
+                    width: "100%",
                   }}
                 >
                   Email pengaturan ulang kata sandi telah terkirim.
@@ -498,7 +505,7 @@ export default function Login() {
                     color: "#16161D",
                     fontSize: "18px",
                     marginBottom: "30px",
-                    maxWidth: "410px",
+                    width: "100%",
                     fontWeight: "400",
                   }}
                 >
@@ -512,7 +519,7 @@ export default function Login() {
                   fullWidth
                   disabled={isCounting}
                   sx={{
-                    width: "410px",
+                    width: "100%",
                     height: "48px",
                     backgroundColor: isCounting ? "#ccc" : "#8F85F3",
                     ":hover": { backgroundColor: "#D5D1FB" },
@@ -527,9 +534,9 @@ export default function Login() {
                   label="Kembali ke halaman masuk"
                 />
 
-                {resendSuccess && (
+                {/* {resendSuccess && (
                   <AlertSuccess label="Link tautan berhasil dikirim ulang" />
-                )}
+                )} */}
               </Box>
             )}
           </>
