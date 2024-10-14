@@ -523,8 +523,7 @@ export default function LoginPasien() {
             height: "100vh",
             top: "0",
             left: "0",
-          }}
-        />
+          }}></Box> 
         {/* ---- */}
 
         <Box
