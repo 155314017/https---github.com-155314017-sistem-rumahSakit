@@ -29,6 +29,8 @@ import Fasilitas from './pages/fasilitas';
 import TambahFasilitas from './pages/fasilitas/TambahFasilitas';
 import TambahRuangan from './pages/ruangan/TambahRuangan';
 import BioPjBaru from './pages/login/loginPasien/BioPjBaru';
+import Pegawai from './pages/pegawai';
+import DetailPegawai from './pages/pegawai/DetailPegawai';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -82,6 +84,11 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/fasilitas" element={<Fasilitas/>} />
         <Route path="/detailFasilitas" element={<DetailRuangan />} />
         <Route path="/tambahFasilitas" element={<TambahFasilitas/>} />
+
+        {/* Page Pegawai  */}
+        <Route path="/pegawai" element={<Pegawai/>} />
+        <Route path="/detailPegawai" element={<DetailPegawai/>} />
+
 
 
         {/* <Route path="/about" element={<About />} /> */}
