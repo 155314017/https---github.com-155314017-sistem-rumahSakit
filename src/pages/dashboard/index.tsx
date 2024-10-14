@@ -33,35 +33,35 @@ export default function Dashboard() {
       <Grid container spacing={3} flex={1} justifyContent={"space-between"}>
         <MediumCard
           icon={MeetingRoomIcon}
-          title={"Total Ruangan"}
-          subtitle={"10"}
+          title="Total Ruangan"
+          subtitle="10"
         />
         <MediumCard icon={BedIcon} title={"Ruangan tersedia"} subtitle={"10"} />
         <MediumCard icon={PeopleIcon} title={"Total pegawai"} subtitle={"10"} />
         <MediumCard
           icon={LocalHospitalIcon}
-          title={"Total poliklinik"}
-          subtitle={"10"}
+          title="Total poliklinik"
+          subtitle="10"
         />
         <MediumCard
           icon={MedicalServicesIcon}
-          title={"Total dokter"}
-          subtitle={"10"}
+          title="Total dokter"
+          subtitle="10"
         />
         <MediumCard
           icon={MonitorHeartIcon}
-          title={"Total fasilitas"}
-          subtitle={"10"}
+          title="Total fasilitas"
+          subtitle="10"
         />
         <CardAdd
           icon={RoomPreferencesIcon}
-          title= "Tambah ruangan"
-          link= "/tambahRuangan"
+          title="Tambah ruangan"
+          link="/tambahRuangan"
         />
         <CardAdd
           icon={PersonAddIcon}
-          title= "Tambah pegawai"
-          link= "/tambahPegawai"
+          title="Tambah pegawai"
+          link="/tambahPegawai"
         />
       </Grid>
 
