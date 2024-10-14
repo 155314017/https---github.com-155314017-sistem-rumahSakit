@@ -28,6 +28,7 @@ import DetailRuangan from './pages/ruangan/detailRuangan';
 import Fasilitas from './pages/fasilitas';
 import TambahFasilitas from './pages/fasilitas/TambahFasilitas';
 import TambahRuangan from './pages/ruangan/TambahRuangan';
+import BioPjBaru from './pages/login/loginPasien/BioPjBaru';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -50,6 +51,8 @@ createRoot(document.getElementById('root')!).render(
 
         {/* Form Register */}
         <Route path="/register/pasien" element={<RegisterPasien />} />
+        <Route path="/register/penanggungJawab" element={<BioPjBaru/>} />
+
 
         {/* Dashboard  */}
         <Route path="/dashboard" element={<Home />} />

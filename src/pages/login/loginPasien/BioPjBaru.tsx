@@ -1,6 +1,5 @@
-import { Box, CardMedia, FormLabel, TextField, Typography, Button, } from "@mui/material";
+import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, OutlinedInput, } from "@mui/material";
 import { useEffect, useState } from "react";
-import logo from "../../../img/St.carolus.png";
 import patientImage from "../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -10,6 +9,9 @@ import CustomButton from "../../../components/small/CustomButton";
 import OtpInput from 'react-otp-input';
 import 'react-phone-input-2/lib/style.css';
 import { Link } from "react-router-dom";
+import PhoneInputComponent from "../../../components/inputComponent/PhoneInputComponent";
+import PhoneInput from "react-phone-input-2";
+import NameValidation from "../../../components/inputComponent/NameValidation";
 
 const validationSchema = Yup.object({
     nik: Yup.string()
@@ -33,7 +35,7 @@ const otpValidationSchema = Yup.object({
         .required('OTP wajib diisi'),
 });
 
-export default function LoginPasien() {
+export default function BioPjBaru() {
     const [showPassword, setShowPassword] = useState(false);
     const [showLogin, setShowLogin] = useState(true);
     const [showEmailChanged, setShowEmailChanged] = useState(true);
@@ -129,7 +131,7 @@ export default function LoginPasien() {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'row', marginLeft: '10%', marginTop: '1%' }}>
             <Box sx={{ marginTop: '-100px' }} >
-                <Typography sx={{ fontSize: '56px', fontWeight: '700', lineHeight: '60px', position: 'absolute', zIndex: '9999', top: '798px', left: '73px', width: '40%', height: '120px', color: 'white' }} >
+                <Typography sx={{ fontSize: '56px', fontWeight: '700', lineHeight: '60px', position: 'fixed', zIndex: '9999', top: '798px', left: '73px', width: '40%', height: '120px', color: 'white' }} >
                     Mulai permintaan janji temu Anda di sini.
                 </Typography>
                 <Box>
@@ -166,7 +168,7 @@ export default function LoginPasien() {
 
                         }}
                     >
-                        <Box sx={{ ml: 16, mt: "20%", width: '52%' }}>
+                        <Box sx={{ ml: 16, mt: "5%", width: '52%' }}>
                             <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
                             <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
                                 Silahkan masukkan nomor NIK (Nomor induk kependudukan) penanggung jawab.
@@ -251,6 +253,75 @@ export default function LoginPasien() {
                                                 </Typography>
                                             )}
 
+                                            <Typography mt={2} >
+                                                No. Handphone penanggung jawab{" "}
+                                                <span style={{ color: "#d32f2f" }}>*</span>{" "}
+                                            </Typography>
+                                            <PhoneInput
+                                                country={"id"}
+                                                onChange={(phone) => setFieldValue("phone", phone)}
+                                                inputStyle={{
+                                                    height: "48px",
+                                                    borderRadius: "8px",
+                                                    border: "1px solid #ccc",
+                                                    padding: "10px 40px 10px 60px",
+                                                    fontSize: "16px",
+                                                    width: "100%",
+                                                    marginTop: "10px",
+                                                }}
+                                                buttonStyle={{
+                                                    borderRadius: "8px 0 0 8px",
+                                                    border: "1px solid #ccc",
+                                                }}
+                                                containerStyle={{
+                                                    marginBottom: "10px",
+                                                    width: "100%",
+                                                }}
+                                            />
+
+                                            <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Nama lengkap penanggung jawab</FormLabel>
+                                            <Field
+                                                name="email"
+                                                as={TextField}
+                                                placeholder="Masukka Nama lengkap penanggung jawab"
+                                                variant="outlined"
+                                                fullWidth
+                                                sx={{
+                                                    width: '100%',
+                                                    height: '48px',
+                                                    marginTop: '10px',
+                                                    '& .MuiOutlinedInput-root': {
+                                                        borderRadius: '8px',
+                                                        backgroundColor: 'inherit',
+                                                    },
+                                                    '& .MuiOutlinedInput-notchedOutline': {
+                                                        border: '1px solid #ccc',
+                                                    },
+                                                    '& .MuiOutlinedInput-input': {
+                                                        padding: '10px',
+                                                        fontSize: '16px',
+                                                    },
+                                                }}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            />
+
+                                            <Box display={'flex'} flexDirection={'row'} padding={1} border={"1px solid #A8A8BD"} mt={2} borderRadius={"12px"} pl={3}>
+                                                <FormControlLabel value="pria" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Pria" />
+                                                <FormControlLabel value="wanita" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Wanita" />
+                                            </Box>
+
+                                            <Typography sx={{ fontSize: "16px", mt: 2 }}>Alamat tempat tinggal penanggung jawab<span style={{ color: "red" }}>*</span></Typography>
+                                            
+                                            <FormControl fullWidth sx={{ my: 1 }}>
+                                                <OutlinedInput
+                                                    id="deskripsiKlinik"
+                                                    name="deskripsiKlinik"
+                                                    size="small"
+                                                    placeholder="Masukkan tempat tinggal penanggung jawab"
+                                                    sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
+                                                />
+                                            </FormControl>
 
                                             <Button
                                                 type="submit"
@@ -294,8 +365,8 @@ export default function LoginPasien() {
                                     top: "0",
                                     width: "25%",
                                     flexDirection: 'column',
-                                    mr:"18%",
-                                    mt:"15%",
+                                    mr: "18%",
+                                    mt: "15%",
                                 }}
                             >
                                 <Box sx={{ ml: 1 }}>
@@ -368,7 +439,7 @@ export default function LoginPasien() {
                                                             {isCounting ? `${formatTime()}` : 'Kirim ulang tautan'}
                                                         </Typography>
                                                     </Box>
-                                                    <Link to={"/register/penanggungJawab"} >
+                                                    <Link to={"/register/pasien"} >
                                                         <Button
                                                             type="submit"
                                                             variant="contained"
