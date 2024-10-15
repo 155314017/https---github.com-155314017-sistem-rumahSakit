@@ -1,10 +1,6 @@
 import { Container, Box } from "@mui/system";
 
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
-import ImageGrid from "../../components/medium/ImageGrid";
-import { Link } from "@mui/material";
-import CardDetail from "../../components/medium/CardDetail";
-import TablePegawai from "./TablePegawai";
 import CardIzinAkses from "./CardIzinAkses";
 import CardBiodataPegawai from "./CardBiodataPegawai";
 import CardJamPraktek from "./CardJamPraktek";
@@ -16,12 +12,12 @@ export default function DetailPegawai() {
             href: "/dashboard",
         },
         {
-            label: "Ruangan",
-            href: "/ruangan",
+            label: "Pegawai",
+            href: "/pegawai",
         },
         {
-            label: "Detail Ruangan",
-            href: "/detailRuangan",
+            label: "Detail Pegawai",
+            href: "/detailPegawai",
         },
     ];
 

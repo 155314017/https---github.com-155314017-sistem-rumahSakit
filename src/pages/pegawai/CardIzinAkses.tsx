@@ -185,133 +185,134 @@ export default function CardIzinAkses() {
                     <img src={bgImage} alt="bg-image" />
                 </Box>
 
-                    <Box>
-                        <Box
-                            mt={3}
-                            display={"flex"}
-                            justifyContent={"space-between"}
-                            sx={{ gap: 3 }}
-                        >
-                            <SearchBar />
-                            <DropdownList
-                                options={sortir}
-                                placeholder="Sortir"
-                                onChange={handleSelectionChange}
-                            />
-                            <DropdownList
-                                options={urutkan}
-                                placeholder="Urutkan"
-                                onChange={handleSelectionChange}
-                            />
-                        </Box>
+                <Box>
+                    <Box
+                        mt={3}
+                        display={"flex"}
+                        justifyContent={"space-between"}
+                        sx={{ gap: 3 }}
+                    >
+                        <SearchBar />
+                        <DropdownList
+                            options={sortir}
+                            placeholder="Sortir"
+                            onChange={handleSelectionChange}
+                        />
+                        <DropdownList
+                            options={urutkan}
+                            placeholder="Urutkan"
+                            onChange={handleSelectionChange}
+                        />
+                    </Box>
 
-                        <Box mt={3}>
-                            <StyledTableContainer
-                                sx={{
-                                    mt: 2,
-                                    boxShadow: "none",
-                                    mb: 2,
-                                    maxHeight: "610px",
-                                    borderRadius: "16px",
-                                }}
-                            >
-                                <Table stickyHeader sx={{ width: "100%" }}>
-                                    <TableHead>
-                                        <TableRow>
+                    <Box mt={3}>
+                        <StyledTableContainer
+                            sx={{
+                                mt: 2,
+                                boxShadow: "none",
+                                mb: 2,
+                                maxHeight: "610px",
+                                borderRadius: "16px",
+                            }}
+                        >
+                            <Table stickyHeader sx={{ width: "100%" }}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell
+                                            width={"10%"}
+                                            sx={{
+                                                fontSize: "14px",
+                                                fontWeight: 700,
+                                                color: "#292B2C",
+                                                bgcolor: "#F1F0FE",
+                                            }}
+                                            align="center"
+                                        >
+                                            Menu Akses
+                                        </TableCell>
+                                        <TableCell
+                                            width={"15%"}
+                                            sx={{
+                                                fontSize: "14px",
+                                                fontWeight: 700,
+                                                color: "#292B2C",
+                                                bgcolor: "#F1F0FE",
+                                            }}
+                                            align="center"
+                                        >
+                                            Detail Akses
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {displayedData.map((data, index) => (
+                                        <StyledTableRow key={index}>
                                             <TableCell
-                                                width={"10%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
+                                                sx={[{ color: "#292B2C", fontSize: "14px" }]}
                                                 align="center"
                                             >
-                                                Menu Akses
+                                                {data.menuAkses}
                                             </TableCell>
                                             <TableCell
-                                                width={"15%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="left"
+                                                align="center"
+                                                sx={[
+                                                    {
+                                                        color: "#292B2C",
+                                                        fontSize: "14px",
+                                                        overflow: "hidden",
+                                                        textOverflow: "ellipsis",
+                                                        whiteSpace: "nowrap",
+                                                        maxWidth: "150px",
+                                                        textTransform: "capitalize",
+                                                    },
+                                                ]}
                                             >
-                                                Detail Akses
+                                                {data.detailAkses}
                                             </TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {displayedData.map((data, index) => (
-                                            <StyledTableRow key={index}>
-                                                <TableCell
-                                                    sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                                                    align="center"
-                                                >
-                                                    {data.menuAkses}
-                                                </TableCell>
-                                                <TableCell
-                                                    sx={[
-                                                        {
-                                                            color: "#292B2C",
-                                                            fontSize: "14px",
-                                                            overflow: "hidden",
-                                                            textOverflow: "ellipsis",
-                                                            whiteSpace: "nowrap",
-                                                            maxWidth: "150px",
-                                                            textTransform: "capitalize",
-                                                        },
-                                                    ]}
-                                                >
-                                                    {data.detailAkses}
-                                                </TableCell>
-                                            </StyledTableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </StyledTableContainer>
-                        </Box>
-                        <Stack
-                            spacing={2}
-                            direction={"row"}
-                            justifyContent={"space-between"}
-                            alignItems={"center"}
-                        >
-                            <Typography sx={{ color: "#8F85F3" }}>
-                                Showing {page * rowsPerPage + 1} to{" "}
-                                {Math.min(page * rowsPerPage + rowsPerPage, datas.length)} of{" "}
-                                {datas.length} entries
-                            </Typography>
-                            <TablePagination
-                                // shape="rounded"
-                                count={datas.length}
-                                rowsPerPageOptions={[10, 25, 100]}
-                                component="div"
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                                sx={{
-                                    display: "flex",
-                                    justifyContent: "flex-end",
-                                    color: "#8F85F3",
-                                    "& .MuiPaginationItem-root": {
-                                        color: "#8F85F3",
-                                    },
-                                    "& .Mui-selected": {
-                                        backgroundColor: "#8F85F3",
-                                        color: "white",
-                                    },
-                                    "& .MuiPaginationItem-ellipsis": {
-                                        color: "#8F85F3",
-                                    },
-                                }}
-                            />
-                        </Stack>
+                                        </StyledTableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </StyledTableContainer>
                     </Box>
+                    <Stack
+                        spacing={2}
+                        direction={"row"}
+                        justifyContent={"space-between"}
+                        alignItems={"center"}
+                    >
+                        <Typography sx={{ color: "#8F85F3" }}>
+                            Showing {page * rowsPerPage + 1} to{" "}
+                            {Math.min(page * rowsPerPage + rowsPerPage, datas.length)} of{" "}
+                            {datas.length} entries
+                        </Typography>
+                        <TablePagination
+                            // shape="rounded"
+                            count={datas.length}
+                            rowsPerPageOptions={[10, 25, 100]}
+                            component="div"
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            sx={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                color: "#8F85F3",
+                                "& .MuiPaginationItem-root": {
+                                    color: "#8F85F3",
+                                },
+                                "& .Mui-selected": {
+                                    backgroundColor: "#8F85F3",
+                                    color: "white",
+                                },
+                                "& .MuiPaginationItem-ellipsis": {
+                                    color: "#8F85F3",
+                                },
+                            }}
+                        />
+                    </Stack>
+                </Box>
             </Box>
         </Box>
     );

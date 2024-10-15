@@ -8,9 +8,9 @@ import CardAdd from "../../components/medium/CardAdd";
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import TableDokter from "./TableDokter";
+import TablePasien from "./TablePasien";
 
-export default function Dokter() {
+export default function Pegawai() {
     return (
         <Box>
             <SideBar />
@@ -19,14 +19,17 @@ export default function Dokter() {
                 <Header />
                 <Box>
                     <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
-                        Dokter
+                        Pegawai
                     </Typography>
                     <Grid container spacing={3} flex={1} mb={3}>
                         <MediumCard icon={BusinessOutlinedIcon} title="Total Dokter Spesialis" subtitle="89" />
                         <MediumCard icon={BusinessOutlinedIcon} title="Total Dokter Umum" subtitle="127" />
-                        <CardAdd icon={AddBoxIcon} title="Tambah Pegawai" link="/tambahPegawai" />  
+                        <MediumCard icon={BusinessOutlinedIcon} title="Total Perawat" subtitle="267" />
+                        <MediumCard icon={BusinessOutlinedIcon} title="Total Admin" subtitle="108" />
+                        <MediumCard icon={BusinessOutlinedIcon} title="Total Manajemen" subtitle="48" />
+                        <CardAdd icon={AddBoxIcon} title="Tambah Pegawai" link="/tambahPegawai" />
                     </Grid>
-                    <TableDokter/>
+                    <TablePasien/>
                 </Box>
             </Box>
         </Box>

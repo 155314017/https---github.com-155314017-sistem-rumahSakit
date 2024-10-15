@@ -32,6 +32,7 @@ import BioPjBaru from './pages/login/loginPasien/BioPjBaru';
 import Pegawai from './pages/pegawai';
 import DetailPegawai from './pages/pegawai/DetailPegawai';
 import TambahPegawai from './pages/pegawai/TambahPegawai';
+import Dokter from './pages/dokter';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -90,6 +91,9 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/pegawai" element={<Pegawai/>} />
         <Route path="/detailPegawai" element={<DetailPegawai/>} />
         <Route path="/tambahPegawai" element={<TambahPegawai/>} />
+
+        {/* Page Dokter  */}
+        <Route path="/dokter" element={<Dokter/>} />
 
 
 

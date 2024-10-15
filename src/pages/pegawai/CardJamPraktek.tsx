@@ -7,9 +7,68 @@ export default function CardJamPraktek() {
         <Box
             position={"relative"}
             p={3}
-            height="400px"
-            sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}
+            height="fit-content"
+            sx={{ borderRadius: "24px", bgcolor: "#ffff", overflow: "hidden" }}
         >
+
+            {/* membuat bentuk lengkung atas */}
+            <Box
+                position={"absolute"}
+                sx={{
+                    top: 0,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    display: "flex",
+                }}
+            >
+                {/* lengkung kiri */}
+                <Box
+                    sx={{
+                        width: "50px",
+                        height: "30px",
+                        bgcolor: "#F1F0FE",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            width: "50px",
+                            height: "30px",
+                            bgcolor: "#fff",
+                            borderRadius: "0px 15px 0px 0px ",
+                        }}
+                    />
+                </Box>
+
+                {/* kotak tengah */}
+                <Box
+                    sx={{
+                        width: "80px",
+                        height: "40px",
+                        bgcolor: "#F1F0FE",
+                        borderRadius: "0px 0px 22px 22px",
+                    }}
+                />
+
+                {/* lengkung kanan */}
+                <Box
+                    sx={{
+                        width: "50px",
+                        height: "30px",
+                        bgcolor: "#F1F0FE",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            width: "50px",
+                            height: "30px",
+                            bgcolor: "#fff",
+                            borderRadius: "15px 0px 0px 0px ",
+                        }}
+                    />
+                </Box>
+            </Box>
+            {/* ---------- */}
+
             <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} >
                 <Typography
                     sx={{
@@ -18,62 +77,32 @@ export default function CardJamPraktek() {
                         fontSize: "20px",
                     }}
                 >
-                    Biodata Pegawai
+                    Jam Praktek
                 </Typography>
-                <Box display={'flex'} flexDirection={'row'} gap={2}  >
-                    <Typography color={'#8F85F3'} >Ubah data</Typography>
-                    <Typography color={'#8F85F3'} >Hapus data</Typography>
-                </Box>
             </Box>
-            <Avatar alt="Cindy Baker" src="#" sx={{ width: '80px', height: '80px', mt: 3 }} />
-            <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} maxWidth={'90%'} >
+            <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} maxWidth={'90%'} mt={3} >
 
                 <Box maxWidth={'50%'} display={'flex'} flexDirection={'column'} gap={2} >
 
-                    <Box display={'flex'} flexDirection={'column'} >
-                        <Typography>Tanggal ditambahkan</Typography>
-                        <Typography>29/Juli/2024</Typography>
-                    </Box>
-
-                    <Box display={'flex'} flexDirection={'column'} >
-                        <Typography>Nama Pegawai</Typography>
-                        <Typography>Ahmad Jaelani</Typography>
-                    </Box>
-
-                    <Box display={'flex'} flexDirection={'column'} >
-                        <Typography>Jenis Kelamin</Typography>
-                        <Typography>Pria</Typography>
-                    </Box>
-
-                    <Box display={'flex'} flexDirection={'column'} >
-                        <Typography>Alamat Tempat Tinggal</Typography>
-                        <Typography>Ruko Tmn Kb Jeruk Intercon Bl AA-4/5, Dki Jakarta
-                        </Typography>
-                    </Box>
+                    <Typography>Senin</Typography>
+                    <Typography>Selasa</Typography>
+                    <Typography>Rabu</Typography>
+                    <Typography>Kamis</Typography>
+                    <Typography>Jumat</Typography>
+                    <Typography>Sabtu</Typography>
+                    <Typography>Minggu</Typography>
 
                 </Box>
 
                 <Box maxWidth={'50%'} display={'flex'} flexDirection={'column'} gap={2} >
 
-                    <Box display={'flex'} flexDirection={'column'} >
-                        <Typography>Nomor induk pegawai</Typography>
-                        <Typography>1902739721649124</Typography>
-                    </Box>
-
-                    <Box display={'flex'} flexDirection={'column'} >
-                        <Typography>Role pegawai:</Typography>
-                        <Typography>Dokter Spesialis</Typography>
-                    </Box>
-
-                    <Box display={'flex'} flexDirection={'column'} >
-                        <Typography>No. Handphone</Typography>
-                        <Typography>+6281263098903</Typography>
-                    </Box>
-
-                    <Box display={'flex'} flexDirection={'column'} >
-                        <Typography>Dokumen</Typography>
-                        <Typography>Lihat dokumen</Typography>
-                    </Box>
+                    <Typography>10:30-15:00</Typography>
+                    <Typography>10:30-15:00</Typography>
+                    <Typography>10:30-15:00</Typography>
+                    <Typography>10:30-15:00</Typography>
+                    <Typography>10:30-15:00</Typography>
+                    <Typography>10:30-15:00</Typography>
+                    <Typography>10:30-15:00</Typography>
 
                 </Box>
 

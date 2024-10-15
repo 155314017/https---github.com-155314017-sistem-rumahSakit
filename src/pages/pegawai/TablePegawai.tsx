@@ -366,7 +366,7 @@ export default function TablePegawai() {
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",
-                              color: "#F04438",
+                              color: "#8F85F3",
                             }}
                           >
                             Hapus
@@ -383,14 +383,14 @@ export default function TablePegawai() {
                             Ubah
                           </Link>
                           <Link
-                            href="#"
+                            href="/detailPegawai"
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",
                               color: "#8F85F3",
                             }}
                           >
-                            Detail
+                            Lihat selengkapnya
                           </Link>
                         </TableCell>
                       </StyledTableRow>

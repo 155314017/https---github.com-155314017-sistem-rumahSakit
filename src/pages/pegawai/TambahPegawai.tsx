@@ -280,11 +280,11 @@ export default function TambahPegawai() {
                             <Box
                                 display={'flex'}
                                 flexDirection={'row'}
-                                padding={1}
+                                padding={"3px"}
                                 border={"1px solid #A8A8BD"}
                                 mt={2}
                                 borderRadius={"12px"}
-                                pl={3}
+                                pl={2}
                             >
                                 <RadioGroup
                                     row // Mengatur radio button secara horizontal
