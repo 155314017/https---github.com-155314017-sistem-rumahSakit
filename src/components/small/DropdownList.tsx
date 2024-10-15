@@ -34,8 +34,9 @@ export default function DropdownList({
       width="100%"
       sx={{
         borderRadius: "8px",
-        padding: "2px 4px",
+        // padding: "2px 4px",
         height: "38px",
+        mt: 1
 
       }}
     >

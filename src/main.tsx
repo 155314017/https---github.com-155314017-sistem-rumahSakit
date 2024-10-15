@@ -31,6 +31,7 @@ import TambahRuangan from './pages/ruangan/TambahRuangan';
 import BioPjBaru from './pages/login/loginPasien/BioPjBaru';
 import Pegawai from './pages/pegawai';
 import DetailPegawai from './pages/pegawai/DetailPegawai';
+import TambahPegawai from './pages/pegawai/TambahPegawai';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -88,6 +89,7 @@ createRoot(document.getElementById('root')!).render(
         {/* Page Pegawai  */}
         <Route path="/pegawai" element={<Pegawai/>} />
         <Route path="/detailPegawai" element={<DetailPegawai/>} />
+        <Route path="/tambahPegawai" element={<TambahPegawai/>} />
 
 
 

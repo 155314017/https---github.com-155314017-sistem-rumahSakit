@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { Container } from "@mui/system";
+import { Box, Container } from "@mui/system";
 import PhoneInput from "react-phone-input-2";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 
 export default function PhoneInputComponent({ widthInput, heightInput }: Props) {
     return (
-        <Container>
+        <Box>
             <PhoneInput
                 country={'id'}
                 // value={values.phone}
@@ -38,6 +38,6 @@ export default function PhoneInputComponent({ widthInput, heightInput }: Props) 
                     {errors.phone}
                 </Typography>
             )} */}
-        </Container>
+        </Box>
     );
 }
