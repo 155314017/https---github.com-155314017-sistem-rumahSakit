@@ -1,4 +1,5 @@
 import { useState } from "react";
+import * as React from 'react';
 import {
     Box,
     Stack,
@@ -23,6 +24,9 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import DataPegawai from "../../dummyData/dataPegawai";
+import DataPasien from "../../dummyData/dataPasien";
+import { borderRadius } from "@mui/system";
+import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -56,7 +60,7 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 export default function TablePasien() {
-    const datas = DataPegawai;
+    const datas = DataPasien;
 
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -82,16 +86,15 @@ export default function TablePasien() {
     );
 
     const sortir = [
-        { value: 1, label: "Role Pegawai" },
-        { value: 2, label: "Role Pegawai" },
-        { value: 3, label: "Role Pegawai" },
+        { value: 1, label: "Pria" },
+        { value: 2, label: "Wanita" },
     ];
 
     const urutkan = [
-        { value: 1, label: "Terbaru" },
-        { value: 2, label: "Terlama" },
-        { value: 3, label: "Nama Pegawai A-Z" },
-        { value: 4, label: "Nama Pegawai Z-A" },
+        { value: 1, label: "Nama Pasien A-Z" },
+        { value: 2, label: "Nama Pasien Z-A" },
+        { value: 3, label: "Nomor Pasien 1-9" },
+        { value: 4, label: "Nomor Pasien 9-1" },
     ];
 
     const handleSelectionChange = (selectedValue: string) => {
@@ -102,6 +105,12 @@ export default function TablePasien() {
         setIsCollapsed((prev) => !prev);
     };
 
+    const [open, setOpen] = React.useState<boolean>(false);
+
+    const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault();
+        setOpen(true);
+    };
     return (
         <Box>
             <Box
@@ -117,7 +126,7 @@ export default function TablePasien() {
                             fontSize: "20px",
                         }}
                     >
-                        Daftar Pegawai
+                        Daftar Pasien
                     </Typography>
                     {/* collapse button */}
                     <IconButton sx={{ zIndex: 1 }} onClick={toggleCollapse}>
@@ -227,7 +236,7 @@ export default function TablePasien() {
                                 }}
                             >
                                 <Table stickyHeader sx={{ width: "100%" }}>
-                                    <TableHead>
+                                    <TableHead >
                                         <TableRow>
                                             <TableCell
                                                 width={"10%"}
@@ -239,43 +248,7 @@ export default function TablePasien() {
                                                 }}
                                                 align="center"
                                             >
-                                                NIP
-                                            </TableCell>
-                                            <TableCell
-                                                width={"15%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="left"
-                                            >
-                                                Nama Pegawai
-                                            </TableCell>
-                                            <TableCell
-                                                width={"12%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="left"
-                                            >
-                                                Role Pegawai
-                                            </TableCell>
-                                            <TableCell
-                                                width={"12%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="center"
-                                            >
-                                                Menu Akses
+                                                No. Pasien
                                             </TableCell>
                                             <TableCell
                                                 width={"15%"}
@@ -287,7 +260,103 @@ export default function TablePasien() {
                                                 }}
                                                 align="center"
                                             >
-                                                Detail Akses
+                                                Nama Pasien
+                                            </TableCell>
+                                            <TableCell
+                                                width={"12%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="left"
+                                            >
+                                                Jenis Kunjungan
+                                            </TableCell>
+                                            <TableCell
+                                                width={"12%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="center"
+                                            >
+                                                Jenis Kelamin
+                                            </TableCell>
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="center"
+                                            >
+                                                Keluhan
+                                            </TableCell>
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="center"
+                                            >
+                                                Poli
+                                            </TableCell>
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="left"
+                                            >
+                                                Waktu Kunjungan
+                                            </TableCell>
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="left"
+                                            >
+                                                No telpon
+                                            </TableCell>
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="center"
+                                            >
+                                                Tipe
+                                            </TableCell>
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="center"
+                                            >
+                                                Berkas
                                             </TableCell>
                                             <TableCell
                                                 width={"15%"}
@@ -303,16 +372,17 @@ export default function TablePasien() {
                                             </TableCell>
                                         </TableRow>
                                     </TableHead>
-                                    <TableBody>
+                                    <TableBody sx={{ borderRadius: '16px' }} >
                                         {displayedData.map((data, index) => (
                                             <StyledTableRow key={index}>
                                                 <TableCell
                                                     sx={[{ color: "#292B2C", fontSize: "14px" }]}
                                                     align="center"
                                                 >
-                                                    {data.nip}
+                                                    {data.nomorpasien}
                                                 </TableCell>
                                                 <TableCell
+                                                    align="center"
                                                     sx={[
                                                         {
                                                             color: "#292B2C",
@@ -325,7 +395,7 @@ export default function TablePasien() {
                                                         },
                                                     ]}
                                                 >
-                                                    {data.name}
+                                                    {data.namaPasien}
                                                 </TableCell>
                                                 <TableCell
                                                     sx={[
@@ -336,19 +406,59 @@ export default function TablePasien() {
                                                         },
                                                     ]}
                                                 >
-                                                    {data.role}
+                                                    {data.jenisKunjungan}
                                                 </TableCell>
                                                 <TableCell
                                                     align="center"
                                                     sx={[{ color: "#292B2C", fontSize: "14px" }]}
                                                 >
-                                                    {data.menuAkses}
+                                                    {data.jenisKelamin}
                                                 </TableCell>
                                                 <TableCell
                                                     align="center"
                                                     sx={[{ color: "#292B2C", fontSize: "14px" }]}
                                                 >
-                                                    {data.detailAkses}
+                                                    {data.keluhan}
+                                                </TableCell>
+                                                <TableCell
+                                                    align="center"
+                                                    sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                                                >
+                                                    {data.poli}
+                                                </TableCell>
+                                                <TableCell
+                                                    align="left"
+                                                    sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                                                >
+                                                    {data.waktuKunjungan}
+                                                </TableCell>
+                                                <TableCell
+                                                    align="left"
+                                                    sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                                                >
+                                                    {data.nomorTelepon}
+                                                </TableCell>
+                                                <TableCell
+                                                    align="center"
+                                                    sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                                                >
+                                                    {data.tipe}
+                                                </TableCell>
+                                                <TableCell
+                                                    align="center"
+                                                    sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                                                >
+                                                    <Link
+                                                        href="#"
+                                                        mr={2}
+                                                        underline="hover"
+                                                        sx={{
+                                                            textTransform: "capitalize",
+                                                            color: "#8F85F3",
+                                                        }}
+                                                    >
+                                                        Lihat Berkas
+                                                    </Link>
                                                 </TableCell>
                                                 <TableCell
                                                     align="center"
@@ -361,6 +471,7 @@ export default function TablePasien() {
                                                     ]}
                                                 >
                                                     <Link
+                                                        onClick={confirmationDelete}
                                                         href="#"
                                                         mr={2}
                                                         underline="hover"
@@ -371,6 +482,8 @@ export default function TablePasien() {
                                                     >
                                                         Hapus
                                                     </Link>
+
+                                                    <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
                                                     <Link
                                                         href="#"
                                                         mr={2}
@@ -381,16 +494,6 @@ export default function TablePasien() {
                                                         }}
                                                     >
                                                         Ubah
-                                                    </Link>
-                                                    <Link
-                                                        href="/detailPegawai"
-                                                        underline="hover"
-                                                        sx={{
-                                                            textTransform: "capitalize",
-                                                            color: "#8F85F3",
-                                                        }}
-                                                    >
-                                                        Lihat selengkapnya
                                                     </Link>
                                                 </TableCell>
                                             </StyledTableRow>

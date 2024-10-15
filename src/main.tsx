@@ -33,6 +33,7 @@ import Pegawai from './pages/pegawai';
 import DetailPegawai from './pages/pegawai/DetailPegawai';
 import TambahPegawai from './pages/pegawai/TambahPegawai';
 import Dokter from './pages/dokter';
+import Pasien from './pages/pasien';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -94,6 +95,9 @@ createRoot(document.getElementById('root')!).render(
 
         {/* Page Dokter  */}
         <Route path="/dokter" element={<Dokter/>} />
+
+        {/* Page Pasien  */}
+        <Route path="/pasien" element={<Pasien/>} />
 
 
 

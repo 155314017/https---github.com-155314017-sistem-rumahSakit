@@ -10,7 +10,7 @@ import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import TablePasien from "./TablePasien";
 
-export default function Pegawai() {
+export default function Pasien() {
     return (
         <Box>
             <SideBar />
@@ -19,15 +19,11 @@ export default function Pegawai() {
                 <Header />
                 <Box>
                     <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
-                        Pegawai
+                        Pasien
                     </Typography>
                     <Grid container spacing={3} flex={1} mb={3}>
-                        <MediumCard icon={BusinessOutlinedIcon} title="Total Dokter Spesialis" subtitle="89" />
-                        <MediumCard icon={BusinessOutlinedIcon} title="Total Dokter Umum" subtitle="127" />
-                        <MediumCard icon={BusinessOutlinedIcon} title="Total Perawat" subtitle="267" />
-                        <MediumCard icon={BusinessOutlinedIcon} title="Total Admin" subtitle="108" />
-                        <MediumCard icon={BusinessOutlinedIcon} title="Total Manajemen" subtitle="48" />
-                        <CardAdd icon={AddBoxIcon} title="Tambah Pegawai" link="/tambahPegawai" />
+                        <MediumCard icon={BusinessOutlinedIcon} title="Total Pasien" subtitle="899" />
+                        <CardAdd icon={AddBoxIcon} title="Tambah Pasien" link="/tambahPasien" />
                     </Grid>
                     <TablePasien/>
                 </Box>
