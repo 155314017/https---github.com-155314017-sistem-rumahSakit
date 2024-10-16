@@ -1,5 +1,4 @@
-import { bgcolor, Box } from '@mui/system'
-import bgImage from "../../assets/img/String.png";
+import { Box } from '@mui/system'
 import { Avatar, Typography } from '@mui/material';
 
 export default function CardBiodataPegawai() {

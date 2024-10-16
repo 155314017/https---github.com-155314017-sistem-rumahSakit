@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import { TextField, Typography } from '@mui/material';
@@ -23,7 +24,7 @@ const DoctorSchedule: React.FC<DoctorAvailability> = ({ availableDates }) => {
                 Pilih Tanggal Operasi
             </Typography>
             <Calendar
-                onChange={setDate}
+                // onChange={setDate}
                 value={date}
                 tileDisabled={({ date }) => !isDateAvailable(date)}
             />

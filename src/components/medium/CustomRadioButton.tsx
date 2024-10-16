@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Radio, FormControlLabel } from '@mui/material';
+import {Typography, Radio, FormControlLabel } from '@mui/material';
 
 interface CustomRadioButtonProps {
     value: string;

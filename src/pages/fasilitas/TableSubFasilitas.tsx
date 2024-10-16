@@ -22,8 +22,6 @@ import bgImage from "../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
-import DataPegawai from "../../dummyData/dataPegawai";
-import DataFasilitas from "../../dummyData/dataFasilitas";
 import DataSubFasilitas from "../../dummyData/dataSubFasilitas";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({

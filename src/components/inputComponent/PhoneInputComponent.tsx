@@ -1,5 +1,4 @@
-import { Typography } from "@mui/material";
-import { Box, Container } from "@mui/system";
+import { Box } from "@mui/system";
 import PhoneInput from "react-phone-input-2";
 
 interface Props {
