@@ -476,7 +476,7 @@ export default function LoginPasien() {
                               : "Kirim ulang tautan"}
                           </Typography>
                         </Box>
-                        <Link to={"/register/pasien"}>
+                        <Link to={"/register/penanggungJawab"}>
                           <Button
                             type="submit"
                             variant="contained"

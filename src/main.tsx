@@ -5,7 +5,6 @@ import './index.css';
 // import App from './App';
 import LoginPasien from './pages/login/loginPasien/LoginPasien';
 import Login from './pages/login/loginPegawai/LoginPages';
-import RegisterPasien from './pages/login/loginPasien/RegisterPasien';
 import PasienLamaRawatJalanBPJS from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanBPJS';
 import PasienLamaRawatJalanUmum from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanUmum';
 import Home from './pages';
@@ -34,6 +33,9 @@ import DetailPegawai from './pages/pegawai/DetailPegawai';
 import TambahPegawai from './pages/pegawai/TambahPegawai';
 import Dokter from './pages/dokter';
 import Pasien from './pages/pasien';
+import RegisterPasienBaru from './pages/login/loginPasien/RegisterPasienBaru';
+import KategoriPasien from './pages/login/loginPasien/KategoriPasien';
+import RegisterPasien from './pages/login/loginPasien/RegisterPasien';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -55,8 +57,10 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/login/pasien" element={<LoginPasien />} />
 
         {/* Form Register */}
-        <Route path="/register/pasien" element={<RegisterPasien />} />
+        <Route path="/kategori/pasien" element={<KategoriPasien/>} />
+        <Route path="/register/pasien" element={<RegisterPasien/>} />
         <Route path="/register/penanggungJawab" element={<BioPjBaru/>} />
+        <Route path="/register/pasien/baru" element={<RegisterPasienBaru/>} />
 
 
         {/* Dashboard  */}
@@ -98,8 +102,6 @@ createRoot(document.getElementById('root')!).render(
 
         {/* Page Pasien  */}
         <Route path="/pasien" element={<Pasien/>} />
-
-
 
         {/* <Route path="/about" element={<About />} /> */}
       </Routes>

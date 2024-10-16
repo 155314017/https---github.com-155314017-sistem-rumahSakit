@@ -35,7 +35,7 @@ const otpValidationSchema = Yup.object({
         .required('OTP wajib diisi'),
 });
 
-export default function BioPjBaru() {
+export default function RegisterPasienBaru() {
     const [showPassword, setShowPassword] = useState(false);
     const [showLogin, setShowLogin] = useState(true);
     const [showEmailChanged, setShowEmailChanged] = useState(true);
@@ -171,7 +171,7 @@ export default function BioPjBaru() {
                         <Box sx={{ ml: 16, mt: "5%", width: '52%' }}>
                             <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
                             <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
-                                Silahkan masukkan nomor NIK (Nomor induk kependudukan) penanggung jawab.
+                                Silahkan masukkan nomor NIK (Nomor induk kependudukan) Pasien.
                             </Typography>
 
                             <Formik
@@ -187,7 +187,7 @@ export default function BioPjBaru() {
                                 {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
                                     <Form>
                                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                            <FormLabel sx={{ fontSize: '18px' }}>NIK (Nomor induk kependudukan) Penanggung jawab</FormLabel>
+                                            <FormLabel sx={{ fontSize: '18px' }}>NIK (Nomor induk kependudukan) Pasien</FormLabel>
                                             <Field
                                                 name="nik"
                                                 as={TextField}
@@ -254,7 +254,7 @@ export default function BioPjBaru() {
                                             )}
 
                                             <Typography mt={2} >
-                                                No. Handphone penanggung jawab{" "}
+                                                No. Handphone Pasien{" "}
                                                 <span style={{ color: "#d32f2f" }}>*</span>{" "}
                                             </Typography>
                                             <PhoneInput
@@ -279,7 +279,7 @@ export default function BioPjBaru() {
                                                 }}
                                             />
 
-                                            <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Nama lengkap penanggung jawab</FormLabel>
+                                            <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Nama lengkap Pasien</FormLabel>
                                             <Field
                                                 name="namaPj"
                                                 as={TextField}
@@ -306,12 +306,16 @@ export default function BioPjBaru() {
                                                 onBlur={handleBlur}
                                             />
 
-                                            <Box display={'flex'} flexDirection={'row'} padding={1} border={"1px solid #A8A8BD"} mt={2} borderRadius={"12px"} pl={3}>
+                                            <Typography mt={2} >
+                                                Jenis kelamin Pasien{" "}
+                                                <span style={{ color: "#d32f2f" }}>*</span>{" "}
+                                            </Typography>
+                                            <Box display={'flex'} flexDirection={'row'} padding={1} border={"1px solid #A8A8BD"} borderRadius={"12px"} pl={3}>
                                                 <FormControlLabel value="pria" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Pria" />
                                                 <FormControlLabel value="wanita" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Wanita" />
                                             </Box>
 
-                                            <Typography sx={{ fontSize: "16px", mt: 2 }}>Alamat tempat tinggal penanggung jawab<span style={{ color: "red" }}>*</span></Typography>
+                                            <Typography sx={{ fontSize: "16px", mt: 2 }}>Alamat tempat tinggal Pasien<span style={{ color: "red" }}>*</span></Typography>
 
                                             <FormControl fullWidth sx={{ my: 1 }}>
                                                 <OutlinedInput
@@ -324,7 +328,7 @@ export default function BioPjBaru() {
                                             </FormControl>
 
                                             <Button
-                                                href="/register/pasien/baru"
+                                                href="/register/pasien"
                                                 type="submit"
                                                 variant="contained"
                                                 color="primary"
@@ -339,6 +343,21 @@ export default function BioPjBaru() {
                                                 disabled={!isValid || !dirty}
                                             >
                                                 Lanjutkan
+                                            </Button>
+
+                                            <Button
+                                                href="/register/penanggungJawab"
+                                                sx={{
+                                                    width: '100%',
+                                                    height: '48px',
+                                                    marginTop: '20px',
+                                                    backgroundColor: '#ffff',
+                                                    border: '1px solid #8F85F3',
+                                                    color: '#8F85F3',
+                                                    ":hover": { backgroundColor: '#8F85F3', color: '#ffff' },
+                                                }}
+                                            >
+                                                Kembali ke halaman data penanggung jawab
                                             </Button>
 
                                             {/* <CustomButton onClick={() => console.log("hai ")} label="Daftar pasien baru" /> */}
