@@ -483,7 +483,7 @@ export default function LoginPasien() {
                           variant="contained"
                           color="primary"
                           // onClick={otpFormShown}
-                          onClick={() => navigate('/register/penanggungJawab')}
+                          onClick={() => navigate('/dashboard')}
                           fullWidth
                           sx={{
                             width: "100%",
