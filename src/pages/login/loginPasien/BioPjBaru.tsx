@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, OutlinedInput, } from "@mui/material";
 import { useEffect, useState } from "react";
 import patientImage from "../../../assets/img/registrationImg.jpg";
@@ -96,7 +97,7 @@ export default function BioPjBaru() {
     };
 
     useEffect(() => {
-        let timer: NodeJS.Timeout;
+        let timer: ReturnType<typeof setInterval>;
         if (isCounting && secondsLeft > 0) {
             timer = setInterval(() => {
                 setSecondsLeft((prev) => prev - 1);

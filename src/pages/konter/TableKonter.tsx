@@ -18,8 +18,6 @@ import DropdownList from "../../components/small/DropdownList";
 import { styled } from "@mui/material/styles";
 import bgImage from "../../assets/img/String.png";
 
-import DataGedung from "../../dummyData/dataGedung";
-
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";

@@ -1,6 +1,5 @@
-import { bgcolor, Box } from '@mui/system'
-import bgImage from "../../assets/img/String.png";
-import { Avatar, Typography } from '@mui/material';
+import { Box } from '@mui/system'
+import { Typography } from '@mui/material';
 
 export default function CardJamPraktek() {
     return (

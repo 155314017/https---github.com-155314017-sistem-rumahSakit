@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Container, Box } from "@mui/system";
 import { Typography, Button, InputAdornment, FormControl, OutlinedInput } from "@mui/material";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";

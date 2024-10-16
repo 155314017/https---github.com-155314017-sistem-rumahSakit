@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Container, Box, Typography, Button, FormControl, OutlinedInput, InputAdornment } from "@mui/material";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useState } from 'react';
+import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
-import ImageUploader from "../../components/medium/ImageUploader";
 import bgImage from "../../assets/img/String.png";
 import AlertSuccess from "../../components/small/AlertSuccess";
 import DropdownList from "../../components/small/DropdownList";

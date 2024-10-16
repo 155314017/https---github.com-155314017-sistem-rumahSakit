@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import {
     Container,
@@ -19,13 +20,21 @@ import {
     RadioGroup,
     TableContainer
 } from "@mui/material";
+=======
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useState } from 'react';
+import { Container, Box, Typography, Button, FormControl, OutlinedInput, FormControlLabel, Radio, RadioGroup } from "@mui/material";
+>>>>>>> 13824d6ee9595be51e92c8486ecae67dd8f6154e
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import bgImage from "../../assets/img/String.png";
 import AlertSuccess from "../../components/small/AlertSuccess";
 import DropdownList from "../../components/small/DropdownList";
+<<<<<<< HEAD
 import { styled } from "@mui/material/styles";
+=======
+>>>>>>> 13824d6ee9595be51e92c8486ecae67dd8f6154e
 import DatePickerCustom from '../../components/inputComponent/DatePickerCustom';
 import PhoneInputComponent from '../../components/inputComponent/PhoneInputComponent';
 import { Stack } from '@mui/system';

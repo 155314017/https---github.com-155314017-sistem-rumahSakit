@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Container, Box } from "@mui/system";
 import { Typography, Button, InputAdornment, FormControl, OutlinedInput } from "@mui/material";
 import { useFormik } from "formik"; // Import useFormik
 import * as Yup from "yup"; // Import Yup for validation
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
-import ImageUploader from "../../components/medium/ImageUploader";
 import bgImage from "../../assets/img/String.png";
 import { useState } from "react";
 import AlertSuccess from "../../components/small/AlertSuccess";

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import {
     Box,
@@ -9,20 +10,13 @@ import {
     TableRow,
     TableCell,
     TableBody,
-    Link,
     TablePagination,
-    IconButton,
 } from "@mui/material";
 import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
 import { styled } from "@mui/material/styles";
 import bgImage from "../../assets/img/String.png";
 
-// icon
-import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
-import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-
-import DataPegawai from "../../dummyData/dataPegawai";
 import izinAkses from "../../dummyData/izinAKses";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({

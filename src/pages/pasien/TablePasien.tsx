@@ -23,9 +23,7 @@ import bgImage from "../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
-import DataPegawai from "../../dummyData/dataPegawai";
 import DataPasien from "../../dummyData/dataPasien";
-import { borderRadius } from "@mui/system";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({

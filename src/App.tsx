@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import "./App.css";
 import Home from "./pages";
 import LoginPasien from "./pages/login/loginPasien/LoginPasien";

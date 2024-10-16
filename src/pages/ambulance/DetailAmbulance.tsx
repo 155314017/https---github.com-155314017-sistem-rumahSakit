@@ -45,8 +45,7 @@ export default function DetailAmbulance() {
             { id: "biaya", label: "Biaya" },
             { id: "waktuPelayanan", label: "Waktu Pelayanan" },
           ]}
-          data={[{ biaya: "Rp. 100.000", waktuPelayanan: "2 jam" },
-          { biaya: "Rp. 100.000", waktuPelayanan: "2 jam" }]}
+          data={[{ biaya: "Rp. 100.000", waktuPelayanan: "2 jam" }]}
           actions={() => (
             <>
               <Link underline="hover" sx={{ color: "#8F85F3" }} href="/hapus">
