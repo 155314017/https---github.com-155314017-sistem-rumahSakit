@@ -130,11 +130,8 @@ export default function BioPjBaru() {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'row', marginLeft: '10%', marginTop: '1%' }}>
-            <Box sx={{ marginTop: '-100px' }} >
-                <Typography sx={{ fontSize: '56px', fontWeight: '700', lineHeight: '60px', position: 'fixed', zIndex: '9999', top: '798px', left: '73px', width: '40%', height: '120px', color: 'white' }} >
-                    Mulai permintaan janji temu Anda di sini.
-                </Typography>
-                <Box>
+            <Box>
+                <Box sx={{ position: "relative" }}>
                     <CardMedia
                         component="img"
                         sx={{
@@ -148,6 +145,41 @@ export default function BioPjBaru() {
                         image={patientImage}
                         alt="Example Image"
                     />
+                </Box>
+
+                {/* overlay */}
+                <Box
+                    sx={{
+                        position: "absolute",
+                        bgcolor: "rgba(0, 0, 0, 0.5)",
+                        width: "50%",
+                        height: "100vh",
+                        top: "0",
+                        left: "0",
+                    }}
+                ></Box>
+                {/* ---- */}
+
+                <Box
+                    sx={{
+                        position: "absolute",
+                        zIndex: "9999",
+                        width: "40%",
+                        left: "23%",
+                        bottom: "0%",
+                        transform: "translate(-50%, -50%)",
+                    }}
+                >
+                    <Typography
+                        sx={{
+                            fontSize: "56px",
+                            fontWeight: "700",
+                            lineHeight: "60px",
+                            color: "white",
+                        }}
+                    >
+                        Mulai permintaan janji temu Anda di sini.
+                    </Typography>
                 </Box>
             </Box>
             {loginSuccess && <AlertSuccess label="Login Succeeded!" />}
@@ -165,10 +197,10 @@ export default function BioPjBaru() {
                             top: "0",
                             width: "50%",
                             flexDirection: 'column',
-
+                            
                         }}
                     >
-                        <Box sx={{ ml: 16, mt: "5%", width: '52%' }}>
+                        <Box sx={{ ml: 16, mt: "5%", width: '85%' }}>
                             <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
                             <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
                                 Silahkan masukkan nomor NIK (Nomor induk kependudukan) penanggung jawab.
@@ -193,7 +225,6 @@ export default function BioPjBaru() {
                                                 as={TextField}
                                                 placeholder="Masukkan NIK (Nomor induk kependudukan)"
                                                 variant="outlined"
-                                                fullWidth
                                                 sx={{
                                                     width: '100%',
                                                     height: '48px',
@@ -323,8 +354,8 @@ export default function BioPjBaru() {
                                                 />
                                             </FormControl>
 
-                                            <Button 
-                                                onClick={() => navigate('/register/pasien') }
+                                            <Button
+                                                onClick={() => navigate('/register/pasien')}
                                                 type="submit"
                                                 variant="contained"
                                                 color="primary"

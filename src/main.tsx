@@ -36,6 +36,8 @@ import Pasien from './pages/pasien';
 import RegisterPasienBaru from './pages/login/loginPasien/RegisterPasienBaru';
 import KategoriPasien from './pages/login/loginPasien/KategoriPasien';
 import RegisterPasien from './pages/login/loginPasien/RegisterPasien';
+import RawatJalanBPJS from './pages/rawatJalan/pendaftaranPasien/RawatJalanBPJS';
+import RawatJalanUmum from './pages/rawatJalan/pendaftaranPasien/RawatJalanUmum';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -65,6 +67,10 @@ createRoot(document.getElementById('root')!).render(
 
         {/* Dashboard  */}
         <Route path="/dashboard" element={<Home />} />
+
+        {/* Pages Pendafaran Pasien  */}
+        <Route path="/rawatjalan/bpjs" element={<RawatJalanBPJS/>} />
+        <Route path="/rawatjalan/umum" element={<RawatJalanUmum/>} />
 
         {/* Page Rawat Jalan  */}
         <Route path="/rawatjalan/lama/bpjs" element={<PasienLamaRawatJalanBPJS />} />

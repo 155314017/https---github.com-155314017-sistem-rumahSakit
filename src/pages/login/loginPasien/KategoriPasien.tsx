@@ -3,12 +3,13 @@ import { Box } from "@mui/system";
 import regisImg from "../../../assets/img/registerImg.jpg";
 // import logo from "../../../img/St.carolus.png";
 import { Button, CardMedia, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import CardRawatJalan from "../../../components/medium/CardRawatJalan";
 
 export default function KategoriPasien() {
   const [pasienBaru, setPasienBaru] = useState(true);
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -67,7 +68,7 @@ export default function KategoriPasien() {
                 sx={{ display: "flex", flexDirection: "column", gap: "24px" }}
               >
                 <Link
-                  to="/rawatjalan/lama/bpjs"
+                  to="/rawatjalan/bpjs"
                   style={{ textDecoration: "none" }}
                 >
                   <CardRawatJalan
@@ -77,7 +78,7 @@ export default function KategoriPasien() {
                 </Link>
 
                 <Link
-                  to="/rawatjalan/lama/umum"
+                  to="/rawatjalan/umum"
                   style={{ textDecoration: "none" }}
                 >
                   <CardRawatJalan
@@ -88,7 +89,8 @@ export default function KategoriPasien() {
               </Box>
 
               <Button
-                onClick={() => setPasienBaru(false)}
+                // onClick={() => setPasienBaru(false)}
+                onClick={() => navigate('/register/penanggungJawab') }
                 fullWidth
                 sx={{
                   width: "434px",
@@ -112,7 +114,7 @@ export default function KategoriPasien() {
                 sx={{ display: "flex", flexDirection: "column", gap: "24px" }}
               >
                 <Link
-                  to="/rawatjalan/baru/bpjs"
+                  to="/rawatjalan/bpjs"
                   style={{ textDecoration: "none" }}
                 >
                   <CardRawatJalan
@@ -122,7 +124,7 @@ export default function KategoriPasien() {
                 </Link>
 
                 <Link
-                  to="/rawatjalan/baru/umum"
+                  to="/rawatjalan/umum"
                   style={{ textDecoration: "none" }}
                 >
                   <CardRawatJalan
