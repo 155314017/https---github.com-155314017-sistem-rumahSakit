@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import {
     Box,
@@ -55,7 +54,7 @@ export default function CardIzinAkses() {
 
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    // const [isCollapsed, setIsCollapsed] = useState(true);
 
     const handleChangePage = (
         _event: React.MouseEvent<HTMLButtonElement> | null,
@@ -93,9 +92,9 @@ export default function CardIzinAkses() {
         console.log("Selected Value:", selectedValue);
     };
 
-    const toggleCollapse = () => {
-        setIsCollapsed((prev) => !prev);
-    };
+    // const toggleCollapse = () => {
+    //     setIsCollapsed((prev) => !prev);
+    // };
 
     return (
         <Box width={'55vw'} >

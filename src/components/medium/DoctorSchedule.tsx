@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import { TextField, Typography } from '@mui/material';
@@ -9,7 +8,7 @@ interface DoctorAvailability {
 }
 
 const DoctorSchedule: React.FC<DoctorAvailability> = ({ availableDates }) => {
-    const [date, setDate] = useState<Date | null>(null);
+    const [date] = useState<Date | null>(null);
 
     // Fungsi untuk memeriksa apakah tanggal tersedia
     const isDateAvailable = (date: Date) => {

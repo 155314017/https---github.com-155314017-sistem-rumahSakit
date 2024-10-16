@@ -1,21 +1,20 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Container, Box } from "@mui/system";
 import { Typography, Button, InputAdornment, FormControl, OutlinedInput } from "@mui/material";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import bgImage from "../../assets/img/String.png";
 import ImageUploaderGroup from "../../components/medium/ImageUploaderGroup";
 
-interface ImageInfo {
-  file: File;
-  preview: string;
-  name: string;
-  size: string;
-}
+// interface ImageInfo {
+//   file: File;
+//   preview: string;
+//   name: string;
+//   size: string;
+// }
 
 export default function TambahAmbulance() {
-  const handleImagesSelected = (images: ImageInfo[]) => {
-    console.log("Selected images:", images);
-  };
+  // const handleImagesSelected = (images: ImageInfo[]) => {
+  //   console.log("Selected images:", images);
+  // };
 
   const breadcrumbItems = [
     {

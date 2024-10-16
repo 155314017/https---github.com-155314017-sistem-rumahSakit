@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
 import { useFormik } from "formik";
@@ -10,12 +9,12 @@ import DropdownList from "../../components/small/DropdownList";
 import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 
 
-interface ImageInfo {
-    file: File;
-    preview: string;
-    name: string;
-    size: string;
-}
+// interface ImageInfo {
+//     file: File;
+//     preview: string;
+//     name: string;
+//     size: string;
+// }
 
 const jenisGedung = [
     { value: 1, label: "Gedung A" },
@@ -48,9 +47,9 @@ export default function TambahRuangan() {
         setSuccessAlert(false);
     };
 
-    const handleImagesSelected = (images: ImageInfo[]) => {
-        console.log("Selected images:", images);
-    };
+    // const handleImagesSelected = (images: ImageInfo[]) => {
+    //     console.log("Selected images:", images);
+    // };
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },

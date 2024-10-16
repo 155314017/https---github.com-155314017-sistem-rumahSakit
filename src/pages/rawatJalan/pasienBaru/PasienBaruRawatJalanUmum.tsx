@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button, Box, Typography, CardMedia, MenuItem, Select, FormControl, InputLabel, Alert, TextField, RadioGroup, FormControlLabel, Radio } from "@mui/material";
 import { useState } from "react";
 import { Formik, Form } from 'formik';
@@ -36,18 +35,18 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const totalPages = 2;
     const [showAlert, setShowAlert] = useState<boolean>(false);
-    const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-    const [fileBase64, setFileBase64] = useState<string | null>(null);
+    // const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+    // const [fileBase64, setFileBase64] = useState<string | null>(null);
     const [showFormPage, setSHowFormPage] = useState(true);
     const [selectedMethod, setSelectedMethod] = useState<string>('');
 
 
 
-    const handleSubmit = (values: FormValues) => {
-        console.log("Data yang diisi:", values);
-        console.log("File yang diunggah:", uploadedFile);
-        console.log("Base64:", fileBase64);
-    };
+    // const handleSubmit = (values: FormValues) => {
+    //     console.log("Data yang diisi:", values);
+    //     console.log("File yang diunggah:", uploadedFile);
+    //     console.log("Base64:", fileBase64);
+    // };
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedMethod(event.target.value);
@@ -70,11 +69,11 @@ const PasienBaruRawatJalanUmum: React.FC = () => {
         });
     };
 
-    const handlePrev = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
+    // const handlePrev = () => {
+    //     if (currentPage > 1) {
+    //         setCurrentPage(currentPage - 1);
+    //     }
+    // };
 
     const getPageStyle = (page: number) => {
         if (page === currentPage) {

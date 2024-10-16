@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, OutlinedInput, } from "@mui/material";
 import { useEffect, useState } from "react";
 import patientImage from "../../../assets/img/registrationImg.jpg";
@@ -35,12 +34,12 @@ const otpValidationSchema = Yup.object({
 });
 
 export default function BioPjBaru() {
-    const [showPassword, setShowPassword] = useState(false);
+    // const [showPassword, setShowPassword] = useState(false);
     const [showLogin, setShowLogin] = useState(true);
     const [showEmailChanged, setShowEmailChanged] = useState(true);
     const [emailError, setEmailError] = useState(false);
-    const [nikError, setNikError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
+    const [, setNikError] = useState(false);
+    const [, setPasswordError] = useState(false);
 
     const [showAlert, setShowAlert] = useState(false);
     const [isCounting, setIsCounting] = useState(false);
@@ -417,7 +416,7 @@ export default function BioPjBaru() {
                                             console.log(values);
                                         }}
                                     >
-                                        {({ errors, touched, handleChange, handleBlur, values, isValid, dirty }) => (
+                                        {({ errors, touched, handleChange, isValid, dirty }) => (
                                             <Form>
                                                 <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
                                                     <OtpInput

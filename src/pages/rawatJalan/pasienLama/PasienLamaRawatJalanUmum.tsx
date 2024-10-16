@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Button,
   Box,
@@ -24,13 +23,10 @@ import "react-phone-input-2/lib/style.css";
 import imagePendaftaran from "../../../assets/img/pendaftaran.jpeg";
 import logo from "../../../img/St.carolus.png";
 
-import { operationalDateOptions, doctors } from "../../../dummyData/dummyData";
-import RadioButton from "../../../components/small/RadioButton";
+import { doctors } from "../../../dummyData/dummyData";
 import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
-import CalenderPopover from "../../../components/medium/CalenderPopover";
 import PoliSelect from "../../../components/inputComponent/PoliSelect";
-import { minWidth } from "@mui/system";
 import CustomDateTimePicker from "../../../components/medium/CustomDateTimePicker";
 
 const validationSchema = Yup.object({
@@ -54,24 +50,24 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const totalPages = 2;
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [fileBase64, setFileBase64] = useState<string | null>(null);
+  // const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  // const [fileBase64, setFileBase64] = useState<string | null>(null);
   const [showFormPage, setSHowFormPage] = useState(true);
   const [selectedMethod, setSelectedMethod] = useState<string>("");
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedMethod(event.target.value);
   };
-  const handleFileChange = (file: File | null, base64: string | null) => {
-    setUploadedFile(file);
-    setFileBase64(base64);
-  };
+  // const handleFileChange = (file: File | null, base64: string | null) => {
+  //   setUploadedFile(file);
+  //   setFileBase64(base64);
+  // };
 
-  const handleSubmit = (values: FormValues) => {
-    console.log("Data yang diisi:", values);
-    console.log("File yang diunggah:", uploadedFile);
-    console.log("Base64:", fileBase64);
-  };
+  // const handleSubmit = (values: FormValues) => {
+  //   console.log("Data yang diisi:", values);
+  //   console.log("File yang diunggah:", uploadedFile);
+  //   console.log("Base64:", fileBase64);
+  // };
 
   const handleNext = (
     validateForm: any,
@@ -93,11 +89,11 @@ const PasienLamaRawatJalanUmum: React.FC = () => {
     });
   };
 
-  const handlePrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  // const handlePrev = () => {
+  //   if (currentPage > 1) {
+  //     setCurrentPage(currentPage - 1);
+  //   }
+  // };
 
   const getPageStyle = (page: number) => {
     if (page === currentPage) {
