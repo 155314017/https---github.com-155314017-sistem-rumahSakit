@@ -333,7 +333,7 @@ export default function Login() {
                         />
                       </Box>
                       <Button
-                        onClick={() => navigate("/dashboard")}
+                        onClick={() => navigate("/pegawai")}
                         type="submit"
                         variant="contained"
                         color="primary"

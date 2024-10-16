@@ -480,7 +480,7 @@ const PasienBaruRawatJalanBPJS: React.FC = () => {
             )}
 
             {!showFormPage && (
-                <Box marginLeft={"2%"} marginTop={"10%"} >
+                <Box marginLeft={"60%"} marginTop={"10%"} >
                     <InformasiTicket />
                 </Box>
             )}
