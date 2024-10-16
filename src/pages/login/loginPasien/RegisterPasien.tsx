@@ -103,7 +103,7 @@ export default function RegisterPasien() {
     };
 
     useEffect(() => {
-        let timer: NodeJS.Timeout;
+        let timer: ReturnType<typeof setInterval>;
         if (isCounting && secondsLeft > 0) {
             timer = setInterval(() => {
                 setSecondsLeft((prev) => prev - 1);
