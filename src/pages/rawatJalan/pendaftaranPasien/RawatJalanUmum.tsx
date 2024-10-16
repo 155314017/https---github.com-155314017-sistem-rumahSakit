@@ -7,7 +7,6 @@ import {
     Select,
     FormControl,
     InputLabel,
-    Alert,
     TextField,
     Radio,
     FormControlLabel,
@@ -16,8 +15,6 @@ import {
 import { useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import RadioButtonsGroup from "../../../components/medium/RadoButtonsGroup";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import logo from "../../../img/St.carolus.png";
 import imagePendaftaran from "../../../assets/img/pendaftaran.jpeg";
@@ -45,52 +42,11 @@ interface FormValues {
 }
 
 const RawatJalanUmum: React.FC = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const totalPages = 2;
-    const [showAlert, setShowAlert] = useState<boolean>(false);
-    const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-    const [fileBase64, setFileBase64] = useState<string | null>(null);
     const [showFormPage, setSHowFormPage] = useState(true);
     const [selectedMethod, setSelectedMethod] = useState<string>("");
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedMethod(event.target.value);
-    };
-    const handleFileChange = (file: File | null, base64: string | null) => {
-        setUploadedFile(file);
-        setFileBase64(base64);
-    };
-
-    const handleSubmit = (values: FormValues) => {
-        console.log("Data yang diisi:", values);
-        console.log("File yang diunggah:", uploadedFile);
-        console.log("Base64:", fileBase64);
-    };
-
-    const handleNext = (
-        validateForm: any,
-        setErrors: any,
-        values: FormValues
-    ) => {
-        validateForm().then((formErrors: any) => {
-            if (Object.keys(formErrors).length === 0) {
-                console.log("Data yang diisi:", values);
-                if (currentPage < totalPages) {
-                    setCurrentPage(currentPage + 1);
-                    setShowAlert(false);
-                }
-            } else {
-                setShowAlert(true);
-                setErrors(formErrors);
-                setTimeout(() => setShowAlert(false), 3000);
-            }
-        });
-    };
-
-    const handlePrev = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
     };
 
 
@@ -139,8 +95,6 @@ const RawatJalanUmum: React.FC = () => {
                         errors,
                         touched,
                         setFieldValue,
-                        validateForm,
-                        setErrors,
                     }) => (
                         <Form>
                             <Box
@@ -181,12 +135,6 @@ const RawatJalanUmum: React.FC = () => {
                                         Formulir pendaftaran pasien Umum
                                     </Typography>
 
-                                    {showAlert && (
-                                        <Alert severity="warning" sx={{ mb: 2 }}>
-                                            Semua field wajib diisi sebelum lanjut ke halaman
-                                            berikutnya!
-                                        </Alert>
-                                    )}
 
                                     <Box>
                                         <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -330,11 +278,7 @@ const RawatJalanUmum: React.FC = () => {
                                             mt: 4,
                                         }}
                                     >
-                                        {currentPage < totalPages ? (
                                             <Button
-                                                // onClick={() =>
-                                                //     handleNext(validateForm, setErrors, values)
-                                                // }
                                                 onClick={() => setSHowFormPage(false)}
                                                 sx={{
                                                     backgroundColor: "#8F85F3",
@@ -350,25 +294,6 @@ const RawatJalanUmum: React.FC = () => {
                                             >
                                                 Selesai
                                             </Button>
-                                        ) : (
-                                            <Button
-                                                type="submit"
-                                                onClick={() => setSHowFormPage(false)}
-                                                sx={{
-                                                    backgroundColor: "#8F85F3",
-                                                    color: "white",
-                                                    textTransform: "none",
-                                                    padding: "10px 24px",
-                                                    width: "100%",
-                                                    borderRadius: "8px",
-                                                    "&:hover": {
-                                                        backgroundColor: "#7C75E2",
-                                                    },
-                                                }}
-                                            >
-                                                Selesai
-                                            </Button>
-                                        )}
                                     </Box>
                                 </Box>
                             </Box>

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import {
     Container,
@@ -13,60 +12,27 @@ import {
     TableCell,
     TableBody,
     Link,
-    TablePagination,
-    IconButton,
     FormControlLabel,
     Radio,
     RadioGroup,
     TableContainer
 } from "@mui/material";
-=======
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from 'react';
-import { Container, Box, Typography, Button, FormControl, OutlinedInput, FormControlLabel, Radio, RadioGroup } from "@mui/material";
->>>>>>> 13824d6ee9595be51e92c8486ecae67dd8f6154e
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import bgImage from "../../assets/img/String.png";
-import AlertSuccess from "../../components/small/AlertSuccess";
 import DropdownList from "../../components/small/DropdownList";
-<<<<<<< HEAD
 import { styled } from "@mui/material/styles";
-=======
->>>>>>> 13824d6ee9595be51e92c8486ecae67dd8f6154e
 import DatePickerCustom from '../../components/inputComponent/DatePickerCustom';
 import PhoneInputComponent from '../../components/inputComponent/PhoneInputComponent';
-import { Stack } from '@mui/system';
-import DataPegawai from '../../dummyData/dataPegawai';
 import SearchBar from '../../components/small/SearchBar';
 import DataMenu from '../../dummyData/dataMenu';
 
 
-interface ImageInfo {
-    file: File;
-    preview: string;
-    name: string;
-    size: string;
-}
-
-const hari = [
-    { value: 1, label: "Senin" },
-    { value: 2, label: "Selasa" },
-    { value: 3, label: "Rabu" },
-    { value: 4, label: "Kamis" },
-    { value: 5, label: "Jumat" },
-    { value: 6, label: "Sabtu" },
-    { value: 7, label: "Minggu" },
-];
-
 export default function TambahPegawai() {
-    const [successAlert, setSuccessAlert] = useState(false);
     const [currentPage, setCurrentPage] = useState<number>(1);
-
-    const [page, setPage] = useState(2);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const page = 2;
+    const rowsPerPage = 10;
 
     // const datas = DataPegawai;
     const datas = DataMenu;
@@ -102,20 +68,6 @@ export default function TambahPegawai() {
     cursor: pointer;
   }
 `;
-
-    const handleChangePage = (
-        _event: React.MouseEvent<HTMLButtonElement> | null,
-        newPage: number
-    ) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
 
     const displayedData = datas.slice(
         page * rowsPerPage,
@@ -674,9 +626,6 @@ export default function TambahPegawai() {
                     )}
                 </Box>
             </Box>
-            {successAlert && (
-                <AlertSuccess label="Success adding building" />
-            )}
 
 
         </Container>
