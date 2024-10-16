@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 import { Container, Box, Typography, Button, FormControl, OutlinedInput} from "@mui/material";
 import { useFormik } from "formik";
@@ -12,12 +11,12 @@ import dayjs from 'dayjs';
 import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 
 
-interface ImageInfo {
-    file: File;
-    preview: string;
-    name: string;
-    size: string;
-}
+// interface ImageInfo {
+//     file: File;
+//     preview: string;
+//     name: string;
+//     size: string;
+// }
 
 const hari = [
     { value: 1, label: "Senin" },
@@ -51,9 +50,9 @@ export default function TambahKlinik() {
         setSuccessAlert(false);
     };
 
-    const handleImagesSelected = (images: ImageInfo[]) => {
-        console.log("Selected images:", images);
-    };
+    // const handleImagesSelected = (images: ImageInfo[]) => {
+    //     console.log("Selected images:", images);
+    // };
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },

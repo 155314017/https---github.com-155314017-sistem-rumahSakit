@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Button,
@@ -47,24 +46,24 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const totalPages = 2;
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [fileBase64, setFileBase64] = useState<string | null>(null);
+  // const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  // const [fileBase64, setFileBase64] = useState<string | null>(null);
   const [showFormPage, setSHowFormPage] = useState(true);
-  const [selectedMethod, setSelectedMethod] = useState<string>("");
+  // const [selectedMethod, setSelectedMethod] = useState<string>("");
 
-  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedMethod(event.target.value);
-  };
-  const handleFileChange = (file: File | null, base64: string | null) => {
-    setUploadedFile(file);
-    setFileBase64(base64);
-  };
+  // const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSelectedMethod(event.target.value);
+  // };
+  // const handleFileChange = (file: File | null, base64: string | null) => {
+  //   setUploadedFile(file);
+  //   setFileBase64(base64);
+  // };
 
-  const handleSubmit = (values: FormValues) => {
-    console.log("Data yang diisi:", values);
-    console.log("File yang diunggah:", uploadedFile);
-    console.log("Base64:", fileBase64);
-  };
+  // const handleSubmit = (values: FormValues) => {
+  //   console.log("Data yang diisi:", values);
+  //   console.log("File yang diunggah:", uploadedFile);
+  //   console.log("Base64:", fileBase64);
+  // };
 
   const handleNext = (
     validateForm: any,
@@ -86,11 +85,11 @@ const PasienLamaRawatJalanBPJS: React.FC = () => {
     });
   };
 
-  const handlePrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  // const handlePrev = () => {
+  //   if (currentPage > 1) {
+  //     setCurrentPage(currentPage - 1);
+  //   }
+  // };
 
   const getPageStyle = (page: number) => {
     if (page === currentPage) {

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, DragEvent, ChangeEvent, useRef } from "react";
 import { Box, Typography, CircularProgress, Alert } from "@mui/material";
 import { Grid } from "@mui/system";
@@ -80,13 +79,13 @@ const ImageUploaderGroup: React.FC = () => {
     };
 
     // Kirim semua gambar ke server atau database
-    const handleSaveToDatabase = () => {
-        images.forEach((img, index) => {
-            if (img.imageBase64) {
-                console.log(`Image ${index + 1} in Base64:`, img.imageBase64);
-            }
-        });
-    };
+    // const handleSaveToDatabase = () => {
+    //     images.forEach((img, index) => {
+    //         if (img.imageBase64) {
+    //             console.log(`Image ${index + 1} in Base64:`, img.imageBase64);
+    //         }
+    //     });
+    // };
 
     const handleBoxClick = (index: number) => {
         if (inputRefs.current[index]) {

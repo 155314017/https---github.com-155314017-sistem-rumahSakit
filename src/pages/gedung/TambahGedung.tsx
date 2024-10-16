@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Container, Box } from "@mui/system";
 import { Typography, Button, InputAdornment, FormControl, OutlinedInput } from "@mui/material";
 import { useFormik } from "formik"; // Import useFormik
@@ -9,12 +8,12 @@ import { useState } from "react";
 import AlertSuccess from "../../components/small/AlertSuccess";
 import ImageUploaderGroup from "../../components/medium/ImageUploaderGroup";
 
-interface ImageInfo {
-    file: File;
-    preview: string;
-    name: string;
-    size: string;
-}
+// interface ImageInfo {
+//     file: File;
+//     preview: string;
+//     name: string;
+//     size: string;
+// }
 
 export default function TambahGedung() {
     const [successAlert, setSuccessAlert] = useState(false);
@@ -25,9 +24,9 @@ export default function TambahGedung() {
         setSuccessAlert(false);
     };
 
-    const handleImagesSelected = (images: ImageInfo[]) => {
-        console.log("Selected images:", images);
-    };
+    // const handleImagesSelected = (images: ImageInfo[]) => {
+    //     console.log("Selected images:", images);
+    // };
 
     const breadcrumbItems = [
         {

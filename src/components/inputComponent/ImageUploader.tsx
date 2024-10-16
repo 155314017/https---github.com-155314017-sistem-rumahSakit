@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { Box, Typography, Button, Grid, CircularProgress, Alert } from "@mui/material";
 
 const ImageUploader: React.FC = () => {
     const [image, setImage] = useState<string | null>(null);        // Menyimpan URL gambar untuk ditampilkan
-    const [imageBase64, setImageBase64] = useState<string>("");     // Menyimpan gambar dalam base64
+    const [imageBase64] = useState<string>("");     // Menyimpan gambar dalam base64
     const [loading, setLoading] = useState<boolean>(false);         // Status loading
     const [dragging, setDragging] = useState<boolean>(false);       // Status dragging
     const [error, setError] = useState<string>("");                 // Pesan error

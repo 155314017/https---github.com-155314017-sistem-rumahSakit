@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
     Box,
     CardMedia,
@@ -14,10 +13,8 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import AlertWarning from "../../../components/small/AlertWarning";
 import AlertSuccess from "../../../components/small/AlertSuccess";
-import CustomButton from "../../../components/small/CustomButton";
-import OtpInput from "react-otp-input";
 import "react-phone-input-2/lib/style.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object({
     nik: Yup.string()
@@ -33,41 +30,41 @@ interface FormValues {
     email: string;
 }
 
-const otpValidationSchema = Yup.object({
-    otp: Yup.string()
-        .matches(/^[0-9]+$/, "OTP harus berupa angka")
-        .min(4, "OTP minimal 4 digit")
-        .max(4, "OTP maksimal 4 digit")
-        .required("OTP wajib diisi"),
-});
+// const otpValidationSchema = Yup.object({
+//     otp: Yup.string()
+//         .matches(/^[0-9]+$/, "OTP harus berupa angka")
+//         .min(4, "OTP minimal 4 digit")
+//         .max(4, "OTP maksimal 4 digit")
+//         .required("OTP wajib diisi"),
+// });
 
 export default function RegisterPasien() {
     //   const [showPassword, setShowPassword] = useState(false);
     const [showLogin, setShowLogin] = useState(true);
-    const [showEmailChanged, setShowEmailChanged] = useState(true);
+    // const [showEmailChanged, setShowEmailChanged] = useState(true);
     const [emailError, setEmailError] = useState(false);
-    const [nikError, setNikError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
+    const [, setNikError] = useState(false);
+    const [, setPasswordError] = useState(false);
 
     const [showAlert, setShowAlert] = useState(false);
     const [isCounting, setIsCounting] = useState(false);
     const [secondsLeft, setSecondsLeft] = useState(60);
-    const [resendSuccess, setResendSuccess] = useState(false);
+    // const [resendSuccess, setResendSuccess] = useState(false);
     const [loginSuccess, setLoginSuccess] = useState(false);
-    const [otp, setOtp] = useState("");
+    // const [otp, setOtp] = useState("");
 
     const navigate = useNavigate();
 
-    const otpFormShown = () => {
-        // setShowEmailChanged(false);
+    // const otpFormShown = () => {
+    //     // setShowEmailChanged(false);
 
-        setOtp("");
-    };
+    //     setOtp("");
+    // };
 
-    const handleClick = () => {
-        setShowLogin(true);
-        setShowEmailChanged(true);
-    };
+    // const handleClick = () => {
+    //     setShowLogin(true);
+    //     setShowEmailChanged(true);
+    // };
 
     const showTemporaryAlert = async () => {
         setShowAlert(true);
@@ -116,26 +113,26 @@ export default function RegisterPasien() {
         return () => clearInterval(timer);
     }, [isCounting, secondsLeft]);
 
-    const handleResendClick = () => {
-        setIsCounting(true);
-        setSecondsLeft(60);
-        showTemporaryAlertSuccess();
-        console.log("Resend clicked");
-    };
+    // const handleResendClick = () => {
+    //     setIsCounting(true);
+    //     setSecondsLeft(60);
+    //     showTemporaryAlertSuccess();
+    //     console.log("Resend clicked");
+    // };
 
-    const showTemporaryAlertSuccess = async () => {
-        setResendSuccess(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setResendSuccess(false);
-    };
+    // const showTemporaryAlertSuccess = async () => {
+    //     setResendSuccess(true);
+    //     await new Promise((resolve) => setTimeout(resolve, 3000));
+    //     setResendSuccess(false);
+    // };
 
-    const formatTime = () => {
-        const minutes = Math.floor(secondsLeft / 60);
-        const seconds = secondsLeft % 60;
-        return `${minutes.toString().padStart(2, "0")}:${seconds
-            .toString()
-            .padStart(2, "0")}`;
-    };
+    // const formatTime = () => {
+    //     const minutes = Math.floor(secondsLeft / 60);
+    //     const seconds = secondsLeft % 60;
+    //     return `${minutes.toString().padStart(2, "0")}:${seconds
+    //         .toString()
+    //         .padStart(2, "0")}`;
+    // };
 
     return (
         <Box>

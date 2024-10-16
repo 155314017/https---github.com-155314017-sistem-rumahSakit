@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Box,
   CardMedia,
@@ -17,7 +16,7 @@ import AlertSuccess from "../../../components/small/AlertSuccess";
 import CustomButton from "../../../components/small/CustomButton";
 import OtpInput from "react-otp-input";
 import "react-phone-input-2/lib/style.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object({
   nik: Yup.string()
@@ -46,8 +45,8 @@ export default function LoginPasien() {
   const [showLogin, setShowLogin] = useState(true);
   const [showEmailChanged, setShowEmailChanged] = useState(true);
   const [emailError, setEmailError] = useState(false);
-  const [nikError, setNikError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
+  const [, setNikError] = useState(false);
+  const [, setPasswordError] = useState(false);
 
   const [showAlert, setShowAlert] = useState(false);
   const [isCounting, setIsCounting] = useState(false);
@@ -58,12 +57,12 @@ export default function LoginPasien() {
 
   const navigate = useNavigate();
 
-  const otpFormShown = () => {
-    // setShowEmailChanged(false);
+  // const otpFormShown = () => {
+  //   // setShowEmailChanged(false);
 
 
-    setOtp("");
-  };
+  //   setOtp("");
+  // };
 
   const handleClick = () => {
     setShowLogin(true);

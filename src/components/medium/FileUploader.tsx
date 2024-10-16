@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { Button, Typography, Box, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const FileUploader: React.FC = () => {
   const [fileName, setFileName] = useState<string | null>(null);
-  const [base64String, setBase64String] = useState<string | null>(null);
+  const [, setBase64String] = useState<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
