@@ -17,7 +17,7 @@ import AlertSuccess from "../../../components/small/AlertSuccess";
 import CustomButton from "../../../components/small/CustomButton";
 import OtpInput from "react-otp-input";
 import "react-phone-input-2/lib/style.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object({
     nik: Yup.string()
@@ -55,6 +55,8 @@ export default function RegisterPasien() {
     const [resendSuccess, setResendSuccess] = useState(false);
     const [loginSuccess, setLoginSuccess] = useState(false);
     const [otp, setOtp] = useState("");
+
+    const navigate = useNavigate();
 
     const otpFormShown = () => {
         // setShowEmailChanged(false);
@@ -318,8 +320,8 @@ export default function RegisterPasien() {
                                                 </Typography>
                                             )}
 
-                                            <Button
-                                                href="/register/pasien/baru"
+                                            <Button 
+                                                onClick={() => navigate('/register/pasien/baru') }
                                                 type="submit"
                                                 variant="contained"
                                                 color="primary"

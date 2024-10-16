@@ -17,7 +17,7 @@ import AlertSuccess from "../../../components/small/AlertSuccess";
 import CustomButton from "../../../components/small/CustomButton";
 import OtpInput from "react-otp-input";
 import "react-phone-input-2/lib/style.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object({
   nik: Yup.string()
@@ -56,8 +56,11 @@ export default function LoginPasien() {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [otp, setOtp] = useState("");
 
+  const navigate = useNavigate();
+
   const otpFormShown = () => {
     // setShowEmailChanged(false);
+
 
     setOtp("");
   };
@@ -425,9 +428,8 @@ export default function LoginPasien() {
                                 width: "100%",
                                 height: "48px",
                                 textAlign: "center",
-                                border: `1px solid ${
-                                  touched.otp && errors.otp ? "red" : "#8F85F3"
-                                }`,
+                                border: `1px solid ${touched.otp && errors.otp ? "red" : "#8F85F3"
+                                  }`,
                                 borderRadius: "8px",
                                 fontSize: "20px",
                                 margin: "0 4px",
@@ -476,25 +478,24 @@ export default function LoginPasien() {
                               : "Kirim ulang tautan"}
                           </Typography>
                         </Box>
-                        <Link to={"/register/penanggungJawab"}>
-                          <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            onClick={otpFormShown}
-                            fullWidth
-                            sx={{
-                              width: "100%",
-                              height: "48px",
-                              marginTop: "20px",
-                              backgroundColor: "#8F85F3",
-                              ":hover": { backgroundColor: "#D5D1FB" },
-                            }}
-                            disabled={!isValid || !dirty}
-                          >
-                            Verifikasi
-                          </Button>
-                        </Link>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          // onClick={otpFormShown}
+                          onClick={() => navigate('/register/penanggungJawab')}
+                          fullWidth
+                          sx={{
+                            width: "100%",
+                            height: "48px",
+                            marginTop: "20px",
+                            backgroundColor: "#8F85F3",
+                            ":hover": { backgroundColor: "#D5D1FB" },
+                          }}
+                          disabled={!isValid || !dirty}
+                        >
+                          Verifikasi
+                        </Button>
                       </Box>
                     </Form>
                   )}
