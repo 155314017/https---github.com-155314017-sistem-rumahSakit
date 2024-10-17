@@ -167,7 +167,7 @@ export default function TambahPasienBPJS() {
                         </Box>
                     </Box>
                     {/* ---------- */}
-                    <Typography fontSize="20px" fontWeight="700">Formulir pendaftaran pasien BPJS </Typography>
+                    <Typography fontSize="20px" fontWeight="700" maxWidth={'20%'}>Formulir pendaftaran pasien BPJS </Typography>
                     <Box
                         sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, gap: 42 }}
                     >

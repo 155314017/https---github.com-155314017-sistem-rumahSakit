@@ -161,7 +161,7 @@ export default function TambahPasienUmum() {
                         </Box>
                     </Box>
                     {/* ---------- */}
-                    <Typography fontSize="20px" fontWeight="700">Formulir pendafataran pasien Umum</Typography>
+                    <Typography fontSize="20px" fontWeight="700" maxWidth={'20%'}>Formulir pendafataran pasien Umum</Typography>
                     <Box
                         sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, gap: 42 }}
                     >
