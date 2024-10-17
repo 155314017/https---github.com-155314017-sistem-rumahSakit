@@ -41,6 +41,8 @@ import RawatJalanUmum from './pages/rawatJalan/pendaftaranPasien/RawatJalanUmum'
 import TambahPasien from './pages/pasien/TambahPasien';
 import TambahPasienBPJS from './pages/pasien/TambahPasienBPJS';
 import TambahPasienUmum from './pages/pasien/TambahPasienUmum';
+import EditPasienBPJS from './pages/pasien/EditPasienBPJS';
+import EditPasienUmum from './pages/pasien/EditPasienUmum';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -113,6 +115,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/pasien" element={<Pasien/>} />
         <Route path="/tambahPasien/BPJS" element={<TambahPasienBPJS/>} />
         <Route path="/tambahPasien/Umum" element={<TambahPasienUmum/>} />
+        <Route path="/editPasien/BPJS" element={<EditPasienBPJS/>} />
+        <Route path="/editPasien/Umum" element={<EditPasienUmum/>} />
 
 
         {/* <Route path="/about" element={<About />} /> */}
