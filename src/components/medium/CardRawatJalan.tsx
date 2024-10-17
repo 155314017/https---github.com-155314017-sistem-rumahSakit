@@ -13,7 +13,7 @@ export default function CardRawatJalan({ title, text }: Props) {
             sx={{
                 display: "flex",
                 flexDirection: "column",
-                width: "386px",
+                width: "95%",
                 height: "128px",
                 borderRadius: "24px",
                 backgroundColor: "#F1F0FE",

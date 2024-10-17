@@ -51,7 +51,7 @@ export default function KategoriPasien() {
         }}
       >
 
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "14px", width:'80%' }}>
           <Typography
             sx={{ fontSize: "32px", fontWeight: "600", lineHeight: "34px" }}
           >
@@ -93,7 +93,7 @@ export default function KategoriPasien() {
                 onClick={() => navigate('/register/penanggungJawab') }
                 fullWidth
                 sx={{
-                  width: "434px",
+                  width: "100%",
                   height: "44px",
                   marginTop: "20px",
                   backgroundColor: "transparent",

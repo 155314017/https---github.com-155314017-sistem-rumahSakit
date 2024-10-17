@@ -1,16 +1,21 @@
+import * as React from 'react';
 import { Box, Grid } from "@mui/system";
 import { Typography } from "@mui/material";
 import SideBar from "../../components/SideBar/SideBar";
 import Header from "../../components/medium/Header";
 import MediumCard from "../../components/medium/MediumCard";
-import CardAdd from "../../components/medium/CardAdd";
+import CardAddOnClick from "../../components/medium/CardAddOnClick";
+import TablePasien from "./TablePasien";
 
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import TablePasien from "./TablePasien";
+import ModalKategoriPasien from '../../components/small/ModalKategoriPasien';
 
 export default function Pasien() {
+    // Deklarasikan state `open` di dalam fungsi komponen
+    const [open, setOpen] = React.useState<boolean>(false);
+
     return (
         <Box>
             <SideBar />
@@ -23,11 +28,18 @@ export default function Pasien() {
                     </Typography>
                     <Grid container spacing={3} flex={1} mb={3}>
                         <MediumCard icon={BusinessOutlinedIcon} title="Total Pasien" subtitle="899" />
-                        <CardAdd icon={AddBoxIcon} title="Tambah Pasien" link="/tambahPasien" />
+                        <CardAddOnClick
+                            icon={AddBoxIcon}
+                            title="Tambah Pasien"
+                            link="/add-patient" 
+                            onClick={() => setOpen(true)} 
+                        />
                     </Grid>
-                    <TablePasien/>
+                    <TablePasien />
                 </Box>
             </Box>
+
+            <ModalKategoriPasien open={open} onClose={() => setOpen(false)} />
         </Box>
     );
 }
