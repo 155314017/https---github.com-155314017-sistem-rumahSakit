@@ -5,116 +5,31 @@ import {
     Typography,
     Button,
     FormControl,
-    OutlinedInput,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody,
-    Link,
     FormControlLabel,
     Radio,
     RadioGroup,
-    TableContainer,
     FormLabel,
     InputLabel,
     Select,
     MenuItem,
     TextField,
-    CardMedia
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import bgImage from "../../assets/img/String.png";
-import DropdownList from "../../components/small/DropdownList";
-import { styled } from "@mui/material/styles";
-import DatePickerCustom from '../../components/inputComponent/DatePickerCustom';
 import PhoneInputComponent from '../../components/inputComponent/PhoneInputComponent';
-import SearchBar from '../../components/small/SearchBar';
-import DataMenu from '../../dummyData/dataMenu';
-import RadioButtonsGroup from '../../components/medium/RadoButtonsGroup';
-import DropDownListPenanggungJawab from '../../components/inputComponent/DropDownListPenanggungJawab';
 import FileUploader from '../../components/medium/FileUploader';
 import CalenderPopover from '../../components/medium/CalenderPopover';
 import { doctors } from '../../dummyData/dummyData';
-import PoliSelect from '../../components/inputComponent/PoliSelect';
-
 
 export default function TambahPasienUmum() {
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const page = 2;
-    const rowsPerPage = 10;
-
-    // const datas = DataPegawai;
-    const datas = DataMenu;
-
-
-    const StyledTableRow = styled(TableRow)(({ theme }) => ({
-        "&:nth-of-type(odd)": {
-            backgroundColor: theme.palette.action.hover,
-        },
-        // hide last border
-        "&:last-child td, &:last-child th": {
-            border: 0,
-        },
-    }));
-
-    const StyledTableContainer = styled(TableContainer)`
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #8f85f3;
-    border-radius: 10px;
-    border: 2px solid #f1f1f1;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: #6c63ff;
-    cursor: pointer;
-  }
-`;
-
-    const displayedData = datas.slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-    );
-
-    const sortir = [
-        { value: 1, label: "Role Pegawai" },
-        { value: 2, label: "Role Pegawai" },
-        { value: 3, label: "Role Pegawai" },
-    ];
-
-    const urutkan = [
-        { value: 1, label: "Terbaru" },
-        { value: 2, label: "Terlama" },
-        { value: 3, label: "Nama Pegawai A-Z" },
-        { value: 4, label: "Nama Pegawai Z-A" },
-    ];
-
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
         { label: "Pasien", href: "/pasien" },
         { label: "Tambah Pasien", href: "/tambahPasien/Umum" },
     ];
-
-    const rolePegawai = [
-        { value: 1, label: "Dokter Spesialis" },
-        { value: 2, label: "Dokter Umum" },
-        { value: 3, label: "Customer Services" },
-        { value: 4, label: "Manajemen" },
-    ];
-
-    const handleSelectionChange = (selectedValue: string) => {
-        console.log("Selected Value:", selectedValue);
-    };
 
     const formik = useFormik({
         initialValues: {

@@ -38,7 +38,6 @@ import KategoriPasien from './pages/login/loginPasien/KategoriPasien';
 import RegisterPasien from './pages/login/loginPasien/RegisterPasien';
 import RawatJalanBPJS from './pages/rawatJalan/pendaftaranPasien/RawatJalanBPJS';
 import RawatJalanUmum from './pages/rawatJalan/pendaftaranPasien/RawatJalanUmum';
-import TambahPasien from './pages/pasien/TambahPasien';
 import TambahPasienBPJS from './pages/pasien/TambahPasienBPJS';
 import TambahPasienUmum from './pages/pasien/TambahPasienUmum';
 import EditPasienBPJS from './pages/pasien/EditPasienBPJS';
