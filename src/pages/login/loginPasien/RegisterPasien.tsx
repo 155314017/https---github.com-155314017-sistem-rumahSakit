@@ -135,8 +135,8 @@ export default function RegisterPasien() {
     // };
 
     return (
-        <Box>
-            <Box>
+        <Box  >
+            <Box >
                 <Box sx={{ position: "relative" }}>
                     <CardMedia
                         component="img"
@@ -206,6 +206,7 @@ export default function RegisterPasien() {
                             bottom: "0",
                             width: "50%",
                             flexDirection: "column",
+                            bgcolor:'#ffff'
                         }}
                     >
                         <Box sx={{ width: "80%" }}>

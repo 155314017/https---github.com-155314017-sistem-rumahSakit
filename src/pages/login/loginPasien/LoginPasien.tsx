@@ -138,7 +138,7 @@ export default function LoginPasien() {
   };
 
   return (
-    <Box>
+    <Box >
       <Box>
         <Box sx={{ position: "relative" }}>
           <CardMedia
@@ -206,9 +206,11 @@ export default function LoginPasien() {
               position: "absolute",
               right: "0",
               top: "0",
-              bottom: "0",
               width: "50%",
               flexDirection: "column",
+              gap: 5,
+              height: "100vh",
+              bgcolor: "#fff",
             }}
           >
             <Box sx={{ width: "80%" }}>
@@ -482,7 +484,7 @@ export default function LoginPasien() {
                           variant="contained"
                           color="primary"
                           // onClick={otpFormShown}
-                          onClick={() => navigate('/dashboard')}
+                          onClick={() => navigate('/register/pasien')}
                           fullWidth
                           sx={{
                             width: "100%",
