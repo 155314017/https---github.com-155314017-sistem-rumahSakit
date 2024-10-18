@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
     Container,
     Box,
@@ -11,11 +11,11 @@ import {
     TableRow,
     TableCell,
     TableBody,
-    Link,
     FormControlLabel,
     Radio,
     RadioGroup,
-    TableContainer
+    TableContainer,
+    Checkbox
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -25,17 +25,20 @@ import DropdownList from "../../components/small/DropdownList";
 import { styled } from "@mui/material/styles";
 import DatePickerCustom from '../../components/inputComponent/DatePickerCustom';
 import PhoneInputComponent from '../../components/inputComponent/PhoneInputComponent';
-import SearchBar from '../../components/small/SearchBar';
-import DataMenu from '../../dummyData/dataMenu';
 
 
 export default function TambahPegawai() {
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const page = 2;
-    const rowsPerPage = 10;
 
-    // const datas = DataPegawai;
-    const datas = DataMenu;
+
+    const labels = [
+        "Pilih semua menu",
+        "Dashboard Admin",
+        "Dashboard Dokter",
+        "Dashboard Lab",
+        "Dashboard Farmasi",
+        "Dashboard Kasir",
+    ];
 
 
     const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -69,23 +72,6 @@ export default function TambahPegawai() {
   }
 `;
 
-    const displayedData = datas.slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-    );
-
-    const sortir = [
-        { value: 1, label: "Role Pegawai" },
-        { value: 2, label: "Role Pegawai" },
-        { value: 3, label: "Role Pegawai" },
-    ];
-
-    const urutkan = [
-        { value: 1, label: "Terbaru" },
-        { value: 2, label: "Terlama" },
-        { value: 3, label: "Nama Pegawai A-Z" },
-        { value: 4, label: "Nama Pegawai Z-A" },
-    ];
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
@@ -100,9 +86,8 @@ export default function TambahPegawai() {
         { value: 4, label: "Manajemen" },
     ];
 
-    const handleSelectionChange = (selectedValue: string) => {
-        console.log("Selected Value:", selectedValue);
-    };
+
+
 
     const formik = useFormik({
         initialValues: {
@@ -128,6 +113,7 @@ export default function TambahPegawai() {
             return { color: "black", cursor: "pointer" };
         }
     };
+
 
 
 
@@ -167,7 +153,51 @@ export default function TambahPegawai() {
             };
         }
     };
+    // State untuk mengelola status checkbox
+    const [checkedItems, setCheckedItems] = useState(Array(labels.length).fill(false));
+    const [actionCheckboxes, setActionCheckboxes] = useState({
+        view: false,
+        edit: false,
+        delete: false,
+    });
 
+    // State untuk checkbox "Pilih semua"
+    const [selectAllChecked, setSelectAllChecked] = useState(false);
+
+    // Handler untuk checkbox "Pilih semua tindakan"
+    const handleSelectAllActions = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const isChecked = event.target.checked;
+        setSelectAllChecked(isChecked);
+        setActionCheckboxes({
+            view: isChecked,
+            edit: isChecked,
+            delete: isChecked,
+        });
+    };
+
+    // Handler untuk checkbox individual
+    const handleIndividualCheckboxChange = (key: keyof typeof actionCheckboxes) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        const updatedCheckboxes = {
+            ...actionCheckboxes,
+            [key]: event.target.checked,
+        };
+        setActionCheckboxes(updatedCheckboxes);
+
+        setSelectAllChecked(Object.values(updatedCheckboxes).every(item => item)); 
+    };
+
+
+    const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const isChecked = event.target.checked;
+        setCheckedItems(checkedItems.map(() => isChecked));
+    };
+
+    // Handler untuk checkbox individual
+    const handleCheckboxChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        const updatedCheckedItems = [...checkedItems];
+        updatedCheckedItems[index] = event.target.checked;
+        setCheckedItems(updatedCheckedItems);
+    };
 
     return (
         <Container sx={{ py: 2 }}>
@@ -418,24 +448,6 @@ export default function TambahPegawai() {
                         <Box mt={3} >
                             <Typography fontWeight={600} fontSize={"16px"} mb={4} >1. Hak Akses Pegawai</Typography>
                             <Box>
-                                <Box
-                                    mt={3}
-                                    display={"flex"}
-                                    justifyContent={"space-between"}
-                                    sx={{ gap: 3 }}
-                                >
-                                    <SearchBar />
-                                    <DropdownList
-                                        options={sortir}
-                                        placeholder="Sortir"
-                                        onChange={handleSelectionChange}
-                                    />
-                                    <DropdownList
-                                        options={urutkan}
-                                        placeholder="Urutkan"
-                                        onChange={handleSelectionChange}
-                                    />
-                                </Box>
 
                                 <Box mt={3}>
                                     <StyledTableContainer
@@ -451,16 +463,16 @@ export default function TambahPegawai() {
                                             <TableHead>
                                                 <TableRow>
                                                     <TableCell
-                                                        width={"10%"}
+                                                        width={"15%"}
                                                         sx={{
                                                             fontSize: "14px",
                                                             fontWeight: 700,
                                                             color: "#292B2C",
                                                             bgcolor: "#F1F0FE",
                                                         }}
-                                                        align="center"
+                                                        align="left"
                                                     >
-                                                        NIP
+                                                        Nama Menu
                                                     </TableCell>
                                                     <TableCell
                                                         width={"15%"}
@@ -472,153 +484,157 @@ export default function TambahPegawai() {
                                                         }}
                                                         align="left"
                                                     >
-                                                        Nama Pegawai
-                                                    </TableCell>
-                                                    <TableCell
-                                                        width={"12%"}
-                                                        sx={{
-                                                            fontSize: "14px",
-                                                            fontWeight: 700,
-                                                            color: "#292B2C",
-                                                            bgcolor: "#F1F0FE",
-                                                        }}
-                                                        align="left"
-                                                    >
-                                                        Role Pegawai
-                                                    </TableCell>
-                                                    <TableCell
-                                                        width={"12%"}
-                                                        sx={{
-                                                            fontSize: "14px",
-                                                            fontWeight: 700,
-                                                            color: "#292B2C",
-                                                            bgcolor: "#F1F0FE",
-                                                        }}
-                                                        align="center"
-                                                    >
-                                                        Menu Akses
-                                                    </TableCell>
-                                                    <TableCell
-                                                        width={"15%"}
-                                                        sx={{
-                                                            fontSize: "14px",
-                                                            fontWeight: 700,
-                                                            color: "#292B2C",
-                                                            bgcolor: "#F1F0FE",
-                                                        }}
-                                                        align="center"
-                                                    >
-                                                        Detail Akses
-                                                    </TableCell>
-                                                    <TableCell
-                                                        width={"15%"}
-                                                        sx={{
-                                                            fontSize: "14px",
-                                                            fontWeight: 700,
-                                                            color: "#292B2C",
-                                                            bgcolor: "#F1F0FE",
-                                                        }}
-                                                        align="center"
-                                                    >
-                                                        Aksi
+                                                        Tindakan Akses
                                                     </TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                {displayedData.map((data, index) => (
+                                                {/* Checkbox Pilih Semua */}
+                                                <StyledTableRow>
+                                                    <TableCell
+                                                        sx={{ color: "#292B2C", fontSize: "14px" }}
+                                                        align="left"
+                                                    >
+                                                        <FormControlLabel
+                                                            sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
+                                                            control={<Checkbox sx={{
+                                                                color: '#A8A8BD',
+                                                                borderRadius: '4px',
+                                                                '&.Mui-checked': {
+                                                                    color: '#7367F0',
+                                                                },
+                                                            }} checked={checkedItems.every(Boolean)} onChange={handleSelectAll} />}
+                                                            label="Pilih semua menu"
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell
+                                                        align="left"
+                                                        sx={{ color: "#292B2C", fontSize: "14px", textTransform: "capitalize" }}
+                                                    >
+                                                        <FormControlLabel
+                                                            sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
+                                                            control={
+                                                                <Checkbox
+                                                                    sx={{
+                                                                        color: '#A8A8BD',
+                                                                        borderRadius: '4px',
+                                                                        '&.Mui-checked': {
+                                                                            color: '#7367F0',
+                                                                        },
+                                                                    }}
+                                                                    checked={selectAllChecked}
+                                                                    onChange={handleSelectAllActions}
+                                                                />
+                                                            }
+                                                            label="Pilih semua tindakan"
+                                                        />
+                                                    </TableCell>
+                                                </StyledTableRow>
+
+                                                {labels.slice(1).map((label, index) => (
                                                     <StyledTableRow key={index}>
                                                         <TableCell
-                                                            sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                                                            align="center"
+                                                            sx={{ color: "#292B2C", fontSize: "14px" }}
+                                                            align="left"
                                                         >
-                                                            {data.nip}
+                                                            <FormControlLabel
+                                                                sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
+                                                                control={<Checkbox
+                                                                    sx={{
+                                                                        color: '#A8A8BD',
+                                                                        borderRadius: '4px',
+                                                                        '&.Mui-checked': {
+                                                                            color: '#7367F0',
+                                                                        },
+                                                                    }}
+                                                                    checked={checkedItems[index + 1]}
+                                                                    onChange={handleCheckboxChange(index + 1)}
+                                                                />}
+                                                                label={label}
+                                                            />
                                                         </TableCell>
                                                         <TableCell
-                                                            sx={[
-                                                                {
-                                                                    color: "#292B2C",
-                                                                    fontSize: "14px",
-                                                                    overflow: "hidden",
-                                                                    textOverflow: "ellipsis",
-                                                                    whiteSpace: "nowrap",
-                                                                    maxWidth: "150px",
-                                                                    textTransform: "capitalize",
-                                                                },
-                                                            ]}
+                                                            align="left"
+                                                            sx={{ color: "#292B2C", fontSize: "14px", textTransform: "capitalize" }}
                                                         >
-                                                            {data.name}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            sx={[
-                                                                {
-                                                                    color: "#292B2C",
-                                                                    fontSize: "14px",
-                                                                    textTransform: "capitalize",
-                                                                },
-                                                            ]}
-                                                        >
-                                                            {data.role}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            align="center"
-                                                            sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                                                        >
-                                                            {data.menuAkses}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            align="center"
-                                                            sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                                                        >
-                                                            {data.detailAkses}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            align="center"
-                                                            sx={[
-                                                                {
-                                                                    color: "#292B2C",
-                                                                    fontSize: "14px",
-                                                                    textTransform: "capitalize",
-                                                                },
-                                                            ]}
-                                                        >
-                                                            <Link
-                                                                href="#"
-                                                                mr={2}
-                                                                underline="hover"
-                                                                sx={{
-                                                                    textTransform: "capitalize",
-                                                                    color: "#8F85F3",
-                                                                }}
-                                                            >
-                                                                Hapus
-                                                            </Link>
-                                                            <Link
-                                                                href="#"
-                                                                mr={2}
-                                                                underline="hover"
-                                                                sx={{
-                                                                    textTransform: "capitalize",
-                                                                    color: "#8F85F3",
-                                                                }}
-                                                            >
-                                                                Ubah
-                                                            </Link>
-                                                            <Link
-                                                                href="/detailPegawai"
-                                                                underline="hover"
-                                                                sx={{
-                                                                    textTransform: "capitalize",
-                                                                    color: "#8F85F3",
-                                                                }}
-                                                            >
-                                                                Lihat selengkapnya
-                                                            </Link>
+                                                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                                <FormControlLabel
+                                                                    sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
+                                                                    control={
+                                                                        <Checkbox
+                                                                            sx={{
+                                                                                color: '#A8A8BD',
+                                                                                borderRadius: '4px',
+                                                                                '&.Mui-checked': {
+                                                                                    color: '#7367F0',
+                                                                                },
+                                                                            }}
+                                                                            checked={actionCheckboxes.view}
+                                                                            onChange={handleIndividualCheckboxChange('view')}
+                                                                        />
+                                                                    }
+                                                                    label="View"
+                                                                />
+                                                                <FormControlLabel
+                                                                    sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
+                                                                    control={
+                                                                        <Checkbox
+                                                                            sx={{
+                                                                                color: '#A8A8BD',
+                                                                                borderRadius: '4px',
+                                                                                '&.Mui-checked': {
+                                                                                    color: '#7367F0',
+                                                                                },
+                                                                            }}
+                                                                            checked={actionCheckboxes.edit}
+                                                                            onChange={handleIndividualCheckboxChange('edit')}
+                                                                        />
+                                                                    }
+                                                                    label="Edit"
+                                                                />
+                                                                <FormControlLabel
+                                                                    sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
+                                                                    control={
+                                                                        <Checkbox
+                                                                            sx={{
+                                                                                color: '#A8A8BD',
+                                                                                borderRadius: '4px',
+                                                                                '&.Mui-checked': {
+                                                                                    color: '#7367F0',
+                                                                                },
+                                                                            }}
+                                                                            checked={actionCheckboxes.delete}
+                                                                            onChange={handleCheckboxChange(index + 1)}
+                                                                        />
+                                                                    }
+                                                                    label="Delete"
+                                                                />
+                                                            </Box>
                                                         </TableCell>
                                                     </StyledTableRow>
                                                 ))}
                                             </TableBody>
                                         </Table>
                                     </StyledTableContainer>
+                                    <Button
+                                        type="submit"
+                                        // onClick={showTemporaryAlertSuccess}
+                                        // onClick={() => setCurrentPage(2)}
+                                        variant="contained"
+                                        color="inherit"
+                                        sx={{
+                                            mt: 8,
+                                            width: "100%",
+                                            bgcolor: "#8F85F3",
+                                            color: "#fff",
+                                            textTransform: "none",
+                                            borderRadius: "8px",
+                                            ":hover": { bgcolor: "#a098f5" },
+                                        }}
+                                        // disabled={!formik.isValid || !formik.dirty}
+                                    >
+                                        Selanjutnya
+                                    </Button>
                                 </Box>
                             </Box>
                         </Box>
