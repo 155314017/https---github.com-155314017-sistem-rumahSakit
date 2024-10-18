@@ -23,11 +23,11 @@ import CustomButton from "../../../components/small/CustomButton";
 import LabelHandler from "../../../components/small/LabelHandler";
 import logo from "../../../img/St.carolus.png";
 import { useNavigate } from "react-router-dom";
+import Login from "../../../services/Admin Tenant/Auth/Login";
 
 const validationSchema = Yup.object({
   email: Yup.string().email("Email tidak valid").required("Email wajib diisi"),
   password: Yup.string()
-    .min(6, "Kata sandi harus terdiri dari minimal 6 karakter")
     .required("Kata sandi wajib diisi"),
 });
 
@@ -36,7 +36,7 @@ interface FormValues {
   password: string;
 }
 
-export default function Login() {
+export default function LoginPegawai() {
   const [showPassword, setShowPassword] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
   const [showEmailChanged, setShowEmailChanged] = useState(true);
@@ -83,18 +83,30 @@ export default function Login() {
 
   const validationCheck = async (values: FormValues) => {
     const { email, password } = values;
+    console.log('validator')
 
-    const emailIsValid = email === "admin@mail.com";
-    const passwordIsValid = password === "admin123";
-    setEmailError(!emailIsValid);
-    setPasswordError(!passwordIsValid);
-
-    if (!emailIsValid || !passwordIsValid) {
-      await showTemporaryAlert();
-      return false;
+    try {
+      console.log('validator API')
+      console.log("validator prepared...")
+      console.log('Memanggil API Login dengan email dan password:', email, password);
+      const response = await Login(email, password);
+      console.log("validator pass")
+      console.log(response)
+      if (response.success) {
+        console.log('validator sukses')
+        navigate("/pegawai");
+        return true;
+      } else {
+        console.log('validator gagal')
+        await showTemporaryAlert();
+        return false;
+      }
+    } catch (error) {
+      console.error("Terjadi kesalahan saat memanggil API:", error);
+      throw error;  
     }
-    return true;
   };
+
 
   useEffect(() => {
     let timer: ReturnType<typeof setInterval>;
@@ -331,7 +343,7 @@ export default function Login() {
                         />
                       </Box>
                       <Button
-                        onClick={() => navigate("/pegawai")}
+                        onClick={() => validationCheck}
                         type="submit"
                         variant="contained"
                         color="primary"

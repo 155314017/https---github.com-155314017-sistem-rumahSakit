@@ -154,51 +154,108 @@ export default function TambahPegawai() {
         }
     };
     // State untuk mengelola status checkbox
-    const [checkedItems, setCheckedItems] = useState(Array(labels.length).fill(false));
-    const [actionCheckboxes, setActionCheckboxes] = useState({
-        view: false,
-        edit: false,
-        delete: false,
-    });
+    const [checkedItems, setCheckedItems] = useState(labels.slice(0).map(() => false));
 
-    // State untuk checkbox "Pilih semua"
+    const [menuActions, setMenuActions] = useState(
+
+        labels.slice(1).map(() => ({
+
+            view: false,
+
+            edit: false,
+
+            delete: false,
+
+        }))
+
+    );
+
     const [selectAllChecked, setSelectAllChecked] = useState(false);
 
-    // Handler untuk checkbox "Pilih semua tindakan"
-    const handleSelectAllActions = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const isChecked = event.target.checked;
-        setSelectAllChecked(isChecked);
-        setActionCheckboxes({
-            view: isChecked,
-            edit: isChecked,
-            delete: isChecked,
-        });
-    };
-
     // Handler untuk checkbox individual
-    const handleIndividualCheckboxChange = (key: keyof typeof actionCheckboxes) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        const updatedCheckboxes = {
-            ...actionCheckboxes,
-            [key]: event.target.checked,
-        };
-        setActionCheckboxes(updatedCheckboxes);
 
-        setSelectAllChecked(Object.values(updatedCheckboxes).every(item => item)); 
+    const handleCheckboxChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+
+        const updatedCheckedItems = [...checkedItems];
+
+        updatedCheckedItems[index] = event.target.checked;
+
+        setCheckedItems(updatedCheckedItems);
+
+    };
+    const handleSelectAllMenus = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+        const isChecked = event.target.checked;
+
+        setCheckedItems(checkedItems.map(() => isChecked)); // Update semua checkbox menu
+
+
+        // Update status menuActions untuk semua menu
+
+        const updatedMenuActions = menuActions.map(action => ({
+
+            view: isChecked,
+
+            edit: isChecked,
+
+            delete: isChecked,
+
+        }));
+
+        setMenuActions(updatedMenuActions);
+
     };
 
+
+    const handleSelectAllActions = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+        const isChecked = event.target.checked;
+
+        setSelectAllChecked(isChecked);
+
+
+        // Update status tindakan untuk semua menu
+
+        const updatedMenuActions = menuActions.map(action => ({
+
+            view: isChecked,
+
+            edit: isChecked,
+
+            delete: isChecked,
+
+        }));
+
+        setMenuActions(updatedMenuActions);
+
+    };
 
     const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+
         const isChecked = event.target.checked;
+
         setCheckedItems(checkedItems.map(() => isChecked));
+
     };
 
-    // Handler untuk checkbox individual
-    const handleCheckboxChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        const updatedCheckedItems = [...checkedItems];
-        updatedCheckedItems[index] = event.target.checked;
-        setCheckedItems(updatedCheckedItems);
-    };
 
+
+    const handleIndividualCheckboxChange = (menuIndex: number, action: keyof typeof menuActions[0]) => (event: React.ChangeEvent<HTMLInputElement>) => {
+
+        const updatedMenuActions = [...menuActions];
+
+        updatedMenuActions[menuIndex][action] = event.target.checked;
+
+        setMenuActions(updatedMenuActions);
+
+
+        // Update "Pilih semua tindakan" berdasarkan status individual
+
+        const allActionsChecked = updatedMenuActions.every(item => item[action]);
+
+        setSelectAllChecked(allActionsChecked);
+
+    };
     return (
         <Container sx={{ py: 2 }}>
             <BreadCrumbs
@@ -569,8 +626,8 @@ export default function TambahPegawai() {
                                                                                     color: '#7367F0',
                                                                                 },
                                                                             }}
-                                                                            checked={actionCheckboxes.view}
-                                                                            onChange={handleIndividualCheckboxChange('view')}
+                                                                            checked={menuActions[index].view}
+                                                                            onChange={handleIndividualCheckboxChange(index, 'view')}
                                                                         />
                                                                     }
                                                                     label="View"
@@ -586,8 +643,8 @@ export default function TambahPegawai() {
                                                                                     color: '#7367F0',
                                                                                 },
                                                                             }}
-                                                                            checked={actionCheckboxes.edit}
-                                                                            onChange={handleIndividualCheckboxChange('edit')}
+                                                                            checked={menuActions[index].edit}
+                                                                            onChange={handleIndividualCheckboxChange(index, 'edit')}
                                                                         />
                                                                     }
                                                                     label="Edit"
@@ -603,8 +660,8 @@ export default function TambahPegawai() {
                                                                                     color: '#7367F0',
                                                                                 },
                                                                             }}
-                                                                            checked={actionCheckboxes.delete}
-                                                                            onChange={handleCheckboxChange(index + 1)}
+                                                                            checked={menuActions[index].delete}
+                                                                            onChange={handleIndividualCheckboxChange(index, 'delete')}
                                                                         />
                                                                     }
                                                                     label="Delete"
