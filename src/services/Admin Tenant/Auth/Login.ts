@@ -5,15 +5,16 @@ const Login = async (email: string, password: string) => {
   try {
     console.log("inside try");
     const response = await axios.post(
-      "https://hms.3dolphinsocial.com:8083/auth/login",
+      "http://34.128.99.52:8081/login",
       {
         email,
         password,
-      }, {
+      },
+      {
         headers: {
-            'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        timeout: 5000
+        timeout: 15000,
       }
     );
     console.log("ready to return");

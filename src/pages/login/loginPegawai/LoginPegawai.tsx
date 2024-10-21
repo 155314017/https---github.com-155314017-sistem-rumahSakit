@@ -92,18 +92,19 @@ export default function LoginPegawai() {
       const response = await Login(email, password);
       console.log("validator pass")
       console.log(response)
-      if (response.success) {
+      if (response.code === "200") {
         console.log('validator sukses')
         navigate("/pegawai");
         return true;
       } else {
+        // navigate("/pegawai");
         console.log('validator gagal')
         await showTemporaryAlert();
         return false;
       }
     } catch (error) {
       console.error("Terjadi kesalahan saat memanggil API:", error);
-      throw error;  
+      throw error;
     }
   };
 
@@ -148,7 +149,7 @@ export default function LoginPegawai() {
         position: "relative",
         display: "flex",
         flexDirection: "row",
-        
+
       }}
     >
       <Box>
@@ -167,7 +168,7 @@ export default function LoginPegawai() {
         />
       </Box>
 
-     
+
       <Box
         sx={{
           display: "flex",
@@ -185,20 +186,20 @@ export default function LoginPegawai() {
         )}
 
         {showLogin && (
-            <>
+          <>
             {showAlert && (
-                <AlertWarning teks="Email atau kata sandi yang Anda masukkan salah, silahkan coba lagi." />
+              <AlertWarning teks="Email atau kata sandi yang Anda masukkan salah, silahkan coba lagi." />
             )}
 
             <Box
               sx={{
-                  marginY: "auto",
-                  marginX: "auto",
-                  width: "90%",
-                  
-                }}
+                marginY: "auto",
+                marginX: "auto",
+                width: "90%",
+
+              }}
             >
-                <img src={logo} alt="" style={{ width: "100px"}} /> 
+              <img src={logo} alt="" style={{ width: "100px" }} />
               <Typography sx={{ fontSize: "32px", fontWeight: "600" }}>
                 Selamat Datang
               </Typography>
@@ -343,7 +344,6 @@ export default function LoginPegawai() {
                         />
                       </Box>
                       <Button
-                        onClick={() => validationCheck}
                         type="submit"
                         variant="contained"
                         color="primary"
@@ -359,6 +359,7 @@ export default function LoginPegawai() {
                       >
                         Login
                       </Button>
+
 
                       {loginSuccess && (
                         <AlertSuccess label="Login Succeeded!" />
@@ -378,7 +379,7 @@ export default function LoginPegawai() {
                   marginLeft: "50px",
                   marginTop: "auto",
                   marginBottom: "auto",
-                  width:'90%'
+                  width: '90%'
                 }}
               >
                 <Typography
@@ -498,7 +499,7 @@ export default function LoginPegawai() {
                   marginBottom: "auto",
                   display: "flex",
                   flexDirection: "column",
-                  width:'90%'
+                  width: '90%'
                 }}
               >
                 <Typography

@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
 // import App from './App';
 import LoginPasien from './pages/login/loginPasien/LoginPasien';
-import Login from './pages/login/loginPegawai/LoginPegawai';
 import PasienLamaRawatJalanBPJS from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanBPJS';
 import PasienLamaRawatJalanUmum from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanUmum';
 import Home from './pages';
