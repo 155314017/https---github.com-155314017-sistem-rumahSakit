@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import {
     Container,
@@ -183,28 +184,28 @@ export default function TambahPegawai() {
         setCheckedItems(updatedCheckedItems);
 
     };
-    const handleSelectAllMenus = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // const handleSelectAllMenus = (event: React.ChangeEvent<HTMLInputElement>) => {
 
-        const isChecked = event.target.checked;
+    //     const isChecked = event.target.checked;
 
-        setCheckedItems(checkedItems.map(() => isChecked)); // Update semua checkbox menu
+    //     setCheckedItems(checkedItems.map(() => isChecked)); // Update semua checkbox menu
 
 
-        // Update status menuActions untuk semua menu
+    //     // Update status menuActions untuk semua menu
 
-        const updatedMenuActions = menuActions.map(action => ({
+    //     const updatedMenuActions = menuActions.map(action => ({
 
-            view: isChecked,
+    //         view: isChecked,
 
-            edit: isChecked,
+    //         edit: isChecked,
 
-            delete: isChecked,
+    //         delete: isChecked,
 
-        }));
+    //     }));
 
-        setMenuActions(updatedMenuActions);
+    //     setMenuActions(updatedMenuActions);
 
-    };
+    // };
 
 
     const handleSelectAllActions = (event: React.ChangeEvent<HTMLInputElement>) => {
