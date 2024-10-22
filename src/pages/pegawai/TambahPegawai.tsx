@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import {
     Container,
@@ -217,7 +216,7 @@ export default function TambahPegawai() {
 
         // Update status tindakan untuk semua menu
 
-        const updatedMenuActions = menuActions.map(action => ({
+        const updatedMenuActions = menuActions.map(() => ({
 
             view: isChecked,
 
