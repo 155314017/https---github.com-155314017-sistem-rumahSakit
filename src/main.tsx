@@ -58,7 +58,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/tambahAmbulance" element={<TambahAmbulance />} />
 
         {/* Form Login */}
-        <Route path="/" element={<LoginPasien />} />
+        <Route path="/" element={<LoginPegawai/>} />
         <Route path="/login/pegawai" element={<LoginPegawai/>} />
         <Route path="/login/pasien" element={<LoginPasien />} />
 
