@@ -1,26 +1,5 @@
 import axios from "axios";
 
-// interface LoginResponse {
-//   responseCode: string;
-//   statusCode: string;
-//   message: string;
-//   data: {
-//     id: string;
-//     masterUserId: string;
-//     tokenValue: string;
-//     refreshTokenValue: string;
-//     expDate: number;
-//     expRefreshTokenDate: number;
-//     oneTimeUse: boolean;
-//     used: null | string;
-//     updatedBy: null | string;
-//     updatedDateTime: null | string;
-//     createdBy: null | string;
-//     createdDateTime: null | string;
-//     deletedBy: null | string;
-//     deletedDateTime: null | string;
-//   };
-// }
 
 const Login = async (email: string, password: string) => {
   try {

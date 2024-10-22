@@ -17,7 +17,6 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import my from "../../../img/loginImg.png";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import AlertWarning from "../../../components/small/AlertWarning";
 import AlertSuccess from "../../../components/small/AlertSuccess";
 import CustomButton from "../../../components/small/CustomButton";
 import LabelHandler from "../../../components/small/LabelHandler";
@@ -42,7 +41,6 @@ export default function LoginPegawai() {
   const [showEmailChanged, setShowEmailChanged] = useState(true);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
   const [isCounting, setIsCounting] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [resendSuccess, setResendSuccess] = useState(false);
@@ -65,12 +63,7 @@ export default function LoginPegawai() {
     setShowEmailChanged(true);
   };
 
-  const showTemporaryAlert = async () => {
-    setShowAlert(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setShowAlert(false);
-  };
-
+ 
   const showTemporarySuccessLogin = async () => {
     setLoginSuccess(true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -97,6 +90,7 @@ export default function LoginPegawai() {
       console.log("inside 2")
       if (response.code === "200"){
         console.log("sukses ")
+        navigate('/dashboard')
         return true
       } else {
         console.log("gagal ")
@@ -188,9 +182,9 @@ export default function LoginPegawai() {
 
         {showLogin && (
           <>
-            {showAlert && (
+            {/* {showAlert && (
               <AlertWarning teks="Email atau kata sandi yang Anda masukkan salah, silahkan coba lagi." />
-            )}
+            )} */}
 
             <Box
               sx={{
