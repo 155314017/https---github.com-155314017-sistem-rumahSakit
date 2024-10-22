@@ -42,6 +42,7 @@ import TambahPasienUmum from './pages/pasien/TambahPasienUmum';
 import EditPasienBPJS from './pages/pasien/EditPasienBPJS';
 import EditPasienUmum from './pages/pasien/EditPasienUmum';
 import LoginPegawai from './pages/login/loginPegawai/LoginPegawai';
+import AturUlangKataSandiPegawai from './pages/login/loginPegawai/AturUlangKataSandiPegawai';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -61,6 +62,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<LoginPegawai/>} />
         <Route path="/login/pegawai" element={<LoginPegawai/>} />
         <Route path="/login/pasien" element={<LoginPasien />} />
+        <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai/>} />
 
         {/* Form Register */}
         <Route path="/kategori/pasien" element={<KategoriPasien/>} />
