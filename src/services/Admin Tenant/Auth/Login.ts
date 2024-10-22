@@ -5,7 +5,8 @@ const Login = async (email: string, password: string) => {
   try {
     console.log("inside try");
     const response = await axios.post(
-      "http://34.128.99.52:8081/login",
+      // "http://34.128.99.52:8081/login",
+      "https://hms.3dolphinsocial.com:8083/v1/auth/login",
       {
         email,
         password,
@@ -20,7 +21,6 @@ const Login = async (email: string, password: string) => {
     console.log("ready to return");
     return response.data;
   } catch (error) {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     console.log("eror nya karna:", error)
     console.error("API error:", error);
     throw error;
