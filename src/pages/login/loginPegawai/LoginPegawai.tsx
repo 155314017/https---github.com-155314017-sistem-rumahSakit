@@ -82,29 +82,29 @@ export default function LoginPegawai() {
   };
 
   const validationCheck = async (values: FormValues) => {
-    const { email, password } = values;
-    console.log('validator')
-
+    console.log("inside")
     try {
-      console.log('validator API')
-      console.log("validator prepared...")
-      console.log('Memanggil API Login dengan email dan password:', email, password);
+      console.log("inside 1")
+      // const email = "admin@admin.com";
+      // const password = "admin";
+
+      const { email, password } = values;
       const response = await Login(email, password);
-      console.log("validator pass")
-      console.log(response)
-      if (response.code === "200") {
-        console.log('validator sukses')
-        navigate("/pegawai");
-        return true;
+      console.log("Login successful:", response);
+
+      const token = response.data.tokenValue;
+      console.log("Token:", token);
+      console.log("inside 2")
+      if (response.code === "200"){
+        console.log("sukses ")
+        return true
       } else {
-        // navigate("/pegawai");
-        console.log('validator gagal')
-        await showTemporaryAlert();
-        return false;
+        console.log("gagal ")
+        return false
       }
     } catch (error) {
-      console.error("Terjadi kesalahan saat memanggil API:", error);
-      throw error;
+      console.error("Error during login:", error);
+      return false;
     }
   };
 
@@ -178,6 +178,7 @@ export default function LoginPegawai() {
           width: "50%",
           height: "100vh",
           flexDirection: "column",
+          bgcolor:'#ffff'
         }}
       >
 

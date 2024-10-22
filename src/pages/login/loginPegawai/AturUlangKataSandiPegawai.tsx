@@ -17,10 +17,13 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import logo from "../../../img/St.carolus.png";
 import CustomButton from "../../../components/small/CustomButton";
+import { useNavigate } from "react-router-dom";
 
 export default function AturUlangKataSandiPegawai() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -70,16 +73,6 @@ export default function AturUlangKataSandiPegawai() {
                         transform: "translate(-50%, -50%)",
                     }}
                 >
-                    <Typography
-                        sx={{
-                            fontSize: "56px",
-                            fontWeight: "700",
-                            lineHeight: "60px",
-                            color: "white",
-                        }}
-                    >
-                        Mulai permintaan janji temu Anda di sini.
-                    </Typography>
                 </Box>
             </Box>
 
@@ -93,6 +86,7 @@ export default function AturUlangKataSandiPegawai() {
                         width: "50%",
                         height: "100vh",
                         flexDirection: "column",
+                        bgcolor: '#ffff'
                     }}
                 >
                     <Box
@@ -100,6 +94,7 @@ export default function AturUlangKataSandiPegawai() {
                             marginY: "auto",
                             marginX: "auto",
                             width: "90%",
+                            
                         }}
                     >
                         <img src={logo} alt="logo-carolus" />
@@ -146,6 +141,7 @@ export default function AturUlangKataSandiPegawai() {
                                             placeholder="Masukkan kata sandi"
                                             variant="outlined"
                                             type={showPassword ? "text" : "password"}
+                                            
                                             InputProps={{
                                                 endAdornment: (
                                                     <InputAdornment position="end">
@@ -250,7 +246,7 @@ export default function AturUlangKataSandiPegawai() {
                                         }}>
                                         Atur kata sandi
                                     </Button>
-                                    <CustomButton onClick={() => console.log("p") } label="Kembali ke halaman masuk" />
+                                    <CustomButton onClick={ () => navigate('/login/pegawai')} label="Kembali ke halaman masuk" />
                                 </Form>
                             )}
                         </Formik>
