@@ -102,11 +102,11 @@ const RawatJalanUmum: React.FC = () => {
                                     display: "flex",
                                     justifyContent: "center",
                                     p: 5,
-                                    position: "absolute",
+                                    position: "fixed",
                                     right: "0",
                                     top: "0",
-                                    width: "50%",
-
+                                    width: "45.9%",
+                                    bgcolor: '#ffff'
                                 }}
                             >
                                 <Box sx={{ ml: 10, width: '90%' }}>
@@ -278,22 +278,22 @@ const RawatJalanUmum: React.FC = () => {
                                             mt: 4,
                                         }}
                                     >
-                                            <Button
-                                                onClick={() => setSHowFormPage(false)}
-                                                sx={{
-                                                    backgroundColor: "#8F85F3",
-                                                    color: "white",
-                                                    textTransform: "none",
-                                                    width: "100%",
-                                                    padding: "10px 24px",
-                                                    borderRadius: "8px",
-                                                    "&:hover": {
-                                                        backgroundColor: "#7C75E2",
-                                                    },
-                                                }}
-                                            >
-                                                Selesai
-                                            </Button>
+                                        <Button
+                                            onClick={() => setSHowFormPage(false)}
+                                            sx={{
+                                                backgroundColor: "#8F85F3",
+                                                color: "white",
+                                                textTransform: "none",
+                                                width: "100%",
+                                                padding: "10px 24px",
+                                                borderRadius: "8px",
+                                                "&:hover": {
+                                                    backgroundColor: "#7C75E2",
+                                                },
+                                            }}
+                                        >
+                                            Selesai
+                                        </Button>
                                     </Box>
                                 </Box>
                             </Box>
@@ -303,8 +303,23 @@ const RawatJalanUmum: React.FC = () => {
             )}
 
             {!showFormPage && (
-                <Box marginLeft={"60%"} marginTop={"10%"}>
-                    <InformasiTicket />
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        p: 5,
+                        position: "absolute",
+                        right: "0",
+                        top: "0",
+                        width: "45.9%",
+                        height: '91.7vh',
+                        bgcolor: '#ffff'
+
+                    }}
+                >
+                    <Box marginLeft={"10%"} marginTop={"20%"}>
+                        <InformasiTicket />
+                    </Box>
                 </Box>
             )}
         </Box>

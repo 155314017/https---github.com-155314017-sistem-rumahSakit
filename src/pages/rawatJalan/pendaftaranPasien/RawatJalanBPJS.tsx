@@ -97,7 +97,9 @@ const RawatJalanBPJS: React.FC = () => {
                                     position: "absolute",
                                     right: "0",
                                     top: "0",
-                                    width: "50%",
+                                    width: "45.9%",
+                                    height: '91.7vh',
+                                    bgcolor: '#ffff'
 
                                 }}
                             >
@@ -280,8 +282,23 @@ const RawatJalanBPJS: React.FC = () => {
             )}
 
             {!showFormPage && (
-                <Box marginLeft={"60%"} marginTop={"10%"}>
-                    <InformasiTicket />
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        p: 5,
+                        position: "absolute",
+                        right: "0",
+                        top: "0",
+                        width: "45.9%",
+                        height: '91.7vh',
+                        bgcolor: '#ffff'
+
+                    }}
+                >
+                    <Box marginLeft={"10%"} marginTop={"20%"}>
+                        <InformasiTicket />
+                    </Box>
                 </Box>
             )}
         </Box>

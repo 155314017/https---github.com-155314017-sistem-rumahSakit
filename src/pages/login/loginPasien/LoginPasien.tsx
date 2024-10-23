@@ -356,17 +356,18 @@ export default function LoginPasien() {
               sx={{
                 display: "flex",
                 justifyContent: "center",
-                p: 5,
+                alignItems: "center",
                 position: "absolute",
                 right: "0",
                 top: "0",
-                width: "40%",
+                width: "50%",
                 flexDirection: "column",
-                mr: "2.5%",
-                mt: "15%",
+                gap: 5,
+                height: "100vh",
+                bgcolor: "#fff",
               }}
             >
-              <Box >
+              <Box width={'70%'}>
                 <Typography
                   sx={{
                     fontSize: "32px",

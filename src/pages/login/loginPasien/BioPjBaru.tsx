@@ -192,15 +192,15 @@ export default function BioPjBaru() {
                             display: "flex",
                             justifyContent: "center",
                             p: 5,
-                            position: "absolute",
+                            position: "fixed",
                             right: "0",
                             top: "0",
-                            width: "50%",
-                            flexDirection: 'column',
-                            
+                            width: "45.9%",
+                            height:'100vh',
+                            bgcolor: '#ffff'
                         }}
                     >
-                        <Box sx={{ ml: 16, mt: "5%", width: '85%' }}>
+                        <Box sx={{ ml: 8, mt: "5%", width: '85%' }}>
                             <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
                             <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
                                 Silahkan masukkan nomor NIK (Nomor induk kependudukan) penanggung jawab.
