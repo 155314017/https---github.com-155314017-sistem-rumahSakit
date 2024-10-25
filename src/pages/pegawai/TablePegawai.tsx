@@ -11,7 +11,6 @@ import {
   TableCell,
   TableBody,
   Link,
-  TablePagination,
   IconButton,
   Pagination,
 } from "@mui/material";
@@ -68,14 +67,6 @@ export default function TablePegawai() {
 
   const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
-  };
-
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
   };
 
   const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);

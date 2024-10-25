@@ -11,7 +11,6 @@ import {
   TableCell,
   TableBody,
   Link,
-  TablePagination,
   IconButton,
   Modal,
   Button,
@@ -78,7 +77,6 @@ export default function TableAmbulance() {
   const datas = DataAmbulance;
 
   const [openDelete, setOpenDelete] = useState(false);
-  const handleOpen = () => setOpenDelete(true);
   const handleClose = () => setOpenDelete(false);
 
   const [page, setPage] = useState(2);
@@ -87,12 +85,6 @@ export default function TableAmbulance() {
 
   const [open, setOpen] = React.useState<boolean>(false);
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
 
   const displayedData = datas.slice(
     page * rowsPerPage,
