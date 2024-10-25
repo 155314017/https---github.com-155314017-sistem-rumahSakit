@@ -35,10 +35,10 @@ function ModalDeleteConfirmation({ open, onClose }: ModalDeleteConfirmationProps
             }}
         >
             <Box sx={style}>
-                <Typography id="modal-modal-description" sx={{ mt: 2, fontSize: '18px', fontWeight: 600 }}>
+                <Typography id="modal-modal-title" sx={{ mt: 2, fontSize: '18px', fontWeight: 600 }}>
                     Apakah Anda yakin ingin menghapus data ini ?
                 </Typography>
-                <Typography>
+                <Typography id="modal-modal-description" >
                     Jika anda menghapus data ini, maka data yang anda hapus akan hilang selamanya.
                 </Typography>
                 <Box display="flex" justifyContent="flex-start" mt={2}>

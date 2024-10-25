@@ -21,6 +21,8 @@ import TableFasilitas from "../fasilitas/TableFasilitas";
 import TableDokter from "../dokter/TableDokter";
 import TableAmbulance from "../ambulance/TableAmbulance";
 import TableKlinik from "../klinik/TableKlinik";
+import TableKonter from "../konter/TableKonter";
+import TablePasien from "../pasien/TablePasien";
 
 export default function Dashboard() {
   return (
@@ -73,6 +75,8 @@ export default function Dashboard() {
         <TableDokter />
         <TableAmbulance />
         <TableKlinik />
+        <TableKonter/>
+        <TablePasien/>
       </Stack>
     </Box>
   );

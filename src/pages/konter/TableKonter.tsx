@@ -11,7 +11,7 @@ import {
     TableCell,
     TableBody,
     Link,
-    TablePagination,
+    Pagination,
     IconButton,
 } from "@mui/material";
 import SearchBar from "../../components/small/SearchBar";
@@ -23,12 +23,12 @@ import bgImage from "../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import DataKonter from "../../dummyData/dataKonter";
+import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
         backgroundColor: theme.palette.action.hover,
     },
-    // hide last border
     "&:last-child td, &:last-child th": {
         border: 0,
     },
@@ -56,32 +56,18 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 export default function TableKonter() {
-    // const datas = DataGedung;
     const datas = DataKonter;
 
-    const [page, setPage] = useState(2);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [page, setPage] = useState(1);
+    const [rowsPerPage] = useState(10);
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [open, setOpen] = React.useState<boolean>(false);
 
-    const handleChangePage = (
-        _event: React.MouseEvent<HTMLButtonElement> | null,
-        newPage: number
-    ) => {
-        setPage(newPage);
+    const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
     };
 
-    const handleChangeRowsPerPage = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-
-    const displayedData = datas.slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-    );
+    const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
     const urutkan = [
         { value: 1, label: "Nama Konter A-Z" },
@@ -102,8 +88,6 @@ export default function TableKonter() {
         event.preventDefault();
         setOpen(true);
     };
-
-
     return (
         <Box>
             <Box
@@ -136,6 +120,9 @@ export default function TableKonter() {
                     </IconButton>
                 </Box>
 
+                <Box position="absolute" sx={{ top: 0, right: 0 }}>
+                    <img src={bgImage} alt="bg-image" />
+                </Box>
                 {/* membuat bentuk lengkung atas */}
                 <Box
                     position={"absolute"}
@@ -193,10 +180,6 @@ export default function TableKonter() {
                     </Box>
                 </Box>
                 {/* ---------- */}
-
-                <Box position="absolute" sx={{ top: 0, right: 0 }}>
-                    <img src={bgImage} alt="bg-image" />
-                </Box>
                 {!isCollapsed && (
                     <Box>
                         <Box
@@ -226,77 +209,22 @@ export default function TableKonter() {
                                 <Table stickyHeader sx={{ width: "100%" }}>
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell
-                                                width={"12%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="center"
-                                            >
+                                            <TableCell width={"12%"} align="center">
                                                 No. Konter
                                             </TableCell>
-                                            <TableCell
-                                                width={"15%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="left"
-                                            >
+                                            <TableCell width={"15%"} align="left">
                                                 Tipe Konter
                                             </TableCell>
-                                            <TableCell
-                                                width={"15%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="left"
-                                            >
+                                            <TableCell width={"15%"} align="left">
                                                 Nama Konter
                                             </TableCell>
-                                            <TableCell
-                                                width={"15%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="left"
-                                            >
+                                            <TableCell width={"15%"} align="left">
                                                 Jam Operasional
                                             </TableCell>
-                                            <TableCell
-                                                width={"15%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="left"
-                                            >
+                                            <TableCell width={"15%"} align="left">
                                                 Lokasi Konter
                                             </TableCell>
-                                            
-                                            <TableCell
-                                                width={"15%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="center"
-                                            >
+                                            <TableCell width={"15%"} align="center">
                                                 Aksi
                                             </TableCell>
                                         </TableRow>
@@ -304,72 +232,11 @@ export default function TableKonter() {
                                     <TableBody>
                                         {displayedData.map((data, index) => (
                                             <StyledTableRow key={index}>
-                                                <TableCell
-                                                    sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                                                    align="center"
-                                                >
-                                                    {data.no_konter}
-                                                </TableCell>
-                                                <TableCell
-                                                    sx={[
-                                                        {
-                                                            color: "#292B2C",
-                                                            fontSize: "14px",
-                                                            overflow: "hidden",
-                                                            textOverflow: "ellipsis",
-                                                            whiteSpace: "nowrap",
-                                                            maxWidth: "150px",
-                                                            textTransform: "capitalize",
-                                                        },
-                                                    ]}
-                                                >
-                                                    {data.type}
-                                                </TableCell>
-                                                <TableCell
-                                                    sx={[
-                                                        {
-                                                            color: "#292B2C",
-                                                            overflow: "hidden",
-                                                            textOverflow: "ellipsis",
-                                                            whiteSpace: "nowrap",
-                                                            maxWidth: "150px",
-                                                            fontSize: "14px",
-                                                            textTransform: "capitalize",
-                                                        },
-                                                    ]}
-                                                >
-                                                    {data.name}
-                                                </TableCell>
-                                                <TableCell
-                                                    sx={[
-                                                        {
-                                                            color: "#292B2C",
-                                                            overflow: "hidden",
-                                                            textOverflow: "ellipsis",
-                                                            whiteSpace: "nowrap",
-                                                            maxWidth: "150px",
-                                                            fontSize: "14px",
-                                                            textTransform: "capitalize",
-                                                        },
-                                                    ]}
-                                                >
-                                                    {data.operational}
-                                                </TableCell>
-                                                <TableCell
-                                                    sx={[
-                                                        {
-                                                            color: "#292B2C",
-                                                            overflow: "hidden",
-                                                            textOverflow: "ellipsis",
-                                                            whiteSpace: "nowrap",
-                                                            maxWidth: "150px",
-                                                            fontSize: "14px",
-                                                            textTransform: "capitalize",
-                                                        },
-                                                    ]}
-                                                >
-                                                    {data.address}
-                                                </TableCell>
+                                                <TableCell align="center">{data.no_konter}</TableCell>
+                                                <TableCell>{data.type}</TableCell>
+                                                <TableCell>{data.name}</TableCell>
+                                                <TableCell>{data.operational}</TableCell>
+                                                <TableCell>{data.address}</TableCell>
                                                 <TableCell
                                                     align="center"
                                                     sx={[
@@ -392,6 +259,8 @@ export default function TableKonter() {
                                                     >
                                                         Hapus
                                                     </Link>
+
+                                                    <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
                                                     <Link
                                                         href="#"
                                                         mr={2}
@@ -404,7 +273,7 @@ export default function TableKonter() {
                                                         Ubah
                                                     </Link>
                                                     <Link
-                                                        href="/detailKonter"
+                                                        href="/detailRuangan"
                                                         underline="hover"
                                                         sx={{
                                                             textTransform: "capitalize",
@@ -421,42 +290,36 @@ export default function TableKonter() {
                             </StyledTableContainer>
                         </Box>
 
-                        <Stack
-                            spacing={2}
-                            direction={"row"}
-                            justifyContent={"space-between"}
-                            alignItems={"center"}
-                        >
-                            <Typography sx={{ color: "#8F85F3" }}>
-                                Showing {page * rowsPerPage + 1} to{" "}
-                                {Math.min(page * rowsPerPage + rowsPerPage, datas.length)} of{" "}
+                        <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+                            <Typography sx={{ color: "#A8A8BD" }}>
+                                Showing {((page - 1) * rowsPerPage) + 1} to{" "}
+                                {Math.min(page * rowsPerPage, datas.length)} of{" "}
                                 {datas.length} entries
                             </Typography>
-                            <TablePagination
-                                // shape="rounded"
-                                count={datas.length}
-                                rowsPerPageOptions={[10, 25, 100]}
-                                component="div"
-                                rowsPerPage={rowsPerPage}
+                            <Pagination
+                                count={Math.ceil(datas.length / rowsPerPage)}
+                                variant="outlined"
+                                shape="rounded"
                                 page={page}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                onChange={handleChangePage}
                                 sx={{
-                                    display: "flex",
-                                    justifyContent: "flex-end",
-                                    color: "#8F85F3",
                                     "& .MuiPaginationItem-root": {
                                         color: "#8F85F3",
+                                        border: 'none', 
                                     },
                                     "& .Mui-selected": {
                                         backgroundColor: "#8F85F3",
-                                        color: "white",
+                                        bgcolor: '#D5D1FB',
                                     },
                                     "& .MuiPaginationItem-ellipsis": {
-                                        color: "#8F85F3",
+                                        border: 'none', 
+                                    },
+                                    "& .MuiPaginationItem-text": {
+                                        border: 'none', 
                                     },
                                 }}
                             />
+
                         </Stack>
                     </Box>
                 )}

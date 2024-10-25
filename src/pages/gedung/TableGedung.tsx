@@ -13,6 +13,7 @@ import {
   Link,
   TablePagination,
   IconButton,
+  Pagination,
 } from "@mui/material";
 import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
@@ -66,11 +67,8 @@ export default function TableGedung() {
   const [open, setOpen] = React.useState<boolean>(false);
 
 
-  const handleChangePage = (
-    _event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
-    setPage(newPage);
+  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
   };
 
   const handleChangeRowsPerPage = (
@@ -80,10 +78,7 @@ export default function TableGedung() {
     setPage(0);
   };
 
-  const displayedData = datas.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
+  const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const urutkan = [
     { value: 1, label: "Nama Gedung A-Z" },
@@ -369,42 +364,35 @@ export default function TableGedung() {
               </StyledTableContainer>
             </Box>
 
-            <Stack
-              spacing={2}
-              direction={"row"}
-              justifyContent={"space-between"}
-              alignItems={"center"}
-            >
-              <Typography sx={{ color: "#8F85F3" }}>
-                Showing {page * rowsPerPage + 1} to{" "}
-                {Math.min(page * rowsPerPage + rowsPerPage, datas.length)} of{" "}
+            <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+              <Typography sx={{ color: "#A8A8BD" }}>
+                Showing {((page - 1) * rowsPerPage) + 1} to{" "}
+                {Math.min(page * rowsPerPage, datas.length)} of{" "}
                 {datas.length} entries
               </Typography>
-              <TablePagination
-                // shape="rounded"
-                count={datas.length}
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                rowsPerPage={rowsPerPage}
+              <Pagination 
+                count={Math.ceil(datas.length / rowsPerPage)}
+                variant="outlined"
+                shape="rounded"
                 page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                onChange={handleChangePage}
                 sx={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  color: "#8F85F3",
                   "& .MuiPaginationItem-root": {
                     color: "#8F85F3",
+                    border: 'none',
                   },
                   "& .Mui-selected": {
-                    backgroundColor: "#8F85F3",
-                    color: "white",
+                    bgcolor: '#D5D1FB',
                   },
                   "& .MuiPaginationItem-ellipsis": {
-                    color: "#8F85F3",
+                    border: 'none',
+                  },
+                  "& .MuiPaginationItem-text": {
+                    border: 'none',
                   },
                 }}
               />
+
             </Stack>
           </Box>
         )}
