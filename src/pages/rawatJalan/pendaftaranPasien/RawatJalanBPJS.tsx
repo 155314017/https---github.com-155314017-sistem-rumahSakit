@@ -43,265 +43,274 @@ const RawatJalanBPJS: React.FC = () => {
 
 
     return (
-        <Box
-            sx={{
-                position: "relative",
-                display: "flex",
-                flexDirection: "row",
-            }}
-        >
-            <Box>
-                <CardMedia
-                    component="img"
-                    sx={{
-                        width: "50%",
-                        height: "100vh",
-                        objectFit: "cover",
-                        position: "fixed",
-                        top: "0",
-                        left: "0",
-                    }}
-                    image={imagePendaftaran}
-                    alt="Example Image"
-                />
-            </Box>
+        <>
+            <style>
+                {`
+            :root {
+            background-color: #ffff
+            }
+            `}
+            </style>
 
-            {showFormPage && (
-                <Formik<FormValues>
-                    initialValues={{
-                        fullname: "",
-                        phone: "",
-                        relation: "",
-                        transportMethod: "",
-                        poli: "",
-                        docter: "",
-                        operationalDate: "",
-                    }}
-                    validationSchema={validationSchema}
-                    onSubmit={(values) => {
-                        console.log("Form submitted with values:", values);
-                    }}
-                >
-                    {({
-                        values,
-                        errors,
-                        touched,
-                        setFieldValue,
-                    }) => (
-                        <Form>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    p: 5,
-                                    position: "absolute",
-                                    right: "0",
-                                    top: "0",
-                                    width: "45.9%",
-                                    height: '91.7vh',
-                                    bgcolor: '#ffff'
+            <Box
+                sx={{
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "row",
+                }}
+            >
+                <Box>
+                    <CardMedia
+                        component="img"
+                        sx={{
+                            width: "50%",
+                            height: "100vh",
+                            objectFit: "cover",
+                            position: "fixed",
+                            top: "0",
+                            left: "0",
+                        }}
+                        image={imagePendaftaran}
+                        alt="Example Image"
+                    />
+                </Box>
 
-                                }}
-                            >
-                                <Box sx={{ ml: 10, width: '90%' }}>
-                                    <Box>
-                                        <CardMedia
-                                            component="img"
-                                            sx={{
-                                                width: "112px",
-                                                objectFit: "cover",
-                                            }}
-                                            image={logo}
-                                            alt="Example Logo"
-                                        />
-                                    </Box>
+                {showFormPage && (
+                    <Formik<FormValues>
+                        initialValues={{
+                            fullname: "",
+                            phone: "",
+                            relation: "",
+                            transportMethod: "",
+                            poli: "",
+                            docter: "",
+                            operationalDate: "",
+                        }}
+                        validationSchema={validationSchema}
+                        onSubmit={(values) => {
+                            console.log("Form submitted with values:", values);
+                        }}
+                    >
+                        {({
+                            values,
+                            errors,
+                            touched,
+                            setFieldValue,
+                        }) => (
+                            <Form>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        p: 5,
+                                        position: "absolute",
+                                        right: "0",
+                                        top: "0",
+                                        width: "45.9%",
+                                        bgcolor: 'transparent'
 
-                                    <Typography
-                                        sx={{
-                                            fontSize: "32px",
-                                            fontWeight: "600",
-                                            lineHeight: "34px",
-                                            marginTop: 2,
-                                            mb: 5,
-                                            maxWidth: "450px",
-                                        }}
-                                    >
-                                        Formulir pendaftaran pasien BPJS
-                                    </Typography>
-
-
-                                    <Box>
-                                        <Box sx={{ display: "flex", flexDirection: "column" }}>
-                                            <FormControl>
-                                                <Typography>Jenis Kunjungan</Typography>
-                                                <TextField
-                                                    variant="outlined"
-                                                    sx={{
-                                                        width: "100%",
-                                                        borderRadius: "8px",
-                                                        mb: 2,
-                                                        padding: "0",
-                                                        "& .MuiOutlinedInput-root": {
-                                                            height: "44px",
-                                                            padding: "0 12px",
-                                                            border: "1px solid #8F85F3",
-                                                            "& input": {
-                                                                height: "44px",
-                                                                padding: "0",
-                                                            },
-                                                            "& fieldset": {
-                                                                borderColor: "#8F85F3",
-                                                            },
-                                                            "&:hover fieldset": {
-                                                                borderColor: "#7A73E3",
-                                                            },
-                                                            "&.Mui-focused fieldset": {
-                                                                borderColor: "#6B63D1",
-                                                            },
-                                                        },
-                                                    }}
-                                                />
-                                            </FormControl>
-                                            <Typography>Poli yang dituju</Typography>
-                                            <PoliSelect
-                                                value={values.poli}
-                                                onChange={(e) =>
-                                                    setFieldValue("poli", e.target.value)
-                                                }
+                                    }}
+                                >
+                                    <Box sx={{ ml: 10, width: '90%' }}>
+                                        <Box>
+                                            <CardMedia
+                                                component="img"
+                                                sx={{
+                                                    width: "112px",
+                                                    objectFit: "cover",
+                                                }}
+                                                image={logo}
+                                                alt="Example Logo"
                                             />
-                                            {touched.poli && errors.poli && (
-                                                <Typography sx={{ color: "red", fontSize: "12px" }}>
-                                                    {errors.poli}
-                                                </Typography>
-                                            )}
+                                        </Box>
 
-                                            <Box
-                                                display={"flex"}
-                                                flexDirection={"row"}
-                                                justifyContent={"center"}
-                                                alignItems={"center"}
-                                                sx={{ width: "100%" }}
-                                            >
-                                                <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
-                                                    <InputLabel id="doctor-label">
-                                                        Pilih Dokter
-                                                    </InputLabel>
-                                                    <Select
-                                                        labelId="doctor-label"
-                                                        value={values.docter}
-                                                        label="Pilih Dokter"
-                                                        onChange={(e) =>
-                                                            setFieldValue("docter", e.target.value)
-                                                        }
-                                                        sx={{ width: "100%", borderRadius: "8px" }}
-                                                    >
-                                                        {doctors.map((doctor) => (
-                                                            <MenuItem
-                                                                key={doctor.value}
-                                                                value={doctor.value}
-                                                                sx={{ color: "#8F85F3" }}
-                                                            >
-                                                                {doctor.label}
-                                                            </MenuItem>
-                                                        ))}
-                                                    </Select>
+                                        <Typography
+                                            sx={{
+                                                fontSize: "32px",
+                                                fontWeight: "600",
+                                                lineHeight: "34px",
+                                                marginTop: 2,
+                                                mb: 5,
+                                                maxWidth: "450px",
+                                            }}
+                                        >
+                                            Formulir pendaftaran pasien BPJS
+                                        </Typography>
+
+
+                                        <Box>
+                                            <Box sx={{ display: "flex", flexDirection: "column" }}>
+                                                <FormControl>
+                                                    <Typography>Jenis Kunjungan</Typography>
+                                                    <TextField
+                                                        variant="outlined"
+                                                        sx={{
+                                                            width: "100%",
+                                                            borderRadius: "8px",
+                                                            mb: 2,
+                                                            padding: "0",
+                                                            "& .MuiOutlinedInput-root": {
+                                                                height: "44px",
+                                                                padding: "0 12px",
+                                                                border: "1px solid #8F85F3",
+                                                                "& input": {
+                                                                    height: "44px",
+                                                                    padding: "0",
+                                                                },
+                                                                "& fieldset": {
+                                                                    borderColor: "#8F85F3",
+                                                                },
+                                                                "&:hover fieldset": {
+                                                                    borderColor: "#7A73E3",
+                                                                },
+                                                                "&.Mui-focused fieldset": {
+                                                                    borderColor: "#6B63D1",
+                                                                },
+                                                            },
+                                                        }}
+                                                    />
                                                 </FormControl>
-                                                {touched.docter && errors.docter && (
-                                                    <Typography
-                                                        sx={{ color: "red", fontSize: "12px", ml: 1 }}
-                                                    >
-                                                        {errors.docter}
+                                                <Typography>Poli yang dituju</Typography>
+                                                <PoliSelect
+                                                    value={values.poli}
+                                                    onChange={(e) =>
+                                                        setFieldValue("poli", e.target.value)
+                                                    }
+                                                />
+                                                {touched.poli && errors.poli && (
+                                                    <Typography sx={{ color: "red", fontSize: "12px" }}>
+                                                        {errors.poli}
                                                     </Typography>
                                                 )}
 
-                                                <Box sx={{ ml: 2, width: "100%" }}>
-                                                    <CalenderPopover title="Pilih tanggal" />
+                                                <Box
+                                                    display={"flex"}
+                                                    flexDirection={"row"}
+                                                    justifyContent={"center"}
+                                                    alignItems={"center"}
+                                                    sx={{ width: "100%" }}
+                                                >
+                                                    <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
+                                                        <InputLabel id="doctor-label">
+                                                            Pilih Dokter
+                                                        </InputLabel>
+                                                        <Select
+                                                            labelId="doctor-label"
+                                                            value={values.docter}
+                                                            label="Pilih Dokter"
+                                                            onChange={(e) =>
+                                                                setFieldValue("docter", e.target.value)
+                                                            }
+                                                            sx={{ width: "100%", borderRadius: "8px" }}
+                                                        >
+                                                            {doctors.map((doctor) => (
+                                                                <MenuItem
+                                                                    key={doctor.value}
+                                                                    value={doctor.value}
+                                                                    sx={{ color: "#8F85F3" }}
+                                                                >
+                                                                    {doctor.label}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </Select>
+                                                    </FormControl>
+                                                    {touched.docter && errors.docter && (
+                                                        <Typography
+                                                            sx={{ color: "red", fontSize: "12px", ml: 1 }}
+                                                        >
+                                                            {errors.docter}
+                                                        </Typography>
+                                                    )}
+
+                                                    <Box sx={{ ml: 2, width: "100%" }}>
+                                                        <CalenderPopover title="Pilih tanggal" />
+                                                    </Box>
                                                 </Box>
-                                            </Box>
 
-                                            <FormControl>
-                                                <Typography sx={{ textTransform: "capitalize" }}>keluhan pasien</Typography>
-                                                <TextField
-                                                    id="outlined-multiline-static"
-                                                    multiline
-                                                    rows={4}
-                                                    variant="outlined"
-                                                    sx={{ maxHeight: "107px", maxWidth: "100%" }}
-                                                />
-                                            </FormControl>
+                                                <FormControl>
+                                                    <Typography sx={{ textTransform: "capitalize" }}>keluhan pasien</Typography>
+                                                    <TextField
+                                                        id="outlined-multiline-static"
+                                                        multiline
+                                                        rows={4}
+                                                        variant="outlined"
+                                                        sx={{ maxHeight: "107px", maxWidth: "100%" }}
+                                                    />
+                                                </FormControl>
 
-                                            <Box mt={4}>
-                                                <Box>
-                                                    <Typography>Unggah kartu BPJS</Typography>
-                                                    <FileUploader />
-                                                    <Typography fontSize={"14px"} color="#A8A8BD">
-                                                        Ukuran maksimal 1mb
-                                                    </Typography>
-                                                </Box>
+                                                <Box mt={4}>
+                                                    <Box>
+                                                        <Typography>Unggah kartu BPJS</Typography>
+                                                        <FileUploader />
+                                                        <Typography fontSize={"14px"} color="#A8A8BD">
+                                                            Ukuran maksimal 1mb
+                                                        </Typography>
+                                                    </Box>
 
-                                                <Box mt={2}>
-                                                    <Typography>Unggah surat rujukan BPJS</Typography>
-                                                    <FileUploader />
-                                                    <Typography fontSize={"14px"} color="#A8A8BD">
-                                                        Ukuran maksimal 1mb
-                                                    </Typography>
+                                                    <Box mt={2}>
+                                                        <Typography>Unggah surat rujukan BPJS</Typography>
+                                                        <FileUploader />
+                                                        <Typography fontSize={"14px"} color="#A8A8BD">
+                                                            Ukuran maksimal 1mb
+                                                        </Typography>
+                                                    </Box>
                                                 </Box>
                                             </Box>
                                         </Box>
-                                    </Box>
 
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            mt: 4,
-                                        }}
-                                    >
-                                        <Button
-                                            onClick={() => setSHowFormPage(false)}
+                                        <Box
                                             sx={{
-                                                backgroundColor: "#8F85F3",
-                                                color: "white",
-                                                textTransform: "none",
-                                                width: "100%",
-                                                padding: "10px 24px",
-                                                borderRadius: "8px",
-                                                "&:hover": {
-                                                    backgroundColor: "#7C75E2",
-                                                },
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                                mt: 4,
                                             }}
                                         >
-                                            Selesai
-                                        </Button>
+                                            <Button
+                                                onClick={() => setSHowFormPage(false)}
+                                                sx={{
+                                                    backgroundColor: "#8F85F3",
+                                                    color: "white",
+                                                    textTransform: "none",
+                                                    width: "100%",
+                                                    padding: "10px 24px",
+                                                    borderRadius: "8px",
+                                                    "&:hover": {
+                                                        backgroundColor: "#7C75E2",
+                                                    },
+                                                }}
+                                            >
+                                                Selesai
+                                            </Button>
+                                        </Box>
                                     </Box>
                                 </Box>
-                            </Box>
-                        </Form>
-                    )}
-                </Formik>
-            )}
+                            </Form>
+                        )}
+                    </Formik>
+                )}
 
-            {!showFormPage && (
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        p: 5,
-                        position: "absolute",
-                        right: "0",
-                        top: "0",
-                        width: "45.9%",
-                        height: '91.7vh',
-                        bgcolor: '#ffff'
+                {!showFormPage && (
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            p: 5,
+                            position: "absolute",
+                            right: "0",
+                            top: "0",
+                            width: "45.9%",
+                            height: '91.7vh',
+                            bgcolor: '#ffff'
 
-                    }}
-                >
-                    <Box marginLeft={"10%"} marginTop={"20%"}>
-                        <InformasiTicket />
+                        }}
+                    >
+                        <Box marginLeft={"10%"} marginTop={"20%"}>
+                            <InformasiTicket />
+                        </Box>
                     </Box>
-                </Box>
-            )}
-        </Box>
+                )}
+            </Box>
+        </>
     );
 };
 

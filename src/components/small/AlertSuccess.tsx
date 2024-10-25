@@ -21,6 +21,7 @@ const AlertSuccess: React.FC<Props> = ({ label }) => {
                 position: 'absolute', 
                 top: '10%',
                 left: '50%',
+                zIndex:999,
                 transform: 'translate(-50%, -100%)', 
                 animation: 'slideIn 0.5s ease-out',
                 '@keyframes slideIn': {
