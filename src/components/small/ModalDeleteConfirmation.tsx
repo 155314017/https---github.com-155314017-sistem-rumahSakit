@@ -10,8 +10,8 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 500,
     bgcolor: 'background.paper',
-    border: '2px solid #A8A8BD',
-    boxShadow: 8,
+    border: '1px solid #A8A8BD',
+    boxShadow: 1,
     p: 4,
     borderRadius: '16px'
 };
@@ -30,7 +30,7 @@ function ModalDeleteConfirmation({ open, onClose }: ModalDeleteConfirmationProps
             aria-describedby="modal-modal-description"
             BackdropProps={{
                 style: {
-                    backgroundColor: 'rgba(211, 211, 211, 0.4)',
+                    backgroundColor: 'rgba(211, 211, 211, 0.2)',
                 },
             }}
         >

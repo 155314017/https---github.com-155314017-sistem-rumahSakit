@@ -1,4 +1,5 @@
 import { useState } from "react";
+import * as React from 'react';
 import {
     Box,
     Stack,
@@ -23,6 +24,7 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import DataSubFasilitas from "../../dummyData/dataSubFasilitas";
+import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -61,6 +63,7 @@ export default function TableSubFasilitas() {
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [isCollapsed, setIsCollapsed] = useState(true);
+    const [open, setOpen] = React.useState<boolean>(false);
 
     const handleChangePage = (
         _event: React.MouseEvent<HTMLButtonElement> | null,
@@ -94,6 +97,11 @@ export default function TableSubFasilitas() {
 
     const toggleCollapse = () => {
         setIsCollapsed((prev) => !prev);
+    };
+
+    const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault();
+        setOpen(true);
     };
 
     return (
@@ -316,6 +324,7 @@ export default function TableSubFasilitas() {
                                                     ]}
                                                 >
                                                     <Link
+                                                        onClick={confirmationDelete}
                                                         href="#"
                                                         mr={2}
                                                         underline="hover"
@@ -326,6 +335,8 @@ export default function TableSubFasilitas() {
                                                     >
                                                         Hapus
                                                     </Link>
+
+                                                    <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
                                                     <Link
                                                         href="#"
                                                         mr={2}

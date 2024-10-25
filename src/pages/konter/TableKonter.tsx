@@ -1,4 +1,5 @@
 import { useState } from "react";
+import * as React from 'react';
 import {
     Box,
     Stack,
@@ -61,6 +62,7 @@ export default function TableKonter() {
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [isCollapsed, setIsCollapsed] = useState(true);
+    const [open, setOpen] = React.useState<boolean>(false);
 
     const handleChangePage = (
         _event: React.MouseEvent<HTMLButtonElement> | null,
@@ -95,6 +97,12 @@ export default function TableKonter() {
     const toggleCollapse = () => {
         setIsCollapsed((prev) => !prev);
     };
+
+    const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault();
+        setOpen(true);
+    };
+
 
     return (
         <Box>
@@ -373,6 +381,7 @@ export default function TableKonter() {
                                                     ]}
                                                 >
                                                     <Link
+                                                        onClick={confirmationDelete}
                                                         href="#"
                                                         mr={2}
                                                         underline="hover"

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import * as React from 'react';
 import {
   Box,
   Stack,
@@ -27,6 +28,7 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import DataAmbulance from "../../dummyData/dataAmbulance";
+import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 
 const style = {
   position: "absolute",
@@ -82,6 +84,8 @@ export default function TableAmbulance() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isCollapsed, setIsCollapsed] = useState(true);
 
+  const [open, setOpen] = React.useState<boolean>(false);
+
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -120,6 +124,11 @@ export default function TableAmbulance() {
 
   const toggleCollapse = () => {
     setIsCollapsed((prev) => !prev);
+  };
+
+  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setOpen(true);
   };
 
   return (
@@ -389,17 +398,19 @@ export default function TableAmbulance() {
                           ]}
                         >
                           <Link
-                            onClick={handleOpen}
+                            onClick={confirmationDelete}
+                            href="#"
                             mr={2}
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",
-                              color: "#F04438",
-                              cursor: "pointer",
+                              color: "#8F85F3",
                             }}
                           >
                             Hapus
                           </Link>
+
+                          <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
                           <Link
                             href="#"
                             mr={2}
