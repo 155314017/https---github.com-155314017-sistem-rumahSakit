@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 
-
-
 const Login = async (email: string, password: string) => {
   try {
     console.log("inside Login");
