@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { Box, Button, InputBase, Typography } from '@mui/material';
+import { Box, Button, InputBase } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 
 interface CustomTimeViewProps {
@@ -12,6 +12,8 @@ interface CustomTimeViewProps {
 }
 
 function renderCustomTimeViewClock({ onChange, value, handleTimeSelect }: CustomTimeViewProps): JSX.Element {
+    if (!value) return <></>;
+
     const startHour = 7;
     const endHour = 18;
     const interval = 1;
@@ -34,10 +36,10 @@ function renderCustomTimeViewClock({ onChange, value, handleTimeSelect }: Custom
                     }}
                     variant={value?.hour() === start ? "contained" : "outlined"}
                     sx={{
-                        bgcolor: value?.hour() === start ? '#1976d2' : 'transparent',
+                        bgcolor: value?.hour() === start ? '#8F85F3' : 'transparent',
                         color: value?.hour() === start ? '#fff' : '#000',
                         '&:hover': {
-                            bgcolor: value?.hour() === start ? '#115293' : '#e0e0e0',
+                            bgcolor: value?.hour() === start ? '#8F85F3' : '#e0e0e0',
                         },
                     }}
                 >
@@ -54,11 +56,11 @@ export default function CustomDateTimePicker() {
 
     const handleTimeChange = (newValue: Dayjs | null) => {
         if (newValue) {
-            const startDate = newValue.format('DD-MM-YYYY');
-            const startTime = newValue.format('HH:mm');
-            const endTime = newValue.add(1, 'hour').format('HH:mm');
-            setInputValue(`${startDate} ${startTime} - ${endTime}`);
-            setSelectedTime({ date: startDate, start: newValue.hour(), end: newValue.hour() + 1 });
+            const startDate = newValue.format('YYYY-MM-DD');
+            const startHour = newValue.hour();
+            const endHour = startHour + 1;
+            setInputValue(`${startDate} ${newValue.format('HH:mm')} - ${newValue.add(1, 'hour').format('HH:mm')}`);
+            setSelectedTime({ date: startDate, start: startHour, end: endHour });
         } else {
             setInputValue('');
             setSelectedTime(null);
@@ -67,23 +69,24 @@ export default function CustomDateTimePicker() {
 
     const handleTimeSelect = (date: string, start: number, end: number) => {
         setSelectedTime({ date, start, end });
+        setInputValue(`${date} ${start.toString().padStart(2, '0')}:00 - ${end.toString().padStart(2, '0')}:00`);
     };
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Box>
-                <Typography>Select Start Time</Typography>
                 <DateTimePicker
-                    value={selectedTime ? dayjs(`${selectedTime.date} ${selectedTime.start.toString().padStart(2, '0')}:00  ${selectedTime.end.toString().padStart(2, '0')}:00`) : null}
-                    sx={{ width: '100%' }}
+                    value={selectedTime ? dayjs(`${selectedTime.date} ${selectedTime.end.toString().padStart(2, '0')}:00`) : null}
+                    sx={{ width: '100%', bgcolor: 'red' }}
                     onChange={handleTimeChange}
                     viewRenderers={{
                         hours: (props) => renderCustomTimeViewClock({ ...props, value: selectedTime ? dayjs(`${selectedTime.date} ${selectedTime.start.toString().padStart(2, '0')}:00`) : null, handleTimeSelect }),
                     }}
+                    defaultValue={dayjs('2024-10-24T08:00:00')}
                 />
                 <InputBase
                     value={inputValue}
-                    onClick={() => setInputValue(selectedTime ? `${dayjs(selectedTime.date).format('DD-MM-YYYY')} ${selectedTime.start.toString().padStart(2, '0')}:00 - ${selectedTime.end.toString().padStart(2, '0')}:00` : '')}
+                    onClick={() => setInputValue(selectedTime ? `${dayjs(selectedTime.date).format('DD/MM/YYYY')} ${selectedTime.start.toString().padStart(2, '0')}:00 - ${selectedTime.end.toString().padStart(2, '0')}:00` : '')}
                     placeholder="Select Date and Time"
                     readOnly
                     sx={{

@@ -18,11 +18,13 @@ import my from "../../../img/loginImg.png";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import AlertSuccess from "../../../components/small/AlertSuccess";
+import AlertWarning from "../../../components/small/AlertWarning";
 import CustomButton from "../../../components/small/CustomButton";
 import LabelHandler from "../../../components/small/LabelHandler";
 import logo from "../../../img/St.carolus.png";
 import { useNavigate } from "react-router-dom";
 import Login from "../../../services/Admin Tenant/Auth/Login";
+import ResetPassword from "../../../services/Admin Tenant/Auth/ResetPassword";
 
 const validationSchema = Yup.object({
   email: Yup.string().email("Email tidak valid").required("Email wajib diisi"),
@@ -35,6 +37,11 @@ interface FormValues {
   password: string;
 }
 
+interface FormResetPasswordValues {
+  email: string;
+}
+
+
 export default function LoginPegawai() {
   const [showPassword, setShowPassword] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
@@ -45,6 +52,10 @@ export default function LoginPegawai() {
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [resendSuccess, setResendSuccess] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
+
+  const [wrongPassword, setWrongPassword] = useState(false);
+  const [wrongEmail, setWrongEmail] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -73,31 +84,60 @@ export default function LoginPegawai() {
   const loginComponent = () => {
     setShowLogin(true);
   };
+  const showTemporaryWrongEmail = async () => {
+    setWrongEmail(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setWrongEmail(false);
+  };
+
+  const showTemporaryWrongPassword = async () => {
+    setWrongPassword(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setWrongPassword(false);
+  };
 
   const validationCheck = async (values: FormValues) => {
-    console.log("inside")
+    console.log("inside validationCheck");
     try {
-      console.log("inside 1")
-      // const email = "admin@admin.com";
-      // const password = "admin";
-
       const { email, password } = values;
       const response = await Login(email, password);
-      console.log("Login successful:", response);
+      console.log("Login response:", response);
 
-      const token = response.data.tokenValue;
-      console.log("Token:", token);
-      console.log("inside 2")
-      if (response.code === "200") {
-        console.log("sukses ")
-        navigate('/dashboard')
-        return true
+      if (response.responseCode === "200") {
+        console.log("sukses");
+        navigate('/dashboard');
+        return true;
       } else {
-        console.log("gagal ")
-        return false
+        console.log("gagal - unexpected response:", response);
+        return false;
       }
-    } catch (error) {
-      console.error("Error during login:", error);
+    } catch (error: any) {
+      // console.error("Error during login:", error);
+      // return false;
+      if (error.responseCode == "401") {//salah password
+        console.log(error.responseCode);
+        showTemporaryWrongPassword();
+      } else if (error.responseCode == "404") {//salah email
+        console.log(error.responseCode);
+        showTemporaryWrongEmail();
+      }
+    }
+  };
+
+  const handleResetPassword = async (values: FormResetPasswordValues) => {
+    console.log("inside handleResetPassword");
+    try {
+      const email = values.email; 
+      const response = await ResetPassword(email);
+      if (response.responseCode === "200") {
+        console.log("email sent");
+        return true;
+      } else {
+        console.log("gagal - unexpected response:", response);
+        return false;
+      }
+    } catch (error: any) {
+      console.error("Error during password reset:", error);
       return false;
     }
   };
@@ -128,6 +168,9 @@ export default function LoginPegawai() {
     await new Promise((resolve) => setTimeout(resolve, 3000));
     setResendSuccess(false);
   };
+
+
+
 
   const formatTime = () => {
     const minutes = Math.floor(secondsLeft / 60);
@@ -190,9 +233,13 @@ export default function LoginPegawai() {
 
           {showLogin && (
             <>
-              {/* {showAlert && (
-              <AlertWarning teks="Email atau kata sandi yang Anda masukkan salah, silahkan coba lagi." />
-            )} */}
+              {wrongPassword && (
+                <AlertWarning teks="Kata sandi yang Anda masukkan salah, silahkan coba lagi." />
+              )}
+
+              {wrongEmail && (
+                <AlertWarning teks="Email yang Anda masukkan salah, silahkan coba lagi." />
+              )}
 
               <Box
                 sx={{
@@ -416,147 +463,151 @@ export default function LoginPegawai() {
                     })}
                     validateOnChange={true}
                     validateOnBlur={true}
-                    onSubmit={(values) => {
-                      console.log(values);
+                    onSubmit={async (values) => {
+                      if (await handleResetPassword(values)) {
+                        console.log(values);
+                        await showTemporarySuccessLogin();
+                      }
                     }}
                   >
-                    {({
-                      errors,
-                      touched,
-                      handleChange,
-                      handleBlur,
-                      values,
-                      isValid,
-                      dirty,
-                    }) => (
-                      <Form>
-                        <Box
+
+                  {({
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    values,
+                    isValid,
+                    dirty,
+                  }) => (
+                    <Form>
+                      <Box
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <FormLabel sx={{ fontSize: "18px" }}>Email</FormLabel>
+                        <Field
+                          name="email"
+                          as={TextField}
+                          placeholder="example@mail.com"
+                          variant="outlined"
+                          fullWidth
                           sx={{
                             width: "100%",
-                            display: "flex",
-                            flexDirection: "column",
+                            height: "48px",
+                            marginTop: "10px",
+                            "& .MuiOutlinedInput-root": {
+                              borderRadius: "8px",
+                            },
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              border: "1px solid #ccc",
+                            },
+                            "& .MuiOutlinedInput-input": {
+                              padding: "10px",
+                              fontSize: "16px",
+                            },
                           }}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.email}
+                          error={touched.email && Boolean(errors.email)}
+                          helperText={touched.email && errors.email}
+                        />
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          // onClick={() => setShowEmailChanged(false)}
+                          fullWidth
+                          sx={{
+                            width: "100%",
+                            height: "48px",
+                            marginTop: "20px",
+                            backgroundColor: "#8F85F3",
+                            ":hover": { backgroundColor: "#D5D1FB" },
+                          }}
+                          disabled={!isValid || !dirty}
                         >
-                          <FormLabel sx={{ fontSize: "18px" }}>Email</FormLabel>
-                          <Field
-                            name="email"
-                            as={TextField}
-                            placeholder="example@mail.com"
-                            variant="outlined"
-                            fullWidth
-                            sx={{
-                              width: "100%",
-                              height: "48px",
-                              marginTop: "10px",
-                              "& .MuiOutlinedInput-root": {
-                                borderRadius: "8px",
-                              },
-                              "& .MuiOutlinedInput-notchedOutline": {
-                                border: "1px solid #ccc",
-                              },
-                              "& .MuiOutlinedInput-input": {
-                                padding: "10px",
-                                fontSize: "16px",
-                              },
-                            }}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.email}
-                            error={touched.email && Boolean(errors.email)}
-                            helperText={touched.email && errors.email}
-                          />
-                          <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            onClick={() => setShowEmailChanged(false)}
-                            fullWidth
-                            sx={{
-                              width: "100%",
-                              height: "48px",
-                              marginTop: "20px",
-                              backgroundColor: "#8F85F3",
-                              ":hover": { backgroundColor: "#D5D1FB" },
-                            }}
-                            disabled={!isValid || !dirty}
-                          >
-                            Setel ulang kata sandi
-                          </Button>
+                          Setel ulang kata sandi
+                        </Button>
 
-                          <CustomButton
-                            onClick={loginComponent}
-                            label="Kembali ke halaman masuk"
-                          />
-                        </Box>
-                      </Form>
-                    )}
-                  </Formik>
+                        <CustomButton
+                          onClick={loginComponent}
+                          label="Kembali ke halaman masuk"
+                        />
+                      </Box>
+                    </Form>
+                  )}
+                </Formik>
                 </Box>
               )}
 
-              {!showEmailChanged && (
-                <Box
-                  sx={{
-                    marginLeft: "50px",
-                    marginTop: "auto",
-                    marginBottom: "auto",
-                    display: "flex",
-                    flexDirection: "column",
-                    width: '90%'
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: "32px",
-                      fontWeight: "600",
-                      width: "100%",
-                    }}
-                  >
-                    Email pengaturan ulang kata sandi telah terkirim.
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "#16161D",
-                      fontSize: "18px",
-                      marginBottom: "30px",
-                      width: "100%",
-                      fontWeight: "400",
-                    }}
-                  >
-                    Kami telah mengirimkan tautan untuk mengatur ulang kata sandi
-                    Anda. Tidak mendapat email?
-                  </Typography>
-                  <Button
-                    onClick={handleResendClick}
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    disabled={isCounting}
-                    sx={{
-                      width: "100%",
-                      height: "48px",
-                      backgroundColor: isCounting ? "#ccc" : "#8F85F3",
-                      ":hover": { backgroundColor: "#D5D1FB" },
-                    }}
-                  >
-                    {isCounting
-                      ? `Kirim ulang dalam ${formatTime()}`
-                      : "Kirim ulang tautan"}
-                  </Button>
-                  <CustomButton
-                    onClick={handleClick}
-                    label="Kembali ke halaman masuk"
-                  />
+          {!showEmailChanged && (
+            <Box
+              sx={{
+                marginLeft: "50px",
+                marginTop: "auto",
+                marginBottom: "auto",
+                display: "flex",
+                flexDirection: "column",
+                width: '90%'
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "32px",
+                  fontWeight: "600",
+                  width: "100%",
+                }}
+              >
+                Email pengaturan ulang kata sandi telah terkirim.
+              </Typography>
+              <Typography
+                sx={{
+                  color: "#16161D",
+                  fontSize: "18px",
+                  marginBottom: "30px",
+                  width: "100%",
+                  fontWeight: "400",
+                }}
+              >
+                Kami telah mengirimkan tautan untuk mengatur ulang kata sandi
+                Anda. Tidak mendapat email?
+              </Typography>
+              <Button
+                onClick={handleResendClick}
+                variant="contained"
+                color="primary"
+                fullWidth
+                disabled={isCounting}
+                sx={{
+                  width: "100%",
+                  height: "48px",
+                  backgroundColor: isCounting ? "#ccc" : "#8F85F3",
+                  ":hover": { backgroundColor: "#D5D1FB" },
+                }}
+              >
+                {isCounting
+                  ? `Kirim ulang dalam ${formatTime()}`
+                  : "Kirim ulang tautan"}
+              </Button>
+              <CustomButton
+                onClick={handleClick}
+                label="Kembali ke halaman masuk"
+              />
 
-                  {/* {resendSuccess && (
+              {/* {resendSuccess && (
                   <AlertSuccess label="Link tautan berhasil dikirim ulang" />
                 )} */}
-                </Box>
-              )}
-            </>
+            </Box>
           )}
-        </Box>
+        </>
+          )}
       </Box>
+    </Box >
     </>
   );
 }
