@@ -1,31 +1,21 @@
+
 import axios from "axios";
 
-interface CustomError extends Error {
-  responseCode?: number;
+
+export interface Building {
+  no_gedung: string;
+  name: string;
+  address: string;
 }
 
-const Building = async () => {
+export const fetchBuildings = async (): Promise<Building[]> => {
   try {
-    console.log("inside Login");
-    const response = await axios.post(
-      "https://hms.3dolphinsocial.com:8083/v1/auth/login",
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log("inside Login1 ");
-
+    const response = await axios.get<Building[]>(
+      "https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc"
+    ); 
     return response.data;
-  } catch (error: any) {
-    const customError: CustomError = new Error(
-      error.response?.data?.message || error.message || "Login failed"
-    );
-
-    customError.responseCode = error.response?.status;
-    throw customError;
+  } catch (error) {
+    console.error("Error fetching buildings:", error);
+    throw error; 
   }
 };
-
-export default Building;

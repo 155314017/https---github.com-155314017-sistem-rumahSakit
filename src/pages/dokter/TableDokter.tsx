@@ -61,7 +61,6 @@ export default function TableDokter() {
   const datas = DataDokter;
 
   const [page, setPage] = useState(2);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
 
@@ -76,6 +75,7 @@ export default function TableDokter() {
     setPage(value);
   };
 
+  const rowsPerPage = 10;
   const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const sortir = [

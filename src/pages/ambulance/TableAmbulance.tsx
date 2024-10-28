@@ -80,11 +80,11 @@ export default function TableAmbulance() {
   const handleClose = () => setOpenDelete(false);
 
   const [page, setPage] = useState(2);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const [open, setOpen] = React.useState<boolean>(false);
 
+  const rowsPerPage = 10;
 
   const displayedData = datas.slice(
     page * rowsPerPage,

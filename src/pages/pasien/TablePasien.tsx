@@ -61,12 +61,13 @@ export default function TablePasien() {
     const datas = DataPasien;
 
     const [page, setPage] = useState(2);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
     const [isCollapsed, setIsCollapsed] = useState(true);
 
     const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
+
+    const rowsPerPage = 10;
 
     const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
