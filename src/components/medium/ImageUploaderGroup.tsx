@@ -17,6 +17,7 @@ const ImageUploaderGroup: React.FC = () => {
 
     const inputRefs = useRef<HTMLInputElement[]>([]); // Menyimpan referensi untuk input file
 
+
     const validateFile = (file: File): boolean => {
         const validTypes = ["image/jpeg", "image/png", "image/svg+xml", "image/gif"]; // jenis file yang di acc
         if (!validTypes.includes(file.type)) {

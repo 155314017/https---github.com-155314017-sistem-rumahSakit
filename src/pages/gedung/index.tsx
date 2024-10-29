@@ -1,16 +1,38 @@
-import { Box, Grid } from "@mui/system";
-import { Typography } from "@mui/material";
+// src/pages/Gedung.tsx
+import React, { useEffect, useState } from "react";
+import { Box, Grid, CircularProgress, Typography } from "@mui/material";
 import TableGedung from "./TableGedung";
 import SideBar from "../../components/SideBar/SideBar";
 import Header from "../../components/medium/Header";
 import MediumCard from "../../components/medium/MediumCard";
 import CardAdd from "../../components/medium/CardAdd";
+import { Building, DataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
 
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 export default function Gedung() {
+  const [data, setData] = useState<DataItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log('fetching data . . . ')
+      try {
+        const result = await Building();
+        console.log('result : ' + result)
+        setData(result);
+      } catch (error) {
+        setError('Failed to fetch data from API');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <Box>
       <SideBar />
@@ -21,9 +43,9 @@ export default function Gedung() {
           <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
             Gedung
           </Typography>
-          <Grid container spacing={3} flex={1} mb={3}>
-            <MediumCard icon={BusinessOutlinedIcon} title="Total Gedung" subtitle="10" />
-            <CardAdd icon={AddBoxIcon} title="Tambah Gedung" link="/tambahGedung"/>
+          <Grid container flex={1} mb={3} gap={3}>
+            <MediumCard icon={BusinessOutlinedIcon} title="Total Gedung" subtitle={data.length.toString()} />
+            <CardAdd icon={AddBoxIcon} title="Tambah Gedung" link="/tambahGedung" />
           </Grid>
           <TableGedung />
         </Box>
