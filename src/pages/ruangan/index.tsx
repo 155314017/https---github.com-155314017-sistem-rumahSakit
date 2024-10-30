@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { Box, Grid } from "@mui/system";
 import { Typography } from "@mui/material";
 import SideBar from "../../components/SideBar/SideBar";
@@ -9,8 +10,26 @@ import CardAdd from "../../components/medium/CardAdd";
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import TableRuangan from "./TableRuangan";
+import { RoomServices, DataItem } from "../../services/Admin Tenant/ManageRoom/RoomServices";
 
 export default function Ruangan() {
+
+    const [data, setData] = useState<DataItem[]>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            console.log('fetching data . . . ')
+            try {
+                const result = await RoomServices();
+                console.log('result : ' + result)
+                setData(result);
+            } catch (error) {
+                console.log('Failed to fetch data from API' + error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <Box>
             <SideBar />
@@ -22,10 +41,10 @@ export default function Ruangan() {
                         Ruangan
                     </Typography>
                     <Grid container spacing={3} flex={1} mb={3}>
-                        <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle="10" />
+                        <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={data.length.toString() || "0"} />
                         <CardAdd icon={AddBoxIcon} title="Tambah Ruangan" link="/tambahRuangan" />
                     </Grid>
-                    <TableRuangan/>
+                    <TableRuangan />
                 </Box>
             </Box>
         </Box>

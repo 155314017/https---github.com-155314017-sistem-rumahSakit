@@ -350,7 +350,9 @@ export default function RegisterPasienBaru() {
                                                 <FormControlLabel value="wanita" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Wanita" />
                                             </Box>
 
-                                            <Typography sx={{ fontSize: "16px", mt: 2 }}>Alamat tempat tinggal Pasien<span style={{ color: "red" }}>*</span></Typography>
+                                            <Typography sx={{ fontSize: "16px", mt: 2 }}>
+                                                Alamat tempat tinggal Pasien<span style={{ color: "red" }}>*</span>
+                                            </Typography>
 
                                             <FormControl fullWidth sx={{ my: 1 }}>
                                                 <OutlinedInput
@@ -358,9 +360,12 @@ export default function RegisterPasienBaru() {
                                                     name="deskripsiKlinik"
                                                     size="small"
                                                     placeholder="Masukkan tempat tinggal penanggung jawab"
-                                                    sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
+                                                    sx={{ alignItems: 'flex-start', borderRadius: '8px' }}
+                                                    multiline
+                                                    // minRows={3} 
                                                 />
                                             </FormControl>
+
 
                                             <Button 
                                                 onClick={() => navigate('/kategori/pasien') }

@@ -9,8 +9,28 @@ import TableAmbulance from "../ambulance/TableAmbulance";
 // icon
 import MinorCrashIcon from "@mui/icons-material/MinorCrash";
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import { useEffect, useState } from "react";
+import { AmbulanceServices, DataItem } from "../../services/Admin Tenant/ManageAmbulance/AmbulanceServices";
 
 export default function Ambulance() {
+
+  const [data, setData] = useState<DataItem[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log('fetching data . . . ')
+      try {
+        const result = await AmbulanceServices();
+        console.log('result : ' + result)
+        setData(result);
+      } catch (error) {
+        console.log('Failed to fetch data from API' + error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Box>
       <SideBar />
@@ -25,7 +45,7 @@ export default function Ambulance() {
             <MediumCard
               icon={MinorCrashIcon}
               title="Total Ambulance"
-              subtitle="10"
+              subtitle={data.length.toString()}
             />
             <CardAdd
               icon={AddBoxIcon}

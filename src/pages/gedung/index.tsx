@@ -1,6 +1,6 @@
 // src/pages/Gedung.tsx
 import React, { useEffect, useState } from "react";
-import { Box, Grid, CircularProgress, Typography } from "@mui/material";
+import { Box, Grid,  Typography } from "@mui/material";
 import TableGedung from "./TableGedung";
 import SideBar from "../../components/SideBar/SideBar";
 import Header from "../../components/medium/Header";
@@ -14,8 +14,6 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 
 export default function Gedung() {
   const [data, setData] = useState<DataItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,9 +23,7 @@ export default function Gedung() {
         console.log('result : ' + result)
         setData(result);
       } catch (error) {
-        setError('Failed to fetch data from API');
-      } finally {
-        setLoading(false);
+        console.log('Failed to fetch data from API' + error);
       }
     };
 
@@ -44,7 +40,7 @@ export default function Gedung() {
             Gedung
           </Typography>
           <Grid container flex={1} mb={3} gap={3}>
-            <MediumCard icon={BusinessOutlinedIcon} title="Total Gedung" subtitle={data.length.toString()} />
+            <MediumCard icon={BusinessOutlinedIcon} title="Total Gedung" subtitle={data.length.toString() || "0"} />
             <CardAdd icon={AddBoxIcon} title="Tambah Gedung" link="/tambahGedung" />
           </Grid>
           <TableGedung />

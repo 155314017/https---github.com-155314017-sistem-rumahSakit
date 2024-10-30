@@ -1,5 +1,4 @@
-import { useState } from "react";
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Stack,
@@ -19,18 +18,16 @@ import DropdownList from "../../components/small/DropdownList";
 import { styled } from "@mui/material/styles";
 import bgImage from "../../assets/img/String.png";
 
-import DataGedung from "../../dummyData/dataGedung";
-
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
+import { Building, DataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
@@ -40,17 +37,14 @@ const StyledTableContainer = styled(TableContainer)`
   ::-webkit-scrollbar {
     width: 8px;
   }
-
   ::-webkit-scrollbar-track {
     border-radius: 10px;
   }
-
   ::-webkit-scrollbar-thumb {
     background-color: #8f85f3;
     border-radius: 10px;
     border: 2px solid #f1f1f1;
   }
-
   ::-webkit-scrollbar-thumb:hover {
     background-color: #6c63ff;
     cursor: pointer;
@@ -58,17 +52,32 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 export default function TableGedung() {
-  const datas = DataGedung;
-
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [open, setOpen] = React.useState<boolean>(false);
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState<DataItem[]>([]);
+  const [datas, setDatas] = useState<DataItem[]>([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log('Fetching data...');
+      try {
+        const result = await Building();
+        console.log('Result: ', result);
+        setDatas(result); // Store the result in datas state
+        setData(result); // Set data to display in table
+      } catch (error) {
+        console.log('Failed to fetch data from API: ', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-  
+
   const rowsPerPage = 10;
 
   const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
@@ -111,7 +120,6 @@ export default function TableGedung() {
             Daftar Gedung
           </Typography>
 
-          {/* collapse button */}
           <IconButton sx={{ zIndex: 1 }} onClick={toggleCollapse}>
             {isCollapsed ? (
               <ChevronRightRoundedIcon
@@ -125,7 +133,6 @@ export default function TableGedung() {
           </IconButton>
         </Box>
 
-        {/* membuat bentuk lengkung atas */}
         <Box
           position={"absolute"}
           sx={{
@@ -135,7 +142,6 @@ export default function TableGedung() {
             display: "flex",
           }}
         >
-          {/* lengkung kiri */}
           <Box
             sx={{
               width: "50px",
@@ -153,7 +159,6 @@ export default function TableGedung() {
             />
           </Box>
 
-          {/* kotak tengah */}
           <Box
             sx={{
               width: "600px",
@@ -163,7 +168,6 @@ export default function TableGedung() {
             }}
           />
 
-          {/* lengkung kanan */}
           <Box
             sx={{
               width: "50px",
@@ -181,11 +185,11 @@ export default function TableGedung() {
             />
           </Box>
         </Box>
-        {/* ---------- */}
 
         <Box position="absolute" sx={{ top: 0, right: 0 }}>
           <img src={bgImage} alt="bg-image" />
         </Box>
+
         {!isCollapsed && (
           <Box>
             <Box
@@ -235,7 +239,7 @@ export default function TableGedung() {
                           color: "#292B2C",
                           bgcolor: "#F1F0FE",
                         }}
-                        align="left"
+                        align="center"
                       >
                         Nama Gedung
                       </TableCell>
@@ -247,7 +251,7 @@ export default function TableGedung() {
                           color: "#292B2C",
                           bgcolor: "#F1F0FE",
                         }}
-                        align="left"
+                        align="center"
                       >
                         Alamat Gedung
                       </TableCell>
@@ -266,104 +270,109 @@ export default function TableGedung() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {displayedData.map((data, index) => (
-                      <StyledTableRow key={index}>
-                        <TableCell
-                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                          align="center"
-                        >
-                          {data.no_gedung}
-                        </TableCell>
-                        <TableCell
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              maxWidth: "150px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          {data.name}
-                        </TableCell>
-                        <TableCell
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              maxWidth: "150px",
-                              fontSize: "14px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          {data.address}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          <Link
-                            onClick={confirmationDelete}
-                            href="#"
-                            mr={2}
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
+                    {displayedData.length > 0 ? (
+                      displayedData.map((data, index) => (
+                        <StyledTableRow key={index}>
+                          <TableCell
+                            sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                            align="center"
                           >
-                            Hapus
-                          </Link>
-
-                          <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
-                          <Link
-                            href="#"
-                            mr={2}
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
+                            {data.id}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                fontSize: "14px",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                            align="center"
                           >
-                            Ubah
-                          </Link>
-                          <Link
-                            href="/detailGedung "
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
+                            {data.name}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                            align="center"
                           >
-                            Lihat Selengkapnya
-                          </Link>
+                            {data.address}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                          >
+                            <Link
+                              href="#"
+                              underline="none"
+                              color={"#8F85F3"}
+                              onClick={confirmationDelete}
+                              sx={{mr:2}}
+                            >
+                              Hapus
+                            </Link>
+                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
+                            <Link
+                              href="#"
+                              mr={2}
+                              underline="hover"
+                              sx={{
+                                textTransform: "capitalize",
+                                color: "#8F85F3",
+                              }}
+                            >
+                              Ubah
+                            </Link>
+                            <Link
+                              href="/detailGedung "
+                              underline="hover"
+                              sx={{
+                                textTransform: "capitalize",
+                                color: "#8F85F3",
+                              }}
+                            >
+                              Lihat Selengkapnya
+                            </Link>
+                          </TableCell>
+                        </StyledTableRow>
+                      ))
+                    ) : (
+                      <StyledTableRow>
+                        <TableCell colSpan={4} align="center">
+                          Tidak ada data
                         </TableCell>
                       </StyledTableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </StyledTableContainer>
             </Box>
-
             <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
               <Typography sx={{ color: "#A8A8BD" }}>
                 Showing {((page - 1) * rowsPerPage) + 1} to{" "}
                 {Math.min(page * rowsPerPage, datas.length)} of{" "}
                 {datas.length} entries
               </Typography>
-              <Pagination 
+              <Pagination
                 count={Math.ceil(datas.length / rowsPerPage)}
                 variant="outlined"
                 shape="rounded"

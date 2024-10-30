@@ -1,17 +1,18 @@
 import axios from "axios";
 
 export interface DataItem {
-  id: string; 
-  name: string; 
-  address: string; 
-  additionalInfo: string; 
-  createdBy: string; 
-  createdDateTime: number; 
+  id: string;
+  name: string;
+  masterBuildingId: string;
+  type: string;
+  additionalInfo: string;
+  createdBy: string;
+  createdDateTime: number;
   updatedBy: string | null;
-  updatedDateTime: number | null; 
+  updatedDateTime: number | null;
   deletedBy: string | null;
   deletedDateTime: number | null;
-  images: string[]; 
+  images: string[];
 }
 
 export interface Pageable {
@@ -51,9 +52,9 @@ export interface ApiResponse {
 }
 
 const API_URL =
-  "https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc"; 
+  "https://hms.3dolphinsocial.com:8083/v1/manage/room/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc";
 
-export const Building = async (): Promise<DataItem[]> => {
+export const RoomServices = async (): Promise<DataItem[]> => {
   const response = await axios.get<ApiResponse>(API_URL);
 
   if (response.status === 200) {
@@ -61,8 +62,9 @@ export const Building = async (): Promise<DataItem[]> => {
 
     response.data.data.content.forEach((item) => {
       console.log("ID:", item.id);
-      console.log("Name:", item.name);
-      console.log("Address:", item.address);
+      console.log("Name Room:", item.name);
+      console.log("Name Gedung:", item.masterBuildingId);
+      console.log("Jenis Room:", item.type);
       console.log("Additional Info:", item.additionalInfo);
       console.log("Created By:", item.createdBy);
       console.log(

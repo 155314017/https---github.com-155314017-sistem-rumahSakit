@@ -21,7 +21,7 @@ const Login = async (email: string, password: string) => {
       }
     );
     console.log("inside Login1 ");
-
+    console.log("akses token", response.headers);
     return response.data;
   } catch (error: any) {
     const customError: CustomError = new Error(
