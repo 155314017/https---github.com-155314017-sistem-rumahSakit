@@ -56,7 +56,7 @@ export default function TableAmbulance() {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState<AmbulanceDataItem[]>([]);
+  // const [data, setData] = useState<AmbulanceDataItem[]>([]);
   const [datas, setDatas] = useState<AmbulanceDataItem[]>([]);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function TableAmbulance() {
         const result = await AmbulanceServices();
         console.log('Result: ', result);
         setDatas(result); // Store the result in datas state
-        setData(result); // Set data to display in table
+        // setData(result); // Set data to display in table
       } catch (error) {
         console.log('Failed to fetch data from API: ', error);
       }

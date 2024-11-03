@@ -13,7 +13,7 @@ import TableKonter from "./TableKonter";
 import { Tenant, DataItem } from "../../services/Admin Tenant/ManageTenant/Tenant";
 
 export default function Konter() {
-    const [data, setData] = useState<DataItem[]>([]);
+    // const [data, setData] = useState<DataItem[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,7 +21,7 @@ export default function Konter() {
             try {
                 const result = await Tenant();
                 console.log('result : ' + result)
-                setData(result);
+                // setData(result);
             } catch (error) {
                 console.log('Failed to fetch data from API' + error);
             }

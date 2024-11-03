@@ -22,9 +22,9 @@ import bgImage from "../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
-import DataPegawai from "../../dummyData/dataPegawai";
+// import DataPegawai from "../../dummyData/dataPegawai";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
-import { Clinic, DataItem } from "../../services/Admin Tenant/ManageClinic/Clinic";
+import { Clinic, ClinicDataItem } from "../../services/Admin Tenant/ManageClinic/Clinic";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -61,8 +61,8 @@ export default function TableKlinik() {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
-  const [data, setData] = useState<DataItem[]>([]);
-  const [datas, setDatas] = useState<DataItem[]>([]);
+  // const [data, setData] = useState<DataItem[]>([]);
+  const [datas, setDatas] = useState<ClinicDataItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,7 +71,7 @@ export default function TableKlinik() {
         const result = await Clinic();
         console.log('Result: ', result);
         setDatas(result); // Store the result in datas state
-        setData(result); // Set data to display in table
+        // setData(result); // Set data to display in table
       } catch (error) {
         console.log('Failed to fetch data from API: ', error);
       }

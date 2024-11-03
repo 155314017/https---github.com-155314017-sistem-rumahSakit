@@ -61,7 +61,7 @@ export default function TableRuangan() {
   const [page, setPage] = useState(2);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
-  const [data, setData] = useState<RoomDataItem[]>([]);
+  // const [data, setData] = useState<RoomDataItem[]>([]);
   const [datas, setDatas] = useState<RoomDataItem[]>([]);
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export default function TableRuangan() {
         const result = await RoomServices();
         console.log('Result: ', result);
         setDatas(result); // Store the result in datas state
-        setData(result); // Set data to display in table
+        // setData(result); // Set data to display in table
       } catch (error) {
         console.log('Failed to fetch data from API: ', error);
       }

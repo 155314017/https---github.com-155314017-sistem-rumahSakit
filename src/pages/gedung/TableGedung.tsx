@@ -55,7 +55,7 @@ export default function TableGedung() {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState<BuildingDataItem[]>([]);
+  // const [data, setData] = useState<BuildingDataItem[]>([]);
   const [datas, setDatas] = useState<BuildingDataItem[]>([]);
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function TableGedung() {
         const result = await Building();
         console.log('Result: ', result);
         setDatas(result); // Store the result in datas state
-        setData(result); // Set data to display in table
+        // setData(result); // Set data to display in table
       } catch (error) {
         console.log('Failed to fetch data from API: ', error);
       }

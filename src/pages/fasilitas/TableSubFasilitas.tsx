@@ -60,7 +60,7 @@ export default function TableSubFasilitas() {
     const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [open, setOpen] = React.useState<boolean>(false);
-    const [data, setData] = useState<SubFacilityDataItem[]>([]);
+    // const [data, setData] = useState<SubFacilityDataItem[]>([]);
     const [datas, setDatas] = useState<SubFacilityDataItem[]>([]);
 
     useEffect(() => {
@@ -70,7 +70,7 @@ export default function TableSubFasilitas() {
                 const result = await SubFacilityServices();
                 console.log('Result: ', result);
                 setDatas(result); // Store the result in datas state
-                setData(result); // Set data to display in table
+                // setData(result); // Set data to display in table
             } catch (error) {
                 console.log('Failed to fetch data from API: ', error);
             }
