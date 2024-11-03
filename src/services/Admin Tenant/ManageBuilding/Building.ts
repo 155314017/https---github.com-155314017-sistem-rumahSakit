@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export interface DataItem {
+export interface BuildingDataItem {
   id: string; 
   name: string; 
   address: string; 
@@ -32,7 +32,7 @@ export interface ApiResponse {
   statusCode: string;
   message: string;
   data: {
-    content: DataItem[];
+    content: BuildingDataItem[];
     pageable: Pageable;
     totalPages: number;
     totalElements: number;
@@ -53,7 +53,7 @@ export interface ApiResponse {
 const API_URL =
   "https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc"; 
 
-export const Building = async (): Promise<DataItem[]> => {
+export const Building = async (): Promise<BuildingDataItem[]> => {
   const response = await axios.get<ApiResponse>(API_URL);
 
   if (response.status === 200) {

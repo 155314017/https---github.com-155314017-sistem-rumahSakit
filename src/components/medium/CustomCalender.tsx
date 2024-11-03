@@ -12,7 +12,7 @@ interface CustomTimeViewProps {
 }
 
 function renderCustomTimeViewClock({ onChange, value, handleTimeSelect }: CustomTimeViewProps): JSX.Element {
-    if (!value) return <></>;
+    // if (!value) return <></>;
 
     const startHour = 7;
     const endHour = 18;
@@ -60,7 +60,12 @@ export default function CustomDateTimePicker() {
             const startHour = newValue.hour();
             const endHour = startHour + 1;
             setInputValue(`${startDate} ${newValue.format('HH:mm')} - ${newValue.add(1, 'hour').format('HH:mm')}`);
-            setSelectedTime({ date: startDate, start: startHour, end: endHour });
+            if (startDate === "Invalid Date") {
+                console.log('PILIH TANGGAL DAHULU ! ! !')
+            } else {
+                setSelectedTime({ date: startDate, start: startHour, end: endHour });
+                console.log("date: ", startDate, "Time: ", startHour, "-", endHour);
+            }
         } else {
             setInputValue('');
             setSelectedTime(null);

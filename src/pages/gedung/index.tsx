@@ -5,7 +5,7 @@ import SideBar from "../../components/SideBar/SideBar";
 import Header from "../../components/medium/Header";
 import MediumCard from "../../components/medium/MediumCard";
 import CardAdd from "../../components/medium/CardAdd";
-import { Building, DataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
+import { Building, BuildingDataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
 
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
@@ -13,7 +13,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 
 
 export default function Gedung() {
-  const [data, setData] = useState<DataItem[]>([]);
+  const [data, setData] = useState<BuildingDataItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {

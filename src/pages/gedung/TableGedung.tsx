@@ -22,7 +22,7 @@ import bgImage from "../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
-import { Building, DataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
+import { Building, BuildingDataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -55,8 +55,8 @@ export default function TableGedung() {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState<DataItem[]>([]);
-  const [datas, setDatas] = useState<DataItem[]>([]);
+  const [data, setData] = useState<BuildingDataItem[]>([]);
+  const [datas, setDatas] = useState<BuildingDataItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
