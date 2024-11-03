@@ -60,7 +60,7 @@ const StyledTableContainer = styled(TableContainer)`
 export default function TablePasien() {
     const datas = DataPasien;
 
-    const [page, setPage] = useState(2);
+    const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
 
     const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {

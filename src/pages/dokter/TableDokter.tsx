@@ -60,7 +60,7 @@ const StyledTableContainer = styled(TableContainer)`
 export default function TableDokter() {
   const datas = DataDokter;
 
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
 

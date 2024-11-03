@@ -52,7 +52,7 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 export default function TableGedung() {
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
   // const [data, setData] = useState<BuildingDataItem[]>([]);
