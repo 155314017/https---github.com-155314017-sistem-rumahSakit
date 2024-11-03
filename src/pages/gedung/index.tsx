@@ -1,4 +1,3 @@
-// src/pages/Gedung.tsx
 import React, { useEffect, useState } from "react";
 import { Box, Grid,  Typography } from "@mui/material";
 import TableGedung from "./TableGedung";
@@ -11,6 +10,7 @@ import { Building, DataItem } from "../../services/Admin Tenant/ManageBuilding/B
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+
 
 export default function Gedung() {
   const [data, setData] = useState<DataItem[]>([]);

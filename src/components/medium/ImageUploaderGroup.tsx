@@ -1,29 +1,31 @@
 import React, { useState, DragEvent, ChangeEvent, useRef } from "react";
 import { Box, Typography, CircularProgress, Alert } from "@mui/material";
 import { Grid } from "@mui/system";
-import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
+import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
 
-interface ImageData {
-    image: string | null;      // Menyimpan URL gambar untuk ditampilkan
-    imageBase64: string;       // Menyimpan gambar dalam base64
-    loading: boolean;          // Status loading
-    error: string;             // Pesan error
+interface ImageDatas {
+    image: string | null;
+    imageBase64: string;
+    type: string;
+    name: string;
+    loading: boolean;
+    error: string;
 }
 
-const ImageUploaderGroup: React.FC = () => {
-    const [images, setImages] = useState<ImageData[]>(
-        Array(5).fill({ image: null, imageBase64: "", loading: false, error: "" })
+interface ImageUploaderGroupProps {
+    onChange: (images: { imageName: string; imageType: string; imageData: string;  }[]) => void;
+}
+
+const ImageUploaderGroup: React.FC<ImageUploaderGroupProps> = ({ onChange }) => {
+    const [images, setImages] = useState<ImageDatas[]>(
+        Array(5).fill({ image: null, imageBase64: "", type: "", name: "", loading: false, error: "" })
     );
 
-    const inputRefs = useRef<HTMLInputElement[]>([]); // Menyimpan referensi untuk input file
-
+    const inputRefs = useRef<HTMLInputElement[]>([]);
 
     const validateFile = (file: File): boolean => {
-        const validTypes = ["image/jpeg", "image/png", "image/svg+xml", "image/gif"]; // jenis file yang di acc
-        if (!validTypes.includes(file.type)) {
-            return false;
-        }
-        return true;
+        const validTypes = ["image/jpeg", "image/png", "image/svg+xml", "image/gif"];
+        return validTypes.includes(file.type);
     };
 
     const validateDimensions = (file: File, callback: (isValid: boolean) => void) => {
@@ -31,11 +33,7 @@ const ImageUploaderGroup: React.FC = () => {
         img.src = URL.createObjectURL(file);
 
         img.onload = () => {
-            if (img.width > 8000 || img.height > 4000) {
-                callback(false);
-            } else {
-                callback(true);
-            }
+            callback(img.width <= 8000 && img.height <= 4000);
         };
     };
 
@@ -50,20 +48,33 @@ const ImageUploaderGroup: React.FC = () => {
 
                     reader.onload = () => {
                         setTimeout(() => {
-                            setImages((prevImages) =>
-                                prevImages.map((img, i) =>
-                                    i === index
-                                        ? { ...img, image: reader.result as string, imageBase64: (reader.result as string).split(",")[1], loading: false }
-                                        : img
-                                )
+                            const base64 = (reader.result as string).split(",")[1];
+                            const updatedImages = images.map((img, i) =>
+                                i === index
+                                    ? {
+                                        ...img,
+                                        image: reader.result as string,
+                                        imageBase64: base64,
+                                        type: file.type,
+                                        name: file.name,
+                                        loading: false
+                                    }
+                                    : img
                             );
+                            setImages(updatedImages);
+
+                            onChange(updatedImages.map((img) => ({
+                                imageData: img.imageBase64,
+                                imageType: img.type,
+                                imageName: img.name
+                            })));
                         }, 2000); // delay 2 detik
                     };
 
-                    reader.readAsDataURL(file); // Membaca file sebagai base64
+                    reader.readAsDataURL(file);
                 } else {
                     setImages((prevImages) =>
-                        prevImages.map((img, i) => i === index ? { ...img, error: "Dimensi gambar maksimal adalah 800x400 piksel." } : img)
+                        prevImages.map((img, i) => i === index ? { ...img, error: "Dimensi gambar maksimal adalah 8000x4000 piksel." } : img)
                     );
                 }
             });
@@ -79,22 +90,12 @@ const ImageUploaderGroup: React.FC = () => {
         if (file) handleFileUpload(file, index);
     };
 
-    // Kirim semua gambar ke server atau database
-    // const handleSaveToDatabase = () => {
-    //     images.forEach((img, index) => {
-    //         if (img.imageBase64) {
-    //             console.log(`Image ${index + 1} in Base64:`, img.imageBase64);
-    //         }
-    //     });
-    // };
-
     const handleBoxClick = (index: number) => {
         if (inputRefs.current[index]) {
-            inputRefs.current[index].click(); // Trigger input click to open file manager
+            inputRefs.current[index].click();
         }
     };
 
-    // Handle drag and drop
     const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
     };
@@ -107,7 +108,7 @@ const ImageUploaderGroup: React.FC = () => {
 
     return (
         <>
-            <Typography sx={{ fontSize: "16px", fontWeight: 600, mt:1 }}>Unggah Foto<span style={{ color: "red" }}>*</span></Typography>
+            <Typography sx={{ fontSize: "16px", fontWeight: 600, mt: 1 }}>Unggah Foto<span style={{ color: "red" }}>*</span></Typography>
             <Typography fontSize={'14px'} mb={1} color='#A8A8BD' >Format foto harus .SVG, .PNG, atau .JPG dan ukuran foto maksimal 4MB.</Typography>
             <Grid container justifyContent="center" alignItems="center" direction="column" spacing={4} maxHeight={'350px'} maxWidth={'100%'} >
                 {images.map((imgData, index) => (
@@ -125,12 +126,10 @@ const ImageUploaderGroup: React.FC = () => {
                             sx={{
                                 border: imgData.loading ? "2px dashed blue" : "2px dashed gray",
                                 borderRadius: "12px",
-                                // padding: "20px",
                                 textAlign: "center",
                                 width: "190px",
                                 height: "160px",
                                 backgroundColor: "#fafafa",
-                                // backgroundColor:'blue',
                                 transition: "background-color 0.3s ease",
                                 cursor: "pointer",
                                 boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
@@ -170,14 +169,6 @@ const ImageUploaderGroup: React.FC = () => {
                         </Box>
                     </Grid>
                 ))}
-
-                {/* <Button
-                variant="contained"
-                sx={{ mt: 3, bgcolor: "#1976d2", '&:hover': { bgcolor: "#155fa0" } }}
-                onClick={handleSaveToDatabase}
-            >
-                Save All to Database
-            </Button> */}
             </Grid>
         </>
     );

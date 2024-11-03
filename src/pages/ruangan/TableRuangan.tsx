@@ -345,7 +345,7 @@ export default function TableRuangan() {
                                 textTransform: "capitalize",
                               },
                             ]}
-                            align="center"
+                            align="left"
                           >
                             {data.masterBuildingId}
                           </TableCell>
@@ -361,9 +361,9 @@ export default function TableRuangan() {
                                 textTransform: "capitalize",
                               },
                             ]}
-                            align="center"
+                            align="left"
                           >
-                            {data.type}
+                            {data.name}
                           </TableCell>
                           <TableCell
                             align="center"
@@ -438,7 +438,6 @@ export default function TableRuangan() {
                     border: 'none',
                   },
                   "& .Mui-selected": {
-                    backgroundColor: "#8F85F3",
                     bgcolor: '#D5D1FB',
                   },
                   "& .MuiPaginationItem-ellipsis": {
