@@ -81,7 +81,7 @@ export default function TableKlinik() {
   }, []);
 
 
-  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 

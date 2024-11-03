@@ -94,7 +94,7 @@ export default function TambahFasilitas() {
                     </Box>
 
                     {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
-                    <ImageUploaderGroup />
+                    <ImageUploaderGroup onChange={() => console.log("tes")} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Fasilitas<span style={{ color: "red" }}>*</span></Typography>

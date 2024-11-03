@@ -64,7 +64,7 @@ export default function TablePegawai() {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
 
-  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 

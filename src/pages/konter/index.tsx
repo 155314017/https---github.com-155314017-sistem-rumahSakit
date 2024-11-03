@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Box, Grid } from "@mui/system";
 import { Typography } from "@mui/material";
 import SideBar from "../../components/SideBar/SideBar";
@@ -10,7 +10,7 @@ import CardAdd from "../../components/medium/CardAdd";
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import TableKonter from "./TableKonter";
-import { Tenant, DataItem } from "../../services/Admin Tenant/ManageTenant/Tenant";
+import { Tenant } from "../../services/Admin Tenant/ManageTenant/Tenant";
 
 export default function Konter() {
     // const [data, setData] = useState<DataItem[]>([]);

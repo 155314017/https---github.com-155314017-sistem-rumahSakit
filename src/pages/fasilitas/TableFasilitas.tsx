@@ -79,7 +79,7 @@ export default function TableFasilitas() {
     fetchData();
   }, []);
 
-  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
@@ -312,7 +312,7 @@ export default function TableFasilitas() {
                             sx={[{ color: "#292B2C", fontSize: "14px" }]}
                             align="center"
                           >
-                            {data.id}
+                            {index+1}
                           </TableCell>
                           <TableCell
                             sx={[
@@ -376,7 +376,7 @@ export default function TableFasilitas() {
                             ]}
                             align="center"
                           >
-                            {data.cost}
+                            {data.operationalSchedule}
                           </TableCell>
                           <TableCell
                             align="center"

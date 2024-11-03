@@ -58,7 +58,7 @@ const StyledTableContainer = styled(TableContainer)`
 
 export default function TableRuangan() {
 
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
   // const [data, setData] = useState<RoomDataItem[]>([]);
@@ -70,7 +70,7 @@ export default function TableRuangan() {
       try {
         const result = await RoomServices();
         console.log('Result: ', result);
-        setDatas(result); // Store the result in datas state
+        setDatas(result); 
         // setData(result); // Set data to display in table
       } catch (error) {
         console.log('Failed to fetch data from API: ', error);
@@ -80,7 +80,7 @@ export default function TableRuangan() {
     fetchData();
   }, []);
 
-  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
@@ -315,7 +315,7 @@ export default function TableRuangan() {
                             sx={[{ color: "#292B2C", fontSize: "14px" }]}
                             align="center"
                           >
-                            {data.id}
+                            {index+1}
                           </TableCell>
                           <TableCell
                             sx={[

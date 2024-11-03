@@ -63,7 +63,7 @@ export default function TablePasien() {
     const [page, setPage] = useState(2);
     const [isCollapsed, setIsCollapsed] = useState(true);
 
-    const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
 

@@ -83,7 +83,7 @@ export default function TambahRuangan() {
                     </Box>
 
                     {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
-                    <ImageUploaderGroup />
+                    <ImageUploaderGroup onChange={() => console.log("clicked")} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Ruangan<span style={{ color: "red" }}>*</span></Typography>

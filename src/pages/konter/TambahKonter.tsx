@@ -98,7 +98,7 @@ export default function TambahKonter() {
                     </Box>
 
                     {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
-                    <ImageUploaderGroup/>
+                    <ImageUploaderGroup onChange={() => console.log("clicked") } />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Konter<span style={{ color: "red" }}>*</span></Typography>

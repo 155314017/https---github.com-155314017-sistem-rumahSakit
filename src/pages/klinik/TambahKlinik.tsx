@@ -88,7 +88,7 @@ export default function TambahKlinik() {
                     </Box>
 
                     {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
-                    <ImageUploaderGroup/>
+                    <ImageUploaderGroup onChange={() => console.log("clicked") } />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Klinik<span style={{ color: "red" }}>*</span></Typography>

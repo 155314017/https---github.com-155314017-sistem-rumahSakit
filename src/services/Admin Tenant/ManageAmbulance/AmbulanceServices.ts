@@ -67,7 +67,6 @@ export const AmbulanceServices = async (): Promise<AmbulanceDataItem[]> => {
         console.log("Number:", item.number);
         console.log("Status:", item.status);
 
-        // Mendapatkan jam operasional
         if (item.schedules.length > 0) {
           const { startDateTime, endDateTime } = item.schedules[0];
 
@@ -79,7 +78,6 @@ export const AmbulanceServices = async (): Promise<AmbulanceDataItem[]> => {
           const endHours = endDate.getHours();
           const endMinutes = endDate.getMinutes();
 
-          // Membuat string jam operasional
           const operationalSchedule = `${startHours}:${
             startMinutes < 10 ? "0" : ""
           }${startMinutes} - ${endHours}:${

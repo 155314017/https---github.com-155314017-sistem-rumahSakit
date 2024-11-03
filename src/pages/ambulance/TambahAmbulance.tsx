@@ -111,7 +111,7 @@ export default function TambahAmbulance() {
           {/* ---------- */}
 
           {/* image uploader */}
-          <ImageUploaderGroup/>
+          <ImageUploaderGroup onChange={() => console.log("clicked") } />
 
           {/* form */}
           <Box component="form" noValidate autoComplete="off" mt={3}>

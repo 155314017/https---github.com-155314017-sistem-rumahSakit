@@ -75,7 +75,7 @@ export default function TableAmbulance() {
     fetchData();
   }, []);
 
-  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
@@ -290,7 +290,7 @@ export default function TableAmbulance() {
                             sx={[{ color: "#292B2C", fontSize: "14px" }]}
                             align="center"
                           >
-                            {data.number}
+                            {index+1}
                           </TableCell>
                           <TableCell
                             sx={[

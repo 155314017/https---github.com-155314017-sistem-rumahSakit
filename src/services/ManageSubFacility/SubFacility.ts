@@ -13,8 +13,9 @@ export interface SubFacilityDataItem {
   deletedDateTime: number | null;
   masterBuildingId: string;
   cost: number;
-  schedules: string | null;
   images: string[];
+  schedules: { id: string; startDateTime: number; endDateTime: number }[];
+  operationalSchedule?: string;
 }
 
 export interface Pageable {
@@ -68,6 +69,29 @@ export const SubFacilityServices = async (): Promise<SubFacilityDataItem[]> => {
       console.log("Description:", item.facilityDataId);
       console.log("Additional Info:", item.additionalInfo);
       console.log("Created By:", item.createdBy);
+
+          if (item.schedules.length > 0) {
+            const { startDateTime, endDateTime } = item.schedules[0];
+
+            const startDate = new Date(startDateTime * 1000);
+            const endDate = new Date(endDateTime * 1000);
+
+            const startHours = startDate.getHours();
+            const startMinutes = startDate.getMinutes();
+            const endHours = endDate.getHours();
+            const endMinutes = endDate.getMinutes();
+
+            const operationalSchedule = `${startHours}:${
+              startMinutes < 10 ? "0" : ""
+            }${startMinutes} - ${endHours}:${
+              endMinutes < 10 ? "0" : ""
+            }${endMinutes}`;
+            item.operationalSchedule = operationalSchedule; // Menyimpan jam operasional ke item
+            console.log("Operational Schedule:", operationalSchedule);
+          } else {
+            console.log("No schedules available.");
+          }
+
       console.log(
         "Created Date Time:",
         new Date(item.createdDateTime * 1000).toLocaleString()

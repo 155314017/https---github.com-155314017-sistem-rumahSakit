@@ -52,7 +52,7 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 export default function TableGedung() {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(2);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
   // const [data, setData] = useState<BuildingDataItem[]>([]);
@@ -74,7 +74,7 @@ export default function TableGedung() {
     fetchData();
   }, []);
 
-  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
@@ -277,7 +277,7 @@ export default function TableGedung() {
                             sx={[{ color: "#292B2C", fontSize: "14px" }]}
                             align="center"
                           >
-                            {data.id}
+                            {index+1}
                           </TableCell>
                           <TableCell
                             sx={[
