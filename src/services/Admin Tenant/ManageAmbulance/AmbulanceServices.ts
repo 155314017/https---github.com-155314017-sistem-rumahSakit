@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export interface DataItem {
+export interface AmbulanceDataItem {
   id: string;
   number: string;
   status: string;
@@ -13,7 +13,7 @@ export interface DataItem {
   deletedDateTime: number | null;
   images: string[];
   schedules: { id: string; startDateTime: number; endDateTime: number }[];
-  operationalSchedule?: string; // Menambahkan properti baru untuk menyimpan jam operasional
+  operationalSchedule?: string; 
 }
 
 export interface Pageable {
@@ -34,7 +34,7 @@ export interface ApiResponse {
   statusCode: string;
   message: string;
   data: {
-    content: DataItem[];
+    content: AmbulanceDataItem[];
     pageable: Pageable;
     totalPages: number;
     totalElements: number;
@@ -55,7 +55,7 @@ export interface ApiResponse {
 const API_URL =
   "https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc";
 
-export const AmbulanceServices = async (): Promise<DataItem[]> => {
+export const AmbulanceServices = async (): Promise<AmbulanceDataItem[]> => {
   try {
     const response = await axios.get<ApiResponse>(API_URL);
 

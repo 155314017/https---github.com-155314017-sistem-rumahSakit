@@ -23,7 +23,7 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
-import { SubFacilityServices, DataItems } from "../../services/ManageSubFacility/SubFacility";
+import { SubFacilityServices, SubFacilityDataItem } from "../../services/ManageSubFacility/SubFacility";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -57,11 +57,11 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 export default function TableSubFasilitas() {
-    const [page, setPage] = useState(2);
+    const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [open, setOpen] = React.useState<boolean>(false);
-    const [data, setData] = useState<DataItems[]>([]);
-    const [datas, setDatas] = useState<DataItems[]>([]);
+    const [data, setData] = useState<SubFacilityDataItem[]>([]);
+    const [datas, setDatas] = useState<SubFacilityDataItem[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {

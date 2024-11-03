@@ -290,7 +290,7 @@ export default function TableKlinik() {
                           sx={[{ color: "#292B2C", fontSize: "14px" }]}
                           align="center"
                         >
-                          {data.id}
+                          {index+1}
                         </TableCell>
                         <TableCell
                           sx={[

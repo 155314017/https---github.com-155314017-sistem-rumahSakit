@@ -23,7 +23,7 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import bgImage from "../../assets/img/String.png";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
-import { RoomServices, DataItem } from "../../services/Admin Tenant/ManageRoom/RoomServices";
+import { RoomServices, RoomDataItem } from "../../services/Admin Tenant/ManageRoom/RoomServices";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -61,8 +61,8 @@ export default function TableRuangan() {
   const [page, setPage] = useState(2);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
-  const [data, setData] = useState<DataItem[]>([]);
-  const [datas, setDatas] = useState<DataItem[]>([]);
+  const [data, setData] = useState<RoomDataItem[]>([]);
+  const [datas, setDatas] = useState<RoomDataItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {

@@ -10,11 +10,11 @@ import TableAmbulance from "../ambulance/TableAmbulance";
 import MinorCrashIcon from "@mui/icons-material/MinorCrash";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { useEffect, useState } from "react";
-import { AmbulanceServices, DataItem } from "../../services/Admin Tenant/ManageAmbulance/AmbulanceServices";
+import { AmbulanceServices, AmbulanceDataItem } from "../../services/Admin Tenant/ManageAmbulance/AmbulanceServices";
 
 export default function Ambulance() {
 
-  const [data, setData] = useState<DataItem[]>([]);
+  const [data, setData] = useState<AmbulanceDataItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {

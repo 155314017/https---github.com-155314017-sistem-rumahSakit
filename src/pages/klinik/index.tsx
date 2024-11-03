@@ -10,12 +10,12 @@ import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import TableKlinik from "./TableKlinik";
 import { useEffect, useState } from "react";
-import { Clinic, DataItem } from "../../services/Admin Tenant/ManageClinic/Clinic";
+import { Clinic, ClinicDataItem } from "../../services/Admin Tenant/ManageClinic/Clinic";
 
 export default function Klinik() {
-    const [data, setData] = useState<DataItem[]>([]);
+    const [data, setData] = useState<ClinicDataItem[]>([]);
     
-    useEffect(() => {
+    useEffect(() => {   
         const fetchData = async () => {
             console.log('fetching data . . . ')
             try {

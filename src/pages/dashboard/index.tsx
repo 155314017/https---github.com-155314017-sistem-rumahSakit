@@ -23,8 +23,36 @@ import TableAmbulance from "../ambulance/TableAmbulance";
 import TableKlinik from "../klinik/TableKlinik";
 import TableKonter from "../konter/TableKonter";
 import TablePasien from "../pasien/TablePasien";
+import { useEffect, useState } from "react";
+import { Clinic, ClinicDataItem } from "../../services/Admin Tenant/ManageClinic/Clinic";
+import { RoomDataItem, RoomServices } from "../../services/Admin Tenant/ManageRoom/RoomServices";
+import { FacilityDataItem, FacilityServices } from "../../services/ManageFacility/FacilityServices";
 
 export default function Dashboard() {
+  const [dataClinic, setDataClinic] = useState<ClinicDataItem[]>([]);
+  const [dataRoom, setDataRoom] = useState<RoomDataItem[]>([]);
+  const [dataFacility, setDataFacility] = useState<FacilityDataItem[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log('fetching data . . . ')
+      try {
+        const resultClinic = await Clinic();
+        const resultRoom = await RoomServices();
+        const resultFacility = await FacilityServices();
+
+        // console.log('result : ' + resultClinic)
+        setDataRoom(resultRoom);
+        setDataClinic(resultClinic);
+        setDataFacility(resultFacility);
+      } catch (error) {
+        console.log('Failed to fetch data from API' + error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Box>
       <Box sx={{ py: 5 }}>
@@ -36,14 +64,14 @@ export default function Dashboard() {
         <MediumCard
           icon={MeetingRoomIcon}
           title="Total Ruangan"
-          subtitle="10"
-        />
-        <MediumCard icon={BedIcon} title={"Ruangan tersedia"} subtitle={"10"} />
+          subtitle={dataRoom.length.toString()}
+        />  
+        <MediumCard icon={BedIcon} title={"Ruangan tersedia"} subtitle={dataRoom.length.toString()} />
         <MediumCard icon={PeopleIcon} title={"Total pegawai"} subtitle={"10"} />
         <MediumCard
           icon={LocalHospitalIcon}
           title="Total poliklinik"
-          subtitle="10"
+          subtitle={dataClinic.length.toString()}
         />
         <MediumCard
           icon={MedicalServicesIcon}
@@ -53,7 +81,7 @@ export default function Dashboard() {
         <MediumCard
           icon={MonitorHeartIcon}
           title="Total fasilitas"
-          subtitle="10"
+          subtitle={dataFacility.length.toString()}
         />
         <CardAdd
           icon={RoomPreferencesIcon}
@@ -75,8 +103,8 @@ export default function Dashboard() {
         <TableDokter />
         <TableAmbulance />
         <TableKlinik />
-        <TableKonter/>
-        <TablePasien/>
+        <TableKonter />
+        <TablePasien />
       </Stack>
     </Box>
   );

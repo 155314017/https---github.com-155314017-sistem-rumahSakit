@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export interface DataItems {
+export interface SubFacilityDataItem {
   id: string;
   name: string;
   facilityDataId: string;
@@ -35,7 +35,7 @@ export interface ApiResponse {
   statusCode: string;
   message: string;
   data: {
-    content: DataItems[];
+    content: SubFacilityDataItem[];
     pageable: Pageable;
     totalPages: number;
     totalElements: number;
@@ -56,7 +56,7 @@ export interface ApiResponse {
 const API_URL =
   "https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc";
 
-export const SubFacilityServices = async (): Promise<DataItems[]> => {
+export const SubFacilityServices = async (): Promise<SubFacilityDataItem[]> => {
   const response = await axios.get<ApiResponse>(API_URL);
 
   if (response.status === 200) {

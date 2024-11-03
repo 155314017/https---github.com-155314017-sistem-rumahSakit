@@ -10,11 +10,11 @@ import CardAdd from "../../components/medium/CardAdd";
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import TableRuangan from "./TableRuangan";
-import { RoomServices, DataItem } from "../../services/Admin Tenant/ManageRoom/RoomServices";
+import { RoomServices, RoomDataItem } from "../../services/Admin Tenant/ManageRoom/RoomServices";
 
 export default function Ruangan() {
 
-    const [data, setData] = useState<DataItem[]>([]);
+    const [data, setData] = useState<RoomDataItem[]>([]);
     useEffect(() => {
         const fetchData = async () => {
             console.log('fetching data . . . ')

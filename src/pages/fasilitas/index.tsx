@@ -11,12 +11,12 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import TableFasilitas from "./TableFasilitas";
 import TableSubFasilitas from "./TableSubFasilitas";
 import { useEffect, useState } from "react";
-import { FacilityServices, DataItem } from "../../services/ManageFacility/FacilityServices";
-import { SubFacilityServices, DataItems } from "../../services/ManageSubFacility/SubFacility";
+import { FacilityServices, FacilityDataItem } from "../../services/ManageFacility/FacilityServices";
+import { SubFacilityServices, SubFacilityDataItem } from "../../services/ManageSubFacility/SubFacility";
 
 export default function Fasilitas() {
-    const [data, setData] = useState<DataItem[]>([]);
-    const [data1, setData1] = useState<DataItems[]>([]);
+    const [data, setData] = useState<FacilityDataItem[]>([]);
+    const [data1, setData1] = useState<SubFacilityDataItem[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
