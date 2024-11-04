@@ -8,6 +8,7 @@ import { useState } from "react";
 import AlertSuccess from "../../components/small/AlertSuccess";
 import ImageUploaderGroup from "../../components/medium/ImageUploaderGroup";
 import axios from "axios";
+import Cookies from "js-cookie"; // Import js-cookie
 
 type ImageData = {
     imageName: string;
@@ -53,34 +54,49 @@ export default function TambahGedung() {
             alamatGedung: Yup.string().required('Alamat Gedung is required'),
         }),
         onSubmit: async (values) => {
-            const structuredData = {
+            console.log(values.namaGedung)
+            console.log(values.alamatGedung)
+
+            const data = {
                 name: values.namaGedung,
                 address: values.alamatGedung,
-                additionalInfo: `${values.namaGedung} in ${values.alamatGedung}`, 
+                additionalInfo: "",
                 images: imagesData.map(image => ({
-                    imageName: image.imageName || "", 
-                    imageType: image.imageType || "", 
+                    imageName: image.imageName || "",
+                    imageType: image.imageType || "",
                     imageData: image.imageData || "",
                 })),
             };
 
-            console.log('Submitting form with data:', structuredData);
+            console.log('Submitting form with data:', data);
+
+            const token = Cookies.get("accessToken"); 
+            console.log("Token :", token)
 
             try {
-                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/building/', structuredData, {
+                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/building/', data, {
                     headers: {
                         'Content-Type': 'application/json',
+                        'accessToken': `${token}`
                     },
                 });
                 console.log('Response:', response.data);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
-                setImagesData([]); 
+                setImagesData([]);
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
                     console.error('Axios error message:', error.message);
                     console.error('Response data:', error.response?.data);
+
+                    if (error.response) {
+                        console.error('Response status:', error.response.status);
+                        console.error('Response headers:', error.response.headers);
+                        console.error('Response data:', error.response.data);
+                    } else {
+                        console.error('Error message:', error.message);
+                    }
                     showTemporaryAlertError();
                 } else {
                     console.error('Unexpected error:', error);
@@ -91,8 +107,7 @@ export default function TambahGedung() {
 
     return (
         <Container sx={{ py: 2 }}>
-            <BreadCrumbs
-                breadcrumbItems={breadcrumbItems}
+            <BreadCrumbs breadcrumbItems={breadcrumbItems}
                 onBackClick={() => window.history.back()}
             />
 
@@ -103,10 +118,10 @@ export default function TambahGedung() {
                         <img src={bgImage} alt="bg-image" />
                     </Box>
 
-                   
+
                     <ImageUploaderGroup onChange={handleImageChange} />
 
-                   
+
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>
                             Nama Gedung<span style={{ color: "red" }}>*</span>
@@ -134,7 +149,7 @@ export default function TambahGedung() {
                             <OutlinedInput
                                 id="alamatGedung"
                                 name="alamatGedung"
-                                size="small" 
+                                size="small"
                                 placeholder="Masukkan alamat tempat tinggal pegawai"
                                 value={formik.values.alamatGedung}
                                 onChange={formik.handleChange}

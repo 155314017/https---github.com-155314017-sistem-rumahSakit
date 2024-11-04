@@ -51,11 +51,11 @@ export interface ApiResponse {
 }
 
 const API_URL =
-  "https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc"; 
+  "https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=100&orderBy=createdDateTime=asc"; 
 
 export const Building = async (): Promise<BuildingDataItem[]> => {
   const response = await axios.get<ApiResponse>(API_URL);
-
+  
   if (response.status === 200) {
     console.log("API connection successful:", response.data);
 

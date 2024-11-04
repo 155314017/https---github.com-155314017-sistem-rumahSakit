@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
+import Cookies from "js-cookie"; // Import js-cookie
 
 interface CustomError extends Error {
   responseCode?: number;
@@ -10,9 +10,6 @@ const Login = async (email: string, password: string) => {
     console.log("inside Login");
     const response = await axios.post(
       "https://hms.3dolphinsocial.com:8083/v1/auth/login",
-      // "https://hms.3dolphinsocial.com:8083/login",
-      // "http://34.128.99.52:8081/login",
-      // "https://hms.3dolphinsocial.com:8083/login",
       { email, password },
       {
         headers: {
@@ -20,8 +17,13 @@ const Login = async (email: string, password: string) => {
         },
       }
     );
+
     console.log("inside Login1 ");
-    console.log("akses token", response.headers);
+    console.log("akses token", response.data.data.tokenValue); // Access the token from the response
+
+    // Save the token in cookies
+    Cookies.set("accessToken", response.data.data.tokenValue, { expires: 7 }); // Expires in 7 days
+
     return response.data;
   } catch (error: any) {
     const customError: CustomError = new Error(
