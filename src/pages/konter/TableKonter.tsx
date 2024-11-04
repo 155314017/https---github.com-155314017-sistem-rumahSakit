@@ -1,5 +1,4 @@
-import { useState } from "react";
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 import {
     Box,
     Stack,
@@ -22,8 +21,8 @@ import bgImage from "../../assets/img/String.png";
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import DataKonter from "../../dummyData/dataKonter";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
+import { CounterDataItem, CounterServices } from "../../services/Admin Tenant/ManageCounter/CounterServices";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -56,11 +55,27 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 export default function TableKonter() {
-    const datas = DataKonter;
-
     const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [open, setOpen] = React.useState<boolean>(false);
+    const [datas, setDatas] = useState<CounterDataItem[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            console.log('Fetching data...');
+            try {
+                const result = await CounterServices();
+                console.log('Result: ', result);
+                setDatas(result); // Store the result in datas state
+                // setData(result); // Set data to display in table
+            } catch (error) {
+                console.log('Failed to fetch data from API: ', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
 
     const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
@@ -231,61 +246,130 @@ export default function TableKonter() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {displayedData.map((data, index) => (
-                                            <StyledTableRow key={index}>
-                                                <TableCell align="center">{data.no_konter}</TableCell>
-                                                <TableCell>{data.type}</TableCell>
-                                                <TableCell>{data.name}</TableCell>
-                                                <TableCell>{data.operational}</TableCell>
-                                                <TableCell>{data.address}</TableCell>
-                                                <TableCell
-                                                    align="center"
-                                                    sx={[
-                                                        {
-                                                            color: "#292B2C",
-                                                            fontSize: "14px",
-                                                            textTransform: "capitalize",
-                                                        },
-                                                    ]}
-                                                >
-                                                    <Link
-                                                        onClick={confirmationDelete}
-                                                        href="#"
-                                                        mr={2}
-                                                        underline="hover"
-                                                        sx={{
-                                                            textTransform: "capitalize",
-                                                            color: "#8F85F3",
-                                                        }}
+                                        {displayedData.length > 0 ? (
+                                            displayedData.map((data, index) => (
+                                                <StyledTableRow key={index}>
+                                                    <TableCell
+                                                        sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                                                        align="center"
                                                     >
-                                                        Hapus
-                                                    </Link>
-
-                                                    <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
-                                                    <Link
-                                                        href="#"
-                                                        mr={2}
-                                                        underline="hover"
-                                                        sx={{
-                                                            textTransform: "capitalize",
-                                                            color: "#8F85F3",
-                                                        }}
+                                                        {index + 1}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        sx={[
+                                                            {
+                                                                color: "#292B2C",
+                                                                fontSize: "14px",
+                                                                overflow: "hidden",
+                                                                textOverflow: "ellipsis",
+                                                                whiteSpace: "nowrap",
+                                                                maxWidth: "150px",
+                                                                textTransform: "capitalize",
+                                                            },
+                                                        ]}
+                                                        align="center"
                                                     >
-                                                        Ubah
-                                                    </Link>
-                                                    <Link
-                                                        href="/detailRuangan"
-                                                        underline="hover"
-                                                        sx={{
-                                                            textTransform: "capitalize",
-                                                            color: "#8F85F3",
-                                                        }}
+                                                        {data.name}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        sx={[
+                                                            {
+                                                                color: "#292B2C",
+                                                                overflow: "hidden",
+                                                                textOverflow: "ellipsis",
+                                                                whiteSpace: "nowrap",
+                                                                maxWidth: "150px",
+                                                                fontSize: "14px",
+                                                                textTransform: "capitalize",
+                                                            },
+                                                        ]}
+                                                        align="center"
                                                     >
-                                                        Lihat Selengkapnya
-                                                    </Link>
+                                                        {data.id}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        sx={[
+                                                            {
+                                                                color: "#292B2C",
+                                                                overflow: "hidden",
+                                                                textOverflow: "ellipsis",
+                                                                whiteSpace: "nowrap",
+                                                                maxWidth: "150px",
+                                                                fontSize: "14px",
+                                                                textTransform: "capitalize",
+                                                            },
+                                                        ]}
+                                                        align="center"
+                                                    >
+                                                        {data.id}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        sx={[
+                                                            {
+                                                                color: "#292B2C",
+                                                                overflow: "hidden",
+                                                                textOverflow: "ellipsis",
+                                                                whiteSpace: "nowrap",
+                                                                maxWidth: "150px",
+                                                                fontSize: "14px",
+                                                                textTransform: "capitalize",
+                                                            },
+                                                        ]}
+                                                        align="center"
+                                                    >
+                                                        {data.id}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        align="center"
+                                                        sx={[
+                                                            {
+                                                                color: "#292B2C",
+                                                                fontSize: "14px",
+                                                                textTransform: "capitalize",
+                                                            },
+                                                        ]}
+                                                    >
+                                                        <Link
+                                                            href="#"
+                                                            underline="none"
+                                                            color={"#8F85F3"}
+                                                            onClick={confirmationDelete}
+                                                            sx={{ mr: 2 }}
+                                                        >
+                                                            Hapus
+                                                        </Link>
+                                                        <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
+                                                        <Link
+                                                            href="#"
+                                                            mr={2}
+                                                            underline="hover"
+                                                            sx={{
+                                                                textTransform: "capitalize",
+                                                                color: "#8F85F3",
+                                                            }}
+                                                        >
+                                                            Ubah
+                                                        </Link>
+                                                        <Link
+                                                            href="/detailGedung "
+                                                            underline="hover"
+                                                            sx={{
+                                                                textTransform: "capitalize",
+                                                                color: "#8F85F3",
+                                                            }}
+                                                        >
+                                                            Lihat Selengkapnya
+                                                        </Link>
+                                                    </TableCell>
+                                                </StyledTableRow>
+                                            ))
+                                        ) : (
+                                            <StyledTableRow>
+                                                <TableCell colSpan={6} align="center">
+                                                    Tidak ada data
                                                 </TableCell>
                                             </StyledTableRow>
-                                        ))}
+                                        )}
                                     </TableBody>
                                 </Table>
                             </StyledTableContainer>
@@ -306,17 +390,17 @@ export default function TableKonter() {
                                 sx={{
                                     "& .MuiPaginationItem-root": {
                                         color: "#8F85F3",
-                                        border: 'none', 
+                                        border: 'none',
                                     },
                                     "& .Mui-selected": {
                                         backgroundColor: "#8F85F3",
                                         bgcolor: '#D5D1FB',
                                     },
                                     "& .MuiPaginationItem-ellipsis": {
-                                        border: 'none', 
+                                        border: 'none',
                                     },
                                     "& .MuiPaginationItem-text": {
-                                        border: 'none', 
+                                        border: 'none',
                                     },
                                 }}
                             />

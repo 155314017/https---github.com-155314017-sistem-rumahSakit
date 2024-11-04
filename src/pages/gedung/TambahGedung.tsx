@@ -7,15 +7,21 @@ import bgImage from "../../assets/img/String.png";
 import { useState } from "react";
 import AlertSuccess from "../../components/small/AlertSuccess";
 import ImageUploaderGroup from "../../components/medium/ImageUploaderGroup";
-import axios from "axios"; 
+import axios from "axios";
+
+type ImageData = {
+    imageName: string;
+    imageType: string;
+    imageData: string;
+};
 
 export default function TambahGedung() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
-    const [imagesData, setImagesData] = useState<Array<{ imageName: string; imageType: string; imageData: string; }>>([]);
+    const [imagesData, setImagesData] = useState<ImageData[]>([]);
 
-    const handleImageChange = (images: { imageName: string; imageType: string; imageData: string; }[]) => {
-        console.log('Images changed:', images); 
+    const handleImageChange = (images: ImageData[]) => {
+        console.log('Images changed:', images);
         setImagesData(images);
     };
 
@@ -50,22 +56,31 @@ export default function TambahGedung() {
             const structuredData = {
                 name: values.namaGedung,
                 address: values.alamatGedung,
-                additionalInfo: {},
-                data: imagesData,
+                additionalInfo: `${values.namaGedung} in ${values.alamatGedung}`, 
+                images: imagesData.map(image => ({
+                    imageName: image.imageName || "", 
+                    imageType: image.imageType || "", 
+                    imageData: image.imageData || "",
+                })),
             };
 
-            console.log('Submitting form with data:', structuredData); 
+            console.log('Submitting form with data:', structuredData);
 
             try {
-                const response = await axios.post('baseurl', structuredData);
+                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/building/', structuredData, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
                 console.log('Response:', response.data);
                 showTemporaryAlertSuccess();
-                formik.resetForm(); 
+                formik.resetForm();
+                setImagesData([]); 
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
                     console.error('Axios error message:', error.message);
-                    console.error('Response data:', error.response?.data); 
+                    console.error('Response data:', error.response?.data);
                     showTemporaryAlertError();
                 } else {
                     console.error('Unexpected error:', error);
@@ -88,10 +103,10 @@ export default function TambahGedung() {
                         <img src={bgImage} alt="bg-image" />
                     </Box>
 
-                    {/* Image Uploader */}
+                   
                     <ImageUploaderGroup onChange={handleImageChange} />
 
-                    {/* Form */}
+                   
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>
                             Nama Gedung<span style={{ color: "red" }}>*</span>
@@ -119,7 +134,7 @@ export default function TambahGedung() {
                             <OutlinedInput
                                 id="alamatGedung"
                                 name="alamatGedung"
-                                size="small" // Ensure consistency in size
+                                size="small" 
                                 placeholder="Masukkan alamat tempat tinggal pegawai"
                                 value={formik.values.alamatGedung}
                                 onChange={formik.handleChange}

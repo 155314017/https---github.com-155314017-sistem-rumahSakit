@@ -1,5 +1,4 @@
-import { useState } from "react";
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Stack,
@@ -23,8 +22,8 @@ import bgImage from "../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
-import DataDokter from "../../dummyData/dataDokter";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
+import { DoctorDataItem, DoctorServices } from "../../services/Admin Tenant/ManageDoctor/DoctorServices";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -58,11 +57,26 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 export default function TableDokter() {
-  const datas = DataDokter;
-
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
+  const [datas, setDatas] = useState<DoctorDataItem[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log('Fetching data...');
+      try {
+        const result = await DoctorServices();
+        console.log('Result: ', result);
+        setDatas(result); // Store the result in datas state
+        // setData(result); // Set data to display in table
+      } catch (error) {
+        console.log('Failed to fetch data from API: ', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // const handleChangePage = (
   //   _event: React.MouseEvent<HTMLButtonElement> | null,
@@ -317,116 +331,146 @@ export default function TableDokter() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {displayedData.map((data, index) => (
-                      <StyledTableRow key={index}>
-                        <TableCell
-                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                          align="center"
-                        >
-                          {data.no_dokter}
-                        </TableCell>
-                        <TableCell
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              maxWidth: "150px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          {data.name}
-                        </TableCell>
-                        <TableCell
-                          sx={[
-                            {
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              maxWidth: "150px",
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          {data.role_dokter}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          {data.klinik}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                        >
-                          Rp {data.biaya_penanganan},-
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                        >
-                          {data.jam_praktek}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          <Link
-                            onClick={confirmationDelete}
-                            href="#"
-                            mr={2}
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
+                    {displayedData.length > 0 ? (
+                      displayedData.map((data, index) => (
+                        <StyledTableRow key={index}>
+                          <TableCell
+                            sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                            align="center"
                           >
-                            Hapus
-                          </Link>
-
-                          <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
-                          <Link
-                            href="#"
-                            mr={2}
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
+                            {index + 1}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                fontSize: "14px",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                            align="center"
                           >
-                            Ubah
-                          </Link>
-                          <Link
-                            href="#"
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
+                            {data.name}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                            align="center"
                           >
-                            Lihat Selengkapnya
-                          </Link>
+                            {data.id}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                            align="center"
+                          >
+                            {data.id}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                            align="center"
+                          >
+                            {data.id}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                            align="center"
+                          >
+                            {data.id}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                          >
+                            <Link
+                              href="#"
+                              underline="none"
+                              color={"#8F85F3"}
+                              onClick={confirmationDelete}
+                              sx={{ mr: 2 }}
+                            >
+                              Hapus
+                            </Link>
+                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
+                            <Link
+                              href="#"
+                              mr={2}
+                              underline="hover"
+                              sx={{
+                                textTransform: "capitalize",
+                                color: "#8F85F3",
+                              }}
+                            >
+                              Ubah
+                            </Link>
+                            <Link
+                              href="/detailGedung "
+                              underline="hover"
+                              sx={{
+                                textTransform: "capitalize",
+                                color: "#8F85F3",
+                              }}
+                            >
+                              Lihat Selengkapnya
+                            </Link>
+                          </TableCell>
+                        </StyledTableRow>
+                      ))
+                    ) : (
+                      <StyledTableRow>
+                        <TableCell colSpan={7} align="center">
+                          Tidak ada data
                         </TableCell>
                       </StyledTableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </StyledTableContainer>

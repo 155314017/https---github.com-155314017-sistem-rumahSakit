@@ -42,7 +42,7 @@ export default function Konter() {
                         Konter
                     </Typography>
                     <Grid container spacing={3} flex={1} mb={3}>
-                        <MediumCard icon={BusinessOutlinedIcon} title="Daftar Konter" subtitle="10" />
+                        <MediumCard icon={BusinessOutlinedIcon} title="Daftar Konter" subtitle={data.length.toString()} />
                         <CardAdd icon={AddBoxIcon} title="Tambah Konter" link="/tambahKonter" />
                     </Grid>
                     <TableKonter />
