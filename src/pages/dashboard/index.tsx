@@ -27,11 +27,13 @@ import { useEffect, useState } from "react";
 import { Clinic, ClinicDataItem } from "../../services/Admin Tenant/ManageClinic/Clinic";
 import { RoomDataItem, RoomServices } from "../../services/Admin Tenant/ManageRoom/RoomServices";
 import { FacilityDataItem, FacilityServices } from "../../services/ManageFacility/FacilityServices";
+import { DoctorServices, DoctorDataItem } from "../../services/Admin Tenant/ManageDoctor/DoctorServices";
 
 export default function Dashboard() {
   const [dataClinic, setDataClinic] = useState<ClinicDataItem[]>([]);
   const [dataRoom, setDataRoom] = useState<RoomDataItem[]>([]);
   const [dataFacility, setDataFacility] = useState<FacilityDataItem[]>([]);
+  const [dataDoctor, setDataDoctor] = useState<DoctorDataItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,11 +42,13 @@ export default function Dashboard() {
         const resultClinic = await Clinic();
         const resultRoom = await RoomServices();
         const resultFacility = await FacilityServices();
+        const resultDoctor = await DoctorServices();
 
         // console.log('result : ' + resultClinic)
         setDataRoom(resultRoom);
         setDataClinic(resultClinic);
         setDataFacility(resultFacility);
+        setDataDoctor(resultDoctor);
       } catch (error) {
         console.log('Failed to fetch data from API' + error);
       }
@@ -65,7 +69,7 @@ export default function Dashboard() {
           icon={MeetingRoomIcon}
           title="Total Ruangan"
           subtitle={dataRoom.length.toString()}
-        />  
+        />
         <MediumCard icon={BedIcon} title={"Ruangan tersedia"} subtitle={dataRoom.length.toString()} />
         <MediumCard icon={PeopleIcon} title={"Total pegawai"} subtitle={"10"} />
         <MediumCard
@@ -76,7 +80,7 @@ export default function Dashboard() {
         <MediumCard
           icon={MedicalServicesIcon}
           title="Total dokter"
-          subtitle="10"
+          subtitle={dataDoctor.length.toString()}
         />
         <MediumCard
           icon={MonitorHeartIcon}

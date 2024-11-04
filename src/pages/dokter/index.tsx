@@ -9,8 +9,28 @@ import CardAdd from "../../components/medium/CardAdd";
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import TableDokter from "./TableDokter";
+import { useEffect, useState } from "react";
+import { DoctorServices, DoctorDataItem } from "../../services/Admin Tenant/ManageDoctor/DoctorServices";
 
 export default function Dokter() {
+
+    const [data, setData] = useState<DoctorDataItem[]>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            console.log('fetching data . . . ')
+            try {
+                const result = await DoctorServices();
+                console.log('result : ' + result)
+                setData(result);
+            } catch (error) {
+                console.log('Failed to fetch data from API' + error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
     return (
         <Box>
             <SideBar />

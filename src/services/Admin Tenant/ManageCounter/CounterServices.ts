@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export interface DataItem {
+export interface CounterDataItem {
   id: string;
   name: string;
-  address: string;
+  description: string;
   additionalInfo: string;
   createdBy: string;
   createdDateTime: number;
@@ -32,7 +32,7 @@ export interface ApiResponse {
   statusCode: string;
   message: string;
   data: {
-    content: DataItem[];
+    content: CounterDataItem[];
     pageable: Pageable;
     totalPages: number;
     totalElements: number;
@@ -51,44 +51,49 @@ export interface ApiResponse {
 }
 
 const API_URL =
-  "https://hms.3dolphinsocial.com:8083/v1/manage/counter/?page=1&size=10&orderBy=status=asc";
+  "https://hms.3dolphinsocial.com:8083/v1/manage/doctor/?pageNumber=1&pageSize=10&orderBy=id=desc";
 
-export const CounterServices = async (): Promise<DataItem[]> => {
-  const response = await axios.get<ApiResponse>(API_URL);
+export const CounterServices = async (): Promise<CounterDataItem[]> => {
+  try {
+    const response = await axios.get<ApiResponse>(API_URL);
 
-  if (response.status === 200) {
-    console.log("API connection successful:", response.data);
+    if (response.status === 200) {
+      console.log("API connection successful:", response.data);
 
-    response.data.data.content.forEach((item) => {
-      console.log("ID:", item.id);
-      console.log("Name:", item.name);
-      console.log("Address:", item.address);
-      console.log("Additional Info:", item.additionalInfo);
-      console.log("Created By:", item.createdBy);
-      console.log(
-        "Created Date Time:",
-        new Date(item.createdDateTime * 1000).toLocaleString()
-      );
-      console.log("Updated By:", item.updatedBy);
-      console.log(
-        "Updated Date Time:",
-        item.updatedDateTime
-          ? new Date(item.updatedDateTime * 1000).toLocaleString()
-          : "N/A"
-      );
-      console.log("Deleted By:", item.deletedBy);
-      console.log(
-        "Deleted Date Time:",
-        item.deletedDateTime
-          ? new Date(item.deletedDateTime * 1000).toLocaleString()
-          : "N/A"
-      );
-      console.log("Images:", item.images);
-      console.log("----------------------------");
-    });
+      response.data.data.content.forEach((item) => {
+        console.log("ID:", item.id);
+        console.log("Number:", item.name);
+        console.log("Status:", item.description);
+        console.log("Additional Info:", item.additionalInfo);
+        console.log("Created By:", item.createdBy);
+        console.log(
+          "Created Date Time:",
+          new Date(item.createdDateTime * 1000).toLocaleString()
+        );
+        console.log("Updated By:", item.updatedBy);
+        console.log(
+          "Updated Date Time:",
+          item.updatedDateTime
+            ? new Date(item.updatedDateTime * 1000).toLocaleString()
+            : "N/A"
+        );
+        console.log("Deleted By:", item.deletedBy);
+        console.log(
+          "Deleted Date Time:",
+          item.deletedDateTime
+            ? new Date(item.deletedDateTime * 1000).toLocaleString()
+            : "N/A"
+        );
+        console.log("Images:", item.images);
+        console.log("----------------------------");
+      });
 
-    return response.data.data.content;
-  } else {
-    throw new Error(`API responded with status: ${response.status}`);
+      return response.data.data.content;
+    } else {
+      throw new Error(`API responded with status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error("Error fetching ambulance services:", error);
+    throw error; // Re-throw the error for handling by the caller
   }
 };

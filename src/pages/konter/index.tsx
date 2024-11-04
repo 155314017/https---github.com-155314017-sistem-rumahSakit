@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Box, Grid } from "@mui/system";
 import { Typography } from "@mui/material";
 import SideBar from "../../components/SideBar/SideBar";
@@ -10,18 +10,18 @@ import CardAdd from "../../components/medium/CardAdd";
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import TableKonter from "./TableKonter";
-import { Tenant } from "../../services/Admin Tenant/ManageTenant/Tenant";
+import { CounterServices, CounterDataItem } from "../../services/Admin Tenant/ManageCounter/CounterServices";
 
 export default function Konter() {
-    // const [data, setData] = useState<DataItem[]>([]);
+    const [data, setData] = useState<CounterDataItem[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             console.log('fetching data . . . ')
             try {
-                const result = await Tenant();
+                const result = await CounterServices();
                 console.log('result : ' + result)
-                // setData(result);
+                setData(result);
             } catch (error) {
                 console.log('Failed to fetch data from API' + error);
             }
