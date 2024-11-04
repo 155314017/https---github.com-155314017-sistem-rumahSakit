@@ -78,8 +78,8 @@ export default function TambahFasilitas() {
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
-        { label: "Klinik", href: "/klinik" },
-        { label: "Tambah Klinik", href: "/tambahKlinik" },
+        { label: "Fasilitas", href: "/fasilitas" },
+        { label: "Tambah Fasilitas", href: "/tambahFasilitas" },
     ];
 
     const formik = useFormik({
