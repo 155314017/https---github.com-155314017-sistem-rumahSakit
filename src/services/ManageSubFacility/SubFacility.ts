@@ -3,8 +3,8 @@ import axios from "axios";
 export interface SubFacilityDataItem {
   id: string;
   name: string;
-  facilityDataId: string;
   additionalInfo: string;
+  facilityDataId: string;
   createdBy: string;
   createdDateTime: number;
   updatedBy: string | null;
@@ -61,12 +61,12 @@ export const SubFacilityServices = async (): Promise<SubFacilityDataItem[]> => {
   const response = await axios.get<ApiResponse>(API_URL);
 
   if (response.status === 200) {
-    console.log("API connection successful:", response.data);
+    console.log("API SubFacility connection successful:", response.data);
 
     response.data.data.content.forEach((item) => {
       console.log("ID:", item.id);
       console.log("Name:", item.name);
-      console.log("Description:", item.facilityDataId);
+      console.log("ID fasilitas utama:", item.facilityDataId);
       console.log("Additional Info:", item.additionalInfo);
       console.log("Created By:", item.createdBy);
 
@@ -113,6 +113,8 @@ export const SubFacilityServices = async (): Promise<SubFacilityDataItem[]> => {
       console.log("Images:", item.images);
       console.log("----------------------------");
     });
+
+   
 
     return response.data.data.content;
   } else {

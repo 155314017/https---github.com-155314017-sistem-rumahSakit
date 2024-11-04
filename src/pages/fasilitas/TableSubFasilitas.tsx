@@ -24,6 +24,62 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { SubFacilityServices, SubFacilityDataItem } from "../../services/ManageSubFacility/SubFacility";
+import axios from "axios";
+
+export interface FacilityDataItem {
+    id: string;
+    name: string;
+    description: string;
+    additionalInfo: string;
+    createdBy: string;
+    createdDateTime: number;
+    updatedBy: string | null;
+    updatedDateTime: number | null;
+    deletedBy: string | null;
+    deletedDateTime: number | null;
+    masterBuildingId: string;
+    cost: number;
+    images: string[];
+    schedules: { id: string; startDateTime: number; endDateTime: number }[];
+    operationalSchedule?: string;
+}
+
+export interface Pageable {
+    pageNumber: number;
+    pageSize: number;
+    sort: {
+        sorted: boolean;
+        empty: boolean;
+        unsorted: boolean;
+    };
+    offset: number;
+    paged: boolean;
+    unpaged: boolean;
+}
+
+export interface ApiResponse {
+    responseCode: string;
+    statusCode: string;
+    message: string;
+    data: {
+        content: FacilityDataItem[];
+        pageable: Pageable;
+        totalPages: number;
+        totalElements: number;
+        last: boolean;
+        size: number;
+        number: number;
+        sort: {
+            sorted: boolean;
+            empty: boolean;
+            unsorted: boolean;
+        };
+        numberOfElements: number;
+        first: boolean;
+        empty: boolean;
+    };
+}
+
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -62,15 +118,21 @@ export default function TableSubFasilitas() {
     const [open, setOpen] = React.useState<boolean>(false);
     // const [data, setData] = useState<SubFacilityDataItem[]>([]);
     const [datas, setDatas] = useState<SubFacilityDataItem[]>([]);
+    const [dataIdFacility, setDataIdFacility] = useState<string[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             console.log('Fetching data...');
             try {
                 const result = await SubFacilityServices();
-                console.log('Result: ', result);
+                console.log('Result FETCHING: ', result);
                 setDatas(result); // Store the result in datas state
                 // setData(result); // Set data to display in table
+                console.log("FETCHIG DATA ID FAICILITY")
+                const facilityIds = result.map((data) => data.facilityDataId);
+                setDataIdFacility(facilityIds);
+
+                console.log('Data ID Facility: ', facilityIds);
             } catch (error) {
                 console.log('Failed to fetch data from API: ', error);
             }
@@ -78,6 +140,35 @@ export default function TableSubFasilitas() {
 
         fetchData();
     }, []);
+
+    const [facilities, setFacilities] = useState<string[]>([]);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchFacilities = async () => {
+            try {
+                // Menggunakan Promise.all untuk memanggil API untuk setiap facilityId
+                const responses = await Promise.all(
+                    dataIdFacility.map((id) => axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${id}`))
+                );
+
+                // Mengambil data dari setiap respons dan menyimpannya di state facilities
+                const facilitiesData = responses.map((response) => response.data.data.name);
+                setFacilities(facilitiesData);
+                console.log("DATA FASILITAS UTAMA");
+                console.log(facilitiesData);
+            } catch (err) {
+                setError('Gagal memuat data fasilitas');
+                console.error('Error:', err);
+            }
+        };
+
+        if (dataIdFacility.length > 0) {
+            fetchFacilities();
+        }
+    }, [dataIdFacility]);
+
+
 
     const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
@@ -332,7 +423,7 @@ export default function TableSubFasilitas() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.name}
+                                                        {facilities[index]}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[

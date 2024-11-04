@@ -61,14 +61,14 @@ export const FacilityServices = async (): Promise<FacilityDataItem[]> => {
   const response = await axios.get<ApiResponse>(API_URL);
 
   if (response.status === 200) {
-    console.log("API connection successful:", response.data);
+    // console.log("API connection successful:", response.data);
 
     response.data.data.content.forEach((item) => {
-      console.log("ID:", item.id);
-      console.log("Name:", item.name);
-      console.log("Description:", item.description);
-      console.log("Additional Info:", item.additionalInfo);
-      console.log("Created By:", item.createdBy);
+      // console.log("ID:", item.id);
+      // console.log("Name:", item.name);
+      // console.log("Description:", item.description);
+      // console.log("Additional Info:", item.additionalInfo);
+      // console.log("Created By:", item.createdBy);
 
         if (item.schedules.length > 0) {
           const { startDateTime, endDateTime } = item.schedules[0];
@@ -87,9 +87,9 @@ export const FacilityServices = async (): Promise<FacilityDataItem[]> => {
             endMinutes < 10 ? "0" : ""
           }${endMinutes}`;
           item.operationalSchedule = operationalSchedule; // Menyimpan jam operasional ke item
-          console.log("Operational Schedule:", operationalSchedule);
+          // console.log("Operational Schedule:", operationalSchedule);
         } else {
-          console.log("No schedules available.");
+          // console.log("No schedules available.");
         }
 
       console.log(
