@@ -22,6 +22,7 @@ export default function Konter() {
                 const result = await CounterServices();
                 console.log('result : ' + result)
                 setData(result);
+                console.log(data)
             } catch (error) {
                 console.log('Failed to fetch data from API' + error);
             }
