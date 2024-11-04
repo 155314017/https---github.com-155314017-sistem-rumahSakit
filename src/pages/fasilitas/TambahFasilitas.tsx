@@ -10,14 +10,8 @@ import CustomTimePicker from "../../components/small/CustomTimePicker";
 import dayjs from 'dayjs';
 import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import InputCurrencyIdr from '../../components/inputComponent/InputCurrencyIdr';
-
-
-// interface ImageInfo {
-//     file: File;
-//     preview: string;
-//     name: string;
-//     size: string;
-// }
+import axios from 'axios';
+import Cookies from "js-cookie";
 
 const hari = [
     { value: 1, label: "Senin" },
@@ -30,23 +24,43 @@ const hari = [
 ];
 
 const listFasilitas = [
-    { value: 1, label:"MRI" },
-    { value: 1, label: "Fisioterapi" },
-    { value: 1, label: "Unit Transfusi Darah (UTD)" },
-]
+    { value: 1, label: "MRI" },
+    { value: 2, label: "Fisioterapi" },
+    { value: 3, label: "Unit Transfusi Darah (UTD)" },
+];
+
+
+type ImageData = {
+    imageName: string;
+    imageType: string;
+    imageData: string;
+};
+
 export default function TambahFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
-    const [selectedDay, setSelectedDay] = useState<number | null>(null);
+    const [operationalTime, setOperationalTime] = useState<string | null>(null);
+    const [selectedDay, setSelectedDay] = useState<string | null>(null);
+    const [selectedFacility, setSelectedFacility] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
+    const [imagesData, setImagesData] = useState<ImageData[]>([]);
+    const [operationalCost, setOperationalCost] = useState<string | null>(null);
+    const [errorAlert, setErrorAlert] = useState(false);
+
+
+    const handleImageChange = (images: ImageData[]) => {
+        console.log('Images changed:', images);
+        setImagesData(images);
+    };
 
     const handleTambahHari = () => {
-        const selectedDayLabel = hari.find(day => day.value === selectedDay)?.label;
-        console.log("Selected day:", selectedDayLabel);
+        // const selectedDayLabel = hari.find(day => day.value === selectedDay)?.label;
+        console.log("Selected day:", selectedDay);
         console.log("Start time:", startTime?.format("HH:mm"));
         console.log("End time:", endTime?.format("HH:mm"));
 
-        const dateTime = selectedDayLabel + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
+        const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
+        setOperationalTime(dateTime);
         console.log(dateTime);
     };
 
@@ -56,9 +70,11 @@ export default function TambahFasilitas() {
         setSuccessAlert(false);
     };
 
-    // const handleImagesSelected = (images: ImageInfo[]) => {
-    //     console.log("Selected images:", images);
-    // };
+    const showTemporaryAlertError = async () => {
+        setErrorAlert(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setErrorAlert(false);
+    };
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
@@ -68,15 +84,58 @@ export default function TambahFasilitas() {
 
     const formik = useFormik({
         initialValues: {
-            namaKlinik: '',
             deskripsiKlinik: '',
         },
         validationSchema: Yup.object({
-            namaKlinik: Yup.string().required('Nama Klinik is required'),
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
         }),
-        onSubmit: (values) => {
-            console.log('Form submitted:', values);
+        onSubmit: async (values) => {
+            const schedules = [
+                {
+                    startDateTime: startTime ? dayjs(startTime).toISOString() : null,
+                    endDateTime: endTime ? dayjs(endTime).toISOString() : null,
+                }
+            ].filter(schedule => schedule.startDateTime && schedule.endDateTime); 
+
+            const data = {
+                name: selectedFacility,
+                masterBuildingId: "7e331236-8a5c-4650-b373-6c591abc5a58", 
+                description: values.deskripsiKlinik,
+                cost: operationalCost ? parseInt(operationalCost.replace(/\D/g, '')) : 0, 
+                additionalInfo: "hai",
+                schedules: schedules,
+                images: imagesData.map(image => ({
+                    imageName: image.imageName || "",
+                    imageType: image.imageType || "",
+                    imageData: image.imageData || "",
+                })),
+            };
+
+            console.log('Form submitted:', data);
+
+            const token = Cookies.get("accessToken");
+
+            try {
+                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/facility/', data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'accessToken': `${token}`
+                    },
+                });
+                console.log('Response:', response.data);
+                showTemporaryAlertSuccess();
+                formik.resetForm();
+                setImagesData([]);
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                if (axios.isAxiosError(error)) {
+                    console.error('Axios error message:', error.message);
+                    console.error('Response data:', error.response?.data);
+                    showTemporaryAlertError();
+                } else {
+                    console.error('Unexpected error:', error);
+                }
+            }
         },
     });
 
@@ -93,18 +152,21 @@ export default function TambahFasilitas() {
                         <img src={bgImage} alt="bg-image" />
                     </Box>
 
-                    {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
-                    <ImageUploaderGroup onChange={() => console.log("tes")} />
+                    <ImageUploaderGroup onChange={handleImageChange} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Fasilitas<span style={{ color: "red" }}>*</span></Typography>
                         <DropdownList
                             options={listFasilitas}
                             placeholder="masukkan nama ruangan"
-                            onChange={(value: string) => setSelectedDay(Number(value))}
+                            onChange={(value: string) => {
+                                console.log(value);
+                                setSelectedFacility(value)
+                            }
+                            }
                         />
 
-                        <Typography sx={{ fontSize: "16px", mt:2 }}>Deskripsi<span style={{ color: "red" }}>*</span></Typography>
+                        <Typography sx={{ fontSize: "16px", mt: 2 }}>Deskripsi<span style={{ color: "red" }}>*</span></Typography>
                         <FormControl fullWidth sx={{ my: 1 }}>
                             <OutlinedInput
                                 id="deskripsiKlinik"
@@ -122,7 +184,7 @@ export default function TambahFasilitas() {
                             )}
                         </FormControl>
 
-                        <Box display={'flex'} flexDirection={'column'} border={'1px solid #A8A8BD'} borderRadius={'16px'} padding={'16px'} mt={2} >
+                        <Box display={'flex'} flexDirection={'column'} border={'1px solid #A8A8BD'} borderRadius={'16px'} padding={'16px'} mt={2}>
                             <Typography mb={'15px'} >Jam Operasional</Typography>
                             <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} gap={'32px'} >
                                 {/* Hari */}
@@ -131,7 +193,10 @@ export default function TambahFasilitas() {
                                     <DropdownList
                                         options={hari}
                                         placeholder="Pilih hari"
-                                        onChange={(value: string) => setSelectedDay(Number(value))}
+                                        onChange={(value: string) => {
+                                            console.log("Selected value:", value);
+                                            setSelectedDay(value);
+                                        }}
                                     />
                                 </Box>
 
@@ -168,8 +233,9 @@ export default function TambahFasilitas() {
                             </Button>
                         </Box>
 
-                        <Typography sx={{ fontSize: "16px", mt:3 }}>Biaya Penanganan<span style={{ color: "red" }}>*</span></Typography>
-                        <InputCurrencyIdr/>
+                        <Typography sx={{ fontSize: "16px", mt: 3 }}>Biaya Penanganan<span style={{ color: "red" }}>*</span></Typography>
+                        {/* <InputCurrencyIdr /> */}
+                        <InputCurrencyIdr onChange={(value) => setOperationalCost(value)} />
 
                         <Button
                             type="submit"
@@ -194,6 +260,9 @@ export default function TambahFasilitas() {
             </Box>
             {successAlert && (
                 <AlertSuccess label="Success adding building" />
+            )}
+            {errorAlert && (
+                <AlertSuccess label="Error adding building" />
             )}
         </Container>
     );
