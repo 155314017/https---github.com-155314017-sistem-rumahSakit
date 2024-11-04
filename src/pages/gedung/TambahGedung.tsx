@@ -8,7 +8,7 @@ import { useState } from "react";
 import AlertSuccess from "../../components/small/AlertSuccess";
 import ImageUploaderGroup from "../../components/medium/ImageUploaderGroup";
 import axios from "axios";
-import Cookies from "js-cookie"; // Import js-cookie
+import Cookies from "js-cookie";
 
 type ImageData = {
     imageName: string;

@@ -58,7 +58,7 @@ export default function DropdownList({
           <em>{placeholder}</em>
         </MenuItem>
         {options.map((option, index) => (
-          <MenuItem key={index} value={option.value} sx={{ color: "#8F85F3" }}>
+          <MenuItem key={index} value={option.label} sx={{ color: "#8F85F3" }}>
             {option.label}
           </MenuItem>
         ))}
