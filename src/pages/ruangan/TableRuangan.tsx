@@ -24,6 +24,59 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import bgImage from "../../assets/img/String.png";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { RoomServices, RoomDataItem } from "../../services/Admin Tenant/ManageRoom/RoomServices";
+import axios from "axios";
+
+export interface BuildingDataItem {
+  id: string;
+  name: string;
+  address: string;
+  additionalInfo: string;
+  createdBy: string;
+  createdDateTime: number;
+  updatedBy: string | null;
+  updatedDateTime: number | null;
+  deletedBy: string | null;
+  deletedDateTime: number | null;
+  images: string[];
+}
+
+export interface Pageable {
+  pageNumber: number;
+  pageSize: number;
+  sort: {
+    sorted: boolean;
+    empty: boolean;
+    unsorted: boolean;
+  };
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export interface ApiResponse {
+  responseCode: string;
+  statusCode: string;
+  message: string;
+  data: {
+    content: BuildingDataItem[];
+    pageable: Pageable;
+    totalPages: number;
+    totalElements: number;
+    last: boolean;
+    size: number;
+    number: number;
+    sort: {
+      sorted: boolean;
+      empty: boolean;
+      unsorted: boolean;
+    };
+    numberOfElements: number;
+    first: boolean;
+    empty: boolean;
+  };
+}
+
+
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -63,6 +116,7 @@ export default function TableRuangan() {
   const [open, setOpen] = React.useState<boolean>(false);
   // const [data, setData] = useState<RoomDataItem[]>([]);
   const [datas, setDatas] = useState<RoomDataItem[]>([]);
+  const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,7 +124,12 @@ export default function TableRuangan() {
       try {
         const result = await RoomServices();
         console.log('Result: ', result);
-        setDatas(result); 
+        setDatas(result);
+        console.log("FETCHIG DATA ID FAICILITY")
+        const buildingIds = result.map((data) => data.masterBuildingId);
+        setDataIdBuilding(buildingIds);
+
+        console.log('Data ID Facility: ', buildingIds);
         // setData(result); // Set data to display in table
       } catch (error) {
         console.log('Failed to fetch data from API: ', error);
@@ -79,6 +138,33 @@ export default function TableRuangan() {
 
     fetchData();
   }, []);
+
+
+
+  const [buildings, setBuildings] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchBuildings = async () => {
+      try {
+        const responses = await Promise.all(
+          dataIdBuilding.map((id) => axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`))
+        );
+
+        const facilitiesData = responses.map((response) => response.data.data.name);
+        setBuildings(facilitiesData);
+        console.log("DATA FASILITAS UTAMA");
+        console.log(facilitiesData);
+      } catch (err) {
+        console.error('Error:', err);
+      }
+    };
+
+    if (dataIdBuilding.length > 0) {
+      fetchBuildings();
+    }
+  }, [dataIdBuilding]);
+
+
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -315,7 +401,7 @@ export default function TableRuangan() {
                             sx={[{ color: "#292B2C", fontSize: "14px" }]}
                             align="center"
                           >
-                            {index+1}
+                            {index + 1}
                           </TableCell>
                           <TableCell
                             sx={[
@@ -347,7 +433,7 @@ export default function TableRuangan() {
                             ]}
                             align="left"
                           >
-                            {data.masterBuildingId}
+                            {buildings[index]}
                           </TableCell>
                           <TableCell
                             sx={[

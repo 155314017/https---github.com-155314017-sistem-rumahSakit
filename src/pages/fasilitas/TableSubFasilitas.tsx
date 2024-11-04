@@ -146,12 +146,10 @@ export default function TableSubFasilitas() {
     useEffect(() => {
         const fetchFacilities = async () => {
             try {
-                // Menggunakan Promise.all untuk memanggil API untuk setiap facilityId
                 const responses = await Promise.all(
                     dataIdFacility.map((id) => axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${id}`))
                 );
 
-                // Mengambil data dari setiap respons dan menyimpannya di state facilities
                 const facilitiesData = responses.map((response) => response.data.data.name);
                 setFacilities(facilitiesData);
                 console.log("DATA FASILITAS UTAMA");
