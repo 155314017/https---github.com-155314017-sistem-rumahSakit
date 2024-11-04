@@ -2,16 +2,19 @@ import axios from "axios";
 
 export interface PatientDataItem {
   id: string;
+  masterUserID: string;
   name: string;
-  description: string;
+  birthDate: string;
+  gender: string;
+  address: string;
+  phone: string;
   additionalInfo: string;
   createdBy: string;
   createdDateTime: number;
-  updatedBy: string | null;
-  updatedDateTime: number | null;
-  deletedBy: string | null;
-  deletedDateTime: number | null;
-  images: string[];
+  updatedBy: string;
+  updatedDateTime: number;
+  deletedBy: string;
+  deletedDateTime: number;
 }
 
 export interface Pageable {
@@ -51,7 +54,7 @@ export interface ApiResponse {
 }
 
 const API_URL =
-  "https://hms.3dolphinsocial.com:8083/v1/manage/patient/?pageNumber=1&pageSize=10&orderBy=id=asc";
+  "https://hms.3dolphinsocial.com:8083/v1/manage/patient/?pageNumber=0&pageSize=10&orderBy=id=asc";
 
 export const PatientServices = async (): Promise<PatientDataItem[]> => {
   try {
@@ -61,11 +64,6 @@ export const PatientServices = async (): Promise<PatientDataItem[]> => {
       console.log("API connection successful:", response.data);
 
       response.data.data.content.forEach((item) => {
-        console.log("ID:", item.id);
-        console.log("Number:", item.name);
-        console.log("Status:", item.description);
-        console.log("Additional Info:", item.additionalInfo);
-        console.log("Created By:", item.createdBy);
         console.log(
           "Created Date Time:",
           new Date(item.createdDateTime * 1000).toLocaleString()
@@ -84,7 +82,6 @@ export const PatientServices = async (): Promise<PatientDataItem[]> => {
             ? new Date(item.deletedDateTime * 1000).toLocaleString()
             : "N/A"
         );
-        console.log("Images:", item.images);
         console.log("----------------------------");
       });
 

@@ -429,6 +429,22 @@ export default function TablePasien() {
                                                         ]}
                                                         align="center"
                                                     >
+                                                        {data.gender}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        sx={[
+                                                            {
+                                                                color: "#292B2C",
+                                                                overflow: "hidden",
+                                                                textOverflow: "ellipsis",
+                                                                whiteSpace: "nowrap",
+                                                                maxWidth: "150px",
+                                                                fontSize: "14px",
+                                                                textTransform: "capitalize",
+                                                            },
+                                                        ]}
+                                                        align="center"
+                                                    >
                                                         {data.id}
                                                     </TableCell>
                                                     <TableCell
