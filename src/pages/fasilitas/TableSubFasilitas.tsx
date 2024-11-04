@@ -142,7 +142,6 @@ export default function TableSubFasilitas() {
     }, []);
 
     const [facilities, setFacilities] = useState<string[]>([]);
-    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchFacilities = async () => {
@@ -158,7 +157,6 @@ export default function TableSubFasilitas() {
                 console.log("DATA FASILITAS UTAMA");
                 console.log(facilitiesData);
             } catch (err) {
-                setError('Gagal memuat data fasilitas');
                 console.error('Error:', err);
             }
         };
