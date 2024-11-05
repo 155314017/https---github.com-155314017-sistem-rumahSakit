@@ -44,6 +44,7 @@ import EditPasienUmum from './pages/pasien/EditPasienUmum';
 import LoginPegawai from './pages/login/loginPegawai/LoginPegawai';
 import AturUlangKataSandiPegawai from './pages/login/loginPegawai/AturUlangKataSandiPegawai';
 import TambahSubFasilitas from './pages/fasilitas/TambahSubFasilitas';
+import EditRuangan from './pages/ruangan/EditRuangan';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -99,6 +100,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/ruangan" element={<Ruangan/>} />
         <Route path="/detailRuangan" element={<DetailRuangan/>} />
         <Route path="/tambahRuangan" element={<TambahRuangan/>} />
+        <Route path="/editRuangan/:id" element={<EditRuangan />} />
 
         {/* Page Fasilitas */}
         <Route path="/fasilitas" element={<Fasilitas/>} />

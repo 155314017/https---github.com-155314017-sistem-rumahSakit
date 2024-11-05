@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, Select, MenuItem } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 
@@ -11,14 +11,20 @@ interface DropdownListProps {
   options: Option[];
   placeholder: string;
   onChange?: (value: string) => void;
+  defaultValue?: string; // Add this line
 }
 
 export default function DropdownList({
   options,
   placeholder,
   onChange,
+  defaultValue = "", // Set a default value for the prop
 }: DropdownListProps) {
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState<string>(defaultValue);
+
+  useEffect(() => {
+    setSelectedOption(defaultValue); // Update selectedOption when defaultValue changes
+  }, [defaultValue]);
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setSelectedOption(event.target.value);
@@ -34,10 +40,7 @@ export default function DropdownList({
       width="100%"
       sx={{
         borderRadius: "8px",
-        // padding: "2px 4px",
         height: "38px",
-        // mt: 1
-
       }}
     >
       <Select
