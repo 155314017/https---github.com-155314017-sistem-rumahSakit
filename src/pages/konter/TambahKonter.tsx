@@ -9,6 +9,8 @@ import DropdownList from "../../components/small/DropdownList";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
 import dayjs from 'dayjs';
 import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
+import Cookies from "js-cookie";
+import axios from 'axios';
 
 
 // interface ImageInfo {
@@ -34,30 +36,50 @@ const hari = [
     { value: 7, label: "Minggu" },
 ];
 
+type ImageData = {
+    imageName: string;
+    imageType: string;
+    imageData: string;
+};
+
 const handleSelectionChange = (selectedValue: string) => {
     console.log("Selected Value:", selectedValue);
 };
 
 export default function TambahKonter() {
     const [successAlert, setSuccessAlert] = useState(false);
-    const [selectedDay, setSelectedDay] = useState<number | null>(null);
+    const [selectedDay, setSelectedDay] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
+    const [operationalTime, setOperationalTime] = useState<string | null>(null);
+    const [imagesData, setImagesData] = useState<ImageData[]>([]);
+    const [errorAlert, setErrorAlert] = useState(false);
 
     const handleTambahHari = () => {
-        const selectedDayLabel = hari.find(day => day.value === selectedDay)?.label;
-        console.log("Selected day:", selectedDayLabel);
+        console.log("Selected day:", selectedDay);
         console.log("Start time:", startTime?.format("HH:mm"));
         console.log("End time:", endTime?.format("HH:mm"));
 
-        const dateTime = selectedDayLabel + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
+        const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
+        setOperationalTime(dateTime);
         console.log(dateTime);
+    };
+
+    const handleImageChange = (images: ImageData[]) => {
+        console.log('Images changed:', images);
+        setImagesData(images);
     };
 
     const showTemporaryAlertSuccess = async () => {
         setSuccessAlert(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setSuccessAlert(false);
+    };
+
+    const showTemporaryAlertError = async () => {
+        setErrorAlert(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setErrorAlert(false);
     };
 
     // const handleImagesSelected = (images: ImageInfo[]) => {
@@ -79,8 +101,50 @@ export default function TambahKonter() {
             namaKlinik: Yup.string().required('Nama Konter is required'),
             deskripsiKlinik: Yup.string().required('Deskripsi Konter is required'),
         }),
-        onSubmit: (values) => {
-            console.log('Form submitted:', values);
+        onSubmit: async (values) => {
+            const schedules = [
+                {
+                    startDateTime: startTime ? dayjs(startTime).toISOString() : null,
+                    endDateTime: endTime ? dayjs(endTime).toISOString() : null,
+                }
+            ].filter(schedule => schedule.startDateTime && schedule.endDateTime);
+
+            const data = {
+                name: values.namaKlinik,
+                location: values.deskripsiKlinik,
+                schedules: schedules,
+                images: imagesData.map(image => ({
+                    imageName: image.imageName || "",
+                    imageType: image.imageType || "",
+                    imageData: image.imageData || "",
+                })),
+            };
+
+            console.log('Form submitted:', data);
+
+            const token = Cookies.get("accessToken");
+
+            try {
+                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/counter/', data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'accessToken': `${token}`
+                    },
+                });
+                console.log('Response:', response.data);
+                showTemporaryAlertSuccess();
+                formik.resetForm();
+                setImagesData([]);
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                if (axios.isAxiosError(error)) {
+                    console.error('Axios error message:', error.message);
+                    console.error('Response data:', error.response?.data);
+                    showTemporaryAlertError();
+                } else {
+                    console.error('Unexpected error:', error);
+                }
+            }
         },
     });
 
@@ -98,7 +162,7 @@ export default function TambahKonter() {
                     </Box>
 
                     {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
-                    <ImageUploaderGroup onChange={() => console.log("clicked") } />
+                    <ImageUploaderGroup onChange={handleImageChange} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Konter<span style={{ color: "red" }}>*</span></Typography>
@@ -152,7 +216,10 @@ export default function TambahKonter() {
                                     <DropdownList
                                         options={hari}
                                         placeholder="Pilih hari"
-                                        onChange={(value: string) => setSelectedDay(Number(value))}
+                                        onChange={(value: string) => {
+                                            console.log("Selected value:", value);
+                                            setSelectedDay(value);
+                                        }}
                                     />
                                 </Box>
 
@@ -211,7 +278,10 @@ export default function TambahKonter() {
                 </Box>
             </Box>
             {successAlert && (
-                <AlertSuccess label="Success adding building" />
+                <AlertSuccess label="Success adding counter" />
+            )}
+            {errorAlert && (
+                <AlertSuccess label="Error adding counter" />
             )}
         </Container>
     );

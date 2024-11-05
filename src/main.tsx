@@ -43,6 +43,7 @@ import EditPasienBPJS from './pages/pasien/EditPasienBPJS';
 import EditPasienUmum from './pages/pasien/EditPasienUmum';
 import LoginPegawai from './pages/login/loginPegawai/LoginPegawai';
 import AturUlangKataSandiPegawai from './pages/login/loginPegawai/AturUlangKataSandiPegawai';
+import TambahSubFasilitas from './pages/fasilitas/TambahSubFasilitas';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -103,6 +104,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/fasilitas" element={<Fasilitas/>} />
         <Route path="/detailFasilitas" element={<DetailRuangan />} />
         <Route path="/tambahFasilitas" element={<TambahFasilitas/>} />
+        <Route path="/tambahSubFasilitas" element={<TambahSubFasilitas />} />
 
         {/* Page Pegawai  */}
         <Route path="/pegawai" element={<Pegawai/>} />

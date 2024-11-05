@@ -23,10 +23,10 @@ const hari = [
     { value: 7, label: "Minggu" },
 ];
 
-const listFasilitas = [
-    { value: 1, label: "MRI" },
-    { value: 2, label: "Fisioterapi" },
-    { value: 3, label: "Unit Transfusi Darah (UTD)" },
+const listSubFasilitas = [
+    { value: 1, label: "Baju Nakes" },
+    { value: 2, label: "Stetoskop" },
+    { value: 3, label: "Suntikan" },
 ];
 
 
@@ -36,16 +36,13 @@ type ImageData = {
     imageData: string;
 };
 
-const jenisGedung = [
-    { value: 1, label: "Gedung A" },
-    { value: 2, label: "Gedung B" },
-    { value: 3, label: "Gedung C" },
-    { value: 4, label: "Gedung D" },
-    { value: 5, label: "Gedung E" },
-    { value: 6, label: "Gedung F" },
+const jenisFasilitas = [
+    { value: 1, label: "MRI" },
+    { value: 2, label: "Fisioterapi" },
+    { value: 3, label: "Unit Transfusi Darah (UTD)" },
 ];
 
-export default function TambahFasilitas() {
+export default function TambahSubFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
@@ -53,7 +50,6 @@ export default function TambahFasilitas() {
     const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
-    const [operationalCost, setOperationalCost] = useState<string | null>(null);
     const [errorAlert, setErrorAlert] = useState(false);
 
 
@@ -88,16 +84,16 @@ export default function TambahFasilitas() {
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
-        { label: "Fasilitas", href: "/fasilitas" },
-        { label: "Tambah Fasilitas", href: "/tambahFasilitas" },
+        { label: "fasilitas", href: "/fasilitas" },
+        { label: "Tambah SubFasilitas", href: "/tambahSubFasilitas" },
     ];
 
     const formik = useFormik({
         initialValues: {
-            deskripsiKlinik: '',
+            // deskripsiKlinik: '',
         },
         validationSchema: Yup.object({
-            deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
+            // deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
         }),
         onSubmit: async (values) => {
             const schedules = [
@@ -105,13 +101,11 @@ export default function TambahFasilitas() {
                     startDateTime: startTime ? dayjs(startTime).toISOString() : null,
                     endDateTime: endTime ? dayjs(endTime).toISOString() : null,
                 }
-            ].filter(schedule => schedule.startDateTime && schedule.endDateTime); 
+            ].filter(schedule => schedule.startDateTime && schedule.endDateTime);
 
             const data = {
                 name: selectedFacility,
-                masterBuildingId: "17e145fa-ea31-495e-b725-149108b12321", 
-                description: values.deskripsiKlinik,
-                cost: operationalCost ? parseInt(operationalCost.replace(/\D/g, '')) : 0, 
+                facilityDataId: "c941a277-06b0-4026-97d7-b952a68b6716",
                 additionalInfo: "hai",
                 schedules: schedules,
                 images: imagesData.map(image => ({
@@ -126,7 +120,7 @@ export default function TambahFasilitas() {
             const token = Cookies.get("accessToken");
 
             try {
-                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/facility/', data, {
+                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/', data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`
@@ -165,10 +159,10 @@ export default function TambahFasilitas() {
                     <ImageUploaderGroup onChange={handleImageChange} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
-                        <Typography sx={{ fontSize: "16px" }}>Nama Fasilitas<span style={{ color: "red" }}>*</span></Typography>
+                        <Typography sx={{ fontSize: "16px" }}>Nama Sub Fasilitas<span style={{ color: "red" }}>*</span></Typography>
                         <DropdownList
-                            options={listFasilitas}
-                            placeholder="masukkan nama ruangan"
+                            options={listSubFasilitas}
+                            placeholder="masukkan nama sub fasilitas"
                             onChange={(value: string) => {
                                 console.log(value);
                                 setSelectedFacility(value)
@@ -176,30 +170,12 @@ export default function TambahFasilitas() {
                             }
                         />
 
-                        <Typography sx={{ fontSize: "16px", mt:2 }}>Pilih Gedung<span style={{ color: "red" }}>*</span></Typography>
+                        <Typography sx={{ fontSize: "16px", mt: 2 }}>Pilih Fasilitas<span style={{ color: "red" }}>*</span></Typography>
                         <DropdownList
-                            options={jenisGedung}
-                            placeholder="Pilih gedung"
-                            onChange={(selectedValue) => formik.setFieldValue('gedung', selectedValue)}
+                            options={jenisFasilitas}
+                            placeholder="Pilih fasilitas induk"
+                            onChange={(selectedValue) => formik.setFieldValue('fasilitas', selectedValue)}
                         />
-
-                        <Typography sx={{ fontSize: "16px", mt: 2 }}>Deskripsi<span style={{ color: "red" }}>*</span></Typography>
-                        <FormControl fullWidth sx={{ my: 1 }}>
-                            <OutlinedInput
-                                id="deskripsiKlinik"
-                                name="deskripsiKlinik"
-                                size="small"
-                                placeholder="Masukkan deskripsi"
-                                value={formik.values.deskripsiKlinik}
-                                onChange={formik.handleChange}
-                                onBlur={() => formik.setTouched({ ...formik.touched, deskripsiKlinik: true })}
-                                error={formik.touched.deskripsiKlinik && Boolean(formik.errors.deskripsiKlinik)}
-                                sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
-                            />
-                            {formik.touched.deskripsiKlinik && formik.errors.deskripsiKlinik && (
-                                <Typography color="error">{formik.errors.deskripsiKlinik}</Typography>
-                            )}
-                        </FormControl>
 
                         <Box display={'flex'} flexDirection={'column'} border={'1px solid #A8A8BD'} borderRadius={'16px'} padding={'16px'} mt={2}>
                             <Typography mb={'15px'} >Jam Operasional</Typography>
@@ -250,10 +226,6 @@ export default function TambahFasilitas() {
                             </Button>
                         </Box>
 
-                        <Typography sx={{ fontSize: "16px", mt: 3 }}>Biaya Penanganan<span style={{ color: "red" }}>*</span></Typography>
-                        {/* <InputCurrencyIdr /> */}
-                        <InputCurrencyIdr onChange={(value) => setOperationalCost(value)} />
-
                         <Button
                             type="submit"
                             onClick={showTemporaryAlertSuccess}
@@ -276,10 +248,10 @@ export default function TambahFasilitas() {
                 </Box>
             </Box>
             {successAlert && (
-                <AlertSuccess label="Success adding building" />
+                <AlertSuccess label="Success adding SubFacility" />
             )}
             {errorAlert && (
-                <AlertSuccess label="Error adding building" />
+                <AlertSuccess label="Error adding SubFacility" />
             )}
         </Container>
     );

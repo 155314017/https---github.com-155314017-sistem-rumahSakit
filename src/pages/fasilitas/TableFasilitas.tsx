@@ -24,6 +24,7 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { FacilityServices, FacilityDataItem } from "../../services/ManageFacility/FacilityServices";
+import axios from "axios";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -63,15 +64,22 @@ export default function TableFasilitas() {
   // const [data, setData] = useState<FacilityDataItem[]>([]);
   const [datas, setDatas] = useState<FacilityDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
+  const [buildings, setBuildings] = useState<string[]>([]);
+  const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('Fetching data...');
+      console.log('Fetching Facility data...');
       try {
         const result = await FacilityServices();
         console.log('Result: ', result);
         setDatas(result); // Store the result in datas state
         // setData(result); // Set data to display in table
+        console.log("FETCHIG DATA ID FAICILITY")
+        const buildingIds = result.map((data) => data.masterBuildingId);
+        setDataIdBuilding(buildingIds);
+
+        console.log('Data ID Facility: ', buildingIds);
       } catch (error) {
         console.log('Failed to fetch data from API: ', error);
       }
@@ -79,6 +87,29 @@ export default function TableFasilitas() {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchBuildings = async () => {
+      try {
+        const responses = await Promise.all(
+          dataIdBuilding.map((id) => axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`))
+        );
+
+        const facilitiesData = responses.map((response) => response.data.data.name);
+        setBuildings(facilitiesData);
+        console.log("DATA FASILITAS UTAMA");
+        console.log(facilitiesData);
+      } catch (err) {
+        console.log("GAGALLLL")
+        console.error('Error:', err);
+      }
+    };
+
+    if (dataIdBuilding.length > 0) {
+      fetchBuildings();
+    }
+  }, [dataIdBuilding]);
+
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -287,6 +318,18 @@ export default function TableFasilitas() {
                         Biaya Penanganan
                       </TableCell>
                       <TableCell
+                        width={"12%"}
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
+                        align="center"
+                      >
+                        Gedung
+                      </TableCell>
+                      <TableCell
                         width={"15%"}
                         sx={{
                           fontSize: "14px",
@@ -384,6 +427,22 @@ export default function TableFasilitas() {
                             ]}
                             align="center"
                           >
+                            {buildings[index]}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                            align="center"
+                          >
                             {data.operationalSchedule}
                           </TableCell>
                           <TableCell
@@ -418,7 +477,7 @@ export default function TableFasilitas() {
                               Ubah
                             </Link>
                             <Link
-                              href="/detailGedung "
+                              href="/detailFasilitas "
                               underline="hover"
                               sx={{
                                 textTransform: "capitalize",
@@ -432,7 +491,7 @@ export default function TableFasilitas() {
                       ))
                     ) : (
                       <StyledTableRow>
-                        <TableCell colSpan={4} align="center">
+                        <TableCell colSpan={7} align="center">
                           Tidak ada data
                         </TableCell>
                       </StyledTableRow>

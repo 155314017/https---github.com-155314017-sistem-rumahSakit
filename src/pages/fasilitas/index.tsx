@@ -63,7 +63,7 @@ export default function Fasilitas() {
                         <MediumCard icon={BusinessOutlinedIcon} title="Total Fasilitas" subtitle={data.length.toString()} />
                         <MediumCard icon={BusinessOutlinedIcon} title="Total Sub Fasilitas" subtitle={data1.length.toString()} />
                         <CardAdd icon={AddBoxIcon} title="Tambah Fasilitas" link="/tambahFasilitas" />
-                        <CardAdd icon={AddBoxIcon} title="Tambah Sub Fasilitas" link="/tambahFasilitas" />
+                        <CardAdd icon={AddBoxIcon} title="Tambah Sub Fasilitas" link="/tambahSubFasilitas" />
                     </Grid>
                     <Box display={"flex"} flexDirection={"column"} gap={5} >
                         <TableFasilitas />

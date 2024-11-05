@@ -59,6 +59,11 @@ export default function TambahAmbulance() {
     setErrorAlert(false);
   };
 
+  const handleImageChange = (images: ImageData[]) => {
+    console.log('Images changed:', images);
+    setImagesData(images);
+  };
+
   const breadcrumbItems = [
     {
       label: "Dashboard",
@@ -202,7 +207,7 @@ export default function TambahAmbulance() {
           {/* ---------- */}
 
           {/* image uploader */}
-          <ImageUploaderGroup onChange={(images) => setImagesData(images)} />
+          <ImageUploaderGroup onChange={handleImageChange} />
 
           {/* form */}
           <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={handleSubmit}>
