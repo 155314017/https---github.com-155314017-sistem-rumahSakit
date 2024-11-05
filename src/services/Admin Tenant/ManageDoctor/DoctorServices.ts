@@ -51,7 +51,7 @@ export interface ApiResponse {
 }
 
 const API_URL =
-  "https://hms.3dolphinsocial.com:8083/v1/manage/doctor/?pageNumber=1&pageSize=10&orderBy=id=asc";
+  "https://hms.3dolphinsocial.com:8083/v1/manage/doctor/?pageNumber=0&pageSize=10&orderBy=id=asc";
 
 export const DoctorServices = async (): Promise<DoctorDataItem[]> => {
   try {

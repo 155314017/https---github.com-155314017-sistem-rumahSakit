@@ -58,6 +58,7 @@ export default function TableAmbulance() {
   const [open, setOpen] = useState(false);
   // const [data, setData] = useState<AmbulanceDataItem[]>([]);
   const [datas, setDatas] = useState<AmbulanceDataItem[]>([]);
+  const [deletedItems, setDeletedItems] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,13 +95,25 @@ export default function TableAmbulance() {
     console.log("Selected Value:", selectedValue);
   };
 
+  const handleDeleteSuccess = () => {
+    console.log("Item deleted successfully");
+    // Refresh the data or perform additional actions after delete
+  };
+
   const toggleCollapse = () => {
     setIsCollapsed((prev) => !prev);
   };
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
+
     event.preventDefault();
+
+    console.log("ID Gedung yang akan dihapus:", buildingId);
+    setDeletedItems(buildingId);
+
+
     setOpen(true);
+
   };
 
   return (
@@ -290,7 +303,7 @@ export default function TableAmbulance() {
                             sx={[{ color: "#292B2C", fontSize: "14px" }]}
                             align="center"
                           >
-                            {index+1}
+                            {index + 1}
                           </TableCell>
                           <TableCell
                             sx={[
@@ -354,12 +367,12 @@ export default function TableAmbulance() {
                               href="#"
                               underline="none"
                               color={"#8F85F3"}
-                              onClick={confirmationDelete}
+                              onClick={(event) => confirmationDelete(event, data.id)}
                               sx={{ mr: 2 }}
                             >
                               Hapus
                             </Link>
-                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
+                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                             <Link
                               href="#"
                               mr={2}

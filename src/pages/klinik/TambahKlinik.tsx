@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Box, Typography, Button, FormControl, OutlinedInput} from "@mui/material";
+import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
@@ -9,14 +9,15 @@ import DropdownList from "../../components/small/DropdownList";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
 import dayjs from 'dayjs';
 import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
+import axios from "axios";
+import Cookies from "js-cookie";
 
+type ImageData = {
+    imageName: string;
+    imageType: string;
+    imageData: string;
+};
 
-// interface ImageInfo {
-//     file: File;
-//     preview: string;
-//     name: string;
-//     size: string;
-// }
 
 const hari = [
     { value: 1, label: "Senin" },
@@ -30,18 +31,28 @@ const hari = [
 
 export default function TambahKlinik() {
     const [successAlert, setSuccessAlert] = useState(false);
-    const [selectedDay, setSelectedDay] = useState<number | null>(null);
+    const [selectedDay, setSelectedDay] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
+    const [imagesData, setImagesData] = useState<ImageData[]>([]);
+    const [errorAlert, setErrorAlert] = useState(false);
+    const [operationalTime, setOperationalTime] = useState<string | null>(null);
 
     const handleTambahHari = () => {
-        const selectedDayLabel = hari.find(day => day.value === selectedDay)?.label;
-        console.log("Selected day:", selectedDayLabel);
+        // const selectedDayLabel = hari.find(day => day.value === selectedDay)?.label;
+        console.log("Selected day:", selectedDay);
         console.log("Start time:", startTime?.format("HH:mm"));
         console.log("End time:", endTime?.format("HH:mm"));
 
-        const dateTime = selectedDayLabel + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm") ;
+        const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
+        setOperationalTime(dateTime);
         console.log(dateTime);
+    };
+
+    const showTemporaryAlertError = async () => {
+        setErrorAlert(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setErrorAlert(false);
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -69,8 +80,61 @@ export default function TambahKlinik() {
             namaKlinik: Yup.string().required('Nama Klinik is required'),
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
         }),
-        onSubmit: (values) => {
-            console.log('Form submitted:', values);
+        onSubmit: async (values) => {
+
+            const schedules = [
+                {
+                    startDateTime: startTime ? dayjs(startTime).toISOString() : null,
+                    endDateTime: endTime ? dayjs(endTime).toISOString() : null,
+                }
+            ].filter(schedule => schedule.startDateTime && schedule.endDateTime);
+
+            const data = {
+                name: values.namaKlinik,
+                description: values.deskripsiKlinik,
+                additionalInfo: "",
+                schedules: schedules,
+                images: imagesData.map(image => ({
+                    imageName: image.imageName || "",
+                    imageType: image.imageType || "",
+                    imageData: image.imageData || "",
+                })),
+            };
+
+            console.log('Submitting form with data:', data);
+
+            const token = Cookies.get("accessToken");
+            console.log("Token :", token)
+
+            try {
+                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/', data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'accessToken': `${token}`
+                    },
+                });
+                console.log('Response:', response.data);
+                showTemporaryAlertSuccess();
+                formik.resetForm();
+                setImagesData([]);
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                if (axios.isAxiosError(error)) {
+                    console.error('Axios error message:', error.message);
+                    console.error('Response data:', error.response?.data);
+
+                    if (error.response) {
+                        console.error('Response status:', error.response.status);
+                        console.error('Response headers:', error.response.headers);
+                        console.error('Response data:', error.response.data);
+                    } else {
+                        console.error('Error message:', error.message);
+                    }
+                    showTemporaryAlertError();
+                } else {
+                    console.error('Unexpected error:', error);
+                }
+            }
         },
     });
 
@@ -88,7 +152,7 @@ export default function TambahKlinik() {
                     </Box>
 
                     {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
-                    <ImageUploaderGroup onChange={() => console.log("clicked") } />
+                    <ImageUploaderGroup onChange={() => console.log("clicked")} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Klinik<span style={{ color: "red" }}>*</span></Typography>
@@ -119,7 +183,7 @@ export default function TambahKlinik() {
                                 onChange={formik.handleChange}
                                 onBlur={() => formik.setTouched({ ...formik.touched, deskripsiKlinik: true })}
                                 error={formik.touched.deskripsiKlinik && Boolean(formik.errors.deskripsiKlinik)}
-                                sx={{ height: '107px', alignItems: 'flex-start', borderRadius:'8px'}}
+                                sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
                             />
                             {formik.touched.deskripsiKlinik && formik.errors.deskripsiKlinik && (
                                 <Typography color="error">{formik.errors.deskripsiKlinik}</Typography>
@@ -135,7 +199,10 @@ export default function TambahKlinik() {
                                     <DropdownList
                                         options={hari}
                                         placeholder="Pilih hari"
-                                        onChange={(value: string) => setSelectedDay(Number(value))}
+                                        onChange={(value: string) => {
+                                            console.log("Selected value:", value);
+                                            setSelectedDay(value);
+                                        }}
                                     />
                                 </Box>
 
@@ -194,7 +261,10 @@ export default function TambahKlinik() {
                 </Box>
             </Box>
             {successAlert && (
-                <AlertSuccess label="Success adding building" />
+                <AlertSuccess label="Success adding clinic" />
+            )}
+            {errorAlert && (
+                <AlertSuccess label="Error adding clinic" />
             )}
         </Container>
     );

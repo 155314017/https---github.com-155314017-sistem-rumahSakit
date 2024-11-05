@@ -1,7 +1,10 @@
+import React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import axios from 'axios';
+import Cookies from "js-cookie";
 
 const style = {
     position: 'absolute',
@@ -19,9 +22,28 @@ const style = {
 interface ModalDeleteConfirmationProps {
     open: boolean;
     onClose: () => void;
+    onDeleteSuccess: () => void;
+    apiUrl: string;
 }
 
-function ModalDeleteConfirmation({ open, onClose }: ModalDeleteConfirmationProps): JSX.Element {
+const ModalDeleteConfirmation: React.FC<ModalDeleteConfirmationProps> = ({ open, onClose, apiUrl, onDeleteSuccess }) => {
+    const handleDelete = async () => {
+        try {
+            const token = Cookies.get("accessToken");
+            await axios.delete(apiUrl, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'accessToken': `${token}`
+                }
+            });
+            onDeleteSuccess();
+            onClose();
+        } catch (error) {
+            console.error('Error saat menghapus data:', error);
+        }
+    };
+
+
     return (
         <Modal
             open={open}
@@ -36,9 +58,9 @@ function ModalDeleteConfirmation({ open, onClose }: ModalDeleteConfirmationProps
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" sx={{ mt: 2, fontSize: '18px', fontWeight: 600 }}>
-                    Apakah Anda yakin ingin menghapus data ini ?
+                    Apakah Anda yakin ingin menghapus data ini?
                 </Typography>
-                <Typography id="modal-modal-description" >
+                <Typography id="modal-modal-description">
                     Jika anda menghapus data ini, maka data yang anda hapus akan hilang selamanya.
                 </Typography>
                 <Box display="flex" justifyContent="flex-start" mt={2}>
@@ -49,7 +71,7 @@ function ModalDeleteConfirmation({ open, onClose }: ModalDeleteConfirmationProps
                     }}>
                         Keluar
                     </Button>
-                    <Button onClick={() => { }} sx={{
+                    <Button onClick={handleDelete} sx={{
                         bgcolor: '#8F85F3', color: '#ffff', border: '1px solid #8F85F3', padding: 1, px: 10, '&:hover': {
                             backgroundColor: "#ffff", color: '#8F85F3',
                         },
@@ -60,7 +82,6 @@ function ModalDeleteConfirmation({ open, onClose }: ModalDeleteConfirmationProps
             </Box>
         </Modal>
     );
-}
-
+};
 
 export default ModalDeleteConfirmation;

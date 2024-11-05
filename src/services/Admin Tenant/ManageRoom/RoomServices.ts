@@ -52,7 +52,7 @@ export interface ApiResponse {
 }
 
 const API_URL =
-  "https://hms.3dolphinsocial.com:8083/v1/manage/room/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc";
+  "https://hms.3dolphinsocial.com:8083/v1/manage/room/?pageNumber=0&pageSize=100&orderBy=createdDateTime=asc";
 
 export const RoomServices = async (): Promise<RoomDataItem[]> => {
   const response = await axios.get<ApiResponse>(API_URL);

@@ -57,6 +57,7 @@ export default function TableGedung() {
   const [open, setOpen] = useState(false);
   // const [data, setData] = useState<BuildingDataItem[]>([]);
   const [datas, setDatas] = useState<BuildingDataItem[]>([]);
+  const [deletedItems, setDeletedItems] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,6 +79,18 @@ export default function TableGedung() {
     setPage(value);
   };
 
+  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
+
+    event.preventDefault();
+
+    console.log("ID Gedung yang akan dihapus:", buildingId); 
+    setDeletedItems(buildingId);
+
+
+    setOpen(true);
+
+  };
+
   const rowsPerPage = 10;
 
   const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
@@ -89,6 +102,11 @@ export default function TableGedung() {
     { value: 4, label: "Nomor Gedung 9-1" },
   ];
 
+  const handleDeleteSuccess = () => {
+    console.log("Item deleted successfully");
+    // Refresh the data or perform additional actions after delete
+  };
+
   const handleSelectionChange = (selectedValue: string) => {
     console.log("Selected Value:", selectedValue);
   };
@@ -97,10 +115,10 @@ export default function TableGedung() {
     setIsCollapsed((prev) => !prev);
   };
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    setOpen(true);
-  };
+  // const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  //   event.preventDefault();
+  //   setOpen(true);
+  // };
 
   return (
     <Box>
@@ -277,7 +295,7 @@ export default function TableGedung() {
                             sx={[{ color: "#292B2C", fontSize: "14px" }]}
                             align="center"
                           >
-                            {index+1}
+                            {(page - 1) * rowsPerPage + index + 1}
                           </TableCell>
                           <TableCell
                             sx={[
@@ -311,47 +329,75 @@ export default function TableGedung() {
                           >
                             {data.address}
                           </TableCell>
-                          <TableCell
-                            align="center"
-                            sx={[
-                              {
-                                color: "#292B2C",
-                                fontSize: "14px",
-                                textTransform: "capitalize",
-                              },
-                            ]}
-                          >
+                          <TableCell align="center" sx={[{ color: "#292B2C", fontSize: "14px", textTransform: "capitalize", }]}>
+
                             <Link
+
                               href="#"
+
                               underline="none"
+
                               color={"#8F85F3"}
-                              onClick={confirmationDelete}
-                              sx={{mr:2}}
+
+                              onClick={(event) => confirmationDelete(event, data.id)} // Mengirim ID gedung
+
+                              sx={{ mr: 2 }}
+
                             >
+
                               Hapus
+
                             </Link>
-                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
+
+                            <ModalDeleteConfirmation
+                              open={open}
+                              onClose={() => setOpen(false)}
+                              apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/building/${deletedItems}`}
+                              onDeleteSuccess={handleDeleteSuccess}
+                            />
+
                             <Link
+
                               href="#"
+
                               mr={2}
+
                               underline="hover"
+
                               sx={{
+
                                 textTransform: "capitalize",
+
                                 color: "#8F85F3",
+
                               }}
+
                             >
+
                               Ubah
+
                             </Link>
+
                             <Link
+
                               href="/detailGedung "
+
                               underline="hover"
+
                               sx={{
+
                                 textTransform: "capitalize",
+
                                 color: "#8F85F3",
+
                               }}
+
                             >
+
                               Lihat Selengkapnya
+
                             </Link>
+
                           </TableCell>
                         </StyledTableRow>
                       ))

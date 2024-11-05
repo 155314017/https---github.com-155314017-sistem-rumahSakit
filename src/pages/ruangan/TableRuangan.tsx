@@ -117,6 +117,7 @@ export default function TableRuangan() {
   // const [data, setData] = useState<RoomDataItem[]>([]);
   const [datas, setDatas] = useState<RoomDataItem[]>([]);
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
+  const [deletedItems, setDeletedItems] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -165,6 +166,18 @@ export default function TableRuangan() {
   }, [dataIdBuilding]);
 
 
+  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
+
+    event.preventDefault();
+
+    console.log("ID Gedung yang akan dihapus:", buildingId);
+    setDeletedItems(buildingId);
+
+
+    setOpen(true);
+
+  };
+
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -198,11 +211,15 @@ export default function TableRuangan() {
     setIsCollapsed((prev) => !prev);
   };
 
-
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    setOpen(true);
+  const handleDeleteSuccess = () => {
+    console.log("Item deleted successfully");
+    // Refresh the data or perform additional actions after delete
   };
+
+  // const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  //   event.preventDefault();
+  //   setOpen(true);
+  // };
 
   return (
     <Box>
@@ -465,12 +482,12 @@ export default function TableRuangan() {
                               href="#"
                               underline="none"
                               color={"#8F85F3"}
-                              onClick={confirmationDelete}
+                              onClick={(event) => confirmationDelete(event, data.id)}
                               sx={{ mr: 2 }}
                             >
                               Hapus
                             </Link>
-                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
+                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/room/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                             <Link
                               href="#"
                               mr={2}

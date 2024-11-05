@@ -267,6 +267,18 @@ export default function TableKlinik() {
                         }}
                         align="left"
                       >
+                        Jam Operasional
+                      </TableCell>
+                      <TableCell
+                        width={"15%"}
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
+                        align="left"
+                      >
                         Deskripsi
                       </TableCell>
                       <TableCell
@@ -306,6 +318,21 @@ export default function TableKlinik() {
                           ]}
                         >
                           {data.name}
+                        </TableCell>
+                        <TableCell
+                          sx={[
+                            {
+                              color: "#292B2C",
+                              fontSize: "14px",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                              maxWidth: "150px",
+                              textTransform: "capitalize",
+                            },
+                          ]}
+                        >
+                          {data.operationalSchedule}
                         </TableCell>
                         <TableCell
                           align="left"

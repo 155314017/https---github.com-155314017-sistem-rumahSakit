@@ -74,7 +74,7 @@ export default function TambahRuangan() {
         onSubmit: async (values) => {
             const data = {
                 name: values.namaKlinik,
-                masterBuildingId: "7e331236-8a5c-4650-b373-6c591abc5a58",
+                masterBuildingId: "17e145fa-ea31-495e-b725-149108b12321",
                 type: values.jenisRuangan,
                 additionalInfo: "add info,",
                 images: imagesData,
