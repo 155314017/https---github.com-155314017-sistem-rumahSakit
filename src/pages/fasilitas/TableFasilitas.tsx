@@ -62,6 +62,7 @@ export default function TableFasilitas() {
   const [open, setOpen] = React.useState<boolean>(false);
   // const [data, setData] = useState<FacilityDataItem[]>([]);
   const [datas, setDatas] = useState<FacilityDataItem[]>([]);
+  const [deletedItems, setDeletedItems] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,7 +86,7 @@ export default function TableFasilitas() {
 
   const rowsPerPage = 10;
 
-   const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const urutkan = [
     { value: 1, label: "Biaya penanganan tertinggi" },
@@ -102,9 +103,16 @@ export default function TableFasilitas() {
     setIsCollapsed((prev) => !prev);
   };
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
     event.preventDefault();
+    console.log("ID Gedung yang akan dihapus:", buildingId);
+    setDeletedItems(buildingId);
     setOpen(true);
+  };
+
+  const handleDeleteSuccess = () => {
+    console.log("Item deleted successfully");
+    // Refresh the data or perform additional actions after delete
   };
 
 
@@ -312,7 +320,7 @@ export default function TableFasilitas() {
                             sx={[{ color: "#292B2C", fontSize: "14px" }]}
                             align="center"
                           >
-                            {index+1}
+                            {index + 1}
                           </TableCell>
                           <TableCell
                             sx={[
@@ -392,12 +400,12 @@ export default function TableFasilitas() {
                               href="#"
                               underline="none"
                               color={"#8F85F3"}
-                              onClick={confirmationDelete}
+                              onClick={(event) => confirmationDelete(event, data.id)}
                               sx={{ mr: 2 }}
                             >
                               Hapus
                             </Link>
-                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
+                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                             <Link
                               href="#"
                               mr={2}
