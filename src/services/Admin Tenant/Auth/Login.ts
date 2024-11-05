@@ -23,6 +23,7 @@ const Login = async (email: string, password: string) => {
 
     // Save the token in cookies
     Cookies.set("accessToken", response.data.data.tokenValue, { expires: 7 }); // Expires in 7 days
+    Cookies.set("name", response.data.data.name, { expires: 7 });
 
     return response.data;
   } catch (error: any) {

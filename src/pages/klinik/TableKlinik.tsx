@@ -12,6 +12,7 @@ import {
   Link,
   IconButton,
   Pagination,
+  Collapse,
 } from "@mui/material";
 import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
@@ -63,6 +64,7 @@ export default function TableKlinik() {
   const [open, setOpen] = React.useState<boolean>(false);
   // const [data, setData] = useState<DataItem[]>([]);
   const [datas, setDatas] = useState<ClinicDataItem[]>([]);
+  const [deletedItems, setDeletedItems] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,6 +82,19 @@ export default function TableKlinik() {
     fetchData();
   }, []);
 
+  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
+
+    event.preventDefault();
+    console.log("ID Gedung yang akan dihapus:", buildingId);
+    setDeletedItems(buildingId);
+    setOpen(true);
+
+  };
+
+  const handleDeleteSuccess = () => {
+    console.log("Item deleted successfully");
+    // Refresh the data or perform additional actions after delete
+  };
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -104,12 +119,6 @@ export default function TableKlinik() {
     setIsCollapsed(!isCollapsed);
   };
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    setOpen(true);
-  };
-
-
   return (
     <Box>
       <Box
@@ -130,13 +139,9 @@ export default function TableKlinik() {
           {/* collapse button */}
           <IconButton sx={{ zIndex: 1 }} onClick={toggleCollapse}>
             {isCollapsed ? (
-              <ChevronRightRoundedIcon
-                sx={{ fontSize: "30px", color: "#8F85F3" }}
-              />
+              <ChevronRightRoundedIcon sx={{ fontSize: "30px", color: "#8F85F3" }} />
             ) : (
-              <ExpandMoreRoundedIcon
-                sx={{ fontSize: "30px", color: "#8F85F3" }}
-              />
+              <ExpandMoreRoundedIcon sx={{ fontSize: "30px", color: "#8F85F3" }} />
             )}
           </IconButton>
         </Box>
@@ -203,7 +208,7 @@ export default function TableKlinik() {
           <img src={bgImage} alt="bg-image" />
         </Box>
 
-        {!isCollapsed && (
+        <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
           <Box>
             <Box
               mt={3}
@@ -351,7 +356,7 @@ export default function TableKlinik() {
                           ]}
                         >
                           <Link
-                            onClick={confirmationDelete}
+                            onClick={(event) => confirmationDelete(event, data.id)}
                             href="#"
                             mr={2}
                             underline="hover"
@@ -363,7 +368,7 @@ export default function TableKlinik() {
                             Hapus
                           </Link>
 
-                          <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
+                          <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                           <Link
                             href="#"
                             mr={2}
@@ -424,7 +429,7 @@ export default function TableKlinik() {
 
             </Stack>
           </Box>
-        )}
+        </Collapse>
       </Box>
     </Box>
   );

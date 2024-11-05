@@ -12,6 +12,7 @@ import {
     Link,
     Pagination,
     IconButton,
+    Collapse,
 } from "@mui/material";
 import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
@@ -59,6 +60,7 @@ export default function TableKonter() {
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [open, setOpen] = React.useState<boolean>(false);
     const [datas, setDatas] = useState<CounterDataItem[]>([]);
+    const [deletedItems, setDeletedItems] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -100,10 +102,20 @@ export default function TableKonter() {
         setIsCollapsed((prev) => !prev);
     };
 
-    const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
+
         event.preventDefault();
+        console.log("ID Gedung yang akan dihapus:", buildingId);
+        setDeletedItems(buildingId);
         setOpen(true);
+
     };
+
+    const handleDeleteSuccess = () => {
+        console.log("Item deleted successfully");
+        // Refresh the data or perform additional actions after delete
+    };
+
     return (
         <Box>
             <Box
@@ -196,7 +208,7 @@ export default function TableKonter() {
                     </Box>
                 </Box>
                 {/* ---------- */}
-                {!isCollapsed && (
+                <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
                     <Box>
                         <Box
                             mt={3}
@@ -267,7 +279,23 @@ export default function TableKonter() {
                                                                 textTransform: "capitalize",
                                                             },
                                                         ]}
-                                                        align="center"
+                                                        align="left"
+                                                    >
+                                                        {data.name}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        sx={[
+                                                            {
+                                                                color: "#292B2C",
+                                                                overflow: "hidden",
+                                                                textOverflow: "ellipsis",
+                                                                whiteSpace: "nowrap",
+                                                                maxWidth: "150px",
+                                                                fontSize: "14px",
+                                                                textTransform: "capitalize",
+                                                            },
+                                                        ]}
+                                                        align="left"
                                                     >
                                                         {data.name}
                                                     </TableCell>
@@ -285,7 +313,7 @@ export default function TableKonter() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.id}
+                                                        {data.operationalSchedule}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[
@@ -299,25 +327,9 @@ export default function TableKonter() {
                                                                 textTransform: "capitalize",
                                                             },
                                                         ]}
-                                                        align="center"
+                                                        align="left"
                                                     >
-                                                        {data.id}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        sx={[
-                                                            {
-                                                                color: "#292B2C",
-                                                                overflow: "hidden",
-                                                                textOverflow: "ellipsis",
-                                                                whiteSpace: "nowrap",
-                                                                maxWidth: "150px",
-                                                                fontSize: "14px",
-                                                                textTransform: "capitalize",
-                                                            },
-                                                        ]}
-                                                        align="center"
-                                                    >
-                                                        {data.id}
+                                                        {data.location}
                                                     </TableCell>
                                                     <TableCell
                                                         align="center"
@@ -333,12 +345,12 @@ export default function TableKonter() {
                                                             href="#"
                                                             underline="none"
                                                             color={"#8F85F3"}
-                                                            onClick={confirmationDelete}
+                                                            onClick={(event) => confirmationDelete(event, data.id)}
                                                             sx={{ mr: 2 }}
                                                         >
                                                             Hapus
                                                         </Link>
-                                                        <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
+                                                        <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/counter/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                                                         <Link
                                                             href="#"
                                                             mr={2}
@@ -407,7 +419,7 @@ export default function TableKonter() {
 
                         </Stack>
                     </Box>
-                )}
+                </Collapse>
             </Box>
         </Box>
     );
