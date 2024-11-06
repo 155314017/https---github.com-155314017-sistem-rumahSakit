@@ -27,7 +27,7 @@ export default function Gedung() {
   };
 
   useEffect(() => {
-    fetchData(); // Panggil fetchData saat komponen pertama kali dimuat
+    fetchData(); 
   }, []);
 
   return (
