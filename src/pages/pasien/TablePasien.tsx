@@ -20,7 +20,7 @@ import bgImage from "../../assets/img/String.png";
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
+// import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { PatientDataItem, PatientServices } from "../../services/ManagePatient/PatientServices";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -103,11 +103,11 @@ export default function TablePasien() {
         setIsCollapsed((prev) => !prev);
     };
 
-    const [open, setOpen] = React.useState<boolean>(false);
+    // const [open, setOpen] = React.useState<boolean>(false);
 
     const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
-        setOpen(true);
+        // setOpen(true);
     };
     return (
         <Box>

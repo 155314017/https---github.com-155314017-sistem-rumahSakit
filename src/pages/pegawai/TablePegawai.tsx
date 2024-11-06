@@ -24,7 +24,7 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import DataPegawai from "../../dummyData/dataPegawai";
-import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
+// import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -62,7 +62,7 @@ export default function TablePegawai() {
 
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [open, setOpen] = React.useState<boolean>(false);
+  // const [open, setOpen] = React.useState<boolean>(false);
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -95,7 +95,7 @@ export default function TablePegawai() {
 
   const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    setOpen(true);
+    // setOpen(true);
   };
 
 
@@ -370,7 +370,7 @@ export default function TablePegawai() {
                             Hapus
                           </Link>
 
-                          <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
+                          {/* <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} /> */}
                           <Link
                             href="#"
                             mr={2}

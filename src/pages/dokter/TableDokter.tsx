@@ -22,7 +22,7 @@ import bgImage from "../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
-import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
+// import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { DoctorDataItem, DoctorServices } from "../../services/Admin Tenant/ManageDoctor/DoctorServices";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -59,7 +59,7 @@ const StyledTableContainer = styled(TableContainer)`
 export default function TableDokter() {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [open, setOpen] = React.useState<boolean>(false);
+  // const [open, setOpen] = React.useState<boolean>(false);
   const [datas, setDatas] = useState<DoctorDataItem[]>([]);
 
   useEffect(() => {
@@ -114,7 +114,7 @@ export default function TableDokter() {
 
   const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    setOpen(true);
+    // setOpen(true);
   };
 
   return (
@@ -439,7 +439,7 @@ export default function TableDokter() {
                             >
                               Hapus
                             </Link>
-                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
+                            {/* <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} /> */}
                             <Link
                               href="#"
                               mr={2}

@@ -169,7 +169,7 @@ export default function TambahPasien() {
                         </Box>
 
                         <Typography sx={{ fontSize: "16px", mt: 3 }}>Biaya Penanganan<span style={{ color: "red" }}>*</span></Typography>
-                        <InputCurrencyIdr />
+                        <InputCurrencyIdr onChange={() => console.log("filled") } />
 
                         <Button
                             type="submit"
