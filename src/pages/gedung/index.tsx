@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Grid,  Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import TableGedung from "./TableGedung";
 import SideBar from "../../components/SideBar/SideBar";
 import Header from "../../components/medium/Header";
@@ -11,24 +11,25 @@ import { Building, BuildingDataItem } from "../../services/Admin Tenant/ManageBu
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
-
 export default function Gedung() {
   const [data, setData] = useState<BuildingDataItem[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log('fetching data . . . ')
-      try {
-        const result = await Building();
-        console.log('result : ' + result)
-        setData(result);
-      } catch (error) {
-        console.log('Failed to fetch data from API' + error);
-      }
-    };
+  // Fungsi untuk fetch data dari API
+  const fetchData = async () => {
+    console.log('Fetching data...');
+    try {
+      const result = await Building();
+      console.log('Result:', result);
+      setData(result); // Update state data dengan data terbaru
+    } catch (error) {
+      console.log('Failed to fetch data from API', error);
+    }
+  };
 
-    fetchData();
+  useEffect(() => {
+    fetchData(); // Panggil fetchData saat komponen pertama kali dimuat
   }, []);
+
   return (
     <Box>
       <SideBar />
@@ -43,7 +44,7 @@ export default function Gedung() {
             <MediumCard icon={BusinessOutlinedIcon} title="Total Gedung" subtitle={data.length.toString() || "0"} />
             <CardAdd icon={AddBoxIcon} title="Tambah Gedung" link="/tambahGedung" />
           </Grid>
-          <TableGedung />
+          <TableGedung fetchDatas={fetchData} />
         </Box>
       </Box>
     </Box>

@@ -9,6 +9,7 @@ import AlertSuccess from "../../components/small/AlertSuccess";
 import ImageUploaderGroup from "../../components/medium/ImageUploaderGroup";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 type ImageData = {
     imageName: string;
@@ -20,6 +21,8 @@ export default function TambahGedung() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
+
+    const navigate = useNavigate();
 
     const handleImageChange = (images: ImageData[]) => {
         console.log('Images changed:', images);
@@ -90,6 +93,7 @@ export default function TambahGedung() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
+                navigate('/gedung')
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {

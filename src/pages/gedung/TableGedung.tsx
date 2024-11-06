@@ -52,7 +52,11 @@ const StyledTableContainer = styled(TableContainer)`
   }
 `;
 
-export default function TableGedung() {
+interface TableGedungProps {
+  fetchDatas: () => void; 
+}
+
+const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas }) => {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
@@ -62,21 +66,24 @@ export default function TableGedung() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log('Fetching data...');
-      try {
-        const result = await Building();
-        console.log('Result: ', result);
-        setDatas(result); // Store the result in datas state
-        // setData(result); // Set data to display in table
-      } catch (error) {
-        console.log('Failed to fetch data from API: ', error);
-      }
-    };
+  const fetchData = async () => {
+    console.log('Fetching data...');
+    try {
+      const result = await Building(); 
+      console.log('Result: ', result);
+      setDatas(result); 
+    } catch (error) {
+      console.log('Failed to fetch data from API: ', error);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, []); 
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -108,6 +115,8 @@ export default function TableGedung() {
   const handleDeleteSuccess = () => {
     console.log("Item deleted successfully");
     // Refresh the data or perform additional actions after delete
+    fetchDatas();
+    fetchData();
   };
 
   const handleSelectionChange = (selectedValue: string) => {
@@ -442,3 +451,5 @@ export default function TableGedung() {
     </Box>
   );
 }
+
+export default TableGedung;
