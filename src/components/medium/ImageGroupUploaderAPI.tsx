@@ -20,13 +20,14 @@ interface ImageUploaderGroupProps {
 }
 
 const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, apiUrl }) => {
-    const [images, setImages] = useState<ImageDatas[]>(
-        Array(5).fill({ image: null, imageBase64: "", type: "", name: "", loading: false, error: "" })
-    );
+    const [images, setImages] = useState<ImageDatas[]>(Array(5).fill({ image: null, imageBase64: "", type: "", name: "", loading: false, error: "" }));
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const inputRefs = useRef<HTMLInputElement[]>([]);
+    const [tes, setTes] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
             try {
                 const token = Cookies.get("accessToken");
                 const response = await axios.get(apiUrl, {
@@ -36,19 +37,13 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, ap
                     }
                 });
 
-                console.log("respon image uploader: ", response.data.data.images)
                 const imagesData = response.data.data.images;
-
                 const mappedImages = imagesData.map((image: any) => ({
                     imageName: image.imageName,
                     imageType: image.imageType,
-                    imageData: image.imageData,  // Asumsi imageData sudah berformat base64
+                    imageData: image.imageData,
                 }));
 
-                console.log("mapped Images")
-                console.log(mappedImages);
-
-                // Set default images based on mappedImages
                 const initialImages = images.map((img, index) => ({
                     ...img,
                     image: mappedImages[index]?.imageData ? `data:${mappedImages[index].imageType};base64,${mappedImages[index].imageData}` : null,
@@ -57,10 +52,13 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, ap
                     name: mappedImages[index]?.imageName || "",
                 }));
 
-                setImages(initialImages); // Update state with default images
+                setImages(initialImages);
                 onChange(mappedImages);
+                setTes(false);
             } catch (error) {
-                console.error('Error saat menghapus data:', error);
+                console.error('Error fetching data:', error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -72,10 +70,10 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, ap
         return validTypes.includes(file.type);
     };
 
+
     const validateDimensions = (file: File, callback: (isValid: boolean) => void) => {
         const img = new Image();
         img.src = URL.createObjectURL(file);
-
         img.onload = () => {
             callback(img.width <= 8000 && img.height <= 4000);
         };
@@ -106,19 +104,18 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, ap
                                     : img
                             );
                             setImages(updatedImages);
-
                             onChange(updatedImages.map((img) => ({
                                 imageData: img.imageBase64,
                                 imageType: img.type,
                                 imageName: img.name,
                             })));
-                        }, 2000); // delay 2 detik
+                        }, 2000);
                     };
 
                     reader.readAsDataURL(file);
                 } else {
                     setImages((prevImages) =>
-                        prevImages.map((img, i) => i === index ? { ...img, error: "Dimensi gambar maksimal adalah 8000x4000 piksel." } : img)
+                        prevImages.map((img, i) => i === index ? { ...img, error: "Dimensi gambar maksimal adalah 8000x 4000 piksel." } : img)
                     );
                 }
             });
@@ -154,66 +151,71 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, ap
         <>
             <Typography sx={{ fontSize: "16px", fontWeight: 600, mt: 1 }}>Unggah Foto<span style={{ color: "red" }}>*</span></Typography>
             <Typography fontSize={'14px'} mb={1} color='#A8A8BD' >Format foto harus .SVG, .PNG, atau .JPG dan ukuran foto maksimal 4MB.</Typography>
-            <Grid container justifyContent="center" alignItems="center" direction="column" spacing={4} maxHeight={'350px'} maxWidth={'100%'} >
-                {images.map((imgData, index) => (
-                    <Grid key={index}>
-                        {imgData.error && (
-                            <Alert severity="error" sx={{ mb: 3 }}>
-                                {imgData.error}
-                            </Alert>
-                        )}
-
-                        <Box
-                            onClick={() => handleBoxClick(index)}
-                            onDragOver={handleDragOver}
-                            onDrop={(e) => handleDrop(e, index)}
-                            sx={{
-                                border: imgData.loading ? "2px dashed blue" : "2px dashed gray",
-                                borderRadius: "12px",
-                                textAlign: "center",
-                                width: "190px",
-                                height: "160px",
-                                backgroundColor: "#fafafa",
-                                transition: "background-color 0.3s ease",
-                                cursor: "pointer",
-                                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                        >
-                            <input
-                                type="file"
-                                accept="image/jpeg, image/png, image/svg+xml, image/gif"
-                                ref={(el) => (inputRefs.current[index] = el!)}
-                                style={{ display: "none" }}
-                                onChange={(e) => handleFileChange(e, index)}
-                            />
-                            {imgData.loading ? (
-                                <CircularProgress />
-                            ) : imgData.image ? (
-                                <img
-                                    src={imgData.image}
-                                    alt={`Uploaded ${index + 1}`}
-                                    style={{
-                                        width: "100%",
-                                        height: "100%",
-                                        objectFit: "contain",
-                                        borderRadius: "8px",
-                                    }}
-                                />
-                            ) : (
-                                <Box>
-                                    <AddPhotoAlternateOutlinedIcon />
-                                    <Typography sx={{ color: "gray", fontSize: "18px" }}>
-                                        Foto {index + 1}
-                                    </Typography>
-                                </Box>
+            {/* {tes ? (
+                <CircularProgress size={60} sx={{ ml:"50%"}}  />
+            ) : ( */}
+                <Grid container justifyContent="center" alignItems="center" direction="column" spacing={4} maxHeight={'350px'} maxWidth={'100%'} >
+                    {images.map((imgData, index) => (
+                        <Grid key={index}>
+                            {imgData.error && (
+                                <Alert severity="error" sx={{ mb: 3 }}>
+                                    {imgData.error}
+                                </Alert>
                             )}
-                        </Box>
-                    </Grid>
-                ))}
-            </Grid>
+
+                            <Box
+                                onClick={() => handleBoxClick(index)}
+                                onDragOver={handleDragOver}
+                                onDrop={(e) => handleDrop(e, index)}
+                                sx={{
+                                    border: tes ? "2px dashed blue" : "2px dashed gray",
+                                    borderRadius: "12px",
+                                    textAlign: "center",
+                                    width: "190px",
+                                    height: "160px",
+                                    backgroundColor: "#fafafa",
+                                    transition: "background-color 0.3s ease",
+                                    cursor: "pointer",
+                                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <input
+                                    type="file"
+                                    accept="image/jpeg, image/png, image/svg+xml, image/gif"
+                                    ref={(el) => (inputRefs.current[index] = el!)}
+                                    style={{ display: "none" }}
+                                    onChange={(e) => handleFileChange(e, index)}
+                                    disabled={tes}
+                                />
+                                {tes ? (
+                                    <CircularProgress />
+                                ) : imgData.image ? (
+                                    <img
+                                        src={imgData.image}
+                                        alt={`Uploaded ${index + 1}`}
+                                        style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            objectFit: "contain",
+                                            borderRadius: "8px",
+                                        }}
+                                    />
+                                ) : (
+                                    <Box>
+                                        <AddPhotoAlternateOutlinedIcon />
+                                        <Typography sx={{ color: "gray", fontSize: "18px" }}>
+                                            Foto {index + 1}
+                                        </Typography>
+                                    </Box>
+                                )}
+                            </Box>
+                        </Grid>
+                    ))}
+                </Grid>
+            {/* )} */}
         </>
     );
 };

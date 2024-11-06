@@ -10,6 +10,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import ImageUploaderGroupAPI from "../../components/medium/ImageGroupUploaderAPI";
+import { useNavigate } from "react-router-dom";
 
 type ImageData = {
     imageName: string;
@@ -32,6 +33,8 @@ export default function EditGedung() {
     const [apiUrl, setApiUrl] = useState('');
     const { id } = useParams();
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -46,7 +49,7 @@ export default function EditGedung() {
                 });
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`);
                 console.log("DATA : ")
-                console.log("Response",response.data);
+                console.log("Response", response.data);
                 console.log(response.data.data.name);
                 console.log("Images: ")
                 setName(response.data.data.name);
@@ -132,6 +135,7 @@ export default function EditGedung() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
+                navigate('/gedung')
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
@@ -182,6 +186,7 @@ export default function EditGedung() {
                                 placeholder="Masukkan nama gedung"
                                 value={formik.values.namaGedung}
                                 onChange={formik.handleChange}
+                                disabled={loading}
                                 onBlur={() => formik.setTouched({ ...formik.touched, namaGedung: true })}
                                 error={formik.touched.namaGedung && Boolean(formik.errors.namaGedung)}
                                 endAdornment={loading ? <CircularProgress size={20} /> : null}
@@ -204,8 +209,20 @@ export default function EditGedung() {
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.alamatGedung && Boolean(formik.errors.alamatGedung)}
-                                sx={{ height: '107px', alignItems: 'flex-start', paddingTop: '8px' }}
-                                inputProps={{ sx: { padding: 0 } }}
+                                endAdornment={loading ? <CircularProgress size={20} /> : null}
+                                disabled={loading}
+                                sx={{
+                                    alignItems: 'flex-start',
+                                    paddingLeft: '8px',
+                                }}
+                                inputProps={{
+                                    sx: {
+                                        padding: '8px',
+                                    }
+                                }}
+                                multiline
+                                minRows={3}
+                                maxRows={10}
                             />
                             {formik.touched.alamatGedung && formik.errors.alamatGedung && (
                                 <Typography color="error">{formik.errors.alamatGedung}</Typography>

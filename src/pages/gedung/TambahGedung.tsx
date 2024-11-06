@@ -76,7 +76,7 @@ export default function TambahGedung() {
 
             console.log('Submitting form with data:', data);
 
-            const token = Cookies.get("accessToken"); 
+            const token = Cookies.get("accessToken");
             console.log("Token :", token)
 
             try {
@@ -161,13 +161,24 @@ export default function TambahGedung() {
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.alamatGedung && Boolean(formik.errors.alamatGedung)}
-                                sx={{ height: '107px', alignItems: 'flex-start', paddingTop: '8px' }}
-                                inputProps={{ sx: { padding: 0 } }}
+                                sx={{
+                                    alignItems: 'flex-start',
+                                    paddingLeft: '8px', 
+                                }}
+                                inputProps={{
+                                    sx: {
+                                        padding: '8px', 
+                                    }
+                                }}
+                                multiline
+                                minRows={3} 
+                                maxRows={10} 
                             />
                             {formik.touched.alamatGedung && formik.errors.alamatGedung && (
                                 <Typography color="error">{formik.errors.alamatGedung}</Typography>
                             )}
                         </FormControl>
+
 
                         {/* Button */}
                         <Button
