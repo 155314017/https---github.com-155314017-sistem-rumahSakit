@@ -493,7 +493,7 @@ export default function TableRuangan() {
                             <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/room/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                             <Link
                               href="#"
-                              onClick={() => navigate(`/editRuangan/${data.id}`)} // Ubah di sini
+                              onClick={() => navigate(`/editRuangan/${data.id}`)} 
                               mr={2}
                               underline="hover"
                               sx={{

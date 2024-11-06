@@ -90,7 +90,7 @@ export default function TambahAmbulance() {
     ].filter(schedule => schedule.startDateTime && schedule.endDateTime);
 
     const data = {
-      number: "123",
+      number: "12345",
       status: "ACTIVE",
       additionalInfo: "hi",
       cost: operationalCost ? parseInt(operationalCost.replace(/\D/g, '')) : 0,

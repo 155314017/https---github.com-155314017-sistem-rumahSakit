@@ -23,6 +23,7 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { Building, BuildingDataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -58,6 +59,8 @@ export default function TableGedung() {
   // const [data, setData] = useState<BuildingDataItem[]>([]);
   const [datas, setDatas] = useState<BuildingDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -357,25 +360,16 @@ export default function TableGedung() {
                             />
 
                             <Link
-
                               href="#"
-
+                              onClick={() => navigate(`/editGedung/${data.id}`)}
                               mr={2}
-
                               underline="hover"
-
                               sx={{
-
                                 textTransform: "capitalize",
-
                                 color: "#8F85F3",
-
                               }}
-
                             >
-
                               Ubah
-
                             </Link>
 
                             <Link

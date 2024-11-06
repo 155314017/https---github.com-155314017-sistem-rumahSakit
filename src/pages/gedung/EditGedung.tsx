@@ -1,14 +1,15 @@
 import { Container, Box } from "@mui/system";
-import { Typography, Button, FormControl, OutlinedInput } from "@mui/material";
+import { Typography, Button, FormControl, OutlinedInput, CircularProgress } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import bgImage from "../../assets/img/String.png";
 import { useEffect, useState } from "react";
 import AlertSuccess from "../../components/small/AlertSuccess";
-import ImageUploaderGroup from "../../components/medium/ImageUploaderGroup";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useParams } from "react-router-dom";
+import ImageUploaderGroupAPI from "../../components/medium/ImageGroupUploaderAPI";
 
 type ImageData = {
     imageName: string;
@@ -16,21 +17,60 @@ type ImageData = {
     imageData: string;
 };
 
-export default function TambahGedung() {
+interface FormValues {
+    namaGedung: string;
+    alamatGedung: string;
+}
+
+export default function EditGedung() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [name, setName] = useState<string>('');
+    const [address, setAddress] = useState<string>('');
+    const [apiUrl, setApiUrl] = useState('');
+    const { id } = useParams();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            console.log("id room: ", id)
+            try {
+                const token = Cookies.get("accessToken");
+                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'accessToken': `${token}`
+                    }
+                });
+                setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`);
+                console.log("DATA : ")
+                console.log("Response",response.data);
+                console.log(response.data.data.name);
+                console.log("Images: ")
+                setName(response.data.data.name);
+                setAddress(response.data.data.address);
+                console.log("DATA state : ")
+                console.log(name);
+                console.log(address);
+            } catch (error) {
+                console.error('Error saat menghapus data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [id]);
+
+    useEffect(() => {
+        console.log("Nama gedung: ", name);
+    }, [name]);
 
     const handleImageChange = (images: ImageData[]) => {
         console.log('Images changed:', images);
         setImagesData(images);
-        console.log('Images updated 2:', imagesData);
     };
-
-    // In useEffect
-    useEffect(() => {
-        console.log('Updated imagesData:', imagesData);
-    }, [imagesData]);
 
     const showTemporaryAlertSuccess = async () => {
         setSuccessAlert(true);
@@ -47,14 +87,15 @@ export default function TambahGedung() {
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
         { label: "Gedung", href: "/gedung" },
-        { label: "Tambah Gedung", href: "/tambahGedung" },
+        { label: "Edit Gedung", href: `/editGedung/${id}` },
     ];
 
-    const formik = useFormik({
+    const formik = useFormik<FormValues>({
         initialValues: {
-            namaGedung: '',
-            alamatGedung: '',
+            namaGedung: name,
+            alamatGedung: address,
         },
+        enableReinitialize: true,
         validationSchema: Yup.object({
             namaGedung: Yup.string().required('Nama Gedung is required'),
             alamatGedung: Yup.string().required('Alamat Gedung is required'),
@@ -64,6 +105,7 @@ export default function TambahGedung() {
             console.log(values.alamatGedung)
 
             const data = {
+                buildingId: id,
                 name: values.namaGedung,
                 address: values.alamatGedung,
                 additionalInfo: "",
@@ -76,11 +118,11 @@ export default function TambahGedung() {
 
             console.log('Submitting form with data:', data);
 
-            const token = Cookies.get("accessToken"); 
+            const token = Cookies.get("accessToken");
             console.log("Token :", token)
 
             try {
-                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/building/', data, {
+                const response = await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/building/', data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`
@@ -125,7 +167,7 @@ export default function TambahGedung() {
                     </Box>
 
 
-                    <ImageUploaderGroup onChange={handleImageChange} />
+                    <ImageUploaderGroupAPI onChange={handleImageChange} apiUrl={apiUrl} />
 
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
@@ -140,8 +182,9 @@ export default function TambahGedung() {
                                 placeholder="Masukkan nama gedung"
                                 value={formik.values.namaGedung}
                                 onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
+                                onBlur={() => formik.setTouched({ ...formik.touched, namaGedung: true })}
                                 error={formik.touched.namaGedung && Boolean(formik.errors.namaGedung)}
+                                endAdornment={loading ? <CircularProgress size={20} /> : null}
                             />
                             {formik.touched.namaGedung && formik.errors.namaGedung && (
                                 <Typography color="error">{formik.errors.namaGedung}</Typography>
@@ -196,10 +239,10 @@ export default function TambahGedung() {
             </Box>
 
             {successAlert && (
-                <AlertSuccess label="Success adding building" />
+                <AlertSuccess label="Building edited" />
             )}
             {errorAlert && (
-                <AlertSuccess label="Error adding building" />
+                <AlertSuccess label="Error editing building" />
             )}
         </Container>
     );

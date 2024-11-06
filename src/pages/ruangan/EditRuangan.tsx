@@ -13,7 +13,7 @@ import { useParams } from 'react-router-dom';
 
 interface FormValues {
     namaKlinik: string ; 
-    // gedung: string;
+    jenisGedung: string;
     jenisRuangan: string;
 }
 
@@ -45,31 +45,28 @@ const handleSelectionChange = (selectedValue: string) => {
 };
 
 
-
-
-
 export default function EditRuangan() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [name, setName] = useState<string>(''); 
     const [loading, setLoading] = useState<boolean>(true);
-    const { id } = useParams(); // Mengambil ID dari URL
+    const { id } = useParams(); 
 
-    // Sekarang Anda bisa menggunakan `id` untuk mengambil data ruangan yang sesuai
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             console.log("id room: ", id)
             try {
                 const token = Cookies.get("accessToken");
-                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/room/${id}`, { // Menggunakan ID di sini
+                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/room/${id}`, { 
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`
                     }
                 });
                 setName(response.data.data.name); // Set state name
+                console.log("NAMA EEEE",name); 
             } catch (error) {
                 console.error('Error saat menghapus data:', error);
             } finally {
@@ -77,32 +74,32 @@ export default function EditRuangan() {
             }
         };
         fetchData();
-    }, [id]); // Tambahkan `id` sebagai dependensi
+    }, [name]);
 
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         setLoading(true);
+    //         try {
+    //             const token = Cookies.get("accessToken");
+    //             const response = await axios.get("https://hms.3dolphinsocial.com:8083/v1/manage/room/0fe553fe-eea1-4241-acb3-ee98dceb13a3", {
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                     'accessToken': `${token}`
+    //                 }
+    //             });
+    //             setName(response.data.data.name); // Set state name
+    //         } catch (error) {
+    //             console.error('Error saat menghapus data:', error);
+    //         } finally {
+    //             setLoading(false); 
+    //         }
+    //     };
+    //     fetchData();
+    // }, []);
 
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const token = Cookies.get("accessToken");
-                const response = await axios.get("https://hms.3dolphinsocial.com:8083/v1/manage/room/0fe553fe-eea1-4241-acb3-ee98dceb13a3", {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    }
-                });
-                setName(response.data.data.name); // Set state name
-            } catch (error) {
-                console.error('Error saat menghapus data:', error);
-            } finally {
-                setLoading(false); 
-            }
-        };
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        console.log("Nama room: ",name); // This will log the updated name
+        console.log("Nama room: ",name); 
     }, [name]);
 
     const showTemporaryAlertSuccess = async () => {
@@ -126,13 +123,13 @@ export default function EditRuangan() {
     const formik = useFormik<FormValues>({
         initialValues: {
            namaKlinik: name, 
-            // gedung: '',
+            jenisGedung: '',
             jenisRuangan: '',
         },
         enableReinitialize: true, 
         validationSchema: Yup.object({
             namaKlinik: Yup.string().required('Nama Ruangan is required'),
-            // gedung: Yup.string().required('Gedung is required'),
+            jenisGedung: Yup.string().required('Gedung is required'),
             jenisRuangan: Yup.string().required('Jenis Ruangan is required'),
         }),
         onSubmit: async (values) => {

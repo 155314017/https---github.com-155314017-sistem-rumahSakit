@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef, DragEvent, ChangeEvent } from "react";
+import React, { useState, useEffect, DragEvent, ChangeEvent, useRef } from "react";
 import { Box, Typography, CircularProgress, Alert } from "@mui/material";
 import { Grid } from "@mui/system";
 import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 interface ImageDatas {
     image: string | null;
@@ -13,32 +15,57 @@ interface ImageDatas {
 }
 
 interface ImageUploaderGroupProps {
-    onChange: (images: { imageName: string; imageType: string; imageData: string; }[]) => void;
-    fetchImages: () => Promise<{ base64: string; type: string; name: string; }[]>;
+    onChange: (images: { imageName: string; imageType: string; imageData: string }[]) => void;
+    apiUrl: string;
 }
 
-const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, fetchImages }) => {
+const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, apiUrl }) => {
     const [images, setImages] = useState<ImageDatas[]>(
         Array(5).fill({ image: null, imageBase64: "", type: "", name: "", loading: false, error: "" })
     );
-
     const inputRefs = useRef<HTMLInputElement[]>([]);
 
     useEffect(() => {
-        fetchImages().then((fetchedImages) => {
-            const updatedImages = fetchedImages.map((img, index) => ({
-                image: `data:${img.type};base64,${img.base64}`,
-                imageBase64: img.base64,
-                type: img.type,
-                name: img.name,
-                loading: false,
-                error: ""
-            }));
-            setImages((prevImages) => prevImages.map((img, i) => updatedImages[i] || img));
-        }).catch(() => {
-            setImages((prevImages) => prevImages.map(img => ({ ...img, error: "Gagal mengambil gambar dari API." })));
-        });
-    }, [fetchImages]);
+        const fetchData = async () => {
+            try {
+                const token = Cookies.get("accessToken");
+                const response = await axios.get(apiUrl, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'accessToken': `${token}`
+                    }
+                });
+
+                console.log("respon image uploader: ", response.data.data.images)
+                const imagesData = response.data.data.images;
+
+                const mappedImages = imagesData.map((image: any) => ({
+                    imageName: image.imageName,
+                    imageType: image.imageType,
+                    imageData: image.imageData,  // Asumsi imageData sudah berformat base64
+                }));
+
+                console.log("mapped Images")
+                console.log(mappedImages);
+
+                // Set default images based on mappedImages
+                const initialImages = images.map((img, index) => ({
+                    ...img,
+                    image: mappedImages[index]?.imageData ? `data:${mappedImages[index].imageType};base64,${mappedImages[index].imageData}` : null,
+                    imageBase64: mappedImages[index]?.imageData || "",
+                    type: mappedImages[index]?.imageType || "",
+                    name: mappedImages[index]?.imageName || "",
+                }));
+
+                setImages(initialImages); // Update state with default images
+                onChange(mappedImages);
+            } catch (error) {
+                console.error('Error saat menghapus data:', error);
+            }
+        };
+
+        fetchData();
+    }, [apiUrl]);
 
     const validateFile = (file: File): boolean => {
         const validTypes = ["image/jpeg", "image/png", "image/svg+xml", "image/gif"];
@@ -74,7 +101,7 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, fe
                                         imageBase64: base64,
                                         type: file.type,
                                         name: file.name,
-                                        loading: false
+                                        loading: false,
                                     }
                                     : img
                             );
@@ -83,9 +110,9 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, fe
                             onChange(updatedImages.map((img) => ({
                                 imageData: img.imageBase64,
                                 imageType: img.type,
-                                imageName: img.name
+                                imageName: img.name,
                             })));
-                        }, 2000);
+                        }, 2000); // delay 2 detik
                     };
 
                     reader.readAsDataURL(file);
@@ -126,8 +153,8 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, fe
     return (
         <>
             <Typography sx={{ fontSize: "16px", fontWeight: 600, mt: 1 }}>Unggah Foto<span style={{ color: "red" }}>*</span></Typography>
-            <Typography fontSize={'14px'} mb={1} color='#A8A8BD'>Format foto harus .SVG, .PNG, atau .JPG dan ukuran foto maksimal 4MB.</Typography>
-            <Grid container justifyContent="center" alignItems="center" direction="column" spacing={4} maxHeight={'350px'} maxWidth={'100%'}>
+            <Typography fontSize={'14px'} mb={1} color='#A8A8BD' >Format foto harus .SVG, .PNG, atau .JPG dan ukuran foto maksimal 4MB.</Typography>
+            <Grid container justifyContent="center" alignItems="center" direction="column" spacing={4} maxHeight={'350px'} maxWidth={'100%'} >
                 {images.map((imgData, index) => (
                     <Grid key={index}>
                         {imgData.error && (
