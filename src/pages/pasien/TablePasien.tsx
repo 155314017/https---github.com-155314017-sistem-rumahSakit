@@ -543,7 +543,7 @@ export default function TablePasien() {
                                                         >
                                                             Hapus
                                                         </Link>
-                                                        <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} />
+                                                        {/* <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} /> */}
                                                         <Link
                                                             href="#"
                                                             mr={2}
