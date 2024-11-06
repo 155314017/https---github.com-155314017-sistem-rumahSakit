@@ -21,13 +21,11 @@ interface ImageUploaderGroupProps {
 
 const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, apiUrl }) => {
     const [images, setImages] = useState<ImageDatas[]>(Array(5).fill({ image: null, imageBase64: "", type: "", name: "", loading: false, error: "" }));
-    const [isLoading, setIsLoading] = useState<boolean>(true);
     const inputRefs = useRef<HTMLInputElement[]>([]);
     const [tes, setTes] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchData = async () => {
-            setIsLoading(true);
             try {
                 const token = Cookies.get("accessToken");
                 const response = await axios.get(apiUrl, {
@@ -57,9 +55,7 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, ap
                 setTes(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
-            } finally {
-                setIsLoading(false);
-            }
+            } 
         };
 
         fetchData();

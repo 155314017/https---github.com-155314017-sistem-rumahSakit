@@ -55,6 +55,7 @@ export default function TambahKonter() {
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [errorAlert, setErrorAlert] = useState(false);
 
+    console.log(operationalTime)
     const handleTambahHari = () => {
         console.log("Selected day:", selectedDay);
         console.log("Start time:", startTime?.format("HH:mm"));

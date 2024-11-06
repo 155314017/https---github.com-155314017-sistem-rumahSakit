@@ -33,10 +33,6 @@ const jenisRuangan = [
     { value: 5, label: "BPJS" },
 ];
 
-const handleSelectionChange = (selectedValue: string) => {
-    console.log("Selected Value:", selectedValue);
-};
-
 export default function TambahRuangan() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);

@@ -41,6 +41,9 @@ export default function TambahAmbulance() {
     console.log("Selected day:", selectedDay);
     console.log("Start time:", startTime?.format("HH:mm"));
     console.log("End time:", endTime?.format("HH:mm"));
+    console.log(successAlert);
+    console.log(errorAlert);
+    console.log(operationalTime);
 
     const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
     setOperationalTime(dateTime);

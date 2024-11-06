@@ -57,7 +57,7 @@ export default function TambahFasilitas() {
     const [errorAlert, setErrorAlert] = useState(false);
 
 
-
+    console.log(operationalTime);
     const handleImageChange = (images: ImageData[]) => {
         console.log('Images changed:', images);
         setImagesData(images);

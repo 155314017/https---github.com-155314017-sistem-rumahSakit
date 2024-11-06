@@ -40,10 +40,6 @@ const jenisRuangan = [
     { value: 5, label: "BPJS" },
 ];
 
-const handleSelectionChange = (selectedValue: string) => {
-    console.log("Selected Value:", selectedValue);
-};
-
 
 export default function EditRuangan() {
     const [successAlert, setSuccessAlert] = useState(false);

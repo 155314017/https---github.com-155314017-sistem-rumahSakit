@@ -38,6 +38,7 @@ export default function TambahKlinik() {
     const [errorAlert, setErrorAlert] = useState(false);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
 
+    console.log(operationalTime)
     const handleTambahHari = () => {
         // const selectedDayLabel = hari.find(day => day.value === selectedDay)?.label;
         console.log("Selected day:", selectedDay);

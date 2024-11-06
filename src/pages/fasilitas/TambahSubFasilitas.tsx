@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
+import { Container, Box, Typography, Button} from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
@@ -9,7 +9,6 @@ import DropdownList from "../../components/small/DropdownList";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
 import dayjs from 'dayjs';
 import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
-import InputCurrencyIdr from '../../components/inputComponent/InputCurrencyIdr';
 import axios from 'axios';
 import Cookies from "js-cookie";
 
@@ -52,7 +51,7 @@ export default function TambahSubFasilitas() {
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [errorAlert, setErrorAlert] = useState(false);
 
-
+    console.log(operationalTime)
 
     const handleImageChange = (images: ImageData[]) => {
         console.log('Images changed:', images);
@@ -95,7 +94,7 @@ export default function TambahSubFasilitas() {
         validationSchema: Yup.object({
             // deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
         }),
-        onSubmit: async (values) => {
+        onSubmit: async () => {
             const schedules = [
                 {
                     startDateTime: startTime ? dayjs(startTime).toISOString() : null,
