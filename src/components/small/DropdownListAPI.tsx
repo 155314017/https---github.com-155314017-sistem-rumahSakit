@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Select, MenuItem } from "@mui/material";
+import { Box, Select, MenuItem, CircularProgress } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 
 interface Option {
@@ -12,6 +12,7 @@ interface DropdownListProps {
     placeholder: string;
     onChange?: (value: string, label: string) => void; // Update to accept label as well
     defaultValue?: string;
+    loading: boolean;
 }
 
 export default function DropdownListAPI({
@@ -19,6 +20,7 @@ export default function DropdownListAPI({
     placeholder,
     onChange,
     defaultValue = "",
+    loading
 }: DropdownListProps) {
     const [selectedOption, setSelectedOption] = useState<string>(defaultValue);
 
@@ -49,9 +51,10 @@ export default function DropdownListAPI({
             }}
         >
             <Select
-                value={selectedOption} // Bind to selectedOption
+                value={selectedOption} 
                 onChange={handleChange}
                 displayEmpty
+                startAdornment={loading ? <CircularProgress size={20} /> : null}
                 sx={{
                     flex: 1,
                     height: "43px",

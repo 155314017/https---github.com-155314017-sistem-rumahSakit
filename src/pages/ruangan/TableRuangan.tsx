@@ -110,7 +110,11 @@ const StyledTableContainer = styled(TableContainer)`
   }
 `;
 
-export default function TableRuangan() {
+interface TableRoomProps {
+  fetchDatas: () => void;
+}
+
+const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas }) => {
 
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -122,24 +126,24 @@ export default function TableRuangan() {
 
   const navigate = useNavigate();
 
+
+  const fetchData = async () => {
+    console.log('Fetching data...');
+    try {
+      const result = await RoomServices();
+      console.log('Result: ', result);
+      setDatas(result);
+      console.log("FETCHIG DATA ID FAICILITY")
+      const buildingIds = result.map((data) => data.masterBuildingId);
+      setDataIdBuilding(buildingIds);
+
+      console.log('Data ID Facility: ', buildingIds);
+      // setData(result); // Set data to display in table
+    } catch (error) {
+      console.log('Failed to fetch data from API: ', error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      console.log('Fetching data...');
-      try {
-        const result = await RoomServices();
-        console.log('Result: ', result);
-        setDatas(result);
-        console.log("FETCHIG DATA ID FAICILITY")
-        const buildingIds = result.map((data) => data.masterBuildingId);
-        setDataIdBuilding(buildingIds);
-
-        console.log('Data ID Facility: ', buildingIds);
-        // setData(result); // Set data to display in table
-      } catch (error) {
-        console.log('Failed to fetch data from API: ', error);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -147,7 +151,7 @@ export default function TableRuangan() {
 
   const [buildings, setBuildings] = useState<string[]>([]);
 
-useEffect(() => {
+  useEffect(() => {
     const fetchBuildings = async () => {
       try {
         const responses = await Promise.all(
@@ -156,7 +160,7 @@ useEffect(() => {
 
         const facilitiesData = responses.map((response) => {
           const name = response.data.data.name;
-          return name ? name : "Data Gedung Tidak Tercatat"; 
+          return name ? name : "Data Gedung Tidak Tercatat";
         });
 
         setBuildings(facilitiesData);
@@ -222,6 +226,8 @@ useEffect(() => {
   const handleDeleteSuccess = () => {
     console.log("Item deleted successfully");
     // Refresh the data or perform additional actions after delete
+    fetchDatas();
+    fetchData();
   };
 
   // const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -335,11 +341,13 @@ useEffect(() => {
                 options={sortir}
                 placeholder="Sortir"
                 onChange={handleSelectionChange}
+                loading={false}
               />
               <DropdownList
                 options={urutkan}
                 placeholder="Urutkan"
                 onChange={handleSelectionChange}
+                loading={false}
               />
             </Box>
 
@@ -498,7 +506,7 @@ useEffect(() => {
                             <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/room/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                             <Link
                               href="#"
-                              onClick={() => navigate(`/editRuangan/${data.id}`)} 
+                              onClick={() => navigate(`/editRuangan/${data.id}`)}
                               mr={2}
                               underline="hover"
                               sx={{
@@ -568,3 +576,5 @@ useEffect(() => {
     </Box>
   );
 }
+
+export default TableRuangan;

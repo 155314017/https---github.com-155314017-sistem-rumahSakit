@@ -15,18 +15,18 @@ import { RoomServices, RoomDataItem } from "../../services/Admin Tenant/ManageRo
 export default function Ruangan() {
 
     const [data, setData] = useState<RoomDataItem[]>([]);
-    useEffect(() => {
-        const fetchData = async () => {
-            console.log('fetching data . . . ')
-            try {
-                const result = await RoomServices();
-                console.log('result : ' + result)
-                setData(result);
-            } catch (error) {
-                console.log('Failed to fetch data from API' + error);
-            }
-        };
 
+    const fetchData = async () => {
+        console.log('fetching data . . . ')
+        try {
+            const result = await RoomServices();
+            console.log('result : ' + result)
+            setData(result);
+        } catch (error) {
+            console.log('Failed to fetch data from API' + error);
+        }
+    };
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -44,7 +44,7 @@ export default function Ruangan() {
                         <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={data.length.toString() || "0"} />
                         <CardAdd icon={AddBoxIcon} title="Tambah Ruangan" link="/tambahRuangan" />
                     </Grid>
-                    <TableRuangan />
+                    <TableRuangan fetchDatas={fetchData} />
                 </Box>
             </Box>
         </Box>

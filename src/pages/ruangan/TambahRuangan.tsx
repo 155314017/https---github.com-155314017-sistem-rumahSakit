@@ -102,10 +102,10 @@ export default function TambahRuangan() {
                     },
                 });
                 console.log('Response:', response.data);
-                showTemporaryAlertSuccess(); // Show success alert
+                showTemporaryAlertSuccess();
             } catch (error) {
                 console.error('Error adding room:', error);
-                showTemporaryAlertError(); // Show error alert
+                showTemporaryAlertError();
             }
         },
     });
@@ -147,12 +147,13 @@ export default function TambahRuangan() {
                         <DropdownListAPI
                             options={gedungOptions.map(({ id, name }) => ({ value: id, label: name }))}
                             placeholder="Pilih gedung"
-                            defaultValue={formik.values.masterBuildingId} // Pass the current value from Formik
+                            defaultValue={formik.values.masterBuildingId} 
                             onChange={(selectedOptionValue, selectedLabel) => {
                                 formik.setFieldValue('masterBuildingId', selectedOptionValue);
                                 console.log("Selected Building ID:", selectedOptionValue);
                                 console.log("Selected Building Name:", selectedLabel);
                             }}
+                            loading={false}
                         />
 
 
@@ -167,6 +168,7 @@ export default function TambahRuangan() {
                             ]}
                             placeholder="Pilih jenis ruangan"
                             onChange={(selectedValue) => formik.setFieldValue('jenisRuangan', selectedValue)}
+                            loading={false}
                         />
 
                         <Button

@@ -243,6 +243,7 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas }) => {
                 options={urutkan}
                 placeholder="Urutkan"
                 onChange={handleSelectionChange}
+                loading={false}
               />
             </Box>
 
@@ -354,21 +355,13 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas }) => {
                           <TableCell align="center" sx={[{ color: "#292B2C", fontSize: "14px", textTransform: "capitalize", }]}>
 
                             <Link
-
                               href="#"
-
                               underline="none"
-
                               color={"#8F85F3"}
-
                               onClick={(event) => confirmationDelete(event, data.id)} // Mengirim ID gedung
-
                               sx={{ mr: 2 }}
-
                             >
-
                               Hapus
-
                             </Link>
 
                             <ModalDeleteConfirmation
