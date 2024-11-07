@@ -147,14 +147,18 @@ export default function TableRuangan() {
 
   const [buildings, setBuildings] = useState<string[]>([]);
 
-  useEffect(() => {
+useEffect(() => {
     const fetchBuildings = async () => {
       try {
         const responses = await Promise.all(
           dataIdBuilding.map((id) => axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`))
         );
 
-        const facilitiesData = responses.map((response) => response.data.data.name);
+        const facilitiesData = responses.map((response) => {
+          const name = response.data.data.name;
+          return name ? name : "Data Gedung Tidak Tercatat"; 
+        });
+
         setBuildings(facilitiesData);
         console.log("DATA FASILITAS UTAMA");
         console.log(facilitiesData);
@@ -167,6 +171,7 @@ export default function TableRuangan() {
       fetchBuildings();
     }
   }, [dataIdBuilding]);
+
 
 
   const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
@@ -469,7 +474,7 @@ export default function TableRuangan() {
                             ]}
                             align="left"
                           >
-                            {data.name}
+                            {data.type}
                           </TableCell>
                           <TableCell
                             align="center"

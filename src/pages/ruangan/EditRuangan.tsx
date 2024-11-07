@@ -10,6 +10,7 @@ import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useParams } from 'react-router-dom';
+import ImageUploaderGroupAPI from '../../components/medium/ImageGroupUploaderAPI';
 
 interface FormValues {
     namaKlinik: string ; 
@@ -46,8 +47,11 @@ export default function EditRuangan() {
     const [errorAlert, setErrorAlert] = useState(false);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [name, setName] = useState<string>(''); 
+    const [typeRoom, setTypeRoom] = useState<string>(''); 
     const [loading, setLoading] = useState<boolean>(true);
+    const [apiUrl, setApiUrl] = useState('');
     const { id } = useParams(); 
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -61,8 +65,10 @@ export default function EditRuangan() {
                         'accessToken': `${token}`
                     }
                 });
-                setName(response.data.data.name); // Set state name
+                setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/room/${id}`);
+                setName(response.data.data.name);
                 console.log("NAMA EEEE",name); 
+                setTypeRoom(response.data.data.type);
             } catch (error) {
                 console.error('Error saat menghapus data:', error);
             } finally {
@@ -113,14 +119,19 @@ export default function EditRuangan() {
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
         { label: "Ruangan", href: "/ruangan" },
-        { label: "Tambah Ruangan", href: "/tambahRuangan" },
+        { label: "Edit Ruangan", href: "/editRuangan" },
     ];
 
     const formik = useFormik<FormValues>({
         initialValues: {
            namaKlinik: name, 
-            jenisGedung: '',
-            jenisRuangan: '',
+            jenisGedung: 'Gedung B',
+            jenisRuangan: typeRoom,
+        },
+        initialTouched: {
+            namaKlinik: true,
+            jenisGedung: true,
+            jenisRuangan: true,
         },
         enableReinitialize: true, 
         validationSchema: Yup.object({
@@ -129,6 +140,7 @@ export default function EditRuangan() {
             jenisRuangan: Yup.string().required('Jenis Ruangan is required'),
         }),
         onSubmit: async (values) => {
+            console.log("otw kirim");
             const data = {
                 roomId: id,
                 name: values.namaKlinik,
@@ -139,8 +151,10 @@ export default function EditRuangan() {
             };
 
             const token = Cookies.get("accessToken");
+            console.log(token);
 
             try {
+                console.log("otw kirim API");
                 const response = await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/room/', data, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -156,6 +170,11 @@ export default function EditRuangan() {
         },
     });
 
+    const handleImageChange = (images: ImageData[]) => {
+        console.log('Images changed:', images);
+        setImagesData(images);
+    };
+
     return (
         <Container sx={{ py: 2 }}>
             <BreadCrumbs
@@ -164,13 +183,12 @@ export default function EditRuangan() {
             />
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
-                    <Typography fontSize="20px" fontWeight="700">Tambah Ruangan</Typography>
+                    <Typography fontSize="20px" fontWeight="700">Edit Ruangan</Typography>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
                     </Box>
 
-                    {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
-                    <ImageUploaderGroup onChange={(images) => setImagesData(images)} />
+                    <ImageUploaderGroupAPI onChange={handleImageChange} apiUrl={apiUrl} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Ruangan<span style={{ color: "red" }}>*</span></Typography>
@@ -195,7 +213,7 @@ export default function EditRuangan() {
                         <DropdownList
                             options={jenisGedung}
                             placeholder="Pilih gedung"
-                            onChange={(selectedValue) => formik.setFieldValue('gedung', selectedValue)}
+                            onChange={(selectedValue) => formik.setFieldValue('jenisGedung', selectedValue)}
                             defaultValue={"Gedung B" }
                         />
 
@@ -204,6 +222,7 @@ export default function EditRuangan() {
                             options={jenisRuangan}
                             placeholder="Pilih jenis ruangan"
                             onChange={(selectedValue) => formik.setFieldValue('jenisRuangan', selectedValue)}
+                            defaultValue={typeRoom}
                         />
 
                         <Button
@@ -227,10 +246,10 @@ export default function EditRuangan() {
                 </Box>
             </Box>
             {successAlert && (
-                <AlertSuccess label="Success adding building" />
+                <AlertSuccess label="Success edit room" />
             )}
             {errorAlert && (
-                <AlertSuccess label="Error adding building" />
+                <AlertSuccess label="Error editing room" />
             )}
         </Container>
     );

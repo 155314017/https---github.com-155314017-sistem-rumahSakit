@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -7,8 +7,15 @@ import bgImage from "../../assets/img/String.png";
 import AlertSuccess from "../../components/small/AlertSuccess";
 import DropdownList from "../../components/small/DropdownList";
 import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
-import axios from "axios"; 
+import axios from "axios";
 import Cookies from "js-cookie";
+import DropdownListAPI from '../../components/small/DropdownListAPI';
+
+type Building = {
+    id: string;
+    name: string;
+};
+
 
 type ImageData = {
     imageName: string;
@@ -16,27 +23,35 @@ type ImageData = {
     imageData: string;
 };
 
-const jenisGedung = [
-    { value: 1, label: "Gedung A" },
-    { value: 2, label: "Gedung B" },
-    { value: 3, label: "Gedung C" },
-    { value: 4, label: "Gedung D" },
-    { value: 5, label: "Gedung E" },
-    { value: 6, label: "Gedung F" },
-];
-
-const jenisRuangan = [
-    { value: 1, label: "VIP" },
-    { value: 2, label: "Kelas 1" },
-    { value: 3, label: "Kelas 2" },
-    { value: 4, label: "Kelas 3" },
-    { value: 5, label: "BPJS" },
-];
-
 export default function TambahRuangan() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
+    const [gedungOptions, setGedungOptions] = useState<Building[]>([]);
+
+    useEffect(() => {
+        const fetchGedungData = async () => {
+            console.log("Fetching info buildings...");
+            try {
+                console.log("Try fetching info buildings");
+                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
+                    timeout: 10000
+                });
+                setGedungOptions(response.data.data.content.map((item: any) => ({
+                    id: item.id,
+                    name: item.name,
+                })));
+                console.log(response.data.data.content);
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    console.error("Axios error:", error.message);
+                } else {
+                    console.error("Unexpected error:", error);
+                }
+            }
+        };
+        fetchGedungData();
+    }, []);
 
     const showTemporaryAlertSuccess = async () => {
         setSuccessAlert(true);
@@ -59,26 +74,26 @@ export default function TambahRuangan() {
     const formik = useFormik({
         initialValues: {
             namaKlinik: '',
-            gedung: '',
+            masterBuildingId: '',
             jenisRuangan: '',
         },
         validationSchema: Yup.object({
             namaKlinik: Yup.string().required('Nama Ruangan is required'),
-            gedung: Yup.string().required('Gedung is required'),
+            masterBuildingId: Yup.string().required('Gedung is required'),
             jenisRuangan: Yup.string().required('Jenis Ruangan is required'),
         }),
         onSubmit: async (values) => {
             const data = {
                 name: values.namaKlinik,
-                masterBuildingId: "17e145fa-ea31-495e-b725-149108b12321",
+                masterBuildingId: values.masterBuildingId,
                 type: values.jenisRuangan,
                 additionalInfo: "add info,",
                 images: imagesData,
-            }
+            };
 
-            const token = Cookies.get("accessToken"); 
-            console.log("Token :", token)
-
+            const token = Cookies.get("accessToken");
+            console.log("Token :", token);
+            console.log("data: ", data);
             try {
                 const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/room/', data, {
                     headers: {
@@ -108,7 +123,6 @@ export default function TambahRuangan() {
                         <img src={bgImage} alt="bg-image" />
                     </Box>
 
-                    {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
                     <ImageUploaderGroup onChange={(images) => setImagesData(images)} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
@@ -130,15 +144,27 @@ export default function TambahRuangan() {
                         </FormControl>
 
                         <Typography sx={{ fontSize: "16px" }}>Pilih Gedung<span style={{ color: "red" }}>*</span></Typography>
-                        <DropdownList
-                            options={jenisGedung}
+                        <DropdownListAPI
+                            options={gedungOptions.map(({ id, name }) => ({ value: id, label: name }))}
                             placeholder="Pilih gedung"
-                            onChange={(selectedValue) => formik.setFieldValue('gedung', selectedValue)}
+                            defaultValue={formik.values.masterBuildingId} // Pass the current value from Formik
+                            onChange={(selectedOptionValue, selectedLabel) => {
+                                formik.setFieldValue('masterBuildingId', selectedOptionValue);
+                                console.log("Selected Building ID:", selectedOptionValue);
+                                console.log("Selected Building Name:", selectedLabel);
+                            }}
                         />
+
 
                         <Typography sx={{ fontSize: "16px", mt: 1 }}>Jenis Ruangan<span style={{ color: "red" }}>*</span></Typography>
                         <DropdownList
-                            options={jenisRuangan}
+                            options={[
+                                { value: 1, label: "VIP" },
+                                { value: 2, label: "Kelas 1" },
+                                { value: 3, label: "Kelas 2" },
+                                { value: 4, label: "Kelas 3" },
+                                { value: 5, label: "BPJS" },
+                            ]}
                             placeholder="Pilih jenis ruangan"
                             onChange={(selectedValue) => formik.setFieldValue('jenisRuangan', selectedValue)}
                         />

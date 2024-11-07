@@ -24,6 +24,7 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { Building, BuildingDataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
 import { useNavigate } from "react-router-dom";
+import AlertSuccess from "../../components/small/AlertSuccess";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -53,7 +54,7 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 interface TableGedungProps {
-  fetchDatas: () => void; 
+  fetchDatas: () => void;
 }
 
 const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas }) => {
@@ -63,15 +64,16 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas }) => {
   // const [data, setData] = useState<BuildingDataItem[]>([]);
   const [datas, setDatas] = useState<BuildingDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
+  const [successAlert, setSuccessAlert] = useState(false);
 
   const navigate = useNavigate();
 
   const fetchData = async () => {
     console.log('Fetching data...');
     try {
-      const result = await Building(); 
+      const result = await Building();
       console.log('Result: ', result);
-      setDatas(result); 
+      setDatas(result);
     } catch (error) {
       console.log('Failed to fetch data from API: ', error);
     }
@@ -83,7 +85,7 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas }) => {
 
   useEffect(() => {
     fetchData();
-  }, []); 
+  }, []);
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -93,12 +95,18 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas }) => {
 
     event.preventDefault();
 
-    console.log("ID Gedung yang akan dihapus:", buildingId); 
+    console.log("ID Gedung yang akan dihapus:", buildingId);
     setDeletedItems(buildingId);
 
 
     setOpen(true);
 
+  };
+
+  const showTemporaryAlertSuccess = async () => {
+    setSuccessAlert(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setSuccessAlert(false);
   };
 
   const rowsPerPage = 10;
@@ -113,8 +121,8 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas }) => {
   ];
 
   const handleDeleteSuccess = () => {
+    showTemporaryAlertSuccess();
     console.log("Item deleted successfully");
-    // Refresh the data or perform additional actions after delete
     fetchDatas();
     fetchData();
   };
@@ -139,6 +147,9 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas }) => {
         p={3}
         sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}
       >
+        {successAlert && (
+          <AlertSuccess label="Success delete building" />
+        )}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography
             sx={{
@@ -149,7 +160,6 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas }) => {
           >
             Daftar Gedung
           </Typography>
-
           <IconButton sx={{ zIndex: 1 }} onClick={toggleCollapse}>
             {isCollapsed ? (
               <ChevronRightRoundedIcon
@@ -448,8 +458,11 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas }) => {
           </Box>
         )}
       </Box>
+
     </Box>
+
   );
+
 }
 
 export default TableGedung;

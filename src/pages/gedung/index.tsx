@@ -14,13 +14,12 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 export default function Gedung() {
   const [data, setData] = useState<BuildingDataItem[]>([]);
 
-  // Fungsi untuk fetch data dari API
   const fetchData = async () => {
     console.log('Fetching data...');
     try {
       const result = await Building();
       console.log('Result:', result);
-      setData(result); // Update state data dengan data terbaru
+      setData(result); 
     } catch (error) {
       console.log('Failed to fetch data from API', error);
     }

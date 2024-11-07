@@ -11,19 +11,19 @@ interface DropdownListProps {
   options: Option[];
   placeholder: string;
   onChange?: (value: string) => void;
-  defaultValue?: string; // Add this line
+  defaultValue?: string; 
 }
 
 export default function DropdownList({
   options,
   placeholder,
   onChange,
-  defaultValue = "", // Set a default value for the prop
+  defaultValue = "", 
 }: DropdownListProps) {
   const [selectedOption, setSelectedOption] = useState<string>(defaultValue);
 
   useEffect(() => {
-    setSelectedOption(defaultValue); // Update selectedOption when defaultValue changes
+    setSelectedOption(defaultValue); 
   }, [defaultValue]);
 
   const handleChange = (event: SelectChangeEvent<string>) => {
