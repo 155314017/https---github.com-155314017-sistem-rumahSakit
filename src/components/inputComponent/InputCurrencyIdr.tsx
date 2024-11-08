@@ -2,22 +2,31 @@ import Box from '@mui/material/Box';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 interface InputCurrencyIdrProps {
-    onChange: (value: string) => void; 
+    onChange: (value: string) => void;
+    defaultValue: number;
 }
 
-export default function InputCurrencyIdr({ onChange }: InputCurrencyIdrProps) {
+export default function InputCurrencyIdr({ onChange, defaultValue }: InputCurrencyIdrProps) {
+    const [value, setValue] = useState<string>(defaultValue === 0 ? "" : defaultValue.toString());
+
+    useEffect(() => {
+        setValue(defaultValue === 0 ? "" : defaultValue.toString());
+    }, [defaultValue]);
+
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        onChange(value); 
+        const newValue = event.target.value;
+        setValue(newValue);
+        onChange(newValue);
     };
 
     return (
         <Box sx={{ display: 'flex', width: '100%', alignItems: 'center' }}>
             <FormControl fullWidth variant="outlined">
                 <OutlinedInput
+                    value={value}
                     id="outlined-adornment-amount"
                     placeholder='Cth:200.000'
                     startAdornment={

@@ -160,7 +160,7 @@ export default function TambahGedung() {
                                 id="alamatGedung"
                                 name="alamatGedung"
                                 size="small"
-                                placeholder="Masukkan alamat tempat tinggal pegawai"
+                                placeholder="Masukkan alamat gedung"
                                 value={formik.values.alamatGedung}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}

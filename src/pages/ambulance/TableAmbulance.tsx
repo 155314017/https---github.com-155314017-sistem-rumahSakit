@@ -24,6 +24,7 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 // import { Building, DataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
 import { AmbulanceServices, AmbulanceDataItem } from "../../services/Admin Tenant/ManageAmbulance/AmbulanceServices";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -60,13 +61,15 @@ export default function TableAmbulance() {
   const [datas, setDatas] = useState<AmbulanceDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       console.log('Fetching data...');
       try {
         const result = await AmbulanceServices();
         console.log('Result: ', result);
-        setDatas(result); // Store the result in datas state
+        setDatas(result); 
         // setData(result); // Set data to display in table
       } catch (error) {
         console.log('Failed to fetch data from API: ', error);
@@ -84,12 +87,6 @@ export default function TableAmbulance() {
 
   const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
-  const urutkan = [
-    { value: 1, label: "Nama Ambulance A-Z" },
-    { value: 2, label: "Nama Ambulance Z-A" },
-    { value: 3, label: "Nomor Ambulance 1-9" },
-    { value: 4, label: "Nomor Ambulance 9-1" },
-  ];
 
   const handleSelectionChange = (selectedValue: string) => {
     console.log("Selected Value:", selectedValue);
@@ -214,9 +211,15 @@ export default function TableAmbulance() {
             >
               <SearchBar />
               <DropdownList
-                options={urutkan}
+                options={[
+                  { value: 1, label: "Nama Ambulance A-Z" },
+                  { value: 2, label: "Nama Ambulance Z-A" },
+                  { value: 3, label: "Nomor Ambulance 1-9" },
+                  { value: 4, label: "Nomor Ambulance 9-1" },
+                ]}
                 placeholder="Urutkan"
                 onChange={handleSelectionChange}
+                loading={false}
               />
             </Box>
 
@@ -375,6 +378,7 @@ export default function TableAmbulance() {
                             <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                             <Link
                               href="#"
+                              onClick={() => navigate(`/editAmbulance/${data.id}`)}
                               mr={2}
                               underline="hover"
                               sx={{

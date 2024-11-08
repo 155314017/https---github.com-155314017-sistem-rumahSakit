@@ -55,9 +55,10 @@ const StyledTableContainer = styled(TableContainer)`
 
 interface TableGedungProps {
   fetchDatas: () => void;
+  sukses: () => void;
 }
 
-const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas }) => {
+const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, sukses }) => {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
@@ -121,7 +122,8 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas }) => {
   ];
 
   const handleDeleteSuccess = () => {
-    showTemporaryAlertSuccess();
+    // showTemporaryAlertSuccess()
+    sukses();
     console.log("Item deleted successfully");
     fetchDatas();
     fetchData();

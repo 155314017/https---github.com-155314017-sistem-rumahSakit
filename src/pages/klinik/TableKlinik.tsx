@@ -26,6 +26,7 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 // import DataPegawai from "../../dummyData/dataPegawai";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { Clinic, ClinicDataItem } from "../../services/Admin Tenant/ManageClinic/Clinic";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -65,6 +66,8 @@ export default function TableKlinik() {
   // const [data, setData] = useState<DataItem[]>([]);
   const [datas, setDatas] = useState<ClinicDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -222,6 +225,7 @@ export default function TableKlinik() {
                 options={urutkan}
                 placeholder="Urutkan"
                 onChange={handleSelectionChange}
+                loading={false}
               />
             </Box>
 
@@ -371,6 +375,7 @@ export default function TableKlinik() {
                           <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                           <Link
                             href="#"
+                            onClick={() => navigate(`/editKlinik/${data.id}`)}
                             mr={2}
                             underline="hover"
                             sx={{

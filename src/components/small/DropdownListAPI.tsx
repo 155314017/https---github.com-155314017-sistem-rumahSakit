@@ -10,7 +10,7 @@ interface Option {
 interface DropdownListProps {
     options: Option[];
     placeholder: string;
-    onChange?: (value: string, label: string) => void; // Update to accept label as well
+    onChange?: (value: string, label: string) => void; 
     defaultValue?: string;
     loading: boolean;
 }
@@ -33,10 +33,10 @@ export default function DropdownListAPI({
         const value = event.target.value;
         const selected = options.find(option => option.value === value);
 
-        setSelectedOption(value); // Update selected option
+        setSelectedOption(value); 
 
         if (onChange) {
-            onChange(value, selected ? selected.label : ""); // Triggering external onChange function with label
+            onChange(value, selected ? selected.label : ""); 
         }
     };
 

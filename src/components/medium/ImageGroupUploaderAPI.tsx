@@ -36,6 +36,7 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, ap
                 });
 
                 const imagesData = response.data.data.images;
+                console.log("TESTING: ",response.data.data.images);
                 const mappedImages = imagesData.map((image: any) => ({
                     imageName: image.imageName,
                     imageType: image.imageType,

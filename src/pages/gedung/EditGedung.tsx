@@ -165,7 +165,7 @@ export default function EditGedung() {
 
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
-                    <Typography fontSize="20px" fontWeight="700">Tambah Gedung</Typography>
+                    <Typography fontSize="20px" fontWeight="700">Edit Gedung</Typography>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
                     </Box>

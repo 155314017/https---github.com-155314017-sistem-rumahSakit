@@ -204,6 +204,7 @@ export default function TambahKlinik() {
                                             console.log("Selected value:", value);
                                             setSelectedDay(value);
                                         }}
+                                        loading={false}
                                     />
                                 </Box>
 
