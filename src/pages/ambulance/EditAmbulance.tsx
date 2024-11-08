@@ -3,7 +3,6 @@ import { Typography, Button } from "@mui/material";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import bgImage from "../../assets/img/String.png";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
-import DropdownList from "../../components/small/DropdownList";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import dayjs from "dayjs";
@@ -54,6 +53,8 @@ export default function EditAmbulance() {
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${id}`);
                 setInitialOperationalCost(data.cost);
                 console.log("SCHEDULEEESS ", data.schedules);
+                console.log(errorAlert);
+                console.log(successAlert);
 
                 if (data.schedules && data.schedules.length > 0) {
                     const schedule = data.schedules[0];
@@ -81,9 +82,10 @@ export default function EditAmbulance() {
         if (startTime && endTime) {
             const formattedStartTime = startTime.format("HH:mm");
             const formattedEndTime = endTime.format("HH:mm");
-            const dayOfWeek = startTime.format("dddd");  // Mengetahui hari dalam Bahasa Indonesia
-
-            // Mengonversi dayOfWeek ke nilai yang sesuai untuk DropdownListAPI
+            const dayOfWeek = startTime.format("dddd"); 
+            
+            console.log(formattedStartTime)
+            console.log(formattedEndTime);
             const dayMapping: { [key: string]: string } = {
                 "Senin": "1",
                 "Selasa": "2",
@@ -139,6 +141,7 @@ export default function EditAmbulance() {
                         'accessToken': `${token}`
                     },
                 });
+                console.log(response)
                 setSuccessAlert(true);
             } catch (error) {
                 console.error('Error editing ambulance:', error);

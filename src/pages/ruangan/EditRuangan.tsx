@@ -138,6 +138,7 @@ export default function EditRuangan() {
                     },
                 });
                 setSuccessAlert(true);
+                console.log(response);
                 setTimeout(() => {
                     navigate('/ruangan');
                 }, 2000); 

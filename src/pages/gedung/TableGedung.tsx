@@ -65,7 +65,7 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, sukses }) => {
   // const [data, setData] = useState<BuildingDataItem[]>([]);
   const [datas, setDatas] = useState<BuildingDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
-  const [successAlert, setSuccessAlert] = useState(false);
+  // const [successAlert, setSuccessAlert] = useState(false);
 
   const navigate = useNavigate();
 
@@ -104,11 +104,11 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, sukses }) => {
 
   };
 
-  const showTemporaryAlertSuccess = async () => {
-    setSuccessAlert(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setSuccessAlert(false);
-  };
+  // const showTemporaryAlertSuccess = async () => {
+  //   setSuccessAlert(true);
+  //   await new Promise((resolve) => setTimeout(resolve, 3000));
+  //   setSuccessAlert(false);
+  // };
 
   const rowsPerPage = 10;
 
@@ -149,9 +149,9 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, sukses }) => {
         p={3}
         sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}
       >
-        {successAlert && (
+        {/* {successAlert && (
           <AlertSuccess label="Success delete building" />
-        )}
+        )} */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography
             sx={{

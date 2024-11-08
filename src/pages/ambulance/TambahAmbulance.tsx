@@ -1,7 +1,6 @@
 import { Container, Box } from "@mui/system";
 import { Typography, Button } from "@mui/material";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
-import bgImage from "../../assets/img/String.png";
 import ImageUploaderGroup from "../../components/medium/ImageUploaderGroup";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
 import DropdownList from "../../components/small/DropdownList";
@@ -10,9 +9,8 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 import { useState } from "react";
 import dayjs from "dayjs";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import DropdownListAPI from "../../components/small/DropdownListAPI";
 
 
 type ImageData = {
@@ -41,6 +39,9 @@ export default function TambahAmbulance() {
     console.log("Selected day:", selectedDay);
     console.log("Start time:", startTime?.format("HH:mm"));
     console.log("End time:", endTime?.format("HH:mm"));
+    console.log(errorAlert)
+    console.log(successAlert)
+    console.log(operationalTime)
 
     const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
     setOperationalTime(dateTime);
@@ -126,7 +127,7 @@ export default function TambahAmbulance() {
           validationSchema={validationSchema} // Use the updated validationSchema
           onSubmit={handleSubmit}
         >
-          {({ values, setFieldValue, errors, touched }) => (
+          {({  setFieldValue, errors, touched }) => (
             <Form>
               <Box p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
                 <Typography fontSize="20px" fontWeight="700">Tambah Ambulance</Typography>
