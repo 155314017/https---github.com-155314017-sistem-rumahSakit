@@ -94,7 +94,7 @@ export default function TambahPasien() {
                     </Box>
 
                     {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
-                    <ImageUploaderGroup onChange={() => console.log("clciked") } />
+                    <ImageUploaderGroup onChange={() => console.log("clciked")} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Fasilitas<span style={{ color: "red" }}>*</span></Typography>
@@ -102,6 +102,7 @@ export default function TambahPasien() {
                             options={listFasilitas}
                             placeholder="masukkan nama ruangan"
                             onChange={(value: string) => setSelectedDay(Number(value))}
+                            loading={false}
                         />
 
                         <Typography sx={{ fontSize: "16px", mt: 2 }}>Deskripsi<span style={{ color: "red" }}>*</span></Typography>
@@ -132,6 +133,7 @@ export default function TambahPasien() {
                                         options={hari}
                                         placeholder="Pilih hari"
                                         onChange={(value: string) => setSelectedDay(Number(value))}
+                                        loading={false}
                                     />
                                 </Box>
 
@@ -169,7 +171,7 @@ export default function TambahPasien() {
                         </Box>
 
                         <Typography sx={{ fontSize: "16px", mt: 3 }}>Biaya Penanganan<span style={{ color: "red" }}>*</span></Typography>
-                        <InputCurrencyIdr onChange={() => console.log("filled") } />
+                        <InputCurrencyIdr onChange={() => console.log("filled")} defaultValue={0}/>
 
                         <Button
                             type="submit"

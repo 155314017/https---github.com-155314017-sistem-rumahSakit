@@ -308,6 +308,7 @@ export default function TableSubFasilitas() {
                                 options={urutkan}
                                 placeholder="Urutkan"
                                 onChange={handleSelectionChange}
+                                loading={false}
                             />
                         </Box>
 

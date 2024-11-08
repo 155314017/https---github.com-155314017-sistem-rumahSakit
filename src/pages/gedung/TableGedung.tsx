@@ -24,7 +24,6 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { Building, BuildingDataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
 import { useNavigate } from "react-router-dom";
-import AlertSuccess from "../../components/small/AlertSuccess";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {

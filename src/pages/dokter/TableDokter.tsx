@@ -223,11 +223,13 @@ export default function TableDokter() {
                 options={sortir}
                 placeholder="Sortir"
                 onChange={handleSelectionChange}
+                loading={false}
               />
               <DropdownList
                 options={urutkan}
                 placeholder="Urutkan"
                 onChange={handleSelectionChange}
+                loading={false}
               />
             </Box>
 

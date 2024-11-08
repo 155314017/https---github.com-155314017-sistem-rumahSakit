@@ -28,12 +28,32 @@ import { Clinic, ClinicDataItem } from "../../services/Admin Tenant/ManageClinic
 import { RoomDataItem, RoomServices } from "../../services/Admin Tenant/ManageRoom/RoomServices";
 import { FacilityDataItem, FacilityServices } from "../../services/ManageFacility/FacilityServices";
 import { DoctorServices, DoctorDataItem } from "../../services/Admin Tenant/ManageDoctor/DoctorServices";
+import { Building, BuildingDataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
 
 export default function Dashboard() {
   const [dataClinic, setDataClinic] = useState<ClinicDataItem[]>([]);
   const [dataRoom, setDataRoom] = useState<RoomDataItem[]>([]);
   const [dataFacility, setDataFacility] = useState<FacilityDataItem[]>([]);
   const [dataDoctor, setDataDoctor] = useState<DoctorDataItem[]>([]);
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [dataBuilding, setDataBuilding] = useState<BuildingDataItem[]>([]);
+  const [dataRooms, setDataRooms] = useState<RoomDataItem[]>([]);
+
+  const fetchDataRoom = async () => {
+    console.log('fetching data . . . ')
+    try {
+      const result = await RoomServices();
+      console.log('result : ' + result)
+      setDataRooms(result);
+      console.log(dataRooms);
+    } catch (error) {
+      console.log('Failed to fetch data from API' + error);
+    }
+  };
+  useEffect(() => {
+    fetchDataRoom();
+  }, []);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +69,7 @@ export default function Dashboard() {
         setDataClinic(resultClinic);
         setDataFacility(resultFacility);
         setDataDoctor(resultDoctor);
+        console.log(successAlert);
       } catch (error) {
         console.log('Failed to fetch data from API' + error);
       }
@@ -56,6 +77,31 @@ export default function Dashboard() {
 
     fetchData();
   }, []);
+
+
+  const fetchDataBuilding = async () => {
+    console.log('Fetching data...');
+    try {
+      const result = await Building();
+      console.log('Result:', result);
+      setDataBuilding(result);
+      console.log(dataBuilding);
+    } catch (error) {
+      console.log('Failed to fetch data from API', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDataBuilding();
+  }, []);
+
+  const showTemporaryAlertSuccess = async () => {
+    console.log("DELETEEEDDD")
+    setSuccessAlert(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setSuccessAlert(false);
+  };
+
 
   return (
     <Box>
@@ -100,8 +146,8 @@ export default function Dashboard() {
       </Grid>
 
       <Stack mt={3} spacing={3}>
-        <TableGedung />
-        <TableRuangan />
+        <TableGedung fetchDatas={fetchDataBuilding} sukses={showTemporaryAlertSuccess} />
+        <TableRuangan fetchDatas={fetchDataRoom} />
         <TablePegawai />
         <TableFasilitas />
         <TableDokter />

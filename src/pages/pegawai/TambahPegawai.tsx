@@ -477,7 +477,7 @@ export default function TambahPegawai() {
                             <Typography mt={2} >No. Handphone<span style={{ color: 'red' }} >*</span></Typography>
                             <PhoneInputComponent heightInput='44px' widthInput='100%' />
                             <Typography mt={2} >Role Pegawai<span style={{ color: 'red' }} >*</span></Typography>
-                            <DropdownList placeholder='Pilih role pegawai' options={rolePegawai} />
+                            <DropdownList placeholder='Pilih role pegawai' options={rolePegawai} loading={false} />
 
                             <Button
                                 type="submit"

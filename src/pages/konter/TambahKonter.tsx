@@ -188,9 +188,10 @@ export default function TambahKonter() {
                             options={jenisKonter}
                             placeholder="Pilih konter"
                             onChange={handleSelectionChange}
+                            loading={false}
                         />
 
-                        <Typography sx={{ fontSize: "16px", mt:1 }}>Lokasi Konter<span style={{ color: "red" }}>*</span></Typography>
+                        <Typography sx={{ fontSize: "16px", mt: 1 }}>Lokasi Konter<span style={{ color: "red" }}>*</span></Typography>
                         <FormControl fullWidth sx={{ my: 1 }}>
                             <OutlinedInput
                                 id="deskripsiKlinik"
@@ -221,6 +222,7 @@ export default function TambahKonter() {
                                             console.log("Selected value:", value);
                                             setSelectedDay(value);
                                         }}
+                                        loading={false}
                                     />
                                 </Box>
 

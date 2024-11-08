@@ -253,6 +253,7 @@ export default function TableFasilitas() {
                 options={urutkan}
                 placeholder="Urutkan"
                 onChange={handleSelectionChange}
+                loading={false}
               />
             </Box>
 

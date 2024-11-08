@@ -221,6 +221,7 @@ export default function TableKonter() {
                                 options={urutkan}
                                 placeholder="Urutkan"
                                 onChange={handleSelectionChange}
+                                loading={false}
                             />
                         </Box>
 

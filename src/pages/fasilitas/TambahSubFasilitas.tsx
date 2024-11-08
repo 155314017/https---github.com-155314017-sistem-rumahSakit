@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Box, Typography, Button} from "@mui/material";
+import { Container, Box, Typography, Button } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
@@ -167,6 +167,7 @@ export default function TambahSubFasilitas() {
                                 setSelectedFacility(value)
                             }
                             }
+                            loading={false}
                         />
 
                         <Typography sx={{ fontSize: "16px", mt: 2 }}>Pilih Fasilitas<span style={{ color: "red" }}>*</span></Typography>
@@ -174,6 +175,7 @@ export default function TambahSubFasilitas() {
                             options={jenisFasilitas}
                             placeholder="Pilih fasilitas induk"
                             onChange={(selectedValue) => formik.setFieldValue('fasilitas', selectedValue)}
+                            loading={false}
                         />
 
                         <Box display={'flex'} flexDirection={'column'} border={'1px solid #A8A8BD'} borderRadius={'16px'} padding={'16px'} mt={2}>
@@ -189,6 +191,7 @@ export default function TambahSubFasilitas() {
                                             console.log("Selected value:", value);
                                             setSelectedDay(value);
                                         }}
+                                        loading={false}
                                     />
                                 </Box>
 
