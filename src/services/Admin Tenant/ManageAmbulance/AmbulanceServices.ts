@@ -11,6 +11,7 @@ export interface AmbulanceDataItem {
   updatedDateTime: number | null;
   deletedBy: string | null;
   deletedDateTime: number | null;
+  cost: number,
   images: string[];
   schedules: { id: string; startDateTime: number; endDateTime: number }[];
   operationalSchedule?: string;

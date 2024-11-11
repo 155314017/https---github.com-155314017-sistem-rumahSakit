@@ -65,6 +65,7 @@ export const Building = async (): Promise<BuildingDataItem[]> => {
       console.log("Address:", item.address);
       console.log("Additional Info:", item.additionalInfo);
       console.log("Created By:", item.createdBy);
+      console.log("Image: ", item.images);
       console.log(
         "Created Date Time:",
         new Date(item.createdDateTime * 1000).toLocaleString()

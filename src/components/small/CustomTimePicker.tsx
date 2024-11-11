@@ -25,12 +25,13 @@ const CustomTimePicker: React.FC<Props> = ({ value, onChange }) => {
                         onClick={() => {
                             const newValue = dayjs().hour(hour).minute(0).second(0);
                             onChange(newValue);
-                            handleClose(); 
+                            handleClose();
                         }}
                         variant={value?.hour() === hour ? "contained" : "outlined"}
                         sx={{
-                            bgcolor: value?.hour() === hour ? '#1976d2' : 'transparent',
+                            bgcolor: value?.hour() === hour ? '#8F85F3' : 'transparent',
                             color: value?.hour() === hour ? '#fff' : '#000',
+                            cursor: 'pointer', 
                             '&:hover': {
                                 bgcolor: value?.hour() === hour ? '#115293' : '#e0e0e0',
                             },
@@ -42,6 +43,7 @@ const CustomTimePicker: React.FC<Props> = ({ value, onChange }) => {
             </Box>
         );
     };
+
 
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);

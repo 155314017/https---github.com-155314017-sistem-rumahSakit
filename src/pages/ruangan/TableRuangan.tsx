@@ -531,8 +531,8 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas }) => {
                       ))
                     ) : (
                       <StyledTableRow>
-                        <TableCell colSpan={4} align="center">
-                          Tidak ada data hehe
+                        <TableCell colSpan={5} align="center">
+                          Tidak ada data
                         </TableCell>
                       </StyledTableRow>
                     )}

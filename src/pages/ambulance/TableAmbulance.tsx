@@ -322,7 +322,7 @@ export default function TableAmbulance() {
                             ]}
                             align="center"
                           >
-                            {data.number}
+                            {data.cost}
                           </TableCell>
                           <TableCell
                             sx={[

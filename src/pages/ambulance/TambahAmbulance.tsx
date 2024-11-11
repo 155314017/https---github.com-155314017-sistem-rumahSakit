@@ -19,12 +19,12 @@ type ImageData = {
   imageData: string;
 };
 
-const validationSchema = Yup.object({
-  cost: Yup.number()
-    .typeError("Biaya tarif harus berupa angka")
-    .required("Biaya tarif wajib diisi")
-    .min(1, "Biaya tarif tidak boleh 0"),
-});
+// const validationSchema = Yup.object({
+//   cost: Yup.number()
+//     .typeError("Biaya tarif harus berupa angka")
+//     .required("Biaya tarif wajib diisi")
+//     .min(1, "Biaya tarif tidak boleh 0"),
+// });
 
 export default function TambahAmbulance() {
   const [imagesData, setImagesData] = useState<ImageData[]>([]);
@@ -34,18 +34,22 @@ export default function TambahAmbulance() {
   const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
   const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
   const [operationalTime, setOperationalTime] = useState<string | null>(null);
+  const [operationalCost, setOperationalCost] = useState<string | null>(null);
 
   const handleTambahHari = () => {
     console.log("Selected day:", selectedDay);
     console.log("Start time:", startTime?.format("HH:mm"));
     console.log("End time:", endTime?.format("HH:mm"));
-    console.log(errorAlert)
-    console.log(successAlert)
-    console.log(operationalTime)
+    // console.log(errorAlert)
+    // console.log(successAlert)
+    // console.log(operationalTime)
 
     const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
     setOperationalTime(dateTime);
-    console.log(dateTime);
+    console.log("Waktu yg dipilih: ",dateTime);
+    console.log("Day: ",selectedDay);
+    console.log("start time: ",startTime?.unix());
+    console.log("end time: ",endTime?.unix());
   };
 
   const showTemporaryAlertSuccess = async () => {
@@ -73,16 +77,15 @@ export default function TambahAmbulance() {
   const handleSubmit = async (values: any) => {
     const schedules = [
       {
-        startDateTime: values.startTime ? dayjs(startTime).toISOString() : null,
-        endDateTime: values.endTime ? dayjs(endTime).toISOString() : null,
-      },
-    ].filter(schedule => schedule.startDateTime && schedule.endDateTime);
-
+        startDateTime: startTime?.unix(),
+        endDateTime: endTime?.unix(),
+      }
+    ];
     const data = {
       number: "12345",
       status: "ACTIVE",
       additionalInfo: "hi",
-      cost: values.cost,
+      cost: operationalCost ? parseInt(operationalCost.replace(/\D/g, '')) : 0,
       schedules: schedules,
       images: imagesData.map(image => ({
         imageName: image.imageName || "",
@@ -124,7 +127,7 @@ export default function TambahAmbulance() {
             endTime: null as dayjs.Dayjs | null,
             selectedDay: '',
           }}
-          validationSchema={validationSchema} // Use the updated validationSchema
+          // validationSchema={validationSchema} // Use the updated validationSchema
           onSubmit={handleSubmit}
         >
           {({  setFieldValue, errors, touched }) => (
@@ -137,7 +140,7 @@ export default function TambahAmbulance() {
                 <Box mt={3}>
                   <Typography sx={{ fontSize: "16px" }}>Biaya Tarif<span style={{ color: "red" }}>*</span></Typography>
                   <InputCurrencyIdr
-                    onChange={(value) => setFieldValue("cost", value)}
+                    onChange={(value) => setOperationalCost(value)} 
                     defaultValue={0}
                   />
                   {errors.cost && touched.cost && <div style={{ color: "red" }}>{errors.cost}</div>}
@@ -165,7 +168,7 @@ export default function TambahAmbulance() {
                           setSelectedDay(value);
                         }}
                         loading={false}
-                        defaultValue=""
+                        // defaultValue=""
                       />
                     </Box>
 

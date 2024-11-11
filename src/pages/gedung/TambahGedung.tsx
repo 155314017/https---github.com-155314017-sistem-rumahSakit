@@ -93,7 +93,7 @@ export default function TambahGedung() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/gedung')
+                navigate('/gedung', { state: { success: true, message: 'Gedung berhasil ditambahkan!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {

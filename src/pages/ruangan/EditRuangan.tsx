@@ -120,6 +120,7 @@ export default function EditRuangan() {
             jenisRuangan: Yup.string().required('Jenis Ruangan is required'),
         }),
         onSubmit: async (values) => {
+            console.log("Submitted values: ", values);
             const data = {
                 roomId: id,
                 name: values.namaKlinik,
@@ -203,14 +204,17 @@ export default function EditRuangan() {
                                 console.log("Selected Building ID:", selectedOptionValue);
                                 console.log("Selected Building Name:", selectedLabel);
                             }}
-                            loading={loading}
+                            loading={loading}   
                         />
 
                         <Typography sx={{ fontSize: "16px", mt: 1 }}>Jenis Ruangan<span style={{ color: "red" }}>*</span></Typography>
                         <DropdownList
                             options={jenisRuangan}
                             placeholder={loading ? "" : "Pilih jenis ruangan"}
-                            onChange={(selectedValue) => formik.setFieldValue('jenisRuangan', selectedValue)}
+                            onChange={(selectedValue) => {
+                                console.log("Selected Jenis Ruangan:", selectedValue); 
+                                formik.setFieldValue('jenisRuangan', selectedValue);
+                            }}
                             defaultValue={loading ? "" : formik.values.jenisRuangan}
                             loading={loading}
                         />

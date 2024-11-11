@@ -24,19 +24,19 @@ export default function DropdownListAPI({
 }: DropdownListProps) {
     const [selectedOption, setSelectedOption] = useState<string>(defaultValue);
 
+    // Mengupdate selectedOption ketika defaultValue berubah
     useEffect(() => {
-        // Set the selected option based on defaultValue
         setSelectedOption(defaultValue);
-    }, [defaultValue]);
+    }, [defaultValue]); // Pastikan ini dieksekusi saat defaultValue berubah
 
     const handleChange = (event: SelectChangeEvent<string>) => {
         const value = event.target.value;
         const selected = options.find(option => option.value === value);
 
-        setSelectedOption(value); 
+        setSelectedOption(value);
 
         if (onChange) {
-            onChange(value, selected ? selected.label : ""); 
+            onChange(value, selected ? selected.label : "");
         }
     };
 
@@ -51,7 +51,7 @@ export default function DropdownListAPI({
             }}
         >
             <Select
-                value={selectedOption} 
+                value={selectedOption} // Pastikan value menggunakan selectedOption
                 onChange={handleChange}
                 displayEmpty
                 startAdornment={loading ? <CircularProgress size={20} /> : null}
