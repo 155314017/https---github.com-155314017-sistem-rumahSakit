@@ -9,17 +9,17 @@ import DropdownList from "../../components/small/DropdownList";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
 import dayjs from 'dayjs';
 import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
+import InputCurrencyIdr from '../../components/inputComponent/InputCurrencyIdr';
 import axios from 'axios';
 import Cookies from "js-cookie";
 import DropdownListAPI from '../../components/small/DropdownListAPI';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import ImageUploaderGroupAPI from '../../components/medium/ImageGroupUploaderAPI';
 
-const listSubFasilitas = [
-    { value: 1, label: "Baju Nakes" },
-    { value: 2, label: "Stetoskop" },
-    { value: 3, label: "Suntikan" },
-];
-
+type Building = {
+    id: string;
+    name: string;
+};
 
 type ImageData = {
     imageName: string;
@@ -27,12 +27,12 @@ type ImageData = {
     imageData: string;
 };
 
-type Facility = {
-    id: string;
-    name: string;
-};
+interface FormValues {
+    operationalCost: number;
+}
 
-export default function TambahSubFasilitas() {
+
+export default function EditFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
@@ -40,44 +40,117 @@ export default function TambahSubFasilitas() {
     const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
+    const [operationalCost, setOperationalCost] = useState<string | null>(null);
     const [errorAlert, setErrorAlert] = useState(false);
-    const [facilityOptions, setFacilityOptions] = useState<Facility[]>([]);
+    const [gedungOptions, setGedungOptions] = useState<Building[]>([]);
+    const [apiUrl, setApiUrl] = useState('');
+    const { id } = useParams();
+    const [initialOperationalCost, setInitialOperationalCost] = useState<number>(0);
+    const [name, setName] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    const [buildingName, setBuildingName] = useState('');
     const navigate = useNavigate();
+    const [selectedDays, setSelectedDays] = useState<string>("1");
+
+    const dayMapping: { [key: string]: number } = {
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "6": 6,
+        "7": 0,
+    };
 
     useEffect(() => {
-        const fetchFacilityData = async () => {
-            console.log("Fetching info buildings...");
+        if (startTime && endTime) {
+            const formattedStartTime = startTime.format("HH:mm");
+            const formattedEndTime = endTime.format("HH:mm");
+            const dayOfWeek = startTime.format("dddd");
+
+            console.log(formattedStartTime)
+            console.log(formattedEndTime);
+            const dayMapping: { [key: string]: string } = {
+                "Senin": "1",
+                "Selasa": "2",
+                "Rabu": "3",
+                "Kamis": "4",
+                "Jumat": "5",
+                "Sabtu": "6",
+                "Minggu": "7"
+            };
+
+            const dayValue = dayMapping[dayOfWeek] || "7";
+            setSelectedDays(dayValue);
+            console.log(dayValue);
+        }
+    }, [startTime, endTime]);
+
+    useEffect(() => {
+        const fetchGedungData = async () => {
             try {
-                console.log("Try fetching info buildings");
-                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/facility/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
+                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
                     timeout: 10000
                 });
-                setFacilityOptions(response.data.data.content.map((item: any) => ({
+                setGedungOptions(response.data.data.content.map((item: any) => ({
                     id: item.id,
                     name: item.name,
                 })));
-                console.log(response.data.data.content);
             } catch (error) {
-                if (axios.isAxiosError(error)) {
-                    console.error("Axios error:", error.message);
-                } else {
-                    console.error("Unexpected error:", error);
-                }
+                console.error("Error fetching buildings:", error);
             }
         };
-        fetchFacilityData();
+        fetchGedungData();
     }, []);
 
-    console.log(operationalTime)
 
-    const dayMapping: { [key: string]: number } = {
-        "Senin": 1,
-        "Selasa": 2,
-        "Rabu": 3,
-        "Kamis": 4,
-        "Jumat": 5,
-        "Sabtu": 6,
-        "Minggu": 0,
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const token = Cookies.get("accessToken");
+                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'accessToken': `${token}`
+                    }
+                });
+                setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${id}`);
+                setName(response.data.data.name);
+                setDescription(response.data.data.description);
+                setInitialOperationalCost(response.data.data.cost);
+                console.log("nama: ", name)
+
+                const buildingResponse = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${response.data.data.masterBuildingId}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'accessToken': `${token}`
+                    }
+                });
+
+                setBuildingName(buildingResponse.data.data.id);
+
+                if (response.data.data.schedules && response.data.data.schedules.length > 0) {
+                    const schedule = response.data.data.schedules[0];
+                    setStartTime(dayjs.unix(schedule.startDateTime));
+                    setEndTime(dayjs.unix(schedule.endDateTime));
+                }
+
+                setImagesData(response.data.data.images || []);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+        fetchData();
+    }, [id]);
+
+    useEffect(() => {
+        console.log("Nama gedung: ", name);
+    }, [name]);
+
+    console.log(operationalTime);
+    const handleImageChange = (images: ImageData[]) => {
+        console.log('Images changed:', images);
+        setImagesData(images);
     };
 
 
@@ -97,11 +170,6 @@ export default function TambahSubFasilitas() {
         console.log("end time: ", endTime?.unix());
     };
 
-    const handleImageChange = (images: ImageData[]) => {
-        console.log('Images changed:', images);
-        setImagesData(images);
-    };
-
     const showTemporaryAlertSuccess = async () => {
         setSuccessAlert(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -116,20 +184,23 @@ export default function TambahSubFasilitas() {
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
-        { label: "fasilitas", href: "/fasilitas" },
-        { label: "Tambah SubFasilitas", href: "/tambahSubFasilitas" },
+        { label: "Fasilitas", href: "/fasilitas" },
+        { label: "Tambah Fasilitas", href: "/tambahFasilitas" },
     ];
 
     const formik = useFormik({
         initialValues: {
-            // deskripsiKlinik: '',
-            masterFacilityId: '',
-            namaSubFasilitas: '',
+            namaFasilitas: name,
+            masterBuildingId: buildingName,
+            deskripsiKlinik: description,
+            operationalCost: initialOperationalCost || 0,
         },
+        enableReinitialize: true,
         validationSchema: Yup.object({
-            // deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
-            masterFacilityId: Yup.string().required('Gedung is required'),
-            namaSubFasilitas: Yup.string().required('SubFacility Name is required'),
+            namaFasilitas: Yup.string().required('Facility Name is required'),
+            masterBuildingId: Yup.string().required('Gedung is required'),
+            deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
+            operationalCost: Yup.number().required('Operational Cost is required').positive('Must be a positive number'),
         }),
         onSubmit: async (values) => {
 
@@ -150,11 +221,17 @@ export default function TambahSubFasilitas() {
             ];
 
             const data = {
-                name: values.namaSubFasilitas,
-                facilityDataId: values.masterFacilityId,
+                name: values.namaFasilitas,
+                masterBuildingId: values.masterBuildingId,
+                description: values.deskripsiKlinik,
+                cost: values.operationalCost,
                 additionalInfo: "hai",
                 schedules: schedules,
-                images: null,
+                images: imagesData.map(image => ({
+                    imageName: image.imageName || "",
+                    imageType: image.imageType || "",
+                    imageData: image.imageData || "",
+                })),
             };
 
             console.log('Form submitted:', data);
@@ -162,7 +239,7 @@ export default function TambahSubFasilitas() {
             const token = Cookies.get("accessToken");
 
             try {
-                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/', data, {
+                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/facility/', data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`
@@ -199,36 +276,56 @@ export default function TambahSubFasilitas() {
                         <img src={bgImage} alt="bg-image" />
                     </Box>
 
+                    <ImageUploaderGroupAPI onChange={handleImageChange} apiUrl={apiUrl} />
+
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
-                        <Typography sx={{ fontSize: "16px" }}>Nama Sub Fasilitas<span style={{ color: "red" }}>*</span></Typography>
+                        <Typography sx={{ fontSize: "16px" }}>Nama Fasilitas<span style={{ color: "red" }}>*</span></Typography>
                         <FormControl fullWidth sx={{ my: 1 }}>
                             <OutlinedInput
-                                id="namaSubFasilitas"
-                                name="namaSubFasilitas"
+                                id="namaFasilitas"
+                                name="namaFasilitas"
                                 size="small"
                                 placeholder="Masukkan nama fasilitas"
-                                value={formik.values.namaSubFasilitas}
+                                value={formik.values.namaFasilitas}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                error={formik.touched.namaSubFasilitas && Boolean(formik.errors.namaSubFasilitas)}
+                                error={formik.touched.namaFasilitas && Boolean(formik.errors.namaFasilitas)}
                             />
-                            {formik.touched.namaSubFasilitas && formik.errors.namaSubFasilitas && (
-                                <Typography color="error">{formik.errors.namaSubFasilitas}</Typography>
+                            {formik.touched.namaFasilitas && formik.errors.namaFasilitas && (
+                                <Typography color="error">{formik.errors.namaFasilitas}</Typography>
                             )}
                         </FormControl>
 
-                        <Typography sx={{ fontSize: "16px", mt: 2 }}>Pilih Fasilitas<span style={{ color: "red" }}>*</span></Typography>
+                        <Typography sx={{ fontSize: "16px", mt: 2 }}>Pilih Gedung<span style={{ color: "red" }}>*</span></Typography>
                         <DropdownListAPI
-                            options={facilityOptions.map(({ id, name }) => ({ value: id, label: name }))}
-                            placeholder="Pilih Fasilitas Induk"
-                            defaultValue={formik.values.masterFacilityId}
+                            options={gedungOptions.map(({ id, name }) => ({ value: id, label: name }))}
+                            placeholder="Pilih gedung"
+                            defaultValue={formik.values.masterBuildingId}
                             onChange={(selectedOptionValue, selectedLabel) => {
-                                formik.setFieldValue('masterFacilityId', selectedOptionValue);
+                                formik.setFieldValue('masterBuildingId', selectedOptionValue);
                                 console.log("Selected Building ID:", selectedOptionValue);
                                 console.log("Selected Building Name:", selectedLabel);
                             }}
                             loading={false}
                         />
+
+                        <Typography sx={{ fontSize: "16px", mt: 2 }}>Deskripsi<span style={{ color: "red" }}>*</span></Typography>
+                        <FormControl fullWidth sx={{ my: 1 }}>
+                            <OutlinedInput
+                                id="deskripsiKlinik"
+                                name="deskripsiKlinik"
+                                size="small"
+                                placeholder="Masukkan deskripsi"
+                                value={formik.values.deskripsiKlinik}
+                                onChange={formik.handleChange}
+                                onBlur={() => formik.setTouched({ ...formik.touched, deskripsiKlinik: true })}
+                                error={formik.touched.deskripsiKlinik && Boolean(formik.errors.deskripsiKlinik)}
+                                sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
+                            />
+                            {formik.touched.deskripsiKlinik && formik.errors.deskripsiKlinik && (
+                                <Typography color="error">{formik.errors.deskripsiKlinik}</Typography>
+                            )}
+                        </FormControl>
 
                         <Box display={'flex'} flexDirection={'column'} border={'1px solid #A8A8BD'} borderRadius={'16px'} padding={'16px'} mt={2}>
                             <Typography mb={'15px'} >Jam Operasional</Typography>
@@ -236,23 +333,20 @@ export default function TambahSubFasilitas() {
                                 {/* Hari */}
                                 <Box display={'flex'} flexDirection={'column'} width={'100%'} >
                                     <Typography>Hari</Typography>
-                                    <DropdownList
+                                    <DropdownListAPI
                                         options={[
-                                            { value: 1, label: "Senin" },
-                                            { value: 2, label: "Selasa" },
-                                            { value: 3, label: "Rabu" },
-                                            { value: 4, label: "Kamis" },
-                                            { value: 5, label: "Jumat" },
-                                            { value: 6, label: "Sabtu" },
-                                            { value: 7, label: "Minggu" },
+                                            { value: "1", label: "Senin" },
+                                            { value: "2", label: "Selasa" },
+                                            { value: "3", label: "Rabu" },
+                                            { value: "4", label: "Kamis" },
+                                            { value: "5", label: "Jumat" },
+                                            { value: "6", label: "Sabtu" },
+                                            { value: "7", label: "Minggu" },
                                         ]}
                                         placeholder="Pilih hari"
-                                        onChange={(value: string) => {
-                                            console.log("Selected value:", value);
-                                            setSelectedDay(value);
-                                        }}
+                                        onChange={(value: string) => setSelectedDay(value)}
                                         loading={false}
-                                    // defaultValue=""
+                                        defaultValue={selectedDays}
                                     />
                                 </Box>
 
@@ -289,6 +383,15 @@ export default function TambahSubFasilitas() {
                             </Button>
                         </Box>
 
+                        <Typography sx={{ fontSize: "16px", mt: 3 }}>Biaya Penanganan<span style={{ color: "red" }}>*</span></Typography>
+                        {/* <InputCurrencyIdr /> */}
+                        <InputCurrencyIdr
+                            onChange={(value) => {
+                                formik.setFieldValue('operationalCost', value);
+                            }}
+                            defaultValue={initialOperationalCost}
+                        />
+
                         <Button
                             type="submit"
                             onClick={showTemporaryAlertSuccess}
@@ -311,10 +414,10 @@ export default function TambahSubFasilitas() {
                 </Box>
             </Box>
             {successAlert && (
-                <AlertSuccess label="Success adding SubFacility" />
+                <AlertSuccess label="Success adding building" />
             )}
             {errorAlert && (
-                <AlertSuccess label="Error adding SubFacility" />
+                <AlertSuccess label="Error adding building" />
             )}
         </Container>
     );

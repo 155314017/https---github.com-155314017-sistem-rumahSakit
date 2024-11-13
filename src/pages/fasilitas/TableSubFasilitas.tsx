@@ -25,6 +25,7 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { SubFacilityServices, SubFacilityDataItem } from "../../services/ManageSubFacility/SubFacility";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export interface FacilityDataItem {
     id: string;
@@ -124,6 +125,7 @@ const TableSubFasilitas: React.FC<TableSubFacilityProps> = ({ fetchDatas }) => {
     const [datas, setDatas] = useState<SubFacilityDataItem[]>([]);
     const [dataIdFacility, setDataIdFacility] = useState<string[]>([]);
     const [deletedItems, setDeletedItems] = useState("");
+    const navigate = useNavigate();
 
 
     const fetchData = async () => {
@@ -474,6 +476,7 @@ const TableSubFasilitas: React.FC<TableSubFacilityProps> = ({ fetchDatas }) => {
                                                         <Link
                                                             href="#"
                                                             mr={2}
+                                                            onClick={() => navigate(`/editSubFasilitas/${data.id}`)}
                                                             underline="hover"
                                                             sx={{
                                                                 textTransform: "capitalize",
@@ -497,7 +500,7 @@ const TableSubFasilitas: React.FC<TableSubFacilityProps> = ({ fetchDatas }) => {
                                             ))
                                         ) : (
                                             <StyledTableRow>
-                                                <TableCell colSpan={4} align="center">
+                                                <TableCell colSpan={5} align="center">
                                                     Tidak ada data
                                                 </TableCell>
                                             </StyledTableRow>

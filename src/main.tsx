@@ -48,6 +48,8 @@ import EditRuangan from './pages/ruangan/EditRuangan';
 import EditGedung from './pages/gedung/EditGedung';
 import EditAmbulance from './pages/ambulance/EditAmbulance';
 import EditKlinik from './pages/klinik/EditKlinik';
+import EditFasilitas from './pages/fasilitas/EditFasilitas';
+import EditSUbFasilitas from './pages/fasilitas/EditSubFasilitas';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -113,6 +115,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/detailFasilitas" element={<DetailRuangan />} />
         <Route path="/tambahFasilitas" element={<TambahFasilitas/>} />
         <Route path="/tambahSubFasilitas" element={<TambahSubFasilitas />} />
+        <Route path="/editSubFasilitas/:id" element={<EditSUbFasilitas/>} />
+        <Route path="/editFasilitas/:id" element={<EditFasilitas/>} />
 
         {/* Page Pegawai  */}
         <Route path="/pegawai" element={<Pegawai/>} />

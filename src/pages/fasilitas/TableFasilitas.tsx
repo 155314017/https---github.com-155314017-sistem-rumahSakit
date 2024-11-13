@@ -25,6 +25,7 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { FacilityServices, FacilityDataItem } from "../../services/ManageFacility/FacilityServices";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -69,6 +70,8 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas }) => {
   const [datas, setDatas] = useState<FacilityDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
+
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     console.log('Fetching data...');
@@ -480,7 +483,8 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas }) => {
                             <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                             <Link
                               href="#"
-                              mr={2}
+                              mr={2} 
+                              onClick={() => navigate(`/editFasilitas/${data.id}`)}
                               underline="hover"
                               sx={{
                                 textTransform: "capitalize",

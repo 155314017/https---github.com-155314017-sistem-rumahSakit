@@ -12,7 +12,7 @@ import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import axios from 'axios';
 import Cookies from "js-cookie";
 import DropdownListAPI from '../../components/small/DropdownListAPI';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const listSubFasilitas = [
     { value: 1, label: "Baju Nakes" },
@@ -32,7 +32,7 @@ type Facility = {
     name: string;
 };
 
-export default function TambahSubFasilitas() {
+export default function EditSUbFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
@@ -41,14 +41,78 @@ export default function TambahSubFasilitas() {
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [errorAlert, setErrorAlert] = useState(false);
+    const { id } = useParams();
     const [facilityOptions, setFacilityOptions] = useState<Facility[]>([]);
     const navigate = useNavigate();
+    const [name, setName] = useState<string>('');
+    const [facilityId, setFacilityId] = useState<string>('');
+    const [selectedDays, setSelectedDays] = useState<string>("1");
+
+    const dayMapping: { [key: string]: number } = {
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "6": 6,
+        "7": 0,
+    };
 
     useEffect(() => {
-        const fetchFacilityData = async () => {
-            console.log("Fetching info buildings...");
+        if (startTime && endTime) {
+            const formattedStartTime = startTime.format("HH:mm");
+            const formattedEndTime = endTime.format("HH:mm");
+            const dayOfWeek = startTime.format("dddd");
+
+            console.log(formattedStartTime)
+            console.log(formattedEndTime);
+            const dayMapping: { [key: string]: string } = {
+                "Senin": "1",
+                "Selasa": "2",
+                "Rabu": "3",
+                "Kamis": "4",
+                "Jumat": "5",
+                "Sabtu": "6",
+                "Minggu": "7"
+            };
+
+            const dayValue = dayMapping[dayOfWeek] || "7";
+            setSelectedDays(dayValue);
+            console.log(dayValue);
+        }
+    }, [startTime, endTime]);
+
+    useEffect(() => {
+        const fetchData = async () => {
             try {
-                console.log("Try fetching info buildings");
+                const token = Cookies.get("accessToken");
+                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/${id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'accessToken': `${token}`
+                    }
+                });
+                setName(response.data.data.name);
+                setFacilityId(response.data.data.facilityDataId);
+                console.log("nama: ", name)
+
+                if (response.data.data.schedules && response.data.data.schedules.length > 0) {
+                    const schedule = response.data.data.schedules[0];
+                    setStartTime(dayjs.unix(schedule.startDateTime));
+                    setEndTime(dayjs.unix(schedule.endDateTime));
+                }
+
+                setImagesData(response.data.data.images || []);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+        fetchData();
+    }, [id]);
+
+    useEffect(() => {
+        const fetchGedungData = async () => {
+            try {
                 const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/facility/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
                     timeout: 10000
                 });
@@ -56,39 +120,19 @@ export default function TambahSubFasilitas() {
                     id: item.id,
                     name: item.name,
                 })));
-                console.log(response.data.data.content);
             } catch (error) {
-                if (axios.isAxiosError(error)) {
-                    console.error("Axios error:", error.message);
-                } else {
-                    console.error("Unexpected error:", error);
-                }
+                console.error("Error fetching buildings:", error);
             }
         };
-        fetchFacilityData();
+        fetchGedungData();
     }, []);
 
     console.log(operationalTime)
-
-    const dayMapping: { [key: string]: number } = {
-        "Senin": 1,
-        "Selasa": 2,
-        "Rabu": 3,
-        "Kamis": 4,
-        "Jumat": 5,
-        "Sabtu": 6,
-        "Minggu": 0,
-    };
-
 
     const handleTambahHari = () => {
         console.log("Selected day:", selectedDay);
         console.log("Start time:", startTime?.format("HH:mm"));
         console.log("End time:", endTime?.format("HH:mm"));
-        // console.log(errorAlert)
-        // console.log(successAlert)
-        // console.log(operationalTime)
-
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
         console.log("Waktu yg dipilih: ", dateTime);
@@ -117,18 +161,19 @@ export default function TambahSubFasilitas() {
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
         { label: "fasilitas", href: "/fasilitas" },
-        { label: "Tambah SubFasilitas", href: "/tambahSubFasilitas" },
+        { label: "Edit SubFasilitas", href: "/editSubFasilitas:id" },
     ];
 
     const formik = useFormik({
         initialValues: {
             // deskripsiKlinik: '',
-            masterFacilityId: '',
-            namaSubFasilitas: '',
+            masterFacilityId: facilityId,
+            namaSubFasilitas: name,
         },
+        enableReinitialize: true,
         validationSchema: Yup.object({
             // deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
-            masterFacilityId: Yup.string().required('Gedung is required'),
+            masterFacilityId: Yup.string().required('Facility is required'),
             namaSubFasilitas: Yup.string().required('SubFacility Name is required'),
         }),
         onSubmit: async (values) => {
@@ -150,6 +195,7 @@ export default function TambahSubFasilitas() {
             ];
 
             const data = {
+                subfacilityId: id,
                 name: values.namaSubFasilitas,
                 facilityDataId: values.masterFacilityId,
                 additionalInfo: "hai",
@@ -162,7 +208,7 @@ export default function TambahSubFasilitas() {
             const token = Cookies.get("accessToken");
 
             try {
-                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/', data, {
+                const response = await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/', data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`
@@ -194,7 +240,7 @@ export default function TambahSubFasilitas() {
             />
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
-                    <Typography fontSize="20px" fontWeight="700">Tambah Fasilitas</Typography>
+                    <Typography fontSize="20px" fontWeight="700">Edit SubFasilitas</Typography>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
                     </Box>
@@ -236,23 +282,20 @@ export default function TambahSubFasilitas() {
                                 {/* Hari */}
                                 <Box display={'flex'} flexDirection={'column'} width={'100%'} >
                                     <Typography>Hari</Typography>
-                                    <DropdownList
+                                    <DropdownListAPI
                                         options={[
-                                            { value: 1, label: "Senin" },
-                                            { value: 2, label: "Selasa" },
-                                            { value: 3, label: "Rabu" },
-                                            { value: 4, label: "Kamis" },
-                                            { value: 5, label: "Jumat" },
-                                            { value: 6, label: "Sabtu" },
-                                            { value: 7, label: "Minggu" },
+                                            { value: "1", label: "Senin" },
+                                            { value: "2", label: "Selasa" },
+                                            { value: "3", label: "Rabu" },
+                                            { value: "4", label: "Kamis" },
+                                            { value: "5", label: "Jumat" },
+                                            { value: "6", label: "Sabtu" },
+                                            { value: "7", label: "Minggu" },
                                         ]}
                                         placeholder="Pilih hari"
-                                        onChange={(value: string) => {
-                                            console.log("Selected value:", value);
-                                            setSelectedDay(value);
-                                        }}
+                                        onChange={(value: string) => setSelectedDay(value)}
                                         loading={false}
-                                    // defaultValue=""
+                                        defaultValue={selectedDays}
                                     />
                                 </Box>
 
