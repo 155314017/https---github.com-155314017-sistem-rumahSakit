@@ -47,9 +47,9 @@ import TambahSubFasilitas from './pages/fasilitas/TambahSubFasilitas';
 import EditRuangan from './pages/ruangan/EditRuangan';
 import EditGedung from './pages/gedung/EditGedung';
 import EditAmbulance from './pages/ambulance/EditAmbulance';
-import EditKlinik from './pages/klinik/EditKlinik';
 import EditFasilitas from './pages/fasilitas/EditFasilitas';
 import EditSUbFasilitas from './pages/fasilitas/EditSubFasilitas';
+import EditKlinik from './pages/klinik/EditKlinik';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -97,7 +97,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/klinik" element={<Klinik />} />
         <Route path="/detailKlinik" element={<DetailKlinik />} />
         <Route path="/tambahKlinik" element={<TambahKlinik />} />
-        <Route path="/tambahKlinik/:id" element={<EditKlinik/>} />
+        <Route path="/editKlinik/:id" element={<EditKlinik/>} />
 
         {/* Page Konter */}
         <Route path="/konter" element={<Konter />} />

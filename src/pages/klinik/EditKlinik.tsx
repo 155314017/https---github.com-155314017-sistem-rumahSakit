@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -11,6 +11,10 @@ import dayjs from 'dayjs';
 import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useNavigate, useParams } from 'react-router-dom';
+import ImageUploaderGroupAPI from '../../components/medium/ImageGroupUploaderAPI';
+import DropdownListAPI from '../../components/small/DropdownListAPI';
+import "dayjs/locale/id";
 
 type ImageData = {
     imageName: string;
@@ -18,36 +22,114 @@ type ImageData = {
     imageData: string;
 };
 
-
-const hari = [
-    { value: 1, label: "Senin" },
-    { value: 2, label: "Selasa" },
-    { value: 3, label: "Rabu" },
-    { value: 4, label: "Kamis" },
-    { value: 5, label: "Jumat" },
-    { value: 6, label: "Sabtu" },
-    { value: 7, label: "Minggu" },
-];
-
 export default function EditKlinik() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
-    const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [errorAlert, setErrorAlert] = useState(false);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
+    const { id } = useParams();
+    const [loading, setLoading] = useState<boolean>(true);
+    const [apiUrl, setApiUrl] = useState('');
+    const [name, setName] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    const [imagesData, setImagesData] = useState<ImageData[]>([]);
+    const [selectedDays, setSelectedDays] = useState<string>("1");
 
+    const navigate = useNavigate();
     console.log(operationalTime)
+
+    const handleImageChange = (images: ImageData[]) => {
+        console.log('Images changed:', images);
+        setImagesData(images);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            console.log("id room: ", id)
+            try {
+                const token = Cookies.get("accessToken");
+                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'accessToken': `${token}`
+                    }
+                });
+                setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`);
+                console.log("DATA : ")
+                console.log("Response", response.data);
+                console.log(response.data.data.name);
+                console.log("Images: ")
+                setName(response.data.data.name);
+                setDescription(response.data.data.description);
+                if (response.data.data.schedules && response.data.data.schedules.length > 0) {
+                    const schedule = response.data.data.schedules[0];
+                    setStartTime(dayjs.unix(schedule.startDateTime));
+                    setEndTime(dayjs.unix(schedule.endDateTime));
+                }
+                console.log("DATA state : ")
+                console.log(name);
+                console.log(description);
+            } catch (error) {
+                console.error('Error saat menghapus data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [id]);
+
+    const dayMapping: { [key: string]: number } = {
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "6": 6,
+        "7": 0,
+    };
+
+    useEffect(() => {
+        if (startTime && endTime) {
+            const formattedStartTime = startTime.format("HH:mm");
+            const formattedEndTime = endTime.format("HH:mm");
+            const dayOfWeek = startTime.format("dddd");
+            console.log("day of week: ", dayOfWeek);
+
+            console.log(formattedStartTime)
+            console.log(formattedEndTime);
+            const dayMapping: { [key: string]: string } = {
+                "Monday": "1",
+                "Tuesday": "2",
+                "Wednesday": "3",
+                "Thursday": "4",
+                "Friday": "5",
+                "Saturday": "6",
+                "Sunday": "7"
+            };
+
+            const dayValue = dayMapping[dayOfWeek] || "7";
+            setSelectedDays(dayValue);
+            console.log(dayValue);
+        }
+    }, [startTime, endTime]);
+
     const handleTambahHari = () => {
-        // const selectedDayLabel = hari.find(day => day.value === selectedDay)?.label;
         console.log("Selected day:", selectedDay);
         console.log("Start time:", startTime?.format("HH:mm"));
         console.log("End time:", endTime?.format("HH:mm"));
+        // console.log(errorAlert)
+        // console.log(successAlert)
+        // console.log(operationalTime)
 
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
-        console.log(dateTime);
+        console.log("Waktu yg dipilih: ", dateTime);
+        console.log("Day: ", selectedDay);
+        console.log("start time: ", startTime?.unix());
+        console.log("end time: ", endTime?.unix());
     };
 
     const showTemporaryAlertError = async () => {
@@ -69,28 +151,37 @@ export default function EditKlinik() {
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
         { label: "Klinik", href: "/klinik" },
-        { label: "Tambah Klinik", href: "/tambahKlinik" },
+        { label: "Edit Klinik", href: "/editKlinik:id" },
     ];
 
     const formik = useFormik({
         initialValues: {
-            namaKlinik: '',
-            deskripsiKlinik: '',
+            namaKlinik: name,
+            deskripsiKlinik: description,
         },
+        enableReinitialize: true,
         validationSchema: Yup.object({
             namaKlinik: Yup.string().required('Nama Klinik is required'),
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
         }),
         onSubmit: async (values) => {
+            const selectedDayOfWeek = dayMapping[selectedDay || "1"];
+            const adjustedStartTime = startTime?.day(selectedDayOfWeek);
+            const adjustedEndTime = endTime?.day(selectedDayOfWeek);
+
+            console.log("Selected Day on submit: ", selectedDayOfWeek)
+            console.log("adjusted start time: ", adjustedStartTime?.unix())
+            console.log("adjusted end time: ", adjustedEndTime?.unix())
 
             const schedules = [
                 {
-                    startDateTime: startTime ? dayjs(startTime).toISOString() : null,
-                    endDateTime: endTime ? dayjs(endTime).toISOString() : null,
+                    startDateTime: adjustedStartTime?.unix(),
+                    endDateTime: adjustedEndTime?.unix(),
                 }
-            ].filter(schedule => schedule.startDateTime && schedule.endDateTime);
+            ];
 
             const data = {
+                clinicId: id,
                 name: values.namaKlinik,
                 description: values.deskripsiKlinik,
                 additionalInfo: "",
@@ -108,7 +199,7 @@ export default function EditKlinik() {
             console.log("Token :", token)
 
             try {
-                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/', data, {
+                const response = await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/', data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`
@@ -118,6 +209,7 @@ export default function EditKlinik() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
+                navigate('/klinik')
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
@@ -147,13 +239,13 @@ export default function EditKlinik() {
             />
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
-                    <Typography fontSize="20px" fontWeight="700">Tambah Klinik</Typography>
+                    <Typography fontSize="20px" fontWeight="700">Edit Klinik</Typography>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
                     </Box>
 
                     {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
-                    <ImageUploaderGroup onChange={() => console.log("clicked")} />
+                    <ImageUploaderGroupAPI onChange={handleImageChange} apiUrl={apiUrl} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Klinik<span style={{ color: "red" }}>*</span></Typography>
@@ -197,14 +289,20 @@ export default function EditKlinik() {
                                 {/* Hari */}
                                 <Box display={'flex'} flexDirection={'column'} width={'100%'} >
                                     <Typography>Hari</Typography>
-                                    <DropdownList
-                                        options={hari}
+                                    <DropdownListAPI
+                                        options={[
+                                            { value: "1", label: "Senin" },
+                                            { value: "2", label: "Selasa" },
+                                            { value: "3", label: "Rabu" },
+                                            { value: "4", label: "Kamis" },
+                                            { value: "5", label: "Jumat" },
+                                            { value: "6", label: "Sabtu" },
+                                            { value: "7", label: "Minggu" },
+                                        ]}
                                         placeholder="Pilih hari"
-                                        onChange={(value: string) => {
-                                            console.log("Selected value:", value);
-                                            setSelectedDay(value);
-                                        }}
+                                        onChange={(value: string) => setSelectedDay(value)}
                                         loading={false}
+                                        defaultValue={selectedDays}
                                     />
                                 </Box>
 

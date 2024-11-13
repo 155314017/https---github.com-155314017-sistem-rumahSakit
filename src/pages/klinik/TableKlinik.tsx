@@ -312,99 +312,107 @@ const TableKlinik: React.FC<TableClinicProps> = ({ fetchDatas }) => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {displayedData.map((data, index) => (
-                      <StyledTableRow key={index}>
-                        <TableCell
-                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                          align="center"
-                        >
-                          {index + 1}
-                        </TableCell>
-                        <TableCell
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              maxWidth: "150px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          {data.name}
-                        </TableCell>
-                        <TableCell
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              maxWidth: "150px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          {data.operationalSchedule}
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                        >
-                          {data.description}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          <Link
-                            onClick={(event) => confirmationDelete(event, data.id)}
-                            href="#"
-                            mr={2}
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
-                          >
-                            Hapus
-                          </Link>
+                    {displayedData.length > 0 ? (
+                        displayedData.map((data, index) => (
+                          <StyledTableRow key={index}>
+                            <TableCell
+                              sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                              align="center"
+                            >
+                              {index + 1}
+                            </TableCell>
+                            <TableCell
+                              sx={[
+                                {
+                                  color: "#292B2C",
+                                  fontSize: "14px",
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                  whiteSpace: "nowrap",
+                                  maxWidth: "150px",
+                                  textTransform: "capitalize",
+                                },
+                              ]}
+                            >
+                              {data.name}
+                            </TableCell>
+                            <TableCell
+                              sx={[
+                                {
+                                  color: "#292B2C",
+                                  fontSize: "14px",
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                  whiteSpace: "nowrap",
+                                  maxWidth: "150px",
+                                  textTransform: "capitalize",
+                                },
+                              ]}
+                            >
+                              {data.operationalSchedule}
+                            </TableCell>
+                            <TableCell
+                              align="left"
+                              sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                            >
+                              {data.description}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              sx={[
+                                {
+                                  color: "#292B2C",
+                                  fontSize: "14px",
+                                  textTransform: "capitalize",
+                                },
+                              ]}
+                            >
+                              <Link
+                                onClick={(event) => confirmationDelete(event, data.id)}
+                                href="#"
+                                mr={2}
+                                underline="hover"
+                                sx={{
+                                  textTransform: "capitalize",
+                                  color: "#8F85F3",
+                                }}
+                              >
+                                Hapus
+                              </Link>
 
-                          <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
-                          <Link
-                            href="#"
-                            onClick={() => navigate(`/editKlinik/${data.id}`)}
-                            mr={2}
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
-                          >
-                            Ubah
-                          </Link>
-                          <Link
-                            href="/detailKlinik"
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
-                          >
-                            Lihat selengkapnya
-                          </Link>
+                              <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
+                              <Link
+                                href="#"
+                                onClick={() => navigate(`/editKlinik/${data.id}`)}
+                                mr={2}
+                                underline="hover"
+                                sx={{
+                                  textTransform: "capitalize",
+                                  color: "#8F85F3",
+                                }}
+                              >
+                                Ubah
+                              </Link>
+                              <Link
+                                href="/detailKlinik"
+                                underline="hover"
+                                sx={{
+                                  textTransform: "capitalize",
+                                  color: "#8F85F3",
+                                }}
+                              >
+                                Lihat selengkapnya
+                              </Link>
+                            </TableCell>
+                          </StyledTableRow>
+                        ))
+                    ) : (
+                      <StyledTableRow>
+                        <TableCell colSpan={5} align="center">
+                          Tidak ada data
                         </TableCell>
                       </StyledTableRow>
-                    ))}
+                  )}
                   </TableBody>
                 </Table>
               </StyledTableContainer>
