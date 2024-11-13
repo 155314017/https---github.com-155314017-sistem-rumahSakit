@@ -55,26 +55,31 @@ const StyledTableContainer = styled(TableContainer)`
   }
 `;
 
-export default function TableKonter() {
+interface TableKonterProps {
+    fetchDatas: () => void;
+}
+
+
+const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas }) => {
     const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [open, setOpen] = React.useState<boolean>(false);
     const [datas, setDatas] = useState<CounterDataItem[]>([]);
     const [deletedItems, setDeletedItems] = useState("");
 
-    useEffect(() => {
-        const fetchData = async () => {
-            console.log('Fetching data...');
-            try {
-                const result = await CounterServices();
-                console.log('Result: ', result);
-                setDatas(result); // Store the result in datas state
-                // setData(result); // Set data to display in table
-            } catch (error) {
-                console.log('Failed to fetch data from API: ', error);
-            }
-        };
 
+    const fetchData = async () => {
+        console.log('Fetching data...');
+        try {
+            const result = await CounterServices();
+            console.log('Result: ', result);
+            setDatas(result); // Store the result in datas state
+            // setData(result); // Set data to display in table
+        } catch (error) {
+            console.log('Failed to fetch data from API: ', error);
+        }
+    };
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -114,6 +119,8 @@ export default function TableKonter() {
     const handleDeleteSuccess = () => {
         console.log("Item deleted successfully");
         // Refresh the data or perform additional actions after delete
+        fetchDatas();
+        fetchData();
     };
 
     return (
@@ -425,3 +432,6 @@ export default function TableKonter() {
         </Box>
     );
 }
+
+
+export default TableKonter;

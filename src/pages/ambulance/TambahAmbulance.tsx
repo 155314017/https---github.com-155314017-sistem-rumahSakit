@@ -7,10 +7,12 @@ import DropdownList from "../../components/small/DropdownList";
 import InputCurrencyIdr from "../../components/inputComponent/InputCurrencyIdr";
 import axios from 'axios';
 import Cookies from "js-cookie";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import "dayjs/locale/id";
+import { useNavigate } from "react-router-dom";
 
 
 type ImageData = {
@@ -35,6 +37,20 @@ export default function TambahAmbulance() {
   const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
   const [operationalTime, setOperationalTime] = useState<string | null>(null);
   const [operationalCost, setOperationalCost] = useState<string | null>(null);
+  dayjs.locale("id");
+
+  const navigate = useNavigate();
+
+  const dayMapping: { [key: string]: number } = {
+    "Senin": 1,
+    "Selasa": 2,
+    "Rabu": 3,
+    "Kamis": 4,
+    "Jumat": 5,
+    "Sabtu": 6,
+    "Minggu": 0,
+  };
+
 
   const handleTambahHari = () => {
     console.log("Selected day:", selectedDay);
@@ -46,10 +62,10 @@ export default function TambahAmbulance() {
 
     const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
     setOperationalTime(dateTime);
-    console.log("Waktu yg dipilih: ",dateTime);
-    console.log("Day: ",selectedDay);
-    console.log("start time: ",startTime?.unix());
-    console.log("end time: ",endTime?.unix());
+    console.log("Waktu yg dipilih: ", dateTime);
+    console.log("Day: ", selectedDay);
+    console.log("start time: ", startTime?.unix());
+    console.log("end time: ", endTime?.unix());
   };
 
   const showTemporaryAlertSuccess = async () => {
@@ -75,10 +91,18 @@ export default function TambahAmbulance() {
   ];
 
   const handleSubmit = async (values: any) => {
+    const selectedDayOfWeek = dayMapping[selectedDay || "1"];
+    const adjustedStartTime = startTime?.day(selectedDayOfWeek);
+    const adjustedEndTime = endTime?.day(selectedDayOfWeek);
+
+    console.log("Selected Day on submit: ", selectedDayOfWeek)
+    console.log("adjusted start time: ", adjustedStartTime)
+    console.log("adjusted end time: ", adjustedEndTime)
+
     const schedules = [
       {
-        startDateTime: startTime?.unix(),
-        endDateTime: endTime?.unix(),
+        startDateTime: adjustedStartTime?.unix(),
+        endDateTime: adjustedEndTime?.unix(),
       }
     ];
     const data = {
@@ -105,6 +129,7 @@ export default function TambahAmbulance() {
       });
       console.log('Response:', response.data);
       showTemporaryAlertSuccess();
+      navigate('/ambulance')
     } catch (error) {
       console.error('Error submitting form:', error);
       showTemporaryAlertError();
@@ -130,7 +155,7 @@ export default function TambahAmbulance() {
           // validationSchema={validationSchema} // Use the updated validationSchema
           onSubmit={handleSubmit}
         >
-          {({  setFieldValue, errors, touched }) => (
+          {({ setFieldValue, errors, touched }) => (
             <Form>
               <Box p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
                 <Typography fontSize="20px" fontWeight="700">Tambah Ambulance</Typography>
@@ -140,7 +165,7 @@ export default function TambahAmbulance() {
                 <Box mt={3}>
                   <Typography sx={{ fontSize: "16px" }}>Biaya Tarif<span style={{ color: "red" }}>*</span></Typography>
                   <InputCurrencyIdr
-                    onChange={(value) => setOperationalCost(value)} 
+                    onChange={(value) => setOperationalCost(value)}
                     defaultValue={0}
                   />
                   {errors.cost && touched.cost && <div style={{ color: "red" }}>{errors.cost}</div>}
@@ -168,7 +193,7 @@ export default function TambahAmbulance() {
                           setSelectedDay(value);
                         }}
                         loading={false}
-                        // defaultValue=""
+                      // defaultValue=""
                       />
                     </Box>
 

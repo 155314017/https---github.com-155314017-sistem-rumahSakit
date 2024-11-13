@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useNavigate } from 'react-router-dom';
 
 type ImageData = {
     imageName: string;
@@ -19,15 +20,7 @@ type ImageData = {
 };
 
 
-const hari = [
-    { value: 1, label: "Senin" },
-    { value: 2, label: "Selasa" },
-    { value: 3, label: "Rabu" },
-    { value: 4, label: "Kamis" },
-    { value: 5, label: "Jumat" },
-    { value: 6, label: "Sabtu" },
-    { value: 7, label: "Minggu" },
-];
+
 
 export default function TambahKlinik() {
     const [successAlert, setSuccessAlert] = useState(false);
@@ -37,23 +30,42 @@ export default function TambahKlinik() {
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [errorAlert, setErrorAlert] = useState(false);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     console.log(operationalTime)
-    const handleTambahHari = () => {
-        // const selectedDayLabel = hari.find(day => day.value === selectedDay)?.label;
-        console.log("Selected day:", selectedDay);
-        console.log("Start time:", startTime?.format("HH:mm"));
-        console.log("End time:", endTime?.format("HH:mm"));
-
-        const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
-        setOperationalTime(dateTime);
-        console.log(dateTime);
-    };
 
     const showTemporaryAlertError = async () => {
         setErrorAlert(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setErrorAlert(false);
+    };
+
+
+    const dayMapping: { [key: string]: number } = {
+        "Senin": 1,
+        "Selasa": 2,
+        "Rabu": 3,
+        "Kamis": 4,
+        "Jumat": 5,
+        "Sabtu": 6,
+        "Minggu": 0,
+    };
+
+
+    const handleTambahHari = () => {
+        console.log("Selected day:", selectedDay);
+        console.log("Start time:", startTime?.format("HH:mm"));
+        console.log("End time:", endTime?.format("HH:mm"));
+        // console.log(errorAlert)
+        // console.log(successAlert)
+        // console.log(operationalTime)
+
+        const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
+        setOperationalTime(dateTime);
+        console.log("Waktu yg dipilih: ", dateTime);
+        console.log("Day: ", selectedDay);
+        console.log("start time: ", startTime?.unix());
+        console.log("end time: ", endTime?.unix());
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -83,12 +95,21 @@ export default function TambahKlinik() {
         }),
         onSubmit: async (values) => {
 
+            const selectedDayOfWeek = dayMapping[selectedDay || "1"];
+            const adjustedStartTime = startTime?.day(selectedDayOfWeek);
+            const adjustedEndTime = endTime?.day(selectedDayOfWeek);
+
+            console.log("Selected Day on submit: ", selectedDayOfWeek)
+            console.log("adjusted start time: ", adjustedStartTime)
+            console.log("adjusted end time: ", adjustedEndTime)
+
+
             const schedules = [
                 {
-                    startDateTime: startTime ? dayjs(startTime).toISOString() : null,
-                    endDateTime: endTime ? dayjs(endTime).toISOString() : null,
+                    startDateTime: adjustedStartTime?.unix(),
+                    endDateTime: adjustedEndTime?.unix(),
                 }
-            ].filter(schedule => schedule.startDateTime && schedule.endDateTime);
+            ];
 
             const data = {
                 name: values.namaKlinik,
@@ -118,6 +139,7 @@ export default function TambahKlinik() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
+                navigate('/klinik');
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
@@ -198,13 +220,22 @@ export default function TambahKlinik() {
                                 <Box display={'flex'} flexDirection={'column'} width={'100%'} >
                                     <Typography>Hari</Typography>
                                     <DropdownList
-                                        options={hari}
+                                        options={[
+                                            { value: 1, label: "Senin" },
+                                            { value: 2, label: "Selasa" },
+                                            { value: 3, label: "Rabu" },
+                                            { value: 4, label: "Kamis" },
+                                            { value: 5, label: "Jumat" },
+                                            { value: 6, label: "Sabtu" },
+                                            { value: 7, label: "Minggu" },
+                                        ]}
                                         placeholder="Pilih hari"
                                         onChange={(value: string) => {
                                             console.log("Selected value:", value);
                                             setSelectedDay(value);
                                         }}
                                         loading={false}
+                                    // defaultValue=""
                                     />
                                 </Box>
 

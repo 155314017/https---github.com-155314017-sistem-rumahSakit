@@ -18,34 +18,34 @@ export default function Fasilitas() {
     const [data, setData] = useState<FacilityDataItem[]>([]);
     const [data1, setData1] = useState<SubFacilityDataItem[]>([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            console.log('fetching data . . . ')
-            try {
-                const result = await FacilityServices();
-                console.log('result : ' + result)
-                setData(result);
-            } catch (error) {
-                console.log('Failed to fetch data from API' + error);
-            }
-        };
 
-        fetchData();
+    const fetchDataFacility = async () => {
+        console.log('fetching data . . . ')
+        try {
+            const result = await FacilityServices();
+            console.log('result : ' + result)
+            setData(result);
+        } catch (error) {
+            console.log('Failed to fetch data from API' + error);
+        }
+    };
+    useEffect(() => {
+        fetchDataFacility();
     }, []);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            console.log('fetching data . . . ')
-            try {
-                const result1 = await SubFacilityServices();
-                console.log('result : ' + result1)
-                setData1(result1);
-            } catch (error) {
-                console.log('Failed to fetch data from API' + error);
-            }
-        };
 
-        fetchData();
+    const fetchDataSubFacility = async () => {
+        console.log('fetching data . . . ')
+        try {
+            const result1 = await SubFacilityServices();
+            console.log('result : ' + result1)
+            setData1(result1);
+        } catch (error) {
+            console.log('Failed to fetch data from API' + error);
+        }
+    };
+    useEffect(() => {
+        fetchDataSubFacility();
     }, []);
 
 
@@ -66,8 +66,8 @@ export default function Fasilitas() {
                         <CardAdd icon={AddBoxIcon} title="Tambah Sub Fasilitas" link="/tambahSubFasilitas" />
                     </Grid>
                     <Box display={"flex"} flexDirection={"column"} gap={5} >
-                        <TableFasilitas />
-                        <TableSubFasilitas />
+                        <TableFasilitas fetchDatas={fetchDataFacility} />
+                        <TableSubFasilitas fetchDatas={fetchDataSubFacility} />
                     </Box>
                 </Box>
             </Box>

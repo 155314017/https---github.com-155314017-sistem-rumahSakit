@@ -15,21 +15,30 @@ import { AmbulanceServices, AmbulanceDataItem } from "../../services/Admin Tenan
 export default function Ambulance() {
 
   const [data, setData] = useState<AmbulanceDataItem[]>([]);
+  const [successAlert, setSuccessAlert] = useState(false);
+
+
+  const fetchData = async () => {
+    console.log('fetching data . . . ')
+    try {
+      const result = await AmbulanceServices();
+      console.log('result : ' + result)
+      setData(result);
+    } catch (error) {
+      console.log('Failed to fetch data from API' + error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      console.log('fetching data . . . ')
-      try {
-        const result = await AmbulanceServices();
-        console.log('result : ' + result)
-        setData(result);
-      } catch (error) {
-        console.log('Failed to fetch data from API' + error);
-      }
-    };
-
     fetchData();
   }, []);
+
+  const showTemporaryAlertSuccess = async () => {
+    console.log("DELETEEEDDD")
+    setSuccessAlert(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setSuccessAlert(false);
+  };
 
   return (
     <Box>
@@ -54,7 +63,7 @@ export default function Ambulance() {
             />
           </Grid>
 
-          <TableAmbulance />
+          <TableAmbulance fetchDatas={fetchData} sukses={showTemporaryAlertSuccess} />
         </Box>
       </Box>
     </Box>

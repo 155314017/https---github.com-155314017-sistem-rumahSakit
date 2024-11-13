@@ -26,15 +26,6 @@ const jenisKonter = [
     { value: 3, label: "Umum" },
 ];
 
-const hari = [
-    { value: 1, label: "Senin" },
-    { value: 2, label: "Selasa" },
-    { value: 3, label: "Rabu" },
-    { value: 4, label: "Kamis" },
-    { value: 5, label: "Jumat" },
-    { value: 6, label: "Sabtu" },
-    { value: 7, label: "Minggu" },
-];
 
 type ImageData = {
     imageName: string;
@@ -56,14 +47,27 @@ export default function TambahKonter() {
     const [errorAlert, setErrorAlert] = useState(false);
 
     console.log(operationalTime)
+    const dayMapping: { [key: string]: number } = {
+        "Senin": 1,
+        "Selasa": 2,
+        "Rabu": 3,
+        "Kamis": 4,
+        "Jumat": 5,
+        "Sabtu": 6,
+        "Minggu": 0,
+    };
+
+
     const handleTambahHari = () => {
         console.log("Selected day:", selectedDay);
         console.log("Start time:", startTime?.format("HH:mm"));
         console.log("End time:", endTime?.format("HH:mm"));
-
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
-        console.log(dateTime);
+        console.log("Waktu yg dipilih: ", dateTime);
+        console.log("Day: ", selectedDay);
+        console.log("start time: ", startTime?.unix());
+        console.log("end time: ", endTime?.unix());
     };
 
     const handleImageChange = (images: ImageData[]) => {
@@ -95,29 +99,39 @@ export default function TambahKonter() {
 
     const formik = useFormik({
         initialValues: {
-            namaKlinik: '',
-            deskripsiKlinik: '',
+            namaKonter: '',
+            lokasiKonter: '',
         },
         validationSchema: Yup.object({
-            namaKlinik: Yup.string().required('Nama Konter is required'),
-            deskripsiKlinik: Yup.string().required('Deskripsi Konter is required'),
+            namaKonter: Yup.string().required('Nama Konter is required'),
+            lokasiKonter: Yup.string().required('Deskripsi Konter is required'),
         }),
         onSubmit: async (values) => {
+
+            const selectedDayOfWeek = dayMapping[selectedDay || "1"];
+            const adjustedStartTime = startTime?.day(selectedDayOfWeek);
+            const adjustedEndTime = endTime?.day(selectedDayOfWeek);
+
+            console.log("Selected Day on submit: ", selectedDayOfWeek)
+            console.log("adjusted start time: ", adjustedStartTime)
+            console.log("adjusted end time: ", adjustedEndTime)
+
+
             const schedules = [
                 {
-                    startDateTime: startTime ? dayjs(startTime).toISOString() : null,
-                    endDateTime: endTime ? dayjs(endTime).toISOString() : null,
+                    startDateTime: adjustedStartTime?.unix(),
+                    endDateTime: adjustedEndTime?.unix(),
                 }
-            ].filter(schedule => schedule.startDateTime && schedule.endDateTime);
+            ];
 
             const data = {
-                name: values.namaKlinik,
-                location: values.deskripsiKlinik,
+                name: values.namaKonter,
+                location: values.lokasiKonter,
                 schedules: schedules,
                 images: imagesData.map(image => ({
                     imageName: image.imageName || "",
                     imageType: image.imageType || "",
-                    imageData: image.imageData || "",
+                    imageData: image.imageData || "",   
                 })),
             };
 
@@ -169,17 +183,17 @@ export default function TambahKonter() {
                         <Typography sx={{ fontSize: "16px" }}>Nama Konter<span style={{ color: "red" }}>*</span></Typography>
                         <FormControl fullWidth sx={{ my: 1 }}>
                             <OutlinedInput
-                                id="namaKlinik"
-                                name="namaKlinik"
+                                id="namaKonter"
+                                name="namaKonter"
                                 size="small"
                                 placeholder="Masukkan Nama konter"
-                                value={formik.values.namaKlinik}
+                                value={formik.values.namaKonter}
                                 onChange={formik.handleChange}
-                                onBlur={() => formik.setTouched({ ...formik.touched, namaKlinik: true })}
-                                error={formik.touched.namaKlinik && Boolean(formik.errors.namaKlinik)}
+                                onBlur={() => formik.setTouched({ ...formik.touched, namaKonter: true })}
+                                error={formik.touched.namaKonter && Boolean(formik.errors.namaKonter)}
                             />
-                            {formik.touched.namaKlinik && formik.errors.namaKlinik && (
-                                <Typography color="error">{formik.errors.namaKlinik}</Typography>
+                            {formik.touched.namaKonter && formik.errors.namaKonter && (
+                                <Typography color="error">{formik.errors.namaKonter}</Typography>
                             )}
                         </FormControl>
 
@@ -194,18 +208,18 @@ export default function TambahKonter() {
                         <Typography sx={{ fontSize: "16px", mt: 1 }}>Lokasi Konter<span style={{ color: "red" }}>*</span></Typography>
                         <FormControl fullWidth sx={{ my: 1 }}>
                             <OutlinedInput
-                                id="deskripsiKlinik"
-                                name="deskripsiKlinik"
+                                id="lokasiKonter"
+                                name="lokasiKonter"
                                 size="small"
                                 placeholder="Masukkan lokasi konter"
-                                value={formik.values.deskripsiKlinik}
+                                value={formik.values.lokasiKonter}
                                 onChange={formik.handleChange}
-                                onBlur={() => formik.setTouched({ ...formik.touched, deskripsiKlinik: true })}
-                                error={formik.touched.deskripsiKlinik && Boolean(formik.errors.deskripsiKlinik)}
+                                onBlur={() => formik.setTouched({ ...formik.touched, lokasiKonter: true })}
+                                error={formik.touched.lokasiKonter && Boolean(formik.errors.lokasiKonter)}
                                 sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
                             />
-                            {formik.touched.deskripsiKlinik && formik.errors.deskripsiKlinik && (
-                                <Typography color="error">{formik.errors.deskripsiKlinik}</Typography>
+                            {formik.touched.lokasiKonter && formik.errors.lokasiKonter && (
+                                <Typography color="error">{formik.errors.lokasiKonter}</Typography>
                             )}
                         </FormControl>
 
@@ -216,13 +230,22 @@ export default function TambahKonter() {
                                 <Box display={'flex'} flexDirection={'column'} width={'100%'} >
                                     <Typography>Hari</Typography>
                                     <DropdownList
-                                        options={hari}
+                                        options={[
+                                            { value: 1, label: "Senin" },
+                                            { value: 2, label: "Selasa" },
+                                            { value: 3, label: "Rabu" },
+                                            { value: 4, label: "Kamis" },
+                                            { value: 5, label: "Jumat" },
+                                            { value: 6, label: "Sabtu" },
+                                            { value: 7, label: "Minggu" },
+                                        ]}
                                         placeholder="Pilih hari"
                                         onChange={(value: string) => {
                                             console.log("Selected value:", value);
                                             setSelectedDay(value);
                                         }}
                                         loading={false}
+                                    // defaultValue=""
                                     />
                                 </Box>
 

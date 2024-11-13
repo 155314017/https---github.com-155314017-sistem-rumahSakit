@@ -59,7 +59,12 @@ const StyledTableContainer = styled(TableContainer)`
   }
 `;
 
-export default function TableKlinik() {
+interface TableClinicProps {
+  fetchDatas: () => void;
+}
+
+
+const TableKlinik: React.FC<TableClinicProps> = ({ fetchDatas }) => {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
@@ -69,19 +74,19 @@ export default function TableKlinik() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log('Fetching data...');
-      try {
-        const result = await Clinic();
-        console.log('Result: ', result);
-        setDatas(result); // Store the result in datas state
-        // setData(result); // Set data to display in table
-      } catch (error) {
-        console.log('Failed to fetch data from API: ', error);
-      }
-    };
 
+  const fetchData = async () => {
+    console.log('Fetching data...');
+    try {
+      const result = await Clinic();
+      console.log('Result: ', result);
+      setDatas(result); // Store the result in datas state
+      // setData(result); // Set data to display in table
+    } catch (error) {
+      console.log('Failed to fetch data from API: ', error);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -97,6 +102,8 @@ export default function TableKlinik() {
   const handleDeleteSuccess = () => {
     console.log("Item deleted successfully");
     // Refresh the data or perform additional actions after delete
+    fetchDatas();
+    fetchData();
   };
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
@@ -311,7 +318,7 @@ export default function TableKlinik() {
                           sx={[{ color: "#292B2C", fontSize: "14px" }]}
                           align="center"
                         >
-                          {index+1}
+                          {index + 1}
                         </TableCell>
                         <TableCell
                           sx={[
@@ -439,3 +446,6 @@ export default function TableKlinik() {
     </Box>
   );
 }
+
+
+export default TableKlinik;

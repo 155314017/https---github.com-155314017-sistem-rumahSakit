@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -12,7 +12,13 @@ import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import InputCurrencyIdr from '../../components/inputComponent/InputCurrencyIdr';
 import axios from 'axios';
 import Cookies from "js-cookie";
+import DropdownListAPI from '../../components/small/DropdownListAPI';
+import { useNavigate } from 'react-router-dom';
 
+type Building = {
+    id: string;
+    name: string;
+};
 
 type ImageData = {
     imageName: string;
@@ -31,7 +37,32 @@ export default function TambahFasilitas() {
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [operationalCost, setOperationalCost] = useState<string | null>(null);
     const [errorAlert, setErrorAlert] = useState(false);
+    const [gedungOptions, setGedungOptions] = useState<Building[]>([]);
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        const fetchGedungData = async () => {
+            console.log("Fetching info buildings...");
+            try {
+                console.log("Try fetching info buildings");
+                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
+                    timeout: 10000
+                });
+                setGedungOptions(response.data.data.content.map((item: any) => ({
+                    id: item.id,
+                    name: item.name,
+                })));
+                console.log(response.data.data.content);
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    console.error("Axios error:", error.message);
+                } else {
+                    console.error("Unexpected error:", error);
+                }
+            }
+        };
+        fetchGedungData();
+    }, []);
 
     console.log(operationalTime);
     const handleImageChange = (images: ImageData[]) => {
@@ -39,15 +70,31 @@ export default function TambahFasilitas() {
         setImagesData(images);
     };
 
+    const dayMapping: { [key: string]: number } = {
+        "Senin": 1,
+        "Selasa": 2,
+        "Rabu": 3,
+        "Kamis": 4,
+        "Jumat": 5,
+        "Sabtu": 6,
+        "Minggu": 0,
+    };
+
+
     const handleTambahHari = () => {
-        // const selectedDayLabel = hari.find(day => day.value === selectedDay)?.label;
         console.log("Selected day:", selectedDay);
         console.log("Start time:", startTime?.format("HH:mm"));
         console.log("End time:", endTime?.format("HH:mm"));
+        // console.log(errorAlert)
+        // console.log(successAlert)
+        // console.log(operationalTime)
 
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
-        console.log(dateTime);
+        console.log("Waktu yg dipilih: ", dateTime);
+        console.log("Day: ", selectedDay);
+        console.log("start time: ", startTime?.unix());
+        console.log("end time: ", endTime?.unix());
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -71,21 +118,35 @@ export default function TambahFasilitas() {
     const formik = useFormik({
         initialValues: {
             deskripsiKlinik: '',
+            masterBuildingId: '',
+            namaFasilitas:'',
         },
         validationSchema: Yup.object({
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
+            masterBuildingId: Yup.string().required('Gedung is required'),
+            namaFasilitas: Yup.string().required('Facility Name is required'),
         }),
         onSubmit: async (values) => {
+
+            const selectedDayOfWeek = dayMapping[selectedDay || "1"];
+            const adjustedStartTime = startTime?.day(selectedDayOfWeek);
+            const adjustedEndTime = endTime?.day(selectedDayOfWeek);
+
+            console.log("Selected Day on submit: ", selectedDayOfWeek)
+            console.log("adjusted start time: ", adjustedStartTime)
+            console.log("adjusted end time: ", adjustedEndTime)
+
+
             const schedules = [
                 {
-                    startDateTime: startTime ? dayjs(startTime).toISOString() : null,
-                    endDateTime: endTime ? dayjs(endTime).toISOString() : null,
+                    startDateTime: adjustedStartTime?.unix(),
+                    endDateTime: adjustedEndTime?.unix(),
                 }
-            ].filter(schedule => schedule.startDateTime && schedule.endDateTime);
+            ];
 
             const data = {
-                name: selectedFacility,
-                masterBuildingId: "17e145fa-ea31-495e-b725-149108b12321",
+                name: values.namaFasilitas,
+                masterBuildingId: values.masterBuildingId,
                 description: values.deskripsiKlinik,
                 cost: operationalCost ? parseInt(operationalCost.replace(/\D/g, '')) : 0,
                 additionalInfo: "hai",
@@ -112,6 +173,7 @@ export default function TambahFasilitas() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
+                navigate('/fasilitas')
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
@@ -142,33 +204,31 @@ export default function TambahFasilitas() {
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Fasilitas<span style={{ color: "red" }}>*</span></Typography>
-                        <DropdownList
-                            options={[
-                                { value: 1, label: "MRI" },
-                                { value: 2, label: "Fisioterapi" },
-                                { value: 3, label: "Unit Transfusi Darah (UTD)" },
-                            ]}
-                            placeholder="masukkan nama ruangan"
-                            onChange={(value: string) => {
-                                console.log(value);
-                                setSelectedFacility(value)
-                            }
-                            }
-                            loading={false}
-                        />
+                        <FormControl fullWidth sx={{ my: 1 }}>
+                            <OutlinedInput
+                                id="namaFasilitas"
+                                name="namaFasilitas"
+                                size="small"
+                                placeholder="Masukkan nama fasilitas"
+                                value={formik.values.namaFasilitas}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik.touched.namaFasilitas && Boolean(formik.errors.namaFasilitas)}
+                            />
+                            {formik.touched.namaFasilitas && formik.errors.namaFasilitas && (
+                                <Typography color="error">{formik.errors.namaFasilitas}</Typography>
+                            )}
+                        </FormControl>
 
                         <Typography sx={{ fontSize: "16px", mt: 2 }}>Pilih Gedung<span style={{ color: "red" }}>*</span></Typography>
-                        <DropdownList
-                            options={[
-                                { value: 1, label: "Gedung A" },
-                                { value: 2, label: "Gedung B" },
-                                { value: 3, label: "Gedung C" },
-                                { value: 4, label: "Gedung D" },
-                                { value: 5, label: "Gedung E" },
-                                { value: 6, label: "Gedung F" },
-                            ]}
+                        <DropdownListAPI
+                            options={gedungOptions.map(({ id, name }) => ({ value: id, label: name }))}
                             placeholder="Pilih gedung"
-                            onChange={(selectedValue) => formik.setFieldValue('gedung', selectedValue)}
+                            onChange={(selectedOptionValue, selectedLabel) => {
+                                formik.setFieldValue('masterBuildingId', selectedOptionValue);
+                                console.log("Selected Building ID:", selectedOptionValue);
+                                console.log("Selected Building Name:", selectedLabel);
+                            }}
                             loading={false}
                         />
 
@@ -212,6 +272,7 @@ export default function TambahFasilitas() {
                                             setSelectedDay(value);
                                         }}
                                         loading={false}
+                                    // defaultValue=""
                                     />
                                 </Box>
 
@@ -250,7 +311,7 @@ export default function TambahFasilitas() {
 
                         <Typography sx={{ fontSize: "16px", mt: 3 }}>Biaya Penanganan<span style={{ color: "red" }}>*</span></Typography>
                         {/* <InputCurrencyIdr /> */}
-                        <InputCurrencyIdr onChange={(value) => setOperationalCost(value)} defaultValue={0}/>
+                        <InputCurrencyIdr onChange={(value) => setOperationalCost(value)} defaultValue={0} />
 
                         <Button
                             type="submit"

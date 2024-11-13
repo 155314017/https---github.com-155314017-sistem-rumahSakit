@@ -15,19 +15,19 @@ import { CounterServices, CounterDataItem } from "../../services/Admin Tenant/Ma
 export default function Konter() {
     const [data, setData] = useState<CounterDataItem[]>([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            console.log('fetching data . . . ')
-            try {
-                const result = await CounterServices();
-                console.log('result : ' + result)
-                setData(result);
-                console.log(data)
-            } catch (error) {
-                console.log('Failed to fetch data from API' + error);
-            }
-        };
 
+    const fetchData = async () => {
+        console.log('fetching data . . . ')
+        try {
+            const result = await CounterServices();
+            console.log('result : ' + result)
+            setData(result);
+            console.log(data)
+        } catch (error) {
+            console.log('Failed to fetch data from API' + error);
+        }
+    };
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -45,7 +45,7 @@ export default function Konter() {
                         <MediumCard icon={BusinessOutlinedIcon} title="Daftar Konter" subtitle={data.length.toString()} />
                         <CardAdd icon={AddBoxIcon} title="Tambah Konter" link="/tambahKonter" />
                     </Grid>
-                    <TableKonter />
+                    <TableKonter fetchDatas={fetchData} />
                 </Box>
             </Box>
         </Box>

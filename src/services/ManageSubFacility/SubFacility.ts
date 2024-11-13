@@ -62,35 +62,30 @@ export const SubFacilityServices = async (): Promise<SubFacilityDataItem[]> => {
 
   if (response.status === 200) {
     console.log("API SubFacility connection successful:", response.data);
-
     response.data.data.content.forEach((item) => {
-      console.log("ID:", item.id);
-      console.log("Name:", item.name);
-      console.log("ID fasilitas utama:", item.facilityDataId);
-      console.log("Additional Info:", item.additionalInfo);
-      console.log("Created By:", item.createdBy);
+      if (item.schedules.length > 0) {
+        const { startDateTime, endDateTime } = item.schedules[0];
 
-          if (item.schedules.length > 0) {
-            const { startDateTime, endDateTime } = item.schedules[0];
+        const startDate = new Date(startDateTime * 1000);
+        const endDate = new Date(endDateTime * 1000);
 
-            const startDate = new Date(startDateTime * 1000);
-            const endDate = new Date(endDateTime * 1000);
+        const formatter = new Intl.DateTimeFormat("id-ID", {
+          weekday: "long",
+        });
 
-            const startHours = startDate.getHours();
-            const startMinutes = startDate.getMinutes();
-            const endHours = endDate.getHours();
-            const endMinutes = endDate.getMinutes();
+        const startDay = formatter.format(startDate);
+        const startHours = startDate.getHours().toString().padStart(2, "0");
+        const startMinutes = startDate.getMinutes().toString().padStart(2, "0");
+        const endHours = endDate.getHours().toString().padStart(2, "0");
+        const endMinutes = endDate.getMinutes().toString().padStart(2, "0");
 
-            const operationalSchedule = `${startHours}:${
-              startMinutes < 10 ? "0" : ""
-            }${startMinutes} - ${endHours}:${
-              endMinutes < 10 ? "0" : ""
-            }${endMinutes}`;
-            item.operationalSchedule = operationalSchedule; // Menyimpan jam operasional ke item
-            console.log("Operational Schedule:", operationalSchedule);
-          } else {
-            console.log("No schedules available.");
-          }
+        const operationalSchedule = `${startDay}, ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
+        item.operationalSchedule = operationalSchedule; // Menyimpan hari dan jam operasional ke item
+
+        console.log("Operational Schedule:", operationalSchedule);
+      } else {
+        console.log("No schedules available.");
+      }
 
       console.log(
         "Created Date Time:",
@@ -113,8 +108,6 @@ export const SubFacilityServices = async (): Promise<SubFacilityDataItem[]> => {
       console.log("Images:", item.images);
       console.log("----------------------------");
     });
-
-   
 
     return response.data.data.content;
   } else {

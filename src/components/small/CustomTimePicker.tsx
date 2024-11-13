@@ -62,7 +62,7 @@ const CustomTimePicker: React.FC<Props> = ({ value, onChange }) => {
                 placeholder="Select time"
                 variant="outlined"
                 size="small"
-                sx={{ height:'38px', borderRadius:'8px' }}
+                sx={{ height:'38px', borderRadius:'8px', cursor:'pointer' }}
                 fullWidth
                 InputProps={{
                     readOnly: true, 

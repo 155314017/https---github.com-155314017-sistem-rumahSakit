@@ -14,19 +14,19 @@ import { Clinic, ClinicDataItem } from "../../services/Admin Tenant/ManageClinic
 
 export default function Klinik() {
     const [data, setData] = useState<ClinicDataItem[]>([]);
-    
-    useEffect(() => {   
-        const fetchData = async () => {
-            console.log('fetching data . . . ')
-            try {
-                const result = await Clinic();
-                console.log('result : ' + result)
-                setData(result);
-            } catch (error) {
-                console.log('Failed to fetch data from API' + error);
-            }
-        };
 
+
+    const fetchData = async () => {
+        console.log('fetching data . . . ')
+        try {
+            const result = await Clinic();
+            console.log('result : ' + result)
+            setData(result);
+        } catch (error) {
+            console.log('Failed to fetch data from API' + error);
+        }
+    };
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -44,7 +44,7 @@ export default function Klinik() {
                         <MediumCard icon={BusinessOutlinedIcon} title="Daftar Klinik" subtitle={data.length.toString()} />
                         <CardAdd icon={AddBoxIcon} title="Tambah Klinik" link="/tambahKlinik" />
                     </Grid>
-                    <TableKlinik/>
+                    <TableKlinik fetchDatas={fetchData} />
                 </Box>
             </Box>
         </Box>

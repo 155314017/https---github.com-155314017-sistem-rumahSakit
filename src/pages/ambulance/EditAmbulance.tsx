@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import InputCurrencyIdr from "../../components/inputComponent/InputCurrencyIdr";
 import axios from 'axios';
 import Cookies from "js-cookie";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ImageUploaderGroupAPI from "../../components/medium/ImageGroupUploaderAPI";
 import { useFormik } from "formik";
 import DropdownListAPI from "../../components/small/DropdownListAPI";
@@ -37,6 +37,8 @@ export default function EditAmbulance() {
     const [selectedDay, setSelectedDay] = useState<string | null>("1");
     const [selectedDays, setSelectedDays] = useState<string>("1");
     dayjs.locale("id");
+
+    const navigate = useNavigate();
 
     const dayMapping: { [key: string]: number } = {
         "1": 1,
@@ -114,6 +116,10 @@ export default function EditAmbulance() {
             const adjustedStartTime = startTime?.day(selectedDayOfWeek);
             const adjustedEndTime = endTime?.day(selectedDayOfWeek);
 
+            console.log("Selected Day on submit: ", selectedDayOfWeek)
+            console.log("adjusted start time: ", adjustedStartTime?.unix())
+            console.log("adjusted end time: ", adjustedEndTime?.unix())
+
             const schedules = [
                 {
                     startDateTime: adjustedStartTime?.unix(),
@@ -145,6 +151,7 @@ export default function EditAmbulance() {
                 });
                 console.log(response)
                 setSuccessAlert(true);
+                navigate('/ambulance')
             } catch (error) {
                 console.error('Error editing ambulance:', error);
                 setErrorAlert(true);

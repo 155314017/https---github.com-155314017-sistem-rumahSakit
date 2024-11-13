@@ -57,36 +57,42 @@ const StyledTableContainer = styled(TableContainer)`
   }
 `;
 
-export default function TableFasilitas() {
+interface TableFacilityProps {
+  fetchDatas: () => void;
+}
+
+const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas }) => {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
   // const [data, setData] = useState<FacilityDataItem[]>([]);
   const [datas, setDatas] = useState<FacilityDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
-  const [buildings, setBuildings] = useState<string[]>([]);
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
 
+  const fetchData = async () => {
+    console.log('Fetching data...');
+    try {
+      const result = await FacilityServices();
+      console.log('Result: ', result);
+      setDatas(result);
+      console.log("FETCHIG DATA ID FAICILITY")
+      const buildingIds = result.map((data) => data.masterBuildingId);
+      setDataIdBuilding(buildingIds);
+
+      console.log('Data ID Facility: ', buildingIds);
+      // setData(result); // Set data to display in table
+    } catch (error) {
+      console.log('Failed to fetch data from API: ', error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      console.log('Fetching Facility data...');
-      try {
-        const result = await FacilityServices();
-        console.log('Result: ', result);
-        setDatas(result); // Store the result in datas state
-        // setData(result); // Set data to display in table
-        console.log("FETCHIG DATA ID FAICILITY")
-        const buildingIds = result.map((data) => data.masterBuildingId);
-        setDataIdBuilding(buildingIds);
-
-        console.log('Data ID Facility: ', buildingIds);
-      } catch (error) {
-        console.log('Failed to fetch data from API: ', error);
-      }
-    };
-
     fetchData();
   }, []);
+
+
+
+  const [buildings, setBuildings] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchBuildings = async () => {
@@ -95,12 +101,15 @@ export default function TableFasilitas() {
           dataIdBuilding.map((id) => axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`))
         );
 
-        const facilitiesData = responses.map((response) => response.data.data.name);
+        const facilitiesData = responses.map((response) => {
+          const name = response.data.data.name;
+          return name ? name : "Data Gedung Tidak Tercatat";
+        });
+
         setBuildings(facilitiesData);
         console.log("DATA FASILITAS UTAMA");
         console.log(facilitiesData);
       } catch (err) {
-        console.log("GAGALLLL")
         console.error('Error:', err);
       }
     };
@@ -109,6 +118,7 @@ export default function TableFasilitas() {
       fetchBuildings();
     }
   }, [dataIdBuilding]);
+
 
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
@@ -144,6 +154,8 @@ export default function TableFasilitas() {
   const handleDeleteSuccess = () => {
     console.log("Item deleted successfully");
     // Refresh the data or perform additional actions after delete
+    fetchDatas();
+    fetchData();
   };
 
 
@@ -538,3 +550,6 @@ export default function TableFasilitas() {
     </Box>
   );
 }
+
+
+export default TableFasilitas;

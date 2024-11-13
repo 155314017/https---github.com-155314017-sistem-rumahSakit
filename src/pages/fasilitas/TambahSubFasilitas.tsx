@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Container, Box, Typography, Button } from "@mui/material";
+import { useEffect, useState } from 'react';
+import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
@@ -11,16 +11,8 @@ import dayjs from 'dayjs';
 import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import axios from 'axios';
 import Cookies from "js-cookie";
-
-const hari = [
-    { value: 1, label: "Senin" },
-    { value: 2, label: "Selasa" },
-    { value: 3, label: "Rabu" },
-    { value: 4, label: "Kamis" },
-    { value: 5, label: "Jumat" },
-    { value: 6, label: "Sabtu" },
-    { value: 7, label: "Minggu" },
-];
+import DropdownListAPI from '../../components/small/DropdownListAPI';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const listSubFasilitas = [
     { value: 1, label: "Baju Nakes" },
@@ -35,11 +27,10 @@ type ImageData = {
     imageData: string;
 };
 
-const jenisFasilitas = [
-    { value: 1, label: "MRI" },
-    { value: 2, label: "Fisioterapi" },
-    { value: 3, label: "Unit Transfusi Darah (UTD)" },
-];
+type Facility = {
+    id: string;
+    name: string;
+};
 
 export default function TambahSubFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
@@ -50,23 +41,65 @@ export default function TambahSubFasilitas() {
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [errorAlert, setErrorAlert] = useState(false);
+    const [facilityOptions, setFacilityOptions] = useState<Facility[]>([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchFacilityData = async () => {
+            console.log("Fetching info buildings...");
+            try {
+                console.log("Try fetching info buildings");
+                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/facility/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
+                    timeout: 10000
+                });
+                setFacilityOptions(response.data.data.content.map((item: any) => ({
+                    id: item.id,
+                    name: item.name,
+                })));
+                console.log(response.data.data.content);
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    console.error("Axios error:", error.message);
+                } else {
+                    console.error("Unexpected error:", error);
+                }
+            }
+        };
+        fetchFacilityData();
+    }, []);
 
     console.log(operationalTime)
+
+    const dayMapping: { [key: string]: number } = {
+        "Senin": 1,
+        "Selasa": 2,
+        "Rabu": 3,
+        "Kamis": 4,
+        "Jumat": 5,
+        "Sabtu": 6,
+        "Minggu": 0,
+    };
+
+
+    const handleTambahHari = () => {
+        console.log("Selected day:", selectedDay);
+        console.log("Start time:", startTime?.format("HH:mm"));
+        console.log("End time:", endTime?.format("HH:mm"));
+        // console.log(errorAlert)
+        // console.log(successAlert)
+        // console.log(operationalTime)
+
+        const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
+        setOperationalTime(dateTime);
+        console.log("Waktu yg dipilih: ", dateTime);
+        console.log("Day: ", selectedDay);
+        console.log("start time: ", startTime?.unix());
+        console.log("end time: ", endTime?.unix());
+    };
 
     const handleImageChange = (images: ImageData[]) => {
         console.log('Images changed:', images);
         setImagesData(images);
-    };
-
-    const handleTambahHari = () => {
-        // const selectedDayLabel = hari.find(day => day.value === selectedDay)?.label;
-        console.log("Selected day:", selectedDay);
-        console.log("Start time:", startTime?.format("HH:mm"));
-        console.log("End time:", endTime?.format("HH:mm"));
-
-        const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
-        setOperationalTime(dateTime);
-        console.log(dateTime);
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -90,21 +123,35 @@ export default function TambahSubFasilitas() {
     const formik = useFormik({
         initialValues: {
             // deskripsiKlinik: '',
+            masterFacilityId: '',
+            namaSubFasilitas: '',
         },
         validationSchema: Yup.object({
             // deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
+            masterFacilityId: Yup.string().required('Gedung is required'),
+            namaSubFasilitas: Yup.string().required('SubFacility Name is required'),
         }),
-        onSubmit: async () => {
+        onSubmit: async (values) => {
+
+            const selectedDayOfWeek = dayMapping[selectedDay || "1"];
+            const adjustedStartTime = startTime?.day(selectedDayOfWeek);
+            const adjustedEndTime = endTime?.day(selectedDayOfWeek);
+
+            console.log("Selected Day on submit: ", selectedDayOfWeek)
+            console.log("adjusted start time: ", adjustedStartTime)
+            console.log("adjusted end time: ", adjustedEndTime)
+
+
             const schedules = [
                 {
-                    startDateTime: startTime ? dayjs(startTime).toISOString() : null,
-                    endDateTime: endTime ? dayjs(endTime).toISOString() : null,
+                    startDateTime: adjustedStartTime?.unix(),
+                    endDateTime: adjustedEndTime?.unix(),
                 }
-            ].filter(schedule => schedule.startDateTime && schedule.endDateTime);
+            ];
 
             const data = {
-                name: selectedFacility,
-                facilityDataId: "c941a277-06b0-4026-97d7-b952a68b6716",
+                name: values.namaSubFasilitas,
+                facilityDataId: values.masterFacilityId,
                 additionalInfo: "hai",
                 schedules: schedules,
                 images: imagesData.map(image => ({
@@ -129,6 +176,7 @@ export default function TambahSubFasilitas() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
+                navigate('/fasilitas')
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
@@ -159,22 +207,32 @@ export default function TambahSubFasilitas() {
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Sub Fasilitas<span style={{ color: "red" }}>*</span></Typography>
-                        <DropdownList
-                            options={listSubFasilitas}
-                            placeholder="masukkan nama sub fasilitas"
-                            onChange={(value: string) => {
-                                console.log(value);
-                                setSelectedFacility(value)
-                            }
-                            }
-                            loading={false}
-                        />
+                        <FormControl fullWidth sx={{ my: 1 }}>
+                            <OutlinedInput
+                                id="namaSubFasilitas"
+                                name="namaSubFasilitas"
+                                size="small"
+                                placeholder="Masukkan nama fasilitas"
+                                value={formik.values.namaSubFasilitas}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik.touched.namaSubFasilitas && Boolean(formik.errors.namaSubFasilitas)}
+                            />
+                            {formik.touched.namaSubFasilitas && formik.errors.namaSubFasilitas && (
+                                <Typography color="error">{formik.errors.namaSubFasilitas}</Typography>
+                            )}
+                        </FormControl>
 
                         <Typography sx={{ fontSize: "16px", mt: 2 }}>Pilih Fasilitas<span style={{ color: "red" }}>*</span></Typography>
-                        <DropdownList
-                            options={jenisFasilitas}
-                            placeholder="Pilih fasilitas induk"
-                            onChange={(selectedValue) => formik.setFieldValue('fasilitas', selectedValue)}
+                        <DropdownListAPI
+                            options={facilityOptions.map(({ id, name }) => ({ value: id, label: name }))}
+                            placeholder="Pilih Fasilitas Induk"
+                            defaultValue={formik.values.masterFacilityId}
+                            onChange={(selectedOptionValue, selectedLabel) => {
+                                formik.setFieldValue('masterFacilityId', selectedOptionValue);
+                                console.log("Selected Building ID:", selectedOptionValue);
+                                console.log("Selected Building Name:", selectedLabel);
+                            }}
                             loading={false}
                         />
 
@@ -185,13 +243,22 @@ export default function TambahSubFasilitas() {
                                 <Box display={'flex'} flexDirection={'column'} width={'100%'} >
                                     <Typography>Hari</Typography>
                                     <DropdownList
-                                        options={hari}
+                                        options={[
+                                            { value: 1, label: "Senin" },
+                                            { value: 2, label: "Selasa" },
+                                            { value: 3, label: "Rabu" },
+                                            { value: 4, label: "Kamis" },
+                                            { value: 5, label: "Jumat" },
+                                            { value: 6, label: "Sabtu" },
+                                            { value: 7, label: "Minggu" },
+                                        ]}
                                         placeholder="Pilih hari"
                                         onChange={(value: string) => {
                                             console.log("Selected value:", value);
                                             setSelectedDay(value);
                                         }}
                                         loading={false}
+                                    // defaultValue=""
                                     />
                                 </Box>
 

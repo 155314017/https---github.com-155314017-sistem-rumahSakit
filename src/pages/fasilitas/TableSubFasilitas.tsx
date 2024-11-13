@@ -112,7 +112,11 @@ const StyledTableContainer = styled(TableContainer)`
   }
 `;
 
-export default function TableSubFasilitas() {
+interface TableSubFacilityProps {
+    fetchDatas: () => void;
+}
+
+const TableSubFasilitas: React.FC<TableSubFacilityProps> = ({ fetchDatas }) => {
     const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [open, setOpen] = React.useState<boolean>(false);
@@ -121,24 +125,24 @@ export default function TableSubFasilitas() {
     const [dataIdFacility, setDataIdFacility] = useState<string[]>([]);
     const [deletedItems, setDeletedItems] = useState("");
 
+
+    const fetchData = async () => {
+        console.log('Fetching data...');
+        try {
+            const result = await SubFacilityServices();
+            console.log('Result FETCHING: ', result);
+            setDatas(result); // Store the result in datas state
+            // setData(result); // Set data to display in table
+            console.log("FETCHIG DATA ID FAICILITY")
+            const facilityIds = result.map((data) => data.facilityDataId);
+            setDataIdFacility(facilityIds);
+
+            console.log('Data ID Facility: ', facilityIds);
+        } catch (error) {
+            console.log('Failed to fetch data from API: ', error);
+        }
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            console.log('Fetching data...');
-            try {
-                const result = await SubFacilityServices();
-                console.log('Result FETCHING: ', result);
-                setDatas(result); // Store the result in datas state
-                // setData(result); // Set data to display in table
-                console.log("FETCHIG DATA ID FAICILITY")
-                const facilityIds = result.map((data) => data.facilityDataId);
-                setDataIdFacility(facilityIds);
-
-                console.log('Data ID Facility: ', facilityIds);
-            } catch (error) {
-                console.log('Failed to fetch data from API: ', error);
-            }
-        };
-
         fetchData();
     }, []);
 
@@ -200,6 +204,8 @@ export default function TableSubFasilitas() {
     const handleDeleteSuccess = () => {
         console.log("Item deleted successfully");
         // Refresh the data or perform additional actions after delete
+        fetchDatas();
+        fetchData();
     };
 
     return (
@@ -427,7 +433,7 @@ export default function TableSubFasilitas() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {facilities[index]}
+                                                        {facilities[index] ? facilities[index] : "Fasilitas Tidak Ditemukan"}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[
@@ -477,7 +483,7 @@ export default function TableSubFasilitas() {
                                                             Ubah
                                                         </Link>
                                                         <Link
-                                                            href="/detailGedung "
+                                                            href="/detailGedung"
                                                             underline="hover"
                                                             sx={{
                                                                 textTransform: "capitalize",
@@ -537,3 +543,6 @@ export default function TableSubFasilitas() {
         </Box>
     );
 }
+
+
+export default TableSubFasilitas;

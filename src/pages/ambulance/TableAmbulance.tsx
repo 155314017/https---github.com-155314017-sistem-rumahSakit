@@ -53,7 +53,12 @@ const StyledTableContainer = styled(TableContainer)`
   }
 `;
 
-export default function TableAmbulance() {
+interface TableAmbulanceProps {
+  fetchDatas: () => void;
+  sukses: () => void;
+}
+
+const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, sukses }) => {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
@@ -63,19 +68,19 @@ export default function TableAmbulance() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log('Fetching data...');
-      try {
-        const result = await AmbulanceServices();
-        console.log('Result: ', result);
-        setDatas(result); 
-        // setData(result); // Set data to display in table
-      } catch (error) {
-        console.log('Failed to fetch data from API: ', error);
-      }
-    };
 
+  const fetchData = async () => {
+    console.log('Fetching data...');
+    try {
+      const result = await AmbulanceServices();
+      console.log('Result: ', result);
+      setDatas(result);
+      // setData(result); // Set data to display in table
+    } catch (error) {
+      console.log('Failed to fetch data from API: ', error);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -93,8 +98,11 @@ export default function TableAmbulance() {
   };
 
   const handleDeleteSuccess = () => {
+    sukses();
     console.log("Item deleted successfully");
     // Refresh the data or perform additional actions after delete
+    fetchDatas();
+    fetchData();
   };
 
   const toggleCollapse = () => {
@@ -403,7 +411,7 @@ export default function TableAmbulance() {
                       ))
                     ) : (
                       <StyledTableRow>
-                        <TableCell colSpan={4} align="center">
+                        <TableCell colSpan={5} align="center">
                           Tidak ada data
                         </TableCell>
                       </StyledTableRow>
@@ -448,3 +456,5 @@ export default function TableAmbulance() {
     </Box>
   );
 }
+
+export default TableAmbulance;

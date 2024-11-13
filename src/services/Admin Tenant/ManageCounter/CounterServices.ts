@@ -13,7 +13,9 @@ export interface CounterDataItem {
   deletedBy: string | null;
   deletedDateTime: number | null;
   images: string[];
-  schedules: { id: string; startDateTime: number; endDateTime: number }[];
+  schedules:
+    | { id: string; startDateTime: number; endDateTime: number }[]
+    | null; // Make sure to handle null
   operationalSchedule?: string;
 }
 
@@ -54,7 +56,7 @@ export interface ApiResponse {
 }
 
 const API_URL =
-  "https://hms.3dolphinsocial.com:8083/v1/manage/counter/?pageNumber=0&pageSize=100&orderBy=id=desc";
+  "https://hms.3dolphinsocial.com:8083/v1/manage/counter/?pageNumber=0&pageSize=10&orderBy=id=desc";
 
 export const CounterServices = async (): Promise<CounterDataItem[]> => {
   try {
@@ -70,38 +72,34 @@ export const CounterServices = async (): Promise<CounterDataItem[]> => {
         console.log("Additional Info:", item.additionalInfo);
         console.log("Created By:", item.createdBy);
 
-           if (item.schedules.length > 0) {
-             const { startDateTime, endDateTime } = item.schedules[0];
+        // Check if schedules is defined and has items
+        if (item.schedules && item.schedules.length > 0) {
+          const { startDateTime, endDateTime } = item.schedules[0];
 
-             const startDate = new Date(startDateTime * 1000);
-             const endDate = new Date(endDateTime * 1000);
+          const startDate = new Date(startDateTime * 1000);
+          const endDate = new Date(endDateTime * 1000);
 
-             const formatter = new Intl.DateTimeFormat("id-ID", {
-               weekday: "long",
-             });
+          const formatter = new Intl.DateTimeFormat("id-ID", {
+            weekday: "long",
+          });
 
-             const startDay = formatter.format(startDate);
-             const startHours = startDate
-               .getHours()
-               .toString()
-               .padStart(2, "0");
-             const startMinutes = startDate
-               .getMinutes()
-               .toString()
-               .padStart(2, "0");
-             const endHours = endDate.getHours().toString().padStart(2, "0");
-             const endMinutes = endDate
-               .getMinutes()
-               .toString()
-               .padStart(2, "0");
+          const startDay = formatter.format(startDate);
+          const startHours = startDate.getHours().toString().padStart(2, "0");
+          const startMinutes = startDate
+            .getMinutes()
+            .toString()
+            .padStart(2, "0");
+          const endHours = endDate.getHours().toString().padStart(2, "0");
+          const endMinutes = endDate.getMinutes().toString().padStart(2, "0");
 
-             const operationalSchedule = `${startDay}, ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
-             item.operationalSchedule = operationalSchedule; // Menyimpan hari dan jam operasional ke item
+          const operationalSchedule = `${startDay}, ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
+          item.operationalSchedule = operationalSchedule; // Store operational schedule in item
 
-             console.log("Operational Schedule:", operationalSchedule);
-           } else {
-             console.log("No schedules available.");
-           }
+          console.log("Operational Schedule:", operationalSchedule);
+        } else {
+          console.log("No schedules available.");
+          item.operationalSchedule = "Jadwal tidak tersedia"; // Optional: Set a default message
+        }
 
         console.log(
           "Created Date Time:",
@@ -130,7 +128,7 @@ export const CounterServices = async (): Promise<CounterDataItem[]> => {
       throw new Error(`API responded with status: ${response.status}`);
     }
   } catch (error) {
-    console.error("Error fetching ambulance services:", error);
+    console.error("Error fetching counter services:", error);
     throw error; // Re-throw the error for handling by the caller
   }
 };
