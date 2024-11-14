@@ -24,6 +24,7 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { CounterDataItem, CounterServices } from "../../services/Admin Tenant/ManageCounter/CounterServices";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -66,6 +67,7 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas }) => {
     const [open, setOpen] = React.useState<boolean>(false);
     const [datas, setDatas] = useState<CounterDataItem[]>([]);
     const [deletedItems, setDeletedItems] = useState("");
+    const navigate = useNavigate();
 
 
     const fetchData = async () => {
@@ -362,6 +364,7 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas }) => {
                                                         <Link
                                                             href="#"
                                                             mr={2}
+                                                            onClick={() => navigate(`/editKonter/${data.id}`)}
                                                             underline="hover"
                                                             sx={{
                                                                 textTransform: "capitalize",
