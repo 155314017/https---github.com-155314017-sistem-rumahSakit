@@ -165,7 +165,7 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, ap
                                 onDragOver={handleDragOver}
                                 onDrop={(e) => handleDrop(e, index)}
                                 sx={{
-                                    border: tes ? "2px dashed blue" : "2px dashed gray",
+                                    border: tes ? "2px dashed #8F85F3" : "2px dashed gray",
                                     borderRadius: "12px",
                                     textAlign: "center",
                                     width: "190px",
@@ -188,7 +188,7 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, ap
                                     disabled={tes}
                                 />
                                 {tes ? (
-                                    <CircularProgress />
+                                    <CircularProgress sx={{ color:'#8F85F3'}} />
                                 ) : imgData.image ? (
                                     <img
                                         src={imgData.image}
