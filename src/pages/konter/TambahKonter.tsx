@@ -11,14 +11,7 @@ import dayjs from 'dayjs';
 import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import Cookies from "js-cookie";
 import axios from 'axios';
-
-
-// interface ImageInfo {
-//     file: File;
-//     preview: string;
-//     name: string;
-//     size: string;
-// }
+import { useNavigate } from 'react-router-dom';
 
 const jenisKonter = [
     { value: 1, label: "Asuransi" },
@@ -45,6 +38,7 @@ export default function TambahKonter() {
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [errorAlert, setErrorAlert] = useState(false);
+    const navigate = useNavigate();
 
     console.log(operationalTime)
     const dayMapping: { [key: string]: number } = {
@@ -131,7 +125,7 @@ export default function TambahKonter() {
                 images: imagesData.map(image => ({
                     imageName: image.imageName || "",
                     imageType: image.imageType || "",
-                    imageData: image.imageData || "",   
+                    imageData: image.imageData || "",
                 })),
             };
 
@@ -150,6 +144,7 @@ export default function TambahKonter() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
+                navigate('/konter', { state: { successAdd: true, message: 'Konters berhasil ditambahkan!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
@@ -171,6 +166,58 @@ export default function TambahKonter() {
             />
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
+                    <Box
+                        position={"absolute"}
+                        sx={{
+                            top: 0,
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            display: "flex",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#fff",
+                                    borderRadius: "0px 15px 0px 0px ",
+                                }}
+                            />
+                        </Box>
+
+                        <Box
+                            sx={{
+                                width: "600px",
+                                height: "50px",
+                                bgcolor: "#F1F0FE",
+                                borderRadius: "0px 0px 22px 22px",
+                            }}
+                        />
+
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#fff",
+                                    borderRadius: "15px 0px 0px 0px ",
+                                }}
+                            />
+                        </Box>
+                    </Box>
                     <Typography fontSize="20px" fontWeight="700">Tambah Konter</Typography>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />

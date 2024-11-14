@@ -223,7 +223,7 @@ export default function EditKonter() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/konter')
+                navigate('/konter', { state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' } })
 
             } catch (error) {
                 console.error('Error submitting form:', error);
