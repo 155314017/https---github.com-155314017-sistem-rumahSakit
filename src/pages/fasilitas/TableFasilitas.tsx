@@ -60,9 +60,10 @@ const StyledTableContainer = styled(TableContainer)`
 
 interface TableFacilityProps {
   fetchDatas: () => void;
+  onSuccessDelete: () => void;
 }
 
-const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas }) => {
+const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDelete }) => {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
@@ -156,7 +157,7 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas }) => {
 
   const handleDeleteSuccess = () => {
     console.log("Item deleted successfully");
-    // Refresh the data or perform additional actions after delete
+    onSuccessDelete();
     fetchDatas();
     fetchData();
   };

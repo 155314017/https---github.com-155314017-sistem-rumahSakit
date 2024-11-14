@@ -151,7 +151,7 @@ export default function EditAmbulance() {
                 });
                 console.log(response)
                 setSuccessAlert(true);
-                navigate('/ambulance')
+                navigate('/ambulance', { state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' } })
             } catch (error) {
                 console.error('Error editing ambulance:', error);
                 setErrorAlert(true);

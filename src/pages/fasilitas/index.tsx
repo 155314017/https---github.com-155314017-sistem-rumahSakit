@@ -13,10 +13,23 @@ import TableSubFasilitas from "./TableSubFasilitas";
 import { useEffect, useState } from "react";
 import { FacilityServices, FacilityDataItem } from "../../services/ManageFacility/FacilityServices";
 import { SubFacilityServices, SubFacilityDataItem } from "../../services/ManageSubFacility/SubFacility";
+import { useLocation, useNavigate } from "react-router-dom";
+import AlertSuccess from "../../components/small/AlertSuccess";
 
 export default function Fasilitas() {
     const [data, setData] = useState<FacilityDataItem[]>([]);
     const [data1, setData1] = useState<SubFacilityDataItem[]>([]);
+    //fasilitas
+    const [successAddBuilding, setSuccessAddBuilding] = useState(false);
+    const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
+    const [successEditBuilding, setSuccessEditBuilding] = useState(false);
+    //sub
+    const [successAddSub, setSuccessAddSub] = useState(false);
+    const [successDeleteSub, setSuccessDeleteSub] = useState(false);
+    const [successEditSub, setSuccessEditSub] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+
 
 
     const fetchDataFacility = async () => {
@@ -49,6 +62,79 @@ export default function Fasilitas() {
     }, []);
 
 
+    //Fasilitas
+    useEffect(() => {
+        if (location.state && location.state.successAdd) {
+            showTemporaryAlertSuccess();
+            console.log(location.state.message);
+            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+        }
+    }, [location.state, navigate]);
+
+    useEffect(() => {
+        if (location.state && location.state.successEdit) {
+            showTemporarySuccessEdit();
+            console.log(location.state.message);
+            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+        }
+    }, [location.state, navigate]);
+
+    const showTemporaryAlertSuccess = async () => {
+        setSuccessAddBuilding(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setSuccessAddBuilding(false);
+    };
+
+    const showTemporarySuccessDelete = async () => {
+        setSuccessDeleteBuilding(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setSuccessDeleteBuilding(false);
+    };
+
+    const showTemporarySuccessEdit = async () => {
+        setSuccessEditBuilding(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setSuccessEditBuilding(false);
+    };
+
+    
+
+    //Sub Fasilitas
+
+    useEffect(() => {
+        if (location.state && location.state.successAddSub) {
+            showTemporaryAlertSuccessSub();
+            console.log(location.state.message);
+            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+        }
+    }, [location.state, navigate]);
+
+    useEffect(() => {
+        if (location.state && location.state.successEditSub) {
+            showTemporarySuccessEditSub();
+            console.log(location.state.message);
+            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+        }
+    }, [location.state, navigate]);
+
+    const showTemporaryAlertSuccessSub = async () => {
+        setSuccessAddSub(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setSuccessAddSub(false);
+    };
+
+    const showTemporarySuccessDeleteSub = async () => {
+        setSuccessDeleteSub(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setSuccessDeleteSub(false);
+    };
+
+    const showTemporarySuccessEditSub = async () => {
+        setSuccessEditSub(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setSuccessEditSub(false);
+    };
+
     return (
         <Box>
             <SideBar />
@@ -56,6 +142,27 @@ export default function Fasilitas() {
             <Box p={2} sx={{ marginLeft: "130px" }}>
                 <Header />
                 <Box>
+                    {/* alert fasilitas */}
+                    {successAddBuilding && (
+                        <AlertSuccess label="Success adding Fasilitas" />
+                    )}
+                    {successDeleteBuilding && (
+                        <AlertSuccess label="Success delete Fasilitas" />
+                    )}
+                    {successEditBuilding && (
+                        <AlertSuccess label="Success edit Fasilitas" />
+                    )}
+
+                    {/* alert sub */}
+                    {successAddSub && (
+                        <AlertSuccess label="Success adding SubFasilitas" />
+                    )}
+                    {successDeleteSub && (
+                        <AlertSuccess label="Success delete SubFasilitas" />
+                    )}
+                    {successEditSub && (
+                        <AlertSuccess label="Success edit SubFasilitas" />
+                    )}
                     <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
                         Fasilitas
                     </Typography>
@@ -66,8 +173,8 @@ export default function Fasilitas() {
                         <CardAdd icon={AddBoxIcon} title="Tambah Sub Fasilitas" link="/tambahSubFasilitas" />
                     </Grid>
                     <Box display={"flex"} flexDirection={"column"} gap={5} >
-                        <TableFasilitas fetchDatas={fetchDataFacility} />
-                        <TableSubFasilitas fetchDatas={fetchDataSubFacility} />
+                        <TableFasilitas fetchDatas={fetchDataFacility} onSuccessDelete={showTemporarySuccessDelete} />
+                        <TableSubFasilitas fetchDatas={fetchDataSubFacility} onSuccessDelete={showTemporarySuccessDeleteSub} />
                     </Box>
                 </Box>
             </Box>

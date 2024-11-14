@@ -12,6 +12,7 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import { useEffect, useState } from "react";
 import { AmbulanceServices, AmbulanceDataItem } from "../../services/Admin Tenant/ManageAmbulance/AmbulanceServices";
 import { useLocation, useNavigate } from "react-router-dom";
+import AlertSuccess from "../../components/small/AlertSuccess";
 
 export default function Ambulance() {
 
@@ -56,21 +57,21 @@ export default function Ambulance() {
   }, [location.state, navigate]);
 
   const showTemporaryAlertSuccess = async () => {
-    console.log("Adding building successful");
+    console.log("Adding ambulance successful");
     setSuccessAddBuilding(true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
     setSuccessAddBuilding(false);
   };
 
   const showTemporarySuccessDelete = async () => {
-    console.log("Deleting building successful");
+    console.log("Deleting ambulance successful");
     setSuccessDeleteBuilding(true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
     setSuccessDeleteBuilding(false);
   };
 
   const showTemporarySuccessEdit = async () => {
-    console.log("Editing building successful");
+    console.log("Editing ambulance successful");
     setSuccessEditBuilding(true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
     setSuccessEditBuilding(false);
@@ -83,6 +84,15 @@ export default function Ambulance() {
       <Box p={2} sx={{ marginLeft: "130px" }}>
         <Header />
         <Box>
+          {successAddBuilding && (
+            <AlertSuccess label="Success adding ambulance" />
+          )}
+          {successDeleteBuilding && (
+            <AlertSuccess label="Success delete ambulance" />
+          )}
+          {successEditBuilding && (
+            <AlertSuccess label="Success edit ambulance" />
+          )}
           <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
             Ambulance
           </Typography>

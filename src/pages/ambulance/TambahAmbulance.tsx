@@ -21,13 +21,6 @@ type ImageData = {
   imageData: string;
 };
 
-// const validationSchema = Yup.object({
-//   cost: Yup.number()
-//     .typeError("Biaya tarif harus berupa angka")
-//     .required("Biaya tarif wajib diisi")
-//     .min(1, "Biaya tarif tidak boleh 0"),
-// });
-
 export default function TambahAmbulance() {
   const [imagesData, setImagesData] = useState<ImageData[]>([]);
   const [errorAlert, setErrorAlert] = useState(false);
@@ -36,7 +29,6 @@ export default function TambahAmbulance() {
   const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
   const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
   const [operationalTime, setOperationalTime] = useState<string | null>(null);
-  const [operationalCost, setOperationalCost] = useState<string | null>(null);
   dayjs.locale("id");
 
   const navigate = useNavigate();
@@ -59,10 +51,6 @@ export default function TambahAmbulance() {
     console.log("Selected day:", selectedDay);
     console.log("Start time:", startTime?.format("HH:mm"));
     console.log("End time:", endTime?.format("HH:mm"));
-    // console.log(errorAlert)
-    // console.log(successAlert)
-    // console.log(operationalTime)
-
     const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
     setOperationalTime(dateTime);
     console.log("Waktu yg dipilih: ", dateTime);

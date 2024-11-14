@@ -71,13 +71,13 @@ export default function EditFasilitas() {
             console.log(formattedStartTime)
             console.log(formattedEndTime);
             const dayMapping: { [key: string]: string } = {
-                "Senin": "1",
-                "Selasa": "2",
-                "Rabu": "3",
-                "Kamis": "4",
-                "Jumat": "5",
-                "Sabtu": "6",
-                "Minggu": "7"
+                "Monday": "1",
+                "Tuesday": "2",
+                "Wednesday": "3",
+                "Thursday": "4",
+                "Friday": "5",
+                "Saturday": "6",
+                "Sunday": "7"
             };
 
             const dayValue = dayMapping[dayOfWeek] || "7";
@@ -185,7 +185,7 @@ export default function EditFasilitas() {
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
         { label: "Fasilitas", href: "/fasilitas" },
-        { label: "Tambah Fasilitas", href: "/tambahFasilitas" },
+        { label: "Edit Fasilitas", href: "/editFasilitas/:id" },
     ];
 
     const formik = useFormik({
@@ -249,7 +249,7 @@ export default function EditFasilitas() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/fasilitas')
+                navigate('/fasilitas', { state: { successEdit: true, message: 'Fasilitas berhasil di edit!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
@@ -271,7 +271,7 @@ export default function EditFasilitas() {
             />
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
-                    <Typography fontSize="20px" fontWeight="700">Tambah Fasilitas</Typography>
+                    <Typography fontSize="20px" fontWeight="700">Edit Fasilitas</Typography>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
                     </Box>

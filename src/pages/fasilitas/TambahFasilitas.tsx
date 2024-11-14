@@ -31,7 +31,6 @@ export default function TambahFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
-    const [selectedFacility, setSelectedFacility] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
@@ -173,7 +172,7 @@ export default function TambahFasilitas() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/fasilitas')
+                navigate('/fasilitas', { state: { successAdd: true, message: 'Fasilitas berhasil ditambahkan!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {

@@ -116,7 +116,7 @@ export default function TambahSubFasilitas() {
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
-        { label: "fasilitas", href: "/fasilitas" },
+        { label: "Fasilitas", href: "/fasilitas" },
         { label: "Tambah SubFasilitas", href: "/tambahSubFasilitas" },
     ];
 
@@ -172,7 +172,7 @@ export default function TambahSubFasilitas() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/fasilitas')
+                navigate('/fasilitas', { state: { successAddSub: true, message: 'Fasilitas berhasil ditambahkan!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
@@ -193,8 +193,67 @@ export default function TambahSubFasilitas() {
                 onBackClick={() => window.history.back()}
             />
             <Box mt={3}>
+
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
-                    <Typography fontSize="20px" fontWeight="700">Tambah Fasilitas</Typography>
+
+                    {/* membuat bentuk lengkung atas */}
+                    <Box
+                        position={"absolute"}
+                        sx={{
+                            top: 0,
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            display: "flex",
+                        }}
+                    >
+                        {/* lengkung kiri */}
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#fff",
+                                    borderRadius: "0px 15px 0px 0px ",
+                                }}
+                            />
+                        </Box>
+
+                        {/* kotak tengah */}
+                        <Box
+                            sx={{
+                                width: "600px",
+                                height: "50px",
+                                bgcolor: "#F1F0FE",
+                                borderRadius: "0px 0px 22px 22px",
+                            }}
+                        />
+
+                        {/* lengkung kanan */}
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#fff",
+                                    borderRadius: "15px 0px 0px 0px ",
+                                }}
+                            />
+                        </Box>
+                    </Box>
+                    {/* ---------- */}
+                    <Typography fontSize="20px" fontWeight="700">Tambah SubFasilitas</Typography>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
                     </Box>
@@ -206,7 +265,7 @@ export default function TambahSubFasilitas() {
                                 id="namaSubFasilitas"
                                 name="namaSubFasilitas"
                                 size="small"
-                                placeholder="Masukkan nama fasilitas"
+                                placeholder="Masukkan nama subfasilitas"
                                 value={formik.values.namaSubFasilitas}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
