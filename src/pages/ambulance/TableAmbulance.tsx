@@ -12,6 +12,7 @@ import {
   Link,
   IconButton,
   Pagination,
+  Collapse,
 } from "@mui/material";
 import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
@@ -208,7 +209,7 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
           <img src={bgImage} alt="bg-image" />
         </Box>
 
-        {!isCollapsed && (
+        <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
           <Box>
             <Box
               mt={3}
@@ -450,7 +451,7 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
 
             </Stack>
           </Box>
-        )}
+        </Collapse>
       </Box>
     </Box>
   );

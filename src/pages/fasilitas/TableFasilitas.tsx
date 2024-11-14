@@ -12,6 +12,7 @@ import {
   Link,
   IconButton,
   Pagination,
+  Collapse,
 } from "@mui/material";
 import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
@@ -256,7 +257,7 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
           <img src={bgImage} alt="bg-image" />
         </Box>
 
-        {!isCollapsed && (
+        <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
           <Box>
             <Box
               mt={3}
@@ -550,7 +551,7 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
 
             </Stack>
           </Box>
-        )}
+        </Collapse>
       </Box>
     </Box>
   );
