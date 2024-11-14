@@ -5,21 +5,12 @@ import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import bgImage from "../../assets/img/String.png";
 import AlertSuccess from "../../components/small/AlertSuccess";
-import DropdownList from "../../components/small/DropdownList";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
 import dayjs from 'dayjs';
-import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import axios from 'axios';
 import Cookies from "js-cookie";
 import DropdownListAPI from '../../components/small/DropdownListAPI';
 import { useParams, useNavigate } from 'react-router-dom';
-
-const listSubFasilitas = [
-    { value: 1, label: "Baju Nakes" },
-    { value: 2, label: "Stetoskop" },
-    { value: 3, label: "Suntikan" },
-];
-
 
 type ImageData = {
     imageName: string;
@@ -36,10 +27,8 @@ export default function EditSUbFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
-    const [selectedFacility, setSelectedFacility] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
-    const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [errorAlert, setErrorAlert] = useState(false);
     const { id } = useParams();
     const [facilityOptions, setFacilityOptions] = useState<Facility[]>([]);
@@ -63,7 +52,6 @@ export default function EditSUbFasilitas() {
             const formattedStartTime = startTime.format("HH:mm");
             const formattedEndTime = endTime.format("HH:mm");
             const dayOfWeek = startTime.format("dddd");
-
             console.log(formattedStartTime)
             console.log(formattedEndTime);
             const dayMapping: { [key: string]: string } = {
@@ -102,7 +90,6 @@ export default function EditSUbFasilitas() {
                     setEndTime(dayjs.unix(schedule.endDateTime));
                 }
 
-                setImagesData(response.data.data.images || []);
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -139,11 +126,6 @@ export default function EditSUbFasilitas() {
         console.log("Day: ", selectedDay);
         console.log("start time: ", startTime?.unix());
         console.log("end time: ", endTime?.unix());
-    };
-
-    const handleImageChange = (images: ImageData[]) => {
-        console.log('Images changed:', images);
-        setImagesData(images);
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -217,7 +199,6 @@ export default function EditSUbFasilitas() {
                 console.log('Response:', response.data);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
-                setImagesData([]);
                 navigate('/fasilitas', { state: { successEditSub: true, message: 'Fasilitas berhasil di edit!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);

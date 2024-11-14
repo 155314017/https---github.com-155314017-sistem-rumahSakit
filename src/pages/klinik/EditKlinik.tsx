@@ -5,10 +5,8 @@ import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import bgImage from "../../assets/img/String.png";
 import AlertSuccess from "../../components/small/AlertSuccess";
-import DropdownList from "../../components/small/DropdownList";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
 import dayjs from 'dayjs';
-import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate, useParams } from 'react-router-dom';
@@ -30,7 +28,6 @@ export default function EditKlinik() {
     const [errorAlert, setErrorAlert] = useState(false);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
     const { id } = useParams();
-    const [loading, setLoading] = useState<boolean>(true);
     const [apiUrl, setApiUrl] = useState('');
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -47,7 +44,6 @@ export default function EditKlinik() {
 
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true);
             console.log("id room: ", id)
             try {
                 const token = Cookies.get("accessToken");
@@ -74,8 +70,6 @@ export default function EditKlinik() {
                 console.log(description);
             } catch (error) {
                 console.error('Error saat menghapus data:', error);
-            } finally {
-                setLoading(false);
             }
         };
         fetchData();

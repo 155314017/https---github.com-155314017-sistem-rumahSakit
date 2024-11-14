@@ -8,22 +8,12 @@ import AlertSuccess from "../../components/small/AlertSuccess";
 import DropdownList from "../../components/small/DropdownList";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
 import dayjs from 'dayjs';
-import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import Cookies from "js-cookie";
 import axios from 'axios';
 import ImageUploaderGroupAPI from '../../components/medium/ImageGroupUploaderAPI';
 import "dayjs/locale/id";
 import { useNavigate, useParams } from 'react-router-dom';
 import DropdownListAPI from '../../components/small/DropdownListAPI';
-
-
-
-// interface ImageInfo {
-//     file: File;
-//     preview: string;
-//     name: string;
-//     size: string;
-// }
 
 const jenisKonter = [
     { value: 1, label: "Asuransi" },
@@ -52,7 +42,6 @@ export default function EditKonter() {
     const [errorAlert, setErrorAlert] = useState(false);
     const [apiUrl, setApiUrl] = useState('');
     const { id } = useParams();
-    const [loading, setLoading] = useState<boolean>(true);
     const [name, setName] = useState<string>('');
     const [location, setLocation] = useState<string>('');
     const [selectedDays, setSelectedDays] = useState<string>("1");
@@ -96,7 +85,6 @@ export default function EditKonter() {
 
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true);
             console.log("id room: ", id)
             try {
                 const token = Cookies.get("accessToken");
@@ -124,8 +112,6 @@ export default function EditKonter() {
                 console.log(location);
             } catch (error) {
                 console.error('Error saat menghapus data:', error);
-            } finally {
-                setLoading(false);
             }
         };
         fetchData();
@@ -159,10 +145,6 @@ export default function EditKonter() {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setErrorAlert(false);
     };
-
-    // const handleImagesSelected = (images: ImageInfo[]) => {
-    //     console.log("Selected images:", images);
-    // };
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
@@ -251,7 +233,6 @@ export default function EditKonter() {
                         <img src={bgImage} alt="bg-image" />
                     </Box>
 
-                    {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
                     <ImageUploaderGroupAPI onChange={handleImageChange} apiUrl={apiUrl} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>

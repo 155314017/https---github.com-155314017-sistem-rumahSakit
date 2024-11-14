@@ -7,9 +7,9 @@ import DropdownList from "../../components/small/DropdownList";
 import InputCurrencyIdr from "../../components/inputComponent/InputCurrencyIdr";
 import axios from 'axios';
 import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import dayjs from "dayjs";
-import { Formik, Form, useFormik, FormikValues } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import "dayjs/locale/id";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,6 @@ type ImageData = {
 export default function TambahAmbulance() {
   const [imagesData, setImagesData] = useState<ImageData[]>([]);
   const [errorAlert, setErrorAlert] = useState(false);
-  const [successAlert, setSuccessAlert] = useState(false);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
   const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
@@ -52,17 +51,13 @@ export default function TambahAmbulance() {
     console.log("Start time:", startTime?.format("HH:mm"));
     console.log("End time:", endTime?.format("HH:mm"));
     const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
+    console.log(errorAlert);
+    console.log(operationalTime);
     setOperationalTime(dateTime);
     console.log("Waktu yg dipilih: ", dateTime);
     console.log("Day: ", selectedDay);
     console.log("start time: ", startTime?.unix());
     console.log("end time: ", endTime?.unix());
-  };
-
-  const showTemporaryAlertSuccess = async () => {
-    setSuccessAlert(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setSuccessAlert(false);
   };
 
   const showTemporaryAlertError = async () => {
@@ -126,7 +121,6 @@ export default function TambahAmbulance() {
           },
         });
         console.log('Response:', response.data);
-        showTemporaryAlertSuccess();
         navigate('/ambulance', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' } })
       } catch (error) {
         console.error('Error submitting form:', error);

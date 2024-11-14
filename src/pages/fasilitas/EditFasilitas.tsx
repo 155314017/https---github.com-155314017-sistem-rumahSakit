@@ -5,10 +5,8 @@ import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import bgImage from "../../assets/img/String.png";
 import AlertSuccess from "../../components/small/AlertSuccess";
-import DropdownList from "../../components/small/DropdownList";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
 import dayjs from 'dayjs';
-import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import InputCurrencyIdr from '../../components/inputComponent/InputCurrencyIdr';
 import axios from 'axios';
 import Cookies from "js-cookie";
@@ -27,20 +25,18 @@ type ImageData = {
     imageData: string;
 };
 
-interface FormValues {
-    operationalCost: number;
-}
+// interface FormValues {
+//     operationalCost: number;
+// }
 
 
 export default function EditFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
-    const [selectedFacility, setSelectedFacility] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
-    const [operationalCost, setOperationalCost] = useState<string | null>(null);
     const [errorAlert, setErrorAlert] = useState(false);
     const [gedungOptions, setGedungOptions] = useState<Building[]>([]);
     const [apiUrl, setApiUrl] = useState('');
@@ -158,10 +154,6 @@ export default function EditFasilitas() {
         console.log("Selected day:", selectedDay);
         console.log("Start time:", startTime?.format("HH:mm"));
         console.log("End time:", endTime?.format("HH:mm"));
-        // console.log(errorAlert)
-        // console.log(successAlert)
-        // console.log(operationalTime)
-
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
         console.log("Waktu yg dipilih: ", dateTime);

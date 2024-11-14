@@ -25,7 +25,6 @@ type ImageData = {
 };
 
 export default function TambahRuangan() {
-    const [successAlert, setSuccessAlert] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [gedungOptions, setGedungOptions] = useState<Building[]>([]);
@@ -54,13 +53,6 @@ export default function TambahRuangan() {
         };
         fetchGedungData();
     }, []);
-
-    const showTemporaryAlertSuccess = async () => {
-        setSuccessAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessAlert(false);
-    };
-
     const showTemporaryAlertError = async () => {
         setErrorAlert(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -248,11 +240,8 @@ export default function TambahRuangan() {
                     </Box>
                 </Box>
             </Box>
-            {successAlert && (
-                <AlertSuccess label="Success adding building" />
-            )}
             {errorAlert && (
-                <AlertSuccess label="Error adding building" />
+                <AlertSuccess label="Error adding room" />
             )}
         </Container>
     );

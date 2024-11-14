@@ -32,7 +32,6 @@ export default function EditAmbulance() {
     const { id } = useParams();
     const [apiUrl, setApiUrl] = useState('');
     const [initialOperationalCost, setInitialOperationalCost] = useState<number>(0);
-    const [successAlert, setSuccessAlert] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
     const [selectedDay, setSelectedDay] = useState<string | null>("1");
     const [selectedDays, setSelectedDays] = useState<string>("1");
@@ -55,7 +54,7 @@ export default function EditAmbulance() {
             const formattedStartTime = startTime.format("HH:mm");
             const formattedEndTime = endTime.format("HH:mm");
             const dayOfWeek = startTime.format("dddd");
-
+            console.log(errorAlert);
             console.log(formattedStartTime)
             console.log(formattedEndTime);
             const dayMapping: { [key: string]: string } = {
@@ -150,7 +149,6 @@ export default function EditAmbulance() {
                     },
                 });
                 console.log(response)
-                setSuccessAlert(true);
                 navigate('/ambulance', { state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' } })
             } catch (error) {
                 console.error('Error editing ambulance:', error);

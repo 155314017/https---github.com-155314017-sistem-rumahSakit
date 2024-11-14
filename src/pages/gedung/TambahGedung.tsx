@@ -18,7 +18,6 @@ type ImageData = {
 };
 
 export default function TambahGedung() {
-    const [successAlert, setSuccessAlert] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
 
@@ -30,16 +29,9 @@ export default function TambahGedung() {
         console.log('Images updated 2:', imagesData);
     };
 
-    // In useEffect
     useEffect(() => {
         console.log('Updated imagesData:', imagesData);
     }, [imagesData]);
-
-    const showTemporaryAlertSuccess = async () => {
-        setSuccessAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessAlert(false);
-    };
 
     const showTemporaryAlertError = async () => {
         setErrorAlert(true);
@@ -261,10 +253,6 @@ export default function TambahGedung() {
                     </Box>
                 </Box>
             </Box>
-
-            {successAlert && (
-                <AlertSuccess label="Success adding building" />
-            )}
             {errorAlert && (
                 <AlertSuccess label="Error adding building" />
             )}

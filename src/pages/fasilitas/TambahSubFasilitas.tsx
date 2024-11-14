@@ -36,10 +36,8 @@ export default function TambahSubFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
-    const [selectedFacility, setSelectedFacility] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
-    const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [errorAlert, setErrorAlert] = useState(false);
     const [facilityOptions, setFacilityOptions] = useState<Facility[]>([]);
     const navigate = useNavigate();
@@ -97,11 +95,6 @@ export default function TambahSubFasilitas() {
         console.log("end time: ", endTime?.unix());
     };
 
-    const handleImageChange = (images: ImageData[]) => {
-        console.log('Images changed:', images);
-        setImagesData(images);
-    };
-
     const showTemporaryAlertSuccess = async () => {
         setSuccessAlert(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -122,12 +115,10 @@ export default function TambahSubFasilitas() {
 
     const formik = useFormik({
         initialValues: {
-            // deskripsiKlinik: '',
             masterFacilityId: '',
             namaSubFasilitas: '',
         },
         validationSchema: Yup.object({
-            // deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
             masterFacilityId: Yup.string().required('Gedung is required'),
             namaSubFasilitas: Yup.string().required('SubFacility Name is required'),
         }),
@@ -171,7 +162,6 @@ export default function TambahSubFasilitas() {
                 console.log('Response:', response.data);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
-                setImagesData([]);
                 navigate('/fasilitas', { state: { successAddSub: true, message: 'Fasilitas berhasil ditambahkan!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);

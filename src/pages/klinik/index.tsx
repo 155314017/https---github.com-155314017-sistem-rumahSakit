@@ -19,7 +19,6 @@ export default function Klinik() {
     const [successAddBuilding, setSuccessAddBuilding] = useState(false);
     const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
     const [successEditBuilding, setSuccessEditBuilding] = useState(false);
-    const [loading, setLoading] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
