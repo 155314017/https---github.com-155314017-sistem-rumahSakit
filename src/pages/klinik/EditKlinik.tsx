@@ -209,7 +209,7 @@ export default function EditKlinik() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/klinik')
+                navigate('/klinik', { state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {

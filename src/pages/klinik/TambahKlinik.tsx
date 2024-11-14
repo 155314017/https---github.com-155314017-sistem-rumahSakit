@@ -139,7 +139,7 @@ export default function TambahKlinik() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/klinik');
+                navigate('/klinik', { state: { successAdd: true, message: 'Klinik berhasil ditambahkan!' } });
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {

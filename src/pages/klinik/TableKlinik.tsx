@@ -61,10 +61,11 @@ const StyledTableContainer = styled(TableContainer)`
 
 interface TableClinicProps {
   fetchDatas: () => void;
+  onSuccessDelete: () => void;
 }
 
 
-const TableKlinik: React.FC<TableClinicProps> = ({ fetchDatas }) => {
+const TableKlinik: React.FC<TableClinicProps> = ({ fetchDatas, onSuccessDelete }) => {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
@@ -101,7 +102,7 @@ const TableKlinik: React.FC<TableClinicProps> = ({ fetchDatas }) => {
 
   const handleDeleteSuccess = () => {
     console.log("Item deleted successfully");
-    // Refresh the data or perform additional actions after delete
+    onSuccessDelete();
     fetchDatas();
     fetchData();
   };
