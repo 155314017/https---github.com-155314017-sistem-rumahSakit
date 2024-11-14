@@ -80,8 +80,8 @@ const TableKlinik: React.FC<TableClinicProps> = ({ fetchDatas }) => {
     try {
       const result = await Clinic();
       console.log('Result: ', result);
-      setDatas(result); // Store the result in datas state
-      // setData(result); // Set data to display in table
+      setDatas(result); 
+      // setData(result);
     } catch (error) {
       console.log('Failed to fetch data from API: ', error);
     }

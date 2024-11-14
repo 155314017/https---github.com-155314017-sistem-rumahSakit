@@ -12,6 +12,7 @@ import {
   Link,
   IconButton,
   Pagination,
+  Collapse,
 } from "@mui/material";
 import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
@@ -112,9 +113,10 @@ const StyledTableContainer = styled(TableContainer)`
 
 interface TableRoomProps {
   fetchDatas: () => void;
+  onSuccessDelete: () => void;
 }
 
-const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas }) => {
+const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas, onSuccessDelete }) => {
 
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -179,15 +181,10 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas }) => {
 
 
   const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
-
     event.preventDefault();
-
     console.log("ID Gedung yang akan dihapus:", buildingId);
     setDeletedItems(buildingId);
-
-
     setOpen(true);
-
   };
 
 
@@ -225,9 +222,9 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas }) => {
 
   const handleDeleteSuccess = () => {
     console.log("Item deleted successfully");
-    // Refresh the data or perform additional actions after delete
     fetchDatas();
     fetchData();
+    onSuccessDelete();
   };
 
   // const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -328,7 +325,7 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas }) => {
         </Box>
         {/* ---------- */}
 
-        {!isCollapsed && (
+        <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
           <Box>
             <Box
               mt={3}
@@ -571,7 +568,7 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas }) => {
 
             </Stack>
           </Box>
-        )}
+        </Collapse>
       </Box>
     </Box>
   );

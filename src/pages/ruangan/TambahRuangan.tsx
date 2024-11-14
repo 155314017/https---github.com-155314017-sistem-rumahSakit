@@ -10,6 +10,7 @@ import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import axios from "axios";
 import Cookies from "js-cookie";
 import DropdownListAPI from '../../components/small/DropdownListAPI';
+import { useNavigate } from 'react-router-dom';
 
 type Building = {
     id: string;
@@ -28,6 +29,7 @@ export default function TambahRuangan() {
     const [errorAlert, setErrorAlert] = useState(false);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [gedungOptions, setGedungOptions] = useState<Building[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchGedungData = async () => {
@@ -48,7 +50,7 @@ export default function TambahRuangan() {
                 } else {
                     console.error("Unexpected error:", error);
                 }
-            }   
+            }
         };
         fetchGedungData();
     }, []);
@@ -102,7 +104,9 @@ export default function TambahRuangan() {
                     },
                 });
                 console.log('Response:', response.data);
-                showTemporaryAlertSuccess();
+                formik.resetForm();
+                setImagesData([]);
+                navigate('/ruangan', { state: { successAdd: true, message: 'Ruangan berhasil ditambahkan!' } })
             } catch (error) {
                 console.error('Error adding room:', error);
                 showTemporaryAlertError();
@@ -121,6 +125,59 @@ export default function TambahRuangan() {
                     <Typography fontSize="20px" fontWeight="700">Tambah Ruangan</Typography>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
+                    </Box>
+
+                    <Box
+                        position={"absolute"}
+                        sx={{
+                            top: 0,
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            display: "flex",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#fff",
+                                    borderRadius: "0px 15px 0px 0px ",
+                                }}
+                            />
+                        </Box>
+
+                        <Box
+                            sx={{
+                                width: "600px",
+                                height: "50px",
+                                bgcolor: "#F1F0FE",
+                                borderRadius: "0px 0px 22px 22px",
+                            }}
+                        />
+
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#fff",
+                                    borderRadius: "15px 0px 0px 0px ",
+                                }}
+                            />
+                        </Box>
                     </Box>
 
                     <ImageUploaderGroup onChange={(images) => setImagesData(images)} />
@@ -147,7 +204,7 @@ export default function TambahRuangan() {
                         <DropdownListAPI
                             options={gedungOptions.map(({ id, name }) => ({ value: id, label: name }))}
                             placeholder="Pilih gedung"
-                            defaultValue={formik.values.masterBuildingId} 
+                            defaultValue={formik.values.masterBuildingId}
                             onChange={(selectedOptionValue, selectedLabel) => {
                                 formik.setFieldValue('masterBuildingId', selectedOptionValue);
                                 console.log("Selected Building ID:", selectedOptionValue);
