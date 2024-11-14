@@ -90,10 +90,9 @@ export default function TambahGedung() {
                     },
                 });
                 console.log('Response:', response.data);
-                showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/gedung', { state: { success: true, message: 'Gedung berhasil ditambahkan!' } })
+                navigate('/gedung', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
@@ -128,6 +127,58 @@ export default function TambahGedung() {
                         <img src={bgImage} alt="bg-image" />
                     </Box>
 
+                    <Box
+                        position={"absolute"}
+                        sx={{
+                            top: 0,
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            display: "flex",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#fff",
+                                    borderRadius: "0px 15px 0px 0px ",
+                                }}
+                            />
+                        </Box>
+
+                        <Box
+                            sx={{
+                                width: "600px",
+                                height: "50px",
+                                bgcolor: "#F1F0FE",
+                                borderRadius: "0px 0px 22px 22px",
+                            }}
+                        />
+
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#fff",
+                                    borderRadius: "15px 0px 0px 0px ",
+                                }}
+                            />
+                        </Box>
+                    </Box>
 
                     <ImageUploaderGroup onChange={handleImageChange} />
 
@@ -167,16 +218,16 @@ export default function TambahGedung() {
                                 error={formik.touched.alamatGedung && Boolean(formik.errors.alamatGedung)}
                                 sx={{
                                     alignItems: 'flex-start',
-                                    paddingLeft: '8px', 
+                                    paddingLeft: '8px',
                                 }}
                                 inputProps={{
                                     sx: {
-                                        padding: '8px', 
+                                        padding: '8px',
                                     }
                                 }}
                                 multiline
-                                minRows={3} 
-                                maxRows={10} 
+                                minRows={3}
+                                maxRows={10}
                             />
                             {formik.touched.alamatGedung && formik.errors.alamatGedung && (
                                 <Typography color="error">{formik.errors.alamatGedung}</Typography>

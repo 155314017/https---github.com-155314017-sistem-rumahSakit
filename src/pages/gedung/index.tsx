@@ -6,7 +6,7 @@ import Header from "../../components/medium/Header";
 import MediumCard from "../../components/medium/MediumCard";
 import CardAdd from "../../components/medium/CardAdd";
 import { Building, BuildingDataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
-
+import { useLocation, useNavigate } from 'react-router-dom';
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -14,8 +14,12 @@ import AlertSuccess from "../../components/small/AlertSuccess";
 
 export default function Gedung() {
   const [data, setData] = useState<BuildingDataItem[]>([]);
-  const [successAlert, setSuccessAlert] = useState(false);
+  const [successAddBuilding, setSuccessAddBuilding] = useState(false);
+  const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
+  const [successEditBuilding, setSuccessEditBuilding] = useState(false);
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     console.log('Fetching data...');
@@ -34,11 +38,41 @@ export default function Gedung() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (location.state && location.state.successAdd) {
+      showTemporaryAlertSuccess();
+      console.log(location.state.message);
+      navigate(location.pathname, { replace: true, state: undefined }); //clear state
+    }
+  }, [location.state, navigate]);
+
+  useEffect(() => {
+    if (location.state && location.state.successEdit) {
+      showTemporarySuccessEdit();
+      console.log(location.state.message);
+      navigate(location.pathname, { replace: true, state: undefined }); //clear state
+    }
+  }, [location.state, navigate]);
+
   const showTemporaryAlertSuccess = async () => {
-    console.log("DELETEEEDDD")
-    setSuccessAlert(true);
+    console.log("Adding building successful");
+    setSuccessAddBuilding(true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
-    setSuccessAlert(false);
+    setSuccessAddBuilding(false);
+  };
+
+  const showTemporarySuccessDelete = async () => {
+    console.log("Deleting building successful");
+    setSuccessDeleteBuilding(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setSuccessDeleteBuilding(false);
+  };
+
+  const showTemporarySuccessEdit = async () => {
+    console.log("Editing building successful");
+    setSuccessEditBuilding(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setSuccessEditBuilding(false);
   };
 
   return (
@@ -48,8 +82,14 @@ export default function Gedung() {
       <Box p={2} sx={{ marginLeft: "130px" }}>
         <Header />
         <Box>
-          {successAlert && (
+          {successAddBuilding && (
+            <AlertSuccess label="Success adding building" />
+          )}
+          {successDeleteBuilding && (
             <AlertSuccess label="Success delete building" />
+          )}
+          {successEditBuilding && (
+            <AlertSuccess label="Success edit building" />
           )}
           <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
             Gedung
@@ -58,7 +98,8 @@ export default function Gedung() {
             <MediumCard icon={BusinessOutlinedIcon} title="Total Gedung" subtitle={loading ? ". . ." : data.length.toString() || "0"} />
             <CardAdd icon={AddBoxIcon} title="Tambah Gedung" link="/tambahGedung" />
           </Grid>
-          <TableGedung fetchDatas={fetchData} sukses={showTemporaryAlertSuccess} />
+          {/* Kirim fungsi showTemporarySuccessDelete ke TableGedung */}
+          <TableGedung fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDelete} />
         </Box>
       </Box>
     </Box>
