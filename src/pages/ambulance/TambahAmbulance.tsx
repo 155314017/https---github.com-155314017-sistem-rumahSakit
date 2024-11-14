@@ -9,7 +9,7 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { Formik, Form } from "formik";
+import { Formik, Form, useFormik, FormikValues } from "formik";
 import * as Yup from "yup";
 import "dayjs/locale/id";
 import { useNavigate } from "react-router-dom";
@@ -51,6 +51,9 @@ export default function TambahAmbulance() {
     "Minggu": 0,
   };
 
+  interface FormValues {
+    operationalCost: number;
+  }
 
   const handleTambahHari = () => {
     console.log("Selected day:", selectedDay);
@@ -90,51 +93,60 @@ export default function TambahAmbulance() {
     { label: "Tambah Ambulance", href: "/tambahAmbulance" },
   ];
 
-  const handleSubmit = async (values: any) => {
-    const selectedDayOfWeek = dayMapping[selectedDay || "1"];
-    const adjustedStartTime = startTime?.day(selectedDayOfWeek);
-    const adjustedEndTime = endTime?.day(selectedDayOfWeek);
+  const formik = useFormik<FormValues>({
+    initialValues: {
+      operationalCost: 0,
+    },
+    validationSchema: Yup.object({
+      operationalCost: Yup.number().required('Operational Cost is required').positive('Must be a positive number'),
+    }),
+    onSubmit: async (values) => {
+      const selectedDayOfWeek = dayMapping[selectedDay || "1"];
+      const adjustedStartTime = startTime?.day(selectedDayOfWeek);
+      const adjustedEndTime = endTime?.day(selectedDayOfWeek);
 
-    console.log("Selected Day on submit: ", selectedDayOfWeek)
-    console.log("adjusted start time: ", adjustedStartTime)
-    console.log("adjusted end time: ", adjustedEndTime)
+      console.log("Selected Day on submit: ", selectedDayOfWeek)
+      console.log("adjusted start time: ", adjustedStartTime)
+      console.log("adjusted end time: ", adjustedEndTime)
 
-    const schedules = [
-      {
-        startDateTime: adjustedStartTime?.unix(),
-        endDateTime: adjustedEndTime?.unix(),
+      const schedules = [
+        {
+          startDateTime: adjustedStartTime?.unix(),
+          endDateTime: adjustedEndTime?.unix(),
+        }
+      ];
+      const data = {
+        number: "12345",
+        status: "ACTIVE",
+        additionalInfo: "hi",
+        cost: values.operationalCost | 0,
+        schedules: schedules,
+        images: imagesData.map(image => ({
+          imageName: image.imageName || "",
+          imageType: image.imageType || "",
+          imageData: image.imageData || "",
+        })),
+      };
+
+      const token = Cookies.get("accessToken");
+
+      try {
+        const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/', data, {
+          headers: {
+            'Content-Type': 'application/json',
+            'accessToken': `${token}`,
+          },
+        });
+        console.log('Response:', response.data);
+        showTemporaryAlertSuccess();
+        navigate('/ambulance', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' } })
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        showTemporaryAlertError();
       }
-    ];
-    const data = {
-      number: "12345",
-      status: "ACTIVE",
-      additionalInfo: "hi",
-      cost: operationalCost ? parseInt(operationalCost.replace(/\D/g, '')) : 0,
-      schedules: schedules,
-      images: imagesData.map(image => ({
-        imageName: image.imageName || "",
-        imageType: image.imageType || "",
-        imageData: image.imageData || "",
-      })),
-    };
-
-    const token = Cookies.get("accessToken");
-
-    try {
-      const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/', data, {
-        headers: {
-          'Content-Type': 'application/json',
-          'accessToken': `${token}`,
-        },
-      });
-      console.log('Response:', response.data);
-      showTemporaryAlertSuccess();
-      navigate('/ambulance')
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      showTemporaryAlertError();
     }
-  };
+  })
+
 
   return (
     <Container sx={{ py: 2 }}>
@@ -144,114 +156,101 @@ export default function TambahAmbulance() {
       />
 
       <Box mt={3}>
-        <Formik
-          initialValues={{
-            cost: '',
-            operationalTime: '',
-            startTime: null as dayjs.Dayjs | null,
-            endTime: null as dayjs.Dayjs | null,
-            selectedDay: '',
-          }}
-          // validationSchema={validationSchema} // Use the updated validationSchema
-          onSubmit={handleSubmit}
-        >
-          {({ setFieldValue, errors, touched }) => (
-            <Form>
-              <Box p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
-                <Typography fontSize="20px" fontWeight="700">Tambah Ambulance</Typography>
+        <Box p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
+          <Typography fontSize="20px" fontWeight="700">Tambah Ambulance</Typography>
 
-                <ImageUploaderGroup onChange={handleImageChange} />
+          <ImageUploaderGroup onChange={handleImageChange} />
 
-                <Box mt={3}>
-                  <Typography sx={{ fontSize: "16px" }}>Biaya Tarif<span style={{ color: "red" }}>*</span></Typography>
-                  <InputCurrencyIdr
-                    onChange={(value) => setOperationalCost(value)}
-                    defaultValue={0}
-                  />
-                  {errors.cost && touched.cost && <div style={{ color: "red" }}>{errors.cost}</div>}
-                </Box>
+          <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
+            <Typography sx={{ fontSize: "16px" }}>Biaya Tarif<span style={{ color: "red" }}>*</span></Typography>
+            <InputCurrencyIdr
+              onChange={(value) => {
+                formik.setFieldValue('operationalCost', value);
+              }}
+              defaultValue={0}
+            />
 
-                <Box display={'flex'} flexDirection={'column'} border={'1px solid #A8A8BD'} borderRadius={'16px'} padding={'16px'} mt={2}>
-                  <Typography mb={'15px'} >Jam Operasional</Typography>
-                  <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} gap={'32px'} >
-                    {/* Hari */}
-                    <Box display={'flex'} flexDirection={'column'} width={'100%'} >
-                      <Typography>Hari</Typography>
-                      <DropdownList
-                        options={[
-                          { value: 1, label: "Senin" },
-                          { value: 2, label: "Selasa" },
-                          { value: 3, label: "Rabu" },
-                          { value: 4, label: "Kamis" },
-                          { value: 5, label: "Jumat" },
-                          { value: 6, label: "Sabtu" },
-                          { value: 7, label: "Minggu" },
-                        ]}
-                        placeholder="Pilih hari"
-                        onChange={(value: string) => {
-                          console.log("Selected value:", value);
-                          setSelectedDay(value);
-                        }}
-                        loading={false}
-                      // defaultValue=""
-                      />
-                    </Box>
 
-                    {/* Jam Mulai */}
-                    <Box display={'flex'} flexDirection={'column'} width={'100%'} >
-                      <Typography>Jam mulai</Typography>
-                      <CustomTimePicker
-                        value={startTime}
-                        onChange={(newValue) => setStartTime(newValue)}
-                      />
-                    </Box>
-
-                    {/* Jam Selesai */}
-                    <Box display={'flex'} flexDirection={'column'} width={'100%'} >
-                      <Typography>Jam selesai</Typography>
-                      <CustomTimePicker
-                        value={endTime}
-                        onChange={(newValue) => setEndTime(newValue)}
-                      />
-                    </Box>
-                  </Box>
-                  <Button
-                    fullWidth
-                    sx={{
-                      mt: 2,
-                      bgcolor: 'transparent',
-                      color: '#8F85F3',
-                      border: '1px solid #8F85F3',
-                      ":hover": { bgcolor: '#8F85F3', color: 'white' },
+            <Box display={'flex'} flexDirection={'column'} border={'1px solid #A8A8BD'} borderRadius={'16px'} padding={'16px'} mt={2}>
+              <Typography mb={'15px'} >Jam Operasional</Typography>
+              <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} gap={'32px'} >
+                {/* Hari */}
+                <Box display={'flex'} flexDirection={'column'} width={'100%'} >
+                  <Typography>Hari</Typography>
+                  <DropdownList
+                    options={[
+                      { value: 1, label: "Senin" },
+                      { value: 2, label: "Selasa" },
+                      { value: 3, label: "Rabu" },
+                      { value: 4, label: "Kamis" },
+                      { value: 5, label: "Jumat" },
+                      { value: 6, label: "Sabtu" },
+                      { value: 7, label: "Minggu" },
+                    ]}
+                    placeholder="Pilih hari"
+                    onChange={(value: string) => {
+                      console.log("Selected value:", value);
+                      setSelectedDay(value);
                     }}
-                    onClick={handleTambahHari}
-                  >
-                    + Tambah hari
-                  </Button>
+                    loading={false}
+                  // defaultValue=""
+                  />
                 </Box>
 
-                <Button
-                  variant="contained"
-                  color="inherit"
-                  sx={{
-                    mt: 3,
-                    width: "100%",
-                    bgcolor: "#8F85F3",
-                    color: "#fff",
-                    textTransform: "none",
-                    borderRadius: "8px",
-                    boxShadow: "none",
-                    ":hover": { bgcolor: "#a098f5", boxShadow: "none" },
-                  }}
-                  type="submit"
-                >
-                  Simpan
-                </Button>
+                {/* Jam Mulai */}
+                <Box display={'flex'} flexDirection={'column'} width={'100%'} >
+                  <Typography>Jam mulai</Typography>
+                  <CustomTimePicker
+                    value={startTime}
+                    onChange={(newValue) => setStartTime(newValue)}
+                  />
+                </Box>
+
+                {/* Jam Selesai */}
+                <Box display={'flex'} flexDirection={'column'} width={'100%'} >
+                  <Typography>Jam selesai</Typography>
+                  <CustomTimePicker
+                    value={endTime}
+                    onChange={(newValue) => setEndTime(newValue)}
+                  />
+                </Box>
               </Box>
-            </Form>
-          )}
-        </Formik>
+              <Button
+                fullWidth
+                sx={{
+                  mt: 2,
+                  bgcolor: 'transparent',
+                  color: '#8F85F3',
+                  border: '1px solid #8F85F3',
+                  ":hover": { bgcolor: '#8F85F3', color: 'white' },
+                }}
+                onClick={handleTambahHari}
+              >
+                + Tambah hari
+              </Button>
+            </Box>
+
+            <Button
+              type="submit"
+              variant="contained"
+              color="inherit"
+              sx={{
+                mt: 3,
+                width: "100%",
+                bgcolor: "#8F85F3",
+                color: "#fff",
+                textTransform: "none",
+                borderRadius: "8px",
+                boxShadow: "none",
+                ":hover": { bgcolor: "#a098f5", boxShadow: "none" },
+              }}
+              disabled={!formik.isValid || !formik.dirty}
+            >
+              Simpan
+            </Button>
+          </Box>
+        </Box>
       </Box>
-    </Container>
+    </Container >
   );
 }

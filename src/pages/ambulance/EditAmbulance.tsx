@@ -68,8 +68,8 @@ export default function EditAmbulance() {
                 "Minggu": "7"
             };
 
-            const dayValue = dayMapping[dayOfWeek] || "7"; 
-            setSelectedDays(dayValue);  
+            const dayValue = dayMapping[dayOfWeek] || "7";
+            setSelectedDays(dayValue);
             console.log(dayValue);
         }
     }, [startTime, endTime]);
@@ -259,6 +259,7 @@ export default function EditAmbulance() {
                                     boxShadow: "none",
                                 },
                             }}
+                            disabled={!formik.isValid || !formik.dirty}
                         >
                             Simpan
                         </Button>

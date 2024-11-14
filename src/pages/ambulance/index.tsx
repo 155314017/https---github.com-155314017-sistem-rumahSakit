@@ -11,11 +11,16 @@ import MinorCrashIcon from "@mui/icons-material/MinorCrash";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { useEffect, useState } from "react";
 import { AmbulanceServices, AmbulanceDataItem } from "../../services/Admin Tenant/ManageAmbulance/AmbulanceServices";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Ambulance() {
 
   const [data, setData] = useState<AmbulanceDataItem[]>([]);
-  const [successAlert, setSuccessAlert] = useState(false);
+  const [successAddBuilding, setSuccessAddBuilding] = useState(false);
+  const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
+  const [successEditBuilding, setSuccessEditBuilding] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
 
   const fetchData = async () => {
@@ -33,11 +38,42 @@ export default function Ambulance() {
     fetchData();
   }, []);
 
+
+  useEffect(() => {
+    if (location.state && location.state.successAdd) {
+      showTemporaryAlertSuccess();
+      console.log(location.state.message);
+      navigate(location.pathname, { replace: true, state: undefined }); //clear state
+    }
+  }, [location.state, navigate]);
+
+  useEffect(() => {
+    if (location.state && location.state.successEdit) {
+      showTemporarySuccessEdit();
+      console.log(location.state.message);
+      navigate(location.pathname, { replace: true, state: undefined }); //clear state
+    }
+  }, [location.state, navigate]);
+
   const showTemporaryAlertSuccess = async () => {
-    console.log("DELETEEEDDD")
-    setSuccessAlert(true);
+    console.log("Adding building successful");
+    setSuccessAddBuilding(true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
-    setSuccessAlert(false);
+    setSuccessAddBuilding(false);
+  };
+
+  const showTemporarySuccessDelete = async () => {
+    console.log("Deleting building successful");
+    setSuccessDeleteBuilding(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setSuccessDeleteBuilding(false);
+  };
+
+  const showTemporarySuccessEdit = async () => {
+    console.log("Editing building successful");
+    setSuccessEditBuilding(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setSuccessEditBuilding(false);
   };
 
   return (
@@ -63,7 +99,7 @@ export default function Ambulance() {
             />
           </Grid>
 
-          <TableAmbulance fetchDatas={fetchData} sukses={showTemporaryAlertSuccess} />
+          <TableAmbulance fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDelete} />
         </Box>
       </Box>
     </Box>
