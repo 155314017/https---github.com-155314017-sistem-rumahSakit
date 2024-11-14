@@ -126,6 +126,7 @@ export default function TambahGedung() {
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
                     </Box>
+                    
 
                     <Box
                         position={"absolute"}

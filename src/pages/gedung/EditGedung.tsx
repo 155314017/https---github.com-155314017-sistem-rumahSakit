@@ -135,7 +135,7 @@ export default function EditGedung() {
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/gedung' ,{ state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' } })
+                navigate('/gedung', { state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
@@ -168,6 +168,59 @@ export default function EditGedung() {
                     <Typography fontSize="20px" fontWeight="700">Edit Gedung</Typography>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
+                    </Box>
+
+                    <Box
+                        position={"absolute"}
+                        sx={{
+                            top: 0,
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            display: "flex",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#fff",
+                                    borderRadius: "0px 15px 0px 0px ",
+                                }}
+                            />
+                        </Box>
+
+                        <Box
+                            sx={{
+                                width: "600px",
+                                height: "50px",
+                                bgcolor: "#F1F0FE",
+                                borderRadius: "0px 0px 22px 22px",
+                            }}
+                        />
+
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#fff",
+                                    borderRadius: "15px 0px 0px 0px ",
+                                }}
+                            />
+                        </Box>
                     </Box>
 
 

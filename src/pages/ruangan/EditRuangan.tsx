@@ -140,10 +140,10 @@ export default function EditRuangan() {
                 });
                 setSuccessAlert(true);
                 console.log(response);
-                setTimeout(() => {
-                    navigate('/ruangan');
-                }, 2000); 
-
+                // setTimeout(() => {
+                //     navigate('/ruangan');
+                // }, 2000);
+                navigate('/ruangan', { state: { successEdit: true, message: 'Ruangan berhasil di edit!' } })
             } catch (error) {
                 console.error('Error editing room:', error);
                 setErrorAlert(true);
@@ -170,6 +170,59 @@ export default function EditRuangan() {
                     <Typography fontSize="20px" fontWeight="700">Edit Ruangan</Typography>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
+                    </Box>
+
+                    <Box
+                        position={"absolute"}
+                        sx={{
+                            top: 0,
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            display: "flex",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#fff",
+                                    borderRadius: "0px 15px 0px 0px ",
+                                }}
+                            />
+                        </Box>
+
+                        <Box
+                            sx={{
+                                width: "600px",
+                                height: "50px",
+                                bgcolor: "#F1F0FE",
+                                borderRadius: "0px 0px 22px 22px",
+                            }}
+                        />
+
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#fff",
+                                    borderRadius: "15px 0px 0px 0px ",
+                                }}
+                            />
+                        </Box>
                     </Box>
 
                     <ImageUploaderGroupAPI onChange={handleImageChange} apiUrl={apiUrl} />
@@ -204,7 +257,7 @@ export default function EditRuangan() {
                                 console.log("Selected Building ID:", selectedOptionValue);
                                 console.log("Selected Building Name:", selectedLabel);
                             }}
-                            loading={loading}   
+                            loading={loading}
                         />
 
                         <Typography sx={{ fontSize: "16px", mt: 1 }}>Jenis Ruangan<span style={{ color: "red" }}>*</span></Typography>
@@ -212,7 +265,7 @@ export default function EditRuangan() {
                             options={jenisRuangan}
                             placeholder={loading ? "" : "Pilih jenis ruangan"}
                             onChange={(selectedValue) => {
-                                console.log("Selected Jenis Ruangan:", selectedValue); 
+                                console.log("Selected Jenis Ruangan:", selectedValue);
                                 formik.setFieldValue('jenisRuangan', selectedValue);
                             }}
                             defaultValue={loading ? "" : formik.values.jenisRuangan}
