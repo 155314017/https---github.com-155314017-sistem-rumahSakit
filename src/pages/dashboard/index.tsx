@@ -29,52 +29,42 @@ import { RoomDataItem, RoomServices } from "../../services/Admin Tenant/ManageRo
 import { FacilityDataItem, FacilityServices } from "../../services/ManageFacility/FacilityServices";
 import { DoctorServices, DoctorDataItem } from "../../services/Admin Tenant/ManageDoctor/DoctorServices";
 import { Building, BuildingDataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
+import AlertSuccess from "../../components/small/AlertSuccess";
 
 export default function Dashboard() {
   const [dataClinic, setDataClinic] = useState<ClinicDataItem[]>([]);
   const [dataRoom, setDataRoom] = useState<RoomDataItem[]>([]);
   const [dataFacility, setDataFacility] = useState<FacilityDataItem[]>([]);
   const [dataDoctor, setDataDoctor] = useState<DoctorDataItem[]>([]);
-  const [successAlert, setSuccessAlert] = useState(false);
   const [dataBuilding, setDataBuilding] = useState<BuildingDataItem[]>([]);
-  const [dataRooms, setDataRooms] = useState<RoomDataItem[]>([]);
 
-  const fetchDataRoom = async () => {
+  const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
+  const [successDeleteRoom, setSuccessDeleteRoom] = useState(false);
+  const [successDeleteFacility, setSuccessDeleteFacility] = useState(false);
+  const [successDeleteAmbulance, setSuccessDeleteAmbulance] = useState(false);
+  const [successDeleteClinic, setSuccessDeleteClinic] = useState(false);
+  const [successDeleteCounter, setSuccessDeleteCounter] = useState(false);
+
+
+
+  const fetchData = async () => {
     console.log('fetching data . . . ')
     try {
-      const result = await RoomServices();
-      console.log('result : ' + result)
-      setDataRooms(result);
-      console.log(dataRooms);
+      const resultClinic = await Clinic();
+      const resultRoom = await RoomServices();
+      const resultFacility = await FacilityServices();
+      const resultDoctor = await DoctorServices();
+
+      setDataRoom(resultRoom);
+      setDataClinic(resultClinic);
+      setDataFacility(resultFacility);
+      setDataDoctor(resultDoctor);
     } catch (error) {
       console.log('Failed to fetch data from API' + error);
     }
   };
-  useEffect(() => {
-    fetchDataRoom();
-  }, []);
-
 
   useEffect(() => {
-    const fetchData = async () => {
-      console.log('fetching data . . . ')
-      try {
-        const resultClinic = await Clinic();
-        const resultRoom = await RoomServices();
-        const resultFacility = await FacilityServices();
-        const resultDoctor = await DoctorServices();
-
-        // console.log('result : ' + resultClinic)
-        setDataRoom(resultRoom);
-        setDataClinic(resultClinic);
-        setDataFacility(resultFacility);
-        setDataDoctor(resultDoctor);
-        console.log(successAlert);
-      } catch (error) {
-        console.log('Failed to fetch data from API' + error);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -95,17 +85,69 @@ export default function Dashboard() {
     fetchDataBuilding();
   }, []);
 
-  const showTemporaryAlertSuccess = async () => {
-    console.log("DELETEEEDDD")
-    setSuccessAlert(true);
+  const showTemporarySuccessDeleteRoom = async () => {
+    console.log("Deleting building successful");
+    setSuccessDeleteRoom(true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
-    setSuccessAlert(false);
+    setSuccessDeleteRoom(false);
   };
 
+  const showTemporarySuccessDeleteBuilding = async () => {
+    console.log("Deleting building successful");
+    setSuccessDeleteBuilding(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setSuccessDeleteBuilding(false);
+  };
+
+  const showTemporarySuccessDeleteFacility = async () => {
+    console.log("Deleting building successful");
+    setSuccessDeleteFacility(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setSuccessDeleteFacility(false);
+  };
+
+  const showTemporarySuccessDeleteAmbulance = async () => {
+    console.log("Deleting building successful");
+    setSuccessDeleteAmbulance(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setSuccessDeleteAmbulance(false);
+  };
+
+  const showTemporarySuccessDeleteClinic = async () => {
+    console.log("Deleting building successful");
+    setSuccessDeleteClinic(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setSuccessDeleteClinic(false);
+  };
+
+  const showTemporarySuccessDeleteCounter = async () => {
+    console.log("Deleting building successful");
+    setSuccessDeleteCounter(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setSuccessDeleteCounter(false);
+  };
 
   return (
     <Box>
       <Box sx={{ py: 5 }}>
+        {successDeleteBuilding && (
+          <AlertSuccess label="Success delete Building" />
+        )}
+        {successDeleteRoom && (
+          <AlertSuccess label="Success delete Room" />
+        )}
+        {successDeleteFacility && (
+          <AlertSuccess label="Success delete Facility" />
+        )}
+        {successDeleteAmbulance && (
+          <AlertSuccess label="Success delete Ambulance" />
+        )}
+        {successDeleteClinic && (
+          <AlertSuccess label="Success delete Clinic" />
+        )}
+        {successDeleteCounter && (
+          <AlertSuccess label="Success delete Counter" />
+        )}
         <Typography sx={{ fontSize: "32px", fontWeight: "700" }}>
           Dashboard
         </Typography>
@@ -146,14 +188,14 @@ export default function Dashboard() {
       </Grid>
 
       <Stack mt={3} spacing={3}>
-        <TableGedung fetchDatas={fetchDataBuilding} sukses={showTemporaryAlertSuccess} />
-        <TableRuangan fetchDatas={fetchDataRoom} />
+        <TableGedung fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteBuilding} />
+        <TableRuangan fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteRoom} />
         <TablePegawai />
-        <TableFasilitas />
+        <TableFasilitas fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteFacility} />
         <TableDokter />
-        <TableAmbulance />
-        <TableKlinik />
-        <TableKonter />
+        <TableAmbulance fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteAmbulance} />
+        <TableKlinik fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteClinic} />
+        <TableKonter fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteCounter} />
         <TablePasien />
       </Stack>
     </Box>

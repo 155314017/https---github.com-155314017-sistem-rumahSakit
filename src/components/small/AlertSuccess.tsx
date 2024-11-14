@@ -18,7 +18,7 @@ const AlertSuccess: React.FC<Props> = ({ label }) => {
                 color: '#77C397',
                 fontSize: '16px',
                 lineHeight: '18px',
-                position: 'absolute', 
+                position: 'fixed', 
                 top: '10%',
                 left: '50%',
                 zIndex:999,
