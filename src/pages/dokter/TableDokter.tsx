@@ -68,8 +68,8 @@ export default function TableDokter() {
       try {
         const result = await DoctorServices();
         console.log('Result: ', result);
-        setDatas(result); // Store the result in datas state
-        // setData(result); // Set data to display in table
+        setDatas(result); 
+        // setData(result);
       } catch (error) {
         console.log('Failed to fetch data from API: ', error);
       }

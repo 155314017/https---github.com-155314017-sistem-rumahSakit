@@ -50,6 +50,7 @@ import EditAmbulance from './pages/ambulance/EditAmbulance';
 import EditFasilitas from './pages/fasilitas/EditFasilitas';
 import EditSUbFasilitas from './pages/fasilitas/EditSubFasilitas';
 import EditKlinik from './pages/klinik/EditKlinik';
+import EditKonter from './pages/konter/EditKonter';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -103,6 +104,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/konter" element={<Konter />} />
         <Route path="/detailKonter" element={<DetailKonter />} />
         <Route path="/tambahKonter" element={<TambahKonter />} />
+        <Route path="/editKonter/:id" element={<EditKonter/>} />
 
         {/* Page Ruangan */}
         <Route path="/ruangan" element={<Ruangan/>} />
