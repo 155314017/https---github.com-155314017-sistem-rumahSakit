@@ -69,28 +69,37 @@ export const AmbulanceServices = async (): Promise<AmbulanceDataItem[]> => {
         console.log("Status:", item.status);
 
         if (item.schedules.length > 0) {
-          const { startDateTime, endDateTime } = item.schedules[0];
+          const operationalSchedules: string[] = item.schedules.map(
+            (schedule) => {
+              const startDate = new Date(schedule.startDateTime * 1000);
+              const endDate = new Date(schedule.endDateTime * 1000);
 
-          const startDate = new Date(startDateTime * 1000);
-          const endDate = new Date(endDateTime * 1000);
+              const formatter = new Intl.DateTimeFormat("id-ID", {
+                weekday: "long",
+              });
 
-          const formatter = new Intl.DateTimeFormat("id-ID", {
-            weekday: "long",
-          });
+              const startDay = formatter.format(startDate);
+              const startHours = startDate
+                .getHours()
+                .toString()
+                .padStart(2, "0");
+              const startMinutes = startDate
+                .getMinutes()
+                .toString()
+                .padStart(2, "0");
+              const endHours = endDate.getHours().toString().padStart(2, "0");
+              const endMinutes = endDate
+                .getMinutes()
+                .toString()
+                .padStart(2, "0");
 
-          const startDay = formatter.format(startDate);
-          const startHours = startDate.getHours().toString().padStart(2, "0");
-          const startMinutes = startDate
-            .getMinutes()
-            .toString()
-            .padStart(2, "0");
-          const endHours = endDate.getHours().toString().padStart(2, "0");
-          const endMinutes = endDate.getMinutes().toString().padStart(2, "0");
+              return `${startDay}, ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
+            }
+          );
 
-          const operationalSchedule = `${startDay}, ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
-          item.operationalSchedule = operationalSchedule; // Menyimpan hari dan jam operasional ke item
+          item.operationalSchedule = operationalSchedules.join(" | "); // Combine all schedules with a separator
 
-          console.log("Operational Schedule:", operationalSchedule);
+          console.log("Operational Schedules:", item.operationalSchedule);
         } else {
           console.log("No schedules available.");
         }

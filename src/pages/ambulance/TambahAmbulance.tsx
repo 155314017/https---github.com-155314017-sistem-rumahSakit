@@ -1,5 +1,6 @@
 import { Container, Box } from "@mui/system";
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, IconButton } from "@mui/material";
+import { Delete as DeleteIcon } from "@mui/icons-material";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import ImageUploaderGroup from "../../components/medium/ImageUploaderGroup";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
@@ -7,7 +8,7 @@ import DropdownList from "../../components/small/DropdownList";
 import InputCurrencyIdr from "../../components/inputComponent/InputCurrencyIdr";
 import axios from 'axios';
 import Cookies from "js-cookie";
-import {  useState } from "react";
+import { useState } from "react";
 import dayjs from "dayjs";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -21,13 +22,19 @@ type ImageData = {
   imageData: string;
 };
 
+type Schedule = {
+  day: string;
+  startTime: dayjs.Dayjs;
+  endTime: dayjs.Dayjs;
+};
+
 export default function TambahAmbulance() {
   const [imagesData, setImagesData] = useState<ImageData[]>([]);
   const [errorAlert, setErrorAlert] = useState(false);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
   const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
-  const [operationalTime, setOperationalTime] = useState<string | null>(null);
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
   dayjs.locale("id");
 
   const navigate = useNavigate();
@@ -47,17 +54,21 @@ export default function TambahAmbulance() {
   }
 
   const handleTambahHari = () => {
-    console.log("Selected day:", selectedDay);
-    console.log("Start time:", startTime?.format("HH:mm"));
-    console.log("End time:", endTime?.format("HH:mm"));
-    const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
-    console.log(errorAlert);
-    console.log(operationalTime);
-    setOperationalTime(dateTime);
-    console.log("Waktu yg dipilih: ", dateTime);
-    console.log("Day: ", selectedDay);
-    console.log("start time: ", startTime?.unix());
-    console.log("end time: ", endTime?.unix());
+    if (selectedDay && startTime && endTime) {
+      const newSchedule: Schedule = {
+        day: selectedDay,
+        startTime: startTime,
+        endTime: endTime,
+      };
+      setSchedules([...schedules, newSchedule]);
+      setSelectedDay('');
+      setStartTime(null);
+      setEndTime(null);
+    }
+  };
+
+  const handleDeleteSchedule = (index: number) => {
+    setSchedules(schedules.filter((_, i) => i !== index));
   };
 
   const showTemporaryAlertError = async () => {
@@ -84,26 +95,20 @@ export default function TambahAmbulance() {
       operationalCost: Yup.number().required('Operational Cost is required').positive('Must be a positive number'),
     }),
     onSubmit: async (values) => {
-      const selectedDayOfWeek = dayMapping[selectedDay || "1"];
-      const adjustedStartTime = startTime?.day(selectedDayOfWeek);
-      const adjustedEndTime = endTime?.day(selectedDayOfWeek);
+      const formattedSchedules = schedules.map((schedule) => {
+        const selectedDayOfWeek = dayMapping[schedule.day];
+        return {
+          startDateTime: schedule.startTime.day(selectedDayOfWeek).unix(),
+          endDateTime: schedule.endTime.day(selectedDayOfWeek).unix(),
+        };
+      });
 
-      console.log("Selected Day on submit: ", selectedDayOfWeek)
-      console.log("adjusted start time: ", adjustedStartTime)
-      console.log("adjusted end time: ", adjustedEndTime)
-
-      const schedules = [
-        {
-          startDateTime: adjustedStartTime?.unix(),
-          endDateTime: adjustedEndTime?.unix(),
-        }
-      ];
       const data = {
         number: "12345",
         status: "ACTIVE",
         additionalInfo: "hi",
-        cost: values.operationalCost | 0,
-        schedules: schedules,
+        cost: values.operationalCost || 0,
+        schedules: formattedSchedules,
         images: imagesData.map(image => ({
           imageName: image.imageName || "",
           imageType: image.imageType || "",
@@ -121,14 +126,13 @@ export default function TambahAmbulance() {
           },
         });
         console.log('Response:', response.data);
-        navigate('/ambulance', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' } })
+        navigate('/ambulance', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' } });
       } catch (error) {
         console.error('Error submitting form:', error);
         showTemporaryAlertError();
       }
     }
-  })
-
+  });
 
   return (
     <Container sx={{ py: 2 }}>
@@ -152,11 +156,9 @@ export default function TambahAmbulance() {
               defaultValue={0}
             />
 
-
             <Box display={'flex'} flexDirection={'column'} border={'1px solid #A8A8BD'} borderRadius={'16px'} padding={'16px'} mt={2}>
               <Typography mb={'15px'} >Jam Operasional</Typography>
               <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} gap={'32px'} >
-                {/* Hari */}
                 <Box display={'flex'} flexDirection={'column'} width={'100%'} >
                   <Typography>Hari</Typography>
                   <DropdownList
@@ -171,15 +173,12 @@ export default function TambahAmbulance() {
                     ]}
                     placeholder="Pilih hari"
                     onChange={(value: string) => {
-                      console.log("Selected value:", value);
                       setSelectedDay(value);
                     }}
                     loading={false}
-                  // defaultValue=""
                   />
                 </Box>
 
-                {/* Jam Mulai */}
                 <Box display={'flex'} flexDirection={'column'} width={'100%'} >
                   <Typography>Jam mulai</Typography>
                   <CustomTimePicker
@@ -188,7 +187,6 @@ export default function TambahAmbulance() {
                   />
                 </Box>
 
-                {/* Jam Selesai */}
                 <Box display={'flex'} flexDirection={'column'} width={'100%'} >
                   <Typography>Jam selesai</Typography>
                   <CustomTimePicker
@@ -210,6 +208,21 @@ export default function TambahAmbulance() {
               >
                 + Tambah hari
               </Button>
+
+              {schedules.map((schedule, index) => (
+                <Box key={index} display="flex" justifyContent="space-between" alignItems="center" mt={2}
+                  sx={{
+                    border: '1px solid black',
+                    padding: '4px',
+                    borderRadius:'6px'
+                  }}
+                >
+                  <Typography>{`${schedule.day}: ${schedule.startTime.format("HH:mm")} - ${schedule.endTime.format("HH:mm")}`}</Typography>
+                  <IconButton color="error" onClick={() => handleDeleteSchedule(index)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
+              ))}
             </Box>
 
             <Button
@@ -233,6 +246,6 @@ export default function TambahAmbulance() {
           </Box>
         </Box>
       </Box>
-    </Container >
+    </Container>
   );
 }
