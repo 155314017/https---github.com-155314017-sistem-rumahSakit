@@ -58,7 +58,7 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         {/* Gedung */}
         <Route path="/gedung" element={<Gedung />} />
-        <Route path="/detailGedung" element={<DetailGedung />} />
+        <Route path="/detailGedung/:id" element={<DetailGedung />} />
         <Route path="/tambahGedung" element={<TambahGedung />} />
         <Route path="/editGedung/:id" element={<EditGedung/>} />
 
