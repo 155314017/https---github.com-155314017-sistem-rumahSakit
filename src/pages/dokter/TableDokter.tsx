@@ -63,8 +63,8 @@ export default function TableDokter() {
   const [isCollapsed, setIsCollapsed] = useState(true);
   // const [open, setOpen] = React.useState<boolean>(false);
   const [datas, setDatas] = useState<DoctorDataItem[]>([]);
-  const [idClinic, setIdClinic] = useState<String[]>([]);
-  const [clinicNames, setClinicNames] = useState<String[]>([]);
+  const [idClinic, setIdClinic] = useState<string[]>([]);
+  const [clinicNames, setClinicNames] = useState<string[]>([]);
 
 
   useEffect(() => {

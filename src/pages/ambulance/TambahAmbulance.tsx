@@ -39,6 +39,7 @@ export default function TambahAmbulance() {
 
   const navigate = useNavigate();
 
+  console.log(errorAlert)
   const dayMapping: { [key: string]: number } = {
     "Senin": 1,
     "Selasa": 2,
