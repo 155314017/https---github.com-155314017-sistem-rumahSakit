@@ -514,7 +514,8 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas, onSuccessDelete })
                               Ubah
                             </Link>
                             <Link
-                              href="/detailGedung "
+                              href="#"
+                              onClick={() => navigate(`/detailRuangan/${data.id}`)}
                               underline="hover"
                               sx={{
                                 textTransform: "capitalize",

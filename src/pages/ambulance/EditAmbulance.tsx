@@ -1,5 +1,4 @@
-import { Container, Box } from "@mui/system";
-import { Typography, Button } from "@mui/material";
+import { Container, Box, Typography, Button, IconButton } from "@mui/material";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import bgImage from "../../assets/img/String.png";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
@@ -14,6 +13,7 @@ import ImageUploaderGroupAPI from "../../components/medium/ImageGroupUploaderAPI
 import { useFormik } from "formik";
 import DropdownListAPI from "../../components/small/DropdownListAPI";
 import "dayjs/locale/id";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface FormValues {
     operationalCost: number;
@@ -25,53 +25,45 @@ type ImageData = {
     imageData: string;
 };
 
+type Schedule = {
+    day: string;
+    startTime: dayjs.Dayjs;
+    endTime: dayjs.Dayjs;
+};
+
 export default function EditAmbulance() {
-    const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
-    const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
+    const [schedules, setSchedules] = useState<Schedule[]>([]);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const { id } = useParams();
     const [apiUrl, setApiUrl] = useState('');
     const [initialOperationalCost, setInitialOperationalCost] = useState<number>(0);
-    const [errorAlert, setErrorAlert] = useState(false);
-    const [selectedDay, setSelectedDay] = useState<string | null>("1");
-    const [selectedDays, setSelectedDays] = useState<string>("1");
+    const [selectedDay, setSelectedDay] = useState<string>("1");
+    const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
+    const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
     dayjs.locale("id");
 
     const navigate = useNavigate();
 
-    const dayMapping: { [key: string]: number } = {
-        "1": 1,
-        "2": 2,
-        "3": 3,
-        "4": 4,
-        "5": 5,
-        "6": 6,
-        "7": 0,
+    const dayNames: { [key: string]: string } = {
+        "1": "Senin",
+        "2": "Selasa",
+        "3": "Rabu",
+        "4": "Kamis",
+        "5": "Jumat",
+        "6": "Sabtu",
+        "7": "Minggu"
     };
 
-    useEffect(() => {
-        if (startTime && endTime) {
-            const formattedStartTime = startTime.format("HH:mm");
-            const formattedEndTime = endTime.format("HH:mm");
-            const dayOfWeek = startTime.format("dddd");
-            console.log(errorAlert);
-            console.log(formattedStartTime)
-            console.log(formattedEndTime);
-            const dayMapping: { [key: string]: string } = {
-                "Senin": "1",
-                "Selasa": "2",
-                "Rabu": "3",
-                "Kamis": "4",
-                "Jumat": "5",
-                "Sabtu": "6",
-                "Minggu": "7"
-            };
+    const dayMapping: { [key: string]: number } = {
+        "Senin": 1,
+        "Selasa": 2,
+        "Rabu": 3,
+        "Kamis": 4,
+        "Jumat": 5,
+        "Sabtu": 6,
+        "Minggu": 0,
+    };
 
-            const dayValue = dayMapping[dayOfWeek] || "7";
-            setSelectedDays(dayValue);
-            console.log(dayValue);
-        }
-    }, [startTime, endTime]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -88,11 +80,13 @@ export default function EditAmbulance() {
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${id}`);
                 setInitialOperationalCost(data.cost);
 
-                if (data.schedules && data.schedules.length > 0) {
-                    const schedule = data.schedules[0];
-                    setStartTime(dayjs.unix(schedule.startDateTime));
-                    setEndTime(dayjs.unix(schedule.endDateTime));
-                }
+                // if (data.schedules) {
+                //     setSchedules(data.schedules.map((schedule: any) => ({
+                //         day: schedule.day,
+                //         startTime: dayjs.unix(schedule.startDateTime),
+                //         endTime: dayjs.unix(schedule.endDateTime),
+                //     })));
+                // }
 
                 setImagesData(data.images || []);
             } catch (error) {
@@ -111,28 +105,22 @@ export default function EditAmbulance() {
             operationalCost: Yup.number().required('Operational Cost is required').positive('Must be a positive number'),
         }),
         onSubmit: async (values) => {
-            const selectedDayOfWeek = dayMapping[selectedDay || "1"];
-            const adjustedStartTime = startTime?.day(selectedDayOfWeek);
-            const adjustedEndTime = endTime?.day(selectedDayOfWeek);
 
-            console.log("Selected Day on submit: ", selectedDayOfWeek)
-            console.log("adjusted start time: ", adjustedStartTime?.unix())
-            console.log("adjusted end time: ", adjustedEndTime?.unix())
-
-            const schedules = [
-                {
-                    startDateTime: adjustedStartTime?.unix(),
-                    endDateTime: adjustedEndTime?.unix(),
-                }
-            ];
+            const formattedSchedules = schedules.map((schedule) => {
+                const selectedDayOfWeek = dayMapping[schedule.day];
+                return {
+                    startDateTime: schedule.startTime.day(selectedDayOfWeek).unix(),
+                    endDateTime: schedule.endTime.day(selectedDayOfWeek).unix(),
+                };
+            });
 
             const data = {
                 ambulanceId: id,
-                number: "999",
+                number: "9999",
                 status: "ACTIVE",
-                additionalInfo: "hi",
+                additionalInfo: "",
                 cost: values.operationalCost,
-                schedules: schedules,
+                schedules: formattedSchedules,
                 images: imagesData.map(image => ({
                     imageName: image.imageName || "",
                     imageType: image.imageType || "",
@@ -148,15 +136,26 @@ export default function EditAmbulance() {
                         'accessToken': `${token}`
                     },
                 });
-                console.log(response)
-                navigate('/ambulance', { state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' } })
+                console.log(response);
+                navigate('/ambulance', { state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' } });
             } catch (error) {
                 console.error('Error editing ambulance:', error);
-                setErrorAlert(true);
             }
-
         },
     });
+
+    const handleTambahHari = () => {
+        if (selectedDay && startTime && endTime) {
+            setSchedules([...schedules, { day: selectedDay, startTime, endTime }]);
+            setSelectedDay("1");
+            setStartTime(null);
+            setEndTime(null);
+        }
+    };
+
+    const handleDeleteSchedule = (index: number) => {
+        setSchedules(schedules.filter((_, i) => i !== index));
+    };
 
     const handleImageChange = (images: ImageData[]) => {
         setImagesData(images);
@@ -176,11 +175,7 @@ export default function EditAmbulance() {
             />
 
             <Box mt={3}>
-                <Box
-                    position="relative"
-                    p={3}
-                    sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}
-                >
+                <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
                     <Typography fontSize="20px" fontWeight="700">
                         Edit Ambulance
                     </Typography>
@@ -196,11 +191,10 @@ export default function EditAmbulance() {
                             Biaya Tarif<span style={{ color: "red" }}>*</span>
                         </Typography>
                         <InputCurrencyIdr
-                            onChange={(value) => {
-                                formik.setFieldValue('operationalCost', value);
-                            }}
+                            onChange={(value) => formik.setFieldValue('operationalCost', value)}
                             defaultValue={initialOperationalCost}
                         />
+
                         <Box display={'flex'} flexDirection={'column'} border={'1px solid #A8A8BD'} borderRadius={'16px'} padding={'16px'} mt={2}>
                             <Typography mb={'15px'}>Jam Operasional</Typography>
                             <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} gap={'32px'}>
@@ -217,29 +211,46 @@ export default function EditAmbulance() {
                                             { value: "7", label: "Minggu" },
                                         ]}
                                         placeholder="Pilih hari"
-                                        onChange={(value: string) => setSelectedDay(value)}
+                                        onChange={(value) => setSelectedDay(value)}
                                         loading={false}
-                                        defaultValue={selectedDays}
                                     />
                                 </Box>
 
                                 <Box display={'flex'} flexDirection={'column'} width={'100%'}>
                                     <Typography>Jam mulai</Typography>
-                                    <CustomTimePicker
-                                        value={startTime}
-                                        onChange={(newValue) => setStartTime(newValue)}
-                                    />
+                                    <CustomTimePicker value={startTime} onChange={setStartTime} />
                                 </Box>
 
                                 <Box display={'flex'} flexDirection={'column'} width={'100%'}>
                                     <Typography>Jam selesai</Typography>
-                                    <CustomTimePicker
-                                        value={endTime}
-                                        onChange={(newValue) => setEndTime(newValue)}
-                                    />
+                                    <CustomTimePicker value={endTime} onChange={setEndTime} />
                                 </Box>
                             </Box>
+
+                            <Button
+                                fullWidth
+                                sx={{
+                                    mt: 2,
+                                    bgcolor: 'transparent',
+                                    color: '#8F85F3',
+                                    border: '1px solid #8F85F3',
+                                    ":hover": { bgcolor: '#8F85F3', color: 'white' },
+                                }}
+                                onClick={handleTambahHari}
+                            >
+                                + Tambah hari
+                            </Button>
+
+                            {schedules.map((schedule, index) => (
+                                <Box key={index} display="flex" justifyContent="space-between" alignItems="center" mt={2}>
+                                    <Typography>{`hari ${dayNames[schedule.day] || 'Unknown'}: ${schedule.startTime.format("HH:mm")} - ${schedule.endTime.format("HH:mm")}`}</Typography>
+                                    <IconButton color="error" onClick={() => handleDeleteSchedule(index)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Box>
+                            ))}
                         </Box>
+
                         <Button
                             type="submit"
                             variant="contained"
@@ -252,10 +263,7 @@ export default function EditAmbulance() {
                                 textTransform: "none",
                                 borderRadius: "8px",
                                 boxShadow: "none",
-                                ":hover": {
-                                    bgcolor: "#a098f5",
-                                    boxShadow: "none",
-                                },
+                                ":hover": { bgcolor: "#a098f5", boxShadow: "none" },
                             }}
                             disabled={!formik.isValid || !formik.dirty}
                         >

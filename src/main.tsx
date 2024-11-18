@@ -108,7 +108,7 @@ createRoot(document.getElementById('root')!).render(
 
         {/* Page Ruangan */}
         <Route path="/ruangan" element={<Ruangan/>} />
-        <Route path="/detailRuangan" element={<DetailRuangan/>} />
+        <Route path="/detailRuangan/:id" element={<DetailRuangan/>} />
         <Route path="/tambahRuangan" element={<TambahRuangan/>} />
         <Route path="/editRuangan/:id" element={<EditRuangan />} />
 

@@ -17,8 +17,6 @@ type ImageData = {
 };
 
 export default function DetailGedung() {
-
-  const [images, setImages] = useState<ImageData[]>(Array(5).fill({ image: null, imageBase64: "", type: "", name: "", loading: false, error: "" }));
   const [name, setName] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [deletedItems, setDeletedItems] = useState("");

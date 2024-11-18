@@ -1,5 +1,5 @@
 import axios from "axios";
-import Cookies from "js-cookie"; // Import js-cookie
+import Cookies from "js-cookie"; 
 
 interface CustomError extends Error {
   responseCode?: number;
@@ -19,10 +19,9 @@ const Login = async (email: string, password: string) => {
     );
 
     console.log("inside Login1 ");
-    console.log("akses token", response.data.data.tokenValue); // Access the token from the response
+    console.log("akses token", response.data.data.tokenValue);
 
-    // Save the token in cookies
-    Cookies.set("accessToken", response.data.data.tokenValue, { expires: 7 }); // Expires in 7 days
+    Cookies.set("accessToken", response.data.data.tokenValue, { expires: 7 }); 
     Cookies.set("name", response.data.data.name, { expires: 7 });
 
     return response.data;
