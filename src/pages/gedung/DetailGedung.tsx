@@ -103,7 +103,7 @@ export default function DetailGedung() {
         onBackClick={() => window.history.back()}
       />
       <Box mt={3}>
-        <ImageGrid largeImage={largeImage} smallImages={smallImage} loading={loading} />
+        <ImageGrid largeImage={largeImage} smallImages={smallImage} loading={loading}  />
       </Box>
 
       <Box mt={3}>
