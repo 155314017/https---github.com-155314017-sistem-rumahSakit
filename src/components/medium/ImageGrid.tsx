@@ -1,33 +1,13 @@
-import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
 
 interface ImageGridProps {
   largeImage: string;
   smallImages: string[];
-  loading: boolean; // For large image
+  loading: boolean;
 }
 
 const ImageGrid: React.FC<ImageGridProps> = ({ largeImage, smallImages, loading }) => {
-  const [smallImagesLoading, setSmallImagesLoading] = useState<boolean[]>(
-    Array(smallImages.length).fill(true) // Initial state: all small images are loading
-  );
-
-  // Simulate image loading (or replace this with actual image loading logic)
-  useEffect(() => {
-    const timers = smallImages.map((_, index) =>
-      setTimeout(() => {
-        setSmallImagesLoading((prev) => {
-          const updated = [...prev];
-          updated[index] = false; // Mark the specific image as loaded
-          return updated;
-        });
-      }, 1000 * (index + 1)) // Simulated delay per image
-    );
-
-    return () => timers.forEach(clearTimeout); // Clear timers on cleanup
-  }, [smallImages]);
-
   return (
     <div>
       <Box display="flex" gap={3}>
@@ -76,7 +56,7 @@ const ImageGrid: React.FC<ImageGridProps> = ({ largeImage, smallImages, loading 
               height="242.5px"
               sx={{ borderRadius: "32px", bgcolor: "#fff", position: "relative" }}
             >
-              {smallImagesLoading[index] ? (
+              {loading ? (
                 <Box
                   display="flex"
                   justifyContent="center"
