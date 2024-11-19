@@ -122,7 +122,7 @@ export default function useTambahAmbulance() {
         )
         console.log('Response:', response.data)
         navigate('/ambulance', {
-          state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' }
+          state: { successAdd: true, message: 'Ambulance berhasil ditambahkan!' }
         })
       } catch (error) {
         console.error('Error submitting form:', error)
@@ -136,10 +136,10 @@ export default function useTambahAmbulance() {
     handleImageChange,
     breadcrumbItems,
     formik,
+    startTime,
+    endTime,
     setSelectedDay,
     setStartTime,
-    setEndTime,
-    startTime,
-    endTime
+    setEndTime
   }
 }

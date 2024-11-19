@@ -6,6 +6,11 @@ import CustomTimePicker from '../../../components/small/CustomTimePicker'
 import DropdownList from '../../../components/small/DropdownList'
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr'
 
+
+
+import 'dayjs/locale/id'
+
+
 // hooks
 import useTambahAmbulance from '../hooks/useTambahAmbulance'
 

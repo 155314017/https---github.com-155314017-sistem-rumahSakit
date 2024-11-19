@@ -12,7 +12,7 @@ import PasienBaruRawatJalanBPJS from './pages/rawatJalan/pasienBaru/PasienBaruRa
 import Gedung from '../src/pages/gedung/index'
 import Ambulance from './pages/ambulance'
 import DetailAmbulance from './pages/ambulance/DetailAmbulance'
-import TambahAmbulance from './pages/ambulance/TambahAmbulance'
+import TambahAmbulance from './pages/ambulance/features/TambahAmbulance'
 import DetailGedung from './pages/gedung/DetailGedung'
 import TambahGedung from './pages/gedung/TambahGedung'
 import Klinik from './pages/klinik'
