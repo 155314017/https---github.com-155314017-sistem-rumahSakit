@@ -1,144 +1,133 @@
-import {
-  Box,
-  CardMedia,
-  FormLabel,
-  TextField,
-  Typography,
-  Button,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import logo from "../../../img/St.carolus.png";
-import patientImage from "../../../assets/img/registrationImg.jpg";
-import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
-import AlertWarning from "../../../components/small/AlertWarning";
-import AlertSuccess from "../../../components/small/AlertSuccess";
-import CustomButton from "../../../components/small/CustomButton";
-import OtpInput from "react-otp-input";
-import "react-phone-input-2/lib/style.css";
-import { useNavigate } from "react-router-dom";
+import { Box, CardMedia, FormLabel, TextField, Typography, Button } from '@mui/material'
+import { useEffect, useState } from 'react'
+import logo from '../../../img/St.carolus.png'
+import patientImage from '../../../assets/img/registrationImg.jpg'
+import { Formik, Form, Field } from 'formik'
+import * as Yup from 'yup'
+import AlertWarning from '../../../components/small/AlertWarning'
+import AlertSuccess from '../../../components/small/AlertSuccess'
+import CustomButton from '../../../components/small/CustomButton'
+import OtpInput from 'react-otp-input'
+import 'react-phone-input-2/lib/style.css'
+import { useNavigate } from 'react-router-dom'
 
 const validationSchema = Yup.object({
   nik: Yup.string()
-    .matches(/^[0-9]+$/, "NIK harus berupa angka")
-    .min(12, "NIK minimal 12 digit")
-    .max(14, "NIK maksimal 14 digit")
-    .required("NIK wajib diisi"),
-  email: Yup.string().required("Email wajib diisi"),
-});
+    .matches(/^[0-9]+$/, 'NIK harus berupa angka')
+    .min(12, 'NIK minimal 12 digit')
+    .max(14, 'NIK maksimal 14 digit')
+    .required('NIK wajib diisi'),
+  email: Yup.string().required('Email wajib diisi')
+})
 
 interface FormValues {
-  nik: string;
-  email: string;
+  nik: string
+  email: string
 }
 
 const otpValidationSchema = Yup.object({
   otp: Yup.string()
-    .matches(/^[0-9]+$/, "OTP harus berupa angka")
-    .min(4, "OTP minimal 4 digit")
-    .max(4, "OTP maksimal 4 digit")
-    .required("OTP wajib diisi"),
-});
+    .matches(/^[0-9]+$/, 'OTP harus berupa angka')
+    .min(4, 'OTP minimal 4 digit')
+    .max(4, 'OTP maksimal 4 digit')
+    .required('OTP wajib diisi')
+})
 
 export default function LoginPasien() {
   //   const [showPassword, setShowPassword] = useState(false);
-  const [showLogin, setShowLogin] = useState(true);
-  const [showEmailChanged, setShowEmailChanged] = useState(true);
-  const [emailError, setEmailError] = useState(false);
-  const [, setNikError] = useState(false);
-  const [, setPasswordError] = useState(false);
+  const [showLogin, setShowLogin] = useState(true)
+  const [showEmailChanged, setShowEmailChanged] = useState(true)
+  const [emailError, setEmailError] = useState(false)
+  const [, setNikError] = useState(false)
+  const [, setPasswordError] = useState(false)
 
-  const [showAlert, setShowAlert] = useState(false);
-  const [isCounting, setIsCounting] = useState(false);
-  const [secondsLeft, setSecondsLeft] = useState(60);
-  const [resendSuccess, setResendSuccess] = useState(false);
-  const [loginSuccess, setLoginSuccess] = useState(false);
-  const [otp, setOtp] = useState("");
+  const [showAlert, setShowAlert] = useState(false)
+  const [isCounting, setIsCounting] = useState(false)
+  const [secondsLeft, setSecondsLeft] = useState(60)
+  const [resendSuccess, setResendSuccess] = useState(false)
+  const [loginSuccess, setLoginSuccess] = useState(false)
+  const [otp, setOtp] = useState('')
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   // const otpFormShown = () => {
   //   // setShowEmailChanged(false);
-
 
   //   setOtp("");
   // };
 
   const handleClick = () => {
-    setShowLogin(true);
-    setShowEmailChanged(true);
-  };
+    setShowLogin(true)
+    setShowEmailChanged(true)
+  }
 
   const showTemporaryAlert = async () => {
-    setShowAlert(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setShowAlert(false);
-  };
+    setShowAlert(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setShowAlert(false)
+  }
 
   const showTemporarySuccessLogin = async () => {
-    setLoginSuccess(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setLoginSuccess(false);
-  };
+    setLoginSuccess(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setLoginSuccess(false)
+  }
 
   const showOtp = () => {
-    setEmailError(false);
-    setPasswordError(false);
-    setShowLogin(false);
-  };
+    setEmailError(false)
+    setPasswordError(false)
+    setShowLogin(false)
+  }
 
   const validationCheck = async (values: FormValues) => {
-    const { nik, email } = values;
-    const nikIsValid = nik === "1234567891011";
-    const emailIsValid = email === "chornaeld@gmail.com";
-    setNikError(!nikIsValid);
-    setEmailError(!emailIsValid);
+    const { nik, email } = values
+    const nikIsValid = nik === '1234567891011'
+    const emailIsValid = email === 'chornaeld@gmail.com'
+    setNikError(!nikIsValid)
+    setEmailError(!emailIsValid)
 
     if (!nikIsValid || !emailIsValid) {
-      await showTemporaryAlert();
-      return false;
+      await showTemporaryAlert()
+      return false
     }
-    showOtp();
-    return true;
-  };
+    showOtp()
+    return true
+  }
 
   useEffect(() => {
-    let timer: ReturnType<typeof setInterval>;
+    let timer: ReturnType<typeof setInterval>
     if (isCounting && secondsLeft > 0) {
       timer = setInterval(() => {
-        setSecondsLeft((prev) => prev - 1);
-      }, 1000);
+        setSecondsLeft(prev => prev - 1)
+      }, 1000)
     } else if (secondsLeft === 0) {
-      setIsCounting(false);
-      setSecondsLeft(60);
+      setIsCounting(false)
+      setSecondsLeft(60)
     }
 
-    return () => clearInterval(timer);
-  }, [isCounting, secondsLeft]);
+    return () => clearInterval(timer)
+  }, [isCounting, secondsLeft])
 
   const handleResendClick = () => {
-    setIsCounting(true);
-    setSecondsLeft(60);
-    showTemporaryAlertSuccess();
-    console.log("Resend clicked");
-  };
+    setIsCounting(true)
+    setSecondsLeft(60)
+    showTemporaryAlertSuccess()
+    console.log('Resend clicked')
+  }
 
   const showTemporaryAlertSuccess = async () => {
-    setResendSuccess(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setResendSuccess(false);
-  };
+    setResendSuccess(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setResendSuccess(false)
+  }
 
   const formatTime = () => {
-    const minutes = Math.floor(secondsLeft / 60);
-    const seconds = secondsLeft % 60;
-    return `${minutes.toString().padStart(2, "0")}:${seconds
-      .toString()
-      .padStart(2, "0")}`;
-  };
+    const minutes = Math.floor(secondsLeft / 60)
+    const seconds = secondsLeft % 60
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+  }
 
   return (
-
     <>
       <style>
         {`
@@ -148,18 +137,18 @@ export default function LoginPasien() {
             `}
       </style>
 
-      <Box >
+      <Box>
         <Box>
-          <Box sx={{ position: "relative" }}>
+          <Box sx={{ position: 'relative' }}>
             <CardMedia
               component="img"
               sx={{
-                width: "50%",
-                height: "100vh",
-                objectFit: "cover",
-                position: "fixed",
-                top: "0",
-                left: "0",
+                width: '50%',
+                height: '100vh',
+                objectFit: 'cover',
+                position: 'fixed',
+                top: '0',
+                left: '0'
               }}
               image={patientImage}
               alt="Example Image"
@@ -168,31 +157,31 @@ export default function LoginPasien() {
 
           <Box
             sx={{
-              position: "absolute",
-              bgcolor: "rgba(0, 0, 0, 0.5)",
-              width: "50%",
-              height: "100vh",
-              top: "0",
-              left: "0",
+              position: 'absolute',
+              bgcolor: 'rgba(0, 0, 0, 0.5)',
+              width: '50%',
+              height: '100vh',
+              top: '0',
+              left: '0'
             }}
           ></Box>
 
           <Box
             sx={{
-              position: "absolute",
-              zIndex: "9999",
-              width: "40%",
-              left: "23%",
-              bottom: "0%",
-              transform: "translate(-50%, -50%)",
+              position: 'absolute',
+              zIndex: '9999',
+              width: '40%',
+              left: '23%',
+              bottom: '0%',
+              transform: 'translate(-50%, -50%)'
             }}
           >
             <Typography
               sx={{
-                fontSize: "56px",
-                fontWeight: "700",
-                lineHeight: "60px",
-                color: "white",
+                fontSize: '56px',
+                fontWeight: '700',
+                lineHeight: '60px',
+                color: 'white'
               }}
             >
               Mulai permintaan janji temu Anda di sini.
@@ -208,43 +197,40 @@ export default function LoginPasien() {
 
             <Box
               sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                position: "absolute",
-                right: "0",
-                top: "0",
-                width: "50%",
-                flexDirection: "column",
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'absolute',
+                right: '0',
+                top: '0',
+                width: '50%',
+                flexDirection: 'column',
                 gap: 5,
-                height: "100vh",
-                bgcolor: "#fff",
+                height: '100vh',
+                bgcolor: '#fff'
               }}
             >
-              <Box sx={{ width: "80%" }}>
+              <Box sx={{ width: '80%' }}>
                 <img src={logo} alt="logo-carolus" />
-                <Typography sx={{ fontSize: "32px", fontWeight: "600" }}>
-                  Selamat Datang
-                </Typography>
+                <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
                 <Typography
                   sx={{
-                    color: "gray",
-                    fontSize: "18px",
-                    marginBottom: "30px",
-                    width: "100%",
+                    color: 'gray',
+                    fontSize: '18px',
+                    marginBottom: '30px',
+                    width: '100%'
                   }}
                 >
-                  Silahkan masukkan nomor NIK (Nomor induk kependudukan)
-                  penanggung jawab.
+                  Silahkan masukkan nomor NIK (Nomor induk kependudukan) penanggung jawab.
                 </Typography>
 
                 <Formik
-                  initialValues={{ nik: "", email: "" }}
+                  initialValues={{ nik: '', email: '' }}
                   validationSchema={validationSchema}
-                  onSubmit={async (values) => {
+                  onSubmit={async values => {
                     if (await validationCheck(values)) {
-                      console.log(values);
-                      await showTemporarySuccessLogin();
+                      console.log(values)
+                      await showTemporarySuccessLogin()
                     }
                   }}
                 >
@@ -255,12 +241,12 @@ export default function LoginPasien() {
                     handleBlur,
                     values,
                     isValid,
-                    dirty,
+                    dirty
                     //   setFieldValue,
                   }) => (
                     <Form>
-                      <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <FormLabel sx={{ fontSize: "18px" }}>
+                      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <FormLabel sx={{ fontSize: '18px' }}>
                           NIK (Nomor induk kependudukan) Penanggung jawab
                         </FormLabel>
                         <Field
@@ -270,20 +256,20 @@ export default function LoginPasien() {
                           variant="outlined"
                           fullWidth
                           sx={{
-                            width: "100%",
-                            height: "48px",
-                            marginTop: "10px",
-                            "& .MuiOutlinedInput-root": {
-                              borderRadius: "8px",
-                              backgroundColor: emailError ? "#ffcccc" : "inherit",
+                            width: '100%',
+                            height: '48px',
+                            marginTop: '10px',
+                            '& .MuiOutlinedInput-root': {
+                              borderRadius: '8px',
+                              backgroundColor: emailError ? '#ffcccc' : 'inherit'
                             },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              border: "1px solid #ccc",
+                            '& .MuiOutlinedInput-notchedOutline': {
+                              border: '1px solid #ccc'
                             },
-                            "& .MuiOutlinedInput-input": {
-                              padding: "10px",
-                              fontSize: "16px",
-                            },
+                            '& .MuiOutlinedInput-input': {
+                              padding: '10px',
+                              fontSize: '16px'
+                            }
                           }}
                           onChange={handleChange}
                           onBlur={handleBlur}
@@ -292,9 +278,7 @@ export default function LoginPasien() {
                           helperText={touched.nik && errors.nik}
                         />
 
-                        <FormLabel sx={{ fontSize: "18px", marginTop: "20px" }}>
-                          Email
-                        </FormLabel>
+                        <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Email</FormLabel>
                         <Field
                           name="email"
                           as={TextField}
@@ -302,20 +286,20 @@ export default function LoginPasien() {
                           variant="outlined"
                           fullWidth
                           sx={{
-                            width: "100%",
-                            height: "48px",
-                            marginTop: "10px",
-                            "& .MuiOutlinedInput-root": {
-                              borderRadius: "8px",
-                              backgroundColor: emailError ? "#ffcccc" : "inherit",
+                            width: '100%',
+                            height: '48px',
+                            marginTop: '10px',
+                            '& .MuiOutlinedInput-root': {
+                              borderRadius: '8px',
+                              backgroundColor: emailError ? '#ffcccc' : 'inherit'
                             },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              border: "1px solid #ccc",
+                            '& .MuiOutlinedInput-notchedOutline': {
+                              border: '1px solid #ccc'
                             },
-                            "& .MuiOutlinedInput-input": {
-                              padding: "10px",
-                              fontSize: "16px",
-                            },
+                            '& .MuiOutlinedInput-input': {
+                              padding: '10px',
+                              fontSize: '16px'
+                            }
                           }}
                           onChange={handleChange}
                           onBlur={handleBlur}
@@ -325,7 +309,7 @@ export default function LoginPasien() {
                         />
 
                         {touched.email && errors.email && (
-                          <Typography sx={{ color: "red", fontSize: "12px" }}>
+                          <Typography sx={{ color: 'red', fontSize: '12px' }}>
                             {errors.email}
                           </Typography>
                         )}
@@ -336,11 +320,11 @@ export default function LoginPasien() {
                           color="primary"
                           fullWidth
                           sx={{
-                            width: "100%",
-                            height: "48px",
+                            width: '100%',
+                            height: '48px',
                             mt: 5,
-                            backgroundColor: "#8F85F3",
-                            ":hover": { backgroundColor: "#D5D1FB" },
+                            backgroundColor: '#8F85F3',
+                            ':hover': { backgroundColor: '#D5D1FB' }
                           }}
                           disabled={!isValid || !dirty}
                         >
@@ -362,46 +346,46 @@ export default function LoginPasien() {
             {showEmailChanged && (
               <Box
                 sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  position: "absolute",
-                  right: "0",
-                  top: "0",
-                  width: "50%",
-                  flexDirection: "column",
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  position: 'absolute',
+                  right: '0',
+                  top: '0',
+                  width: '50%',
+                  flexDirection: 'column',
                   gap: 5,
-                  height: "100vh",
-                  bgcolor: "#fff",
+                  height: '100vh',
+                  bgcolor: '#fff'
                 }}
               >
                 <Box width={'70%'}>
                   <Typography
                     sx={{
-                      fontSize: "32px",
-                      fontWeight: "600",
-                      maxWidth: "410px",
+                      fontSize: '32px',
+                      fontWeight: '600',
+                      maxWidth: '410px'
                     }}
                   >
                     Verifikasi
                   </Typography>
                   <Typography
                     sx={{
-                      color: "#A8A8BD",
-                      fontSize: "18px",
-                      marginBottom: "30px",
-                      maxWidth: "410px",
-                      fontWeight: "400",
+                      color: '#A8A8BD',
+                      fontSize: '18px',
+                      marginBottom: '30px',
+                      maxWidth: '410px',
+                      fontWeight: '400'
                     }}
                   >
                     Silahkan masukkan kode 4 digit yang dikirimkan ke nomor Anda .
                   </Typography>
 
                   <Formik
-                    initialValues={{ otp: "" }}
+                    initialValues={{ otp: '' }}
                     validationSchema={otpValidationSchema}
-                    onSubmit={(values) => {
-                      console.log(values);
+                    onSubmit={values => {
+                      console.log(values)
                     }}
                   >
                     {({
@@ -411,81 +395,76 @@ export default function LoginPasien() {
                       // handleBlur,
                       // values,
                       isValid,
-                      dirty,
+                      dirty
                     }) => (
                       <Form>
                         <Box
                           sx={{
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: "column",
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column'
                           }}
                         >
                           <OtpInput
                             value={otp}
-                            onChange={(otp) => {
-                              setOtp(otp);
-                              handleChange("otp")(otp);
+                            onChange={otp => {
+                              setOtp(otp)
+                              handleChange('otp')(otp)
                             }}
                             numInputs={4}
-                            renderSeparator={
-                              <span style={{ margin: "0 4px" }}> </span>
-                            }
-                            renderInput={(props) => (
+                            renderSeparator={<span style={{ margin: '0 4px' }}> </span>}
+                            renderInput={props => (
                               <input
                                 {...props}
                                 style={{
-                                  width: "100%",
-                                  height: "48px",
-                                  textAlign: "center",
-                                  border: `1px solid ${touched.otp && errors.otp ? "red" : "#8F85F3"
-                                    }`,
-                                  borderRadius: "8px",
-                                  fontSize: "20px",
-                                  margin: "0 4px",
-                                  outline: "none",
-                                  padding: "14px, 12px, 14px, 12px",
+                                  width: '100%',
+                                  height: '48px',
+                                  textAlign: 'center',
+                                  border: `1px solid ${
+                                    touched.otp && errors.otp ? 'red' : '#8F85F3'
+                                  }`,
+                                  borderRadius: '8px',
+                                  fontSize: '20px',
+                                  margin: '0 4px',
+                                  outline: 'none',
+                                  padding: '14px, 12px, 14px, 12px'
                                 }}
                               />
                             )}
                           />
                           {touched.otp && errors.otp && (
-                            <Typography sx={{ color: "red", fontSize: "12px" }}>
+                            <Typography sx={{ color: 'red', fontSize: '12px' }}>
                               {errors.otp}
                             </Typography>
                           )}
                           <Box
                             sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              marginTop: "10px",
-                              width: "100%",
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              marginTop: '10px',
+                              width: '100%'
                             }}
                           >
                             <Typography
                               sx={{
-                                fontSize: "16px",
-                                lineHeight: "18px",
-                                color: "#A8A8BD",
+                                fontSize: '16px',
+                                lineHeight: '18px',
+                                color: '#A8A8BD'
                               }}
                             >
-                              Tidak mendapatkan kode?{" "}
+                              Tidak mendapatkan kode?{' '}
                             </Typography>
                             <Typography
-                              onClick={
-                                !isCounting ? handleResendClick : undefined
-                              }
+                              onClick={!isCounting ? handleResendClick : undefined}
                               sx={{
-                                cursor: isCounting ? "default" : "pointer",
-                                color: isCounting ? "#ccc" : "#8F85F3",
-                                textDecoration: isCounting ? "none" : "underline",
-                                fontSize: "16px",
+                                cursor: isCounting ? 'default' : 'pointer',
+                                color: isCounting ? '#ccc' : '#8F85F3',
+                                textDecoration: isCounting ? 'none' : 'underline',
+                                fontSize: '16px'
                               }}
                             >
-                              {isCounting
-                                ? `${formatTime()}`
-                                : "Kirim ulang tautan"}
+                              {isCounting ? `${formatTime()}` : 'Kirim ulang tautan'}
                             </Typography>
                           </Box>
                           <Button
@@ -496,11 +475,11 @@ export default function LoginPasien() {
                             onClick={() => navigate('/register/pasien')}
                             fullWidth
                             sx={{
-                              width: "100%",
-                              height: "48px",
-                              marginTop: "20px",
-                              backgroundColor: "#8F85F3",
-                              ":hover": { backgroundColor: "#D5D1FB" },
+                              width: '100%',
+                              height: '48px',
+                              marginTop: '20px',
+                              backgroundColor: '#8F85F3',
+                              ':hover': { backgroundColor: '#D5D1FB' }
                             }}
                             disabled={!isValid || !dirty}
                           >
@@ -517,29 +496,27 @@ export default function LoginPasien() {
             {!showEmailChanged && (
               <Box
                 sx={{
-                  marginLeft: "50px",
-                  marginTop: "auto",
-                  marginBottom: "auto",
-                  display: "flex",
-                  flexDirection: "column",
+                  marginLeft: '50px',
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column'
                 }}
               >
-                <Typography
-                  sx={{ fontSize: "32px", fontWeight: "600", maxWidth: "410px" }}
-                >
+                <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
                   Email pengaturan ulang kata sandi telah terkirim.
                 </Typography>
                 <Typography
                   sx={{
-                    color: "#16161D",
-                    fontSize: "18px",
-                    marginBottom: "30px",
-                    maxWidth: "410px",
-                    fontWeight: "400",
+                    color: '#16161D',
+                    fontSize: '18px',
+                    marginBottom: '30px',
+                    maxWidth: '410px',
+                    fontWeight: '400'
                   }}
                 >
-                  Kami telah mengirimkan tautan untuk mengatur ulang kata sandi
-                  Anda. Tidak mendapat email?
+                  Kami telah mengirimkan tautan untuk mengatur ulang kata sandi Anda. Tidak mendapat
+                  email?
                 </Typography>
                 <Button
                   onClick={handleResendClick}
@@ -548,29 +525,22 @@ export default function LoginPasien() {
                   fullWidth
                   disabled={isCounting}
                   sx={{
-                    width: "410px",
-                    height: "48px",
-                    backgroundColor: isCounting ? "#ccc" : "#8F85F3",
-                    ":hover": { backgroundColor: "#D5D1FB" },
+                    width: '410px',
+                    height: '48px',
+                    backgroundColor: isCounting ? '#ccc' : '#8F85F3',
+                    ':hover': { backgroundColor: '#D5D1FB' }
                   }}
                 >
-                  {isCounting
-                    ? `Kirim ulang dalam ${formatTime()}`
-                    : "Kirim ulang tautan"}
+                  {isCounting ? `Kirim ulang dalam ${formatTime()}` : 'Kirim ulang tautan'}
                 </Button>
-                <CustomButton
-                  onClick={handleClick}
-                  label="Kembali ke halaman masuk"
-                />
+                <CustomButton onClick={handleClick} label="Kembali ke halaman masuk" />
 
-                {resendSuccess && (
-                  <AlertSuccess label="Link tautan berhasil dikirim ulang" />
-                )}
+                {resendSuccess && <AlertSuccess label="Link tautan berhasil dikirim ulang" />}
               </Box>
             )}
           </>
         )}
       </Box>
     </>
-  );
+  )
 }

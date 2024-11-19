@@ -175,7 +175,6 @@ export default function TambahAmbulance() {
                       setSelectedDay(value);
                     }}
                     loading={false}
-                  // defaultValue=""
                   />
                 </Box>
 

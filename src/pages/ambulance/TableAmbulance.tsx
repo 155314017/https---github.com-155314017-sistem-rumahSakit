@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react'
 import {
   Box,
   Stack,
@@ -12,29 +12,33 @@ import {
   Link,
   IconButton,
   Pagination,
-  Collapse,
-} from "@mui/material";
-import SearchBar from "../../components/small/SearchBar";
-import DropdownList from "../../components/small/DropdownList";
-import { styled } from "@mui/material/styles";
-import bgImage from "../../assets/img/String.png";
+  Collapse
+} from '@mui/material'
+import SearchBar from '../../components/small/SearchBar'
+import DropdownList from '../../components/small/DropdownList'
+import { styled } from '@mui/material/styles'
+import bgImage from '../../assets/img/String.png'
 
 // icon
-import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
-import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
+import ModalDeleteConfirmation from '../../components/small/ModalDeleteConfirmation'
 // import { Building, DataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
-import { AmbulanceServices, AmbulanceDataItem } from "../../services/Admin Tenant/ManageAmbulance/AmbulanceServices";
-import { useNavigate } from "react-router-dom";
+import {
+  AmbulanceServices,
+  AmbulanceDataItem
+} from '../../services/Admin Tenant/ManageAmbulance/AmbulanceServices'
+import { useNavigate } from 'react-router-dom'
+import BadgeStatus from '../../components/small/BadgeStatus'
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover
   },
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+  '&:last-child td, &:last-child th': {
+    border: 0
+  }
+}))
 
 const StyledTableContainer = styled(TableContainer)`
   ::-webkit-scrollbar {
@@ -52,88 +56,83 @@ const StyledTableContainer = styled(TableContainer)`
     background-color: #6c63ff;
     cursor: pointer;
   }
-`;
+`
 
 interface TableAmbulanceProps {
-  fetchDatas: () => void;
-  onSuccessDelete: () => void;
+  fetchDatas: () => void
+  onSuccessDelete: () => void
 }
 
 const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDelete }) => {
-  const [page, setPage] = useState(1);
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(1)
+  const [isCollapsed, setIsCollapsed] = useState(true)
+  const [open, setOpen] = useState(false)
   // const [data, setData] = useState<AmbulanceDataItem[]>([]);
-  const [datas, setDatas] = useState<AmbulanceDataItem[]>([]);
-  const [deletedItems, setDeletedItems] = useState("");
+  const [datas, setDatas] = useState<AmbulanceDataItem[]>([])
+  const [deletedItems, setDeletedItems] = useState('')
 
-  const navigate = useNavigate();
-
+  const navigate = useNavigate()
 
   const fetchData = async () => {
-    console.log('Fetching data...');
+    console.log('Fetching data...')
     try {
-      const result = await AmbulanceServices();
-      console.log('Result: ', result);
-      setDatas(result);
+      const result = await AmbulanceServices()
+      console.log('Result: ', result)
+      setDatas(result)
       // setData(result); // Set data to display in table
     } catch (error) {
-      console.log('Failed to fetch data from API: ', error);
+      console.log('Failed to fetch data from API: ', error)
     }
-  };
+  }
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
+    setPage(value)
+  }
 
-  const rowsPerPage = 10;
+  const rowsPerPage = 10
 
-  const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
-
+  const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage)
 
   const handleSelectionChange = (selectedValue: string) => {
-    console.log("Selected Value:", selectedValue);
-  };
+    console.log('Selected Value:', selectedValue)
+  }
 
   const handleDeleteSuccess = () => {
-    console.log("Item deleted successfully");
+    console.log('Item deleted successfully')
     onSuccessDelete()
-    fetchDatas();
-    fetchData();
-  };
+    fetchDatas()
+    fetchData()
+  }
 
   const toggleCollapse = () => {
-    setIsCollapsed((prev) => !prev);
-  };
+    setIsCollapsed(prev => !prev)
+  }
 
   const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
+    event.preventDefault()
 
-    event.preventDefault();
+    console.log('ID Gedung yang akan dihapus:', buildingId)
+    setDeletedItems(buildingId)
 
-    console.log("ID Gedung yang akan dihapus:", buildingId);
-    setDeletedItems(buildingId);
-
-
-    setOpen(true);
-
-  };
+    setOpen(true)
+  }
 
   return (
     <Box>
       <Box
-        position={"relative"}
+        position={'relative'}
         p={3}
-        sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}
+        sx={{ borderRadius: '24px', bgcolor: '#fff', overflow: 'hidden' }}
       >
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography
             sx={{
-              textTransform: "capitalize",
-              fontWeight: "700",
-              fontSize: "20px",
+              textTransform: 'capitalize',
+              fontWeight: '700',
+              fontSize: '20px'
             }}
           >
             Daftar Ambulance
@@ -141,65 +140,61 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
 
           <IconButton sx={{ zIndex: 1 }} onClick={toggleCollapse}>
             {isCollapsed ? (
-              <ChevronRightRoundedIcon
-                sx={{ fontSize: "30px", color: "#8F85F3" }}
-              />
+              <ChevronRightRoundedIcon sx={{ fontSize: '30px', color: '#8F85F3' }} />
             ) : (
-              <ExpandMoreRoundedIcon
-                sx={{ fontSize: "30px", color: "#8F85F3" }}
-              />
+              <ExpandMoreRoundedIcon sx={{ fontSize: '30px', color: '#8F85F3' }} />
             )}
           </IconButton>
         </Box>
 
         <Box
-          position={"absolute"}
+          position={'absolute'}
           sx={{
             top: 0,
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "flex",
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex'
           }}
         >
           <Box
             sx={{
-              width: "50px",
-              height: "30px",
-              bgcolor: "#F1F0FE",
+              width: '50px',
+              height: '30px',
+              bgcolor: '#F1F0FE'
             }}
           >
             <Box
               sx={{
-                width: "50px",
-                height: "30px",
-                bgcolor: "#fff",
-                borderRadius: "0px 15px 0px 0px ",
+                width: '50px',
+                height: '30px',
+                bgcolor: '#fff',
+                borderRadius: '0px 15px 0px 0px '
               }}
             />
           </Box>
 
           <Box
             sx={{
-              width: "600px",
-              height: "50px",
-              bgcolor: "#F1F0FE",
-              borderRadius: "0px 0px 22px 22px",
+              width: '600px',
+              height: '50px',
+              bgcolor: '#F1F0FE',
+              borderRadius: '0px 0px 22px 22px'
             }}
           />
 
           <Box
             sx={{
-              width: "50px",
-              height: "30px",
-              bgcolor: "#F1F0FE",
+              width: '50px',
+              height: '30px',
+              bgcolor: '#F1F0FE'
             }}
           >
             <Box
               sx={{
-                width: "50px",
-                height: "30px",
-                bgcolor: "#fff",
-                borderRadius: "15px 0px 0px 0px ",
+                width: '50px',
+                height: '30px',
+                bgcolor: '#fff',
+                borderRadius: '15px 0px 0px 0px '
               }}
             />
           </Box>
@@ -211,19 +206,14 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
 
         <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
           <Box>
-            <Box
-              mt={3}
-              display={"flex"}
-              justifyContent={"space-between"}
-              sx={{ gap: 3 }}
-            >
+            <Box mt={3} display={'flex'} justifyContent={'space-between'} sx={{ gap: 3 }}>
               <SearchBar />
               <DropdownList
                 options={[
-                  { value: 1, label: "Nama Ambulance A-Z" },
-                  { value: 2, label: "Nama Ambulance Z-A" },
-                  { value: 3, label: "Nomor Ambulance 1-9" },
-                  { value: 4, label: "Nomor Ambulance 9-1" },
+                  { value: 1, label: 'Nama Ambulance A-Z' },
+                  { value: 2, label: 'Nama Ambulance Z-A' },
+                  { value: 3, label: 'Nomor Ambulance 1-9' },
+                  { value: 4, label: 'Nomor Ambulance 9-1' }
                 ]}
                 placeholder="Urutkan"
                 onChange={handleSelectionChange}
@@ -235,70 +225,70 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
               <StyledTableContainer
                 sx={{
                   mt: 2,
-                  boxShadow: "none",
+                  boxShadow: 'none',
                   mb: 2,
-                  maxHeight: "610px",
-                  borderRadius: "16px",
+                  maxHeight: '610px',
+                  borderRadius: '16px'
                 }}
               >
-                <Table stickyHeader sx={{ width: "100%" }}>
+                <Table stickyHeader sx={{ width: '100%' }}>
                   <TableHead>
                     <TableRow>
                       <TableCell
-                        width={"12%"}
+                        width={'12%'}
                         sx={{
-                          fontSize: "14px",
+                          fontSize: '14px',
                           fontWeight: 700,
-                          color: "#292B2C",
-                          bgcolor: "#F1F0FE",
+                          color: '#292B2C',
+                          bgcolor: '#F1F0FE'
                         }}
                         align="center"
                       >
                         No. Ambulance
                       </TableCell>
                       <TableCell
-                        width={"15%"}
+                        width={'15%'}
                         sx={{
-                          fontSize: "14px",
+                          fontSize: '14px',
                           fontWeight: 700,
-                          color: "#292B2C",
-                          bgcolor: "#F1F0FE",
+                          color: '#292B2C',
+                          bgcolor: '#F1F0FE'
                         }}
                         align="center"
                       >
                         Biaya tarif
                       </TableCell>
                       <TableCell
-                        width={"15%"}
+                        width={'15%'}
                         sx={{
-                          fontSize: "14px",
+                          fontSize: '14px',
                           fontWeight: 700,
-                          color: "#292B2C",
-                          bgcolor: "#F1F0FE",
+                          color: '#292B2C',
+                          bgcolor: '#F1F0FE'
                         }}
                         align="center"
                       >
                         Jam Operasional
                       </TableCell>
                       <TableCell
-                        width={"15%"}
+                        width={'15%'}
                         sx={{
-                          fontSize: "14px",
+                          fontSize: '14px',
                           fontWeight: 700,
-                          color: "#292B2C",
-                          bgcolor: "#F1F0FE",
+                          color: '#292B2C',
+                          bgcolor: '#F1F0FE'
                         }}
                         align="center"
                       >
                         Status
                       </TableCell>
                       <TableCell
-                        width={"15%"}
+                        width={'15%'}
                         sx={{
-                          fontSize: "14px",
+                          fontSize: '14px',
                           fontWeight: 700,
-                          color: "#292B2C",
-                          bgcolor: "#F1F0FE",
+                          color: '#292B2C',
+                          bgcolor: '#F1F0FE'
                         }}
                         align="center"
                       >
@@ -310,23 +300,20 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
                     {displayedData.length > 0 ? (
                       displayedData.map((data, index) => (
                         <StyledTableRow key={index}>
-                          <TableCell
-                            sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                            align="center"
-                          >
+                          <TableCell sx={[{ color: '#292B2C', fontSize: '14px' }]} align="center">
                             {index + 1}
                           </TableCell>
                           <TableCell
                             sx={[
                               {
-                                color: "#292B2C",
-                                fontSize: "14px",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                maxWidth: "150px",
-                                textTransform: "capitalize",
-                              },
+                                color: '#292B2C',
+                                fontSize: '14px',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                maxWidth: '150px',
+                                textTransform: 'capitalize'
+                              }
                             ]}
                             align="center"
                           >
@@ -335,14 +322,14 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
                           <TableCell
                             sx={[
                               {
-                                color: "#292B2C",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                maxWidth: "150px",
-                                fontSize: "14px",
-                                textTransform: "capitalize",
-                              },
+                                color: '#292B2C',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                maxWidth: '150px',
+                                fontSize: '14px',
+                                textTransform: 'capitalize'
+                              }
                             ]}
                             align="center"
                           >
@@ -351,47 +338,61 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
                           <TableCell
                             sx={[
                               {
-                                color: "#292B2C",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                maxWidth: "150px",
-                                fontSize: "14px",
-                                textTransform: "capitalize",
-                              },
+                                color: '#292B2C',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                maxWidth: '150px',
+                                fontSize: '14px',
+                                textTransform: 'capitalize'
+                              }
                             ]}
                             align="center"
                           >
-                            {data.status}
+                            <BadgeStatus
+                              status={data.status}
+                              color={
+                                data.status === 'ACTIVE'
+                                  ? '#2EB872'
+                                  : data.status === 'INACTIVE'
+                                  ? '#FA4659'
+                                  : ''
+                              }
+                            />
                           </TableCell>
                           <TableCell
                             align="center"
                             sx={[
                               {
-                                color: "#292B2C",
-                                fontSize: "14px",
-                                textTransform: "capitalize",
-                              },
+                                color: '#292B2C',
+                                fontSize: '14px',
+                                textTransform: 'capitalize'
+                              }
                             ]}
                           >
                             <Link
                               href="#"
                               underline="none"
-                              color={"#8F85F3"}
-                              onClick={(event) => confirmationDelete(event, data.id)}
+                              color={'#8F85F3'}
+                              onClick={event => confirmationDelete(event, data.id)}
                               sx={{ mr: 2 }}
                             >
                               Hapus
                             </Link>
-                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
+                            <ModalDeleteConfirmation
+                              open={open}
+                              onClose={() => setOpen(false)}
+                              apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${deletedItems}`}
+                              onDeleteSuccess={handleDeleteSuccess}
+                            />
                             <Link
                               href="#"
                               onClick={() => navigate(`/editAmbulance/${data.id}`)}
                               mr={2}
                               underline="hover"
                               sx={{
-                                textTransform: "capitalize",
-                                color: "#8F85F3",
+                                textTransform: 'capitalize',
+                                color: '#8F85F3'
                               }}
                             >
                               Ubah
@@ -400,8 +401,8 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
                               href="/detailAmbulance "
                               underline="hover"
                               sx={{
-                                textTransform: "capitalize",
-                                color: "#8F85F3",
+                                textTransform: 'capitalize',
+                                color: '#8F85F3'
                               }}
                             >
                               Lihat Selengkapnya
@@ -420,11 +421,15 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
                 </Table>
               </StyledTableContainer>
             </Box>
-            <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
-              <Typography sx={{ color: "#A8A8BD" }}>
-                Showing {((page - 1) * rowsPerPage) + 1} to{" "}
-                {Math.min(page * rowsPerPage, datas.length)} of{" "}
-                {datas.length} entries
+            <Stack
+              spacing={2}
+              direction={'row'}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+            >
+              <Typography sx={{ color: '#A8A8BD' }}>
+                Showing {(page - 1) * rowsPerPage + 1} to{' '}
+                {Math.min(page * rowsPerPage, datas.length)} of {datas.length} entries
               </Typography>
               <Pagination
                 count={Math.ceil(datas.length / rowsPerPage)}
@@ -433,28 +438,27 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
                 page={page}
                 onChange={handleChangePage}
                 sx={{
-                  "& .MuiPaginationItem-root": {
-                    color: "#8F85F3",
-                    border: 'none',
+                  '& .MuiPaginationItem-root': {
+                    color: '#8F85F3',
+                    border: 'none'
                   },
-                  "& .Mui-selected": {
-                    bgcolor: '#D5D1FB',
+                  '& .Mui-selected': {
+                    bgcolor: '#D5D1FB'
                   },
-                  "& .MuiPaginationItem-ellipsis": {
-                    border: 'none',
+                  '& .MuiPaginationItem-ellipsis': {
+                    border: 'none'
                   },
-                  "& .MuiPaginationItem-text": {
-                    border: 'none',
-                  },
+                  '& .MuiPaginationItem-text': {
+                    border: 'none'
+                  }
                 }}
               />
-
             </Stack>
           </Box>
         </Collapse>
       </Box>
     </Box>
-  );
+  )
 }
 
-export default TableAmbulance;
+export default TableAmbulance
