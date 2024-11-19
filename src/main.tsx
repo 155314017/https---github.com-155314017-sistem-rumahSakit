@@ -51,6 +51,7 @@ import EditFasilitas from './pages/fasilitas/EditFasilitas';
 import EditSUbFasilitas from './pages/fasilitas/EditSubFasilitas';
 import EditKlinik from './pages/klinik/EditKlinik';
 import EditKonter from './pages/konter/EditKonter';
+import RegisterPJ from './pages/login/penanggungJawab/RegisterPJ';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -68,17 +69,30 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/tambahAmbulance" element={<TambahAmbulance />} />
         <Route path="/editAmbulance/:id" element={<EditAmbulance/>} />
 
+
+
+        {/* Developing register */}
+        <Route path="/register/pasien" element={<LoginPasien />} />
+        <Route path="/register/pasien/baru" element={<RegisterPasienBaru/>} />
+        <Route path="/register/pj" element={<RegisterPJ/>} />
+        <Route path="/register/penanggungJawab" element={<BioPjBaru/>} />
+        
+        {/* End Developing registers */}
+
+
+
+
+        {/* Isolated */}
         {/* Form Login */}
         <Route path="/" element={<LoginPegawai/>} />
         <Route path="/login/pegawai" element={<LoginPegawai/>} />
-        <Route path="/login/pasien" element={<LoginPasien />} />
         <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai/>} />
 
         {/* Form Register */}
         <Route path="/kategori/pasien" element={<KategoriPasien/>} />
-        <Route path="/register/pasien" element={<RegisterPasien/>} />
-        <Route path="/register/penanggungJawab" element={<BioPjBaru/>} />
-        <Route path="/register/pasien/baru" element={<RegisterPasienBaru/>} />
+        <Route path="/login/pasien" element={<RegisterPasien/>} />
+        {/* End of Isolated */}
+
 
 
         {/* Dashboard  */}

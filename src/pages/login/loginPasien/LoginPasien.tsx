@@ -98,7 +98,8 @@ export default function LoginPasien() {
       await showTemporaryAlert();
       return false;
     }
-    showOtp();
+    // showOtp();
+    navigate("/register/pasien/baru");
     return true;
   };
 
@@ -200,376 +201,177 @@ export default function LoginPasien() {
           </Box>
         </Box>
         {loginSuccess && <AlertSuccess label="Login Succeeded!" />}
-        {showLogin && (
-          <>
-            {showAlert && (
-              <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />
-            )}
+        {showAlert && (
+          <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />
+        )}
 
-            <Box
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            right: "0",
+            top: "0",
+            width: "50%",
+            flexDirection: "column",
+            gap: 5,
+            height: "100vh",
+            bgcolor: "#fff",
+          }}
+        >
+          <Box sx={{ width: "80%" }}>
+            <img src={logo} alt="logo-carolus" />
+            <Typography sx={{ fontSize: "32px", fontWeight: "600" }}>
+              Selamat Datang
+            </Typography>
+            <Typography
               sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                position: "absolute",
-                right: "0",
-                top: "0",
-                width: "50%",
-                flexDirection: "column",
-                gap: 5,
-                height: "100vh",
-                bgcolor: "#fff",
+                color: "gray",
+                fontSize: "18px",
+                marginBottom: "30px",
+                width: "100%",
               }}
             >
-              <Box sx={{ width: "80%" }}>
-                <img src={logo} alt="logo-carolus" />
-                <Typography sx={{ fontSize: "32px", fontWeight: "600" }}>
-                  Selamat Datang
-                </Typography>
-                <Typography
-                  sx={{
-                    color: "gray",
-                    fontSize: "18px",
-                    marginBottom: "30px",
-                    width: "100%",
-                  }}
-                >
-                  Silahkan masukkan nomor NIK (Nomor induk kependudukan)
-                  penanggung jawab.
-                </Typography>
+              Silahkan masukkan nomor NIK (Nomor induk kependudukan)
+              penanggung jawab.
+            </Typography>
 
-                <Formik
-                  initialValues={{ nik: "", email: "" }}
-                  validationSchema={validationSchema}
-                  onSubmit={async (values) => {
-                    if (await validationCheck(values)) {
-                      console.log(values);
-                      await showTemporarySuccessLogin();
-                    }
-                  }}
-                >
-                  {({
-                    errors,
-                    touched,
-                    handleChange,
-                    handleBlur,
-                    values,
-                    isValid,
-                    dirty,
-                    //   setFieldValue,
-                  }) => (
-                    <Form>
-                      <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <FormLabel sx={{ fontSize: "18px" }}>
-                          NIK (Nomor induk kependudukan) Penanggung jawab
-                        </FormLabel>
-                        <Field
-                          name="nik"
-                          as={TextField}
-                          placeholder="Masukkan NIK (Nomor induk kependudukan)"
-                          variant="outlined"
-                          fullWidth
-                          sx={{
-                            width: "100%",
-                            height: "48px",
-                            marginTop: "10px",
-                            "& .MuiOutlinedInput-root": {
-                              borderRadius: "8px",
-                              backgroundColor: emailError ? "#ffcccc" : "inherit",
-                            },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              border: "1px solid #ccc",
-                            },
-                            "& .MuiOutlinedInput-input": {
-                              padding: "10px",
-                              fontSize: "16px",
-                            },
-                          }}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.nik}
-                          error={touched.nik && Boolean(errors.nik)}
-                          helperText={touched.nik && errors.nik}
-                        />
+            <Formik
+              initialValues={{ nik: "", email: "" }}
+              validationSchema={validationSchema}
+              onSubmit={async (values) => {
+                if (await validationCheck(values)) {
+                  console.log(values);
+                  await showTemporarySuccessLogin();
+                }
+              }}
+            >
+              {({
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                values,
+                isValid,
+                dirty,
+                //   setFieldValue,
+              }) => (
+                <Form>
+                  <Box sx={{ display: "flex", flexDirection: "column" }}>
+                    <Typography fontWeight={600} fontSize={'20px'} mb={'2%'} >
+                      Isi data diri pasien
+                    </Typography>
 
-                        <FormLabel sx={{ fontSize: "18px", marginTop: "20px" }}>
-                          Email
-                        </FormLabel>
-                        <Field
-                          name="email"
-                          as={TextField}
-                          placeholder="Masukkan Email"
-                          variant="outlined"
-                          fullWidth
-                          sx={{
-                            width: "100%",
-                            height: "48px",
-                            marginTop: "10px",
-                            "& .MuiOutlinedInput-root": {
-                              borderRadius: "8px",
-                              backgroundColor: emailError ? "#ffcccc" : "inherit",
-                            },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              border: "1px solid #ccc",
-                            },
-                            "& .MuiOutlinedInput-input": {
-                              padding: "10px",
-                              fontSize: "16px",
-                            },
-                          }}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.email}
-                          error={touched.email && Boolean(errors.email)}
-                          helperText={touched.email && errors.email}
-                        />
+                    <FormLabel sx={{ fontSize: "16px" }}>
+                      NIK (Nomor induk kependudukan) Pasien
+                    </FormLabel>
+                    <Field
+                      name="nik"
+                      as={TextField}
+                      placeholder="Masukkan NIK (Nomor induk kependudukan)"
+                      variant="outlined"
+                      fullWidth
+                      sx={{
+                        width: "100%",
+                        height: "48px",
+                        marginTop: "10px",
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "8px",
+                          backgroundColor: emailError ? "#ffcccc" : "inherit",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          border: "1px solid #ccc",
+                        },
+                        "& .MuiOutlinedInput-input": {
+                          padding: "10px",
+                          fontSize: "16px",
+                        },
+                      }}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.nik}
+                      error={touched.nik && Boolean(errors.nik)}
+                      helperText={touched.nik && errors.nik}
+                    />
 
-                        {touched.email && errors.email && (
-                          <Typography sx={{ color: "red", fontSize: "12px" }}>
-                            {errors.email}
-                          </Typography>
-                        )}
+                    <FormLabel sx={{ fontSize: "18px", marginTop: "20px" }}>
+                      Email
+                    </FormLabel>
+                    <Field
+                      name="email"
+                      as={TextField}
+                      placeholder="Masukkan Email"
+                      variant="outlined"
+                      fullWidth
+                      sx={{
+                        width: "100%",
+                        height: "48px",
+                        marginTop: "10px",
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "8px",
+                          backgroundColor: emailError ? "#ffcccc" : "inherit",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          border: "1px solid #ccc",
+                        },
+                        "& .MuiOutlinedInput-input": {
+                          padding: "10px",
+                          fontSize: "16px",
+                        },
+                      }}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.email}
+                      error={touched.email && Boolean(errors.email)}
+                      helperText={touched.email && errors.email}
+                    />
 
-                        <Button
-                          type="submit"
-                          variant="contained"
-                          color="primary"
-                          fullWidth
-                          sx={{
-                            width: "100%",
-                            height: "48px",
-                            mt: 5,
-                            backgroundColor: "#8F85F3",
-                            ":hover": { backgroundColor: "#D5D1FB" },
-                          }}
-                          disabled={!isValid || !dirty}
-                        >
-                          Lanjutkan
-                        </Button>
-
-                        {/* <CustomButton onClick={() => console.log("hai ")} label="Daftar pasien baru" /> */}
-                      </Box>
-                    </Form>
-                  )}
-                </Formik>
-              </Box>
-            </Box>
-          </>
-        )}
-
-        {!showLogin && (
-          <>
-            {showEmailChanged && (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  position: "absolute",
-                  right: "0",
-                  top: "0",
-                  width: "50%",
-                  flexDirection: "column",
-                  gap: 5,
-                  height: "100vh",
-                  bgcolor: "#fff",
-                }}
-              >
-                <Box width={'70%'}>
-                  <Typography
-                    sx={{
-                      fontSize: "32px",
-                      fontWeight: "600",
-                      maxWidth: "410px",
-                    }}
-                  >
-                    Verifikasi
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "#A8A8BD",
-                      fontSize: "18px",
-                      marginBottom: "30px",
-                      maxWidth: "410px",
-                      fontWeight: "400",
-                    }}
-                  >
-                    Silahkan masukkan kode 4 digit yang dikirimkan ke nomor Anda .
-                  </Typography>
-
-                  <Formik
-                    initialValues={{ otp: "" }}
-                    validationSchema={otpValidationSchema}
-                    onSubmit={(values) => {
-                      console.log(values);
-                    }}
-                  >
-                    {({
-                      errors,
-                      touched,
-                      handleChange,
-                      // handleBlur,
-                      // values,
-                      isValid,
-                      dirty,
-                    }) => (
-                      <Form>
-                        <Box
-                          sx={{
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                          }}
-                        >
-                          <OtpInput
-                            value={otp}
-                            onChange={(otp) => {
-                              setOtp(otp);
-                              handleChange("otp")(otp);
-                            }}
-                            numInputs={4}
-                            renderSeparator={
-                              <span style={{ margin: "0 4px" }}> </span>
-                            }
-                            renderInput={(props) => (
-                              <input
-                                {...props}
-                                style={{
-                                  width: "100%",
-                                  height: "48px",
-                                  textAlign: "center",
-                                  border: `1px solid ${touched.otp && errors.otp ? "red" : "#8F85F3"
-                                    }`,
-                                  borderRadius: "8px",
-                                  fontSize: "20px",
-                                  margin: "0 4px",
-                                  outline: "none",
-                                  padding: "14px, 12px, 14px, 12px",
-                                }}
-                              />
-                            )}
-                          />
-                          {touched.otp && errors.otp && (
-                            <Typography sx={{ color: "red", fontSize: "12px" }}>
-                              {errors.otp}
-                            </Typography>
-                          )}
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              marginTop: "10px",
-                              width: "100%",
-                            }}
-                          >
-                            <Typography
-                              sx={{
-                                fontSize: "16px",
-                                lineHeight: "18px",
-                                color: "#A8A8BD",
-                              }}
-                            >
-                              Tidak mendapatkan kode?{" "}
-                            </Typography>
-                            <Typography
-                              onClick={
-                                !isCounting ? handleResendClick : undefined
-                              }
-                              sx={{
-                                cursor: isCounting ? "default" : "pointer",
-                                color: isCounting ? "#ccc" : "#8F85F3",
-                                textDecoration: isCounting ? "none" : "underline",
-                                fontSize: "16px",
-                              }}
-                            >
-                              {isCounting
-                                ? `${formatTime()}`
-                                : "Kirim ulang tautan"}
-                            </Typography>
-                          </Box>
-                          <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            // onClick={otpFormShown}
-                            onClick={() => navigate('/register/pasien')}
-                            fullWidth
-                            sx={{
-                              width: "100%",
-                              height: "48px",
-                              marginTop: "20px",
-                              backgroundColor: "#8F85F3",
-                              ":hover": { backgroundColor: "#D5D1FB" },
-                            }}
-                            disabled={!isValid || !dirty}
-                          >
-                            Verifikasi
-                          </Button>
-                        </Box>
-                      </Form>
+                    {touched.email && errors.email && (
+                      <Typography sx={{ color: "red", fontSize: "12px" }}>
+                        {errors.email}
+                      </Typography>
                     )}
-                  </Formik>
-                </Box>
-              </Box>
-            )}
 
-            {!showEmailChanged && (
-              <Box
-                sx={{
-                  marginLeft: "50px",
-                  marginTop: "auto",
-                  marginBottom: "auto",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <Typography
-                  sx={{ fontSize: "32px", fontWeight: "600", maxWidth: "410px" }}
-                >
-                  Email pengaturan ulang kata sandi telah terkirim.
-                </Typography>
-                <Typography
-                  sx={{
-                    color: "#16161D",
-                    fontSize: "18px",
-                    marginBottom: "30px",
-                    maxWidth: "410px",
-                    fontWeight: "400",
-                  }}
-                >
-                  Kami telah mengirimkan tautan untuk mengatur ulang kata sandi
-                  Anda. Tidak mendapat email?
-                </Typography>
-                <Button
-                  onClick={handleResendClick}
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  disabled={isCounting}
-                  sx={{
-                    width: "410px",
-                    height: "48px",
-                    backgroundColor: isCounting ? "#ccc" : "#8F85F3",
-                    ":hover": { backgroundColor: "#D5D1FB" },
-                  }}
-                >
-                  {isCounting
-                    ? `Kirim ulang dalam ${formatTime()}`
-                    : "Kirim ulang tautan"}
-                </Button>
-                <CustomButton
-                  onClick={handleClick}
-                  label="Kembali ke halaman masuk"
-                />
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      fullWidth
+                      sx={{
+                        width: "100%",
+                        height: "48px",
+                        mt: 5,
+                        backgroundColor: "#8F85F3",
+                        ":hover": { backgroundColor: "#D5D1FB" },
+                      }}
+                      disabled={!isValid || !dirty}
+                    >
+                      Lanjutkan
+                    </Button>
 
-                {resendSuccess && (
-                  <AlertSuccess label="Link tautan berhasil dikirim ulang" />
-                )}
-              </Box>
-            )}
-          </>
-        )}
+                    <Button
+                      // onClick={() => navigate('/register/penanggungJawab') }
+                      sx={{
+                        width: '100%',
+                        height: '48px',
+                        marginTop: '20px',
+                        backgroundColor: '#ffff',
+                        border: '1px solid #8F85F3',
+                        color: '#8F85F3',
+                        ":hover": { backgroundColor: '#8F85F3', color: '#ffff' },
+                      }}
+                    >
+                      Pasien Tanpa Identitas
+                    </Button>
+
+                    {/* <CustomButton onClick={() => console.log("hai ")} label="Daftar pasien baru" /> */}
+                  </Box>
+                </Form>
+              )}
+            </Formik>
+          </Box>
+        </Box>
       </Box>
     </>
   );

@@ -1,4 +1,4 @@
-import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, OutlinedInput, } from "@mui/material";
+import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, OutlinedInput, Switch, } from "@mui/material";
 import { useEffect, useState } from "react";
 import patientImage from "../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from 'formik';
@@ -219,6 +219,15 @@ export default function BioPjBaru() {
                                 {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
                                     <Form>
                                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                            <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} mb={'2%'}>
+                                                <Typography fontWeight={"bold"} maxWidth={"190px"} fontSize={'20px'} >
+                                                    Isi data diri Penanggung jawab
+                                                </Typography>
+                                                <Box ml={'50px'} mt={'40px'} display={'flex'} flexDirection={'row'} >
+                                                    <Switch defaultChecked size="small" />
+                                                    <Typography color="#747487" fontSize={'14px'} >Data diri sama dengan pasien</Typography>
+                                                </Box>
+                                            </Box>
                                             <FormLabel sx={{ fontSize: '18px' }}>NIK (Nomor induk kependudukan) Penanggung jawab</FormLabel>
                                             <Field
                                                 name="nik"
@@ -355,7 +364,7 @@ export default function BioPjBaru() {
                                             </FormControl>
 
                                             <Button
-                                                onClick={() => navigate('/register/pasien')}
+                                                onClick={() => navigate('/kategori/pasien')}
                                                 type="submit"
                                                 variant="contained"
                                                 color="primary"
