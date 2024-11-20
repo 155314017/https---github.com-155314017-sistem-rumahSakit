@@ -1,5 +1,6 @@
 import { Container, Box } from '@mui/system'
 import { Typography, Button, IconButton } from '@mui/material'
+import { Delete as DeleteIcon } from '@mui/icons-material'
 
 // components
 import BreadCrumbs from '../../../components/medium/BreadCrumbs'
