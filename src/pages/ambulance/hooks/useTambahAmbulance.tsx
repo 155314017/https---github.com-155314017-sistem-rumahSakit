@@ -145,6 +145,7 @@ export default function useTambahAmbulance() {
     endTime,
     setSelectedDay,
     setStartTime,
-    setEndTime
+    setEndTime,
+    schedules
   }
 }

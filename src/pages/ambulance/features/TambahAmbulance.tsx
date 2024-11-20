@@ -1,5 +1,5 @@
 import { Container, Box } from '@mui/system'
-import { Typography, Button } from '@mui/material'
+import { Typography, Button, IconButton } from '@mui/material'
 
 // components
 import BreadCrumbs from '../../../components/medium/BreadCrumbs'
@@ -24,7 +24,8 @@ export default function TambahAmbulance() {
     setStartTime,
     setEndTime,
     startTime,
-    endTime
+    endTime,
+    schedules
   } = useTambahAmbulance()
 
   return (
@@ -72,7 +73,6 @@ export default function TambahAmbulance() {
                   justifyContent={'space-between'}
                   gap={'32px'}
                 >
-                  {/* Hari */}
                   <Box display={'flex'} flexDirection={'column'} width={'100%'}>
                     <Typography>Hari</Typography>
                     <DropdownList
@@ -87,14 +87,12 @@ export default function TambahAmbulance() {
                       ]}
                       placeholder="Pilih hari"
                       onChange={(value: string) => {
-                        console.log('Selected value:', value)
                         setSelectedDay(value)
                       }}
                       loading={false}
                     />
                   </Box>
 
-                  {/* Jam Mulai */}
                   <Box display={'flex'} flexDirection={'column'} width={'100%'}>
                     <Typography>Jam mulai</Typography>
                     <CustomTimePicker
@@ -103,7 +101,6 @@ export default function TambahAmbulance() {
                     />
                   </Box>
 
-                  {/* Jam Selesai */}
                   <Box display={'flex'} flexDirection={'column'} width={'100%'}>
                     <Typography>Jam selesai</Typography>
                     <CustomTimePicker value={endTime} onChange={newValue => setEndTime(newValue)} />
@@ -122,6 +119,28 @@ export default function TambahAmbulance() {
                 >
                   + Tambah hari
                 </Button>
+
+                {schedules.map((schedule, index) => (
+                  <Box
+                    key={index}
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mt={2}
+                    sx={{
+                      border: '1px solid black',
+                      padding: '4px',
+                      borderRadius: '6px'
+                    }}
+                  >
+                    <Typography>{`${schedule.day}: ${schedule.startTime.format(
+                      'HH:mm'
+                    )} - ${schedule.endTime.format('HH:mm')}`}</Typography>
+                    <IconButton color="error" onClick={() => handleDeleteSchedule(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Box>
+                ))}
               </Box>
 
               <Button
