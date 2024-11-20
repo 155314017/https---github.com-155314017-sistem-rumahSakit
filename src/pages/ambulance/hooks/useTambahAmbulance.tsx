@@ -13,13 +13,20 @@ type ImageData = {
   imageData: string
 }
 
+type Schedule = {
+  day: string
+  startTime: dayjs.Dayjs
+  endTime: dayjs.Dayjs
+}
+
 export default function useTambahAmbulance() {
   const [imagesData, setImagesData] = useState<ImageData[]>([])
   const [errorAlert, setErrorAlert] = useState(false)
   const [selectedDay, setSelectedDay] = useState<string | null>(null)
   const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null)
   const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null)
-  const [operationalTime, setOperationalTime] = useState<string | null>(null)
+  // const [operationalTime, setOperationalTime] = useState<string | null>(null)
+  const [schedules, setSchedules] = useState<Schedule[]>([])
 
   dayjs.locale('id')
 
@@ -39,19 +46,33 @@ export default function useTambahAmbulance() {
     operationalCost: number
   }
 
+  // const handleTambahHari = () => {
+  //   console.log('Selected day:', selectedDay)
+  //   console.log('Start time:', startTime?.format('HH:mm'))
+  //   console.log('End time:', endTime?.format('HH:mm'))
+  //   const dateTime =
+  //     selectedDay + ' ' + startTime?.format('HH:mm') + ' - ' + endTime?.format('HH:mm')
+  //   console.log(errorAlert)
+  //   console.log(operationalTime)
+  //   setOperationalTime(dateTime)
+  //   console.log('Waktu yg dipilih: ', dateTime)
+  //   console.log('Day: ', selectedDay)
+  //   console.log('start time: ', startTime?.unix())
+  //   console.log('end time: ', endTime?.unix())
+  // }
+
   const handleTambahHari = () => {
-    console.log('Selected day:', selectedDay)
-    console.log('Start time:', startTime?.format('HH:mm'))
-    console.log('End time:', endTime?.format('HH:mm'))
-    const dateTime =
-      selectedDay + ' ' + startTime?.format('HH:mm') + ' - ' + endTime?.format('HH:mm')
-    console.log(errorAlert)
-    console.log(operationalTime)
-    setOperationalTime(dateTime)
-    console.log('Waktu yg dipilih: ', dateTime)
-    console.log('Day: ', selectedDay)
-    console.log('start time: ', startTime?.unix())
-    console.log('end time: ', endTime?.unix())
+    if (selectedDay && startTime && endTime) {
+      const newSchedule: Schedule = {
+        day: selectedDay,
+        startTime: startTime,
+        endTime: endTime
+      }
+      setSchedules([...schedules, newSchedule])
+      setSelectedDay('')
+      setStartTime(null)
+      setEndTime(null)
+    }
   }
 
   const showTemporaryAlertError = async () => {
@@ -132,6 +153,7 @@ export default function useTambahAmbulance() {
   })
 
   return {
+    errorAlert,
     handleTambahHari,
     handleImageChange,
     breadcrumbItems,
