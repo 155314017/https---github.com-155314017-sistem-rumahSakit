@@ -25,13 +25,12 @@ export default function useTambahAmbulance() {
   const [selectedDay, setSelectedDay] = useState<string | null>(null)
   const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null)
   const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null)
-  // const [operationalTime, setOperationalTime] = useState<string | null>(null)
   const [schedules, setSchedules] = useState<Schedule[]>([])
-
   dayjs.locale('id')
 
   const navigate = useNavigate()
 
+  console.log(errorAlert)
   const dayMapping: { [key: string]: number } = {
     Senin: 1,
     Selasa: 2,
@@ -46,21 +45,6 @@ export default function useTambahAmbulance() {
     operationalCost: number
   }
 
-  // const handleTambahHari = () => {
-  //   console.log('Selected day:', selectedDay)
-  //   console.log('Start time:', startTime?.format('HH:mm'))
-  //   console.log('End time:', endTime?.format('HH:mm'))
-  //   const dateTime =
-  //     selectedDay + ' ' + startTime?.format('HH:mm') + ' - ' + endTime?.format('HH:mm')
-  //   console.log(errorAlert)
-  //   console.log(operationalTime)
-  //   setOperationalTime(dateTime)
-  //   console.log('Waktu yg dipilih: ', dateTime)
-  //   console.log('Day: ', selectedDay)
-  //   console.log('start time: ', startTime?.unix())
-  //   console.log('end time: ', endTime?.unix())
-  // }
-
   const handleTambahHari = () => {
     if (selectedDay && startTime && endTime) {
       const newSchedule: Schedule = {
@@ -73,6 +57,10 @@ export default function useTambahAmbulance() {
       setStartTime(null)
       setEndTime(null)
     }
+  }
+
+  const handleDeleteSchedule = (index: number) => {
+    setSchedules(schedules.filter((_, i) => i !== index))
   }
 
   const showTemporaryAlertError = async () => {
@@ -101,26 +89,20 @@ export default function useTambahAmbulance() {
         .positive('Must be a positive number')
     }),
     onSubmit: async values => {
-      const selectedDayOfWeek = dayMapping[selectedDay || '1']
-      const adjustedStartTime = startTime?.day(selectedDayOfWeek)
-      const adjustedEndTime = endTime?.day(selectedDayOfWeek)
-
-      console.log('Selected Day on submit: ', selectedDayOfWeek)
-      console.log('adjusted start time: ', adjustedStartTime)
-      console.log('adjusted end time: ', adjustedEndTime)
-
-      const schedules = [
-        {
-          startDateTime: adjustedStartTime?.unix(),
-          endDateTime: adjustedEndTime?.unix()
+      const formattedSchedules = schedules.map(schedule => {
+        const selectedDayOfWeek = dayMapping[schedule.day]
+        return {
+          startDateTime: schedule.startTime.day(selectedDayOfWeek).unix(),
+          endDateTime: schedule.endTime.day(selectedDayOfWeek).unix()
         }
-      ]
+      })
+
       const data = {
         number: '12345',
         status: 'ACTIVE',
         additionalInfo: 'hi',
-        cost: values.operationalCost | 0,
-        schedules: schedules,
+        cost: values.operationalCost || 0,
+        schedules: formattedSchedules,
         images: imagesData.map(image => ({
           imageName: image.imageName || '',
           imageType: image.imageType || '',
@@ -143,7 +125,7 @@ export default function useTambahAmbulance() {
         )
         console.log('Response:', response.data)
         navigate('/ambulance', {
-          state: { successAdd: true, message: 'Ambulance berhasil ditambahkan!' }
+          state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' }
         })
       } catch (error) {
         console.error('Error submitting form:', error)
@@ -155,6 +137,7 @@ export default function useTambahAmbulance() {
   return {
     errorAlert,
     handleTambahHari,
+    handleDeleteSchedule,
     handleImageChange,
     breadcrumbItems,
     formik,

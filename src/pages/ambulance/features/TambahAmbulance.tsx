@@ -17,6 +17,7 @@ export default function TambahAmbulance() {
   const {
     handleTambahHari,
     handleImageChange,
+    handleDeleteSchedule,
     breadcrumbItems,
     formik,
     setSelectedDay,
