@@ -61,17 +61,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   
   export default function TableAmbulance() {
     const {page,
-        setPage,
         isCollapsed,
-        setIsCollapsed,
         open,
         setOpen,
         datas,
-        setDatas,
         deletedItems,
-        setDeletedItems,
         navigate,
-        fetchData,
         handleChangePage,
         rowsPerPage,
         displayedData,
