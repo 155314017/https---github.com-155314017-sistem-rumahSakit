@@ -14,8 +14,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import AlertWarning from "../../../components/small/AlertWarning";
 import AlertSuccess from "../../../components/small/AlertSuccess";
-import CustomButton from "../../../components/small/CustomButton";
-import OtpInput from "react-otp-input";
+import Cookies from "js-cookie";
 import "react-phone-input-2/lib/style.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import SwitchCustom from "../../../components/small/SwitchCustom";
@@ -26,7 +25,8 @@ const validationSchema = Yup.object({
         .min(12, "NIK minimal 12 digit")
         .max(14, "NIK maksimal 14 digit")
         .required("NIK wajib diisi"),
-    email: Yup.string().required("Email wajib diisi"),
+    email: Yup.string().email("email tidak valid")
+        .required("Email wajib diisi"),
 });
 
 interface FormValues {
@@ -43,8 +43,12 @@ const otpValidationSchema = Yup.object({
 });
 
 interface DataKirim {
-    nik: string;
+    identityNumber: string;
+    name: string;
+    phone: string;
     email: string;
+    gender: string;
+    address: string;
 }
 
 export default function RegisterPJ() {
@@ -52,7 +56,7 @@ export default function RegisterPJ() {
     const [showLogin, setShowLogin] = useState(true);
     const [showEmailChanged, setShowEmailChanged] = useState(true);
     const [emailError, setEmailError] = useState(false);
-    const [, setNikError] = useState(false);
+    const [nikError, setNikError] = useState(false);
     const [, setPasswordError] = useState(false);
     const location = useLocation();
     const [showAlert, setShowAlert] = useState(false);
@@ -61,9 +65,12 @@ export default function RegisterPJ() {
     const [resendSuccess, setResendSuccess] = useState(false);
     const [loginSuccess, setLoginSuccess] = useState(false);
     const [otp, setOtp] = useState("");
-    const [data, setData] = useState<DataKirim>({ nik: '', email: '' });
+    const [data, setData] = useState<DataKirim>({ identityNumber: '', name: '', phone: '', email: '', gender: '', address: '' });
+    const [patientId, setPatientId] = useState<string>('');
 
     const navigate = useNavigate();
+
+    const [switchValue, setSwitchValue] = useState(false);
 
     // const otpFormShown = () => {
     //   // setShowEmailChanged(false);
@@ -96,6 +103,7 @@ export default function RegisterPJ() {
     };
 
     const validationCheck = async (values: FormValues) => {
+        console.log("nilai: ", values)
         const { nik, email } = values;
         const nikIsValid = nik === "1234567891011";
         const emailIsValid = email === "chornaeld@gmail.com";
@@ -106,8 +114,9 @@ export default function RegisterPJ() {
             await showTemporaryAlert();
             return false;
         }
-        // showOtp();
-        navigate("/register/penanggungJawab");
+        // showOtp();s
+        Cookies.set('dataPasien', JSON.stringify(data), { expires: 7 });
+        navigate("/register/penanggungJawab", { state: { successSendDataPj: switchValue, message: 'Gedung berhasil ditambahkan!', data: data, idPatient: patientId } })
         return true;
     };
 
@@ -128,10 +137,11 @@ export default function RegisterPJ() {
     useEffect(() => {
         if (location.state && location.state.successAdd) {
             console.log(location.state.message);
-            console.log("DATA YANG DIKIRIM: ",location.state.data);
+            console.log("DATA YANG DIKIRIM: ", location.state.data);
             setData(location.state.data);
             console.log("Data yang di state kan: ", data)
-            navigate(location.pathname, { replace: true, state: undefined }); 
+            setPatientId(location.state.idPatient)
+            // navigate(location.pathname, { replace: true, state: undefined });
         }
     }, [location.state, navigate]);
 
@@ -156,6 +166,12 @@ export default function RegisterPJ() {
             .padStart(2, "0")}`;
     };
 
+
+    const handleSwitchChange = (value: boolean) => {
+        setSwitchValue(value);
+        console.log('Switch value:', value);
+        console.log('Data: ', data);
+    };
     return (
 
         <>
@@ -256,12 +272,12 @@ export default function RegisterPJ() {
                         </Typography>
 
                         <Formik
-                            initialValues={{ nik: data.nik, email: data.email }}
+                            initialValues={{ nik: switchValue ? data.identityNumber : "", email: switchValue ? data.email : "" }}
                             enableReinitialize
-                            validationSchema={validationSchema}
+                            validationSchema={switchValue ? null : validationSchema}
                             onSubmit={async (values) => {
                                 if (await validationCheck(values)) {
-                                    console.log(values);
+                                    console.log("nilai dikirim: ", values);
                                     await showTemporarySuccessLogin();
                                 }
                             }}
@@ -282,7 +298,7 @@ export default function RegisterPJ() {
                                             <Typography fontWeight={"bold"} maxWidth={"190px"} fontSize={'20px'} >
                                                 Isi data diri Penanggung jawab
                                             </Typography>
-                                            <SwitchCustom />
+                                            <SwitchCustom onChangeValue={handleSwitchChange} />
                                         </Box>
                                         <FormLabel sx={{ fontSize: "18px" }}>
                                             NIK (Nomor induk kependudukan) Penanggung jawab
@@ -290,7 +306,6 @@ export default function RegisterPJ() {
                                         <Field
                                             name="nik"
                                             as={TextField}
-                                            
                                             placeholder="Masukkan NIK (Nomor induk kependudukan)"
                                             variant="outlined"
                                             fullWidth
@@ -300,7 +315,7 @@ export default function RegisterPJ() {
                                                 marginTop: "10px",
                                                 "& .MuiOutlinedInput-root": {
                                                     borderRadius: "8px",
-                                                    backgroundColor: emailError ? "#ffcccc" : "inherit",
+                                                    backgroundColor: nikError ? "#ffcccc" : "inherit",
                                                 },
                                                 "& .MuiOutlinedInput-notchedOutline": {
                                                     border: "1px solid #ccc",
@@ -312,9 +327,10 @@ export default function RegisterPJ() {
                                             }}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            value={values.nik}
-                                            error={touched.nik && Boolean(errors.nik)}
-                                            helperText={touched.nik && errors.nik}
+                                            value={switchValue ? data.identityNumber : values.nik}
+                                            error={switchValue ? false : touched.nik && Boolean(errors.nik)}
+                                            helperText={switchValue ? false : touched.nik && errors.nik}
+                                            disabled={switchValue}
                                         />
 
                                         <FormLabel sx={{ fontSize: "18px", marginTop: "20px" }}>
@@ -344,16 +360,17 @@ export default function RegisterPJ() {
                                             }}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            value={values.email}
-                                            error={touched.email && Boolean(errors.email)}
-                                            helperText={touched.email && errors.email}
+                                            value={switchValue ? data.email : values.email}
+                                            error={switchValue ? false : touched.email && Boolean(errors.email)}
+                                            helperText={switchValue ? false : touched.email && errors.email}
+                                            disabled={switchValue}
                                         />
 
-                                        {touched.email && errors.email && (
+                                        {/* {touched.email && errors.email && (
                                             <Typography sx={{ color: "red", fontSize: "12px" }}>
                                                 {errors.email}
                                             </Typography>
-                                        )}
+                                        )} */}
 
                                         <Button
                                             type="submit"
@@ -367,7 +384,7 @@ export default function RegisterPJ() {
                                                 backgroundColor: "#8F85F3",
                                                 ":hover": { backgroundColor: "#D5D1FB" },
                                             }}
-                                            disabled={!isValid || !dirty}
+                                            disabled={switchValue ? false : !isValid || !dirty}
                                         >
                                             Lanjutkan
                                         </Button>

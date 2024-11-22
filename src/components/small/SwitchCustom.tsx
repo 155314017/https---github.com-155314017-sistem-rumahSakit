@@ -1,7 +1,7 @@
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Switch, { SwitchProps } from '@mui/material/Switch';
 import { FormControlLabel } from '@mui/material';
+import { useState, useEffect } from "react";
 
 const IOSSwitch = styled((props: SwitchProps) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -63,15 +63,43 @@ const IOSSwitch = styled((props: SwitchProps) => (
     },
 }));
 
-export default function SwitchCustom() {
-  return (
-      <FormControlLabel
-          control={<IOSSwitch sx={{ m: 1 }} defaultChecked onChange={() => console.log('switched') } />}
-          label="Data diri sama dengan pasien"
-          sx={{
-              color:'#747487',
-              fontSize:'14px'
-          }}
-      />
-  )
-}
+type SwitchCustomProps = {
+    defaultValue?: boolean;
+    onChangeValue: (value: boolean) => void;
+};
+
+const SwitchCustom: React.FC<SwitchCustomProps> = ({ defaultValue = false, onChangeValue }) => {
+    const [checked, setChecked] = useState(defaultValue);
+
+    // Sync state with prop defaultValue when it changes
+    useEffect(() => {
+        setChecked(defaultValue);
+    }, [defaultValue]);
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const isChecked = event.target.checked;
+        setChecked(isChecked);
+        if (onChangeValue) {
+            onChangeValue(isChecked);
+        }
+    };
+
+    return (
+        <FormControlLabel
+            control={
+                <IOSSwitch
+                    sx={{ m: 1 }}
+                    checked={checked}
+                    onChange={handleChange}
+                />
+            }
+            label="Data diri sama dengan pasien"
+            sx={{
+                color: '#747487',
+                fontSize: '14px',
+            }}
+        />
+    );
+};
+
+export default SwitchCustom;

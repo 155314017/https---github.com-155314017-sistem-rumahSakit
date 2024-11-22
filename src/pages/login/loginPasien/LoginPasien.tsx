@@ -17,6 +17,7 @@ import CustomButton from "../../../components/small/CustomButton";
 import OtpInput from "react-otp-input";
 import "react-phone-input-2/lib/style.css";
 import { useNavigate } from "react-router-dom";
+import RegisterPatient from "../../../services/Patient Tenant/RegisterPatient";
 
 const validationSchema = Yup.object({
   nik: Yup.string()
@@ -24,7 +25,8 @@ const validationSchema = Yup.object({
     .min(12, "NIK minimal 12 digit")
     .max(14, "NIK maksimal 14 digit")
     .required("NIK wajib diisi"),
-  email: Yup.string().required("Email wajib diisi"),
+  email: Yup.string().required("Email wajib diisi")
+    .email("Format Email Tidak Sesuai")
 });
 
 interface FormValues {
@@ -88,18 +90,9 @@ export default function LoginPasien() {
   };
 
   const validationCheck = async (values: FormValues) => {
-    const { nik, email } = values;
-    const nikIsValid = nik === "1234567891011";
-    const emailIsValid = email === "chornaeld@gmail.com";
-    setNikError(!nikIsValid);
-    setEmailError(!emailIsValid);
 
-    if (!nikIsValid || !emailIsValid) {
-      await showTemporaryAlert();
-      return false;
-    }
     // showOtp();
-    navigate("/register/pasien/baru");
+    navigate("/register/pasien/baru", { state: { succesSendData1: true, data: values } });
     return true;
   };
 
@@ -278,7 +271,7 @@ export default function LoginPasien() {
                         marginTop: "10px",
                         "& .MuiOutlinedInput-root": {
                           borderRadius: "8px",
-                          backgroundColor: emailError ? "#ffcccc" : "inherit",
+                          backgroundColor: touched.nik && errors.nik ? "#ffcccc" : "inherit",
                         },
                         "& .MuiOutlinedInput-notchedOutline": {
                           border: "1px solid #ccc",
@@ -310,7 +303,7 @@ export default function LoginPasien() {
                         marginTop: "10px",
                         "& .MuiOutlinedInput-root": {
                           borderRadius: "8px",
-                          backgroundColor: emailError ? "#ffcccc" : "inherit",
+                          backgroundColor: touched.email && errors.email ? "#ffcccc" : "inherit",
                         },
                         "& .MuiOutlinedInput-notchedOutline": {
                           border: "1px solid #ccc",
@@ -326,12 +319,6 @@ export default function LoginPasien() {
                       error={touched.email && Boolean(errors.email)}
                       helperText={touched.email && errors.email}
                     />
-
-                    {touched.email && errors.email && (
-                      <Typography sx={{ color: "red", fontSize: "12px" }}>
-                        {errors.email}
-                      </Typography>
-                    )}
 
                     <Button
                       type="submit"

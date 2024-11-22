@@ -1,5 +1,5 @@
-import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, OutlinedInput, } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, OutlinedInput, RadioGroup, FormHelperText, } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import patientImage from "../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -8,9 +8,13 @@ import AlertSuccess from "../../../components/small/AlertSuccess";
 import CustomButton from "../../../components/small/CustomButton";
 import OtpInput from 'react-otp-input';
 import 'react-phone-input-2/lib/style.css';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import { useNavigate } from "react-router-dom";
+import RegisterPatient from "../../../services/Patient Tenant/RegisterPatient";
+import VerifyOTPPatient from "../../../services/Patient Tenant/VerifyOTPPatient";
+import { styled } from '@mui/material/styles';
+import { RadioProps } from '@mui/material/Radio';
 
 const validationSchema = Yup.object({
     nik: Yup.string()
@@ -18,7 +22,14 @@ const validationSchema = Yup.object({
         .min(12, 'NIK minimal 12 digit')
         .max(14, 'NIK maksimal 14 digit')
         .required('NIK wajib diisi'),
-    email: Yup.string().required('Email wajib diisi')
+    email: Yup.string().required('Email wajib diisi'),
+    address: Yup.string().required('Email wajib diisi'),
+    phone: Yup.string()
+        .required('Isi nomor telepon')
+        .matches(/^[0-9]{10,15}$/, 'Nomor telepon tidak valid'),
+    fullname: Yup.string().required('biji lo')
+        .matches(/^[A-Za-z\s]+$/, "Nama hanya boleh berisi huruf"),
+    gender: Yup.string().required('JenisK kelamin harus dipilih'),
 });
 
 interface FormValues {
@@ -27,6 +38,15 @@ interface FormValues {
 }
 
 interface DataKirim {
+    identityNumber: string;
+    name: string;
+    phone: string;
+    email: string;
+    gender: string;
+    address: string;
+}
+
+interface DataAwal {
     nik: string;
     email: string;
 }
@@ -39,6 +59,64 @@ const otpValidationSchema = Yup.object({
         .required('OTP wajib diisi'),
 });
 
+const BpIcon = styled('span')(({ theme }) => ({
+    borderRadius: '50%',
+    width: 24,
+    height: 24,
+    boxShadow: 'inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)',
+    backgroundColor: '#f5f8fa',
+    backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))',
+    '.Mui-focusVisible &': {
+        outline: '2px auto red',
+        outlineOffset: 2,
+    },
+    'input:hover ~ &': {
+        backgroundColor: '#ebf1f5',
+        ...theme.applyStyles('dark', {
+            backgroundColor: '#30404d',
+        }),
+    },
+    'input:disabled ~ &': {
+        boxShadow: 'none',
+        background: 'rgba(206,217,224,.5)',
+        ...theme.applyStyles('dark', {
+            background: 'rgba(57,75,89,.5)',
+        }),
+    },
+    ...theme.applyStyles('dark', {
+        boxShadow: '0 0 0 1px rgb(16 22 26 / 40%)',
+        backgroundColor: '#394b59',
+        backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.05),hsla(0,0%,100%,0))',
+    }),
+}));
+
+const BpCheckedIcon = styled(BpIcon)({
+    backgroundColor: '#7367F0',
+    backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
+    '&::before': {
+        display: 'block',
+        width: 24,
+        height: 24,
+        backgroundImage: 'radial-gradient(#fff,#fff 28%,transparent 32%)',
+        content: '""',
+    },
+    'input:hover ~ &': {
+        backgroundColor: '#7367F0',
+    },
+});
+
+function BpRadio(props: RadioProps) {
+    return (
+        <Radio
+            disableRipple
+            color="default"
+            checkedIcon={<BpCheckedIcon />}
+            icon={<BpIcon />}
+            {...props}
+        />
+    );
+}
+
 export default function RegisterPasienBaru() {
     // const [showPassword, setShowPassword] = useState(false);
     const [showLogin, setShowLogin] = useState(true);
@@ -46,14 +124,18 @@ export default function RegisterPasienBaru() {
     const [emailError, setEmailError] = useState(false);
     const [, setNikError] = useState(false);
     const [, setPasswordError] = useState(false);
-    const [data, setData] = useState<DataKirim>({ nik: '', email: '' });
+    const [data, setData] = useState<DataKirim>({ identityNumber: '', name: '', phone: '', email: '', gender: '', address: '' });
     const [showAlert, setShowAlert] = useState(false);
     const [isCounting, setIsCounting] = useState(false);
     const [secondsLeft, setSecondsLeft] = useState(60);
     const [resendSuccess, setResendSuccess] = useState(false);
     const [loginSuccess, setLoginSuccess] = useState(false);
+    const [emailOTP, setEmailOTP] = useState('');
     const [otp, setOtp] = useState('');
+    const [data1, setData1] = useState<DataAwal>({ nik: '', email: '' });
+    const [patientId, setPatientId] = useState<string>('');
 
+    const location = useLocation();
     const navigate = useNavigate();
 
     const otpFormShown = () => {
@@ -87,17 +169,8 @@ export default function RegisterPasienBaru() {
     };
 
     const validationCheck = async (values: FormValues) => {
-        const { nik, email } = values;
-        const nikIsValid = nik === "1234567891011";
-        const emailIsValid = email === "chornaeld@gmail.com";
-        setNikError(!nikIsValid);
-        setEmailError(!emailIsValid);
 
-        if (!nikIsValid || !emailIsValid) {
-            await showTemporaryAlert();
-            return false;
-        }
-        showOtp()
+        // showOtp()
         return true;
     };
 
@@ -133,6 +206,25 @@ export default function RegisterPasienBaru() {
         const seconds = secondsLeft % 60;
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
+
+    const [value, setValue] = React.useState('WOMEN');
+    const handleChangeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValue((event.target as HTMLInputElement).value);
+        console.log(value)
+    };
+
+    useEffect(() => {
+        if (location.state && location.state.succesSendData1) {
+            console.log(location.state.message);
+            console.log("DATA YANG DIKIRIM dari Page 1: ", location.state.data);
+            setData1(location.state.data);
+            // navigate(location.pathname, { replace: true, state: undefined });
+        }
+    }, [location.state, navigate]);
+
+    useEffect(() => {
+        console.log("Data awal yang di state kan : ", data1)
+    })
 
     return (
         <>   <style>
@@ -224,15 +316,32 @@ export default function RegisterPasienBaru() {
                                 </Typography>
 
                                 <Formik
-                                    initialValues={{ nik: '', email: '' }}
+                                    initialValues={{ nik: data1.nik, email: data1.email, phone: '', fullname: '', gender: '', address: '' }}
+                                    enableReinitialize
                                     validationSchema={validationSchema}
                                     onSubmit={async (values) => {
-                                        if (await validationCheck(values)) {
-                                            console.log(values);
-                                            setData(values);
-                                            await showTemporarySuccessLogin();
-                                            // navigate = { "/register/pj", { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' } } }
-                                            navigate('/register/pj', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!', data: values } })
+                                        // if (await validationCheck(values)) {
+                                        //     console.log(values);
+                                        // setData(values);
+                                        // await showTemporarySuccessLogin();
+                                        const dataRegis = {
+                                            identityNumber: values.nik,
+                                            name: values.fullname,
+                                            phone: values.phone,
+                                            email: values.email,
+                                            gender: values.gender,
+                                            address: values.address
+                                        }
+                                        setEmailOTP(values.email)
+                                        console.log("data dikirm ke API: ", dataRegis)
+                                        try {
+                                            const response = await RegisterPatient(dataRegis);
+                                            console.log("response: ", response);
+                                            showOtp()
+                                            setData(dataRegis)
+                                            setPatientId(response.data.id);
+                                        } catch {
+                                            console.log("error")
                                         }
                                     }}
                                 >
@@ -269,7 +378,8 @@ export default function RegisterPasienBaru() {
                                                     onBlur={handleBlur}
                                                     value={values.nik}
                                                     error={touched.nik && Boolean(errors.nik)}
-                                                    helperText={touched.nik && errors.nik}
+                                                    // helperText={touched.nik && errors.nik}
+                                                    disabled
                                                 />
 
                                                 <FormLabel sx={{ fontSize: '18px' }}>Email</FormLabel>
@@ -299,14 +409,9 @@ export default function RegisterPasienBaru() {
                                                     onBlur={handleBlur}
                                                     value={values.email}
                                                     error={touched.email && Boolean(errors.email)}
-                                                    helperText={touched.email && errors.email}
+                                                    // helperText={touched.email && errors.email}
+                                                    disabled
                                                 />
-
-                                                {touched.email && errors.email && (
-                                                    <Typography sx={{ color: 'red', fontSize: '12px' }}>
-                                                        {errors.email}
-                                                    </Typography>
-                                                )}
 
                                                 <Typography mt={2} >
                                                     No. Handphone Pasien{" "}
@@ -314,11 +419,12 @@ export default function RegisterPasienBaru() {
                                                 </Typography>
                                                 <PhoneInput
                                                     country={"id"}
+                                                    value={touched.phone ? errors.phone : ""}
                                                     onChange={(phone) => setFieldValue("phone", phone)}
                                                     inputStyle={{
                                                         height: "48px",
                                                         borderRadius: "8px",
-                                                        border: "1px solid #ccc",
+                                                        border: touched.phone && errors.phone ? "1px solid #f44336" : "1px solid #ccc",
                                                         padding: "10px 40px 10px 60px",
                                                         fontSize: "16px",
                                                         width: "100%",
@@ -332,11 +438,16 @@ export default function RegisterPasienBaru() {
                                                         marginBottom: "10px",
                                                         width: "100%",
                                                     }}
+                                                    onBlur={handleBlur}
                                                 />
+                                                {touched.phone && errors.phone && (
+                                                    <FormHelperText error>{errors.phone}</FormHelperText>
+                                                )}
 
                                                 <FormLabel sx={{ fontSize: '18px' }}>Nama lengkap Pasien</FormLabel>
+
                                                 <Field
-                                                    name="namaPj"
+                                                    name="fullname"
                                                     as={TextField}
                                                     placeholder="Masukka Nama lengkap penanggung jawab"
                                                     variant="outlined"
@@ -359,36 +470,85 @@ export default function RegisterPasienBaru() {
                                                     }}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
+                                                    value={values.fullname}
+                                                    error={touched.fullname && Boolean(errors.fullname)}
+                                                // helperText={touched.fullname && errors.fullname}
                                                 />
 
                                                 <Typography mt={2} >
                                                     Jenis kelamin Pasien{" "}
                                                     <span style={{ color: "#d32f2f" }}>*</span>{" "}
                                                 </Typography>
+                                                <FormLabel id="gender-label" sx={{
+                                                    color: '#7367F0',
+                                                    '&.Mui-focused': {
+                                                        color: '#7367F0',
+                                                    },
+                                                    '&.Mui-error': {
+                                                        color: '#7367F0',
+                                                    }
+                                                }} >Jenis Kelamin Pasien</FormLabel>
                                                 <Box display={'flex'} flexDirection={'row'} padding={1} border={"1px solid #A8A8BD"} borderRadius={"12px"} pl={3}>
-                                                    <FormControlLabel value="pria" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Pria" />
-                                                    <FormControlLabel value="wanita" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Wanita" />
+                                                    <FormControl component="fieldset" error={touched.gender && Boolean(errors.gender)}>
+                                                        <RadioGroup
+                                                            aria-labelledby="gender-label"
+                                                            name="gender"
+                                                            value={values.gender}
+                                                            onChange={(e) => setFieldValue("gender", e.target.value)}
+                                                            row
+                                                        >
+                                                            <FormControlLabel value="MEN" control={<BpRadio />} label="Female" />
+                                                            <FormControlLabel value="WOMEN" control={<BpRadio />} label="Male" />
+                                                        </RadioGroup>
+                                                        {touched.gender && errors.gender && (
+                                                            <FormHelperText error>{errors.gender}</FormHelperText>
+                                                        )}
+                                                    </FormControl>
                                                 </Box>
 
                                                 <Typography sx={{ fontSize: "16px", mt: 2 }}>
                                                     Alamat tempat tinggal Pasien<span style={{ color: "red" }}>*</span>
                                                 </Typography>
 
-                                                <FormControl fullWidth sx={{ my: 1 }}>
-                                                    <OutlinedInput
-                                                        id="deskripsiKlinik"
-                                                        name="deskripsiKlinik"
-                                                        size="medium"
-                                                        placeholder="Masukkan tempat tinggal penanggung jawab"
-                                                        sx={{ alignItems: 'flex-start', borderRadius: '8px' }}
-                                                        multiline
-                                                        minRows={3}
-                                                    />
-                                                </FormControl>
+                                                <Field
+                                                    name="address"
+                                                    as={TextField}
+                                                    placeholder="Masukkan tempat tinggal penanggung jawab"
+                                                    variant="outlined"
+                                                    fullWidth
+                                                    size="medium"
+                                                    sx={{
+                                                        width: '100%',
+                                                        height: '48px',
+                                                        marginTop: '10px',
+                                                        marginBottom: '50px',
+                                                        alignItems: 'flex-start',
+                                                        '& .MuiOutlinedInput-root': {
+                                                            borderRadius: '8px',
+                                                            backgroundColor: 'inherit',
+                                                        },
+                                                        '& .MuiOutlinedInput-notchedOutline': {
+                                                            border: '1px solid #ccc',
+                                                        },
+                                                        '& .MuiOutlinedInput-input': {
+                                                            padding: '10px',
+                                                            fontSize: '16px',
+                                                        },
+                                                    }}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.address}
+                                                    error={touched.address && Boolean(errors.address)}
+                                                    // helperText={touched.address && errors.address}
+                                                    multiline
+                                                    minRows={2}
+                                                />
+
+
 
 
                                                 <Button
-                                                    onClick={() => setShowLogin(true)}
+                                                    // onClick={() => setShowLogin(true)}
                                                     type="submit"
                                                     variant="contained"
                                                     color="primary"
@@ -460,8 +620,20 @@ export default function RegisterPasienBaru() {
                                         <Formik
                                             initialValues={{ otp: '' }}
                                             validationSchema={otpValidationSchema}
-                                            onSubmit={(values) => {
-                                                console.log(values);
+                                            onSubmit={async (values) => {
+                                                const dataOTP = {
+                                                    email: emailOTP,
+                                                    code: values.otp
+                                                }
+                                                console.log("DATA OTP DIKIRIM : ", dataOTP)
+                                                try {
+                                                    const response = await VerifyOTPPatient(dataOTP)
+                                                    console.log("response : ", response)
+                                                    otpFormShown()
+                                                    navigate('/register/pj', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!', data: data, idPatient: patientId } })
+                                                } catch {
+                                                    console.log("error")
+                                                }
 
                                             }}
                                         >
@@ -524,7 +696,7 @@ export default function RegisterPasienBaru() {
                                                             type="submit"
                                                             variant="contained"
                                                             color="primary"
-                                                            onClick={otpFormShown}
+                                                            // onClick={otpFormShown}
                                                             fullWidth
                                                             sx={{
                                                                 width: '100%',
