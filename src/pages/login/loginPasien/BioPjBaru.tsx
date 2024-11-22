@@ -13,6 +13,8 @@ import PhoneInput from "react-phone-input-2";
 import SwitchCustom from "../../../components/small/SwitchCustom";
 import Cookies from "js-cookie";
 import UpdatePatientGuards from "../../../services/Patient Tenant/UpdatePatientGuard";
+import { styled } from '@mui/material/styles';
+import { RadioProps } from '@mui/material/Radio';
 
 const validationSchema = Yup.object({
     nik: Yup.string()
@@ -168,6 +170,64 @@ export default function BioPjBaru() {
     };
 
 
+    const BpIcon = styled('span')(({ theme }) => ({
+        borderRadius: '50%',
+        width: 24,
+        height: 24,
+        boxShadow: 'inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)',
+        backgroundColor: '#f5f8fa',
+        backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))',
+        '.Mui-focusVisible &': {
+            outline: '2px auto red',
+            outlineOffset: 2,
+        },
+        'input:hover ~ &': {
+            backgroundColor: '#ebf1f5',
+            ...theme.applyStyles('dark', {
+                backgroundColor: '#30404d',
+            }),
+        },
+        'input:disabled ~ &': {
+            boxShadow: 'none',
+            background: 'rgba(206,217,224,.5)',
+            ...theme.applyStyles('dark', {
+                background: 'rgba(57,75,89,.5)',
+            }),
+        },
+        ...theme.applyStyles('dark', {
+            boxShadow: '0 0 0 1px rgb(16 22 26 / 40%)',
+            backgroundColor: '#394b59',
+            backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.05),hsla(0,0%,100%,0))',
+        }),
+    }));
+
+    const BpCheckedIcon = styled(BpIcon)({
+        backgroundColor: '#7367F0',
+        backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
+        '&::before': {
+            display: 'block',
+            width: 24,
+            height: 24,
+            backgroundImage: 'radial-gradient(#fff,#fff 28%,transparent 32%)',
+            content: '""',
+        },
+        'input:hover ~ &': {
+            backgroundColor: '#7367F0',
+        },
+    });
+
+    function BpRadio(props: RadioProps) {
+        return (
+            <Radio
+                disableRipple
+                color="default"
+                checkedIcon={<BpCheckedIcon />}
+                icon={<BpIcon />}
+                {...props}
+            />
+        );
+    }
+
     return (
         <Box sx={{ display: 'flex', flexDirection: 'row', marginLeft: '10%' }}>
             <Box>
@@ -240,14 +300,14 @@ export default function BioPjBaru() {
                             bgcolor: '#ffff'
                         }}
                     >
-                        <Box sx={{ ml: 8, width: '85%', marginTop: '-6%' }}>
+                        <Box sx={{ width: '85%' }}>
                             <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
                             <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
                                 Silahkan masukkan nomor NIK (Nomor induk kependudukan) penanggung jawab.
                             </Typography>
 
                             <Formik
-                                initialValues={{ nik: switchValue ? data.identityNumber : '', email: switchValue ? data.email : '', phone: switchValue ? data.phone : '', fullname: switchValue ? data.name : '', address: switchValue ? data.address : '', }}
+                                initialValues={{ nik: switchValue ? data.identityNumber : '', email: switchValue ? data.email : '', phone: switchValue ? data.phone : '', fullname: switchValue ? data.name : '', gender: switchValue ? data.gender : '' , address: switchValue ? data.address : '', }}
                                 enableReinitialize
                                 validationSchema={validationSchema}
                                 onSubmit={async (values) => {
@@ -261,7 +321,7 @@ export default function BioPjBaru() {
                                         guardianName: values.fullname,
                                         guardianPhone: values.phone,
                                         guardianEmail: values.email,
-                                        guardianGender: 'MEN',
+                                        guardianGender: values.gender,
                                         guardianAddress: values.address
                                     }
                                     console.log("data dikirm ke API: ", dataRegis)
@@ -269,6 +329,7 @@ export default function BioPjBaru() {
                                         const response = await UpdatePatientGuards(dataRegis);
                                         console.log("response: ", response);
                                         console.log("Sukses")
+                                        navigate('/kategori/pasien')
                                     } catch {
                                         console.log("error")
                                     }
@@ -406,15 +467,16 @@ export default function BioPjBaru() {
 
                                             <FormControl>
                                                 <FormLabel id="demo-controlled-radio-buttons-group">Jenis Kelamin Pasien</FormLabel>
+
                                                 <RadioGroup
-                                                    aria-labelledby="demo-controlled-radio-buttons-group"
-                                                    name="controlled-radio-buttons-group"
-                                                    value={value}
-                                                    onChange={handleChangeGender}
-                                                    sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+                                                    aria-labelledby="gender-label"
+                                                    name="gender"
+                                                    value={values.gender} 
+                                                    onChange={(e) => setFieldValue("gender", e.target.value)}
+                                                    row
                                                 >
-                                                    <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                                    <FormControlLabel value="male" control={<Radio />} label="Male" />
+                                                    <FormControlLabel value="WOMEN" disabled={switchValue} control={<BpRadio />} label="Female" />
+                                                    <FormControlLabel value="MEN" disabled={switchValue} control={<BpRadio />} label="Male" />
                                                 </RadioGroup>
                                             </FormControl>
 

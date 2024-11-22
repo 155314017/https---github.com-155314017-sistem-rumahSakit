@@ -1,4 +1,4 @@
-import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, OutlinedInput, RadioGroup, FormHelperText, } from "@mui/material";
+import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, OutlinedInput, RadioGroup, FormHelperText, CircularProgress, } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import patientImage from "../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from 'formik';
@@ -23,11 +23,12 @@ const validationSchema = Yup.object({
         .max(14, 'NIK maksimal 14 digit')
         .required('NIK wajib diisi'),
     email: Yup.string().required('Email wajib diisi'),
-    address: Yup.string().required('Email wajib diisi'),
+    address: Yup.string().required('Email wajib diisi')
+        .matches(/^[A-Za-z\s]+$/, "Nama hanya boleh berisi huruf"),
     phone: Yup.string()
         .required('Isi nomor telepon')
         .matches(/^[0-9]{10,15}$/, 'Nomor telepon tidak valid'),
-    fullname: Yup.string().required('biji lo')
+    fullname: Yup.string().required('Wajib diisi')
         .matches(/^[A-Za-z\s]+$/, "Nama hanya boleh berisi huruf"),
     gender: Yup.string().required('JenisK kelamin harus dipilih'),
 });
@@ -120,7 +121,7 @@ function BpRadio(props: RadioProps) {
 export default function RegisterPasienBaru() {
     // const [showPassword, setShowPassword] = useState(false);
     const [showLogin, setShowLogin] = useState(true);
-    const [showEmailChanged, setShowEmailChanged] = useState(true);
+    const [showEmailChanged, setShowEmailChanged] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [, setNikError] = useState(false);
     const [, setPasswordError] = useState(false);
@@ -134,6 +135,8 @@ export default function RegisterPasienBaru() {
     const [otp, setOtp] = useState('');
     const [data1, setData1] = useState<DataAwal>({ nik: '', email: '' });
     const [patientId, setPatientId] = useState<string>('');
+    const [notFound, setNotFound] = useState(true);
+    const [buttonDis, setButtonDis] = useState(false);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -166,6 +169,7 @@ export default function RegisterPasienBaru() {
         setEmailError(false);
         setPasswordError(false);
         setShowLogin(false);
+        setShowEmailChanged(true);
     };
 
     const validationCheck = async (values: FormValues) => {
@@ -188,11 +192,19 @@ export default function RegisterPasienBaru() {
         return () => clearInterval(timer);
     }, [isCounting, secondsLeft]);
 
-    const handleResendClick = () => {
+    const handleResendClick = async () => {
+        try {
+            console.log('handleResendClick');
+            const response = await RegisterPatient(data);
+            console.log("response: ", response);
+        } catch {
+            console.log("error")
+        }
         setIsCounting(true);
         setSecondsLeft(60);
         showTemporaryAlertSuccess();
         console.log("Resend clicked");
+
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -223,8 +235,19 @@ export default function RegisterPasienBaru() {
     }, [location.state, navigate]);
 
     useEffect(() => {
-        console.log("Data awal yang di state kan : ", data1)
-    })
+        console.log("Data awal yang di state kan: ", data1);
+
+        if (data1.email === '') {
+            console.log("ANAK MEMEEEEEEEEEEEEEEEKKKKKKKKKKKKKKK");
+            setShowLogin(false);
+            setNotFound(true);
+        } else {
+
+            setShowLogin(true);
+            setNotFound(false);
+        }
+    }, [data1]);
+
 
     return (
         <>   <style>
@@ -335,6 +358,8 @@ export default function RegisterPasienBaru() {
                                         setEmailOTP(values.email)
                                         console.log("data dikirm ke API: ", dataRegis)
                                         try {
+                                            setButtonDis(true);
+
                                             const response = await RegisterPatient(dataRegis);
                                             console.log("response: ", response);
                                             showOtp()
@@ -395,7 +420,7 @@ export default function RegisterPasienBaru() {
                                                         marginTop: '10px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: emailError ? '#ffcccc' : 'inherit',
+                                                            backgroundColor: 'inherit',
                                                         },
                                                         '& .MuiOutlinedInput-notchedOutline': {
                                                             border: '1px solid #ccc',
@@ -419,13 +444,14 @@ export default function RegisterPasienBaru() {
                                                 </Typography>
                                                 <PhoneInput
                                                     country={"id"}
-                                                    value={touched.phone ? errors.phone : ""}
+                                                    value={values.phone}
                                                     onChange={(phone) => setFieldValue("phone", phone)}
                                                     inputStyle={{
                                                         height: "48px",
                                                         borderRadius: "8px",
                                                         border: touched.phone && errors.phone ? "1px solid #f44336" : "1px solid #ccc",
                                                         padding: "10px 40px 10px 60px",
+                                                        backgroundColor: touched.phone && errors.phone ? "#ffcccc" : 'inherit',
                                                         fontSize: "16px",
                                                         width: "100%",
                                                         marginTop: "10px",
@@ -438,11 +464,8 @@ export default function RegisterPasienBaru() {
                                                         marginBottom: "10px",
                                                         width: "100%",
                                                     }}
-                                                    onBlur={handleBlur}
+                                                    onBlur={handleBlur("phone")}
                                                 />
-                                                {touched.phone && errors.phone && (
-                                                    <FormHelperText error>{errors.phone}</FormHelperText>
-                                                )}
 
                                                 <FormLabel sx={{ fontSize: '18px' }}>Nama lengkap Pasien</FormLabel>
 
@@ -458,7 +481,7 @@ export default function RegisterPasienBaru() {
                                                         marginTop: '10px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: 'inherit',
+                                                            backgroundColor: touched.fullname && errors.fullname ? "#ffcccc" : 'inherit',
                                                         },
                                                         '& .MuiOutlinedInput-notchedOutline': {
                                                             border: '1px solid #ccc',
@@ -475,19 +498,10 @@ export default function RegisterPasienBaru() {
                                                 // helperText={touched.fullname && errors.fullname}
                                                 />
 
-                                                <Typography mt={2} >
+                                                <Typography mt={2} mb={1} >
                                                     Jenis kelamin Pasien{" "}
                                                     <span style={{ color: "#d32f2f" }}>*</span>{" "}
                                                 </Typography>
-                                                <FormLabel id="gender-label" sx={{
-                                                    color: '#7367F0',
-                                                    '&.Mui-focused': {
-                                                        color: '#7367F0',
-                                                    },
-                                                    '&.Mui-error': {
-                                                        color: '#7367F0',
-                                                    }
-                                                }} >Jenis Kelamin Pasien</FormLabel>
                                                 <Box display={'flex'} flexDirection={'row'} padding={1} border={"1px solid #A8A8BD"} borderRadius={"12px"} pl={3}>
                                                     <FormControl component="fieldset" error={touched.gender && Boolean(errors.gender)}>
                                                         <RadioGroup
@@ -497,8 +511,8 @@ export default function RegisterPasienBaru() {
                                                             onChange={(e) => setFieldValue("gender", e.target.value)}
                                                             row
                                                         >
-                                                            <FormControlLabel value="MEN" control={<BpRadio />} label="Female" />
-                                                            <FormControlLabel value="WOMEN" control={<BpRadio />} label="Male" />
+                                                            <FormControlLabel value="WOMEN" control={<BpRadio />} label="Female" />
+                                                            <FormControlLabel value="MEN" control={<BpRadio />} label="Male" />
                                                         </RadioGroup>
                                                         {touched.gender && errors.gender && (
                                                             <FormHelperText error>{errors.gender}</FormHelperText>
@@ -525,13 +539,14 @@ export default function RegisterPasienBaru() {
                                                         alignItems: 'flex-start',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: 'inherit',
+                                                            backgroundColor: touched.address && errors.address ? "#ffcccc" : 'inherit',
                                                         },
                                                         '& .MuiOutlinedInput-notchedOutline': {
                                                             border: '1px solid #ccc',
                                                         },
                                                         '& .MuiOutlinedInput-input': {
-                                                            padding: '10px',
+                                                            // padding: '10px',
+                                                            alignItems: 'flex-start',
                                                             fontSize: '16px',
                                                         },
                                                     }}
@@ -546,24 +561,41 @@ export default function RegisterPasienBaru() {
 
 
 
-
-                                                <Button
-                                                    // onClick={() => setShowLogin(true)}
-                                                    type="submit"
-                                                    variant="contained"
-                                                    color="primary"
-                                                    fullWidth
-                                                    sx={{
-                                                        width: '100%',
-                                                        height: '48px',
-                                                        marginTop: '20px',
-                                                        backgroundColor: '#8F85F3',
-                                                        ":hover": { backgroundColor: '#D5D1FB' },
-                                                    }}
-                                                    disabled={!isValid || !dirty}
-                                                >
-                                                    Lanjutkan
-                                                </Button>
+                                                {buttonDis ? (
+                                                    <Button
+                                                        type="submit"
+                                                        variant="contained"
+                                                        color="primary"
+                                                        fullWidth
+                                                        sx={{
+                                                            width: '100%',
+                                                            height: '48px',
+                                                            marginTop: '20px',
+                                                            backgroundColor: '#8F85F3',
+                                                            ":hover": { backgroundColor: '#D5D1FB' },
+                                                        }}
+                                                        disabled={true}
+                                                    >
+                                                        <CircularProgress size={20} />
+                                                    </Button>
+                                                ) : (
+                                                    <Button
+                                                        type="submit"
+                                                        variant="contained"
+                                                        color="primary"
+                                                        fullWidth
+                                                        sx={{
+                                                            width: '100%',
+                                                            height: '48px',
+                                                            marginTop: '20px',
+                                                            backgroundColor: '#8F85F3',
+                                                            ":hover": { backgroundColor: '#D5D1FB' },
+                                                        }}
+                                                        disabled={!isValid || !dirty}
+                                                    >
+                                                        Lanjutkan
+                                                    </Button>
+                                                )}
 
                                                 <Button
                                                     // onClick={() => navigate('/register/penanggungJawab') }
@@ -592,163 +624,157 @@ export default function RegisterPasienBaru() {
                 )}
 
                 {
-                    !showLogin && (
-                        <>
-                            {showEmailChanged && (
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        p: 5,
-                                        position: "absolute",
-                                        right: "0",
-                                        top: "0",
-                                        width: "45%",
-                                        flexDirection: 'column',
-                                        // mr: "10%",
-                                        mt: "15%",
-                                    }}
-                                >
-                                    <Box sx={{ ml: 1 }}>
-                                        <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
-                                            Verifikasi
-                                        </Typography>
-                                        <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                                            Silahkan masukkan kode 4 digit yang dikirimkan ke nomor Anda .
-                                        </Typography>
+                    notFound && (
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                p: 5,
+                                position: "absolute",
+                                right: "0",
+                                top: "0",
+                                width: "45%",
+                                flexDirection: 'column',
+                                // mr: "10%",
+                                mt: "15%",
+                            }}
+                        >
+                            <Box sx={{ ml: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                                <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
+                                    Data Not Found  !
+                                </Typography>
+                                <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                                    Are you sure you filled the field ?? Look sus !
+                                </Typography>
+                                <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                                    Keep playing kiddos !
+                                </Typography>
+                            </Box>
+                        </Box>
+                    )}
+                {showEmailChanged && (
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            p: 5,
+                            position: "absolute",
+                            right: "0",
+                            top: "0",
+                            width: "45%",
+                            flexDirection: 'column',
+                            // mr: "10%",
+                            mt: "15%",
+                        }}
+                    >
+                        <Box sx={{ ml: 1 }}>
+                            <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
+                                Verifikasi
+                            </Typography>
+                            <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                                Silahkan masukkan kode 4 digit yang dikirimkan ke nomor Anda .
+                            </Typography>
 
-                                        <Formik
-                                            initialValues={{ otp: '' }}
-                                            validationSchema={otpValidationSchema}
-                                            onSubmit={async (values) => {
-                                                const dataOTP = {
-                                                    email: emailOTP,
-                                                    code: values.otp
-                                                }
-                                                console.log("DATA OTP DIKIRIM : ", dataOTP)
-                                                try {
-                                                    const response = await VerifyOTPPatient(dataOTP)
-                                                    console.log("response : ", response)
-                                                    otpFormShown()
-                                                    navigate('/register/pj', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!', data: data, idPatient: patientId } })
-                                                } catch {
-                                                    console.log("error")
-                                                }
+                            <Formik
+                                initialValues={{ otp: '' }}
+                                validationSchema={otpValidationSchema}
+                                onSubmit={async (values) => {
+                                    const dataOTP = {
+                                        email: emailOTP,
+                                        code: values.otp
+                                    }
+                                    console.log("DATA OTP DIKIRIM : ", dataOTP)
+                                    try {
+                                        const response = await VerifyOTPPatient(dataOTP)
+                                        console.log("response : ", response)
+                                        otpFormShown()
+                                        navigate('/register/pj', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!', data: data, idPatient: patientId } })
+                                    } catch {
+                                        console.log("error")
+                                    }
 
-                                            }}
-                                        >
-                                            {({ errors, touched, handleChange, isValid, dirty }) => (
-                                                <Form>
-                                                    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-                                                        <OtpInput
-                                                            value={otp}
-                                                            onChange={(otp) => {
-                                                                setOtp(otp);
-                                                                handleChange('otp')(otp);
-                                                            }}
-                                                            numInputs={4}
-                                                            renderSeparator={<span style={{ margin: '0 4px' }}> </span>}
-                                                            renderInput={(props) => (
-                                                                <input
-                                                                    {...props}
-                                                                    style={{
-                                                                        width: '100%',
-                                                                        height: '48px',
-                                                                        textAlign: 'center',
-                                                                        border: `1px solid ${touched.otp && errors.otp ? 'red' : '#8F85F3'}`,
-                                                                        borderRadius: '8px',
-                                                                        fontSize: '20px',
-                                                                        margin: '0 4px',
-                                                                        outline: 'none',
-                                                                        padding: '14px, 12px, 14px, 12px',
-                                                                    }}
-                                                                />
-                                                            )}
-                                                        />
-                                                        {touched.otp && errors.otp && (
-                                                            <Typography sx={{ color: 'red', fontSize: '12px' }}>
-                                                                {errors.otp}
-                                                            </Typography>
-                                                        )}
-                                                        <Box
-                                                            sx={{
-                                                                display: 'flex',
-                                                                justifyContent: 'space-between',
-                                                                alignItems: 'center',
-                                                                marginTop: '10px',
-                                                                width: '100%',
-                                                            }}
-                                                        >
-                                                            <Typography sx={{ fontSize: '16px', lineHeight: '18px', color: '#A8A8BD' }} >Tidak mendapatkan kode? </Typography>
-                                                            <Typography
-                                                                onClick={!isCounting ? handleResendClick : undefined}
-                                                                sx={{
-                                                                    cursor: isCounting ? 'default' : 'pointer',
-                                                                    color: isCounting ? '#ccc' : '#8F85F3',
-                                                                    textDecoration: isCounting ? 'none' : 'underline',
-                                                                    fontSize: '16px',
-                                                                }}
-                                                            >
-                                                                {isCounting ? `${formatTime()}` : 'Kirim ulang tautan'}
-                                                            </Typography>
-                                                        </Box>
-                                                        <Button
-                                                            type="submit"
-                                                            variant="contained"
-                                                            color="primary"
-                                                            // onClick={otpFormShown}
-                                                            fullWidth
-                                                            sx={{
-                                                                width: '100%',
-                                                                height: '48px',
-                                                                marginTop: '20px',
-                                                                backgroundColor: '#8F85F3',
-                                                                ":hover": { backgroundColor: '#D5D1FB' },
-                                                            }}
-                                                            disabled={!isValid || !dirty}
-                                                        >
-                                                            Verifikasi
-                                                        </Button>
-                                                    </Box>
-                                                </Form>
+                                }}
+                            >
+                                {({ errors, touched, handleChange, isValid, dirty }) => (
+                                    <Form>
+                                        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+                                            <OtpInput
+                                                value={otp}
+                                                onChange={(otp) => {
+                                                    setOtp(otp);
+                                                    handleChange('otp')(otp);
+                                                }}
+                                                numInputs={4}
+                                                renderSeparator={<span style={{ margin: '0 4px' }}> </span>}
+                                                renderInput={(props) => (
+                                                    <input
+                                                        {...props}
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '48px',
+                                                            textAlign: 'center',
+                                                            border: `1px solid ${touched.otp && errors.otp ? 'red' : '#8F85F3'}`,
+                                                            borderRadius: '8px',
+                                                            fontSize: '20px',
+                                                            margin: '0 4px',
+                                                            outline: 'none',
+                                                            padding: '14px, 12px, 14px, 12px',
+                                                        }}
+                                                    />
+                                                )}
+                                            />
+                                            {touched.otp && errors.otp && (
+                                                <Typography sx={{ color: 'red', fontSize: '12px' }}>
+                                                    {errors.otp}
+                                                </Typography>
                                             )}
-                                        </Formik>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center',
+                                                    marginTop: '10px',
+                                                    width: '100%',
+                                                }}
+                                            >
+                                                <Typography sx={{ fontSize: '16px', lineHeight: '18px', color: '#A8A8BD' }} >Tidak mendapatkan kode? </Typography>
+                                                <Typography
+                                                    onClick={!isCounting ? handleResendClick : undefined}
+                                                    sx={{
+                                                        cursor: isCounting ? 'default' : 'pointer',
+                                                        color: isCounting ? '#ccc' : '#8F85F3',
+                                                        textDecoration: isCounting ? 'none' : 'underline',
+                                                        fontSize: '16px',
+                                                    }}
+                                                >
+                                                    {isCounting ? `${formatTime()}` : 'Kirim ulang tautan'}
+                                                </Typography>
+                                            </Box>
+                                            <Button
+                                                type="submit"
+                                                variant="contained"
+                                                color="primary"
+                                                // onClick={otpFormShown}
+                                                fullWidth
+                                                sx={{
+                                                    width: '100%',
+                                                    height: '48px',
+                                                    marginTop: '20px',
+                                                    backgroundColor: '#8F85F3',
+                                                    ":hover": { backgroundColor: '#D5D1FB' },
+                                                }}
+                                                disabled={!isValid || !dirty}
+                                            >
+                                                Verifikasi
+                                            </Button>
+                                        </Box>
+                                    </Form>
+                                )}
+                            </Formik>
 
-                                    </Box>
-                                </Box>
-                            )}
-
-                            {!showEmailChanged && (
-                                <Box sx={{ marginLeft: '50px', marginTop: 'auto', marginBottom: 'auto', display: 'flex', flexDirection: 'column' }}>
-                                    <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
-                                        Email pengaturan ulang kata sandi telah terkirim.
-                                    </Typography>
-                                    <Typography sx={{ color: '#16161D', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                                        Kami telah mengirimkan tautan untuk mengatur ulang kata sandi Anda. Tidak mendapat email?
-                                    </Typography>
-                                    <Button
-                                        onClick={handleResendClick}
-                                        variant="contained"
-                                        color="primary"
-                                        fullWidth
-                                        disabled={isCounting}
-                                        sx={{
-                                            width: '410px',
-                                            height: '48px',
-                                            backgroundColor: isCounting ? '#ccc' : '#8F85F3',
-                                            ":hover": { backgroundColor: '#D5D1FB' },
-                                        }}
-                                    >
-                                        {isCounting ? `Kirim ulang dalam ${formatTime()}` : 'Kirim ulang tautan'}
-                                    </Button>
-                                    <CustomButton onClick={handleClick} label="Kembali ke halaman masuk" />
-
-
-                                </Box>
-                            )}
-                        </>
-                    )
-                }
+                        </Box>
+                    </Box>
+                )}
             </Box>
         </>
     );
