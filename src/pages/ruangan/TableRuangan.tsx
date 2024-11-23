@@ -125,6 +125,7 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas, onSuccessDelete })
   const [datas, setDatas] = useState<RoomDataItem[]>([]);
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -514,7 +515,8 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas, onSuccessDelete })
                               Ubah
                             </Link>
                             <Link
-                              href="/detailGedung "
+                              href="#"
+                              onClick={() => navigate(`/detailRuangan/${data.id}`)}
                               underline="hover"
                               sx={{
                                 textTransform: "capitalize",
@@ -526,13 +528,20 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas, onSuccessDelete })
                           </TableCell>
                         </StyledTableRow>
                       ))
+                    ) : loading ? (
+                      <StyledTableRow>
+                        <TableCell colSpan={5} align="center">
+                          Sedang mengambil data . . .
+                        </TableCell>
+                      </StyledTableRow>
                     ) : (
                       <StyledTableRow>
                         <TableCell colSpan={5} align="center">
                           Tidak ada data
                         </TableCell>
                       </StyledTableRow>
-                    )}
+                    )
+                    }
                   </TableBody>
                 </Table>
               </StyledTableContainer>

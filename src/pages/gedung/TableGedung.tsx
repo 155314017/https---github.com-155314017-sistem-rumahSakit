@@ -343,7 +343,8 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
                             Ubah
                           </Link>
                           <Link
-                            href="/detailGedung"
+                            href="#"
+                            onClick={() => navigate(`/detailGedung/${data.id}`)}
                             mr={2}
                             underline="hover"
                             sx={{

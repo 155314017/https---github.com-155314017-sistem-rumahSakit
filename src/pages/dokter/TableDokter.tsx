@@ -25,6 +25,7 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 // import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { DoctorDataItem, DoctorServices } from "../../services/Admin Tenant/ManageDoctor/DoctorServices";
+import axios from "axios";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -62,6 +63,9 @@ export default function TableDokter() {
   const [isCollapsed, setIsCollapsed] = useState(true);
   // const [open, setOpen] = React.useState<boolean>(false);
   const [datas, setDatas] = useState<DoctorDataItem[]>([]);
+  const [idClinic, setIdClinic] = useState<string[]>([]);
+  const [clinicNames, setClinicNames] = useState<string[]>([]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,15 +73,45 @@ export default function TableDokter() {
       try {
         const result = await DoctorServices();
         console.log('Result: ', result);
-        setDatas(result); 
+        setDatas(result);
+        const clinicId = result.map((data) => data.parentClinicId);
+        console.log("id klinik: ", clinicId)
+        setIdClinic(clinicId)
         // setData(result);
       } catch (error) {
         console.log('Failed to fetch data from API: ', error);
       }
     };
-
     fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log('moved: ', idClinic)
+  }, [idClinic])
+
+  useEffect(() => {
+    const fetchClinicNames = async () => {
+      try {
+        const names = await Promise.all(
+          idClinic.map(async (id) => {
+            const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`);
+            return response.data.name; 
+          })
+        );
+        setClinicNames(names);
+      } catch (error) {
+        console.log('Failed to fetch clinic names: ', error);
+      }
+    };
+
+    if (idClinic.length > 0) {
+      fetchClinicNames();
+    }
+  }, [idClinic]);
+
+  useEffect(() => {
+    console.log('Clinic names: ', clinicNames);
+  }, [clinicNames]);
 
   // const handleChangePage = (
   //   _event: React.MouseEvent<HTMLButtonElement> | null,
@@ -291,7 +325,7 @@ export default function TableDokter() {
                           color: "#292B2C",
                           bgcolor: "#F1F0FE",
                         }}
-                        align="center"
+                        align="left"
                       >
                         Klinik
                       </TableCell>
@@ -303,7 +337,7 @@ export default function TableDokter() {
                           color: "#292B2C",
                           bgcolor: "#F1F0FE",
                         }}
-                        align="center"
+                        align="left"
                       >
                         Biaya Penanganan
                       </TableCell>
@@ -315,7 +349,7 @@ export default function TableDokter() {
                           color: "#292B2C",
                           bgcolor: "#F1F0FE",
                         }}
-                        align="center"
+                        align="left"
                       >
                         Jam Praktek
                       </TableCell>
@@ -355,7 +389,7 @@ export default function TableDokter() {
                                 textTransform: "capitalize",
                               },
                             ]}
-                            align="center"
+                            align="left"
                           >
                             {data.name}
                           </TableCell>
@@ -371,7 +405,39 @@ export default function TableDokter() {
                                 textTransform: "capitalize",
                               },
                             ]}
-                            align="center"
+                            align="left"
+                          >
+                            {data.specialty}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                            align="left"
+                          >
+                            {data.parentClinicId}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                            align="left"
                           >
                             {data.id}
                           </TableCell>
@@ -387,39 +453,7 @@ export default function TableDokter() {
                                 textTransform: "capitalize",
                               },
                             ]}
-                            align="center"
-                          >
-                            {data.id}
-                          </TableCell>
-                          <TableCell
-                            sx={[
-                              {
-                                color: "#292B2C",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                maxWidth: "150px",
-                                fontSize: "14px",
-                                textTransform: "capitalize",
-                              },
-                            ]}
-                            align="center"
-                          >
-                            {data.id}
-                          </TableCell>
-                          <TableCell
-                            sx={[
-                              {
-                                color: "#292B2C",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                maxWidth: "150px",
-                                fontSize: "14px",
-                                textTransform: "capitalize",
-                              },
-                            ]}
-                            align="center"
+                            align="left"
                           >
                             {data.id}
                           </TableCell>

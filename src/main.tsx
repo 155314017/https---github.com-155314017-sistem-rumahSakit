@@ -3,54 +3,55 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './index.css'
 // import App from './App';
-import LoginPasien from './pages/login/loginPasien/LoginPasien'
-import PasienLamaRawatJalanBPJS from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanBPJS'
-import PasienLamaRawatJalanUmum from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanUmum'
-import Home from './pages'
-import PasienBaruRawatJalanUmum from './pages/rawatJalan/pasienBaru/PasienBaruRawatJalanUmum'
-import PasienBaruRawatJalanBPJS from './pages/rawatJalan/pasienBaru/PasienBaruRawatJalanBPJS'
-import Gedung from '../src/pages/gedung/index'
-import Ambulance from './pages/ambulance'
-import DetailAmbulance from './pages/ambulance/DetailAmbulance'
-import TambahAmbulance from './pages/ambulance/features/TambahAmbulance'
-import DetailGedung from './pages/gedung/DetailGedung'
-import TambahGedung from './pages/gedung/TambahGedung'
-import Klinik from './pages/klinik'
-import DetailKlinik from './pages/klinik/DetailKlinik'
-import TambahKlinik from './pages/klinik/TambahKlinik'
-import Konter from './pages/konter'
-import DetailKonter from './pages/konter/DetailKonter'
-import TambahKonter from './pages/konter/TambahKonter'
-import Ruangan from './pages/ruangan'
-import DetailRuangan from './pages/ruangan/detailRuangan'
-import Fasilitas from './pages/fasilitas'
-import TambahFasilitas from './pages/fasilitas/TambahFasilitas'
-import TambahRuangan from './pages/ruangan/TambahRuangan'
-import BioPjBaru from './pages/login/loginPasien/BioPjBaru'
-import Pegawai from './pages/pegawai'
-import DetailPegawai from './pages/pegawai/DetailPegawai'
-import TambahPegawai from './pages/pegawai/TambahPegawai'
-import Dokter from './pages/dokter'
-import Pasien from './pages/pasien'
-import RegisterPasienBaru from './pages/login/loginPasien/RegisterPasienBaru'
-import KategoriPasien from './pages/login/loginPasien/KategoriPasien'
-import RegisterPasien from './pages/login/loginPasien/RegisterPasien'
-import RawatJalanBPJS from './pages/rawatJalan/pendaftaranPasien/RawatJalanBPJS'
-import RawatJalanUmum from './pages/rawatJalan/pendaftaranPasien/RawatJalanUmum'
-import TambahPasienBPJS from './pages/pasien/TambahPasienBPJS'
-import TambahPasienUmum from './pages/pasien/TambahPasienUmum'
-import EditPasienBPJS from './pages/pasien/EditPasienBPJS'
-import EditPasienUmum from './pages/pasien/EditPasienUmum'
-import LoginPegawai from './pages/login/loginPegawai/LoginPegawai'
-import AturUlangKataSandiPegawai from './pages/login/loginPegawai/AturUlangKataSandiPegawai'
-import TambahSubFasilitas from './pages/fasilitas/TambahSubFasilitas'
-import EditRuangan from './pages/ruangan/EditRuangan'
-import EditGedung from './pages/gedung/EditGedung'
-import EditAmbulance from './pages/ambulance/features/EditAmbulance'
-import EditFasilitas from './pages/fasilitas/EditFasilitas'
-import EditSUbFasilitas from './pages/fasilitas/EditSubFasilitas'
-import EditKlinik from './pages/klinik/EditKlinik'
-import EditKonter from './pages/konter/EditKonter'
+import LoginPasien from './pages/login/loginPasien/LoginPasien';
+import PasienLamaRawatJalanBPJS from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanBPJS';
+import PasienLamaRawatJalanUmum from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanUmum';
+import Home from './pages';
+import PasienBaruRawatJalanUmum from './pages/rawatJalan/pasienBaru/PasienBaruRawatJalanUmum';
+import PasienBaruRawatJalanBPJS from './pages/rawatJalan/pasienBaru/PasienBaruRawatJalanBPJS';
+import Gedung from '../src/pages/gedung/index';
+import Ambulance from './pages/ambulance';
+import DetailAmbulance from './pages/ambulance/DetailAmbulance';
+import TambahAmbulance from './pages/ambulance/TambahAmbulance';
+import DetailGedung from './pages/gedung/DetailGedung';
+import TambahGedung from './pages/gedung/TambahGedung';
+import Klinik from './pages/klinik';
+import DetailKlinik from './pages/klinik/DetailKlinik';
+import TambahKlinik from './pages/klinik/TambahKlinik';
+import Konter from './pages/konter';
+import DetailKonter from './pages/konter/DetailKonter';
+import TambahKonter from './pages/konter/TambahKonter';
+import Ruangan from './pages/ruangan';
+import DetailRuangan from './pages/ruangan/detailRuangan';
+import Fasilitas from './pages/fasilitas';
+import TambahFasilitas from './pages/fasilitas/TambahFasilitas';
+import TambahRuangan from './pages/ruangan/TambahRuangan';
+import BioPjBaru from './pages/login/loginPasien/BioPjBaru';
+import Pegawai from './pages/pegawai';
+import DetailPegawai from './pages/pegawai/DetailPegawai';
+import TambahPegawai from './pages/pegawai/TambahPegawai';
+import Dokter from './pages/dokter';
+import Pasien from './pages/pasien';
+import RegisterPasienBaru from './pages/login/loginPasien/RegisterPasienBaru';
+import KategoriPasien from './pages/login/loginPasien/KategoriPasien';
+import RegisterPasien from './pages/login/loginPasien/RegisterPasien';
+import RawatJalanBPJS from './pages/rawatJalan/pendaftaranPasien/RawatJalanBPJS';
+import RawatJalanUmum from './pages/rawatJalan/pendaftaranPasien/RawatJalanUmum';
+import TambahPasienBPJS from './pages/pasien/TambahPasienBPJS';
+import TambahPasienUmum from './pages/pasien/TambahPasienUmum';
+import EditPasienBPJS from './pages/pasien/EditPasienBPJS';
+import EditPasienUmum from './pages/pasien/EditPasienUmum';
+import LoginPegawai from './pages/login/loginPegawai/LoginPegawai';
+import AturUlangKataSandiPegawai from './pages/login/loginPegawai/AturUlangKataSandiPegawai';
+import TambahSubFasilitas from './pages/fasilitas/TambahSubFasilitas';
+import EditRuangan from './pages/ruangan/EditRuangan';
+import EditGedung from './pages/gedung/EditGedung';
+import EditAmbulance from './pages/ambulance/EditAmbulance';
+import EditFasilitas from './pages/fasilitas/EditFasilitas';
+import EditSUbFasilitas from './pages/fasilitas/EditSubFasilitas';
+import EditKlinik from './pages/klinik/EditKlinik';
+import EditKonter from './pages/konter/EditKonter';
+import RegisterPJ from './pages/login/penanggungJawab/RegisterPJ';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -58,7 +59,7 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         {/* Gedung */}
         <Route path="/gedung" element={<Gedung />} />
-        <Route path="/detailGedung" element={<DetailGedung />} />
+        <Route path="/detailGedung/:id" element={<DetailGedung />} />
         <Route path="/tambahGedung" element={<TambahGedung />} />
         <Route path="/editGedung/:id" element={<EditGedung />} />
 
@@ -68,17 +69,31 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/tambahAmbulance" element={<TambahAmbulance />} />
         <Route path="/editAmbulance/:id" element={<EditAmbulance />} />
 
+
+
+        {/* Developing register */}
+        <Route path="/register/pasien" element={<LoginPasien />} />
+        <Route path="/register/pasien/baru" element={<RegisterPasienBaru/>} />
+        <Route path="/register/pj" element={<RegisterPJ/>} />
+        <Route path="/register/penanggungJawab" element={<BioPjBaru/>} />
+        
+        {/* End Developing registers */}
+
+
+
+
+        {/* Isolated */}
         {/* Form Login */}
-        <Route path="/" element={<LoginPegawai />} />
-        <Route path="/login/pegawai" element={<LoginPegawai />} />
-        <Route path="/login/pasien" element={<LoginPasien />} />
-        <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
+        <Route path="/" element={<LoginPegawai/>} />
+        <Route path="/login/pegawai" element={<LoginPegawai/>} />
+        <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai/>} />
 
         {/* Form Register */}
-        <Route path="/kategori/pasien" element={<KategoriPasien />} />
-        <Route path="/register/pasien" element={<RegisterPasien />} />
-        <Route path="/register/penanggungJawab" element={<BioPjBaru />} />
-        <Route path="/register/pasien/baru" element={<RegisterPasienBaru />} />
+        <Route path="/kategori/pasien" element={<KategoriPasien/>} />
+        <Route path="/login/pasien" element={<RegisterPasien/>} />
+        {/* End of Isolated */}
+
+
 
         {/* Dashboard  */}
         <Route path="/dashboard" element={<Home />} />
@@ -106,9 +121,9 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/editKonter/:id" element={<EditKonter />} />
 
         {/* Page Ruangan */}
-        <Route path="/ruangan" element={<Ruangan />} />
-        <Route path="/detailRuangan" element={<DetailRuangan />} />
-        <Route path="/tambahRuangan" element={<TambahRuangan />} />
+        <Route path="/ruangan" element={<Ruangan/>} />
+        <Route path="/detailRuangan/:id" element={<DetailRuangan/>} />
+        <Route path="/tambahRuangan" element={<TambahRuangan/>} />
         <Route path="/editRuangan/:id" element={<EditRuangan />} />
 
         {/* Page Fasilitas */}

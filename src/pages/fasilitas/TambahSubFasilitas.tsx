@@ -8,24 +8,10 @@ import AlertSuccess from "../../components/small/AlertSuccess";
 import DropdownList from "../../components/small/DropdownList";
 import CustomTimePicker from "../../components/small/CustomTimePicker";
 import dayjs from 'dayjs';
-import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import axios from 'axios';
 import Cookies from "js-cookie";
 import DropdownListAPI from '../../components/small/DropdownListAPI';
-import { Navigate, useNavigate } from 'react-router-dom';
-
-const listSubFasilitas = [
-    { value: 1, label: "Baju Nakes" },
-    { value: 2, label: "Stetoskop" },
-    { value: 3, label: "Suntikan" },
-];
-
-
-type ImageData = {
-    imageName: string;
-    imageType: string;
-    imageData: string;
-};
+import { useNavigate } from 'react-router-dom';
 
 type Facility = {
     id: string;

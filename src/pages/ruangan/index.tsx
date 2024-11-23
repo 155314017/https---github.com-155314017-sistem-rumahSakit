@@ -52,6 +52,14 @@ export default function Ruangan() {
         }
     }, [location.state, navigate]);
 
+    useEffect(() => {
+        if (location.state && location.state.successDelete) {
+            showTemporarySuccessEdit();
+            console.log(location.state.message);
+            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+        }
+    }, [location.state, navigate]);
+
     const showTemporaryAlertSuccess = async () => {
         console.log("Adding building successful");
         setSuccessAddRoom(true);

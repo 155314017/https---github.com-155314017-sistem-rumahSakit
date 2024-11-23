@@ -12,11 +12,11 @@ import Cookies from "js-cookie";
 import DropdownListAPI from '../../components/small/DropdownListAPI';
 import { useParams, useNavigate } from 'react-router-dom';
 
-type ImageData = {
-    imageName: string;
-    imageType: string;
-    imageData: string;
-};
+// type ImageData = {
+//     imageName: string;
+//     imageType: string;
+//     imageData: string;
+// };
 
 type Facility = {
     id: string;

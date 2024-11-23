@@ -1,17 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
-import Cookies from "js-cookie"; 
+import Cookies from "js-cookie";
 
 interface CustomError extends Error {
   responseCode?: number;
 }
 
-const Login = async (email: string, password: string) => {
+interface Data {
+  identityNumber: string;
+  name: string;
+  phone: string;
+  email: string;
+  gender: string;
+  address: string;
+}
+const RegisterPatient = async (data: Data) => {
   try {
-    console.log("inside Login");
+    console.log("inside RegisterPatient");
     const response = await axios.post(
-      "https://hms.3dolphinsocial.com:8083/v1/auth/login",
-      { email, password },
+      "https://hms.3dolphinsocial.com:8083/v1/patient/register", data,
       {
         headers: {
           "Content-Type": "application/json",
@@ -20,11 +26,8 @@ const Login = async (email: string, password: string) => {
     );
 
     console.log("inside Login1 ");
-    console.log("akses token", response.data.data.tokenValue);
-
-    Cookies.set("accessToken", response.data.data.tokenValue, { expires: 7 }); 
-    Cookies.set("name", response.data.data.name, { expires: 7 });
-
+    console.log("ID pasien: ",response.data.data.id);
+    console.log("Response register: ",response)
     return response.data;
   } catch (error: any) {
     const customError: CustomError = new Error(
@@ -36,4 +39,4 @@ const Login = async (email: string, password: string) => {
   }
 };
 
-export default Login;
+export default RegisterPatient;

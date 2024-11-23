@@ -37,7 +37,7 @@ export default function DetailKonter() {
                 onBackClick={() => window.history.back()}
             />
             <Box mt={3}>
-                <ImageGrid largeImage={largeImage} smallImages={smallImages} />
+                <ImageGrid largeImage={largeImage} smallImages={smallImages} loading={false} />
             </Box>
 
             <Box mt={3}>

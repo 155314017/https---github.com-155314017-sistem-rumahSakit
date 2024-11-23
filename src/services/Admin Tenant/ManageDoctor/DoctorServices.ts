@@ -3,7 +3,7 @@ import axios from "axios";
 export interface DoctorDataItem {
   id: string;
   name: string;
-  description: string;
+  specialty: string;
   additionalInfo: string;
   createdBy: string;
   createdDateTime: number;
@@ -12,6 +12,10 @@ export interface DoctorDataItem {
   deletedBy: string | null;
   deletedDateTime: number | null;
   images: string[];
+  schedules: null;
+  cost: number | null;
+  parentClinicId: string;
+  employeeData: string | null;
 }
 
 export interface Pageable {
@@ -63,9 +67,9 @@ export const DoctorServices = async (): Promise<DoctorDataItem[]> => {
       response.data.data.content.forEach((item) => {
         console.log("ID:", item.id);
         console.log("Number:", item.name);
-        console.log("Status:", item.description);
         console.log("Additional Info:", item.additionalInfo);
         console.log("Created By:", item.createdBy);
+        console.log("id klinik: ", item.parentClinicId)
         console.log(
           "Created Date Time:",
           new Date(item.createdDateTime * 1000).toLocaleString()
