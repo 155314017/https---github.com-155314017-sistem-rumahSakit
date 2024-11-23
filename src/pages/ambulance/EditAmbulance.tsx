@@ -16,14 +16,14 @@ import "dayjs/locale/id";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface FormValues {
-    operationalCost: number;
+  operationalCost: number
 }
 
 type ImageData = {
-    imageName: string;
-    imageType: string;
-    imageData: string;
-};
+  imageName: string
+  imageType: string
+  imageData: string
+}
 
 type Schedule = {
     day: string;
@@ -42,7 +42,7 @@ export default function EditAmbulance() {
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
     dayjs.locale("id");
 
-    const navigate = useNavigate();
+  const navigate = useNavigate()
 
     const dayNames: { [key: string]: string } = {
         "1": "Senin",
@@ -65,20 +65,28 @@ export default function EditAmbulance() {
     };
 
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const token = Cookies.get("accessToken");
-                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${id}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    }
-                });
+        setImagesData(data.images || [])
+      } catch (error) {
+        console.error('Error:', error)
+      }
+    }
+    fetchData()
+  }, [id])
 
-                const data = response.data.data;
-                setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${id}`);
-                setInitialOperationalCost(data.cost);
+  const formik = useFormik<FormValues>({
+    initialValues: {
+      operationalCost: initialOperationalCost || 0
+    },
+    enableReinitialize: true,
+    validationSchema: Yup.object({
+      operationalCost: Yup.number()
+        .required('Operational Cost is required')
+        .positive('Must be a positive number')
+    }),
+    onSubmit: async values => {
+      const selectedDayOfWeek = dayMapping[selectedDay || '1']
+      const adjustedStartTime = startTime?.day(selectedDayOfWeek)
+      const adjustedEndTime = endTime?.day(selectedDayOfWeek)
 
                 // if (data.schedules) {
                 //     setSchedules(data.schedules.map((schedule: any) => ({
@@ -88,13 +96,49 @@ export default function EditAmbulance() {
                 //     })));
                 // }
 
-                setImagesData(data.images || []);
-            } catch (error) {
-                console.error('Error:', error);
+      const schedules = [
+        {
+          startDateTime: adjustedStartTime?.unix(),
+          endDateTime: adjustedEndTime?.unix()
+        }
+      ]
+
+      const data = {
+        ambulanceId: id,
+        number: '999',
+        status: 'ACTIVE',
+        additionalInfo: 'hi',
+        cost: values.operationalCost,
+        schedules: schedules,
+        images: imagesData.map(image => ({
+          imageName: image.imageName || '',
+          imageType: image.imageType || '',
+          imageData: image.imageData || ''
+        }))
+      }
+
+      const token = Cookies.get('accessToken')
+      try {
+        const response = await axios.put(
+          'https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/',
+          data,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              accessToken: `${token}`
             }
-        };
-        fetchData();
-    }, [id]);
+          }
+        )
+        console.log(response)
+        navigate('/ambulance', {
+          state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' }
+        })
+      } catch (error) {
+        console.error('Error editing ambulance:', error)
+        setErrorAlert(true)
+      }
+    }
+  })
 
     const formik = useFormik<FormValues>({
         initialValues: {
@@ -271,7 +315,45 @@ export default function EditAmbulance() {
                         </Button>
                     </Box>
                 </Box>
+
+                <Box display={'flex'} flexDirection={'column'} width={'100%'}>
+                  <Typography>Jam mulai</Typography>
+                  <CustomTimePicker
+                    value={startTime}
+                    onChange={newValue => setStartTime(newValue)}
+                  />
+                </Box>
+
+                <Box display={'flex'} flexDirection={'column'} width={'100%'}>
+                  <Typography>Jam selesai</Typography>
+                  <CustomTimePicker value={endTime} onChange={newValue => setEndTime(newValue)} />
+                </Box>
+              </Box>
             </Box>
-        </Container>
-    );
+            <Button
+              type="submit"
+              variant="contained"
+              color="inherit"
+              sx={{
+                mt: 3,
+                width: '100%',
+                bgcolor: '#8F85F3',
+                color: '#fff',
+                textTransform: 'none',
+                borderRadius: '8px',
+                boxShadow: 'none',
+                ':hover': {
+                  bgcolor: '#a098f5',
+                  boxShadow: 'none'
+                }
+              }}
+              disabled={!formik.isValid || !formik.dirty}
+            >
+              Simpan
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+    </Container>
+  )
 }

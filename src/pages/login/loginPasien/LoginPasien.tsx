@@ -30,64 +30,63 @@ const validationSchema = Yup.object({
 });
 
 interface FormValues {
-  nik: string;
-  email: string;
+  nik: string
+  email: string
 }
 
 const otpValidationSchema = Yup.object({
   otp: Yup.string()
-    .matches(/^[0-9]+$/, "OTP harus berupa angka")
-    .min(4, "OTP minimal 4 digit")
-    .max(4, "OTP maksimal 4 digit")
-    .required("OTP wajib diisi"),
-});
+    .matches(/^[0-9]+$/, 'OTP harus berupa angka')
+    .min(4, 'OTP minimal 4 digit')
+    .max(4, 'OTP maksimal 4 digit')
+    .required('OTP wajib diisi')
+})
 
 export default function LoginPasien() {
   //   const [showPassword, setShowPassword] = useState(false);
-  const [showLogin, setShowLogin] = useState(true);
-  const [showEmailChanged, setShowEmailChanged] = useState(true);
-  const [emailError, setEmailError] = useState(false);
-  const [, setNikError] = useState(false);
-  const [, setPasswordError] = useState(false);
+  const [showLogin, setShowLogin] = useState(true)
+  const [showEmailChanged, setShowEmailChanged] = useState(true)
+  const [emailError, setEmailError] = useState(false)
+  const [, setNikError] = useState(false)
+  const [, setPasswordError] = useState(false)
 
-  const [showAlert, setShowAlert] = useState(false);
-  const [isCounting, setIsCounting] = useState(false);
-  const [secondsLeft, setSecondsLeft] = useState(60);
-  const [resendSuccess, setResendSuccess] = useState(false);
-  const [loginSuccess, setLoginSuccess] = useState(false);
-  const [otp, setOtp] = useState("");
+  const [showAlert, setShowAlert] = useState(false)
+  const [isCounting, setIsCounting] = useState(false)
+  const [secondsLeft, setSecondsLeft] = useState(60)
+  const [resendSuccess, setResendSuccess] = useState(false)
+  const [loginSuccess, setLoginSuccess] = useState(false)
+  const [otp, setOtp] = useState('')
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   // const otpFormShown = () => {
   //   // setShowEmailChanged(false);
-
 
   //   setOtp("");
   // };
 
   const handleClick = () => {
-    setShowLogin(true);
-    setShowEmailChanged(true);
-  };
+    setShowLogin(true)
+    setShowEmailChanged(true)
+  }
 
   const showTemporaryAlert = async () => {
-    setShowAlert(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setShowAlert(false);
-  };
+    setShowAlert(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setShowAlert(false)
+  }
 
   const showTemporarySuccessLogin = async () => {
-    setLoginSuccess(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setLoginSuccess(false);
-  };
+    setLoginSuccess(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setLoginSuccess(false)
+  }
 
   const showOtp = () => {
-    setEmailError(false);
-    setPasswordError(false);
-    setShowLogin(false);
-  };
+    setEmailError(false)
+    setPasswordError(false)
+    setShowLogin(false)
+  }
 
   const validationCheck = async (values: FormValues) => {
 
@@ -97,42 +96,39 @@ export default function LoginPasien() {
   };
 
   useEffect(() => {
-    let timer: ReturnType<typeof setInterval>;
+    let timer: ReturnType<typeof setInterval>
     if (isCounting && secondsLeft > 0) {
       timer = setInterval(() => {
-        setSecondsLeft((prev) => prev - 1);
-      }, 1000);
+        setSecondsLeft(prev => prev - 1)
+      }, 1000)
     } else if (secondsLeft === 0) {
-      setIsCounting(false);
-      setSecondsLeft(60);
+      setIsCounting(false)
+      setSecondsLeft(60)
     }
 
-    return () => clearInterval(timer);
-  }, [isCounting, secondsLeft]);
+    return () => clearInterval(timer)
+  }, [isCounting, secondsLeft])
 
   const handleResendClick = () => {
-    setIsCounting(true);
-    setSecondsLeft(60);
-    showTemporaryAlertSuccess();
-    console.log("Resend clicked");
-  };
+    setIsCounting(true)
+    setSecondsLeft(60)
+    showTemporaryAlertSuccess()
+    console.log('Resend clicked')
+  }
 
   const showTemporaryAlertSuccess = async () => {
-    setResendSuccess(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setResendSuccess(false);
-  };
+    setResendSuccess(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setResendSuccess(false)
+  }
 
   const formatTime = () => {
-    const minutes = Math.floor(secondsLeft / 60);
-    const seconds = secondsLeft % 60;
-    return `${minutes.toString().padStart(2, "0")}:${seconds
-      .toString()
-      .padStart(2, "0")}`;
-  };
+    const minutes = Math.floor(secondsLeft / 60)
+    const seconds = secondsLeft % 60
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+  }
 
   return (
-
     <>
       <style>
         {`
@@ -142,18 +138,18 @@ export default function LoginPasien() {
             `}
       </style>
 
-      <Box >
+      <Box>
         <Box>
-          <Box sx={{ position: "relative" }}>
+          <Box sx={{ position: 'relative' }}>
             <CardMedia
               component="img"
               sx={{
-                width: "50%",
-                height: "100vh",
-                objectFit: "cover",
-                position: "fixed",
-                top: "0",
-                left: "0",
+                width: '50%',
+                height: '100vh',
+                objectFit: 'cover',
+                position: 'fixed',
+                top: '0',
+                left: '0'
               }}
               image={patientImage}
               alt="Example Image"
@@ -162,31 +158,31 @@ export default function LoginPasien() {
 
           <Box
             sx={{
-              position: "absolute",
-              bgcolor: "rgba(0, 0, 0, 0.5)",
-              width: "50%",
-              height: "100vh",
-              top: "0",
-              left: "0",
+              position: 'absolute',
+              bgcolor: 'rgba(0, 0, 0, 0.5)',
+              width: '50%',
+              height: '100vh',
+              top: '0',
+              left: '0'
             }}
           ></Box>
 
           <Box
             sx={{
-              position: "absolute",
-              zIndex: "9999",
-              width: "40%",
-              left: "23%",
-              bottom: "0%",
-              transform: "translate(-50%, -50%)",
+              position: 'absolute',
+              zIndex: '9999',
+              width: '40%',
+              left: '23%',
+              bottom: '0%',
+              transform: 'translate(-50%, -50%)'
             }}
           >
             <Typography
               sx={{
-                fontSize: "56px",
-                fontWeight: "700",
-                lineHeight: "60px",
-                color: "white",
+                fontSize: '56px',
+                fontWeight: '700',
+                lineHeight: '60px',
+                color: 'white'
               }}
             >
               Mulai permintaan janji temu Anda di sini.
@@ -361,5 +357,5 @@ export default function LoginPasien() {
         </Box>
       </Box>
     </>
-  );
+  )
 }

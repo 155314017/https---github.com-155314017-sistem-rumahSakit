@@ -1,7 +1,7 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './index.css';
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import './index.css'
 // import App from './App';
 import LoginPasien from './pages/login/loginPasien/LoginPasien';
 import PasienLamaRawatJalanBPJS from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanBPJS';
@@ -61,13 +61,13 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/gedung" element={<Gedung />} />
         <Route path="/detailGedung/:id" element={<DetailGedung />} />
         <Route path="/tambahGedung" element={<TambahGedung />} />
-        <Route path="/editGedung/:id" element={<EditGedung/>} />
+        <Route path="/editGedung/:id" element={<EditGedung />} />
 
         {/* Ambulance */}
         <Route path="/ambulance" element={<Ambulance />} />
         <Route path="/detailAmbulance" element={<DetailAmbulance />} />
         <Route path="/tambahAmbulance" element={<TambahAmbulance />} />
-        <Route path="/editAmbulance/:id" element={<EditAmbulance/>} />
+        <Route path="/editAmbulance/:id" element={<EditAmbulance />} />
 
 
 
@@ -99,8 +99,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/dashboard" element={<Home />} />
 
         {/* Pages Pendafaran Pasien  */}
-        <Route path="/rawatjalan/bpjs" element={<RawatJalanBPJS/>} />
-        <Route path="/rawatjalan/umum" element={<RawatJalanUmum/>} />
+        <Route path="/rawatjalan/bpjs" element={<RawatJalanBPJS />} />
+        <Route path="/rawatjalan/umum" element={<RawatJalanUmum />} />
 
         {/* Page Rawat Jalan  */}
         <Route path="/rawatjalan/lama/bpjs" element={<PasienLamaRawatJalanBPJS />} />
@@ -112,13 +112,13 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/klinik" element={<Klinik />} />
         <Route path="/detailKlinik" element={<DetailKlinik />} />
         <Route path="/tambahKlinik" element={<TambahKlinik />} />
-        <Route path="/editKlinik/:id" element={<EditKlinik/>} />
+        <Route path="/editKlinik/:id" element={<EditKlinik />} />
 
         {/* Page Konter */}
         <Route path="/konter" element={<Konter />} />
         <Route path="/detailKonter" element={<DetailKonter />} />
         <Route path="/tambahKonter" element={<TambahKonter />} />
-        <Route path="/editKonter/:id" element={<EditKonter/>} />
+        <Route path="/editKonter/:id" element={<EditKonter />} />
 
         {/* Page Ruangan */}
         <Route path="/ruangan" element={<Ruangan/>} />
@@ -127,31 +127,30 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/editRuangan/:id" element={<EditRuangan />} />
 
         {/* Page Fasilitas */}
-        <Route path="/fasilitas" element={<Fasilitas/>} />
+        <Route path="/fasilitas" element={<Fasilitas />} />
         <Route path="/detailFasilitas" element={<DetailRuangan />} />
-        <Route path="/tambahFasilitas" element={<TambahFasilitas/>} />
+        <Route path="/tambahFasilitas" element={<TambahFasilitas />} />
         <Route path="/tambahSubFasilitas" element={<TambahSubFasilitas />} />
-        <Route path="/editSubFasilitas/:id" element={<EditSUbFasilitas/>} />
-        <Route path="/editFasilitas/:id" element={<EditFasilitas/>} />
+        <Route path="/editSubFasilitas/:id" element={<EditSUbFasilitas />} />
+        <Route path="/editFasilitas/:id" element={<EditFasilitas />} />
 
         {/* Page Pegawai  */}
-        <Route path="/pegawai" element={<Pegawai/>} />
-        <Route path="/detailPegawai" element={<DetailPegawai/>} />
-        <Route path="/tambahPegawai" element={<TambahPegawai/>} />
+        <Route path="/pegawai" element={<Pegawai />} />
+        <Route path="/detailPegawai" element={<DetailPegawai />} />
+        <Route path="/tambahPegawai" element={<TambahPegawai />} />
 
         {/* Page Dokter  */}
-        <Route path="/dokter" element={<Dokter/>} />
+        <Route path="/dokter" element={<Dokter />} />
 
         {/* Page Pasien  */}
-        <Route path="/pasien" element={<Pasien/>} />
-        <Route path="/tambahPasien/BPJS" element={<TambahPasienBPJS/>} />
-        <Route path="/tambahPasien/Umum" element={<TambahPasienUmum/>} />
-        <Route path="/editPasien/BPJS" element={<EditPasienBPJS/>} />
-        <Route path="/editPasien/Umum" element={<EditPasienUmum/>} />
-
+        <Route path="/pasien" element={<Pasien />} />
+        <Route path="/tambahPasien/BPJS" element={<TambahPasienBPJS />} />
+        <Route path="/tambahPasien/Umum" element={<TambahPasienUmum />} />
+        <Route path="/editPasien/BPJS" element={<EditPasienBPJS />} />
+        <Route path="/editPasien/Umum" element={<EditPasienUmum />} />
 
         {/* <Route path="/about" element={<About />} /> */}
       </Routes>
     </Router>
-  </StrictMode>,
-);
+  </StrictMode>
+)

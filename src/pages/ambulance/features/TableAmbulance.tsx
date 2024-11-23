@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+
 import {
   Box,
   Stack,
@@ -14,114 +14,68 @@ import {
   Pagination,
   Collapse
 } from '@mui/material'
-import SearchBar from '../../components/small/SearchBar'
-import DropdownList from '../../components/small/DropdownList'
+import SearchBar from '../../../components/small/SearchBar'
+import DropdownList from '../../../components/small/DropdownList'
 import { styled } from '@mui/material/styles'
 import bgImage from '../../assets/img/String.png'
 
 // icon
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
-import ModalDeleteConfirmation from '../../components/small/ModalDeleteConfirmation'
-// import { Building, DataItem } from "../../services/Admin Tenant/ManageBuilding/Building";
-import {
-  AmbulanceServices,
-  AmbulanceDataItem
-} from '../../services/Admin Tenant/ManageAmbulance/AmbulanceServices'
-import { useNavigate } from 'react-router-dom'
-import BadgeStatus from '../../components/small/BadgeStatus'
+import ModalDeleteConfirmation from '../../../components/small/ModalDeleteConfirmation'
+import BadgeStatus from '../../../components/small/BadgeStatus'
+
+//hooks
+import useTableAmbulance from '../hooks/useTableAmbulance'
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover
-  },
-  '&:last-child td, &:last-child th': {
-    border: 0
-  }
-}))
-
-const StyledTableContainer = styled(TableContainer)`
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: #8f85f3;
-    border-radius: 10px;
-    border: 2px solid #f1f1f1;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: #6c63ff;
-    cursor: pointer;
-  }
-`
-
-interface TableAmbulanceProps {
-  fetchDatas: () => void
-  onSuccessDelete: () => void
-}
-
-const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDelete }) => {
-  const [page, setPage] = useState(1)
-  const [isCollapsed, setIsCollapsed] = useState(true)
-  const [open, setOpen] = useState(false)
-  // const [data, setData] = useState<AmbulanceDataItem[]>([]);
-  const [datas, setDatas] = useState<AmbulanceDataItem[]>([])
-  const [deletedItems, setDeletedItems] = useState('')
-
-  const navigate = useNavigate()
-
-  const fetchData = async () => {
-    console.log('Fetching data...')
-    try {
-      const result = await AmbulanceServices()
-      console.log('Result: ', result)
-      setDatas(result)
-      // setData(result); // Set data to display in table
-    } catch (error) {
-      console.log('Failed to fetch data from API: ', error)
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover
+    },
+    '&:last-child td, &:last-child th': {
+      border: 0
     }
-  }
-  useEffect(() => {
-    fetchData()
-  }, [])
+  }))
+  
+  const StyledTableContainer = styled(TableContainer)`
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #8f85f3;
+      border-radius: 10px;
+      border: 2px solid #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #6c63ff;
+      cursor: pointer;
+    }
 
-  const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value)
-  }
-
-  const rowsPerPage = 10
-
-  const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage)
-
-  const handleSelectionChange = (selectedValue: string) => {
-    console.log('Selected Value:', selectedValue)
-  }
-
-  const handleDeleteSuccess = () => {
-    console.log('Item deleted successfully')
-    onSuccessDelete()
-    fetchDatas()
-    fetchData()
-  }
-
-  const toggleCollapse = () => {
-    setIsCollapsed(prev => !prev)
-  }
-
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
-    event.preventDefault()
-
-    console.log('ID Gedung yang akan dihapus:', buildingId)
-    setDeletedItems(buildingId)
-
-    setOpen(true)
-  }
-
-  return (
-    <Box>
+    //hooks
+    import useTableAmbulance from '../hooks/useTableAmbulance';
+  `
+ 
+  
+  export default function TableAmbulance() {
+    const {page,
+        isCollapsed,
+        open,
+        setOpen,
+        datas,
+        deletedItems,
+        navigate,
+        handleChangePage,
+        rowsPerPage,
+        displayedData,
+        handleSelectionChange,
+        handleDeleteSuccess,
+        toggleCollapse,
+        confirmationDelete}= useTableAmbulance()
+    return (
+        <Box>
       <Box
         position={'relative'}
         p={3}
@@ -458,7 +412,7 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
         </Collapse>
       </Box>
     </Box>
-  )
-}
-
-export default TableAmbulance
+      
+    )
+  }
+  
