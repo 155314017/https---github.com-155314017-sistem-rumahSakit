@@ -63,15 +63,12 @@ export default function BioPjBaru() {
     const [otp, setOtp] = useState('');
     const [switchValue, setSwitchValue] = useState(false);
     const [patientId, setPatientId] = useState<string>('');
+    const [show, setShow] = useState(true);
+    const [notFound, setNotFound] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
-        // const userData = Cookies.get('dataPasien');
-        // if(userData) {
-        //     const hasil = JSON.parse(userData);
-        //     console.log("Hasil Cookies : ", hasil)
-        // }
         if (location.state && location.state.successSendDataPj) {
             console.log(location.state.message);
             console.log("DATA YANG DIKIRIM (Latest): ", location.state.data);
@@ -79,13 +76,21 @@ export default function BioPjBaru() {
             setSwitchValue(location.state.successSendDataPj)
             console.log("Data yang di state kan: ", data)
             setPatientId(location.state.idPatient)
-            // navigate(location.pathname, { replace: true, state: undefined });
         }
     }, [location.state, navigate]);
 
     useEffect(() => {
-        console.log("ID PASIEN YANG DI LEMPAR KE AKHIR: ", patientId)
-    });
+        console.log("Id Patient: ", patientId);
+
+        if (patientId === '') {
+            setShowLogin(false);
+            setNotFound(true);
+        } else {
+
+            setShowLogin(true);
+            setNotFound(false);
+        }
+    }, [patientId]);
 
     const otpFormShown = () => {
         // setShowEmailChanged(false);
@@ -283,23 +288,22 @@ export default function BioPjBaru() {
                 </Box>
             </Box>
             {loginSuccess && <AlertSuccess label="Login Succeeded!" />}
-            {showLogin && (
-                <>
-                    {showAlert && <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />}
-
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            p: 5,
-                            position: "fixed",
-                            right: "0",
-                            top: "0",
-                            width: "45.9%",
-                            height: '100vh',
-                            bgcolor: '#ffff'
-                        }}
-                    >
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    p: 5,
+                    position: "fixed",
+                    right: "0",
+                    top: "0",
+                    width: "45.9%",
+                    height: '100vh',
+                    bgcolor: '#ffff'
+                }}
+            >
+                {show && (
+                    <>
+                        {showAlert && <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />}
                         <Box sx={{ width: '85%' }}>
                             <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
                             <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
@@ -307,7 +311,7 @@ export default function BioPjBaru() {
                             </Typography>
 
                             <Formik
-                                initialValues={{ nik: switchValue ? data.identityNumber : '', email: switchValue ? data.email : '', phone: switchValue ? data.phone : '', fullname: switchValue ? data.name : '', gender: switchValue ? data.gender : '' , address: switchValue ? data.address : '', }}
+                                initialValues={{ nik: switchValue ? data.identityNumber : '', email: switchValue ? data.email : '', phone: switchValue ? data.phone : '', fullname: switchValue ? data.name : '', gender: switchValue ? data.gender : '', address: switchValue ? data.address : '', }}
                                 enableReinitialize
                                 validationSchema={validationSchema}
                                 onSubmit={async (values) => {
@@ -471,7 +475,7 @@ export default function BioPjBaru() {
                                                 <RadioGroup
                                                     aria-labelledby="gender-label"
                                                     name="gender"
-                                                    value={values.gender} 
+                                                    value={values.gender}
                                                     onChange={(e) => setFieldValue("gender", e.target.value)}
                                                     row
                                                 >
@@ -540,9 +544,36 @@ export default function BioPjBaru() {
                                 )}
                             </Formik>
                         </Box>
+                    </>
+                )}
+
+                {notFound && (
+
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            p: 5,
+                            position: "absolute",
+                            width: "60%",
+                            flexDirection: 'column',
+                            mt: "35%"
+                        }}
+                    >
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                            <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
+                                Data Not Found  !
+                            </Typography>
+                            <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                                Are you sure you filled the field ?? Look sus !
+                            </Typography>
+                            <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                                Keep playing kiddos !
+                            </Typography>
+                        </Box>
                     </Box>
-                </>
-            )}
+                )}
+            </Box>
         </Box>
     );
 }

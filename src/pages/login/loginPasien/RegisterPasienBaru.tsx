@@ -137,6 +137,7 @@ export default function RegisterPasienBaru() {
     const [patientId, setPatientId] = useState<string>('');
     const [notFound, setNotFound] = useState(true);
     const [buttonDis, setButtonDis] = useState(false);
+    const [errorAlert, setErrorAlert] = useState(false);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -238,7 +239,6 @@ export default function RegisterPasienBaru() {
         console.log("Data awal yang di state kan: ", data1);
 
         if (data1.email === '') {
-            console.log("ANAK MEMEEEEEEEEEEEEEEEKKKKKKKKKKKKKKK");
             setShowLogin(false);
             setNotFound(true);
         } else {
@@ -247,6 +247,13 @@ export default function RegisterPasienBaru() {
             setNotFound(false);
         }
     }, [data1]);
+
+    const showTemporaryAlertError = async () => {
+        console.log("ALERT ERROR ! ! !")
+        setErrorAlert(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setErrorAlert(false);
+    };
 
 
     return (
@@ -310,8 +317,10 @@ export default function RegisterPasienBaru() {
                         </Typography>
                     </Box>
                 </Box>
+
                 {showLogin && (
                     <>
+
                         {showAlert && <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />}
                         {resendSuccess && (
                             <AlertSuccess label="Kode verifikasi berhasil dikirimkan !" />
@@ -343,10 +352,6 @@ export default function RegisterPasienBaru() {
                                     enableReinitialize
                                     validationSchema={validationSchema}
                                     onSubmit={async (values) => {
-                                        // if (await validationCheck(values)) {
-                                        //     console.log(values);
-                                        // setData(values);
-                                        // await showTemporarySuccessLogin();
                                         const dataRegis = {
                                             identityNumber: values.nik,
                                             name: values.fullname,
@@ -365,8 +370,8 @@ export default function RegisterPasienBaru() {
                                             showOtp()
                                             setData(dataRegis)
                                             setPatientId(response.data.id);
-                                        } catch {
-                                            console.log("error")
+                                        } catch (error) {
+                                            console.log("error", error)
                                         }
                                     }}
                                 >
@@ -653,127 +658,133 @@ export default function RegisterPasienBaru() {
                         </Box>
                     )}
                 {showEmailChanged && (
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            p: 5,
-                            position: "absolute",
-                            right: "0",
-                            top: "0",
-                            width: "45%",
-                            flexDirection: 'column',
-                            // mr: "10%",
-                            mt: "15%",
-                        }}
-                    >
-                        <Box sx={{ ml: 1 }}>
-                            <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
-                                Verifikasi
-                            </Typography>
-                            <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                                Silahkan masukkan kode 4 digit yang dikirimkan ke nomor Anda .
-                            </Typography>
+                    <>
+                        {errorAlert && (
+                            <AlertWarning teks="Kode OTP tidak valid !" />
+                        )}
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                p: 5,
+                                position: "absolute",
+                                right: "0",
+                                top: "0",
+                                width: "45%",
+                                flexDirection: 'column',
+                                // mr: "10%",
+                                mt: "15%",
+                            }}
+                        >
+                            <Box sx={{ ml: 1 }}>
+                                <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
+                                    Verifikasi
+                                </Typography>
+                                <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                                    Silahkan masukkan kode 4 digit yang dikirimkan ke nomor Anda .
+                                </Typography>
 
-                            <Formik
-                                initialValues={{ otp: '' }}
-                                validationSchema={otpValidationSchema}
-                                onSubmit={async (values) => {
-                                    const dataOTP = {
-                                        email: emailOTP,
-                                        code: values.otp
-                                    }
-                                    console.log("DATA OTP DIKIRIM : ", dataOTP)
-                                    try {
-                                        const response = await VerifyOTPPatient(dataOTP)
-                                        console.log("response : ", response)
-                                        otpFormShown()
-                                        navigate('/register/pj', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!', data: data, idPatient: patientId } })
-                                    } catch {
-                                        console.log("error")
-                                    }
+                                <Formik
+                                    initialValues={{ otp: '' }}
+                                    validationSchema={otpValidationSchema}
+                                    onSubmit={async (values) => {
+                                        const dataOTP = {
+                                            email: emailOTP,
+                                            code: values.otp
+                                        }
+                                        console.log("DATA OTP DIKIRIM : ", dataOTP)
+                                        try {
+                                            const response = await VerifyOTPPatient(dataOTP)
+                                            console.log("response : ", response)
+                                            otpFormShown()
+                                            navigate('/register/pj', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!', data: data, idPatient: patientId } })
+                                        } catch {
+                                            console.log("error")
+                                            showTemporaryAlertError()
+                                        }
 
-                                }}
-                            >
-                                {({ errors, touched, handleChange, isValid, dirty }) => (
-                                    <Form>
-                                        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-                                            <OtpInput
-                                                value={otp}
-                                                onChange={(otp) => {
-                                                    setOtp(otp);
-                                                    handleChange('otp')(otp);
-                                                }}
-                                                numInputs={4}
-                                                renderSeparator={<span style={{ margin: '0 4px' }}> </span>}
-                                                renderInput={(props) => (
-                                                    <input
-                                                        {...props}
-                                                        style={{
-                                                            width: '100%',
-                                                            height: '48px',
-                                                            textAlign: 'center',
-                                                            border: `1px solid ${touched.otp && errors.otp ? 'red' : '#8F85F3'}`,
-                                                            borderRadius: '8px',
-                                                            fontSize: '20px',
-                                                            margin: '0 4px',
-                                                            outline: 'none',
-                                                            padding: '14px, 12px, 14px, 12px',
-                                                        }}
-                                                    />
+                                    }}
+                                >
+                                    {({ errors, touched, handleChange, isValid, dirty }) => (
+                                        <Form>
+                                            <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+                                                <OtpInput
+                                                    value={otp}
+                                                    onChange={(otp) => {
+                                                        setOtp(otp);
+                                                        handleChange('otp')(otp);
+                                                    }}
+                                                    numInputs={4}
+                                                    renderSeparator={<span style={{ margin: '0 4px' }}> </span>}
+                                                    renderInput={(props) => (
+                                                        <input
+                                                            {...props}
+                                                            style={{
+                                                                width: '100%',
+                                                                height: '48px',
+                                                                textAlign: 'center',
+                                                                border: `1px solid ${touched.otp && errors.otp ? 'red' : '#8F85F3'}`,
+                                                                borderRadius: '8px',
+                                                                fontSize: '20px',
+                                                                margin: '0 4px',
+                                                                outline: 'none',
+                                                                padding: '14px, 12px, 14px, 12px',
+                                                            }}
+                                                        />
+                                                    )}
+                                                />
+                                                {touched.otp && errors.otp && (
+                                                    <Typography sx={{ color: 'red', fontSize: '12px' }}>
+                                                        {errors.otp}
+                                                    </Typography>
                                                 )}
-                                            />
-                                            {touched.otp && errors.otp && (
-                                                <Typography sx={{ color: 'red', fontSize: '12px' }}>
-                                                    {errors.otp}
-                                                </Typography>
-                                            )}
-                                            <Box
-                                                sx={{
-                                                    display: 'flex',
-                                                    justifyContent: 'space-between',
-                                                    alignItems: 'center',
-                                                    marginTop: '10px',
-                                                    width: '100%',
-                                                }}
-                                            >
-                                                <Typography sx={{ fontSize: '16px', lineHeight: '18px', color: '#A8A8BD' }} >Tidak mendapatkan kode? </Typography>
-                                                <Typography
-                                                    onClick={!isCounting ? handleResendClick : undefined}
+                                                <Box
                                                     sx={{
-                                                        cursor: isCounting ? 'default' : 'pointer',
-                                                        color: isCounting ? '#ccc' : '#8F85F3',
-                                                        textDecoration: isCounting ? 'none' : 'underline',
-                                                        fontSize: '16px',
+                                                        display: 'flex',
+                                                        justifyContent: 'space-between',
+                                                        alignItems: 'center',
+                                                        marginTop: '10px',
+                                                        width: '100%',
                                                     }}
                                                 >
-                                                    {isCounting ? `${formatTime()}` : 'Kirim ulang tautan'}
-                                                </Typography>
+                                                    <Typography sx={{ fontSize: '16px', lineHeight: '18px', color: '#A8A8BD' }} >Tidak mendapatkan kode? </Typography>
+                                                    <Typography
+                                                        onClick={!isCounting ? handleResendClick : undefined}
+                                                        sx={{
+                                                            cursor: isCounting ? 'default' : 'pointer',
+                                                            color: isCounting ? '#ccc' : '#8F85F3',
+                                                            textDecoration: isCounting ? 'none' : 'underline',
+                                                            fontSize: '16px',
+                                                        }}
+                                                    >
+                                                        {isCounting ? `${formatTime()}` : 'Kirim ulang tautan'}
+                                                    </Typography>
+                                                </Box>
+                                                <Button
+                                                    type="submit"
+                                                    variant="contained"
+                                                    color="primary"
+                                                    // onClick={otpFormShown}
+                                                    fullWidth
+                                                    sx={{
+                                                        width: '100%',
+                                                        height: '48px',
+                                                        marginTop: '20px',
+                                                        backgroundColor: '#8F85F3',
+                                                        ":hover": { backgroundColor: '#D5D1FB' },
+                                                    }}
+                                                    disabled={!isValid || !dirty}
+                                                >
+                                                    Verifikasi
+                                                </Button>
                                             </Box>
-                                            <Button
-                                                type="submit"
-                                                variant="contained"
-                                                color="primary"
-                                                // onClick={otpFormShown}
-                                                fullWidth
-                                                sx={{
-                                                    width: '100%',
-                                                    height: '48px',
-                                                    marginTop: '20px',
-                                                    backgroundColor: '#8F85F3',
-                                                    ":hover": { backgroundColor: '#D5D1FB' },
-                                                }}
-                                                disabled={!isValid || !dirty}
-                                            >
-                                                Verifikasi
-                                            </Button>
-                                        </Box>
-                                    </Form>
-                                )}
-                            </Formik>
+                                        </Form>
+                                    )}
+                                </Formik>
 
+                            </Box>
                         </Box>
-                    </Box>
+                    </>
                 )}
             </Box>
         </>
