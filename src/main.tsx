@@ -46,12 +46,12 @@ import AturUlangKataSandiPegawai from './pages/login/loginPegawai/AturUlangKataS
 import TambahSubFasilitas from './pages/fasilitas/TambahSubFasilitas';
 import EditRuangan from './pages/ruangan/EditRuangan';
 import EditGedung from './pages/gedung/EditGedung';
-import EditAmbulance from './pages/ambulance/EditAmbulance';
 import EditFasilitas from './pages/fasilitas/EditFasilitas';
 import EditSUbFasilitas from './pages/fasilitas/EditSubFasilitas';
 import EditKlinik from './pages/klinik/EditKlinik';
 import EditKonter from './pages/konter/EditKonter';
 import RegisterPJ from './pages/login/penanggungJawab/RegisterPJ';
+import EditAmbulance from './pages/ambulance/features/EditAmbulance';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -67,7 +67,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/ambulance" element={<Ambulance />} />
         <Route path="/detailAmbulance" element={<DetailAmbulance />} />
         <Route path="/tambahAmbulance" element={<TambahAmbulance />} />
-        <Route path="/editAmbulance/:id" element={<EditAmbulance />} />
+        <Route path="/editAmbulance/:id" element={<EditAmbulance/>} />
 
 
 
