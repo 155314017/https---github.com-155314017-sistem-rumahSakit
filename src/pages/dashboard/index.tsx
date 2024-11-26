@@ -33,6 +33,7 @@ import {
 } from '../../services/Admin Tenant/ManageDoctor/DoctorServices'
 import { Building, BuildingDataItem } from '../../services/Admin Tenant/ManageBuilding/Building'
 import AlertSuccess from '../../components/small/AlertSuccess'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export default function Dashboard() {
   const [dataClinic, setDataClinic] = useState<ClinicDataItem[]>([])
@@ -40,13 +41,15 @@ export default function Dashboard() {
   const [dataFacility, setDataFacility] = useState<FacilityDataItem[]>([])
   const [dataDoctor, setDataDoctor] = useState<DoctorDataItem[]>([])
   const [dataBuilding, setDataBuilding] = useState<BuildingDataItem[]>([])
-
+  const [successLogin ,setSuccessLogin] = useState(false)
   const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false)
   const [successDeleteRoom, setSuccessDeleteRoom] = useState(false)
   const [successDeleteFacility, setSuccessDeleteFacility] = useState(false)
   const [successDeleteAmbulance, setSuccessDeleteAmbulance] = useState(false)
   const [successDeleteClinic, setSuccessDeleteClinic] = useState(false)
   const [successDeleteCounter, setSuccessDeleteCounter] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const fetchData = async () => {
     console.log('fetching data . . . ')
@@ -127,6 +130,22 @@ export default function Dashboard() {
     setSuccessDeleteCounter(false)
   }
 
+  useEffect(() => {
+    if (location.state && location.state.statusLogin) {
+      showTemporarySuccessLogin()
+      console.log(location.state.message)
+      navigate(location.pathname, { replace: true, state: undefined }) //clear state
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state, navigate])
+
+  const showTemporarySuccessLogin = async () => {
+    console.log('Editing ambulance successful')
+    setSuccessLogin(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setSuccessLogin(false)
+  }
+
   return (
     <Box>
       <Box sx={{ py: 5 }}>
@@ -136,6 +155,7 @@ export default function Dashboard() {
         {successDeleteAmbulance && <AlertSuccess label="Success delete Ambulance" />}
         {successDeleteClinic && <AlertSuccess label="Success delete Clinic" />}
         {successDeleteCounter && <AlertSuccess label="Success delete Counter" />}
+        {successLogin && <AlertSuccess label="Success Login" />}
         <Typography sx={{ fontSize: '32px', fontWeight: '700' }}>Dashboard</Typography>
       </Box>
       <Grid container spacing={3} flex={1} justifyContent={'space-between'}>

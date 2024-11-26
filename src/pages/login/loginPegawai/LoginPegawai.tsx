@@ -26,6 +26,7 @@ import logo from '../../../img/St.carolus.png'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Login from '../../../services/Admin Tenant/Auth/Login'
 import ResetPassword from '../../../services/Admin Tenant/Auth/ResetPassword'
+import { bgcolor } from '@mui/system'
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Email tidak valid').required('Email wajib diisi'),
@@ -51,9 +52,10 @@ export default function LoginPegawai() {
   const [secondsLeft, setSecondsLeft] = useState(60)
   const [resendSuccess, setResendSuccess] = useState(false)
   const [loginSuccess, setLoginSuccess] = useState(false)
-  const [successLogout ,setSuccessLogout] = useState(false)
+  const [successLogout, setSuccessLogout] = useState(false)
   const [wrongPassword, setWrongPassword] = useState(false)
   const [wrongEmail, setWrongEmail] = useState(false)
+  const [isChecked, setIsChecked] = useState(false);
   const location = useLocation();
 
   const navigate = useNavigate()
@@ -94,6 +96,17 @@ export default function LoginPegawai() {
     setWrongPassword(false)
   }
 
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(event.target.checked);
+    console.log("Status check: ", event.target.checked)
+    console.log("Status check: ", isChecked)
+    if (event.target.checked == true) {
+      console.log("simpan kata sandi")
+    } else if (event.target.checked == false) {
+      console.log("tidak simpan")
+    }
+  };
+
   const validationCheck = async (values: FormValues) => {
     console.log('inside validationCheck')
     try {
@@ -103,7 +116,7 @@ export default function LoginPegawai() {
 
       if (response.responseCode === '200') {
         console.log('sukses')
-        navigate('/dashboard')
+        navigate('/dashboard', { state: { statusLogin: true } })
         return true
       } else {
         console.log('gagal - unexpected response:', response)
@@ -236,16 +249,15 @@ export default function LoginPegawai() {
         >
           {resendSuccess && <AlertSuccess label="Link tautan berhasil dikirim ulang" />}
           {successLogout && <AlertSuccess label="Success Log Out" />}
+          {wrongPassword && (
+            <AlertWarning teks="Kata sandi yang Anda masukkan salah, silahkan coba lagi." />
+          )}
+          {wrongEmail && (
+            <AlertWarning teks="Email yang Anda masukkan salah, silahkan coba lagi." />
+          )}
+
           {showLogin && (
             <>
-              {wrongPassword && (
-                <AlertWarning teks="Kata sandi yang Anda masukkan salah, silahkan coba lagi." />
-              )}
-
-              {wrongEmail && (
-                <AlertWarning teks="Email yang Anda masukkan salah, silahkan coba lagi." />
-              )}
-
               <Box
                 sx={{
                   marginY: 'auto',
@@ -260,7 +272,8 @@ export default function LoginPegawai() {
                 </Typography>
 
                 <Formik
-                  initialValues={{ email: '', password: '' }}
+                  initialValues={{ email: isChecked ? 'email@email.com' : '', password: isChecked ? 'password' : '' }}
+                  enableReinitialize
                   validationSchema={validationSchema}
                   onSubmit={async values => {
                     if (await validationCheck(values)) {
@@ -291,7 +304,7 @@ export default function LoginPegawai() {
                             marginTop: '10px',
                             '& .MuiOutlinedInput-root': {
                               borderRadius: '8px',
-                              backgroundColor: emailError ? '#ffcccc' : 'inherit'
+                              backgroundColor: touched.email && errors.email ? '#ffcccc' : 'inherit'
                             },
                             '& .MuiOutlinedInput-notchedOutline': {
                               border: '1px solid #ccc'
@@ -301,7 +314,11 @@ export default function LoginPegawai() {
                               fontSize: '16px'
                             }
                           }}
-                          onChange={handleChange}
+                          // onChange={handleChange}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            handleChange(e);
+                            console.log('Value email changed:', e.target.value);
+                          }}
                           onBlur={handleBlur}
                           value={values.email}
                           error={touched.email && Boolean(errors.email)}
@@ -338,7 +355,7 @@ export default function LoginPegawai() {
                               height: '48px',
                               '& .MuiOutlinedInput-root': {
                                 borderRadius: '8px',
-                                backgroundColor: passwordError ? '#ffcccc' : 'inherit'
+                                backgroundColor: touched.password && errors.password ? '#ffcccc' : 'inherit'
                               },
                               '& .MuiOutlinedInput-notchedOutline': {
                                 border: '1px solid #ccc'
@@ -348,7 +365,10 @@ export default function LoginPegawai() {
                                 fontSize: '16px'
                               }
                             }}
-                            onChange={handleChange}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                              handleChange(e);
+                              console.log('Value password changed:', e.target.value);
+                            }}
                             onBlur={handleBlur}
                             value={values.password}
                             error={touched.password && Boolean(errors.password)}
@@ -366,10 +386,21 @@ export default function LoginPegawai() {
                           }}
                         >
                           <FormControlLabel
-                            control={<Checkbox />}
+                            control={
+                              <Checkbox
+                                sx={{
+                                  '&.Mui-checked': {
+                                    color: '#8F85F3',
+                                  },
+                                }}
+                                checked={isChecked}
+                                onChange={handleCheckboxChange}
+                              />
+                            }
                             label="Ingat kata sandi"
                             sx={{ marginRight: 'auto' }}
                           />
+
                           <LabelHandler onClick={forgotPass} href="#" label="Lupa kata sandi?" />
                         </Box>
                         <Button
@@ -385,12 +416,11 @@ export default function LoginPegawai() {
                             backgroundColor: '#8F85F3',
                             ':hover': { backgroundColor: '#D5D1FB' }
                           }}
-                          disabled={!isValid || !dirty}
+                          disabled={isChecked ? !isChecked : (!isValid || !dirty)}
                         >
                           Login
                         </Button>
 
-                        {loginSuccess && <AlertSuccess label="Login Succeeded!" />}
                       </Box>
                     </Form>
                   )}
@@ -465,7 +495,8 @@ export default function LoginPegawai() {
                               height: '48px',
                               marginTop: '10px',
                               '& .MuiOutlinedInput-root': {
-                                borderRadius: '8px'
+                                borderRadius: '8px',
+                                backgroundColor: touched.email && errors.email ? '#ffcccc' : 'inherit'
                               },
                               '& .MuiOutlinedInput-notchedOutline': {
                                 border: '1px solid #ccc'

@@ -25,6 +25,7 @@ export default function Header() {
     period: moment().format("a"),
   });
   const navigate = useNavigate();
+  const [username, setUsername] = useState<string | null>('');
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -63,6 +64,11 @@ export default function Header() {
     sessionStorage.clear();
     navigate('/', {state:{successLogOut: true}})
   }
+
+  useEffect(() => {
+    const name = sessionStorage.getItem('username')
+    setUsername(name);
+  });
 
   return (
     <Box display={"flex"} gap={2} justifyContent={"space-between"}>
@@ -190,7 +196,8 @@ export default function Header() {
                     textTransform: "capitalize",
                   }}
                 >
-                  full name
+                  {/* full name */}
+                  {username}
                 </Typography>
                 <Typography
                   sx={{

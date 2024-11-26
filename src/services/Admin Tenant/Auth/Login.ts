@@ -23,6 +23,7 @@ const Login = async (email: string, password: string) => {
     console.log("akses token", response.data.data.tokenValue);
 
     sessionStorage.setItem('accessToken', response.data.data.tokenValue)
+    sessionStorage.setItem('username', email);
 
     return response.data;
   } catch (error: any) {
