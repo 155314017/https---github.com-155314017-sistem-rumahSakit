@@ -1,10 +1,12 @@
 import { Outlet, Navigate } from 'react-router-dom';
+import Cookies from "js-cookie"; 
 
 const PrivateRoute = () => {
     // console.log("TOKEN di PrivateRoute:", token);
     
     // const token = 'token';
-    const token = sessionStorage.getItem("accessToken");
+    // const token = sessionStorage.getItem("accessToken");
+    const token = Cookies.get("accessToken");
     console.log("TOKEN DI PRIVATE: ", token)
 
     if (!token) {

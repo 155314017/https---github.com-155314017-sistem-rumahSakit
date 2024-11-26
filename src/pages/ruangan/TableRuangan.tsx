@@ -125,13 +125,14 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas, onSuccessDelete })
   const [datas, setDatas] = useState<RoomDataItem[]>([]);
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
 
   const fetchData = async () => {
     console.log('Fetching data...');
+    setLoading(true)
     try {
       const result = await RoomServices();
       console.log('Result: ', result);
@@ -139,9 +140,9 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas, onSuccessDelete })
       console.log("FETCHIG DATA ID FAICILITY")
       const buildingIds = result.map((data) => data.masterBuildingId);
       setDataIdBuilding(buildingIds);
-
       console.log('Data ID Facility: ', buildingIds);
-      // setData(result); // Set data to display in table
+      // setData(result); 
+      setLoading(false);
     } catch (error) {
       console.log('Failed to fetch data from API: ', error);
     }

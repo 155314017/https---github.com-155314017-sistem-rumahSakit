@@ -493,7 +493,7 @@ export default function TablePasien() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.id}
+                                                        {data.phone}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[

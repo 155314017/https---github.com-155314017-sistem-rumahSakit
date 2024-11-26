@@ -8,6 +8,7 @@ import {
   Button,
 } from "@mui/material";
 import moment from "moment";
+import Cookies from "js-cookie";
 
 // icon
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
@@ -61,8 +62,9 @@ export default function Header() {
   const notifyId = notifyOpen ? "notify-popover" : undefined;
 
   const logOut = () => {
-    sessionStorage.clear();
-    navigate('/', {state:{successLogOut: true}})
+    // sessionStorage.clear();
+    Cookies.remove('accessToken');
+    navigate('/', { state: { successLogOut: true } })
   }
 
   useEffect(() => {
@@ -221,9 +223,9 @@ export default function Header() {
                   Pengaturan
                 </Typography>
               </Button>
-              <Button 
+              <Button
                 onClick={logOut}
-                fullWidth 
+                fullWidth
                 sx={{ justifyContent: "flex-start" }}
               >
                 <Typography
