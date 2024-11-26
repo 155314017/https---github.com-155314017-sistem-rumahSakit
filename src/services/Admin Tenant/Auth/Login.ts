@@ -22,8 +22,7 @@ const Login = async (email: string, password: string) => {
     console.log("inside Login1 ");
     console.log("akses token", response.data.data.tokenValue);
 
-    Cookies.set("accessToken", response.data.data.tokenValue, { expires: 7 }); 
-    Cookies.set("name", response.data.data.name, { expires: 7 });
+    sessionStorage.setItem('accessToken', response.data.data.tokenValue)
 
     return response.data;
   } catch (error: any) {

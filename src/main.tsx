@@ -46,57 +46,101 @@ import AturUlangKataSandiPegawai from './pages/login/loginPegawai/AturUlangKataS
 import TambahSubFasilitas from './pages/fasilitas/TambahSubFasilitas';
 import EditRuangan from './pages/ruangan/EditRuangan';
 import EditGedung from './pages/gedung/EditGedung';
+import EditAmbulance from './pages/ambulance/EditAmbulance';
 import EditFasilitas from './pages/fasilitas/EditFasilitas';
 import EditSUbFasilitas from './pages/fasilitas/EditSubFasilitas';
 import EditKlinik from './pages/klinik/EditKlinik';
 import EditKonter from './pages/konter/EditKonter';
 import RegisterPJ from './pages/login/penanggungJawab/RegisterPJ';
-import EditAmbulance from './pages/ambulance/features/EditAmbulance';
+import PrivateRoute from './services/Admin Tenant/Auth/PrivateRoute';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Router>
       <Routes>
-        {/* Gedung */}
-        <Route path="/gedung" element={<Gedung />} />
-        <Route path="/detailGedung/:id" element={<DetailGedung />} />
-        <Route path="/tambahGedung" element={<TambahGedung />} />
-        <Route path="/editGedung/:id" element={<EditGedung />} />
+        <Route element={<PrivateRoute />} >
+          {/* Gedung */}
+          <Route path="/gedung" element={<Gedung />} />
+          <Route path="/detailGedung/:id" element={<DetailGedung />} />
+          <Route path="/tambahGedung" element={<TambahGedung />} />
+          <Route path="/editGedung/:id" element={<EditGedung />} />
 
-        {/* Ambulance */}
-        <Route path="/ambulance" element={<Ambulance />} />
-        <Route path="/detailAmbulance" element={<DetailAmbulance />} />
-        <Route path="/tambahAmbulance" element={<TambahAmbulance />} />
-        <Route path="/editAmbulance/:id" element={<EditAmbulance/>} />
+          {/* Ambulance */}
+          <Route path="/ambulance" element={<Ambulance />} />
+          <Route path="/detailAmbulance" element={<DetailAmbulance />} />
+          <Route path="/tambahAmbulance" element={<TambahAmbulance />} />
+          <Route path="/editAmbulance/:id" element={<EditAmbulance />} />
 
+          {/* Dashboard  */}
+          <Route path="/dashboard" element={<Home />} />
+
+          {/* Page Klinik */}
+          <Route path="/klinik" element={<Klinik />} />
+          <Route path="/detailKlinik" element={<DetailKlinik />} />
+          <Route path="/tambahKlinik" element={<TambahKlinik />} />
+          <Route path="/editKlinik/:id" element={<EditKlinik />} />
+
+          {/* Page Konter */}
+          <Route path="/konter" element={<Konter />} />
+          <Route path="/detailKonter" element={<DetailKonter />} />
+          <Route path="/tambahKonter" element={<TambahKonter />} />
+          <Route path="/editKonter/:id" element={<EditKonter />} />
+
+          {/* Page Ruangan */}
+          <Route path="/ruangan" element={<Ruangan />} />
+          <Route path="/detailRuangan/:id" element={<DetailRuangan />} />
+          <Route path="/tambahRuangan" element={<TambahRuangan />} />
+          <Route path="/editRuangan/:id" element={<EditRuangan />} />
+
+          {/* Page Fasilitas */}
+          <Route path="/fasilitas" element={<Fasilitas />} />
+          <Route path="/detailFasilitas" element={<DetailRuangan />} />
+          <Route path="/tambahFasilitas" element={<TambahFasilitas />} />
+          <Route path="/tambahSubFasilitas" element={<TambahSubFasilitas />} />
+          <Route path="/editSubFasilitas/:id" element={<EditSUbFasilitas />} />
+          <Route path="/editFasilitas/:id" element={<EditFasilitas />} />
+
+          {/* Page Pegawai  */}
+          <Route path="/pegawai" element={<Pegawai />} />
+          <Route path="/detailPegawai" element={<DetailPegawai />} />
+          <Route path="/tambahPegawai" element={<TambahPegawai />} />
+
+          {/* Page Dokter  */}
+          <Route path="/dokter" element={<Dokter />} />
+
+          {/* Page Pasien  */}
+          <Route path="/pasien" element={<Pasien />} />
+          <Route path="/tambahPasien/BPJS" element={<TambahPasienBPJS />} />
+          <Route path="/tambahPasien/Umum" element={<TambahPasienUmum />} />
+          <Route path="/editPasien/BPJS" element={<EditPasienBPJS />} />
+          <Route path="/editPasien/Umum" element={<EditPasienUmum />} />
+
+          {/* <Route path="/about" element={<About />} /> */}
+
+        </Route>
+
+
+        {/* no need auth */}
 
 
         {/* Developing register */}
         <Route path="/register/pasien" element={<LoginPasien />} />
-        <Route path="/register/pasien/baru" element={<RegisterPasienBaru/>} />
-        <Route path="/register/pj" element={<RegisterPJ/>} />
-        <Route path="/register/penanggungJawab" element={<BioPjBaru/>} />
-        
+        <Route path="/register/pasien/baru" element={<RegisterPasienBaru />} />
+        <Route path="/register/pj" element={<RegisterPJ />} />
+        <Route path="/register/penanggungJawab" element={<BioPjBaru />} />
+
         {/* End Developing registers */}
-
-
-
 
         {/* Isolated */}
         {/* Form Login */}
-        <Route path="/" element={<LoginPegawai/>} />
-        <Route path="/login/pegawai" element={<LoginPegawai/>} />
-        <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai/>} />
+        <Route path="/" element={<LoginPegawai />} />
+        <Route path="/login/pegawai" element={<LoginPegawai />} />
+        <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
 
         {/* Form Register */}
-        <Route path="/kategori/pasien" element={<KategoriPasien/>} />
-        <Route path="/login/pasien" element={<RegisterPasien/>} />
+        <Route path="/kategori/pasien" element={<KategoriPasien />} />
+        <Route path="/login/pasien" element={<RegisterPasien />} />
         {/* End of Isolated */}
-
-
-
-        {/* Dashboard  */}
-        <Route path="/dashboard" element={<Home />} />
 
         {/* Pages Pendafaran Pasien  */}
         <Route path="/rawatjalan/bpjs" element={<RawatJalanBPJS />} />
@@ -108,48 +152,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/rawatjalan/baru/bpjs" element={<PasienBaruRawatJalanBPJS />} />
         <Route path="/rawatjalan/baru/umum" element={<PasienBaruRawatJalanUmum />} />
 
-        {/* Page Klinik */}
-        <Route path="/klinik" element={<Klinik />} />
-        <Route path="/detailKlinik" element={<DetailKlinik />} />
-        <Route path="/tambahKlinik" element={<TambahKlinik />} />
-        <Route path="/editKlinik/:id" element={<EditKlinik />} />
+        {/* end no need auth */}
 
-        {/* Page Konter */}
-        <Route path="/konter" element={<Konter />} />
-        <Route path="/detailKonter" element={<DetailKonter />} />
-        <Route path="/tambahKonter" element={<TambahKonter />} />
-        <Route path="/editKonter/:id" element={<EditKonter />} />
-
-        {/* Page Ruangan */}
-        <Route path="/ruangan" element={<Ruangan/>} />
-        <Route path="/detailRuangan/:id" element={<DetailRuangan/>} />
-        <Route path="/tambahRuangan" element={<TambahRuangan/>} />
-        <Route path="/editRuangan/:id" element={<EditRuangan />} />
-
-        {/* Page Fasilitas */}
-        <Route path="/fasilitas" element={<Fasilitas />} />
-        <Route path="/detailFasilitas" element={<DetailRuangan />} />
-        <Route path="/tambahFasilitas" element={<TambahFasilitas />} />
-        <Route path="/tambahSubFasilitas" element={<TambahSubFasilitas />} />
-        <Route path="/editSubFasilitas/:id" element={<EditSUbFasilitas />} />
-        <Route path="/editFasilitas/:id" element={<EditFasilitas />} />
-
-        {/* Page Pegawai  */}
-        <Route path="/pegawai" element={<Pegawai />} />
-        <Route path="/detailPegawai" element={<DetailPegawai />} />
-        <Route path="/tambahPegawai" element={<TambahPegawai />} />
-
-        {/* Page Dokter  */}
-        <Route path="/dokter" element={<Dokter />} />
-
-        {/* Page Pasien  */}
-        <Route path="/pasien" element={<Pasien />} />
-        <Route path="/tambahPasien/BPJS" element={<TambahPasienBPJS />} />
-        <Route path="/tambahPasien/Umum" element={<TambahPasienUmum />} />
-        <Route path="/editPasien/BPJS" element={<EditPasienBPJS />} />
-        <Route path="/editPasien/Umum" element={<EditPasienUmum />} />
-
-        {/* <Route path="/about" element={<About />} /> */}
       </Routes>
     </Router>
   </StrictMode>

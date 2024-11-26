@@ -23,7 +23,7 @@ import AlertWarning from '../../../components/small/AlertWarning'
 import CustomButton from '../../../components/small/CustomButton'
 import LabelHandler from '../../../components/small/LabelHandler'
 import logo from '../../../img/St.carolus.png'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Login from '../../../services/Admin Tenant/Auth/Login'
 import ResetPassword from '../../../services/Admin Tenant/Auth/ResetPassword'
 
@@ -51,9 +51,10 @@ export default function LoginPegawai() {
   const [secondsLeft, setSecondsLeft] = useState(60)
   const [resendSuccess, setResendSuccess] = useState(false)
   const [loginSuccess, setLoginSuccess] = useState(false)
-
+  const [successLogout ,setSuccessLogout] = useState(false)
   const [wrongPassword, setWrongPassword] = useState(false)
   const [wrongEmail, setWrongEmail] = useState(false)
+  const location = useLocation();
 
   const navigate = useNavigate()
 
@@ -121,6 +122,22 @@ export default function LoginPegawai() {
         showTemporaryWrongEmail()
       }
     }
+  }
+
+  useEffect(() => {
+    if (location.state && location.state.successLogOut) {
+      showTemporarySuccessLogout()
+      console.log(location.state.message)
+      navigate(location.pathname, { replace: true, state: undefined }) //clear state
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state, navigate])
+
+  const showTemporarySuccessLogout = async () => {
+    console.log('Editing ambulance successful')
+    setSuccessLogout(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setSuccessLogout(false)
   }
 
   const handleResetPassword = async (values: FormResetPasswordValues) => {
@@ -218,7 +235,7 @@ export default function LoginPegawai() {
           }}
         >
           {resendSuccess && <AlertSuccess label="Link tautan berhasil dikirim ulang" />}
-
+          {successLogout && <AlertSuccess label="Success Log Out" />}
           {showLogin && (
             <>
               {wrongPassword && (
@@ -357,6 +374,7 @@ export default function LoginPegawai() {
                         </Box>
                         <Button
                           type="submit"
+                          // onClick={() => navigate('/dashboard') }
                           variant="contained"
                           color="primary"
                           fullWidth

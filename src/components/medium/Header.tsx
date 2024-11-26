@@ -13,6 +13,7 @@ import moment from "moment";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { ClockIcon } from "../../assets/icons/ClockIcon";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -23,6 +24,7 @@ export default function Header() {
     minutes: moment().format("mm"),
     period: moment().format("a"),
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -57,6 +59,11 @@ export default function Header() {
   const id = open ? "simple-popover" : undefined;
   const notifyId = notifyOpen ? "notify-popover" : undefined;
 
+  const logOut = () => {
+    sessionStorage.clear();
+    navigate('/', {state:{successLogOut: true}})
+  }
+
   return (
     <Box display={"flex"} gap={2} justifyContent={"space-between"}>
       <Box
@@ -67,7 +74,7 @@ export default function Header() {
           display: "flex",
           alignItems: "center",
           px: 2,
-          color:"#747487"
+          color: "#747487"
         }}
       >
         {/* time and role */}
@@ -207,7 +214,11 @@ export default function Header() {
                   Pengaturan
                 </Typography>
               </Button>
-              <Button fullWidth sx={{ justifyContent: "flex-start" }}>
+              <Button 
+                onClick={logOut}
+                fullWidth 
+                sx={{ justifyContent: "flex-start" }}
+              >
                 <Typography
                   fontSize={"14px"}
                   color="#8F85F3"

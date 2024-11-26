@@ -23,6 +23,7 @@ import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
 import CalenderPopover from "../../../components/medium/CalenderPopover";
 import PoliSelect from "../../../components/inputComponent/PoliSelect";
+import SingleDateTimeRangePickerCustom from "../../../components/medium/SingleDateTimeRangePickerCustom";
 
 const validationSchema = Yup.object({
     fullname: Yup.string().required("Nama wajib diisi"),
@@ -232,6 +233,7 @@ const RawatJalanUmum: React.FC = () => {
 
                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                         <CalenderPopover title="Pilih tanggal" />
+                                                        {/* <SingleDateTimeRangePickerCustom/> */}
                                                     </Box>
                                                 </Box>
 
