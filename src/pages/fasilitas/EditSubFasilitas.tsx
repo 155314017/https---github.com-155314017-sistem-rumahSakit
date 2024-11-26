@@ -182,7 +182,6 @@ export default function EditSUbFasilitas() {
                 facilityDataId: values.masterFacilityId,
                 additionalInfo: "hai",
                 schedules: schedules,
-                images: null,
             };
 
             console.log('Form submitted:', data);
@@ -197,7 +196,6 @@ export default function EditSUbFasilitas() {
                     },
                 });
                 console.log('Response:', response.data);
-                showTemporaryAlertSuccess();
                 formik.resetForm();
                 navigate('/fasilitas', { state: { successEditSub: true, message: 'Fasilitas berhasil di edit!' } })
             } catch (error) {

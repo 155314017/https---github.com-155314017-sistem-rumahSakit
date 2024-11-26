@@ -161,6 +161,11 @@ export default function TambahKlinik() {
         },
     });
 
+    const handleImageChange = (images: ImageData[]) => {
+        console.log('Images changed:', images);
+        setImagesData(images);
+    };
+
     return (
         <Container sx={{ py: 2 }}>
             <BreadCrumbs
@@ -175,7 +180,7 @@ export default function TambahKlinik() {
                     </Box>
 
                     {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
-                    <ImageUploaderGroup onChange={() => console.log("clicked")} />
+                    <ImageUploaderGroup onChange={handleImageChange} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Klinik<span style={{ color: "red" }}>*</span></Typography>

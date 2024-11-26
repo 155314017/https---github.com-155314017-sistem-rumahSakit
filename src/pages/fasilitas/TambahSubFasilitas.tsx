@@ -131,7 +131,7 @@ export default function TambahSubFasilitas() {
                 facilityDataId: values.masterFacilityId,
                 additionalInfo: "hai",
                 schedules: schedules,
-                images: null,
+                // images: null,
             };
 
             console.log('Form submitted:', data);
@@ -146,7 +146,6 @@ export default function TambahSubFasilitas() {
                     },
                 });
                 console.log('Response:', response.data);
-                showTemporaryAlertSuccess();
                 formik.resetForm();
                 navigate('/fasilitas', { state: { successAddSub: true, message: 'Fasilitas berhasil ditambahkan!' } })
             } catch (error) {
