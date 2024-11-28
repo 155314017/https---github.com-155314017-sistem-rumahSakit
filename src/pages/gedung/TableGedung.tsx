@@ -61,12 +61,20 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
   const [open, setOpen] = useState(false);
   const [datas, setDatas] = useState<BuildingDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
+  const [pageNumber, setPageNumber] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [sort, setSort] = useState('');
+  const [orderBy, setOrderBy] = useState("createdDateTime=asc");
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetchData();
+  }, [pageNumber, pageSize, orderBy]);
+
   const fetchData = async () => {
     try {
-      const result = await Building();
+      const result = await Building(pageNumber, pageSize, orderBy);
       setDatas(result);
     } catch (error) {
       console.log("Failed to fetch data from API:", error);
@@ -90,12 +98,25 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
   const rowsPerPage = 10;
   const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
+  useEffect(() => {
+    if (sort == "Nama Gedung A-Z"){
+      setOrderBy('name=asc');
+    } else if (sort == "Nama Gedung Z-A"){
+      setOrderBy('name=desc');
+    } else if (sort == "Nomor Gedung 1-9"){
+      setOrderBy('createdDateTime=asc');
+    } else if (sort == "Nomor Gedung 9-1"){
+      setOrderBy('createdDateTime=desc');
+    }
+  }, [sort])
+
   const urutkan = [
     { value: 1, label: "Nama Gedung A-Z" },
     { value: 2, label: "Nama Gedung Z-A" },
     { value: 3, label: "Nomor Gedung 1-9" },
     { value: 4, label: "Nomor Gedung 9-1" },
   ];
+
 
   const handleDeleteSuccess = () => {
     setOpen(false);
@@ -195,7 +216,7 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
               <DropdownList
                 options={urutkan}
                 placeholder="Urutkan"
-                onChange={(value) => console.log("Selected Value:", value)}
+                onChange={(value) => setSort(value)}
                 loading={false}
               />
             </Box>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as React from 'react';
 import {
   Box,
@@ -25,6 +25,7 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import DataPegawai from "../../dummyData/dataPegawai";
+import { EmployeeDataItem, EmployeeServices } from "../../services/Admin Tenant/ManageEmployee/EmployeeServices";
 // import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -59,11 +60,25 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 export default function TablePegawai() {
-  const datas = DataPegawai;
-
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [datas, setDatas] = useState<EmployeeDataItem[]>([]);
   // const [open, setOpen] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log('Fetching data...');
+      try {
+        const result = await EmployeeServices();
+        console.log('Result: ', result);
+        setDatas(result); // Store the result in datas state
+      } catch (error) {
+        console.log('Failed to fetch data from API: ', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -304,100 +319,108 @@ export default function TablePegawai() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {displayedData.map((data, index) => (
-                      <StyledTableRow key={index}>
-                        <TableCell
-                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                          align="center"
-                        >
-                          {data.nip}
-                        </TableCell>
-                        <TableCell
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              maxWidth: "150px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          {data.name}
-                        </TableCell>
-                        <TableCell
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          {data.role}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                        >
-                          {data.menuAkses}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                        >
-                          {data.detailAkses}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          <Link
-                            onClick={confirmationDelete}
-                            href="#"
-                            mr={2}
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
-                          >
-                            Hapus
-                          </Link>
+                    {displayedData.length > 0 ? (
+                        displayedData.map((data, index) => (
+                          <StyledTableRow key={index}>
+                            <TableCell
+                              sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                              align="center"
+                            >
+                              {data.masterUser.identityNumber}
+                            </TableCell>
+                            <TableCell
+                              sx={[
+                                {
+                                  color: "#292B2C",
+                                  fontSize: "14px",
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                  whiteSpace: "nowrap",
+                                  maxWidth: "150px",
+                                  textTransform: "capitalize",
+                                },
+                              ]}
+                            >
+                              {data.name}
+                            </TableCell>
+                            <TableCell
+                              sx={[
+                                {
+                                  color: "#292B2C",
+                                  fontSize: "14px",
+                                  textTransform: "capitalize",
+                                },
+                              ]}
+                            >
+                              {data.role}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                            >
+                              {data.name}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                            >
+                              {data.name}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              sx={[
+                                {
+                                  color: "#292B2C",
+                                  fontSize: "14px",
+                                  textTransform: "capitalize",
+                                },
+                              ]}
+                            >
+                              <Link
+                                onClick={confirmationDelete}
+                                href="#"
+                                mr={2}
+                                underline="hover"
+                                sx={{
+                                  textTransform: "capitalize",
+                                  color: "#8F85F3",
+                                }}
+                              >
+                                Hapus
+                              </Link>
 
-                          {/* <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} /> */}
-                          <Link
-                            href="#"
-                            mr={2}
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
-                          >
-                            Ubah
-                          </Link>
-                          <Link
-                            href="/detailPegawai"
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
-                          >
-                            Lihat selengkapnya
-                          </Link>
+                              {/* <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} /> */}
+                              <Link
+                                href="#"
+                                mr={2}
+                                underline="hover"
+                                sx={{
+                                  textTransform: "capitalize",
+                                  color: "#8F85F3",
+                                }}
+                              >
+                                Ubah
+                              </Link>
+                              <Link
+                                href="/detailPegawai"
+                                underline="hover"
+                                sx={{
+                                  textTransform: "capitalize",
+                                  color: "#8F85F3",
+                                }}
+                              >
+                                Lihat selengkapnya
+                              </Link>
+                            </TableCell>
+                          </StyledTableRow>
+                        ))
+                     ) : (
+                      <StyledTableRow>
+                        <TableCell colSpan={11} align="center">
+                          Tidak ada data
                         </TableCell>
                       </StyledTableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </StyledTableContainer>

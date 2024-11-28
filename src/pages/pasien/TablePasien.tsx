@@ -66,8 +66,8 @@ export default function TablePasien() {
             try {
                 const result = await PatientServices();
                 console.log('Result: ', result);
-                setDatas(result); // Store the result in datas state
-                // setData(result); // Set data to display in table
+                setDatas(result); 
+                // setData(result);
             } catch (error) {
                 console.log('Failed to fetch data from API: ', error);
             }
