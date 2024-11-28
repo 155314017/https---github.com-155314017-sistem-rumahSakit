@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import TableGedung from "./TableGedung";
 import SideBar from "../../components/SideBar/SideBar";
 import Header from "../../components/medium/Header";
@@ -103,7 +103,7 @@ export default function Gedung() {
             Gedung
           </Typography>
           <Grid container flex={1} mb={3} gap={3}>
-            <MediumCard icon={BusinessOutlinedIcon} title="Total Gedung" subtitle={loading ? ". . ." : data.length.toString() || "0"} />
+            <MediumCard icon={BusinessOutlinedIcon} title="Total Gedung" subtitle={loading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString() || "0"} />
             <CardAdd icon={AddBoxIcon} title="Tambah Gedung" link="/tambahGedung" />
           </Grid>
           {/* Kirim fungsi showTemporarySuccessDelete ke TableGedung */}

@@ -1,5 +1,5 @@
 import { Box, Grid } from "@mui/system";
-import { Typography } from "@mui/material";
+import { Typography, CircularProgress } from "@mui/material";
 import SideBar from "../../components/SideBar/SideBar";
 import Header from "../../components/medium/Header";
 import MediumCard from "../../components/medium/MediumCard";
@@ -19,16 +19,19 @@ export default function Klinik() {
     const [successAddBuilding, setSuccessAddBuilding] = useState(false);
     const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
     const [successEditBuilding, setSuccessEditBuilding] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
     const location = useLocation();
     const navigate = useNavigate();
 
 
     const fetchData = async () => {
+        setIsLoading(true)
         console.log('fetching data . . . ')
         try {
             const result = await Clinic();
             console.log('result : ' + result)
             setData(result);
+            setIsLoading(false)
         } catch (error) {
             console.log('Failed to fetch data from API' + error);
         }
@@ -95,7 +98,7 @@ export default function Klinik() {
                         Klinik
                     </Typography>
                     <Grid container spacing={3} flex={1} mb={3}>
-                        <MediumCard icon={BusinessOutlinedIcon} title="Daftar Klinik" subtitle={data.length.toString()} />
+                        <MediumCard icon={BusinessOutlinedIcon} title="Daftar Klinik" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString()} />
                         <CardAdd icon={AddBoxIcon} title="Tambah Klinik" link="/tambahKlinik" />
                     </Grid>
                     <TableKlinik fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDelete} />

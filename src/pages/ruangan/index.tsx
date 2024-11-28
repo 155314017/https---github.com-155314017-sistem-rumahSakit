@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Grid } from "@mui/system";
-import { Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import SideBar from "../../components/SideBar/SideBar";
 import Header from "../../components/medium/Header";
 import MediumCard from "../../components/medium/MediumCard";
@@ -21,13 +21,16 @@ export default function Ruangan() {
     const [successAddRoom, setSuccessAddRoom] = useState(false);
     const [successDeleteRoom, setSuccessDeleteRoom] = useState(false);
     const [successEditRoom, setSuccessEditRoom] = useState(false);
+    const [isLoading, setIsLoading] = useState (false);
 
     const fetchData = async () => {
+        setIsLoading(true)
         console.log('fetching data . . . ')
         try {
             const result = await RoomServices();
             console.log('result : ' + result)
             setData(result);
+            setIsLoading(false)
         } catch (error) {
             console.log('Failed to fetch data from API' + error);
         }
@@ -102,7 +105,7 @@ export default function Ruangan() {
                         Ruangan
                     </Typography>
                     <Grid container spacing={3} flex={1} mb={3}>
-                        <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={data.length.toString() || "0"} />
+                        <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString() || "0"} />
                         <CardAdd icon={AddBoxIcon} title="Tambah Ruangan" link="/tambahRuangan" />
                     </Grid>
                     <TableRuangan fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDelete} />
