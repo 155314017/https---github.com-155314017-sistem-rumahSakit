@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, CircularProgress, Stack, Typography } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import MediumCard from '../../components/medium/MediumCard'
 
@@ -41,17 +41,19 @@ export default function Dashboard() {
   const [dataFacility, setDataFacility] = useState<FacilityDataItem[]>([])
   const [dataDoctor, setDataDoctor] = useState<DoctorDataItem[]>([])
   const [dataBuilding, setDataBuilding] = useState<BuildingDataItem[]>([])
-  const [successLogin ,setSuccessLogin] = useState(false)
+  const [successLogin, setSuccessLogin] = useState(false)
   const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false)
   const [successDeleteRoom, setSuccessDeleteRoom] = useState(false)
   const [successDeleteFacility, setSuccessDeleteFacility] = useState(false)
   const [successDeleteAmbulance, setSuccessDeleteAmbulance] = useState(false)
   const [successDeleteClinic, setSuccessDeleteClinic] = useState(false)
   const [successDeleteCounter, setSuccessDeleteCounter] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
 
   const fetchData = async () => {
+    setIsLoading(true)
     console.log('fetching data . . . ')
     try {
       const resultClinic = await Clinic()
@@ -63,6 +65,7 @@ export default function Dashboard() {
       setDataClinic(resultClinic)
       setDataFacility(resultFacility)
       setDataDoctor(resultDoctor)
+      setIsLoading(false)
     } catch (error) {
       console.log('Failed to fetch data from API' + error)
     }
@@ -162,28 +165,28 @@ export default function Dashboard() {
         <MediumCard
           icon={MeetingRoomIcon}
           title="Total Ruangan"
-          subtitle={dataRoom.length.toString()}
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataRoom.length.toString()}
         />
         <MediumCard
           icon={BedIcon}
           title={'Ruangan tersedia'}
-          subtitle={dataRoom.length.toString()}
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataRoom.length.toString()}
         />
         <MediumCard icon={PeopleIcon} title={'Total pegawai'} subtitle={'10'} />
         <MediumCard
           icon={LocalHospitalIcon}
           title="Total poliklinik"
-          subtitle={dataClinic.length.toString()}
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataClinic.length.toString()}
         />
         <MediumCard
           icon={MedicalServicesIcon}
           title="Total dokter"
-          subtitle={dataDoctor.length.toString()}
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataDoctor.length.toString()}
         />
         <MediumCard
           icon={MonitorHeartIcon}
           title="Total fasilitas"
-          subtitle={dataFacility.length.toString()}
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataFacility.length.toString()}
         />
         <CardAdd icon={RoomPreferencesIcon} title="Tambah ruangan" link="/tambahRuangan" />
         <CardAdd icon={PersonAddIcon} title="Tambah pegawai" link="/tambahPegawai" />

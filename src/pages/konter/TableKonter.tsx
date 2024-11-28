@@ -245,25 +245,79 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
                                     borderRadius: "16px",
                                 }}
                             >
-                                <Table stickyHeader sx={{ width: "100%" }}>
+                                <Table stickyHeader>
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell width={"12%"} align="center">
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="center"
+                                            >
                                                 No. Konter
                                             </TableCell>
-                                            <TableCell width={"15%"} align="left">
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="left"
+                                            >
                                                 Tipe Konter
                                             </TableCell>
-                                            <TableCell width={"15%"} align="left">
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="left"
+                                            >
                                                 Nama Konter
                                             </TableCell>
-                                            <TableCell width={"15%"} align="left">
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="left"
+                                            >
                                                 Jam Operasional
                                             </TableCell>
-                                            <TableCell width={"15%"} align="left">
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="left"
+                                            >
                                                 Lokasi Konter
                                             </TableCell>
-                                            <TableCell width={"15%"} align="center">
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="center"
+                                            >
                                                 Aksi
                                             </TableCell>
                                         </TableRow>
@@ -322,7 +376,7 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
                                                                 textTransform: "capitalize",
                                                             },
                                                         ]}
-                                                        align="center"
+                                                        align="left"
                                                     >
                                                         {data.operationalSchedule}
                                                     </TableCell>
@@ -399,36 +453,20 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
                             </StyledTableContainer>
                         </Box>
 
-                        <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+                        <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center">
                             <Typography sx={{ color: "#A8A8BD" }}>
-                                Showing {((page - 1) * rowsPerPage) + 1} to{" "}
-                                {Math.min(page * rowsPerPage, datas.length)} of{" "}
-                                {datas.length} entries
+                                Showing {(page - 1) * rowsPerPage + 1} to {Math.min(page * rowsPerPage, datas.length)} of {datas.length} entries
                             </Typography>
                             <Pagination
                                 count={Math.ceil(datas.length / rowsPerPage)}
-                                variant="outlined"
                                 shape="rounded"
                                 page={page}
                                 onChange={handleChangePage}
                                 sx={{
-                                    "& .MuiPaginationItem-root": {
-                                        color: "#8F85F3",
-                                        border: 'none',
-                                    },
-                                    "& .Mui-selected": {
-                                        backgroundColor: "#8F85F3",
-                                        bgcolor: '#D5D1FB',
-                                    },
-                                    "& .MuiPaginationItem-ellipsis": {
-                                        border: 'none',
-                                    },
-                                    "& .MuiPaginationItem-text": {
-                                        border: 'none',
-                                    },
+                                    "& .MuiPaginationItem-root": { color: "#8F85F3" },
+                                    "& .Mui-selected": { bgcolor: "#D5D1FB" },
                                 }}
                             />
-
                         </Stack>
                     </Box>
                 </Collapse>

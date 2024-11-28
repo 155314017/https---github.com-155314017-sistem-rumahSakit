@@ -1,12 +1,13 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { ElementType } from "react";
+import { ElementType, ReactNode } from "react";
 import bgImage from "../../assets/img/String.png";
 
 interface MediumCardProps {
   icon: ElementType;
   title: string;
-  subtitle: string;
+  subtitle: ReactNode;
 }
+
 
 export default function MediumCard({
   icon: Icon,
