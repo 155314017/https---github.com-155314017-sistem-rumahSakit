@@ -53,9 +53,9 @@ export interface ApiResponse {
 const API_URL = 'https://hms.3dolphinsocial.com:8083/v1/manage/building/'
 
 export const Building = async (
-  pageNumber: number = 0, // Default halaman pertama
-  pageSize: number = 10, // Default 10 data per halaman
-  orderBy: string = 'createdDateTime=asc' // Default sorting berdasarkan createdDateTime ascending
+  pageNumber: number = 0,
+  pageSize: number = 10, 
+  orderBy: string = 'createdDateTime=asc' 
 ): Promise<BuildingDataItem[]> => {
   try {
     const response = await axios.get<ApiResponse>(API_URL, {

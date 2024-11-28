@@ -126,15 +126,36 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas, onSuccessDelete })
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
   const [loading, setLoading] = useState(false);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [sort, setSort] = useState('');
+  const [orderBy, setOrderBy] = useState("createdDateTime=asc");
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetchData();
+  }, [pageNumber, pageSize, orderBy]);
+
+  useEffect(() => {
+    if (sort == "Nama Gedung A-Z") {
+      setOrderBy('name=asc');
+    } else if (sort == "Nama Gedung Z-A") {
+      setOrderBy('name=desc');
+    } else if (sort == "Nomor Gedung 1-9") {
+      setOrderBy('createdDateTime=asc');
+    } else if (sort == "Nomor Gedung 9-1") {
+      setOrderBy('createdDateTime=desc');
+    } else {
+      setOrderBy('createdDateTime=asc');
+    }
+  }, [sort])
 
   const fetchData = async () => {
     console.log('Fetching data...');
     setLoading(true)
     try {
-      const result = await RoomServices();
+      const result = await RoomServices(pageNumber, pageSize, orderBy);
       console.log('Result: ', result);
       setDatas(result);
       console.log("FETCHIG DATA ID FAICILITY")
@@ -197,6 +218,8 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas, onSuccessDelete })
   const rowsPerPage = 10;
 
   const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+
+
 
   const sortir = [
     { value: 1, label: "Nama Gedung" },
@@ -345,7 +368,7 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas, onSuccessDelete })
               <DropdownList
                 options={urutkan}
                 placeholder="Urutkan"
-                onChange={handleSelectionChange}
+                onChange={(value) => setSort(value)}
                 loading={false}
               />
             </Box>
