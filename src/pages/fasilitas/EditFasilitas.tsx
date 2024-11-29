@@ -25,10 +25,6 @@ type ImageData = {
     imageData: string;
 };
 
-// interface FormValues {
-//     operationalCost: number;
-// }
-
 
 export default function EditFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
@@ -63,9 +59,6 @@ export default function EditFasilitas() {
             const formattedStartTime = startTime.format("HH:mm");
             const formattedEndTime = endTime.format("HH:mm");
             const dayOfWeek = startTime.format("dddd");
-
-            console.log(formattedStartTime)
-            console.log(formattedEndTime);
             const dayMapping: { [key: string]: string } = {
                 "Monday": "1",
                 "Tuesday": "2",
@@ -78,7 +71,6 @@ export default function EditFasilitas() {
 
             const dayValue = dayMapping[dayOfWeek] || "7";
             setSelectedDays(dayValue);
-            console.log(dayValue);
         }
     }, [startTime, endTime]);
 
@@ -114,8 +106,6 @@ export default function EditFasilitas() {
                 setName(response.data.data.name);
                 setDescription(response.data.data.description);
                 setInitialOperationalCost(response.data.data.cost);
-                console.log("nama: ", name)
-
                 const buildingResponse = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${response.data.data.masterBuildingId}`, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -138,28 +128,14 @@ export default function EditFasilitas() {
         };
         fetchData();
     }, [id]);
-
-    useEffect(() => {
-        console.log("Nama gedung: ", name);
-    }, [name]);
-
-    console.log(operationalTime);
     const handleImageChange = (images: ImageData[]) => {
-        console.log('Images changed:', images);
         setImagesData(images);
     };
 
 
     const handleTambahHari = () => {
-        console.log("Selected day:", selectedDay);
-        console.log("Start time:", startTime?.format("HH:mm"));
-        console.log("End time:", endTime?.format("HH:mm"));
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
-        console.log("Waktu yg dipilih: ", dateTime);
-        console.log("Day: ", selectedDay);
-        console.log("start time: ", startTime?.unix());
-        console.log("end time: ", endTime?.unix());
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -199,12 +175,6 @@ export default function EditFasilitas() {
             const selectedDayOfWeek = dayMapping[selectedDay || "1"];
             const adjustedStartTime = startTime?.day(selectedDayOfWeek);
             const adjustedEndTime = endTime?.day(selectedDayOfWeek);
-
-            console.log("Selected Day on submit: ", selectedDayOfWeek)
-            console.log("adjusted start time: ", adjustedStartTime)
-            console.log("adjusted end time: ", adjustedEndTime)
-
-
             const schedules = [
                 {
                     startDateTime: adjustedStartTime?.unix(),
@@ -226,9 +196,6 @@ export default function EditFasilitas() {
                     imageData: image.imageData || "",
                 })),
             };
-
-            console.log('Form submitted:', data);
-
             const token = Cookies.get("accessToken");
 
             try {
@@ -238,7 +205,6 @@ export default function EditFasilitas() {
                         'accessToken': `${token}`
                     },
                 });
-                console.log('Response:', response.data);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
@@ -246,8 +212,6 @@ export default function EditFasilitas() {
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
-                    console.error('Axios error message:', error.message);
-                    console.error('Response data:', error.response?.data);
                     showTemporaryAlertError();
                 } else {
                     console.error('Unexpected error:', error);
@@ -294,10 +258,8 @@ export default function EditFasilitas() {
                             options={gedungOptions.map(({ id, name }) => ({ value: id, label: name }))}
                             placeholder="Pilih gedung"
                             defaultValue={formik.values.masterBuildingId}
-                            onChange={(selectedOptionValue, selectedLabel) => {
+                            onChange={(selectedOptionValue) => {
                                 formik.setFieldValue('masterBuildingId', selectedOptionValue);
-                                console.log("Selected Building ID:", selectedOptionValue);
-                                console.log("Selected Building Name:", selectedLabel);
                             }}
                             loading={false}
                         />

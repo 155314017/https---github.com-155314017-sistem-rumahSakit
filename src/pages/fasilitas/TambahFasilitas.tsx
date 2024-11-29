@@ -42,9 +42,7 @@ export default function TambahFasilitas() {
 
     useEffect(() => {
         const fetchGedungData = async () => {
-            console.log("Fetching info buildings...");
             try {
-                console.log("Try fetching info buildings");
                 const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
                     timeout: 10000
                 });
@@ -52,7 +50,6 @@ export default function TambahFasilitas() {
                     id: item.id,
                     name: item.name,
                 })));
-                console.log(response.data.data.content);
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     console.error("Axios error:", error.message);
@@ -63,10 +60,7 @@ export default function TambahFasilitas() {
         };
         fetchGedungData();
     }, []);
-
-    console.log(operationalTime);
     const handleImageChange = (images: ImageData[]) => {
-        console.log('Images changed:', images);
         setImagesData(images);
     };
 
@@ -82,19 +76,8 @@ export default function TambahFasilitas() {
 
 
     const handleTambahHari = () => {
-        console.log("Selected day:", selectedDay);
-        console.log("Start time:", startTime?.format("HH:mm"));
-        console.log("End time:", endTime?.format("HH:mm"));
-        // console.log(errorAlert)
-        // console.log(successAlert)
-        // console.log(operationalTime)
-
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
-        console.log("Waktu yg dipilih: ", dateTime);
-        console.log("Day: ", selectedDay);
-        console.log("start time: ", startTime?.unix());
-        console.log("end time: ", endTime?.unix());
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -131,12 +114,6 @@ export default function TambahFasilitas() {
             const selectedDayOfWeek = dayMapping[selectedDay || "1"];
             const adjustedStartTime = startTime?.day(selectedDayOfWeek);
             const adjustedEndTime = endTime?.day(selectedDayOfWeek);
-
-            console.log("Selected Day on submit: ", selectedDayOfWeek)
-            console.log("adjusted start time: ", adjustedStartTime)
-            console.log("adjusted end time: ", adjustedEndTime)
-
-
             const schedules = [
                 {
                     startDateTime: adjustedStartTime?.unix(),
@@ -157,11 +134,7 @@ export default function TambahFasilitas() {
                     imageData: image.imageData || "",
                 })),
             };
-
-            console.log('Form submitted:', data);
-
             const token = Cookies.get("accessToken");
-
             try {
                 const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/facility/', data, {
                     headers: {
@@ -169,7 +142,6 @@ export default function TambahFasilitas() {
                         'accessToken': `${token}`
                     },
                 });
-                console.log('Response:', response.data);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
@@ -224,10 +196,8 @@ export default function TambahFasilitas() {
                         <DropdownListAPI
                             options={gedungOptions.map(({ id, name }) => ({ value: id, label: name }))}
                             placeholder="Pilih gedung"
-                            onChange={(selectedOptionValue, selectedLabel) => {
+                            onChange={(selectedOptionValue) => {
                                 formik.setFieldValue('masterBuildingId', selectedOptionValue);
-                                console.log("Selected Building ID:", selectedOptionValue);
-                                console.log("Selected Building Name:", selectedLabel);
                             }}
                             loading={false}
                         />
@@ -268,11 +238,9 @@ export default function TambahFasilitas() {
                                         ]}
                                         placeholder="Pilih hari"
                                         onChange={(value: string) => {
-                                            console.log("Selected value:", value);
                                             setSelectedDay(value);
                                         }}
                                         loading={false}
-                                    // defaultValue=""
                                     />
                                 </Box>
 

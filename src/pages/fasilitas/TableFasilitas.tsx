@@ -68,7 +68,6 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
-  // const [data, setData] = useState<FacilityDataItem[]>([]);
   const [datas, setDatas] = useState<FacilityDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
@@ -76,17 +75,11 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
   const navigate = useNavigate();
 
   const fetchData = async () => {
-    console.log('Fetching data...');
     try {
       const result = await FacilityServices();
-      console.log('Result: ', result);
       setDatas(result);
-      console.log("FETCHIG DATA ID FAICILITY")
       const buildingIds = result.map((data) => data.masterBuildingId);
       setDataIdBuilding(buildingIds);
-
-      console.log('Data ID Facility: ', buildingIds);
-      // setData(result); // Set data to display in table
     } catch (error) {
       console.log('Failed to fetch data from API: ', error);
     }
@@ -95,10 +88,7 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
     fetchData();
   }, []);
 
-
-
   const [buildings, setBuildings] = useState<string[]>([]);
-
   useEffect(() => {
     const fetchBuildings = async () => {
       try {
@@ -112,8 +102,6 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
         });
 
         setBuildings(facilitiesData);
-        console.log("DATA FASILITAS UTAMA");
-        console.log(facilitiesData);
       } catch (err) {
         console.error('Error:', err);
       }
@@ -141,23 +129,17 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
     { value: 4, label: "Nama fasilitas Z-A" },
   ];
 
-  const handleSelectionChange = (selectedValue: string) => {
-    console.log("Selected Value:", selectedValue);
-  };
-
   const toggleCollapse = () => {
     setIsCollapsed((prev) => !prev);
   };
 
   const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
     event.preventDefault();
-    console.log("ID Gedung yang akan dihapus:", buildingId);
     setDeletedItems(buildingId);
     setOpen(true);
   };
 
   const handleDeleteSuccess = () => {
-    console.log("Item deleted successfully");
     onSuccessDelete();
     fetchDatas();
     fetchData();
@@ -269,7 +251,7 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
               <DropdownList
                 options={urutkan}
                 placeholder="Urutkan"
-                onChange={handleSelectionChange}
+                // onChange={handleSelectionChange}
                 loading={false}
               />
             </Box>

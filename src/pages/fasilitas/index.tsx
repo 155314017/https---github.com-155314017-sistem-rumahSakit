@@ -35,10 +35,8 @@ export default function Fasilitas() {
 
     const fetchDataFacility = async () => {
         setIsLoading(true)
-        console.log('fetching data . . . ')
         try {
             const result = await FacilityServices();
-            console.log('result : ' + result)
             setData(result);
             setIsLoading(false)
         } catch (error) {
@@ -51,10 +49,8 @@ export default function Fasilitas() {
 
 
     const fetchDataSubFacility = async () => {
-        console.log('fetching data . . . ')
         try {
             const result1 = await SubFacilityServices();
-            console.log('result : ' + result1)
             setData1(result1);
         } catch (error) {
             console.log('Failed to fetch data from API' + error);
@@ -69,7 +65,6 @@ export default function Fasilitas() {
     useEffect(() => {
         if (location.state && location.state.successAdd) {
             showTemporaryAlertSuccess();
-            console.log(location.state.message);
             navigate(location.pathname, { replace: true, state: undefined }); //clear state
         }
     }, [location.state, navigate]);
@@ -77,7 +72,6 @@ export default function Fasilitas() {
     useEffect(() => {
         if (location.state && location.state.successEdit) {
             showTemporarySuccessEdit();
-            console.log(location.state.message);
             navigate(location.pathname, { replace: true, state: undefined }); //clear state
         }
     }, [location.state, navigate]);
@@ -107,7 +101,6 @@ export default function Fasilitas() {
     useEffect(() => {
         if (location.state && location.state.successAddSub) {
             showTemporaryAlertSuccessSub();
-            console.log(location.state.message);
             navigate(location.pathname, { replace: true, state: undefined }); //clear state
         }
     }, [location.state, navigate]);
@@ -115,7 +108,6 @@ export default function Fasilitas() {
     useEffect(() => {
         if (location.state && location.state.successEditSub) {
             showTemporarySuccessEditSub();
-            console.log(location.state.message);
             navigate(location.pathname, { replace: true, state: undefined }); //clear state
         }
     }, [location.state, navigate]);

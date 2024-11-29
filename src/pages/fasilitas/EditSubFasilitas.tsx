@@ -12,12 +12,6 @@ import Cookies from "js-cookie";
 import DropdownListAPI from '../../components/small/DropdownListAPI';
 import { useParams, useNavigate } from 'react-router-dom';
 
-// type ImageData = {
-//     imageName: string;
-//     imageType: string;
-//     imageData: string;
-// };
-
 type Facility = {
     id: string;
     name: string;
@@ -52,8 +46,6 @@ export default function EditSUbFasilitas() {
             const formattedStartTime = startTime.format("HH:mm");
             const formattedEndTime = endTime.format("HH:mm");
             const dayOfWeek = startTime.format("dddd");
-            console.log(formattedStartTime)
-            console.log(formattedEndTime);
             const dayMapping: { [key: string]: string } = {
                 "Monday": "1",
                 "Tuesday": "2",
@@ -66,7 +58,6 @@ export default function EditSUbFasilitas() {
 
             const dayValue = dayMapping[dayOfWeek] || "7";
             setSelectedDays(dayValue);
-            console.log(dayValue);
         }
     }, [startTime, endTime]);
 
@@ -82,8 +73,6 @@ export default function EditSUbFasilitas() {
                 });
                 setName(response.data.data.name);
                 setFacilityId(response.data.data.facilityDataId);
-                console.log("nama: ", name)
-
                 if (response.data.data.schedules && response.data.data.schedules.length > 0) {
                     const schedule = response.data.data.schedules[0];
                     setStartTime(dayjs.unix(schedule.startDateTime));
@@ -114,18 +103,9 @@ export default function EditSUbFasilitas() {
         fetchGedungData();
     }, []);
 
-    console.log(operationalTime)
-
     const handleTambahHari = () => {
-        console.log("Selected day:", selectedDay);
-        console.log("Start time:", startTime?.format("HH:mm"));
-        console.log("End time:", endTime?.format("HH:mm"));
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
-        console.log("Waktu yg dipilih: ", dateTime);
-        console.log("Day: ", selectedDay);
-        console.log("start time: ", startTime?.unix());
-        console.log("end time: ", endTime?.unix());
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -148,13 +128,11 @@ export default function EditSUbFasilitas() {
 
     const formik = useFormik({
         initialValues: {
-            // deskripsiKlinik: '',
             masterFacilityId: facilityId,
             namaSubFasilitas: name,
         },
         enableReinitialize: true,
         validationSchema: Yup.object({
-            // deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
             masterFacilityId: Yup.string().required('Facility is required'),
             namaSubFasilitas: Yup.string().required('SubFacility Name is required'),
         }),
@@ -163,12 +141,6 @@ export default function EditSUbFasilitas() {
             const selectedDayOfWeek = dayMapping[selectedDay || "1"];
             const adjustedStartTime = startTime?.day(selectedDayOfWeek);
             const adjustedEndTime = endTime?.day(selectedDayOfWeek);
-
-            console.log("Selected Day on submit: ", selectedDayOfWeek)
-            console.log("adjusted start time: ", adjustedStartTime)
-            console.log("adjusted end time: ", adjustedEndTime)
-
-
             const schedules = [
                 {
                     startDateTime: adjustedStartTime?.unix(),
@@ -183,11 +155,7 @@ export default function EditSUbFasilitas() {
                 additionalInfo: "hai",
                 schedules: schedules,
             };
-
-            console.log('Form submitted:', data);
-
             const token = Cookies.get("accessToken");
-
             try {
                 const response = await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/', data, {
                     headers: {
@@ -195,14 +163,11 @@ export default function EditSUbFasilitas() {
                         'accessToken': `${token}`
                     },
                 });
-                console.log('Response:', response.data);
                 formik.resetForm();
                 navigate('/fasilitas', { state: { successEditSub: true, message: 'Fasilitas berhasil di edit!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
-                    console.error('Axios error message:', error.message);
-                    console.error('Response data:', error.response?.data);
                     showTemporaryAlertError();
                 } else {
                     console.error('Unexpected error:', error);
@@ -247,10 +212,8 @@ export default function EditSUbFasilitas() {
                             options={facilityOptions.map(({ id, name }) => ({ value: id, label: name }))}
                             placeholder="Pilih Fasilitas Induk"
                             defaultValue={formik.values.masterFacilityId}
-                            onChange={(selectedOptionValue, selectedLabel) => {
+                            onChange={(selectedOptionValue) => {
                                 formik.setFieldValue('masterFacilityId', selectedOptionValue);
-                                console.log("Selected Building ID:", selectedOptionValue);
-                                console.log("Selected Building Name:", selectedLabel);
                             }}
                             loading={false}
                         />

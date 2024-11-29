@@ -30,9 +30,7 @@ export default function TambahSubFasilitas() {
 
     useEffect(() => {
         const fetchFacilityData = async () => {
-            console.log("Fetching info buildings...");
             try {
-                console.log("Try fetching info buildings");
                 const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/facility/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
                     timeout: 10000
                 });
@@ -40,7 +38,6 @@ export default function TambahSubFasilitas() {
                     id: item.id,
                     name: item.name,
                 })));
-                console.log(response.data.data.content);
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     console.error("Axios error:", error.message);
@@ -51,8 +48,6 @@ export default function TambahSubFasilitas() {
         };
         fetchFacilityData();
     }, []);
-
-    console.log(operationalTime)
 
     const dayMapping: { [key: string]: number } = {
         "Senin": 1,
@@ -66,19 +61,8 @@ export default function TambahSubFasilitas() {
 
 
     const handleTambahHari = () => {
-        console.log("Selected day:", selectedDay);
-        console.log("Start time:", startTime?.format("HH:mm"));
-        console.log("End time:", endTime?.format("HH:mm"));
-        // console.log(errorAlert)
-        // console.log(successAlert)
-        // console.log(operationalTime)
-
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
-        console.log("Waktu yg dipilih: ", dateTime);
-        console.log("Day: ", selectedDay);
-        console.log("start time: ", startTime?.unix());
-        console.log("end time: ", endTime?.unix());
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -114,11 +98,6 @@ export default function TambahSubFasilitas() {
             const adjustedStartTime = startTime?.day(selectedDayOfWeek);
             const adjustedEndTime = endTime?.day(selectedDayOfWeek);
 
-            console.log("Selected Day on submit: ", selectedDayOfWeek)
-            console.log("adjusted start time: ", adjustedStartTime)
-            console.log("adjusted end time: ", adjustedEndTime)
-
-
             const schedules = [
                 {
                     startDateTime: adjustedStartTime?.unix(),
@@ -131,11 +110,7 @@ export default function TambahSubFasilitas() {
                 facilityDataId: values.masterFacilityId,
                 additionalInfo: "hai",
                 schedules: schedules,
-                // images: null,
             };
-
-            console.log('Form submitted:', data);
-
             const token = Cookies.get("accessToken");
 
             try {
@@ -145,14 +120,11 @@ export default function TambahSubFasilitas() {
                         'accessToken': `${token}`
                     },
                 });
-                console.log('Response:', response.data);
                 formik.resetForm();
                 navigate('/fasilitas', { state: { successAddSub: true, message: 'Fasilitas berhasil ditambahkan!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
-                    console.error('Axios error message:', error.message);
-                    console.error('Response data:', error.response?.data);
                     showTemporaryAlertError();
                 } else {
                     console.error('Unexpected error:', error);
@@ -256,10 +228,8 @@ export default function TambahSubFasilitas() {
                             options={facilityOptions.map(({ id, name }) => ({ value: id, label: name }))}
                             placeholder="Pilih Fasilitas Induk"
                             defaultValue={formik.values.masterFacilityId}
-                            onChange={(selectedOptionValue, selectedLabel) => {
+                            onChange={(selectedOptionValue) => {
                                 formik.setFieldValue('masterFacilityId', selectedOptionValue);
-                                console.log("Selected Building ID:", selectedOptionValue);
-                                console.log("Selected Building Name:", selectedLabel);
                             }}
                             loading={false}
                         />
@@ -282,11 +252,9 @@ export default function TambahSubFasilitas() {
                                         ]}
                                         placeholder="Pilih hari"
                                         onChange={(value: string) => {
-                                            console.log("Selected value:", value);
                                             setSelectedDay(value);
                                         }}
                                         loading={false}
-                                    // defaultValue=""
                                     />
                                 </Box>
 
