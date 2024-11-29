@@ -31,7 +31,6 @@ import {
   DoctorServices,
   DoctorDataItem
 } from '../../services/Admin Tenant/ManageDoctor/DoctorServices'
-import { Building, BuildingDataItem } from '../../services/Admin Tenant/ManageBuilding/Building'
 import AlertSuccess from '../../components/small/AlertSuccess'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -40,7 +39,6 @@ export default function Dashboard() {
   const [dataRoom, setDataRoom] = useState<RoomDataItem[]>([])
   const [dataFacility, setDataFacility] = useState<FacilityDataItem[]>([])
   const [dataDoctor, setDataDoctor] = useState<DoctorDataItem[]>([])
-  const [dataBuilding, setDataBuilding] = useState<BuildingDataItem[]>([])
   const [successLogin, setSuccessLogin] = useState(false)
   const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false)
   const [successDeleteRoom, setSuccessDeleteRoom] = useState(false)
@@ -54,7 +52,7 @@ export default function Dashboard() {
 
   const fetchData = async () => {
     setIsLoading(true)
-    console.log('fetching data . . . ')
+    
     try {
       const resultClinic = await Clinic()
       const resultRoom = await RoomServices()
@@ -75,59 +73,44 @@ export default function Dashboard() {
     fetchData()
   }, [])
 
-  const fetchDataBuilding = async () => {
-    console.log('Fetching data...')
-    try {
-      const result = await Building()
-      console.log('Result:', result)
-      setDataBuilding(result)
-      console.log(dataBuilding)
-    } catch (error) {
-      console.log('Failed to fetch data from API', error)
-    }
-  }
-
-  useEffect(() => {
-    fetchDataBuilding()
-  }, [])
 
   const showTemporarySuccessDeleteRoom = async () => {
-    console.log('Deleting building successful')
+   
     setSuccessDeleteRoom(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
     setSuccessDeleteRoom(false)
   }
 
   const showTemporarySuccessDeleteBuilding = async () => {
-    console.log('Deleting building successful')
+  
     setSuccessDeleteBuilding(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
     setSuccessDeleteBuilding(false)
   }
 
   const showTemporarySuccessDeleteFacility = async () => {
-    console.log('Deleting building successful')
+    
     setSuccessDeleteFacility(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
     setSuccessDeleteFacility(false)
   }
 
   const showTemporarySuccessDeleteAmbulance = async () => {
-    console.log('Deleting building successful')
+    
     setSuccessDeleteAmbulance(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
     setSuccessDeleteAmbulance(false)
   }
 
   const showTemporarySuccessDeleteClinic = async () => {
-    console.log('Deleting building successful')
+    
     setSuccessDeleteClinic(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
     setSuccessDeleteClinic(false)
   }
 
   const showTemporarySuccessDeleteCounter = async () => {
-    console.log('Deleting building successful')
+   
     setSuccessDeleteCounter(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
     setSuccessDeleteCounter(false)
@@ -143,7 +126,7 @@ export default function Dashboard() {
   }, [location.state, navigate])
 
   const showTemporarySuccessLogin = async () => {
-    console.log('Editing ambulance successful')
+    
     setSuccessLogin(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
     setSuccessLogin(false)

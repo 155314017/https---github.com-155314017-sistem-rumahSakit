@@ -61,7 +61,7 @@ export default function useEditAmbulance() {
 
       const dayValue = dayMapping[dayOfWeek] || '7'
       setSelectedDays(dayValue)
-      console.log(dayValue)
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startTime, endTime])
@@ -113,9 +113,7 @@ export default function useEditAmbulance() {
       const adjustedStartTime = startTime?.day(selectedDayOfWeek)
       const adjustedEndTime = endTime?.day(selectedDayOfWeek)
 
-      console.log('Selected Day on submit: ', selectedDayOfWeek)
-      console.log('adjusted start time: ', adjustedStartTime?.unix())
-      console.log('adjusted end time: ', adjustedEndTime?.unix())
+      
 
       const schedules = [
         {
@@ -140,7 +138,7 @@ export default function useEditAmbulance() {
 
       const token = Cookies.get('accessToken')
       try {
-        const response = await axios.put(
+         await axios.put(
           'https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/',
           data,
           {
@@ -150,7 +148,7 @@ export default function useEditAmbulance() {
             }
           }
         )
-        console.log(response)
+       
         navigate('/ambulance', {
           state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' }
         })
