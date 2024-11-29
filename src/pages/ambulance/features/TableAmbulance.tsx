@@ -70,10 +70,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         handleChangePage,
         rowsPerPage,
         displayedData,
-        
         handleDeleteSuccess,
         toggleCollapse,
-        confirmationDelete}= useTableAmbulance()
+        confirmationDelete,
+      }= useTableAmbulance();
     return (
         <Box>
       <Box
@@ -337,7 +337,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
                               open={open}
                               onClose={() => setOpen(false)}
                               apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${deletedItems}`}
-                              onDeleteSuccess={handleDeleteSuccess}
+                              onDeleteSuccess={() => handleDeleteSuccess}
                             />
                             <Link
                               href="#"

@@ -80,7 +80,7 @@ export default function EditFasilitas() {
                 const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
                     timeout: 10000
                 });
-                setGedungOptions(response.data.data.content.map((item: any) => ({
+                setGedungOptions(response.data.data.content.map((item: Building) => ({
                     id: item.id,
                     name: item.name,
                 })));

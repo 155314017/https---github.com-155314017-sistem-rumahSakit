@@ -2,15 +2,6 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './index.css'
-<<<<<<< HEAD
-import Admin from './pages/admin/Admin.tsx'
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    {/* <App /> */}
-    <Admin/>
-  </StrictMode>,
-=======
 // import App from './App';
 import LoginPasien from './pages/login/loginPasien/LoginPasien';
 import PasienLamaRawatJalanBPJS from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanBPJS';
@@ -166,5 +157,4 @@ createRoot(document.getElementById('root')!).render(
       </Routes>
     </Router>
   </StrictMode>
->>>>>>> 7420451127f9ef414f916634dcd0090049f3bab1
 )
