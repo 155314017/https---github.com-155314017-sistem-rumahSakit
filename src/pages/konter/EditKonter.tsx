@@ -21,15 +21,10 @@ const jenisKonter = [
     { value: 3, label: "Umum" },
 ];
 
-
 type ImageData = {
     imageName: string;
     imageType: string;
     imageData: string;
-};
-
-const handleSelectionChange = (selectedValue: string) => {
-    console.log("Selected Value:", selectedValue);
 };
 
 export default function EditKonter() {
@@ -47,7 +42,6 @@ export default function EditKonter() {
     const [selectedDays, setSelectedDays] = useState<string>("1");
     const navigate = useNavigate();
 
-    console.log(operationalTime)
     const dayMapping: { [key: string]: number } = {
         "1": 1,
         "2": 2,
@@ -63,10 +57,6 @@ export default function EditKonter() {
             const formattedStartTime = startTime.format("HH:mm");
             const formattedEndTime = endTime.format("HH:mm");
             const dayOfWeek = startTime.format("dddd");
-            console.log("day of week: ", dayOfWeek);
-
-            console.log(formattedStartTime)
-            console.log(formattedEndTime);
             const dayMapping: { [key: string]: string } = {
                 "Monday": "1",
                 "Tuesday": "2",
@@ -79,13 +69,11 @@ export default function EditKonter() {
 
             const dayValue = dayMapping[dayOfWeek] || "7";
             setSelectedDays(dayValue);
-            console.log(dayValue);
         }
     }, [startTime, endTime]);
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log("id room: ", id)
             try {
                 const token = Cookies.get("accessToken");
                 const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/counter/${id}`, {
@@ -94,12 +82,7 @@ export default function EditKonter() {
                         'accessToken': `${token}`
                     }
                 });
-                console.log("id: ", id)
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/counter/${id}`);
-                console.log("DATA : ")
-                console.log("Response", response.data);
-                console.log(response.data.data.name);
-                console.log("Images: ")
                 setName(response.data.data.name);
                 setLocation(response.data.data.location);
                 if (response.data.data.schedules && response.data.data.schedules.length > 0) {
@@ -107,9 +90,6 @@ export default function EditKonter() {
                     setStartTime(dayjs.unix(schedule.startDateTime));
                     setEndTime(dayjs.unix(schedule.endDateTime));
                 }
-                console.log("DATA state : ")
-                console.log(name);
-                console.log(location);
             } catch (error) {
                 console.error('Error saat menghapus data:', error);
             }
@@ -118,19 +98,11 @@ export default function EditKonter() {
     }, [id]);
 
     const handleTambahHari = () => {
-        console.log("Selected day:", selectedDay);
-        console.log("Start time:", startTime?.format("HH:mm"));
-        console.log("End time:", endTime?.format("HH:mm"));
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
-        console.log("Waktu yg dipilih: ", dateTime);
-        console.log("Day: ", selectedDay);
-        console.log("start time: ", startTime?.unix());
-        console.log("end time: ", endTime?.unix());
     };
 
     const handleImageChange = (images: ImageData[]) => {
-        console.log('Images changed:', images);
         setImagesData(images);
     };
 
@@ -166,11 +138,6 @@ export default function EditKonter() {
             const selectedDayOfWeek = dayMapping[selectedDay || "1"];
             const adjustedStartTime = startTime?.day(selectedDayOfWeek);
             const adjustedEndTime = endTime?.day(selectedDayOfWeek);
-
-            console.log("Selected Day on submit: ", selectedDayOfWeek)
-            console.log("adjusted start time: ", adjustedStartTime?.unix())
-            console.log("adjusted end time: ", adjustedEndTime?.unix())
-
             const schedules = [
                 {
                     startDateTime: adjustedStartTime?.unix(),
@@ -189,9 +156,6 @@ export default function EditKonter() {
                     imageData: image.imageData || "",
                 })),
             };
-
-            console.log('Form submitted:', data);
-
             const token = Cookies.get("accessToken");
 
             try {
@@ -201,7 +165,6 @@ export default function EditKonter() {
                         'accessToken': `${token}`
                     },
                 });
-                console.log('Response:', response.data);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
@@ -211,7 +174,6 @@ export default function EditKonter() {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
                     console.error('Axios error message:', error.message);
-                    console.error('Response data:', error.response?.data);
                     showTemporaryAlertError();
                 } else {
                     console.error('Unexpected error:', error);
@@ -257,7 +219,7 @@ export default function EditKonter() {
                         <DropdownList
                             options={jenisKonter}
                             placeholder="Pilih konter"
-                            onChange={handleSelectionChange}
+                            // onChange={}
                             loading={false}
                         />
 

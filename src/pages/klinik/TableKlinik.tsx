@@ -22,8 +22,6 @@ import bgImage from "../../assets/img/String.png";
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-
-// import DataPegawai from "../../dummyData/dataPegawai";
 import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { Clinic, ClinicDataItem } from "../../services/Admin Tenant/ManageClinic/Clinic";
 import { useNavigate } from "react-router-dom";
@@ -69,20 +67,15 @@ const TableKlinik: React.FC<TableClinicProps> = ({ fetchDatas, onSuccessDelete }
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
-  // const [data, setData] = useState<DataItem[]>([]);
   const [datas, setDatas] = useState<ClinicDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
 
   const navigate = useNavigate();
 
-
   const fetchData = async () => {
-    console.log('Fetching data...');
     try {
       const result = await Clinic();
-      console.log('Result: ', result);
       setDatas(result); 
-      // setData(result);
     } catch (error) {
       console.log('Failed to fetch data from API: ', error);
     }
@@ -94,14 +87,11 @@ const TableKlinik: React.FC<TableClinicProps> = ({ fetchDatas, onSuccessDelete }
   const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
 
     event.preventDefault();
-    console.log("ID Gedung yang akan dihapus:", buildingId);
     setDeletedItems(buildingId);
     setOpen(true);
-
   };
 
   const handleDeleteSuccess = () => {
-    console.log("Item deleted successfully");
     onSuccessDelete();
     fetchDatas();
     fetchData();
@@ -121,10 +111,6 @@ const TableKlinik: React.FC<TableClinicProps> = ({ fetchDatas, onSuccessDelete }
     { value: 3, label: "Nama klinik A-Z" },
     { value: 4, label: "Nama klinik Z-A" },
   ];
-
-  const handleSelectionChange = (selectedValue: string) => {
-    console.log("Selected Value:", selectedValue);
-  };
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -232,7 +218,7 @@ const TableKlinik: React.FC<TableClinicProps> = ({ fetchDatas, onSuccessDelete }
               <DropdownList
                 options={urutkan}
                 placeholder="Urutkan"
-                onChange={handleSelectionChange}
+                // onChange={}
                 loading={false}
               />
             </Box>

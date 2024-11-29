@@ -18,7 +18,6 @@ import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
 import { styled } from "@mui/material/styles";
 import bgImage from "../../assets/img/String.png";
-
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
@@ -70,14 +69,10 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
     const [deletedItems, setDeletedItems] = useState("");
     const navigate = useNavigate();
 
-
     const fetchData = async () => {
-        console.log('Fetching data...');
         try {
             const result = await CounterServices();
-            console.log('Result: ', result);
             setDatas(result); // Store the result in datas state
-            // setData(result); // Set data to display in table
         } catch (error) {
             console.log('Failed to fetch data from API: ', error);
         }
@@ -102,25 +97,17 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
         { value: 4, label: "Nomor Konter 9-1" },
     ];
 
-    const handleSelectionChange = (selectedValue: string) => {
-        console.log("Selected Value:", selectedValue);
-    };
-
     const toggleCollapse = () => {
         setIsCollapsed((prev) => !prev);
     };
 
     const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
-
         event.preventDefault();
-        console.log("ID Gedung yang akan dihapus:", buildingId);
         setDeletedItems(buildingId);
         setOpen(true);
-
     };
 
     const handleDeleteSuccess = () => {
-        console.log("Item deleted successfully");
         onSuccessDelete();
         fetchDatas();
         fetchData();
@@ -230,7 +217,7 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
                             <DropdownList
                                 options={urutkan}
                                 placeholder="Urutkan"
-                                onChange={handleSelectionChange}
+                                // onChange={handleSelectionChange}
                                 loading={false}
                             />
                         </Box>

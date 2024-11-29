@@ -67,10 +67,8 @@ export default function TablePegawai() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('Fetching data...');
       try {
         const result = await EmployeeServices();
-        console.log('Result: ', result);
         setDatas(result); // Store the result in datas state
       } catch (error) {
         console.log('Failed to fetch data from API: ', error);
@@ -100,10 +98,6 @@ export default function TablePegawai() {
     { value: 3, label: "Nama Pegawai A-Z" },
     { value: 4, label: "Nama Pegawai Z-A" },
   ];
-
-  const handleSelectionChange = (selectedValue: string) => {
-    console.log("Selected Value:", selectedValue);
-  };
 
   const toggleCollapse = () => {
     setIsCollapsed((prev) => !prev);
@@ -220,13 +214,13 @@ export default function TablePegawai() {
               <DropdownList
                 options={sortir}
                 placeholder="Sortir"
-                onChange={handleSelectionChange}
+                // onChange={handleSelectionChange}
                 loading={false}
               />
               <DropdownList
                 options={urutkan}
                 placeholder="Urutkan"
-                onChange={handleSelectionChange}
+                // onChange={handleSelectionChange}
                 loading={false}
               />
             </Box>

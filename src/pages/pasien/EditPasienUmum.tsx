@@ -44,7 +44,6 @@ export default function EditPasienUmum() {
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
         }),
         onSubmit: (values) => {
-            console.log('Form submitted:', values);
         },
     });
 

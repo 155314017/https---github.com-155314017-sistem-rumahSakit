@@ -11,14 +11,6 @@ import dayjs from 'dayjs';
 import ImageUploaderGroup from '../../components/medium/ImageUploaderGroup';
 import InputCurrencyIdr from '../../components/inputComponent/InputCurrencyIdr';
 
-
-// interface ImageInfo {
-//     file: File;
-//     preview: string;
-//     name: string;
-//     size: string;
-// }
-
 const hari = [
     { value: 1, label: "Senin" },
     { value: 2, label: "Selasa" },
@@ -42,12 +34,7 @@ export default function TambahPasien() {
 
     const handleTambahHari = () => {
         const selectedDayLabel = hari.find(day => day.value === selectedDay)?.label;
-        console.log("Selected day:", selectedDayLabel);
-        console.log("Start time:", startTime?.format("HH:mm"));
-        console.log("End time:", endTime?.format("HH:mm"));
-
         const dateTime = selectedDayLabel + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
-        console.log(dateTime);
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -55,10 +42,6 @@ export default function TambahPasien() {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setSuccessAlert(false);
     };
-
-    // const handleImagesSelected = (images: ImageInfo[]) => {
-    //     console.log("Selected images:", images);
-    // };
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
@@ -76,7 +59,6 @@ export default function TambahPasien() {
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
         }),
         onSubmit: (values) => {
-            console.log('Form submitted:', values);
         },
     });
 

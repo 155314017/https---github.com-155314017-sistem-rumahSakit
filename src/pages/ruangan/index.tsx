@@ -25,10 +25,8 @@ export default function Ruangan() {
 
     const fetchData = async () => {
         setIsLoading(true)
-        console.log('fetching data . . . ')
         try {
             const result = await RoomServices();
-            console.log('result : ' + result)
             setData(result);
             setIsLoading(false)
         } catch (error) {
@@ -42,7 +40,6 @@ export default function Ruangan() {
     useEffect(() => {
         if (location.state && location.state.successAdd) {
             showTemporaryAlertSuccess();
-            console.log(location.state.message);
             navigate(location.pathname, { replace: true, state: undefined }); //clear state
         }
     }, [location.state, navigate]);
@@ -50,7 +47,6 @@ export default function Ruangan() {
     useEffect(() => {
         if (location.state && location.state.successEdit) {
             showTemporarySuccessEdit();
-            console.log(location.state.message);
             navigate(location.pathname, { replace: true, state: undefined }); //clear state
         }
     }, [location.state, navigate]);
@@ -58,27 +54,23 @@ export default function Ruangan() {
     useEffect(() => {
         if (location.state && location.state.successDelete) {
             showTemporarySuccessEdit();
-            console.log(location.state.message);
             navigate(location.pathname, { replace: true, state: undefined }); //clear state
         }
     }, [location.state, navigate]);
 
     const showTemporaryAlertSuccess = async () => {
-        console.log("Adding building successful");
         setSuccessAddRoom(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setSuccessAddRoom(false);
     };
 
     const showTemporarySuccessDelete = async () => {
-        console.log("Deleting building successful");
         setSuccessDeleteRoom(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setSuccessDeleteRoom(false);
     };
 
     const showTemporarySuccessEdit = async () => {
-        console.log("Editing building successful");
         setSuccessEditRoom(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setSuccessEditRoom(false);

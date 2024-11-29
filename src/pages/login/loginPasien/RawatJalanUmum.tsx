@@ -23,8 +23,6 @@ import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
 import CalenderPopover from "../../../components/medium/CalenderPopover";
 import PoliSelect from "../../../components/inputComponent/PoliSelect";
-import SingleDateTimeRangePickerCustom from "../../../components/medium/SingleDateTimeRangePickerCustom";
-
 const validationSchema = Yup.object({
     fullname: Yup.string().required("Nama wajib diisi"),
     phone: Yup.string().required("Nomor HP wajib diisi"),
@@ -98,7 +96,7 @@ const RawatJalanUmum: React.FC = () => {
                         }}
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
-                            console.log("Form submitted with values:", values);
+                            // console.log("Form submitted with values:", values);
                         }}
                     >
                         {({

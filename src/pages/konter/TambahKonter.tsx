@@ -19,16 +19,12 @@ const jenisKonter = [
     { value: 3, label: "Umum" },
 ];
 
-
 type ImageData = {
     imageName: string;
     imageType: string;
     imageData: string;
 };
 
-const handleSelectionChange = (selectedValue: string) => {
-    console.log("Selected Value:", selectedValue);
-};
 
 export default function TambahKonter() {
     const [successAlert, setSuccessAlert] = useState(false);
@@ -40,7 +36,6 @@ export default function TambahKonter() {
     const [errorAlert, setErrorAlert] = useState(false);
     const navigate = useNavigate();
 
-    console.log(operationalTime)
     const dayMapping: { [key: string]: number } = {
         "Senin": 1,
         "Selasa": 2,
@@ -51,21 +46,12 @@ export default function TambahKonter() {
         "Minggu": 0,
     };
 
-
     const handleTambahHari = () => {
-        console.log("Selected day:", selectedDay);
-        console.log("Start time:", startTime?.format("HH:mm"));
-        console.log("End time:", endTime?.format("HH:mm"));
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
-        console.log("Waktu yg dipilih: ", dateTime);
-        console.log("Day: ", selectedDay);
-        console.log("start time: ", startTime?.unix());
-        console.log("end time: ", endTime?.unix());
     };
 
     const handleImageChange = (images: ImageData[]) => {
-        console.log('Images changed:', images);
         setImagesData(images);
     };
 
@@ -81,9 +67,6 @@ export default function TambahKonter() {
         setErrorAlert(false);
     };
 
-    // const handleImagesSelected = (images: ImageInfo[]) => {
-    //     console.log("Selected images:", images);
-    // };
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
@@ -106,11 +89,6 @@ export default function TambahKonter() {
             const adjustedStartTime = startTime?.day(selectedDayOfWeek);
             const adjustedEndTime = endTime?.day(selectedDayOfWeek);
 
-            console.log("Selected Day on submit: ", selectedDayOfWeek)
-            console.log("adjusted start time: ", adjustedStartTime)
-            console.log("adjusted end time: ", adjustedEndTime)
-
-
             const schedules = [
                 {
                     startDateTime: adjustedStartTime?.unix(),
@@ -129,8 +107,6 @@ export default function TambahKonter() {
                 })),
             };
 
-            console.log('Form submitted:', data);
-
             const token = Cookies.get("accessToken");
 
             try {
@@ -140,7 +116,6 @@ export default function TambahKonter() {
                         'accessToken': `${token}`
                     },
                 });
-                console.log('Response:', response.data);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
@@ -149,7 +124,6 @@ export default function TambahKonter() {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
                     console.error('Axios error message:', error.message);
-                    console.error('Response data:', error.response?.data);
                     showTemporaryAlertError();
                 } else {
                     console.error('Unexpected error:', error);
@@ -248,7 +222,7 @@ export default function TambahKonter() {
                         <DropdownList
                             options={jenisKonter}
                             placeholder="Pilih konter"
-                            onChange={handleSelectionChange}
+                            // onChange={handleSelectionChange}
                             loading={false}
                         />
 
@@ -288,11 +262,9 @@ export default function TambahKonter() {
                                         ]}
                                         placeholder="Pilih hari"
                                         onChange={(value: string) => {
-                                            console.log("Selected value:", value);
                                             setSelectedDay(value);
                                         }}
                                         loading={false}
-                                    // defaultValue=""
                                     />
                                 </Box>
 

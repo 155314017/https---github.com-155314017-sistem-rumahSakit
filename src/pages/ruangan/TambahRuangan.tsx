@@ -32,9 +32,7 @@ export default function TambahRuangan() {
 
     useEffect(() => {
         const fetchGedungData = async () => {
-            console.log("Fetching info buildings...");
             try {
-                console.log("Try fetching info buildings");
                 const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
                     timeout: 10000
                 });
@@ -42,7 +40,6 @@ export default function TambahRuangan() {
                     id: item.id,
                     name: item.name,
                 })));
-                console.log(response.data.data.content);
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     console.error("Axios error:", error.message);
@@ -86,8 +83,6 @@ export default function TambahRuangan() {
             };
 
             const token = Cookies.get("accessToken");
-            console.log("Token :", token);
-            console.log("data: ", data);
             try {
                 const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/room/', data, {
                     headers: {
@@ -95,12 +90,10 @@ export default function TambahRuangan() {
                         'accessToken': `${token}`
                     },
                 });
-                console.log('Response:', response.data);
                 formik.resetForm();
                 setImagesData([]);
                 navigate('/ruangan', { state: { successAdd: true, message: 'Ruangan berhasil ditambahkan!' } })
             } catch (error) {
-                console.error('Error adding room:', error);
                 showTemporaryAlertError();
             }
         },
@@ -197,10 +190,8 @@ export default function TambahRuangan() {
                             options={gedungOptions.map(({ id, name }) => ({ value: id, label: name }))}
                             placeholder="Pilih gedung"
                             defaultValue={formik.values.masterBuildingId}
-                            onChange={(selectedOptionValue, selectedLabel) => {
+                            onChange={(selectedOptionValue) => {
                                 formik.setFieldValue('masterBuildingId', selectedOptionValue);
-                                console.log("Selected Building ID:", selectedOptionValue);
-                                console.log("Selected Building Name:", selectedLabel);
                             }}
                             loading={false}
                         />

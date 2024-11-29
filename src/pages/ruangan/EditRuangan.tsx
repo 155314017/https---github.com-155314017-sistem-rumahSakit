@@ -102,11 +102,6 @@ export default function EditRuangan() {
         fetchData();
     }, [id]);
 
-    useEffect(() => {
-        console.log("Room Name:", roomName);
-        console.log("Building ID:", buildingName);
-    }, [roomName, buildingName]);
-
     const formik = useFormik<FormValues>({
         initialValues: {
             namaKlinik: roomName,
@@ -120,7 +115,6 @@ export default function EditRuangan() {
             jenisRuangan: Yup.string().required('Jenis Ruangan is required'),
         }),
         onSubmit: async (values) => {
-            console.log("Submitted values: ", values);
             const data = {
                 roomId: id,
                 name: values.namaKlinik,
@@ -139,10 +133,6 @@ export default function EditRuangan() {
                     },
                 });
                 setSuccessAlert(true);
-                console.log(response);
-                // setTimeout(() => {
-                //     navigate('/ruangan');
-                // }, 2000);
                 navigate('/ruangan', { state: { successEdit: true, message: 'Ruangan berhasil di edit!' } })
             } catch (error) {
                 console.error('Error editing room:', error);
@@ -252,10 +242,8 @@ export default function EditRuangan() {
                             options={gedungOptions.map(({ id, name }) => ({ value: id, label: name }))}
                             placeholder={loading ? "" : "Pilih gedung"}
                             defaultValue={loading ? "" : formik.values.masterBuildingId}
-                            onChange={(selectedOptionValue, selectedLabel) => {
+                            onChange={(selectedOptionValue) => {
                                 formik.setFieldValue('masterBuildingId', selectedOptionValue);
-                                console.log("Selected Building ID:", selectedOptionValue);
-                                console.log("Selected Building Name:", selectedLabel);
                             }}
                             loading={loading}
                         />
@@ -265,7 +253,6 @@ export default function EditRuangan() {
                             options={jenisRuangan}
                             placeholder={loading ? "" : "Pilih jenis ruangan"}
                             onChange={(selectedValue) => {
-                                console.log("Selected Jenis Ruangan:", selectedValue);
                                 formik.setFieldValue('jenisRuangan', selectedValue);
                             }}
                             defaultValue={loading ? "" : formik.values.jenisRuangan}

@@ -51,11 +51,8 @@ const StyledTableContainer = styled(TableContainer)`
 
 export default function CardIzinAkses() {
     const datas = izinAkses;
-
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    // const [isCollapsed, setIsCollapsed] = useState(true);
-
     const handleChangePage = (
         _event: React.MouseEvent<HTMLButtonElement> | null,
         newPage: number
@@ -87,14 +84,6 @@ export default function CardIzinAkses() {
         { value: 3, label: "Nama Pegawai A-Z" },
         { value: 4, label: "Nama Pegawai Z-A" },
     ];
-
-    const handleSelectionChange = (selectedValue: string) => {
-        console.log("Selected Value:", selectedValue);
-    };
-
-    // const toggleCollapse = () => {
-    //     setIsCollapsed((prev) => !prev);
-    // };
 
     return (
         <Box width={'55vw'} >
@@ -189,13 +178,13 @@ export default function CardIzinAkses() {
                         <DropdownList
                             options={sortir}
                             placeholder="Sortir"
-                            onChange={handleSelectionChange}
+                            // onChange={handleSelectionChange}
                             loading={false}
                         />
                         <DropdownList
                             options={urutkan}
                             placeholder="Urutkan"
-                            onChange={handleSelectionChange}
+                            // onChange={handleSelectionChange}
                             loading={false}
                         />
                     </Box>

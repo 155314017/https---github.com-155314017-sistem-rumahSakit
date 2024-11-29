@@ -14,18 +14,14 @@ import ModalKategoriPasien from '../../components/small/ModalKategoriPasien';
 import { PatientDataItem, PatientServices } from '../../services/ManagePatient/PatientServices';
 
 export default function Pasien() {
-    // Deklarasikan state `open` di dalam fungsi komponen
     const [open, setOpen] = useState<boolean>(false);
     const [data, setData] = useState<PatientDataItem[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log('fetching data . . . ')
             try {
                 const result = await PatientServices();
-                console.log('result : ' + result)
                 setData(result);
-                console.log(data)
             } catch (error) {
                 console.log('Failed to fetch data from API' + error);
             }
