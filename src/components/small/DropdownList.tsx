@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Box, Select, MenuItem } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Box, Select, MenuItem, CircularProgress } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 
 interface Option {
@@ -11,14 +11,22 @@ interface DropdownListProps {
   options: Option[];
   placeholder: string;
   onChange?: (value: string) => void;
+  defaultValue?: string; 
+  loading: boolean;
 }
 
 export default function DropdownList({
   options,
   placeholder,
   onChange,
+  defaultValue = "", 
+  loading
 }: DropdownListProps) {
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState<string>(defaultValue);
+
+  useEffect(() => {
+    setSelectedOption(defaultValue); 
+  }, [defaultValue]);
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setSelectedOption(event.target.value);
@@ -34,7 +42,6 @@ export default function DropdownList({
       width="100%"
       sx={{
         borderRadius: "8px",
-        padding: "2px 4px",
         height: "38px",
       }}
     >
@@ -42,9 +49,9 @@ export default function DropdownList({
         value={selectedOption}
         onChange={handleChange}
         displayEmpty
+        startAdornment={loading ? <CircularProgress size={20} /> : null}
         sx={{
           flex: 1,
-          ml: 1,
           height: "43px",
           borderRadius: "8px",
           border: "1px solid #A8A8BD",
@@ -57,7 +64,7 @@ export default function DropdownList({
           <em>{placeholder}</em>
         </MenuItem>
         {options.map((option, index) => (
-          <MenuItem key={index} value={option.value} sx={{ color: "#8F85F3" }}>
+          <MenuItem key={index} value={option.label} sx={{ color: "#8F85F3" }}>
             {option.label}
           </MenuItem>
         ))}

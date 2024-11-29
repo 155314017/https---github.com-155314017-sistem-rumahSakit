@@ -1,42 +1,214 @@
-import { Box, Stack } from "@mui/material";
-import Grid from "@mui/material/Grid2";
-import MediumCard from "../../components/medium/MediumCard";
+import { Box, CircularProgress, Stack, Typography } from '@mui/material'
+import Grid from '@mui/material/Grid2'
+import MediumCard from '../../components/medium/MediumCard'
 
-
-// icon 
-import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
-import BedIcon from '@mui/icons-material/Bed';
-import PeopleIcon from '@mui/icons-material/People';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import CardAdd from "../../components/medium/CardAdd";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
-import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
-import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
+// icon
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom'
+import BedIcon from '@mui/icons-material/Bed'
+import PeopleIcon from '@mui/icons-material/People'
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital'
+import CardAdd from '../../components/medium/CardAdd'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences'
+import MedicalServicesIcon from '@mui/icons-material/MedicalServices'
+import MonitorHeartIcon from '@mui/icons-material/MonitorHeart'
 
 // table
-import TableRuangan from "../ruangan/TableRuangan";
-import TablePegawai from "../pegawai/TablePegawai";
+import TableRuangan from '../ruangan/TableRuangan'
+import TablePegawai from '../pegawai/TablePegawai'
+import TableGedung from '../gedung/TableGedung'
+import TableFasilitas from '../fasilitas/TableFasilitas'
+import TableDokter from '../dokter/TableDokter'
+import TableAmbulance from '../ambulance/TableAmbulance'
+import TableKlinik from '../klinik/TableKlinik'
+import TableKonter from '../konter/TableKonter'
+import TablePasien from '../pasien/TablePasien'
+import { useEffect, useState } from 'react'
+import { Clinic, ClinicDataItem } from '../../services/Admin Tenant/ManageClinic/Clinic'
+import { RoomDataItem, RoomServices } from '../../services/Admin Tenant/ManageRoom/RoomServices'
+import { FacilityDataItem, FacilityServices } from '../../services/ManageFacility/FacilityServices'
+import {
+  DoctorServices,
+  DoctorDataItem
+} from '../../services/Admin Tenant/ManageDoctor/DoctorServices'
+import { Building, BuildingDataItem } from '../../services/Admin Tenant/ManageBuilding/Building'
+import AlertSuccess from '../../components/small/AlertSuccess'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export default function Dashboard() {
-  
+  const [dataClinic, setDataClinic] = useState<ClinicDataItem[]>([])
+  const [dataRoom, setDataRoom] = useState<RoomDataItem[]>([])
+  const [dataFacility, setDataFacility] = useState<FacilityDataItem[]>([])
+  const [dataDoctor, setDataDoctor] = useState<DoctorDataItem[]>([])
+  const [dataBuilding, setDataBuilding] = useState<BuildingDataItem[]>([])
+  const [successLogin, setSuccessLogin] = useState(false)
+  const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false)
+  const [successDeleteRoom, setSuccessDeleteRoom] = useState(false)
+  const [successDeleteFacility, setSuccessDeleteFacility] = useState(false)
+  const [successDeleteAmbulance, setSuccessDeleteAmbulance] = useState(false)
+  const [successDeleteClinic, setSuccessDeleteClinic] = useState(false)
+  const [successDeleteCounter, setSuccessDeleteCounter] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const fetchData = async () => {
+    setIsLoading(true)
+    console.log('fetching data . . . ')
+    try {
+      const resultClinic = await Clinic()
+      const resultRoom = await RoomServices()
+      const resultFacility = await FacilityServices()
+      const resultDoctor = await DoctorServices()
+
+      setDataRoom(resultRoom)
+      setDataClinic(resultClinic)
+      setDataFacility(resultFacility)
+      setDataDoctor(resultDoctor)
+      setIsLoading(false)
+    } catch (error) {
+      console.log('Failed to fetch data from API' + error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchDataBuilding = async () => {
+    console.log('Fetching data...')
+    try {
+      const result = await Building()
+      console.log('Result:', result)
+      setDataBuilding(result)
+      console.log(dataBuilding)
+    } catch (error) {
+      console.log('Failed to fetch data from API', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchDataBuilding()
+  }, [])
+
+  const showTemporarySuccessDeleteRoom = async () => {
+    console.log('Deleting building successful')
+    setSuccessDeleteRoom(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setSuccessDeleteRoom(false)
+  }
+
+  const showTemporarySuccessDeleteBuilding = async () => {
+    console.log('Deleting building successful')
+    setSuccessDeleteBuilding(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setSuccessDeleteBuilding(false)
+  }
+
+  const showTemporarySuccessDeleteFacility = async () => {
+    console.log('Deleting building successful')
+    setSuccessDeleteFacility(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setSuccessDeleteFacility(false)
+  }
+
+  const showTemporarySuccessDeleteAmbulance = async () => {
+    console.log('Deleting building successful')
+    setSuccessDeleteAmbulance(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setSuccessDeleteAmbulance(false)
+  }
+
+  const showTemporarySuccessDeleteClinic = async () => {
+    console.log('Deleting building successful')
+    setSuccessDeleteClinic(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setSuccessDeleteClinic(false)
+  }
+
+  const showTemporarySuccessDeleteCounter = async () => {
+    console.log('Deleting building successful')
+    setSuccessDeleteCounter(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setSuccessDeleteCounter(false)
+  }
+
+  useEffect(() => {
+    if (location.state && location.state.statusLogin) {
+      showTemporarySuccessLogin()
+      console.log(location.state.message)
+      navigate(location.pathname, { replace: true, state: undefined }) //clear state
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state, navigate])
+
+  const showTemporarySuccessLogin = async () => {
+    console.log('Editing ambulance successful')
+    setSuccessLogin(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setSuccessLogin(false)
+  }
+
   return (
-    <Box mt={2}>
-      <Grid container spacing={3} flex={1} justifyContent={"space-between"}>
-        <MediumCard icon={MeetingRoomIcon} title={"Total Ruangan"} subtitle={"10"} />
-        <MediumCard icon={BedIcon} title={"Ruangan tersedia"} subtitle={"10"} />
-        <MediumCard icon={PeopleIcon} title={"Total pegawai"} subtitle={"10"} />
-        <MediumCard icon={LocalHospitalIcon} title={"Total poliklinik"} subtitle={"10"} />
-        <MediumCard icon={MedicalServicesIcon} title={"Total dokter"} subtitle={"10"} />
-        <MediumCard icon={MonitorHeartIcon} title={"Total fasilitas"} subtitle={"10"} />
-        <CardAdd icon={PersonAddIcon} title={"Tambah pegawai"} link={"Add new"} />
-        <CardAdd icon={RoomPreferencesIcon} title={"Tambah ruangan"} link={"Add new"} />
+    <Box>
+      <Box sx={{ py: 5 }}>
+        {successDeleteBuilding && <AlertSuccess label="Success delete Building" />}
+        {successDeleteRoom && <AlertSuccess label="Success delete Room" />}
+        {successDeleteFacility && <AlertSuccess label="Success delete Facility" />}
+        {successDeleteAmbulance && <AlertSuccess label="Success delete Ambulance" />}
+        {successDeleteClinic && <AlertSuccess label="Success delete Clinic" />}
+        {successDeleteCounter && <AlertSuccess label="Success delete Counter" />}
+        {successLogin && <AlertSuccess label="Success Login" />}
+        <Typography sx={{ fontSize: '32px', fontWeight: '700' }}>Dashboard</Typography>
+      </Box>
+      <Grid container spacing={3} flex={1} justifyContent={'space-between'}>
+        <MediumCard
+          icon={MeetingRoomIcon}
+          title="Total Ruangan"
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataRoom.length.toString()}
+        />
+        <MediumCard
+          icon={BedIcon}
+          title={'Ruangan tersedia'}
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataRoom.length.toString()}
+        />
+        <MediumCard icon={PeopleIcon} title={'Total pegawai'} subtitle={'10'} />
+        <MediumCard
+          icon={LocalHospitalIcon}
+          title="Total poliklinik"
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataClinic.length.toString()}
+        />
+        <MediumCard
+          icon={MedicalServicesIcon}
+          title="Total dokter"
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataDoctor.length.toString()}
+        />
+        <MediumCard
+          icon={MonitorHeartIcon}
+          title="Total fasilitas"
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataFacility.length.toString()}
+        />
+        <CardAdd icon={RoomPreferencesIcon} title="Tambah ruangan" link="/tambahRuangan" />
+        <CardAdd icon={PersonAddIcon} title="Tambah pegawai" link="/tambahPegawai" />
       </Grid>
 
       <Stack mt={3} spacing={3}>
-        <TableRuangan />
+        <TableGedung fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteBuilding} />
+        <TableRuangan fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteRoom} />
         <TablePegawai />
+        <TableFasilitas
+          fetchDatas={fetchData}
+          onSuccessDelete={showTemporarySuccessDeleteFacility}
+        />
+        <TableDokter />
+        <TableAmbulance
+          fetchDatas={fetchData}
+          onSuccessDelete={showTemporarySuccessDeleteAmbulance}
+        />
+        <TableKlinik fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteClinic} />
+        <TableKonter fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteCounter} />
+        <TablePasien />
       </Stack>
     </Box>
-  );
+  )
 }
