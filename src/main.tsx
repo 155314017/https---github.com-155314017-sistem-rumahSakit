@@ -4,11 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './index.css'
 // import App from './App';
 import LoginPasien from './pages/login/loginPasien/LoginPasien';
-import PasienLamaRawatJalanBPJS from './Backup/rawatJalan/pasienLama/PasienLamaRawatJalanBPJS';
-import PasienLamaRawatJalanUmum from './Backup/rawatJalan/pasienLama/PasienLamaRawatJalanUmum';
 import Home from './pages';
-import PasienBaruRawatJalanUmum from './Backup/rawatJalan/pasienBaru/PasienBaruRawatJalanUmum';
-import PasienBaruRawatJalanBPJS from './Backup/rawatJalan/pasienBaru/PasienBaruRawatJalanBPJS';
 import Gedung from '../src/pages/gedung/index';
 import Ambulance from './pages/ambulance';
 import DetailAmbulance from './pages/ambulance/DetailAmbulance';
@@ -34,7 +30,6 @@ import Dokter from './pages/dokter';
 import Pasien from './pages/pasien';
 import RegisterPasienBaru from './pages/login/loginPasien/RegisterPasienBaru';
 import KategoriPasien from './pages/login/loginPasien/KategoriPasien';
-import RegisterPasien from './pages/login/loginPasien/RegisterPasien';
 import RawatJalanBPJS from './pages/login/loginPasien/RawatJalanBPJS';
 import RawatJalanUmum from './pages/login/loginPasien/RawatJalanUmum';
 import TambahPasienBPJS from './pages/pasien/TambahPasienBPJS';
@@ -123,16 +118,13 @@ createRoot(document.getElementById('root')!).render(
         {/* no need auth */}
 
         {/* register pasien */}
-        <Route path="/register/pasien" element={<LoginPasien />} />
-        <Route path="/register/pasien/baru" element={<RegisterPasienBaru />} />
-        <Route path="/register/pj" element={<RegisterPJ />} />
-        <Route path="/register/penanggungJawab" element={<BioPjBaru />} />
-        <Route path="/kategori/pasien" element={<KategoriPasien />} />
-        <Route path="/login/pasien" element={<RegisterPasien />} />
-
-        <Route path="/rawatjalan/bpjs" element={<RawatJalanBPJS />} />
-        <Route path="/rawatjalan/umum" element={<RawatJalanUmum />} />
-
+        <Route path="/register/pasien" element={<LoginPasien />} /> {/*1*/}
+        <Route path="/register/pasien/baru" element={<RegisterPasienBaru />} /> {/*2*/}
+        <Route path="/register/pj" element={<RegisterPJ />} /> {/*3*/}
+        <Route path="/register/penanggungJawab" element={<BioPjBaru />} /> {/*4*/}
+        <Route path="/kategori/pasien" element={<KategoriPasien />} /> {/*5*/}
+        <Route path="/rawatjalan/bpjs" element={<RawatJalanBPJS />} /> {/*Selected BPJS*/}
+        <Route path="/rawatjalan/umum" element={<RawatJalanUmum />} /> {/*Selected Umum*/}
         {/* login pegawai */}
         <Route path="/" element={<LoginPegawai />} />
         <Route path="/login/pegawai" element={<LoginPegawai />} />
