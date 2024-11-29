@@ -30,41 +30,16 @@ interface FormValues {
     email: string;
 }
 
-// const otpValidationSchema = Yup.object({
-//     otp: Yup.string()
-//         .matches(/^[0-9]+$/, "OTP harus berupa angka")
-//         .min(4, "OTP minimal 4 digit")
-//         .max(4, "OTP maksimal 4 digit")
-//         .required("OTP wajib diisi"),
-// });
-
 export default function RegisterPasien() {
-    //   const [showPassword, setShowPassword] = useState(false);
     const [showLogin, setShowLogin] = useState(true);
-    // const [showEmailChanged, setShowEmailChanged] = useState(true);
     const [emailError, setEmailError] = useState(false);
     const [, setNikError] = useState(false);
     const [, setPasswordError] = useState(false);
-
     const [showAlert, setShowAlert] = useState(false);
     const [isCounting, setIsCounting] = useState(false);
     const [secondsLeft, setSecondsLeft] = useState(60);
-    // const [resendSuccess, setResendSuccess] = useState(false);
     const [loginSuccess, setLoginSuccess] = useState(false);
-    // const [otp, setOtp] = useState("");
-
     const navigate = useNavigate();
-
-    // const otpFormShown = () => {
-    //     // setShowEmailChanged(false);
-
-    //     setOtp("");
-    // };
-
-    // const handleClick = () => {
-    //     setShowLogin(true);
-    //     setShowEmailChanged(true);
-    // };
 
     const showTemporaryAlert = async () => {
         setShowAlert(true);

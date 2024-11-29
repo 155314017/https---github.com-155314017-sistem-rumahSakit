@@ -8,9 +8,6 @@ import {
     FormControl,
     InputLabel,
     TextField,
-    Radio,
-    FormControlLabel,
-    RadioGroup,
 } from "@mui/material";
 import { useState } from "react";
 import { Formik, Form } from "formik";
@@ -23,7 +20,6 @@ import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
 import CalenderPopover from "../../../components/medium/CalenderPopover";
 import PoliSelect from "../../../components/inputComponent/PoliSelect";
-import SingleDateTimeRangePickerCustom from "../../../components/medium/SingleDateTimeRangePickerCustom";
 
 const validationSchema = Yup.object({
     fullname: Yup.string().required("Nama wajib diisi"),
@@ -42,47 +38,41 @@ interface FormValues {
     operationalDate: string;
 }
 
-const RawatJalanUmum: React.FC = () => {
+const RawatJalanBPJS: React.FC = () => {
     const [showFormPage, setSHowFormPage] = useState(true);
-    const [selectedMethod, setSelectedMethod] = useState<string>("");
-
-    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedMethod(event.target.value);
-    };
 
 
     return (
         <>
-        <style>
-            {`
+            <style>
+                {`
             :root {
             background-color: #ffff
             }
             `}
-        </style>
+            </style>
 
             <Box
                 sx={{
                     position: "relative",
                     display: "flex",
                     flexDirection: "row",
-                    bgcolor: 'red'
                 }}
             >
                 <Box>
                     <CardMedia
-                    component="img"
-                    sx={{
-                        width: "50%",
-                        height: "100vh",
-                        objectFit: "cover",
-                        position: "fixed",
-                        top: "0",
-                        left: "0",
-                    }}
-                    image={imagePendaftaran}
-                    alt="Example Image"
-                />
+                        component="img"
+                        sx={{
+                            width: "50%",
+                            height: "100vh",
+                            objectFit: "cover",
+                            position: "fixed",
+                            top: "0",
+                            left: "0",
+                        }}
+                        image={imagePendaftaran}
+                        alt="Example Image"
+                    />
                 </Box>
 
                 {showFormPage && (
@@ -98,7 +88,7 @@ const RawatJalanUmum: React.FC = () => {
                         }}
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
-                            console.log("Form submitted with values:", values);
+                            // console.log("Form submitted with values:", values);
                         }}
                     >
                         {({
@@ -116,8 +106,9 @@ const RawatJalanUmum: React.FC = () => {
                                         position: "absolute",
                                         right: "0",
                                         top: "0",
-                                        width: "45.85%",
+                                        width: "45.9%",
                                         bgcolor: 'transparent'
+
                                     }}
                                 >
                                     <Box sx={{ ml: 10, width: '90%' }}>
@@ -143,7 +134,7 @@ const RawatJalanUmum: React.FC = () => {
                                                 maxWidth: "450px",
                                             }}
                                         >
-                                            Formulir pendaftaran pasien Umum
+                                            Formulir pendaftaran pasien BPJS
                                         </Typography>
 
 
@@ -233,7 +224,6 @@ const RawatJalanUmum: React.FC = () => {
 
                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                         <CalenderPopover title="Pilih tanggal" />
-                                                        {/* <SingleDateTimeRangePickerCustom/> */}
                                                     </Box>
                                                 </Box>
 
@@ -248,32 +238,17 @@ const RawatJalanUmum: React.FC = () => {
                                                     />
                                                 </FormControl>
 
-                                                <Box mt={6} >
-                                                    <Typography>Jenis Pembayaran</Typography>
-                                                    <RadioGroup
-                                                        aria-label="transport-method"
-                                                        name="transport-method"
-                                                        value={selectedMethod}
-                                                        onChange={handleRadioChange}
-                                                        sx={{ display: 'flex', flexDirection: 'column', border: '1px solid black', marginTop: '10px', borderRadius: '16px', padding: '16px 24px 16px 24px' }}
-                                                    >
-                                                        <Box display={'flex'} flexDirection={'row'} >
-                                                            <FormControlLabel value="asuransi" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Asuransi" />
-                                                            <FormControlLabel value="uang tunai dan debit" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Uang tunai dan debit" />
-                                                        </Box>
-                                                        {selectedMethod == 'asuransi' && (
-                                                            <Box>
-                                                                <Typography mb={'10px'} >Unggah kartu asuransi</Typography>
-                                                                <FileUploader />
-                                                                <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
-                                                            </Box>
-                                                        )}
-                                                    </RadioGroup>
-                                                </Box>
+                                                <Box mt={4}>
+                                                    <Box>
+                                                        <Typography>Unggah kartu BPJS</Typography>
+                                                        <FileUploader />
+                                                        <Typography fontSize={"14px"} color="#A8A8BD">
+                                                            Ukuran maksimal 1mb
+                                                        </Typography>
+                                                    </Box>
 
-                                                <Box mt={1}>
                                                     <Box mt={2}>
-                                                        <Typography>Unggah surat rujukan</Typography>
+                                                        <Typography>Unggah surat rujukan BPJS</Typography>
                                                         <FileUploader />
                                                         <Typography fontSize={"14px"} color="#A8A8BD">
                                                             Ukuran maksimal 1mb
@@ -339,4 +314,4 @@ const RawatJalanUmum: React.FC = () => {
     );
 };
 
-export default RawatJalanUmum;
+export default RawatJalanBPJS;

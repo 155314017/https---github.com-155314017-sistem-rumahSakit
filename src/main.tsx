@@ -4,11 +4,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './index.css'
 // import App from './App';
 import LoginPasien from './pages/login/loginPasien/LoginPasien';
-import PasienLamaRawatJalanBPJS from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanBPJS';
-import PasienLamaRawatJalanUmum from './pages/rawatJalan/pasienLama/PasienLamaRawatJalanUmum';
+import PasienLamaRawatJalanBPJS from './Backup/rawatJalan/pasienLama/PasienLamaRawatJalanBPJS';
+import PasienLamaRawatJalanUmum from './Backup/rawatJalan/pasienLama/PasienLamaRawatJalanUmum';
 import Home from './pages';
-import PasienBaruRawatJalanUmum from './pages/rawatJalan/pasienBaru/PasienBaruRawatJalanUmum';
-import PasienBaruRawatJalanBPJS from './pages/rawatJalan/pasienBaru/PasienBaruRawatJalanBPJS';
+import PasienBaruRawatJalanUmum from './Backup/rawatJalan/pasienBaru/PasienBaruRawatJalanUmum';
+import PasienBaruRawatJalanBPJS from './Backup/rawatJalan/pasienBaru/PasienBaruRawatJalanBPJS';
 import Gedung from '../src/pages/gedung/index';
 import Ambulance from './pages/ambulance';
 import DetailAmbulance from './pages/ambulance/DetailAmbulance';
@@ -35,8 +35,8 @@ import Pasien from './pages/pasien';
 import RegisterPasienBaru from './pages/login/loginPasien/RegisterPasienBaru';
 import KategoriPasien from './pages/login/loginPasien/KategoriPasien';
 import RegisterPasien from './pages/login/loginPasien/RegisterPasien';
-import RawatJalanBPJS from './pages/rawatJalan/pendaftaranPasien/RawatJalanBPJS';
-import RawatJalanUmum from './pages/rawatJalan/pendaftaranPasien/RawatJalanUmum';
+import RawatJalanBPJS from './pages/login/loginPasien/RawatJalanBPJS';
+import RawatJalanUmum from './pages/login/loginPasien/RawatJalanUmum';
 import TambahPasienBPJS from './pages/pasien/TambahPasienBPJS';
 import TambahPasienUmum from './pages/pasien/TambahPasienUmum';
 import EditPasienBPJS from './pages/pasien/EditPasienBPJS';
@@ -122,35 +122,21 @@ createRoot(document.getElementById('root')!).render(
 
         {/* no need auth */}
 
-
-        {/* Developing register */}
+        {/* register pasien */}
         <Route path="/register/pasien" element={<LoginPasien />} />
         <Route path="/register/pasien/baru" element={<RegisterPasienBaru />} />
         <Route path="/register/pj" element={<RegisterPJ />} />
         <Route path="/register/penanggungJawab" element={<BioPjBaru />} />
-
-        {/* End Developing registers */}
-
-        {/* Isolated */}
-        {/* Form Login */}
-        <Route path="/" element={<LoginPegawai />} />
-        <Route path="/login/pegawai" element={<LoginPegawai />} />
-        <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
-
-        {/* Form Register */}
         <Route path="/kategori/pasien" element={<KategoriPasien />} />
         <Route path="/login/pasien" element={<RegisterPasien />} />
-        {/* End of Isolated */}
 
-        {/* Pages Pendafaran Pasien  */}
         <Route path="/rawatjalan/bpjs" element={<RawatJalanBPJS />} />
         <Route path="/rawatjalan/umum" element={<RawatJalanUmum />} />
 
-        {/* Page Rawat Jalan  */}
-        <Route path="/rawatjalan/lama/bpjs" element={<PasienLamaRawatJalanBPJS />} />
-        <Route path="/rawatjalan/lama/umum" element={<PasienLamaRawatJalanUmum />} />
-        <Route path="/rawatjalan/baru/bpjs" element={<PasienBaruRawatJalanBPJS />} />
-        <Route path="/rawatjalan/baru/umum" element={<PasienBaruRawatJalanUmum />} />
+        {/* login pegawai */}
+        <Route path="/" element={<LoginPegawai />} />
+        <Route path="/login/pegawai" element={<LoginPegawai />} />
+        <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
 
         {/* end no need auth */}
 
