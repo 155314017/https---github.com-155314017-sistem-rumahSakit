@@ -17,12 +17,9 @@ export default function Dokter() {
     const [data, setData] = useState<DoctorDataItem[]>([]);
     useEffect(() => {
         const fetchData = async () => {
-            console.log('fetching data . . . ')
             try {
                 const result = await DoctorServices();
-                console.log('result : ' + result)
                 setData(result);
-                console.log(data)
             } catch (error) {
                 console.log('Failed to fetch data from API' + error);
             }

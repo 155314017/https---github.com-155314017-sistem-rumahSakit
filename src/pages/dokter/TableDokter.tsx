@@ -22,8 +22,6 @@ import bgImage from "../../assets/img/String.png";
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-
-// import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { DoctorDataItem, DoctorServices } from "../../services/Admin Tenant/ManageDoctor/DoctorServices";
 import axios from "axios";
 
@@ -61,7 +59,6 @@ const StyledTableContainer = styled(TableContainer)`
 export default function TableDokter() {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
-  // const [open, setOpen] = React.useState<boolean>(false);
   const [datas, setDatas] = useState<DoctorDataItem[]>([]);
   const [idClinic, setIdClinic] = useState<string[]>([]);
   const [clinicNames, setClinicNames] = useState<string[]>([]);
@@ -69,15 +66,11 @@ export default function TableDokter() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('Fetching data...');
       try {
         const result = await DoctorServices();
-        console.log('Result: ', result);
         setDatas(result);
         const clinicId = result.map((data) => data.parentClinicId);
-        console.log("id klinik: ", clinicId)
         setIdClinic(clinicId)
-        // setData(result);
       } catch (error) {
         console.log('Failed to fetch data from API: ', error);
       }
@@ -85,9 +78,6 @@ export default function TableDokter() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log('moved: ', idClinic)
-  }, [idClinic])
 
   useEffect(() => {
     const fetchClinicNames = async () => {
@@ -109,17 +99,6 @@ export default function TableDokter() {
     }
   }, [idClinic]);
 
-  useEffect(() => {
-    console.log('Clinic names: ', clinicNames);
-  }, [clinicNames]);
-
-  // const handleChangePage = (
-  //   _event: React.MouseEvent<HTMLButtonElement> | null,
-  //   newPage: number
-  // ) => {
-  //   setPage(newPage);
-  // };
-
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -139,17 +118,12 @@ export default function TableDokter() {
     { value: 4, label: "Nama dokter Z-A" },
   ];
 
-  const handleSelectionChange = (selectedValue: string) => {
-    console.log("Selected Value:", selectedValue);
-  };
-
   const toggleCollapse = () => {
     setIsCollapsed((prev) => !prev);
   };
 
   const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    // setOpen(true);
   };
 
   return (
@@ -257,13 +231,13 @@ export default function TableDokter() {
               <DropdownList
                 options={sortir}
                 placeholder="Sortir"
-                onChange={handleSelectionChange}
+                // onChange={}
                 loading={false}
               />
               <DropdownList
                 options={urutkan}
                 placeholder="Urutkan"
-                onChange={handleSelectionChange}
+                // onChange={}
                 loading={false}
               />
             </Box>
