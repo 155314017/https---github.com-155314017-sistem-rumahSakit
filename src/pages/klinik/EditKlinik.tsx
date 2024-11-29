@@ -35,16 +35,13 @@ export default function EditKlinik() {
     const [selectedDays, setSelectedDays] = useState<string>("1");
 
     const navigate = useNavigate();
-    console.log(operationalTime)
 
     const handleImageChange = (images: ImageData[]) => {
-        console.log('Images changed:', images);
         setImagesData(images);
     };
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log("id room: ", id)
             try {
                 const token = Cookies.get("accessToken");
                 const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`, {
@@ -54,10 +51,6 @@ export default function EditKlinik() {
                     }
                 });
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`);
-                console.log("DATA : ")
-                console.log("Response", response.data);
-                console.log(response.data.data.name);
-                console.log("Images: ")
                 setName(response.data.data.name);
                 setDescription(response.data.data.description);
                 if (response.data.data.schedules && response.data.data.schedules.length > 0) {
@@ -65,9 +58,6 @@ export default function EditKlinik() {
                     setStartTime(dayjs.unix(schedule.startDateTime));
                     setEndTime(dayjs.unix(schedule.endDateTime));
                 }
-                console.log("DATA state : ")
-                console.log(name);
-                console.log(description);
             } catch (error) {
                 console.error('Error saat menghapus data:', error);
             }
@@ -90,10 +80,6 @@ export default function EditKlinik() {
             const formattedStartTime = startTime.format("HH:mm");
             const formattedEndTime = endTime.format("HH:mm");
             const dayOfWeek = startTime.format("dddd");
-            console.log("day of week: ", dayOfWeek);
-
-            console.log(formattedStartTime)
-            console.log(formattedEndTime);
             const dayMapping: { [key: string]: string } = {
                 "Monday": "1",
                 "Tuesday": "2",
@@ -106,24 +92,12 @@ export default function EditKlinik() {
 
             const dayValue = dayMapping[dayOfWeek] || "7";
             setSelectedDays(dayValue);
-            console.log(dayValue);
         }
     }, [startTime, endTime]);
 
     const handleTambahHari = () => {
-        console.log("Selected day:", selectedDay);
-        console.log("Start time:", startTime?.format("HH:mm"));
-        console.log("End time:", endTime?.format("HH:mm"));
-        // console.log(errorAlert)
-        // console.log(successAlert)
-        // console.log(operationalTime)
-
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
-        console.log("Waktu yg dipilih: ", dateTime);
-        console.log("Day: ", selectedDay);
-        console.log("start time: ", startTime?.unix());
-        console.log("end time: ", endTime?.unix());
     };
 
     const showTemporaryAlertError = async () => {
@@ -137,10 +111,6 @@ export default function EditKlinik() {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setSuccessAlert(false);
     };
-
-    // const handleImagesSelected = (images: ImageInfo[]) => {
-    //     console.log("Selected images:", images);
-    // };
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
@@ -162,11 +132,6 @@ export default function EditKlinik() {
             const selectedDayOfWeek = dayMapping[selectedDay || "1"];
             const adjustedStartTime = startTime?.day(selectedDayOfWeek);
             const adjustedEndTime = endTime?.day(selectedDayOfWeek);
-
-            console.log("Selected Day on submit: ", selectedDayOfWeek)
-            console.log("adjusted start time: ", adjustedStartTime?.unix())
-            console.log("adjusted end time: ", adjustedEndTime?.unix())
-
             const schedules = [
                 {
                     startDateTime: adjustedStartTime?.unix(),
@@ -186,11 +151,7 @@ export default function EditKlinik() {
                     imageData: image.imageData || "",
                 })),
             };
-
-            console.log('Submitting form with data:', data);
-
             const token = Cookies.get("accessToken");
-            console.log("Token :", token)
 
             try {
                 const response = await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/', data, {
@@ -199,7 +160,6 @@ export default function EditKlinik() {
                         'accessToken': `${token}`
                     },
                 });
-                console.log('Response:', response.data);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
@@ -208,11 +168,8 @@ export default function EditKlinik() {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
                     console.error('Axios error message:', error.message);
-                    console.error('Response data:', error.response?.data);
 
                     if (error.response) {
-                        console.error('Response status:', error.response.status);
-                        console.error('Response headers:', error.response.headers);
                         console.error('Response data:', error.response.data);
                     } else {
                         console.error('Error message:', error.message);
@@ -238,7 +195,6 @@ export default function EditKlinik() {
                         <img src={bgImage} alt="bg-image" />
                     </Box>
 
-                    {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
                     <ImageUploaderGroupAPI onChange={handleImageChange} apiUrl={apiUrl} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>

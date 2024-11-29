@@ -26,10 +26,8 @@ export default function Klinik() {
 
     const fetchData = async () => {
         setIsLoading(true)
-        console.log('fetching data . . . ')
         try {
             const result = await Clinic();
-            console.log('result : ' + result)
             setData(result);
             setIsLoading(false)
         } catch (error) {
@@ -43,7 +41,6 @@ export default function Klinik() {
     useEffect(() => {
         if (location.state && location.state.successAdd) {
             showTemporaryAlertSuccess();
-            console.log(location.state.message);
             navigate(location.pathname, { replace: true, state: undefined }); //clear state
         }
     }, [location.state, navigate]);
@@ -51,27 +48,23 @@ export default function Klinik() {
     useEffect(() => {
         if (location.state && location.state.successEdit) {
             showTemporarySuccessEdit();
-            console.log(location.state.message);
             navigate(location.pathname, { replace: true, state: undefined }); //clear state
         }
     }, [location.state, navigate]);
 
     const showTemporaryAlertSuccess = async () => {
-        console.log("Adding building successful");
         setSuccessAddBuilding(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setSuccessAddBuilding(false);
     };
 
     const showTemporarySuccessDelete = async () => {
-        console.log("Deleting building successful");
         setSuccessDeleteBuilding(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setSuccessDeleteBuilding(false);
     };
 
     const showTemporarySuccessEdit = async () => {
-        console.log("Editing building successful");
         setSuccessEditBuilding(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setSuccessEditBuilding(false);
