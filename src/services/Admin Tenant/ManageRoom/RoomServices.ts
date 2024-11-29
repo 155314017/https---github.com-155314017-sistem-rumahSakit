@@ -55,7 +55,7 @@ const API_URL = 'https://hms.3dolphinsocial.com:8083/v1/manage/room/'
 
 export const RoomServices = async (
   pageNumber: number = 0,
-  pageSize: number = 10,
+  pageSize: number = 100,
   orderBy: string = 'createdDateTime=asc'
 ): Promise<RoomDataItem[]> => {
   try {

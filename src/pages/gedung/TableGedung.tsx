@@ -62,7 +62,7 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
   const [datas, setDatas] = useState<BuildingDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(100);
   const [sort, setSort] = useState('');
   const [orderBy, setOrderBy] = useState("createdDateTime=asc");
 
