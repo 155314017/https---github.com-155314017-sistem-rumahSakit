@@ -12,7 +12,8 @@ import {
     Link,
     IconButton,
     Pagination,
-    Collapse,
+    Collapse, 
+    CircularProgress
 } from "@mui/material";
 import SearchBar from "../../components/small/SearchBar";
 import DropdownList from "../../components/small/DropdownList";
@@ -116,7 +117,7 @@ const StyledTableContainer = styled(TableContainer)`
 
 interface TableSubFacilityProps {
     fetchDatas: () => void;
-    onSuccessDelete: () => void ;
+    onSuccessDelete: () => void;
 }
 
 const TableSubFasilitas: React.FC<TableSubFacilityProps> = ({ fetchDatas, onSuccessDelete }) => {
@@ -127,10 +128,13 @@ const TableSubFasilitas: React.FC<TableSubFacilityProps> = ({ fetchDatas, onSucc
     const [datas, setDatas] = useState<SubFacilityDataItem[]>([]);
     const [dataIdFacility, setDataIdFacility] = useState<string[]>([]);
     const [deletedItems, setDeletedItems] = useState("");
+    const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingFac, setIsLoadingFac] = useState(false)
     const navigate = useNavigate();
 
 
     const fetchData = async () => {
+        setIsLoading(true)
         console.log('Fetching data...');
         try {
             const result = await SubFacilityServices();
@@ -140,7 +144,7 @@ const TableSubFasilitas: React.FC<TableSubFacilityProps> = ({ fetchDatas, onSucc
             console.log("FETCHIG DATA ID FAICILITY")
             const facilityIds = result.map((data) => data.facilityDataId);
             setDataIdFacility(facilityIds);
-
+            setIsLoading(false)
             console.log('Data ID Facility: ', facilityIds);
         } catch (error) {
             console.log('Failed to fetch data from API: ', error);
@@ -153,6 +157,7 @@ const TableSubFasilitas: React.FC<TableSubFacilityProps> = ({ fetchDatas, onSucc
     const [facilities, setFacilities] = useState<string[]>([]);
 
     useEffect(() => {
+        setIsLoadingFac(true)
         const fetchFacilities = async () => {
             try {
                 const responses = await Promise.all(
@@ -163,6 +168,7 @@ const TableSubFasilitas: React.FC<TableSubFacilityProps> = ({ fetchDatas, onSucc
                 setFacilities(facilitiesData);
                 console.log("DATA FASILITAS UTAMA");
                 console.log(facilitiesData);
+                setIsLoadingFac(false)
             } catch (err) {
                 console.error('Error:', err);
             }
@@ -437,7 +443,7 @@ const TableSubFasilitas: React.FC<TableSubFacilityProps> = ({ fetchDatas, onSucc
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {facilities[index] ? facilities[index] : "Fasilitas Tidak Ditemukan"}
+                                                        {isLoadingFac ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : (facilities[index] ? facilities[index] : "Fasilitas Tidak Ditemukan")}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[
@@ -500,12 +506,18 @@ const TableSubFasilitas: React.FC<TableSubFacilityProps> = ({ fetchDatas, onSucc
                                                     </TableCell>
                                                 </StyledTableRow>
                                             ))
+                                        ) : isLoading ?  (
+                                        <StyledTableRow>
+                                            <TableCell colSpan={5} align="center">
+                                                Fetching . . . 
+                                            </TableCell>
+                                        </StyledTableRow>
                                         ) : (
-                                            <StyledTableRow>
-                                                <TableCell colSpan={5} align="center">
-                                                    Tidak ada data
-                                                </TableCell>
-                                            </StyledTableRow>
+                                        <StyledTableRow>
+                                            <TableCell colSpan={5} align="center">
+                                                Tidak ada data
+                                            </TableCell>
+                                        </StyledTableRow>
                                         )}
                                     </TableBody>
                                 </Table>
