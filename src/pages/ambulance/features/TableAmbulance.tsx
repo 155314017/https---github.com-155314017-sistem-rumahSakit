@@ -70,7 +70,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         handleChangePage,
         rowsPerPage,
         displayedData,
-        handleSelectionChange,
+        
         handleDeleteSuccess,
         toggleCollapse,
         confirmationDelete}= useTableAmbulance()
@@ -170,7 +170,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
                   { value: 4, label: 'Nomor Ambulance 9-1' }
                 ]}
                 placeholder="Urutkan"
-                onChange={handleSelectionChange}
+                // onChange={}
                 loading={false}
               />
             </Box>

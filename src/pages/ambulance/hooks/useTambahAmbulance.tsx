@@ -112,7 +112,7 @@ export default function useTambahAmbulance() {
       const token = Cookies.get('accessToken')
 
       try {
-        const response = await axios.post(
+        await axios.post(
           'https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/',
           data,
           {
@@ -122,7 +122,7 @@ export default function useTambahAmbulance() {
             }
           }
         )
-        console.log('Response:', response.data)
+       
         navigate('/ambulance', {
           state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' }
         })
