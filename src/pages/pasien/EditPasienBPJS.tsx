@@ -27,10 +27,6 @@ import { doctors } from '../../dummyData/dummyData';
 
 export default function EditPasienBPJS() {
     const [currentPage, setCurrentPage] = useState<number>(1);
-
-    // const datas = DataPegawai;
-
-
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
         { label: "Pasien", href: "/pasien" },
@@ -48,7 +44,6 @@ export default function EditPasienBPJS() {
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
         }),
         onSubmit: (values) => {
-            console.log('Form submitted:', values);
         },
     });
 

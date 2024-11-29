@@ -21,7 +21,6 @@ import bgImage from "../../assets/img/String.png";
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-// import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 import { PatientDataItem, PatientServices } from "../../services/ManagePatient/PatientServices";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -62,12 +61,9 @@ export default function TablePasien() {
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log('Fetching data...');
             try {
                 const result = await PatientServices();
-                console.log('Result: ', result);
-                setDatas(result); 
-                // setData(result);
+                setDatas(result);
             } catch (error) {
                 console.log('Failed to fetch data from API: ', error);
             }
@@ -96,15 +92,9 @@ export default function TablePasien() {
         { value: 4, label: "Nomor Pasien 9-1" },
     ];
 
-    const handleSelectionChange = (selectedValue: string) => {
-        console.log("Selected Value:", selectedValue);
-    };
-
     const toggleCollapse = () => {
         setIsCollapsed((prev) => !prev);
     };
-
-    // const [open, setOpen] = React.useState<boolean>(false);
 
     const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
@@ -215,13 +205,13 @@ export default function TablePasien() {
                             <DropdownList
                                 options={sortir}
                                 placeholder="Sortir"
-                                onChange={handleSelectionChange}
+                                // onChange={handleSelectionChange}
                                 loading={false}
                             />
                             <DropdownList
                                 options={urutkan}
                                 placeholder="Urutkan"
-                                onChange={handleSelectionChange}
+                                // onChange={handleSelectionChange}
                                 loading={false}
                             />
                         </Box>

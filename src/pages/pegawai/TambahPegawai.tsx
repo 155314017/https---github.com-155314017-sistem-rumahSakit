@@ -86,9 +86,6 @@ export default function TambahPegawai() {
         { value: 4, label: "Manajemen" },
     ];
 
-
-
-
     const formik = useFormik({
         initialValues: {
             namaKlinik: '',
@@ -99,7 +96,7 @@ export default function TambahPegawai() {
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
         }),
         onSubmit: (values) => {
-            console.log('Form submitted:', values);
+            // console.log('Form submitted:', values);
         },
     });
 

@@ -63,9 +63,7 @@ export default function DetailRuangan() {
             setName(response.data.data.name);
             setType(response.data.data.type);
             const imagesData = response.data.data.images;
-            console.log("Fetched images: ", imagesData);
             setBuildingId(response.data.data.masterBuildingId);
-
             const mappedImages = imagesData.map((image: any) => ({
                 imageName: image.imageName,
                 imageType: image.imageType,
@@ -77,8 +75,6 @@ export default function DetailRuangan() {
 
             setLargeImage(largeImage);
             setSmallImages(smallImages);
-            console.log("Large Image: ", largeImage);
-            console.log("Small Images: ", smallImages);
             setLoading(false)
         } catch (error) {
             console.error("Error fetching data:", error);
