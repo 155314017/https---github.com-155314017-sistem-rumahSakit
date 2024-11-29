@@ -53,7 +53,7 @@ export default function useEditSubFasilitas() {
 
             const dayValue = dayMapping[dayOfWeek] || "7";
             setSelectedDays(dayValue);
-            console.log(dayValue);
+            setSelectedDay(dayValue);
         }
     }, [startTime, endTime]);
 

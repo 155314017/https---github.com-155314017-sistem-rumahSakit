@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import dayjs from 'dayjs';
@@ -63,6 +62,7 @@ export default function useEditFasilitas() {
 
             const dayValue = dayMapping[dayOfWeek] || "7";
             setSelectedDays(dayValue);
+            setSelectedDay(dayValue);
         }
     }, [startTime, endTime]);
 
