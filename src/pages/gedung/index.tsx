@@ -22,11 +22,9 @@ export default function Gedung() {
   const navigate = useNavigate();
 
   const fetchData = async () => {
-    console.log('Fetching data...');
     try {
       setLoading(true);
       const result = await Building();
-      console.log('Result:', result);
       setData(result);
       setLoading(false);
     } catch (error) {
@@ -41,7 +39,6 @@ export default function Gedung() {
   useEffect(() => {
     if (location.state && location.state.successAdd) {
       showTemporaryAlertSuccess();
-      console.log(location.state.message);
       navigate(location.pathname, { replace: true, state: undefined }); //clear state
     }
   }, [location.state, navigate]);
@@ -49,7 +46,6 @@ export default function Gedung() {
   useEffect(() => {
     if (location.state && location.state.successEdit) {
       showTemporarySuccessEdit();
-      console.log(location.state.message);
       navigate(location.pathname, { replace: true, state: undefined }); //clear state
     }
   }, [location.state, navigate]);
@@ -57,27 +53,23 @@ export default function Gedung() {
   useEffect(() => {
     if (location.state && location.state.successDelete) {
       showTemporarySuccessDelete();
-      console.log(location.state.message);
       navigate(location.pathname, { replace: true, state: undefined }); //clear state
     }
   }, [location.state, navigate]);
 
   const showTemporaryAlertSuccess = async () => {
-    console.log("Adding building successful");
     setSuccessAddBuilding(true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
     setSuccessAddBuilding(false);
   };
 
   const showTemporarySuccessDelete = async () => {
-    console.log("Deleting building successful");
     setSuccessDeleteBuilding(true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
     setSuccessDeleteBuilding(false);
   };
 
   const showTemporarySuccessEdit = async () => {
-    console.log("Editing building successful");
     setSuccessEditBuilding(true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
     setSuccessEditBuilding(false);
@@ -106,7 +98,6 @@ export default function Gedung() {
             <MediumCard icon={BusinessOutlinedIcon} title="Total Gedung" subtitle={loading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString() || "0"} />
             <CardAdd icon={AddBoxIcon} title="Tambah Gedung" link="/tambahGedung" />
           </Grid>
-          {/* Kirim fungsi showTemporarySuccessDelete ke TableGedung */}
           <TableGedung fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDelete} />
         </Box>
       </Box>

@@ -38,7 +38,6 @@ export default function EditGedung() {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            console.log("id room: ", id)
             try {
                 const token = Cookies.get("accessToken");
                 const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`, {
@@ -48,15 +47,8 @@ export default function EditGedung() {
                     }
                 });
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`);
-                console.log("DATA : ")
-                console.log("Response", response.data);
-                console.log(response.data.data.name);
-                console.log("Images: ")
                 setName(response.data.data.name);
                 setAddress(response.data.data.address);
-                console.log("DATA state : ")
-                console.log(name);
-                console.log(address);
             } catch (error) {
                 console.error('Error saat menghapus data:', error);
             } finally {
@@ -66,12 +58,8 @@ export default function EditGedung() {
         fetchData();
     }, [id]);
 
-    useEffect(() => {
-        console.log("Nama gedung: ", name);
-    }, [name]);
 
     const handleImageChange = (images: ImageData[]) => {
-        console.log('Images changed:', images);
         setImagesData(images);
     };
 
@@ -104,8 +92,6 @@ export default function EditGedung() {
             alamatGedung: Yup.string().required('Alamat Gedung is required'),
         }),
         onSubmit: async (values) => {
-            console.log(values.namaGedung)
-            console.log(values.alamatGedung)
 
             const data = {
                 buildingId: id,
@@ -118,11 +104,7 @@ export default function EditGedung() {
                     imageData: image.imageData || "",
                 })),
             };
-
-            console.log('Submitting form with data:', data);
-
             const token = Cookies.get("accessToken");
-            console.log("Token :", token)
 
             try {
                 const response = await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/building/', data, {
@@ -131,7 +113,6 @@ export default function EditGedung() {
                         'accessToken': `${token}`
                     },
                 });
-                console.log('Response:', response.data);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
@@ -141,11 +122,8 @@ export default function EditGedung() {
                 if (axios.isAxiosError(error)) {
                     console.error('Axios error message:', error.message);
                     console.error('Response data:', error.response?.data);
-
                     if (error.response) {
                         console.error('Response status:', error.response.status);
-                        console.error('Response headers:', error.response.headers);
-                        console.error('Response data:', error.response.data);
                     } else {
                         console.error('Error message:', error.message);
                     }

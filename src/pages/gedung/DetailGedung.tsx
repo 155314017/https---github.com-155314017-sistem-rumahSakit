@@ -60,8 +60,6 @@ export default function DetailGedung() {
       setName(response.data.data.name);
       setAddress(response.data.data.address);
       const imagesData = response.data.data.images;
-      console.log("Fetched images: ", imagesData);
-
       const mappedImages = imagesData.map((image: any) => ({
         imageName: image.imageName,
         imageType: image.imageType,
@@ -73,8 +71,6 @@ export default function DetailGedung() {
 
       setLargeImage(largeImage); 
       setSmallImages(smallImages);
-      console.log("Large Image: ", largeImage);
-      console.log("Small Images: ", smallImages);
       setLoading(false)
     } catch (error) {
       console.error("Error fetching data:", error);
