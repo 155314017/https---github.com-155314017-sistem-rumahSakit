@@ -4,10 +4,11 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Link } from 'react-router-dom';
-import { Avatar, Card, IconButton } from '@mui/material';
+import { Avatar, Button, Card, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Stack } from '@mui/system';
 import ModalKodeBooking from './ModalKodeBooking';
+import ModalPilihPembayaran from './ModalPilihPembayaran';
 
 const style = {
     position: 'absolute',
@@ -29,11 +30,21 @@ interface ModalKategoriPasienProps {
 
 const ModalKategoriPasien: React.FC<ModalKategoriPasienProps> = ({ open, onClose }) => {
     const [openModalKodeBooking, setOpenModalKodeBooking] = useState(false);
+    const [openModalPilihPembayaran, setOpenModalPilihPembayaran] = useState(false);
 
     const handleKodeBooking = () => {
         onClose();
         setOpenModalKodeBooking(true);
     };
+
+    const handlePilihPembayaran = () => {
+        onClose();
+        setOpenModalPilihPembayaran(true);
+    }
+
+    const handleBack = () => {
+        setOpenModalPilihPembayaran(false);
+    }
 
     return (
         <>
@@ -50,7 +61,10 @@ const ModalKategoriPasien: React.FC<ModalKategoriPasienProps> = ({ open, onClose
             >
                 <Box sx={style}>
                     <IconButton
-                        onClick={onClose}
+                        onClick={() => {
+                            onClose;
+                            setOpenModalPilihPembayaran(false);
+                        }}
                         sx={{
                             position: 'absolute',
                             top: 8,
@@ -61,60 +75,123 @@ const ModalKategoriPasien: React.FC<ModalKategoriPasienProps> = ({ open, onClose
                         <CloseIcon />
                     </IconButton>
 
-                    <Typography id="modal-modal-title" sx={{ mt: 2, fontSize: '18px', fontWeight: 600 }}>
-                        Pilih kategori pasien
-                    </Typography>
-                    <Typography id="modal-modal-description" mb={2} color='#747487'>
-                        Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
-                    </Typography>
+                    {!openModalPilihPembayaran && (
+                        <>
+                            <Typography id="modal-modal-title" sx={{ mt: 2, fontSize: '18px', fontWeight: 600 }}>
+                                Pilih kategori pasien
+                            </Typography>
+                            <Typography id="modal-modal-description" mb={2} color='#747487'>
+                                Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
+                            </Typography>
 
-                    <Stack direction="column" spacing={3}>
-                        {/* Pasien BPJS */}
-                        <Link to="/tambahPasien/BPJS" style={{ textDecoration: "none" }}>
-                            <Card sx={cardStyle}>
-                                <Avatar alt="Kode Booking" src="/src/img/filling.png" sx={{ width: '88px', height: '88px' }} />
-                                <Box>
-                                    <Typography sx={titleStyle}>Pasien BPJS</Typography>
-                                    <Box sx={descriptionBoxStyle}>
-                                        <Typography>Dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu dan berhak mendapatkan pelayanan kesehatan</Typography>
-                                        <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
-                                    </Box>
-                                </Box>
-                            </Card>
-                        </Link>
+                            <Stack direction="column" spacing={3}>
+                                {/* Pasien BPJS */}
+                                <Link to="#" style={{ textDecoration: "none" }} onClick={() => setOpenModalPilihPembayaran(true)} >
+                                    <Card sx={cardStyle}>
+                                        <Avatar alt="Kode Booking" src="/src/img/meidicine.png" sx={{ width: '88px', height: '88px' }} />
+                                        <Box>
+                                            <Typography sx={titleStyle}>Pasien BPJS</Typography>
+                                            <Box sx={descriptionBoxStyle}>
+                                                <Typography>Dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu dan berhak mendapatkan pelayanan kesehatan</Typography>
+                                                <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+                                            </Box>
+                                        </Box>
+                                    </Card>
+                                </Link>
 
-                        {/* Pasien Umum */}
-                        <Link to="/tambahPasien/Umum" style={{ textDecoration: "none" }}>
-                            <Card sx={cardStyle}>
-                                <Avatar alt="Kode Booking" src="/src/img/meidicine.png" sx={{ width: '88px', height: '88px' }} />
-                                <Box>
-                                    <Typography sx={titleStyle}>Pasien Umum</Typography>
-                                    <Box sx={descriptionBoxStyle}>
-                                        <Typography>Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.</Typography>
-                                        <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
-                                    </Box>
-                                </Box>
-                            </Card>
-                        </Link>
+                                {/* Pasien Umum */}
+                                <Link to="#" style={{ textDecoration: "none" }} onClick={() => setOpenModalPilihPembayaran(true)} >
+                                    <Card sx={cardStyle}>
+                                        <Avatar alt="Kode Booking" src="/src/img/filling.png" sx={{ width: '88px', height: '88px' }} />
+                                        <Box>
+                                            <Typography sx={titleStyle}>Pasien Umum</Typography>
+                                            <Box sx={descriptionBoxStyle}>
+                                                <Typography>Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.</Typography>
+                                                <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+                                            </Box>
+                                        </Box>
+                                    </Card>
+                                </Link>
 
-                        {/* Masukkan Kode Booking */}
-                        <Link to="#" style={{ textDecoration: "none" }} onClick={handleKodeBooking}>
-                            <Card sx={cardStyle}>
-                                <Avatar alt="Kode Booking" src="/src/img/qrcode.png" sx={{ width: '88px', height: '88px' }} />
-                                <Box>
-                                    <Typography sx={titleStyle}>Masukkan kode booking</Typography>
-                                    <Box sx={descriptionBoxStyle}>
-                                        <Typography>Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian.</Typography>
-                                        <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
-                                    </Box>
-                                </Box>
-                            </Card>
-                        </Link>
-                    </Stack>
+                                {/* Masukkan Kode Booking */}
+                                <Link to="#" style={{ textDecoration: "none" }} onClick={handleKodeBooking}>
+                                    <Card sx={cardStyle}>
+                                        <Avatar alt="Kode Booking" src="/src/img/qrcode.png" sx={{ width: '88px', height: '88px' }} />
+                                        <Box>
+                                            <Typography sx={titleStyle}>Masukkan kode booking</Typography>
+                                            <Box sx={descriptionBoxStyle}>
+                                                <Typography>Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian.</Typography>
+                                                <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+                                            </Box>
+                                        </Box>
+                                    </Card>
+                                </Link>
+                            </Stack>
+                        </>
+                    )}
+
+                    {openModalPilihPembayaran && (
+                        <>
+
+                            <Typography id="modal-modal-title" sx={{ mt: 2, fontSize: '18px', fontWeight: 600 }}>
+                                Pilih kategori pasien
+                            </Typography>
+                            <Typography id="modal-modal-description" mb={2} color='#747487'>
+                                Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
+                            </Typography>
+
+                            <Stack direction="column" spacing={3}>
+                                {/* Pasien BPJS */}
+                                <Link to="/tambahPasien/Umum" style={{ textDecoration: "none" }}>
+                                    <Card sx={cardStyle}>
+                                        <Avatar alt="Kode Booking" src="/src/img/filling.png" sx={{ width: '88px', height: '88px' }} />
+                                        <Box>
+                                            <Typography sx={titleStyle}>Pasien Umum/asuransi</Typography>
+                                            <Box sx={descriptionBoxStyle}>
+                                                <Typography>Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.</Typography>
+                                                <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+                                            </Box>
+                                        </Box>
+                                    </Card>
+                                </Link>
+
+                                {/* Pasien Umum */}
+                                <Link to="#" style={{ textDecoration: "none" }}>
+                                    <Card sx={cardStyle}>
+                                        <Avatar alt="Kode Booking" src="/src/img/meidicine.png" sx={{ width: '88px', height: '88px' }} />
+                                        <Box>
+                                            <Typography sx={titleStyle}>Pasien non BPJS kesehatan</Typography>
+                                            <Box sx={descriptionBoxStyle}>
+                                                <Typography>Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.</Typography>
+                                                <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+                                            </Box>
+                                        </Box>
+                                    </Card>
+                                </Link>
+                                <Button
+                                    sx={{
+                                        padding: "10px 20px",
+                                        backgroundColor: "#8F85F3",
+                                        color: "white",
+                                        borderRadius: "8px",
+                                        cursor: "pointer",
+                                        fontWeight: 600,
+                                        width: "100%",
+                                        border: '1px solid #8F85F3',
+                                        ":hover": { backgroundColor: 'inherit', color: '#8F85F3' }
+                                    }}
+                                    onClick={handleBack}
+                                >
+                                    Kembali ke pilihan sebelumnya
+                                </Button>
+                            </Stack>
+                        </>
+                    )}
                 </Box>
             </Modal>
 
             <ModalKodeBooking open={openModalKodeBooking} onClose={() => setOpenModalKodeBooking(false)} />
+
         </>
     );
 };
