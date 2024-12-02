@@ -1,189 +1,36 @@
-import { useEffect, useState } from 'react';
+//component
 import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import BreadCrumbs from "../../components/medium/BreadCrumbs";
+import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../assets/img/String.png";
-import AlertSuccess from "../../components/small/AlertSuccess";
-import CustomTimePicker from "../../components/small/CustomTimePicker";
-import dayjs from 'dayjs';
-import axios from "axios";
-import Cookies from "js-cookie";
-import { useNavigate, useParams } from 'react-router-dom';
-import ImageUploaderGroupAPI from '../../components/medium/ImageGroupUploaderAPI';
-import DropdownListAPI from '../../components/small/DropdownListAPI';
+import AlertSuccess from "../../../components/small/AlertSuccess";
+import CustomTimePicker from "../../../components/small/CustomTimePicker";
+import ImageUploaderGroupAPI from '../../../components/medium/ImageGroupUploaderAPI';
+import DropdownListAPI from '../../../components/small/DropdownListAPI';
 import "dayjs/locale/id";
 
-type ImageData = {
-    imageName: string;
-    imageType: string;
-    imageData: string;
-};
+//hooks
+import useEditKlinik from "../hooks/useEditKlinik";
+
 
 export default function EditKlinik() {
-    const [successAlert, setSuccessAlert] = useState(false);
-    const [selectedDay, setSelectedDay] = useState<string | null>(null);
-    const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
-    const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
-    const [errorAlert, setErrorAlert] = useState(false);
-    const [operationalTime, setOperationalTime] = useState<string | null>(null);
-    const { id } = useParams();
-    const [apiUrl, setApiUrl] = useState('');
-    const [name, setName] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
-    const [imagesData, setImagesData] = useState<ImageData[]>([]);
-    const [selectedDays, setSelectedDays] = useState<string>("1");
-
-    const navigate = useNavigate();
-
-    const handleImageChange = (images: ImageData[]) => {
-        setImagesData(images);
-    };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const token = Cookies.get("accessToken");
-                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    }
-                });
-                setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`);
-                setName(response.data.data.name);
-                setDescription(response.data.data.description);
-                if (response.data.data.schedules && response.data.data.schedules.length > 0) {
-                    const schedule = response.data.data.schedules[0];
-                    setStartTime(dayjs.unix(schedule.startDateTime));
-                    setEndTime(dayjs.unix(schedule.endDateTime));
-                }
-            } catch (error) {
-                console.error('Error saat menghapus data:', error);
-            }
-        };
-        fetchData();
-    }, [id]);
-
-    const dayMapping: { [key: string]: number } = {
-        "1": 1,
-        "2": 2,
-        "3": 3,
-        "4": 4,
-        "5": 5,
-        "6": 6,
-        "7": 0,
-    };
-
-    useEffect(() => {
-        if (startTime && endTime) {
-            const formattedStartTime = startTime.format("HH:mm");
-            const formattedEndTime = endTime.format("HH:mm");
-            const dayOfWeek = startTime.format("dddd");
-            const dayMapping: { [key: string]: string } = {
-                "Monday": "1",
-                "Tuesday": "2",
-                "Wednesday": "3",
-                "Thursday": "4",
-                "Friday": "5",
-                "Saturday": "6",
-                "Sunday": "7"
-            };
-
-            const dayValue = dayMapping[dayOfWeek] || "7";
-            setSelectedDays(dayValue);
-        }
-    }, [startTime, endTime]);
-
-    const handleTambahHari = () => {
-        const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
-        setOperationalTime(dateTime);
-    };
-
-    const showTemporaryAlertError = async () => {
-        setErrorAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setErrorAlert(false);
-    };
-
-    const showTemporaryAlertSuccess = async () => {
-        setSuccessAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessAlert(false);
-    };
-
-    const breadcrumbItems = [
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "Klinik", href: "/klinik" },
-        { label: "Edit Klinik", href: "/editKlinik:id" },
-    ];
-
-    const formik = useFormik({
-        initialValues: {
-            namaKlinik: name,
-            deskripsiKlinik: description,
-        },
-        enableReinitialize: true,
-        validationSchema: Yup.object({
-            namaKlinik: Yup.string().required('Nama Klinik is required'),
-            deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
-        }),
-        onSubmit: async (values) => {
-            const selectedDayOfWeek = dayMapping[selectedDay || "1"];
-            const adjustedStartTime = startTime?.day(selectedDayOfWeek);
-            const adjustedEndTime = endTime?.day(selectedDayOfWeek);
-            const schedules = [
-                {
-                    startDateTime: adjustedStartTime?.unix(),
-                    endDateTime: adjustedEndTime?.unix(),
-                }
-            ];
-
-            const data = {
-                clinicId: id,
-                name: values.namaKlinik,
-                description: values.deskripsiKlinik,
-                additionalInfo: "",
-                schedules: schedules,
-                images: imagesData.map(image => ({
-                    imageName: image.imageName || "",
-                    imageType: image.imageType || "",
-                    imageData: image.imageData || "",
-                })),
-            };
-            const token = Cookies.get("accessToken");
-
-            try {
-                await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    },
-                });
-                showTemporaryAlertSuccess();
-                formik.resetForm();
-                setImagesData([]);
-                navigate('/klinik', { state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' } })
-            } catch (error) {
-                console.error('Error submitting form:', error);
-                if (axios.isAxiosError(error)) {
-                    console.error('Axios error message:', error.message);
-
-                    if (error.response) {
-                        console.error('Response data:', error.response.data);
-                    } else {
-                        console.error('Error message:', error.message);
-                    }
-                    showTemporaryAlertError();
-                } else {
-                    console.error('Unexpected error:', error);
-                }
-            }
-        },
-    });
-
-    return (
-        <Container sx={{ py: 2 }}>
+    const {
+        formik,
+    handleTambahHari,
+    breadcrumbItems,
+    setSelectedDay,
+    startTime,
+    setStartTime,
+    endTime,
+    setEndTime,
+    showTemporaryAlertSuccess,
+    errorAlert,
+    successAlert,
+    apiUrl,
+    handleImageChange,
+    selectedDays,
+    }=useEditKlinik();
+  return (
+    <Container sx={{ py: 2 }}>
             <BreadCrumbs
                 breadcrumbItems={breadcrumbItems}
                 onBackClick={() => window.history.back()}
@@ -317,5 +164,5 @@ export default function EditKlinik() {
                 <AlertSuccess label="Error adding clinic" />
             )}
         </Container>
-    );
+  )
 }
