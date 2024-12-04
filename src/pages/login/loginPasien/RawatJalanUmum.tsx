@@ -12,7 +12,7 @@ import {
     FormControlLabel,
     RadioGroup,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import "react-phone-input-2/lib/style.css";
@@ -24,41 +24,71 @@ import InformasiTicket from "../../../components/small/InformasiTicket";
 import CalenderPopover from "../../../components/medium/CalenderPopover";
 import PoliSelect from "../../../components/inputComponent/PoliSelect";
 import CustomCalender from "../../../components/medium/CustomCalender";
+import CreateAppointment from "../../../services/Patient Tenant/CreateAppointment";
+import axios from "axios";
+import DropdownListAPI from "../../../components/small/DropdownListAPI";
 const validationSchema = Yup.object({
-    fullname: Yup.string().required("Nama wajib diisi"),
+    typeOfVisit: Yup.string().required("Nama wajib diisi"),
     phone: Yup.string().required("Nomor HP wajib diisi"),
     relation: Yup.string().required("Hubungan wajib diisi"),
     transportMethod: Yup.string().required("Cara datang/pengantar wajib diisi"),
 });
 
 interface FormValues {
-    fullname: string;
-    phone: string;
-    relation: string;
+    typeOfVisit: string;
+    symptoms: string;
+    clinicId: string;
     transportMethod: string;
     poli: string;
     docter: string;
     operationalDate: string;
 }
 
+type Clinic = {
+    id: string;
+    name: string;
+};
+
 const RawatJalanUmum: React.FC = () => {
     const [showFormPage, setSHowFormPage] = useState(true);
     const [selectedMethod, setSelectedMethod] = useState<string>("");
+    const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedMethod(event.target.value);
     };
 
+    useEffect(() => {
+        const fetchClinicData = async () => {
+            try {
+                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
+                    timeout: 10000
+                });
+                setClinicOptions(response.data.data.content.map((item: Clinic) => ({
+                    id: item.id,
+                    name: item.name,
+                })));
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    console.error("Axios error:", error.message);
+                } else {
+                    console.error("Unexpected error:", error);
+                }
+            }
+        };
+        fetchClinicData();
+    }, []);
+
 
     return (
         <>
-        <style>
-            {`
+            <style>
+                {`
             :root {
             background-color: #ffff
             }
             `}
-        </style>
+            </style>
 
             <Box
                 sx={{
@@ -70,34 +100,48 @@ const RawatJalanUmum: React.FC = () => {
             >
                 <Box>
                     <CardMedia
-                    component="img"
-                    sx={{
-                        width: "50%",
-                        height: "100vh",
-                        objectFit: "cover",
-                        position: "fixed",
-                        top: "0",
-                        left: "0",
-                    }}
-                    image={imagePendaftaran}
-                    alt="Example Image"
-                />
+                        component="img"
+                        sx={{
+                            width: "50%",
+                            height: "100vh",
+                            objectFit: "cover",
+                            position: "fixed",
+                            top: "0",
+                            left: "0",
+                        }}
+                        image={imagePendaftaran}
+                        alt="Example Image"
+                    />
                 </Box>
 
                 {showFormPage && (
                     <Formik<FormValues>
                         initialValues={{
-                            fullname: "",
-                            phone: "",
-                            relation: "",
+                            typeOfVisit: "",
+                            symptoms: "",
+                            clinicId: "",
                             transportMethod: "",
                             poli: "",
                             docter: "",
                             operationalDate: "",
                         }}
                         validationSchema={validationSchema}
-                        onSubmit={(values) => {
-                            // console.log("Form submitted with values:", values);
+                        onSubmit={async () => {
+                            const data = {
+                                patientId: "id",
+                                typeOfVisit: "type",
+                                clinicId: "id klini",
+                                doctorId: "doctor id",
+                                scheduleId: "id jadwal",
+                                symptoms: "simptom",
+                                referenceDoc: "docs",
+                            }
+                            try {
+                                await CreateAppointment(data)
+                                console.log('sukses')
+                            } catch (err) {
+                                console.log(err)
+                            }
                         }}
                     >
                         {({
@@ -179,11 +223,22 @@ const RawatJalanUmum: React.FC = () => {
                                                     />
                                                 </FormControl>
                                                 <Typography>Poli yang dituju</Typography>
-                                                <PoliSelect
+                                                {/* <PoliSelect
                                                     value={values.poli}
                                                     onChange={(e) =>
                                                         setFieldValue("poli", e.target.value)
                                                     }
+                                                /> */}
+
+                                                <DropdownListAPI
+                                                    options={clinicOptions.map(({ id, name }) => ({ value: id, label: name }))}
+                                                    placeholder="Pilih Fasilitas Induk"
+                                                    // defaultValue={formik.values.masterFacilityId}
+                                                    // onChange={(selectedOptionValue) => {
+                                                    // formik.setFieldValue('masterFacilityId', selectedOptionValue);
+                                                    // }}
+                                                    onChange={(selectedOptionValue) => console.log('pilihan: ', selectedOptionValue)}
+                                                    loading={false}
                                                 />
                                                 {touched.poli && errors.poli && (
                                                     <Typography sx={{ color: "red", fontSize: "12px" }}>
@@ -232,7 +287,7 @@ const RawatJalanUmum: React.FC = () => {
 
                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                         {/* <CalenderPopover title="Pilih tanggal" /> */}
-                                                        <CustomCalender/>
+                                                        <CustomCalender />
                                                     </Box>
                                                 </Box>
 
@@ -290,7 +345,7 @@ const RawatJalanUmum: React.FC = () => {
                                             }}
                                         >
                                             <Button
-                                                onClick={() => setSHowFormPage(false)}
+                                                type="submit"
                                                 sx={{
                                                     backgroundColor: "#8F85F3",
                                                     color: "white",
