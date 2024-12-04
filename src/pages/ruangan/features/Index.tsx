@@ -8,7 +8,7 @@ import CardAdd from "../../../components/medium/CardAdd";
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import TableRuangan from "../TableRuangan";
+import TableRuangan from "../../../Backup/ruangan/TableRuangan";
 import AlertSuccess from "../../../components/small/AlertSuccess";
 
 //hooks

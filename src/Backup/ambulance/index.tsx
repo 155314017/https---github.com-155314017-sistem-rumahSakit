@@ -14,7 +14,7 @@ import AlertSuccess from '../../components/small/AlertSuccess'
 import MinorCrashIcon from '@mui/icons-material/MinorCrash'
 import AddBoxIcon from '@mui/icons-material/AddBox'
 
-import TableAmbulance from '../ambulance/TableAmbulance'
+import TableAmbulance from './TableAmbulance'
 import {
   AmbulanceServices,
   AmbulanceDataItem

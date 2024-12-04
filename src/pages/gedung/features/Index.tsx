@@ -1,6 +1,6 @@
 
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
-import TableGedung from "../TableGedung";
+import TableGedung from "../../../Backup/gedung/TableGedung";
 import SideBar from "../../../components/SideBar/SideBar";
 import Header from "../../../components/medium/Header";
 import MediumCard from "../../../components/medium/MediumCard";
