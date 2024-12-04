@@ -25,6 +25,8 @@ import { Formik, Form } from "formik";
 
 //hooks
 import useRawatJalanUmum from '../hooks/useRawatJalanUmum';
+import DropdownListAPI from '../../../../components/small/DropdownListAPI';
+import CustomCalender from '../../../../components/medium/CustomCalender';
 interface FormValues {
     fullname: string;
     phone: string;
@@ -38,20 +40,21 @@ interface FormValues {
 export default function RawatJalanUmum() {
     const {
         showFormPage,
-    setSHowFormPage,
-    validationSchema,
-    handleRadioChange,
-    selectedMethod
+        setSHowFormPage,
+        validationSchema,
+        handleRadioChange,
+        selectedMethod,
+        clinicOptions,
     } = useRawatJalanUmum();
-  return (
-    <>
-        <style>
-            {`
+    return (
+        <>
+            <style>
+                {`
             :root {
             background-color: #ffff
             }
             `}
-        </style>
+            </style>
 
             <Box
                 sx={{
@@ -63,18 +66,18 @@ export default function RawatJalanUmum() {
             >
                 <Box>
                     <CardMedia
-                    component="img"
-                    sx={{
-                        width: "50%",
-                        height: "100vh",
-                        objectFit: "cover",
-                        position: "fixed",
-                        top: "0",
-                        left: "0",
-                    }}
-                    image={imagePendaftaran}
-                    alt="Example Image"
-                />
+                        component="img"
+                        sx={{
+                            width: "50%",
+                            height: "100vh",
+                            objectFit: "cover",
+                            position: "fixed",
+                            top: "0",
+                            left: "0",
+                        }}
+                        image={imagePendaftaran}
+                        alt="Example Image"
+                    />
                 </Box>
 
                 {showFormPage && (
@@ -172,11 +175,11 @@ export default function RawatJalanUmum() {
                                                     />
                                                 </FormControl>
                                                 <Typography>Poli yang dituju</Typography>
-                                                <PoliSelect
-                                                    value={values.poli}
-                                                    onChange={(e) =>
-                                                        setFieldValue("poli", e.target.value)
-                                                    }
+                                                <DropdownListAPI
+                                                    options={clinicOptions.map(({ id, name }) => ({ value: id, label: name }))}
+                                                    placeholder="Pilih Fasilitas Induk"
+                                                    onChange={(selectedOptionValue) => console.log('pilihan: ', selectedOptionValue)}
+                                                    loading={false}
                                                 />
                                                 {touched.poli && errors.poli && (
                                                     <Typography sx={{ color: "red", fontSize: "12px" }}>
@@ -224,7 +227,7 @@ export default function RawatJalanUmum() {
                                                     )}
 
                                                     <Box sx={{ ml: 2, width: "100%" }}>
-                                                        <CalenderPopover title="Pilih tanggal" />
+                                                        <CustomCalender/>
                                                         {/* <SingleDateTimeRangePickerCustom/> */}
                                                     </Box>
                                                 </Box>
@@ -328,5 +331,5 @@ export default function RawatJalanUmum() {
                 )}
             </Box>
         </>
-  )
+    )
 }
