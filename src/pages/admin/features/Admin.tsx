@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import SideBar from "../../../components/SideBar/SideBar";
 import LongCard from "../../../components/medium/LongCard";
 import SideBarAdmin from "../../../components/SideBar/SideBarAdmin";
-import DashboardAdmin from "../DashboardAdmin";
+import DashboardAdmin from "../../../Backup/admin/DashboardAdmin";
 
 export default function Admin() {
   return (

@@ -10,7 +10,7 @@ import {
     Box,
 } from "@mui/material";
 
-import bgImage from "../../assets/img/String.png";
+import bgImage from "../../../assets/img/String.png";
 
 interface DetailCardProps {
     title: string;

@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
 // import regisImg from "../../../img/registerPasienImage.png";
-import regisImg from "../../../assets/img/registerImg.jpg";
+import regisImg from "../../../../assets/img/registerImg.jpg";
 // import logo from "../../../img/St.carolus.png";
 import { Button, CardMedia, Typography } from "@mui/material";
 import { Link } from "react-router-dom";

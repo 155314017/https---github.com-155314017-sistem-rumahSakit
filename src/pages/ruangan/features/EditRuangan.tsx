@@ -1,6 +1,6 @@
 import { Container, Box, Typography, Button, FormControl, OutlinedInput, CircularProgress } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import bgImage from "../../assets/img/String.png";
+import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/AlertSuccess";
 import DropdownListAPI from '../../../components/small/DropdownListAPI';
 import ImageUploaderGroupAPI from '../../../components/medium/ImageGroupUploaderAPI';

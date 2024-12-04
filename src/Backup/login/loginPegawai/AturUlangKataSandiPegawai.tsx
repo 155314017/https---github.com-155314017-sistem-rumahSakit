@@ -12,10 +12,10 @@ import {
 import { useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import my from "../../../img/loginImg.png";
+import my from "../../../../img/loginImg.png";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import logo from "../../../img/St.carolus.png";
+import logo from "../../../../img/St.carolus.png";
 import CustomButton from "../../../components/small/CustomButton";
 import { useNavigate } from "react-router-dom";
 

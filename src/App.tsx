@@ -1,7 +1,7 @@
 import "./App.css";
 <<<<<<< HEAD
 import Home from "./pages";
-import Admin from "./pages/admin/Admin";
+import Admin from "./Backup/admin/Admin";
 function App() {
   return (
     <>

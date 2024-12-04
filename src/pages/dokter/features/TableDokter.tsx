@@ -16,7 +16,7 @@ import {
   import SearchBar from "../../../components/small/SearchBar";
   import DropdownList from "../../../components/small/DropdownList";
   import { styled } from "@mui/material/styles";
-  import bgImage from "../../assets/img/String.png";
+  import bgImage from "../../../assets/img/String.png";
   
   // icon
   import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";

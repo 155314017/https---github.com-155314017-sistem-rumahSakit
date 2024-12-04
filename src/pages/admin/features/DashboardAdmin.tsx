@@ -15,9 +15,9 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 
 // table
-import TableRuangan from "../../ruangan/TableRuangan";
-import TablePegawai from "../../pegawai/TablePegawai";
-import TableAntrianPasien from "../TableAntrianPasien";
+import TableRuangan from "../../../Backup/ruangan/TableRuangan";
+import TablePegawai from "../../../Backup/pegawai/TablePegawai";
+import TableAntrianPasien from "../../../Backup/admin/TableAntrianPasien";
 
 export default function DashboardAdmin() {
   

@@ -15,7 +15,7 @@ import {
     TextField,
 } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import bgImage from "../../assets/img/String.png";
+import bgImage from "../../../assets/img/String.png";
 import PhoneInputComponent from '../../../components/inputComponent/PhoneInputComponent';
 import FileUploader from '../../../components/medium/FileUploader';
 import CalenderPopover from '../../../components/medium/CalenderPopover';

@@ -13,14 +13,14 @@ import {
   } from '@mui/material'
   import Visibility from '@mui/icons-material/Visibility'
   import VisibilityOff from '@mui/icons-material/VisibilityOff'
-  import my from '../../../img/loginImg.png'
+  import my from '../../../../img/loginImg.png'
   import { Formik, Form, Field } from 'formik'
   import * as Yup from 'yup'
   import AlertSuccess from '../../../../components/small/AlertSuccess'
   import AlertWarning from '../../../../components/small/AlertWarning'
   import CustomButton from '../../../../components/small/CustomButton'
   import LabelHandler from '../../../../components/small/LabelHandler'
-  import logo from '../../../img/St.carolus.png'
+  import logo from '../../../../img/St.carolus.png'
 
 
   //hooks
