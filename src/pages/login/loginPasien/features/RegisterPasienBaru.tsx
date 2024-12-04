@@ -12,7 +12,7 @@ import VerifyOTPPatient from "../../../../services/Patient Tenant/VerifyOTPPatie
 
 //hooks
 import useRegistrasiPasienBaru from "../hooks/useRegistrasiPasienBaru";
-export default function RegistrasiPasienBaru() {
+export default function RegisterPasienBaru() {
     const {
         otpFormShown,
       showOtp,
