@@ -5,7 +5,7 @@ import logo from "../../img/St.carolus.png"
 
 export default function InformasiTicket() {
   return (
-    <Box width={"506px"} height={"504px"} borderRadius={"32px"} bgcolor={"#F1F0FE"} position={"relative"} padding={"25px"}>
+    <Box width={"506px"} height={"504px"} borderRadius={"32px"} bgcolor={"#ffffff"} position={"relative"} padding={"25px"}>
       <CardMedia
         component="img"
         height="162px"
@@ -38,7 +38,7 @@ export default function InformasiTicket() {
 
           </Box>
         </Box>
-        <Box display={"flex"} flexDirection={"row"} gap={"60px"} >
+        <Box display={"flex"} flexDirection={"row"} gap={"80px"} >
           <Box display={"flex"} flexDirection={"column"} >
           <Typography>Tanggal reservasi</Typography>
           <Typography>29/Jul, 10:30</Typography>
@@ -52,7 +52,7 @@ export default function InformasiTicket() {
         <Button
           fullWidth
           sx={{
-            width: '410px',
+            width: '100%',
             height: '48px',
             marginTop: '20px',
             backgroundColor: '#8F85F3',
