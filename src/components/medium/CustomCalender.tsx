@@ -61,16 +61,17 @@ export default function CustomCalender() {
                 <InputBase
                     value={inputValue}
                     onClick={handleOpen}
-                    placeholder="Select Date and Time Range"
+                    placeholder="Pilih jadwal"
                     readOnly
                     sx={{
                         border: '1px solid #ccc',
-                        borderRadius: '4px',
+                        borderRadius: '8px',
                         padding: '10px 40px 10px 10px',
                         width: '100%',
                         height: '40px',
-                        backgroundColor: '#f5f5f5',
+                        backgroundColor: 'inherit',
                         color: '#333',
+                        cursor: 'pointer',
                         position: 'relative',
                         '&:focus': {
                             borderColor: '#1976d2',
@@ -81,10 +82,11 @@ export default function CustomCalender() {
                             sx={{
                                 position: 'absolute',
                                 right: 10,
+                                cursor: 'pointer',
                             }}
                             onClick={handleOpen}
                         >
-                            <ExpandMoreOutlined/>
+                            <ExpandMoreOutlined />
                         </IconButton>
                     }
                 />
