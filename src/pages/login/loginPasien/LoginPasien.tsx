@@ -7,7 +7,7 @@ import {
   Button,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import logo from "../../../img/St.carolus.png";
+import logo from "../../../../img/St.carolus.png";
 import patientImage from "../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";

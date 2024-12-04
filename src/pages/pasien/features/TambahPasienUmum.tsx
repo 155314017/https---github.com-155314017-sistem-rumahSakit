@@ -14,7 +14,7 @@ import {
     OutlinedInput,
 } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import bgImage from "../../assets/img/String.png";
+import bgImage from "../../../assets/img/String.png";
 import FileUploader from '../../../components/medium/FileUploader';
 import { doctors } from '../../../dummyData/dummyData';
 import PhoneInput from 'react-phone-input-2';

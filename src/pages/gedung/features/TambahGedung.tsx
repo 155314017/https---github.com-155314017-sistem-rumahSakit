@@ -1,7 +1,7 @@
 import { Container, Box } from "@mui/system";
 import { Typography, Button, FormControl, OutlinedInput } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import bgImage from "../../assets/img/String.png";
+import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/AlertSuccess";
 import ImageUploaderGroup from "../../../components/medium/ImageUploaderGroup";
 import useTambahGedung from "../hooks/useTambahGedung";

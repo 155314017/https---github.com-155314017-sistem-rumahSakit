@@ -1,5 +1,5 @@
 import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, OutlinedInput, Switch, RadioGroup, } from "@mui/material";
-import patientImage from "../../../assets/img/registrationImg.jpg";
+import patientImage from "../../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from 'formik';
 import AlertWarning from "../../../../components/small/AlertWarning";
 import AlertSuccess from "../../../../components/small/AlertSuccess";

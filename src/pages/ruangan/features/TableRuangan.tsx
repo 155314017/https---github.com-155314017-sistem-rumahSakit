@@ -21,7 +21,7 @@ import {
   import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
   import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
   
-  import bgImage from "../../assets/img/String.png";
+  import bgImage from "../../../assets/img/String.png";
   import ModalDeleteConfirmation from "../../../components/small/ModalDeleteConfirmation";
 
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, FormControl, RadioGroup, FormHelperText, CircularProgress, } from "@mui/material";
-import patientImage from "../../../assets/img/registrationImg.jpg";
+import patientImage from "../../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from 'formik';
 import AlertWarning from "../../../../components/small/AlertWarning";
 import AlertSuccess from "../../../../components/small/AlertSuccess";

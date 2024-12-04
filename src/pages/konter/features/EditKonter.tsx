@@ -1,5 +1,5 @@
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import bgImage from "../../assets/img/String.png";
+import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/AlertSuccess";
 import DropdownList from "../../../components/small/DropdownList";
 import CustomTimePicker from "../../../components/small/CustomTimePicker";

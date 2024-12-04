@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import logo from "../../../img/St.carolus.png";
-import patientImage from "../../../assets/img/registrationImg.jpg";
+import patientImage from "../../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import AlertWarning from "../../../components/small/AlertWarning";
