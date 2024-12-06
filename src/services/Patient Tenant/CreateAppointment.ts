@@ -15,8 +15,8 @@ interface Data {
   referenceDoc: string
 }
 const CreateAppointment = async (data: Data) => {
+  console.log('Creating appointment with data:', data)
   try {
-    console.log('inside createAppointments')
     const response = await axios.post(
       'https://hms.3dolphinsocial.com:8083/v1/patient/create-appointments',
       data,
@@ -26,19 +26,17 @@ const CreateAppointment = async (data: Data) => {
         }
       }
     )
-
-    console.log('inside Login1 ')
-    console.log('ID pasien: ', response.data.data.id)
-    console.log('Response register: ', response)
+    console.log('Appointment created:', response.data)
     return response.data
   } catch (error: any) {
     const customError: CustomError = new Error(
-      error.response?.data?.message || error.message || 'Login failed'
+      error.response?.data?.message || error.message || 'Creation failed'
     )
-
     customError.responseCode = error.response?.status
+    console.error('Error in CreateAppointment:', customError)
     throw customError
   }
 }
+
 
 export default CreateAppointment

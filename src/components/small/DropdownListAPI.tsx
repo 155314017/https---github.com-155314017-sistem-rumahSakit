@@ -10,9 +10,11 @@ interface Option {
 interface DropdownListProps {
     options: Option[];
     placeholder: string;
-    onChange?: (value: string, label: string) => void; 
+    onChange?: (value: string, label: string) => void;
     defaultValue?: string;
     loading: boolean;
+    valueField?: keyof Option; // Use keyof to restrict it to valid keys of Option
+    labelField?: keyof Option; // Same here for labelField
 }
 
 export default function DropdownListAPI({
@@ -20,23 +22,26 @@ export default function DropdownListAPI({
     placeholder,
     onChange,
     defaultValue = "",
-    loading
+    loading,
+    valueField = "value", // Default to "value"
+    labelField = "label" // Default to "label"
 }: DropdownListProps) {
     const [selectedOption, setSelectedOption] = useState<string>(defaultValue);
 
-    // Mengupdate selectedOption ketika defaultValue berubah
+    // Update selectedOption when defaultValue changes
     useEffect(() => {
         setSelectedOption(defaultValue);
-    }, [defaultValue]); // Pastikan ini dieksekusi saat defaultValue berubah
+    }, [defaultValue]);
 
     const handleChange = (event: SelectChangeEvent<string>) => {
         const value = event.target.value;
-        const selected = options.find(option => option.value === value);
+        const selected = options.find(option => option[valueField] === value);
 
         setSelectedOption(value);
 
-        if (onChange) {
-            onChange(value, selected ? selected.label : "");
+        if (onChange && selected) {
+            const label = selected[labelField]; // Get the label based on labelField
+            onChange(value, label);
         }
     };
 
@@ -51,7 +56,7 @@ export default function DropdownListAPI({
             }}
         >
             <Select
-                value={selectedOption} // Pastikan value menggunakan selectedOption
+                value={selectedOption}
                 onChange={handleChange}
                 displayEmpty
                 startAdornment={loading ? <CircularProgress size={20} /> : null}
@@ -69,8 +74,8 @@ export default function DropdownListAPI({
                     <em>{placeholder}</em>
                 </MenuItem>
                 {options.map((option) => (
-                    <MenuItem key={option.value} value={option.value} sx={{ color: "#8F85F3" }}>
-                        {option.label}
+                    <MenuItem key={option[valueField]} value={option[valueField]} sx={{ color: "#8F85F3" }}>
+                        {option[labelField]} {/* Display the label based on labelField */}
                     </MenuItem>
                 ))}
             </Select>

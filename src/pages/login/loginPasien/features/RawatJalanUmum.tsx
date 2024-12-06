@@ -1,41 +1,33 @@
-import React from 'react'
-import {
-    Button,
-    Box,
-    Typography,
-    CardMedia,
-    MenuItem,
-    Select,
-    FormControl,
-    InputLabel,
-    TextField,
-    Radio,
-    FormControlLabel,
-    RadioGroup,
-} from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import { Box, Button, Typography, CardMedia, FormControl, TextField, Radio, FormControlLabel, RadioGroup } from "@mui/material";
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
+import axios from 'axios';
 import "react-phone-input-2/lib/style.css";
 import logo from "../../../../img/St.carolus.png";
 import imagePendaftaran from "../../../../assets/img/pendaftaran.jpeg";
-import { doctors } from "../../../../dummyData/dummyData";
 import FileUploader from "../../../../components/medium/FileUploader";
 import InformasiTicket from "../../../../components/small/InformasiTicket";
-import CalenderPopover from "../../../../components/medium/CalenderPopover";
-import PoliSelect from "../../../../components/inputComponent/PoliSelect";
-import { Formik, Form } from "formik";
-
-//hooks
-import useRawatJalanUmum from '../hooks/useRawatJalanUmum';
 import DropdownListAPI from '../../../../components/small/DropdownListAPI';
 import CustomCalender from '../../../../components/medium/CustomCalender';
+
+// Hooks
+import useRawatJalanUmum from '../hooks/useRawatJalanUmum';
+import CreateAppointment from '../../../../services/Patient Tenant/CreateAppointment';
+import Cookies from "js-cookie";
+import InformasiTicketAPI from '../../../../components/small/InformasiTicketAPI';
+
+const validationSchema = Yup.object({
+    typeOfVisit: Yup.string().required("Jenis Kunjungan wajib diisi"),
+    symptoms: Yup.string().required("Keluhan wajib diisi"),
+    transportMethod: Yup.string().required("Cara datang/pengantar wajib diisi"),
+});
+
 interface FormValues {
-    fullname: string;
-    phone: string;
-    relation: string;
-    transportMethod: string;
-    poli: string;
-    docter: string;
-    operationalDate: string;
+    typeOfVisit: string;
+    symptoms: string;
 }
+
 
 export default function RawatJalanUmum() {
     const {
@@ -45,15 +37,29 @@ export default function RawatJalanUmum() {
         handleRadioChange,
         selectedMethod,
         clinicOptions,
+        doctorOptions,
+        setIdDoctor,
+        idDoctor,
+        handleScheduleChange,
+        selectedScheduleId,
+        idClinic,
+        handleDropdownPoli,
+        clinicName,
+        docterName,
+        handleDropdownDocter,
+        selectedSchedule,
+        setDataTickets,
+        dataTickets,
     } = useRawatJalanUmum();
+
     return (
         <>
             <style>
                 {`
-            :root {
-            background-color: #ffff
-            }
-            `}
+          :root {
+            background-color: #ffff;
+          }
+        `}
             </style>
 
             <Box
@@ -83,26 +89,57 @@ export default function RawatJalanUmum() {
                 {showFormPage && (
                     <Formik<FormValues>
                         initialValues={{
-                            fullname: "",
-                            phone: "",
-                            relation: "",
-                            transportMethod: "",
-                            poli: "",
-                            docter: "",
-                            operationalDate: "",
+                            typeOfVisit: "",
+                            symptoms: "",
                         }}
                         validationSchema={validationSchema}
-                        onSubmit={(values) => {
-                            // console.log("Form submitted with values:", values);
-                        }}
+                        onSubmit={async (values) => {
+                            // const token = Cookies.get("accessToken");
+                            const data = {
+                                patientId: 'c2d2bb89-27ae-4903-be24-0d6a0c86ab70',
+                                typeOfVisit: values.typeOfVisit,
+                                clinicId: idClinic,
+                                doctorId: idDoctor,
+                                scheduleId: selectedScheduleId,
+                                symptoms: values.symptoms,
+                                referenceDoc: 'tes'
+                            }
+                            try {
+                                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/patient/create-appointment', data, {
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        // 'accessToken': `${token}`
+                                    },
+                                });
+                                console.log("sukses: ", response.data.data.queueDatum)
+                                const dataSent = {
+                                    nomorAntrian: response.data.data.queueDatum.queueNumber,
+                                    namaDokter: docterName,
+                                    clinic: clinicName,
+                                    tanggalReservasi: "27/Des/2024, 10:00",
+                                    jadwalKonsul: selectedSchedule,
+                                }
+
+                                setDataTickets(dataSent)
+                                console.log("dataSent: ", dataSent)
+                                setSHowFormPage(false)
+                                console.log(showFormPage)
+                            } catch (err) {
+                                console.log(err)
+                            }
+                            console.log("Form submitted with values: ", data);
+                        }
+                        }
                     >
                         {({
                             values,
                             errors,
                             touched,
+                            handleChange,
                             setFieldValue,
+                            handleSubmit,
                         }) => (
-                            <Form>
+                            <Form onSubmit={handleSubmit}>
                                 <Box
                                     sx={{
                                         display: "flex",
@@ -141,13 +178,16 @@ export default function RawatJalanUmum() {
                                             Formulir pendaftaran pasien Umum
                                         </Typography>
 
-
                                         <Box>
                                             <Box sx={{ display: "flex", flexDirection: "column" }}>
                                                 <FormControl>
                                                     <Typography>Jenis Kunjungan</Typography>
                                                     <TextField
+                                                        id="typeOfVisit"
+                                                        name="typeOfVisit"
                                                         variant="outlined"
+                                                        value={values.typeOfVisit}
+                                                        onChange={handleChange}
                                                         sx={{
                                                             width: "100%",
                                                             borderRadius: "8px",
@@ -173,19 +213,22 @@ export default function RawatJalanUmum() {
                                                             },
                                                         }}
                                                     />
+                                                    {touched.typeOfVisit && errors.typeOfVisit && (
+                                                        <Typography
+                                                            sx={{ color: "red", fontSize: "12px", ml: 1 }}
+                                                        >
+                                                            {errors.typeOfVisit}
+                                                        </Typography>
+                                                    )}
                                                 </FormControl>
+
                                                 <Typography>Poli yang dituju</Typography>
                                                 <DropdownListAPI
                                                     options={clinicOptions.map(({ id, name }) => ({ value: id, label: name }))}
                                                     placeholder="Pilih Fasilitas Induk"
-                                                    onChange={(selectedOptionValue) => console.log('pilihan: ', selectedOptionValue)}
+                                                    onChange={handleDropdownPoli}
                                                     loading={false}
                                                 />
-                                                {touched.poli && errors.poli && (
-                                                    <Typography sx={{ color: "red", fontSize: "12px" }}>
-                                                        {errors.poli}
-                                                    </Typography>
-                                                )}
 
                                                 <Box
                                                     display={"flex"}
@@ -195,47 +238,26 @@ export default function RawatJalanUmum() {
                                                     sx={{ width: "100%" }}
                                                 >
                                                     <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
-                                                        <InputLabel id="doctor-label">
-                                                            Pilih Dokter
-                                                        </InputLabel>
-                                                        <Select
-                                                            labelId="doctor-label"
-                                                            value={values.docter}
-                                                            label="Pilih Dokter"
-                                                            onChange={(e) =>
-                                                                setFieldValue("docter", e.target.value)
-                                                            }
-                                                            sx={{ width: "100%", borderRadius: "8px" }}
-                                                        >
-                                                            {doctors.map((doctor) => (
-                                                                <MenuItem
-                                                                    key={doctor.value}
-                                                                    value={doctor.value}
-                                                                    sx={{ color: "#8F85F3" }}
-                                                                >
-                                                                    {doctor.label}
-                                                                </MenuItem>
-                                                            ))}
-                                                        </Select>
+                                                        <DropdownListAPI
+                                                            placeholder='Pilih dokter'
+                                                            options={doctorOptions.map(({ id, name }) => ({ value: id, label: name }))}
+                                                            onChange={handleDropdownDocter}
+                                                            loading={false}
+                                                        />
                                                     </FormControl>
-                                                    {touched.docter && errors.docter && (
-                                                        <Typography
-                                                            sx={{ color: "red", fontSize: "12px", ml: 1 }}
-                                                        >
-                                                            {errors.docter}
-                                                        </Typography>
-                                                    )}
 
                                                     <Box sx={{ ml: 2, width: "100%" }}>
-                                                        <CustomCalender/>
-                                                        {/* <SingleDateTimeRangePickerCustom/> */}
+                                                        <CustomCalender doctorId={idDoctor} onChange={handleScheduleChange} />
                                                     </Box>
                                                 </Box>
 
                                                 <FormControl>
-                                                    <Typography sx={{ textTransform: "capitalize" }}>keluhan pasien</Typography>
+                                                    <Typography sx={{ textTransform: "capitalize" }}>Keluhan Pasien</Typography>
                                                     <TextField
-                                                        id="outlined-multiline-static"
+                                                        id="symptoms"
+                                                        name="symptoms"
+                                                        value={values.symptoms}
+                                                        onChange={handleChange}
                                                         multiline
                                                         rows={4}
                                                         variant="outlined"
@@ -243,7 +265,7 @@ export default function RawatJalanUmum() {
                                                     />
                                                 </FormControl>
 
-                                                <Box mt={6} >
+                                                <Box mt={6}>
                                                     <Typography>Jenis Pembayaran</Typography>
                                                     <RadioGroup
                                                         aria-label="transport-method"
@@ -252,15 +274,15 @@ export default function RawatJalanUmum() {
                                                         onChange={handleRadioChange}
                                                         sx={{ display: 'flex', flexDirection: 'column', border: '1px solid black', marginTop: '10px', borderRadius: '16px', padding: '16px 24px 16px 24px' }}
                                                     >
-                                                        <Box display={'flex'} flexDirection={'row'} >
+                                                        <Box display={'flex'} flexDirection={'row'}>
                                                             <FormControlLabel value="asuransi" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Asuransi" />
                                                             <FormControlLabel value="uang tunai dan debit" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Uang tunai dan debit" />
                                                         </Box>
-                                                        {selectedMethod == 'asuransi' && (
+                                                        {selectedMethod === 'asuransi' && (
                                                             <Box>
-                                                                <Typography mb={'10px'} >Unggah kartu asuransi</Typography>
+                                                                <Typography mb={'10px'}>Unggah kartu asuransi</Typography>
                                                                 <FileUploader />
-                                                                <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
+                                                                <Typography fontSize={'14px'} color="#A8A8BD">Ukuran file maksimal 1mb</Typography>
                                                             </Box>
                                                         )}
                                                     </RadioGroup>
@@ -278,30 +300,22 @@ export default function RawatJalanUmum() {
                                             </Box>
                                         </Box>
 
-                                        <Box
+                                        <Button
+                                            type="submit"
                                             sx={{
-                                                display: "flex",
-                                                justifyContent: "space-between",
-                                                mt: 4,
+                                                backgroundColor: "#8F85F3",
+                                                color: "white",
+                                                textTransform: "none",
+                                                width: "100%",
+                                                padding: "10px 24px",
+                                                borderRadius: "8px",
+                                                "&:hover": {
+                                                    backgroundColor: "#7C75E2",
+                                                },
                                             }}
                                         >
-                                            <Button
-                                                onClick={() => setSHowFormPage(false)}
-                                                sx={{
-                                                    backgroundColor: "#8F85F3",
-                                                    color: "white",
-                                                    textTransform: "none",
-                                                    width: "100%",
-                                                    padding: "10px 24px",
-                                                    borderRadius: "8px",
-                                                    "&:hover": {
-                                                        backgroundColor: "#7C75E2",
-                                                    },
-                                                }}
-                                            >
-                                                Selesai
-                                            </Button>
-                                        </Box>
+                                            Selesai
+                                        </Button>
                                     </Box>
                                 </Box>
                             </Form>
@@ -321,15 +335,21 @@ export default function RawatJalanUmum() {
                             width: "45.9%",
                             height: '91.7vh',
                             bgcolor: '#ffff'
-
                         }}
                     >
-                        <Box marginLeft={"10%"} marginTop={"20%"}>
-                            <InformasiTicket />
+                        <Box marginLeft={"10%"} marginTop={"10%"}>
+                            {/* <InformasiTicket /> */}
+                            <InformasiTicketAPI
+                                clinic={"tes"}
+                                jadwalKonsul={"konsul"}
+                                namaDokter={"doktor"}
+                                nomorAntrian={dataTickets?.nomorAntrian}
+                                tanggalReservasi={"reserve"}
+                            />
                         </Box>
                     </Box>
                 )}
-            </Box>
+            </Box >
         </>
-    )
+    );
 }

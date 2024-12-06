@@ -1,17 +1,71 @@
-import * as React from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Box, InputBase, Popover, IconButton, Button, Grid } from '@mui/material';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import dayjs, { Dayjs } from 'dayjs';
 import { ExpandMoreOutlined } from '@mui/icons-material';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-export default function CustomCalender() {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs());
-    const [selectedTimeRange, setSelectedTimeRange] = React.useState<string | null>(null);
-    const [inputValue, setInputValue] = React.useState<string>('');
-    const unavailableTimes = ['10:00-11:00', '17:00-18:00'];
+const formatDate = (timestamp: number) => dayjs.unix(timestamp).format('YYYY-MM-DD');
+const formatTime = (timestamp: number) => dayjs.unix(timestamp).format('HH:00');
+
+type CalenderProps = {
+    doctorId: string;
+    onChange: (scheduleId: string, schedule: string) => void;
+};
+
+const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
+    const [selectedTimeRange, setSelectedTimeRange] = useState<string | null>(null);
+    const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
+    const [inputValue, setInputValue] = useState<string>('');
+    const [schedules, setSchedules] = useState<any[]>([]);
+    const [availableTimes, setAvailableTimes] = useState<{ [date: string]: { timeRange: string, scheduleId: string }[] }>({});
+    const [availableDates, setAvailableDates] = useState<Set<string>>(new Set());
+
+    useEffect(() => {
+        fetchSchedules();
+    }, [doctorId]);
+
+    const fetchSchedules = async () => {
+        try {
+            const response = await axios.get(
+                `https://hms.3dolphinsocial.com:8083/v1/manage/doctor/schedules/${doctorId}`
+            );
+            if (response.data && response.data.data) {
+                setSchedules(response.data.data);
+                processSchedules(response.data.data);
+                console.log("schedule: ", response.data.data)
+            }
+        } catch (error) {
+            console.error('Error fetching schedules:', error);
+        }
+    };
+
+    const processSchedules = (scheduleData: any[]) => {
+        const times: { [date: string]: { timeRange: string, scheduleId: string }[] } = {};
+        const dates: Set<string> = new Set();
+
+        scheduleData.forEach((schedule) => {
+            const startDate = formatDate(schedule.startDateTime);
+            const startTime = formatTime(schedule.startDateTime);
+            const endTime = formatTime(schedule.endDateTime);
+            const timeRange = `${startTime} - ${endTime}`;
+
+            dates.add(startDate);
+
+            if (!times[startDate]) {
+                times[startDate] = [];
+            }
+
+            times[startDate].push({ timeRange, scheduleId: schedule.id });
+        });
+
+        setAvailableDates(dates);
+        setAvailableTimes(times);
+    };
 
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -23,36 +77,38 @@ export default function CustomCalender() {
 
     const open = Boolean(anchorEl);
 
-    const generateTimeSlots = () => {
-        const startHour = 7;
-        const endHour = 18;
+    const handleTimeSelect = (timeRange: string, scheduleId: string) => {
+        if (!selectedDate) return;
 
-        return Array.from({ length: endHour - startHour }, (_, i) => {
-            const start = startHour + i;
-            const startTime = `${start.toString().padStart(2, '0')}:00`;
-            const endTime = `${(start + 1).toString().padStart(2, '0')}:00`;
-
-            // Cek apakah slot waktu ada dalam unavailableTimes
-            const isDisabled = unavailableTimes.includes(`${startTime}-${endTime}`);
-
-            return { startTime, endTime, isDisabled };
-        });
+        const formattedDate = selectedDate.format('MM/DD/YYYY');
+        const selectedTime = `${formattedDate} ${timeRange}`;
+        setSelectedTimeRange(selectedTime);
+        setInputValue(selectedTime);
+        setSelectedScheduleId(scheduleId);
     };
 
-    const handleTimeSelect = (start: string, end: string) => {
-        const formattedDate = selectedDate?.format('MM/DD/YYYY') || '';
-        const timeRange = `${formattedDate} ${start}-${end}`;
+    const generateTimeSlots = () => {
+        const startHour = 0;
+        const endHour = 24;
+        const timeSlots = [];
 
-        setSelectedTimeRange(timeRange);
-        setInputValue(timeRange);
+        for (let hour = startHour; hour < endHour; hour++) {
+            const startTime = `${hour.toString().padStart(2, '0')}:00`;
+            const endTime = `${(hour + 1).toString().padStart(2, '0')}:00`;
+            timeSlots.push({ startTime, endTime });
+        }
+
+        return timeSlots;
     };
 
     const handleSave = () => {
-        if (selectedTimeRange) {
-            // Log the selected date and time range to the console when saving
-            console.log(`Selected Date and Time: ${selectedTimeRange}`);
-            handleClose(); // Close the popover after saving
-        }
+        if (!selectedScheduleId || !selectedTimeRange || !selectedDate) return;
+
+        const formattedDate = selectedDate.format('DD/Mon/YYYY');
+        const selectedSchedule = `${formattedDate}, ${selectedTimeRange.split(' ').slice(1).join(' ')}`;
+
+        onChange(selectedScheduleId, selectedSchedule);
+        handleClose();
     };
 
     return (
@@ -105,46 +161,49 @@ export default function CustomCalender() {
                     }}
                 >
                     <Box sx={{ display: 'flex', padding: 2, maxWidth: '899px' }}>
-                        {/* Pilih Tanggal */}
                         <Box sx={{ width: '50%' }}>
                             <DateCalendar
                                 value={selectedDate}
-                                onChange={(newValue) => setSelectedDate(newValue)}
+                                onChange={(newValue) => {
+                                    setSelectedDate(newValue);
+                                    setSelectedTimeRange(null);
+                                    setInputValue('');
+                                }}
+                                shouldDisableDate={(date) => !availableDates.has(date.format('YYYY-MM-DD'))}
                             />
                         </Box>
 
-                        {/* Pilih Time Range */}
                         <Box sx={{ width: '50%' }}>
                             <Grid container spacing={1}>
-                                {generateTimeSlots().map(({ startTime, endTime, isDisabled }) => (
-                                    <Grid item xs={6} key={`${startTime}-${endTime}`}>
-                                        <Button
-                                            fullWidth
-                                            onClick={() => !isDisabled && handleTimeSelect(startTime, endTime)}
-                                            variant={selectedTimeRange?.includes(`${startTime}-${endTime}`) ? 'contained' : 'outlined'}
-                                            sx={{
-                                                bgcolor: selectedTimeRange?.includes(`${startTime}-${endTime}`)
-                                                    ? '#8F85F3'
-                                                    : isDisabled ? '#A8A8A8'
-                                                        : 'transparent',
-                                                color: selectedTimeRange?.includes(`${startTime}-${endTime}`)
-                                                    ? '#fff'
-                                                    : isDisabled ? '#D3D3D3'
-                                                        : '#000',
-                                                '&:hover': {
-                                                    bgcolor: '#8F85F3',
-                                                    color: '#fff',
-                                                },
-                                                borderColor: '#8F85F3',
-                                                opacity: isDisabled ? 0.7 : 1,
-                                                pointerEvents: isDisabled ? 'none' : 'auto',
-                                            }}
-                                            disabled={isDisabled}
-                                        >
-                                            {`${startTime} - ${endTime}`}
-                                        </Button>
-                                    </Grid>
-                                ))}
+                                {selectedDate && generateTimeSlots().map(({ startTime, endTime }) => {
+                                    const timeRange = `${startTime} - ${endTime}`;
+                                    const availableTime = availableTimes[selectedDate.format('YYYY-MM-DD')]?.find(time => time.timeRange === timeRange);
+                                    const isAvailable = !!availableTime;
+
+                                    return (
+                                        <Grid item xs={6} key={timeRange}>
+                                            <Button
+                                                fullWidth
+                                                onClick={() => isAvailable && handleTimeSelect(timeRange, availableTime.scheduleId)}
+                                                variant={selectedTimeRange === timeRange ? 'contained' : 'outlined'}
+                                                sx={{
+                                                    bgcolor: selectedTimeRange === timeRange ? '#8F85F3' : 'transparent',
+                                                    color: isAvailable ? '#000' : '#D3D3D3',
+                                                    '&:hover': {
+                                                        bgcolor: isAvailable ? '#8F85F3' : 'transparent',
+                                                        color: isAvailable ? '#fff' : '#D3D3D3',
+                                                    },
+                                                    borderColor: isAvailable ? '#8F85F3' : '#D3D3D3',
+                                                    pointerEvents: isAvailable ? 'auto' : 'none',
+                                                    opacity: isAvailable ? 1 : 0.5,
+                                                }}
+                                                disabled={!isAvailable}
+                                            >
+                                                {timeRange}
+                                            </Button>
+                                        </Grid>
+                                    );
+                                })}
                             </Grid>
                         </Box>
                     </Box>
@@ -157,27 +216,29 @@ export default function CustomCalender() {
                                 color: '#8F85F3',
                                 "&:hover": {
                                     backgroundColor: "#8F85F3",
-                                    color: 'white'
+                                    color: "#fff"
                                 },
-                            }}>
-                            Batal
+                            }}
+                        >
+                            Cancel
                         </Button>
                         <Button onClick={handleSave}
                             sx={{
                                 width: '50%',
-                                bgcolor: '#8F85F3',
-                                color: 'white',
-                                border: '1px solid #8F85F3',
-                                "&:hover": {
-                                    backgroundColor: "white",
-                                    color: '#8F85F3',
+                                backgroundColor: '#8F85F3',
+                                color: '#fff',
+                                '&:hover': {
+                                    backgroundColor: '#8F85F3',
                                 },
-                            }}>
+                            }}
+                        >
                             Simpan
                         </Button>
                     </Box>
                 </Popover>
-            </Box >
-        </LocalizationProvider >
+            </Box>
+        </LocalizationProvider>
     );
-}
+};
+
+export default CustomCalender;
