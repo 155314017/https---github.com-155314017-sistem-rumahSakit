@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect } from 'react'
 import { useState } from "react";
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
 
 const validationSchema = Yup.object({
@@ -29,7 +30,7 @@ type dataTicket = {
 
 
 export default function useRawatJalanUmum() {
-  const [showFormPage, setSHowFormPage] = useState(true);
+  const [showFormPage, setShowFormPage] = useState(true);
   const [selectedMethod, setSelectedMethod] = useState<string>("");
   const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
   const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
@@ -40,7 +41,21 @@ export default function useRawatJalanUmum() {
   const [docterName, setDocterName] = useState('');
   const [selectedSchedule, setSelectedSchedule] = useState<string | null>(null);
   const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
+  const [patientId, setPatientId] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  useEffect(() => {
+    console.log("tes")
+    if (location.state && location.state.succesSendData) {
+      console.log("tes1")
+      setPatientId(location.state.data)
+    }
+  }, [location.state, navigate]);
+
+  useEffect(() => {
+    console.log("PASIEN ID RAWAT JALAN: ", patientId);
+  }, [patientId]);
 
   const handleScheduleChange = (scheduleId: string, schedule: string) => {
     setSelectedScheduleId(scheduleId);
@@ -110,7 +125,7 @@ export default function useRawatJalanUmum() {
 
   return {
     showFormPage,
-    setSHowFormPage,
+    setShowFormPage,
     validationSchema,
     handleRadioChange,
     selectedMethod,
@@ -130,5 +145,6 @@ export default function useRawatJalanUmum() {
     selectedSchedule,
     setDataTickets,
     dataTickets,
+    patientId,
   }
 }

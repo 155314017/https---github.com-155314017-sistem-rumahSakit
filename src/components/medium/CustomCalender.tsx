@@ -103,9 +103,9 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
 
     const handleSave = () => {
         if (!selectedScheduleId || !selectedTimeRange || !selectedDate) return;
-
-        const formattedDate = selectedDate.format('DD/Mon/YYYY');
-        const selectedSchedule = `${formattedDate}, ${selectedTimeRange.split(' ').slice(1).join(' ')}`;
+        const formattedDate = dayjs(selectedDate).format('DD/MMM/YYYY');
+        const timeRange = selectedTimeRange.split(' ').slice(-3).join(' ');
+        const selectedSchedule = `${formattedDate}, ${timeRange}`;
 
         onChange(selectedScheduleId, selectedSchedule);
         handleClose();

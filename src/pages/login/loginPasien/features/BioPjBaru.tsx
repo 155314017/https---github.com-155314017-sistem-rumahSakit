@@ -134,7 +134,7 @@ export default function BioPjBaru() {
                                         const response = await UpdatePatientGuards(dataRegis);
                                         console.log("response: ", response);
                                         console.log("Sukses")
-                                        navigate('/kategori/pasien')
+                                        navigate('/kategori/pasien', { state: { succesSendData: true, data: patientId } })
                                     } catch {
                                         console.log("error")
                                     }

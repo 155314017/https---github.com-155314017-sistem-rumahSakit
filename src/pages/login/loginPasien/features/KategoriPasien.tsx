@@ -14,7 +14,8 @@ export default function KategoriPasien() {
   const {
     pasienBaru,
     setPasienBaru,
-    navigate
+    navigate,
+    patientId,
   } = useKategoriPasien();
 
   return (
@@ -81,25 +82,27 @@ export default function KategoriPasien() {
                 <Box
                   sx={{ display: "flex", flexDirection: "column", gap: "24px" }}
                 >
-                  <Link
+                  {/* <Link
                     to="/rawatjalan/bpjs"
                     style={{ textDecoration: "none" }}
-                  >
-                    <CardRawatJalan
-                      title="Pasien BPJS"
-                      text="dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu dan berhak mendapatkan pelayanan kesehatan"
-                    />
-                  </Link>
+                  > */}
+                  <CardRawatJalan
+                    onClick={() => navigate("/rawatjalan/bpjs")}
+                    title="Pasien BPJS"
+                    text="dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu dan berhak mendapatkan pelayanan kesehatan"
+                  />
+                  {/* </Link> */}
 
-                  <Link
+                  {/* <Link
                     to="/rawatjalan/umum"
                     style={{ textDecoration: "none" }}
-                  >
-                    <CardRawatJalan
-                      title="Pasien umum"
-                      text="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
-                    />
-                  </Link>
+                  > */}
+                  <CardRawatJalan
+                    onClick={() => navigate("/rawatjalan/umum", { state: { succesSendData: true, data: patientId } })}
+                    title="Pasien umum"
+                    text="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
+                  />
+                  {/* </Link> */}
                 </Box>
 
                 <Button
@@ -127,25 +130,29 @@ export default function KategoriPasien() {
                 <Box
                   sx={{ display: "flex", flexDirection: "column", gap: "24px" }}
                 >
-                  <Link
+                  {/* <Link
                     to="/rawatjalan/bpjs"
                     style={{ textDecoration: "none" }}
-                  >
-                    <CardRawatJalan
-                      title="Pasien BPJS"
-                      text="dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu dan berhak mendapatkan pelayanan kesehatan"
-                    />
-                  </Link>
+                  > */}
+                  <CardRawatJalan
+                    onClick={() => navigate("/rawatjalan/bpjs")}
+                    title="Pasien BPJS"
+                    text="dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu dan berhak mendapatkan pelayanan kesehatan"
+                  />
+                  {/* </Link> */}
 
-                  <Link
+                  {/* <Link
                     to="/rawatjalan/umum"
+                    state={{ succesSendData: true, data: patientId }}
                     style={{ textDecoration: "none" }}
-                  >
-                    <CardRawatJalan
-                      title="Pasien umum"
-                      text="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
-                    />
-                  </Link>
+                  > */}
+                  <CardRawatJalan
+                    onClick={() => navigate("/rawatjalan/umum", { state: { succesSendData: true, data: patientId } })}
+                    title="Pasien umum"
+                    text="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
+                  />
+                  {/* </Link> */}
+
                 </Box>
 
                 <Button

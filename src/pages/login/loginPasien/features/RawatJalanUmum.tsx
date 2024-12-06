@@ -32,7 +32,7 @@ interface FormValues {
 export default function RawatJalanUmum() {
     const {
         showFormPage,
-        setSHowFormPage,
+        setShowFormPage,
         validationSchema,
         handleRadioChange,
         selectedMethod,
@@ -50,6 +50,7 @@ export default function RawatJalanUmum() {
         selectedSchedule,
         setDataTickets,
         dataTickets,
+        patientId,
     } = useRawatJalanUmum();
 
     return (
@@ -96,7 +97,7 @@ export default function RawatJalanUmum() {
                         onSubmit={async (values) => {
                             // const token = Cookies.get("accessToken");
                             const data = {
-                                patientId: 'c2d2bb89-27ae-4903-be24-0d6a0c86ab70',
+                                patientId: patientId,
                                 typeOfVisit: values.typeOfVisit,
                                 clinicId: idClinic,
                                 doctorId: idDoctor,
@@ -122,7 +123,7 @@ export default function RawatJalanUmum() {
 
                                 setDataTickets(dataSent)
                                 console.log("dataSent: ", dataSent)
-                                setSHowFormPage(false)
+                                setShowFormPage(false)
                                 console.log(showFormPage)
                             } catch (err) {
                                 console.log(err)
@@ -340,11 +341,11 @@ export default function RawatJalanUmum() {
                         <Box marginLeft={"10%"} marginTop={"10%"}>
                             {/* <InformasiTicket /> */}
                             <InformasiTicketAPI
-                                clinic={"tes"}
-                                jadwalKonsul={"konsul"}
-                                namaDokter={"doktor"}
+                                clinic={dataTickets?.clinic || "Unknown Clinic"}
+                                jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
+                                namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
                                 nomorAntrian={dataTickets?.nomorAntrian}
-                                tanggalReservasi={"reserve"}
+                                tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
                             />
                         </Box>
                     </Box>
