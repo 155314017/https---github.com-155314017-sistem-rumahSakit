@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import Cookies from 'js-cookie'
 import dayjs from 'dayjs'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import 'dayjs/locale/id'
+import { CreateAmbulanceServices } from '../../../services/Admin Tenant/ManageAmbulance/CreateAmbulanceService'
 
 type ImageData = {
   imageName: string
@@ -109,19 +108,9 @@ export default function useTambahAmbulance() {
         }))
       }
 
-      const token = Cookies.get('accessToken')
 
       try {
-        await axios.post(
-          'https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/',
-          data,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              accessToken: `${token}`
-            }
-          }
-        )
+        await CreateAmbulanceServices(data);
        
         navigate('/ambulance', {
           state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' }

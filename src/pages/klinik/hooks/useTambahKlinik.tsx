@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom';
+import { createClinic } from '../../../services/Admin Tenant/ManageClinic/CreateClinic';
 
 type ImageData = {
     imageName: string;
@@ -92,12 +93,7 @@ export default function useTambahKlinik() {
             const token = Cookies.get("accessToken");
 
             try {
-                await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    },
-                });
+                await createClinic(data, token);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
