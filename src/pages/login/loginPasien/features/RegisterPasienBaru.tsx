@@ -15,35 +15,35 @@ import useRegistrasiPasienBaru from "../hooks/useRegistrasiPasienBaru";
 export default function RegisterPasienBaru() {
     const {
         otpFormShown,
-      showOtp,
-      showTemporaryAlertError,
-      handleResendClick,
-      formatTime,
-      data1,
-      showLogin,
-      notFound,
-      buttonDis,
-      errorAlert,
-      showEmailChanged,
-      showAlert,
-      emailError,
-      resendSuccess,
-      isCounting,
-      validationSchema,
-      otpValidationSchema,
-      BpRadio,
-      emailOTP,
-      otp,
-      patientId, setPatientId,
-      setButtonDis,
-      setEmailOTP,
-      setData,
-      navigate,
-      data,
-      setOtp
+        showOtp,
+        showTemporaryAlertError,
+        handleResendClick,
+        formatTime,
+        data1,
+        showLogin,
+        notFound,
+        buttonDis,
+        errorAlert,
+        showEmailChanged,
+        showAlert,
+        emailError,
+        resendSuccess,
+        isCounting,
+        validationSchema,
+        otpValidationSchema,
+        BpRadio,
+        emailOTP,
+        otp,
+        patientId, setPatientId,
+        setButtonDis,
+        setEmailOTP,
+        setData,
+        navigate,
+        data,
+        setOtp
     } = useRegistrasiPasienBaru();
-  return (
-    <>   <style>
+    return (
+        <>   <style>
             {`
             :root {
             background-color: #ffff
@@ -363,11 +363,13 @@ export default function RegisterPasienBaru() {
                                                             height: '48px',
                                                             marginTop: '20px',
                                                             backgroundColor: '#8F85F3',
-                                                            ":hover": { backgroundColor: '#D5D1FB' },
+                                                            '&.Mui-disabled': {
+                                                                backgroundColor: '#8F85F3', 
+                                                            },
                                                         }}
-                                                        disabled={true}
+                                                        disabled={true} 
                                                     >
-                                                        <CircularProgress size={20} />
+                                                        <CircularProgress size={20} sx={{ color: 'white' }} />
                                                     </Button>
                                                 ) : (
                                                     <Button
@@ -574,5 +576,5 @@ export default function RegisterPasienBaru() {
                 )}
             </Box>
         </>
-  )
+    )
 }

@@ -41,6 +41,7 @@ export default function useRawatJalanUmum() {
   const [docterName, setDocterName] = useState('');
   const [selectedSchedule, setSelectedSchedule] = useState<string | null>(null);
   const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
+  const [buttonDis, setButtonDis] = useState(false);
   const [patientId, setPatientId] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
@@ -74,6 +75,7 @@ export default function useRawatJalanUmum() {
     setIdClinic(value)
     setClinicName(label);
   };
+  
 
   const handleDropdownDocter = (value: string, label: string) => {
     console.log(`Selected Value: ${value}, Selected Label: ${label}`);
@@ -146,5 +148,7 @@ export default function useRawatJalanUmum() {
     setDataTickets,
     dataTickets,
     patientId,
+    setButtonDis,
+    buttonDis,
   }
 }

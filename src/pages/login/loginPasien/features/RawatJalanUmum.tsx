@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Typography, CardMedia, FormControl, TextField, Radio, FormControlLabel, RadioGroup } from "@mui/material";
+import { Box, Button, Typography, CardMedia, FormControl, TextField, Radio, FormControlLabel, RadioGroup, CircularProgress } from "@mui/material";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -16,6 +16,7 @@ import useRawatJalanUmum from '../hooks/useRawatJalanUmum';
 import CreateAppointment from '../../../../services/Patient Tenant/CreateAppointment';
 import Cookies from "js-cookie";
 import InformasiTicketAPI from '../../../../components/small/InformasiTicketAPI';
+import dayjs from 'dayjs';
 
 const validationSchema = Yup.object({
     typeOfVisit: Yup.string().required("Jenis Kunjungan wajib diisi"),
@@ -51,6 +52,8 @@ export default function RawatJalanUmum() {
         setDataTickets,
         dataTickets,
         patientId,
+        setButtonDis,
+        buttonDis,
     } = useRawatJalanUmum();
 
     return (
@@ -96,6 +99,7 @@ export default function RawatJalanUmum() {
                         validationSchema={validationSchema}
                         onSubmit={async (values) => {
                             // const token = Cookies.get("accessToken");
+                            setButtonDis(true);
                             const data = {
                                 patientId: patientId,
                                 typeOfVisit: values.typeOfVisit,
@@ -113,18 +117,18 @@ export default function RawatJalanUmum() {
                                     },
                                 });
                                 console.log("sukses: ", response.data.data.queueDatum)
+                                const createdDateTimeFormatted = dayjs.unix(response.data.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
                                 const dataSent = {
                                     nomorAntrian: response.data.data.queueDatum.queueNumber,
                                     namaDokter: docterName,
                                     clinic: clinicName,
-                                    tanggalReservasi: "27/Des/2024, 10:00",
+                                    tanggalReservasi: createdDateTimeFormatted,
                                     jadwalKonsul: selectedSchedule,
                                 }
 
                                 setDataTickets(dataSent)
-                                console.log("dataSent: ", dataSent)
                                 setShowFormPage(false)
-                                console.log(showFormPage)
+                                setButtonDis(false)
                             } catch (err) {
                                 console.log(err)
                             }
@@ -137,7 +141,8 @@ export default function RawatJalanUmum() {
                             errors,
                             touched,
                             handleChange,
-                            setFieldValue,
+                            isValid,
+                            dirty,
                             handleSubmit,
                         }) => (
                             <Form onSubmit={handleSubmit}>
@@ -301,22 +306,44 @@ export default function RawatJalanUmum() {
                                             </Box>
                                         </Box>
 
-                                        <Button
-                                            type="submit"
-                                            sx={{
-                                                backgroundColor: "#8F85F3",
-                                                color: "white",
-                                                textTransform: "none",
-                                                width: "100%",
-                                                padding: "10px 24px",
-                                                borderRadius: "8px",
-                                                "&:hover": {
-                                                    backgroundColor: "#7C75E2",
-                                                },
-                                            }}
-                                        >
-                                            Selesai
-                                        </Button>
+
+                                        {buttonDis ? (
+                                            <Button
+                                                type="submit"
+                                                variant="contained"
+                                                color="primary"
+                                                fullWidth
+                                                sx={{
+                                                    width: '100%',
+                                                    height: '48px',
+                                                    marginTop: '20px',
+                                                    backgroundColor: '#8F85F3',
+                                                    '&.Mui-disabled': {
+                                                        backgroundColor: '#8F85F3',
+                                                    },
+                                                }}
+                                                disabled={true}
+                                            >
+                                                <CircularProgress size={20} sx={{ color: 'white' }} />
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                type="submit"
+                                                variant="contained"
+                                                color="primary"
+                                                fullWidth
+                                                sx={{
+                                                    width: '100%',
+                                                    height: '48px',
+                                                    marginTop: '20px',
+                                                    backgroundColor: '#8F85F3',
+                                                    ":hover": { backgroundColor: '#D5D1FB' },
+                                                }}
+                                            disabled={!isValid || !dirty}
+                                            >
+                                                Selesai
+                                            </Button>
+                                        )}
                                     </Box>
                                 </Box>
                             </Form>

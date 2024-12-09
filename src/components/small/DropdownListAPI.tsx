@@ -13,8 +13,8 @@ interface DropdownListProps {
     onChange?: (value: string, label: string) => void;
     defaultValue?: string;
     loading: boolean;
-    valueField?: keyof Option; // Use keyof to restrict it to valid keys of Option
-    labelField?: keyof Option; // Same here for labelField
+    valueField?: keyof Option; 
+    labelField?: keyof Option; 
 }
 
 export default function DropdownListAPI({
@@ -23,12 +23,11 @@ export default function DropdownListAPI({
     onChange,
     defaultValue = "",
     loading,
-    valueField = "value", // Default to "value"
-    labelField = "label" // Default to "label"
+    valueField = "value", 
+    labelField = "label"
 }: DropdownListProps) {
     const [selectedOption, setSelectedOption] = useState<string>(defaultValue);
 
-    // Update selectedOption when defaultValue changes
     useEffect(() => {
         setSelectedOption(defaultValue);
     }, [defaultValue]);
@@ -40,7 +39,7 @@ export default function DropdownListAPI({
         setSelectedOption(value);
 
         if (onChange && selected) {
-            const label = selected[labelField]; // Get the label based on labelField
+            const label = selected[labelField]; 
             onChange(value, label);
         }
     };

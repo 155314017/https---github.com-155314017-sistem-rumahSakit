@@ -38,22 +38,22 @@ const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi
                 <Box display={"flex"} flexDirection={"row"} gap={"60px"} >
                     <Box>
                         <Typography>Dokter yang bertugas</Typography>
-                        <Typography>{namaDokter}</Typography>
+                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"} >{namaDokter}</Typography>
                     </Box>
                     <Box>
                         <Typography>Poli yang dituju</Typography>
-                        <Typography>{clinic}</Typography>
+                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"} >{clinic}</Typography>
 
                     </Box>
                 </Box>
                 <Box display={"flex"} flexDirection={"row"} gap={"80px"} >
                     <Box display={"flex"} flexDirection={"column"} >
                         <Typography>Tanggal reservasi</Typography>
-                        <Typography>{tanggalReservasi}</Typography>
+                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"} >{tanggalReservasi}</Typography>
                     </Box>
                     <Box display={"flex"} flexDirection={"column"} >
                         <Typography>Jadwal konsultasi</Typography>
-                        <Typography>{jadwalKonsul}</Typography>
+                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"} >{jadwalKonsul}</Typography>
                     </Box>
                 </Box>
 
