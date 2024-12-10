@@ -48,6 +48,7 @@ import EditKlinik from './pages/klinik/features/EditKlinik';
 import EditKonter from './pages/konter/features/EditKonter';
 import RegisterPJ from './pages/login/penanggungJawab/features/RegisterPJ';
 import PrivateRoute from './services/Admin Tenant/Auth/PrivateRoute';
+import PilihKategoriPasien from './pages/pasien/pasienn/features/PilihKategoriPasien';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -109,6 +110,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/tambahPasien/Umum" element={<TambahPasienUmum />} />
           <Route path="/editPasien/BPJS" element={<EditPasienBPJS />} />
           <Route path="/editPasien/Umum" element={<EditPasienUmum />} />
+          <Route path="/pasienn" element={<PilihKategoriPasien/>} />
 
           {/* <Route path="/about" element={<About />} /> */}
 
