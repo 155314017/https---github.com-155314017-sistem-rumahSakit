@@ -15,7 +15,7 @@ export interface BuildingDataItem {
   deletedDateTime: number | null;
 }
 
-const API_URL = "http://localhost:8080/v1/manage/building/";
+const API_URL = "https://hms.3dolphinsocial.com:8083/v1/manage/building/";
 
 // Function to create a building
 export const CreateBuildingService = async (data: {

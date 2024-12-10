@@ -11,10 +11,9 @@ export interface Image {
   imageData: string; // Base64 encoded image
 }
 
-export interface CreateClinicRequest {
+export interface CreateCounterRequest {
   name: string;
-  description: string;
-  additionalInfo: string;
+  location: string;
   schedules: { startDateTime: number | undefined; endDateTime: number | undefined }[];
   images: { imageName: string; imageType: string; imageData: string }[];
 }
@@ -26,16 +25,16 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-const BASE_URL = "https://hms.3dolphinsocial.com:8083/v1/manage/clinic";
+const BASE_URL = "https://hms.3dolphinsocial.com:8083/v1/manage/counter/";
 
-export const createClinic = async (
-  clinicData: CreateClinicRequest,
+export const createCounter = async (
+  counterData: CreateCounterRequest,
   accessToken: string | undefined
 ): Promise<ApiResponse<null>> => {
   try {
     const response = await axios.post<ApiResponse<null>>(
       BASE_URL,
-      clinicData,
+      counterData,
       {
         headers: {
           accessToken: accessToken,

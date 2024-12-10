@@ -6,6 +6,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useFormik } from 'formik'
 import 'dayjs/locale/id'
+import { EditAmbulanceServices } from '../../../services/Admin Tenant/ManageAmbulance/EditAmbulanceServices'
 
 interface FormValues {
   operationalCost: number
@@ -136,18 +137,8 @@ export default function useEditAmbulance() {
         }))
       }
 
-      const token = Cookies.get('accessToken')
       try {
-         await axios.put(
-          'https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/',
-          data,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              accessToken: `${token}`
-            }
-          }
-        )
+         await EditAmbulanceServices(data)
        
         navigate('/ambulance', {
           state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' }

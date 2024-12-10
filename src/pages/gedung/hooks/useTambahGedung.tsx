@@ -2,9 +2,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import {  useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import { CreateAmbulanceServices } from "../../../services/Admin Tenant/ManageAmbulance/CreateAmbulanceService";
 import { CreateBuildingService } from "../../../services/Admin Tenant/ManageBuilding/AddBuildingServices";
 
 type ImageData = {
@@ -55,7 +53,6 @@ export default function useTambahGedung() {
                     imageData: image.imageData || "",
                 })),
             };
-            const token = Cookies.get("accessToken");
 
             try {
                 await CreateBuildingService(data);

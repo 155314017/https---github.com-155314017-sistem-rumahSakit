@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom';
+import { createSubfacility } from '../../../services/ManageFacility/CreateSubfacilityService';
 
 type Facility = {
     id: string;
@@ -107,12 +108,7 @@ export default function useTambahSubFasilitas() {
             const token = Cookies.get("accessToken");
 
             try {
-                await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    },
-                });
+                await createSubfacility(data, token);
                 formik.resetForm();
                 navigate('/fasilitas', { state: { successAddSub: true, message: 'Fasilitas berhasil ditambahkan!' } })
             } catch (error) {
