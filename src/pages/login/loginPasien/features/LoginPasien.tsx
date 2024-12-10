@@ -12,11 +12,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import AlertWarning from "../../../../components/small/AlertWarning";
 import AlertSuccess from "../../../../components/small/AlertSuccess";
-import CustomButton from "../../../../components/small/CustomButton";
-import OtpInput from "react-otp-input";
 import "react-phone-input-2/lib/style.css";
-import RegisterPatient from "../../../../services/Patient Tenant/RegisterPatient";
-
 //hooks
 import useLoginPasien from "../hooks/useLoginPasien";
 
@@ -27,7 +23,8 @@ export default function LoginPasien() {
     loginSuccess,
     validationCheck,
     showTemporarySuccessLogin,
-    validationSchema
+    validationSchema,
+    navigate,
 
   } = useLoginPasien()
 
@@ -188,7 +185,7 @@ export default function LoginPasien() {
                       onBlur={handleBlur}
                       value={values.nik}
                       error={touched.nik && Boolean(errors.nik)}
-                      helperText={touched.nik && errors.nik}
+                    // helperText={touched.nik && errors.nik}
                     />
 
                     <FormLabel sx={{ fontSize: "18px", marginTop: "20px" }}>
@@ -223,7 +220,7 @@ export default function LoginPasien() {
                       onBlur={handleBlur}
                       value={values.email}
                       error={touched.email && Boolean(errors.email)}
-                      helperText={touched.email && errors.email}
+                    // helperText={touched.email && errors.email}
                     />
 
                     <Button
@@ -244,7 +241,7 @@ export default function LoginPasien() {
                     </Button>
 
                     <Button
-                      // onClick={() => navigate('/register/penanggungJawab') }
+                      onClick={() => navigate('/register/penanggungJawab', { state: { patientWithNoIdentity: true } })}
                       sx={{
                         width: '100%',
                         height: '48px',

@@ -423,8 +423,6 @@ export default function RegisterPasienBaru() {
                                                     minRows={2}
                                                 />
 
-
-
                                                 {buttonDis ? (
                                                     <Button
                                                         type="submit"

@@ -30,7 +30,9 @@ export default function BioPjBaru() {
         switchValue,
         data,
         patientId,
-        navigate
+        navigate,
+        noIdentity,
+        currentView,
     } = useBioPjBaru();
 
     return (
@@ -111,7 +113,7 @@ export default function BioPjBaru() {
                         height: '100vh',
                     }}
                 >
-                    {show && (
+                    {currentView === 'show' &&
                         <>
                             {showAlert && <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />}
                             <Box sx={{ width: '85%' }}>
@@ -121,7 +123,7 @@ export default function BioPjBaru() {
                                 </Typography>
 
                                 <Formik
-                                    initialValues={{ nik: switchValue ? data.identityNumber : '', email: switchValue ? data.email : '', phone: switchValue ? data.phone : '', fullname: switchValue ? data.name : '', gender: switchValue ? data.gender : '', address: switchValue ? data.address : '', }}
+                                    initialValues={{ nik: switchValue ? data.identityNumber : '', email: switchValue ? data.email : '', phone: switchValue ? data.phone : '', fullname: switchValue ? data.name : '', gender: switchValue ? data.gender : '', address: switchValue ? data.address : '', birthPlace: data.birthPlace }}
                                     enableReinitialize
                                     validationSchema={validationSchema}
                                     onSubmit={async (values) => {
@@ -156,7 +158,7 @@ export default function BioPjBaru() {
                                                     <Typography fontWeight={"bold"} maxWidth={"190px"} fontSize={'20px'} >
                                                         Isi data diri Penanggung jawab
                                                     </Typography>
-                                                    <SwitchCustom onChangeValue={handleSwitchChange} defaultValue={switchValue} />
+                                                    <SwitchCustom onChangeValue={handleSwitchChange} defaultValue={switchValue} disable={noIdentity} />
                                                 </Box>
                                                 <FormLabel sx={{ fontSize: '18px' }}>NIK (Nomor induk kependudukan) Penanggung jawab</FormLabel>
                                                 <Field
@@ -170,7 +172,7 @@ export default function BioPjBaru() {
                                                         marginTop: '10px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: emailError ? '#ffcccc' : 'inherit',
+                                                            backgroundColor: touched.nik && errors.nik ? '#ffcccc' : 'inherit',
                                                             '&:focus-within .MuiOutlinedInput-notchedOutline': {
                                                                 borderColor: '#8F85F3',
                                                             },
@@ -187,12 +189,12 @@ export default function BioPjBaru() {
                                                     onBlur={handleBlur}
                                                     value={values.nik}
                                                     error={touched.nik && Boolean(errors.nik)}
-                                                    helperText={touched.nik && errors.nik}
+                                                    // helperText={touched.nik && errors.nik}
                                                     disabled={switchValue}
                                                 />
 
                                                 <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Email</FormLabel>
-                                                <Field 
+                                                <Field
                                                     name="email"
                                                     as={TextField}
                                                     placeholder="Masukkan Email"
@@ -204,7 +206,7 @@ export default function BioPjBaru() {
                                                         marginTop: '10px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: emailError ? '#ffcccc' : 'inherit',
+                                                            backgroundColor: touched.email && errors.email ? '#ffcccc' : 'inherit',
                                                             '&:focus-within .MuiOutlinedInput-notchedOutline': {
                                                                 borderColor: '#8F85F3',
                                                             },
@@ -221,7 +223,7 @@ export default function BioPjBaru() {
                                                     onBlur={handleBlur}
                                                     value={values.email}
                                                     error={touched.email && Boolean(errors.email)}
-                                                    helperText={touched.email && errors.email}
+                                                    // helperText={touched.email && errors.email}
                                                     disabled={switchValue}
                                                 />
 
@@ -257,14 +259,14 @@ export default function BioPjBaru() {
                                                     </Typography>
                                                     <PhoneInput
                                                         country={"id"}
-                                                        value={switchValue ? data.phone : "62"}
+                                                        value={values.phone}
                                                         onChange={(phone) => setFieldValue("phone", phone)}
-                                                        disabled={switchValue}
                                                         inputStyle={{
                                                             height: "48px",
                                                             borderRadius: "8px",
-                                                            border: "1px solid #ccc",
+                                                            border: touched.phone && errors.phone ? "1px solid #f44336" : "1px solid #ccc",
                                                             padding: "10px 40px 10px 60px",
+                                                            backgroundColor: touched.phone && errors.phone ? "#ffcccc" : 'inherit',
                                                             fontSize: "16px",
                                                             width: "100%",
                                                             marginTop: "10px",
@@ -277,6 +279,7 @@ export default function BioPjBaru() {
                                                             marginBottom: "10px",
                                                             width: "100%",
                                                         }}
+                                                        onBlur={handleBlur("phone")}
                                                     />
                                                 </FormControl>
 
@@ -293,7 +296,7 @@ export default function BioPjBaru() {
                                                         marginTop: '10px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: 'inherit',
+                                                            backgroundColor: touched.fullname && errors.fullname ? "#ffcccc" : 'inherit',
                                                             '&:focus-within .MuiOutlinedInput-notchedOutline': {
                                                                 borderColor: '#8F85F3',
                                                             },
@@ -310,29 +313,44 @@ export default function BioPjBaru() {
                                                     onBlur={handleBlur}
                                                     value={values.fullname}
                                                     error={touched.fullname && Boolean(errors.fullname)}
-                                                    helperText={touched.fullname && errors.fullname}
+                                                    // helperText={touched.fullname && errors.fullname}
                                                     disabled={switchValue}
                                                 />
 
-                                                <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '75px' }}>
+                                                <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '85px' }}>
                                                     <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%' }}>
                                                         <FormLabel>Tempat Lahir</FormLabel>
-                                                        <OutlinedInput
+                                                        <Field
+                                                            name="birthPlace"
+                                                            as={TextField}
+                                                            placeholder="Tempat Lahir"
+                                                            variant="outlined"
+                                                            fullWidth
                                                             sx={{
-                                                                height: '44px',
-                                                                borderRadius: '8px',
+                                                                width: '100%',
+                                                                height: '60px',
+                                                                marginTop: '10px',
                                                                 '& .MuiOutlinedInput-root': {
                                                                     borderRadius: '8px',
-                                                                    backgroundColor: 'inherit',
+                                                                    backgroundColor: touched.birthPlace && errors.birthPlace ? "#ffcccc" : 'inherit',
                                                                     '&:focus-within .MuiOutlinedInput-notchedOutline': {
                                                                         borderColor: '#8F85F3',
                                                                     },
                                                                 },
                                                                 '& .MuiOutlinedInput-notchedOutline': {
-                                                                    borderColor: '#ccc',
-                                                                }
+                                                                    border: '1px solid #ccc',
+                                                                },
+                                                                '& .MuiOutlinedInput-input': {
+                                                                    padding: '10px',
+                                                                    fontSize: '16px',
+                                                                },
                                                             }}
-                                                            placeholder="Tempat Lahir"
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            value={values.birthPlace}
+                                                            error={touched.birthPlace && Boolean(errors.birthPlace)}
+                                                            // helperText={touched.fullname && errors.fullname}
+                                                            disabled={switchValue}
                                                         />
 
                                                     </FormControl>
@@ -363,39 +381,41 @@ export default function BioPjBaru() {
                                                         </LocalizationProvider>
                                                     </FormControl>
                                                 </Box>
-                                                <FormControl>
-                                                    <FormLabel id="demo-controlled-radio-buttons-group">Jenis Kelamin Pasien</FormLabel>
-
-                                                    <RadioGroup
-                                                        aria-labelledby="gender-label"
-                                                        name="gender"
-                                                        value={values.gender}
-                                                        onChange={(e) => setFieldValue("gender", e.target.value)}
-                                                        row
-                                                    >
-                                                        <FormControlLabel value="WOMEN" disabled={switchValue} control={<BpRadio />} label="Female" />
-                                                        <FormControlLabel value="MEN" disabled={switchValue} control={<BpRadio />} label="Male" />
-                                                    </RadioGroup>
-                                                </FormControl>
+                                                <FormLabel id="demo-controlled-radio-buttons-group">Jenis Kelamin Pasien</FormLabel>
+                                                <Box display={'flex'} flexDirection={'row'} padding={1} border={"1px solid #A8A8BD"} borderRadius={"12px"} pl={3}>
+                                                    <FormControl>
+                                                        <FormControl component="fieldset" error={touched.gender && Boolean(errors.gender)}>
+                                                            <RadioGroup
+                                                                aria-labelledby="gender-label"
+                                                                name="gender"
+                                                                value={values.gender}
+                                                                onChange={(e) => setFieldValue("gender", e.target.value)}
+                                                                row
+                                                            >
+                                                                <FormControlLabel value="WOMEN" control={<BpRadio />} label="Female" />
+                                                                <FormControlLabel value="MEN" control={<BpRadio />} label="Male" />
+                                                            </RadioGroup>
+                                                        </FormControl>
+                                                    </FormControl>
+                                                </Box>
 
                                                 <Typography sx={{ fontSize: "16px", mt: 2 }}>Alamat tempat tinggal penanggung jawab<span style={{ color: "red" }}>*</span></Typography>
                                                 <Field
                                                     name="address"
                                                     as={TextField}
-                                                    placeholder="Masukkan tempat tinggal penanggung jawab" s
+                                                    placeholder="Masukkan tempat tinggal penanggung jawab"
                                                     variant="outlined"
-                                                    size="medium"
-                                                    multiline
-                                                    minRows={2}
                                                     fullWidth
+                                                    size="medium"
                                                     sx={{
                                                         width: '100%',
-                                                        height: '107px',
+                                                        height: '48px',
                                                         marginTop: '10px',
+                                                        marginBottom: '50px',
                                                         alignItems: 'flex-start',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: emailError ? '#ffcccc' : 'inherit',
+                                                            backgroundColor: touched.address && errors.address ? "#ffcccc" : 'inherit',
                                                             '&:focus-within .MuiOutlinedInput-notchedOutline': {
                                                                 borderColor: '#8F85F3',
                                                             },
@@ -404,7 +424,8 @@ export default function BioPjBaru() {
                                                             border: '1px solid #ccc',
                                                         },
                                                         '& .MuiOutlinedInput-input': {
-                                                            padding: '10px',
+                                                            // padding: '10px',
+                                                            alignItems: 'flex-start',
                                                             fontSize: '16px',
                                                         },
                                                     }}
@@ -412,8 +433,9 @@ export default function BioPjBaru() {
                                                     onBlur={handleBlur}
                                                     value={values.address}
                                                     error={touched.address && Boolean(errors.address)}
-                                                    helperText={touched.address && errors.address}
-                                                    disabled={switchValue}
+                                                    // helperText={touched.address && errors.address}
+                                                    multiline
+                                                    minRows={2}
                                                 />
 
                                                 <Button
@@ -442,9 +464,9 @@ export default function BioPjBaru() {
                                 </Formik>
                             </Box>
                         </>
-                    )}
+                    }
 
-                    {notFound && (
+                    {currentView === 'notFound' &&
 
                         <Box
                             sx={{
@@ -463,7 +485,7 @@ export default function BioPjBaru() {
                                 </Typography>
                             </Box>
                         </Box>
-                    )}
+                    }
                 </Box>
             </Box>
         </>

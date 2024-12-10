@@ -141,6 +141,7 @@ export default function useLoginPasien() {
     handleClick,
     handleResendClick,
     formatTime,
-    showTemporaryAlert
+    showTemporaryAlert,
+    navigate
   }
 }

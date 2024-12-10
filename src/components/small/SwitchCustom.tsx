@@ -66,9 +66,10 @@ const IOSSwitch = styled((props: SwitchProps) => (
 type SwitchCustomProps = {
     defaultValue?: boolean;
     onChangeValue: (value: boolean) => void;
+    disable?: boolean;
 };
 
-const SwitchCustom: React.FC<SwitchCustomProps> = ({ defaultValue = false, onChangeValue }) => {
+const SwitchCustom: React.FC<SwitchCustomProps> = ({ defaultValue = false, onChangeValue, disable = false }) => {
     const [checked, setChecked] = useState(defaultValue);
 
     // Sync state with prop defaultValue when it changes
@@ -91,6 +92,7 @@ const SwitchCustom: React.FC<SwitchCustomProps> = ({ defaultValue = false, onCha
                     sx={{ m: 1 }}
                     checked={checked}
                     onChange={handleChange}
+                    disabled={disable}
                 />
             }
             label="Data diri sama dengan pasien"
