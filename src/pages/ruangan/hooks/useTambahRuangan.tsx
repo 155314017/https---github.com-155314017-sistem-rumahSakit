@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom';
+import { createRoom } from '../../../services/Admin Tenant/ManageRoom/CreateRoomService';
 
 type Building = {
     id: string;
@@ -77,12 +78,7 @@ export default function useTambahRuangan() {
 
             const token = Cookies.get("accessToken");
             try {
-                await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/room/', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    },
-                });
+                await createRoom(data, token);
                 formik.resetForm();
                 setImagesData([]);
                 navigate('/ruangan', { state: { successAdd: true, message: 'Ruangan berhasil ditambahkan!' } })

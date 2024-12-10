@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import Cookies from "js-cookie";
 import { useNavigate, useParams } from 'react-router-dom';
+import { editFacility } from '../../../services/ManageFacility/EditFacilityService';
 
 
 type Building = {
@@ -191,12 +192,7 @@ export default function useEditFasilitas() {
             const token = Cookies.get("accessToken");
 
             try {
-                await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/facility/', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    },
-                });
+                await editFacility(data, token);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);

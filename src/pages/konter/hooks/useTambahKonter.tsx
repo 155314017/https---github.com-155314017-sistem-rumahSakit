@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import Cookies from "js-cookie";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { createCounter } from '../../../services/Admin Tenant/ManageCounter/CreateCounterService';
 
 const jenisKonter = [
     { value: 1, label: "Asuransi" },
@@ -101,12 +102,7 @@ export default function useTambahKonter() {
             const token = Cookies.get("accessToken");
 
             try {
-                await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/counter/', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    },
-                });
+                await createCounter(data, token);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);

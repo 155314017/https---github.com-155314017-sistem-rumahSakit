@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import axios from 'axios';
 import "dayjs/locale/id";
 import { useNavigate, useParams } from 'react-router-dom';
+import { editCounter } from '../../../services/Admin Tenant/ManageCounter/EditCounterService';
 
 const jenisKonter = [
     { value: 1, label: "Asuransi" },
@@ -151,12 +152,7 @@ export default function useEditKonter() {
             const token = Cookies.get("accessToken");
 
             try {
-                await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/counter/', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    },
-                });
+                await editCounter(data, token);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);

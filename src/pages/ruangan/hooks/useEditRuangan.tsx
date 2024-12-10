@@ -5,6 +5,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import { editRoom } from '../../../services/Admin Tenant/ManageRoom/EditRoomService';
 
 interface FormValues {
     namaKlinik: string;
@@ -119,12 +120,7 @@ export default function useEditRuangan() {
 
             const token = Cookies.get("accessToken");
             try {
-                await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/room/', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    },
-                });
+                await editRoom(data, token);
                 setSuccessAlert(true);
                 navigate('/ruangan', { state: { successEdit: true, message: 'Ruangan berhasil di edit!' } })
             } catch (error) {

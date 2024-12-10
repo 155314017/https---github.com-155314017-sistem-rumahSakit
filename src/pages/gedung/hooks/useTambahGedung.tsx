@@ -2,8 +2,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import {  useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { CreateBuildingService } from "../../../services/Admin Tenant/ManageBuilding/AddBuildingServices";
 
 type ImageData = {
     imageName: string;
@@ -53,15 +53,9 @@ export default function useTambahGedung() {
                     imageData: image.imageData || "",
                 })),
             };
-            const token = Cookies.get("accessToken");
 
             try {
-                await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/building/', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    },
-                });
+                await CreateBuildingService(data);
                 formik.resetForm();
                 setImagesData([]);
                 navigate('/gedung', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' } })

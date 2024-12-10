@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import Cookies from "js-cookie";
 import { useParams, useNavigate } from 'react-router-dom';
+import { editSubfacility } from '../../../services/ManageFacility/EditSubfacilityService';
 
 type Facility = {
     id: string;
@@ -154,12 +155,7 @@ export default function useEditSubFasilitas() {
             };
             const token = Cookies.get("accessToken");
             try {
-                await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    },
-                });
+                await editSubfacility(data, token);
                 formik.resetForm();
                 navigate('/fasilitas', { state: { successEditSub: true, message: 'Fasilitas berhasil di edit!' } })
             } catch (error) {

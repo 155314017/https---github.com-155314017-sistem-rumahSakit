@@ -18,7 +18,7 @@ export interface BuildingDataItem {
 const API_URL = "https://hms.3dolphinsocial.com:8083/v1/manage/building/";
 
 // Function to create a building
-export const CreateBuildingService = async (data: {
+export const EditBuildingService = async (data: {
   name: string;
   address: string;
   additionalInfo: string;
@@ -31,7 +31,7 @@ export const CreateBuildingService = async (data: {
   }
 
   try {
-    const response = await axios.post<BuildingDataItem>(API_URL, data, {
+    const response = await axios.put<BuildingDataItem>(API_URL, data, {
       headers: {
         "Content-Type": "application/json",
         accessToken: token,

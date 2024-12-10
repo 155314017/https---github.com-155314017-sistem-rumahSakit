@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import dayjs from 'dayjs';
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { createFacility } from '../../../services/ManageFacility/CreateFacilityService';
 type Building = {
     id: string;
     name: string;
@@ -124,12 +125,7 @@ export default function useTambahFasilitas() {
             };
             const token = Cookies.get("accessToken");
             try {
-                await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/facility/', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    },
-                });
+                await createFacility(data, token);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
