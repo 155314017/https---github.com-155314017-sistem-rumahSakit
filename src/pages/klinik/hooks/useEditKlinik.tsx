@@ -6,6 +6,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate, useParams } from 'react-router-dom';
 import "dayjs/locale/id";
+import { editClinic } from '../../../services/Admin Tenant/ManageClinic/EditClinic';
 
 
 type ImageData = {
@@ -147,12 +148,7 @@ export default function useEditKlinik() {
             const token = Cookies.get("accessToken");
 
             try {
-                await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    },
-                });
+                await editClinic(data, token);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);

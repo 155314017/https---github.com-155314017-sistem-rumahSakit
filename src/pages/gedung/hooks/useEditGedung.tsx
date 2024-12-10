@@ -5,6 +5,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { EditBuildingService } from "../../../services/Admin Tenant/ManageBuilding/EditBuildingService";
 
 type ImageData = {
     imageName: string;
@@ -98,15 +99,9 @@ export default function useEditGedung() {
                     imageData: image.imageData || "",
                 })),
             };
-            const token = Cookies.get("accessToken");
 
             try {
-                await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/building/', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    },
-                });
+                await EditBuildingService(data);
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
