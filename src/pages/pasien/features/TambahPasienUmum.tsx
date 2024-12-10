@@ -25,6 +25,7 @@ import InformasiTicket from '../../../components/small/InformasiTicket';
 
 //hooks
 import useTambahPasienUmum from '../hooks/useTambahPasienUmum';
+import DropdownListAPI from "../../../components/small/DropdownListAPI";
 
 export default function TambahPasienUmum() {
     const {
@@ -44,8 +45,12 @@ export default function TambahPasienUmum() {
         setGuardFullPage,
         patientFullPage,
         setPatientFullsPage,
-        handleRadioChange
-
+        handleRadioChange,
+        handleScheduleChange,
+        doctorOptions,
+        setIdDoctor,
+        idDoctor,
+        handleDropdownDocter,
 
     } = useTambahPasienUmum();
 
@@ -509,26 +514,17 @@ export default function TambahPasienUmum() {
                                                 </FormControl>
                                                 <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} sx={{ width: "100%" }}>
                                                     <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
-                                                        <InputLabel id="doctor-label">Pilih Dokter</InputLabel>
-                                                        <Select
-                                                            labelId="doctor-label"
-                                                            label="Pilih Dokter"
-                                                            sx={{ width: "100%", borderRadius: "8px" }}
-                                                            name="doctor"
-                                                            value={formik.values.doctor}
-                                                            onChange={formik.handleChange}
-                                                        >
-                                                            {doctors.map((doctor) => (
-                                                                <MenuItem key={doctor.value} value={doctor.value} sx={{ color: "#8F85F3" }}>
-                                                                    {doctor.label}
-                                                                </MenuItem>
-                                                            ))}
-                                                        </Select>
+                                                        <DropdownListAPI
+                                                            placeholder='Pilih dokter'
+                                                            options={doctorOptions.map(({ id, name }) => ({ value: id, label: name }))}
+                                                            onChange={handleDropdownDocter}
+                                                            loading={false}
+                                                        />
                                                         <Typography color="error">{formik.touched.doctor && formik.errors.doctor}</Typography>
                                                     </FormControl>
                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                         {/* <CalenderPopover title="Pilih tanggal" /> */}
-                                                        <CustomCalender />
+                                                        <CustomCalender doctorId="bee0615a-18c6-4385-8fc9-a09d404e9be0" onChange={handleScheduleChange} />
                                                     </Box>
                                                 </Box>
 

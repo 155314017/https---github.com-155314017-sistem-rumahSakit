@@ -88,8 +88,8 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
     };
 
     const generateTimeSlots = () => {
-        const startHour = 0;
-        const endHour = 24;
+        const startHour = 7;
+        const endHour = 18;
         const timeSlots = [];
 
         for (let hour = startHour; hour < endHour; hour++) {
@@ -170,7 +170,25 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
                                     setInputValue('');
                                 }}
                                 shouldDisableDate={(date) => !availableDates.has(date.format('YYYY-MM-DD'))}
+                                slotProps={{
+                                    day: {
+                                        sx: {
+                                            '&.Mui-selected': {
+                                                backgroundColor: '#8F85F3',
+                                                color: '#fff',
+                                                '&:hover': {
+                                                    backgroundColor: '#6E6CB2',
+                                                },
+                                            },
+                                            '&.Mui-selected:focus': {
+                                                backgroundColor: '#8F85F3',
+                                            },
+                                        },
+                                    },
+                                }}
                             />
+
+
                         </Box>
 
                         <Box sx={{ width: '50%' }}>
@@ -181,19 +199,21 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
                                     const isAvailable = !!availableTime;
 
                                     return (
-                                        <Grid item xs={6} key={timeRange}>
+                                        <Grid item xs={4} key={timeRange}>
                                             <Button
-                                                fullWidth
                                                 onClick={() => isAvailable && handleTimeSelect(timeRange, availableTime.scheduleId)}
-                                                variant={selectedTimeRange === timeRange ? 'contained' : 'outlined'}
+                                                variant="text"
                                                 sx={{
+                                                    width: '120px',
+                                                    padding: 0,
+                                                    height: '68px',
+                                                    borderRadius: '100px',
                                                     bgcolor: selectedTimeRange === timeRange ? '#8F85F3' : 'transparent',
                                                     color: isAvailable ? '#000' : '#D3D3D3',
+                                                    border: selectedTimeRange === timeRange ? '1px solid #8F85F3' : '#8F85F3',
                                                     '&:hover': {
-                                                        bgcolor: isAvailable ? '#8F85F3' : 'transparent',
-                                                        color: isAvailable ? '#fff' : '#D3D3D3',
+                                                        border: '1px solid #8F85F3'
                                                     },
-                                                    borderColor: isAvailable ? '#8F85F3' : '#D3D3D3',
                                                     pointerEvents: isAvailable ? 'auto' : 'none',
                                                     opacity: isAvailable ? 1 : 0.5,
                                                 }}
@@ -202,6 +222,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
                                                 {timeRange}
                                             </Button>
                                         </Grid>
+
                                     );
                                 })}
                             </Grid>
