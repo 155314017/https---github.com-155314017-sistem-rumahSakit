@@ -152,7 +152,7 @@ export default function BioPjBaru() {
                                     {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
                                         <Form>
                                             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                                <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} mb={'2%'}>
+                                                <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} >
                                                     <Typography fontWeight={"bold"} maxWidth={"190px"} fontSize={'20px'} >
                                                         Isi data diri Penanggung jawab
                                                     </Typography>
@@ -192,7 +192,7 @@ export default function BioPjBaru() {
                                                 />
 
                                                 <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Email</FormLabel>
-                                                <Field
+                                                <Field 
                                                     name="email"
                                                     as={TextField}
                                                     placeholder="Masukkan Email"

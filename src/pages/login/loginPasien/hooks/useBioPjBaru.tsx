@@ -1,8 +1,8 @@
-import {  Radio,  } from "@mui/material";
+import { Radio, } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import * as Yup from 'yup';
 import 'react-phone-input-2/lib/style.css';
-import {  useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { styled } from '@mui/material/styles';
 import { RadioProps } from '@mui/material/Radio';
 
@@ -53,7 +53,7 @@ export default function useBioPjBaru() {
     const [otp, setOtp] = useState('');
     const [switchValue, setSwitchValue] = useState(false);
     const [patientId, setPatientId] = useState<string>('');
-    const [show] = useState(true);
+    const [show, setShow] = useState(true);
     const [notFound, setNotFound] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
@@ -73,7 +73,7 @@ export default function useBioPjBaru() {
         console.log("Id Patient: ", patientId);
 
         if (patientId === '') {
-            setShowLogin(false);
+            setShow(false);
             setNotFound(true);
         } else {
 

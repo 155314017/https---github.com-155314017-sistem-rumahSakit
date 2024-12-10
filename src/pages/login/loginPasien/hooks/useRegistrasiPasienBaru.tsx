@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as Yup from 'yup';
 import 'react-phone-input-2/lib/style.css';
-import {  useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import RegisterPatient from "../../../../services/Patient Tenant/RegisterPatient";
 import { styled } from '@mui/material/styles';
@@ -23,6 +23,7 @@ const validationSchema = Yup.object({
     fullname: Yup.string().required('Wajib diisi')
         .matches(/^[A-Za-z\s]+$/, "Nama hanya boleh berisi huruf"),
     gender: Yup.string().required('JenisK kelamin harus dipilih'),
+    tempatLahir: Yup.string().required('Tempat lahir harus diisi'),
 });
 
 interface FormValues {
@@ -37,6 +38,7 @@ interface DataKirim {
     email: string;
     gender: string;
     address: string;
+    tempatLahir: string;
 }
 
 interface DataAwal {
@@ -110,13 +112,13 @@ function BpRadio(props: RadioProps) {
     );
 }
 export default function useRegistrasiPasienBaru() {
-     // const [showPassword, setShowPassword] = useState(false);
-     const [showLogin, setShowLogin] = useState(true);
+    // const [showPassword, setShowPassword] = useState(false);
+    const [showLogin, setShowLogin] = useState(true);
     const [showEmailChanged, setShowEmailChanged] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [, setNikError] = useState(false);
     const [, setPasswordError] = useState(false);
-    const [data, setData] = useState<DataKirim>({ identityNumber: '', name: '', phone: '', email: '', gender: '', address: '' });
+    const [data, setData] = useState<DataKirim>({ identityNumber: '', name: '', phone: '', email: '', gender: '', address: '', tempatLahir: '' });
     const [showAlert, setShowAlert] = useState(false);
     const [isCounting, setIsCounting] = useState(false);
     const [secondsLeft, setSecondsLeft] = useState(60);
@@ -129,160 +131,160 @@ export default function useRegistrasiPasienBaru() {
     const [notFound, setNotFound] = useState(true);
     const [buttonDis, setButtonDis] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
- 
-     const location = useLocation();
-     const navigate = useNavigate();
- 
-     const otpFormShown = () => {
-         // setShowEmailChanged(false);
- 
-         setOtp('');
-     }
- 
-     const handleClick = () => {
-         setShowLogin(true);
-         setShowEmailChanged(true);
-     };
- 
-     const showTemporaryAlert = async () => {
-         setShowAlert(true);
-         await new Promise((resolve) => setTimeout(resolve, 3000));
-         setShowAlert(false);
-     };
- 
- 
-     const showTemporarySuccessLogin = async () => {
-         setLoginSuccess(true);
-         await new Promise((resolve) => setTimeout(resolve, 3000));
-         setLoginSuccess(false);
-     };
- 
-     const showOtp = () => {
-         setEmailError(false);
-         setPasswordError(false);
-         setShowLogin(false);
-         setShowEmailChanged(true);
-     };
- 
-     const validationCheck = async (values: FormValues) => {
- 
-         // showOtp()
-         return true;
-     };
- 
-     useEffect(() => {
-         let timer: ReturnType<typeof setInterval>;
-         if (isCounting && secondsLeft > 0) {
-             timer = setInterval(() => {
-                 setSecondsLeft((prev) => prev - 1);
-             }, 1000);
-         } else if (secondsLeft === 0) {
-             setIsCounting(false);
-             setSecondsLeft(60);
-         }
- 
-         return () => clearInterval(timer);
-     }, [isCounting, secondsLeft]);
- 
-     const handleResendClick = async () => {
-         try {
-             console.log('handleResendClick');
-             const response = await RegisterPatient(data);
-             console.log("response: ", response);
-         } catch {
-             console.log("error")
-         }
-         setIsCounting(true);
-         setSecondsLeft(60);
-         showTemporaryAlertSuccess();
-         console.log("Resend clicked");
- 
-     };
- 
-     const showTemporaryAlertSuccess = async () => {
-         setResendSuccess(true);
-         await new Promise((resolve) => setTimeout(resolve, 3000));
-         setResendSuccess(false);
-     };
- 
-     const formatTime = () => {
-         const minutes = Math.floor(secondsLeft / 60);
-         const seconds = secondsLeft % 60;
-         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-     };
- 
-     const [value, setValue] = React.useState('WOMEN');
-     const handleChangeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
-         setValue((event.target as HTMLInputElement).value);
-         console.log(value)
-     };
- 
-     useEffect(() => {
-         if (location.state && location.state.succesSendData1) {
-             console.log(location.state.message);
-             console.log("DATA YANG DIKIRIM dari Page 1: ", location.state.data);
-             setData1(location.state.data);
-             // navigate(location.pathname, { replace: true, state: undefined });
-         }
-     }, [location.state, navigate]);
- 
-     useEffect(() => {
-         console.log("Data awal yang di state kan: ", data1);
- 
-         if (data1.email === '') {
-             setShowLogin(false);
-             setNotFound(true);
-         } else {
- 
-             setShowLogin(true);
-             setNotFound(false);
-         }
-     }, [data1]);
- 
-     const showTemporaryAlertError = async () => {
-         console.log("ALERT ERROR ! ! !")
-         setErrorAlert(true);
-         await new Promise((resolve) => setTimeout(resolve, 3000));
-         setErrorAlert(false);
-     };
-  return {
-      otpFormShown,
-      showOtp,
-      validationCheck,
-      showTemporaryAlert,
-      showTemporaryAlertSuccess,
-      showTemporaryAlertError,
-      showTemporarySuccessLogin,
-      handleClick,
-      handleResendClick,
-      formatTime,
-      value,
-      handleChangeGender,
-      data1,
-      showLogin,
-      notFound,
-      buttonDis,
-      errorAlert,
-      showEmailChanged,
-      showAlert,
-      emailError,
-      resendSuccess,
-      loginSuccess,
-      secondsLeft,
-      isCounting,
-      validationSchema,
-      otpValidationSchema,
-      BpRadio,
-      emailOTP,
-      otp,
-      patientId, setPatientId,
-      setButtonDis,
-      setEmailOTP,
-      setData,
-      setNikError,
-      navigate,
-      data,
-      setOtp
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const otpFormShown = () => {
+        // setShowEmailChanged(false);
+
+        setOtp('');
+    }
+
+    const handleClick = () => {
+        setShowLogin(true);
+        setShowEmailChanged(true);
+    };
+
+    const showTemporaryAlert = async () => {
+        setShowAlert(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setShowAlert(false);
+    };
+
+
+    const showTemporarySuccessLogin = async () => {
+        setLoginSuccess(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setLoginSuccess(false);
+    };
+
+    const showOtp = () => {
+        setEmailError(false);
+        setPasswordError(false);
+        setShowLogin(false);
+        setShowEmailChanged(true);
+    };
+
+    const validationCheck = async (values: FormValues) => {
+
+        // showOtp()
+        return true;
+    };
+
+    useEffect(() => {
+        let timer: ReturnType<typeof setInterval>;
+        if (isCounting && secondsLeft > 0) {
+            timer = setInterval(() => {
+                setSecondsLeft((prev) => prev - 1);
+            }, 1000);
+        } else if (secondsLeft === 0) {
+            setIsCounting(false);
+            setSecondsLeft(60);
+        }
+
+        return () => clearInterval(timer);
+    }, [isCounting, secondsLeft]);
+
+    const handleResendClick = async () => {
+        try {
+            console.log('handleResendClick');
+            const response = await RegisterPatient(data);
+            console.log("response: ", response);
+        } catch {
+            console.log("error")
+        }
+        setIsCounting(true);
+        setSecondsLeft(60);
+        showTemporaryAlertSuccess();
+        console.log("Resend clicked");
+
+    };
+
+    const showTemporaryAlertSuccess = async () => {
+        setResendSuccess(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setResendSuccess(false);
+    };
+
+    const formatTime = () => {
+        const minutes = Math.floor(secondsLeft / 60);
+        const seconds = secondsLeft % 60;
+        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    };
+
+    const [value, setValue] = React.useState('WOMEN');
+    const handleChangeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValue((event.target as HTMLInputElement).value);
+        console.log(value)
+    };
+
+    useEffect(() => {
+        if (location.state && location.state.succesSendData1) {
+            console.log(location.state.message);
+            console.log("DATA YANG DIKIRIM dari Page 1: ", location.state.data);
+            setData1(location.state.data);
+            // navigate(location.pathname, { replace: true, state: undefined });
+        }
+    }, [location.state, navigate]);
+
+    useEffect(() => {
+        console.log("Data awal yang di state kan: ", data1);
+
+        if (data1.email === '') {
+            setShowLogin(false);
+            setNotFound(true);
+        } else {
+
+            setShowLogin(true);
+            setNotFound(false);
+        }
+    }, [data1]);
+
+    const showTemporaryAlertError = async () => {
+        console.log("ALERT ERROR ! ! !")
+        setErrorAlert(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setErrorAlert(false);
+    };
+    return {
+        otpFormShown,
+        showOtp,
+        validationCheck,
+        showTemporaryAlert,
+        showTemporaryAlertSuccess,
+        showTemporaryAlertError,
+        showTemporarySuccessLogin,
+        handleClick,
+        handleResendClick,
+        formatTime,
+        value,
+        handleChangeGender,
+        data1,
+        showLogin,
+        notFound,
+        buttonDis,
+        errorAlert,
+        showEmailChanged,
+        showAlert,
+        emailError,
+        resendSuccess,
+        loginSuccess,
+        secondsLeft,
+        isCounting,
+        validationSchema,
+        otpValidationSchema,
+        BpRadio,
+        emailOTP,
+        otp,
+        patientId, setPatientId,
+        setButtonDis,
+        setEmailOTP,
+        setData,
+        setNikError,
+        navigate,
+        data,
+        setOtp
 
 
 
@@ -290,5 +292,5 @@ export default function useRegistrasiPasienBaru() {
 
 
 
-  }
+    }
 }

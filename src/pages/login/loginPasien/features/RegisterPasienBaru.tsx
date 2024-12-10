@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, FormControl, RadioGroup, FormHelperText, CircularProgress, } from "@mui/material";
+import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, FormControl, RadioGroup, FormHelperText, CircularProgress, OutlinedInput, } from "@mui/material";
 import patientImage from "../../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from 'formik';
 import AlertWarning from "../../../../components/small/AlertWarning";
@@ -12,6 +12,9 @@ import VerifyOTPPatient from "../../../../services/Patient Tenant/VerifyOTPPatie
 
 //hooks
 import useRegistrasiPasienBaru from "../hooks/useRegistrasiPasienBaru";
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 export default function RegisterPasienBaru() {
     const {
         otpFormShown,
@@ -134,7 +137,7 @@ export default function RegisterPasienBaru() {
                                 </Typography>
 
                                 <Formik
-                                    initialValues={{ nik: data1.nik, email: data1.email, phone: '', fullname: '', gender: '', address: '' }}
+                                    initialValues={{ nik: data1.nik, email: data1.email, phone: '', fullname: '', gender: '', address: '', tempatLahir: '' }}
                                     enableReinitialize
                                     validationSchema={validationSchema}
                                     onSubmit={async (values) => {
@@ -144,7 +147,8 @@ export default function RegisterPasienBaru() {
                                             phone: values.phone,
                                             email: values.email,
                                             gender: values.gender,
-                                            address: values.address
+                                            address: values.address,
+                                            tempatLahir: values.tempatLahir,
                                         }
                                         setEmailOTP(values.email)
                                         console.log("data dikirm ke API: ", dataRegis)
@@ -273,6 +277,9 @@ export default function RegisterPasienBaru() {
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
                                                             backgroundColor: touched.fullname && errors.fullname ? "#ffcccc" : 'inherit',
+                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                borderColor: '#8F85F3',
+                                                            },
                                                         },
                                                         '& .MuiOutlinedInput-notchedOutline': {
                                                             border: '1px solid #ccc',
@@ -288,6 +295,69 @@ export default function RegisterPasienBaru() {
                                                     error={touched.fullname && Boolean(errors.fullname)}
                                                 // helperText={touched.fullname && errors.fullname}
                                                 />
+
+                                                <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '75px' }}>
+                                                    <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%' }}>
+                                                        <FormLabel>Tempat Lahir</FormLabel>
+                                                        <Field
+                                                            name="tempatLahir"
+                                                            as={TextField}
+                                                            placeholder="Tempat Lahir"
+                                                            variant="outlined"
+                                                            fullWidth
+                                                            sx={{
+                                                                borderRadius: '8px',
+                                                                height: '44px',
+                                                                '& .MuiOutlinedInput-root': {
+                                                                    borderRadius: '8px',
+                                                                    backgroundColor: touched.tempatLahir && errors.tempatLahir ? "#ffcccc" : 'inherit',
+                                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                        borderColor: '#8F85F3',
+                                                                    },
+                                                                },
+                                                                '& .MuiOutlinedInput-notchedOutline': {
+                                                                    border: '1px solid #ccc',
+                                                                },
+                                                                '& .MuiOutlinedInput-input': {
+                                                                    padding: '10px',
+                                                                    fontSize: '16px',
+                                                                },
+                                                            }}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            value={values.tempatLahir}
+                                                            error={touched.tempatLahir && Boolean(errors.tempatLahir)}
+                                                        // helperText={touched.fullname && errors.fullname}
+                                                        />
+
+                                                    </FormControl>
+
+                                                    <FormControl sx={{ width: '49%', overflow: 'hidden', height: '100%' }}>
+                                                        <FormLabel>Tanggal Lahir</FormLabel>
+                                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                            <Box sx={{ overflow: 'hidden' }}>
+                                                                <DemoContainer components={['DatePicker']}>
+                                                                    <DatePicker
+                                                                        slotProps={{
+                                                                            textField: {
+                                                                                placeholder: "Tanggal Lahir",
+                                                                                sx: {
+                                                                                    borderRadius: '8px',
+                                                                                    height: '60px',
+                                                                                    width: '100%',
+                                                                                    '& .MuiOutlinedInput-root': {
+                                                                                        borderRadius: '8px',
+                                                                                        height: '44px',
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        }}
+                                                                    />
+                                                                </DemoContainer>
+                                                            </Box>
+                                                        </LocalizationProvider>
+                                                    </FormControl>
+                                                </Box>
 
                                                 <Typography mt={2} mb={1} >
                                                     Jenis kelamin Pasien{" "}
@@ -331,6 +401,9 @@ export default function RegisterPasienBaru() {
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
                                                             backgroundColor: touched.address && errors.address ? "#ffcccc" : 'inherit',
+                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                borderColor: '#8F85F3',
+                                                            },
                                                         },
                                                         '& .MuiOutlinedInput-notchedOutline': {
                                                             border: '1px solid #ccc',
@@ -364,10 +437,10 @@ export default function RegisterPasienBaru() {
                                                             marginTop: '20px',
                                                             backgroundColor: '#8F85F3',
                                                             '&.Mui-disabled': {
-                                                                backgroundColor: '#8F85F3', 
+                                                                backgroundColor: '#8F85F3',
                                                             },
                                                         }}
-                                                        disabled={true} 
+                                                        disabled={true}
                                                     >
                                                         <CircularProgress size={20} sx={{ color: 'white' }} />
                                                     </Button>
