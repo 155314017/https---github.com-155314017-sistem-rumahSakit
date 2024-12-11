@@ -90,9 +90,9 @@ const ModalKategoriPasien: React.FC<ModalKategoriPasienProps> = ({ open, onClose
                                     <Card sx={cardStyle}>
                                         <Avatar alt="Kode Booking" src="/src/img/meidicine.png" sx={{ width: '88px', height: '88px' }} />
                                         <Box>
-                                            <Typography sx={titleStyle}>Pasien BPJS</Typography>
+                                            <Typography sx={titleStyle}>Pasien Lama</Typography>
                                             <Box sx={descriptionBoxStyle}>
-                                                <Typography>Dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu dan berhak mendapatkan pelayanan kesehatan</Typography>
+                                                <Typography>Pasien yang pernah datang sebelumnya untuk keperluan berobat.</Typography>
                                                 <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
                                             </Box>
                                         </Box>
@@ -104,9 +104,9 @@ const ModalKategoriPasien: React.FC<ModalKategoriPasienProps> = ({ open, onClose
                                     <Card sx={cardStyle}>
                                         <Avatar alt="Kode Booking" src="/src/img/filling.png" sx={{ width: '88px', height: '88px' }} />
                                         <Box>
-                                            <Typography sx={titleStyle}>Pasien Umum</Typography>
+                                            <Typography sx={titleStyle}>Pasien Baru</Typography>
                                             <Box sx={descriptionBoxStyle}>
-                                                <Typography>Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.</Typography>
+                                                <Typography>Pasien yang baru pertama kali datang ke rumah sakit untuk keperluan berobat. </Typography>
                                                 <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
                                             </Box>
                                         </Box>

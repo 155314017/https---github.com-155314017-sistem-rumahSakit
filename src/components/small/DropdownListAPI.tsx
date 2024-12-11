@@ -13,8 +13,8 @@ interface DropdownListProps {
     onChange?: (value: string, label: string) => void;
     defaultValue?: string;
     loading: boolean;
-    valueField?: keyof Option; 
-    labelField?: keyof Option; 
+    valueField?: keyof Option;
+    labelField?: keyof Option;
 }
 
 export default function DropdownListAPI({
@@ -23,7 +23,7 @@ export default function DropdownListAPI({
     onChange,
     defaultValue = "",
     loading,
-    valueField = "value", 
+    valueField = "value",
     labelField = "label"
 }: DropdownListProps) {
     const [selectedOption, setSelectedOption] = useState<string>(defaultValue);
@@ -39,7 +39,7 @@ export default function DropdownListAPI({
         setSelectedOption(value);
 
         if (onChange && selected) {
-            const label = selected[labelField]; 
+            const label = selected[labelField];
             onChange(value, label);
         }
     };
@@ -65,7 +65,7 @@ export default function DropdownListAPI({
                     borderRadius: "8px",
                     border: "1px solid #A8A8BD",
                     color: "#A8A8BD",
-                    bgcolor: "#fafafa",
+                    bgcolor: "inherit",
                 }}
                 inputProps={{ "aria-label": "select dropdown" }}
             >

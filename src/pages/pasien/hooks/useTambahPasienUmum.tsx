@@ -2,11 +2,39 @@ import { useEffect, useState } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from 'axios';
+import GetPatientByNIKServices from '../../../services/Patient Tenant/GetPatientByNIKServices';
+import 'react-phone-input-2/lib/style.css';
+import { styled } from '@mui/material/styles';
+import { Radio } from '@mui/material';
+import { RadioProps } from '@mui/material/Radio';
+import CreateAppointment from '../../../services/Patient Tenant/CreateAppointment';
 
 type Doctor = {
     id: string;
     name: string;
 };
+
+type ResponsePatient = {
+    identityNumber: string,
+    fullName: string,
+    birthDateAndPlace: string,
+    phoneNumber: string,
+}
+
+type dataPasien = {
+    nik: string | undefined;
+    email: string;
+    phone: string | undefined;
+    gender: string;
+    fullname: string | undefined;
+    address: string;
+}
+
+type Clinic = {
+    id: string;
+    name: string;
+};
+
 
 export default function useTambahPasienUmum() {
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -17,10 +45,17 @@ export default function useTambahPasienUmum() {
     const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
     const [selectedMethod, setSelectedMethod] = useState('');
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
+    const [patientData, setPatientData] = useState<ResponsePatient>();
+    const [dataPasien, setDataPasien] = useState<dataPasien>();
     const [idClinic, setIdClinic] = useState('');
     const [idDoctor, setIdDoctor] = useState('');
     const [docterName, setDocterName] = useState('');
+    const [birthPlace, setBirthPlace] = useState('');
+    const [birthDate, setBirthDate] = useState('');
     const [mainPages, setMainPages] = useState(true);
+    const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
+    const [clinicName, setClinicName] = useState('');
+
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
         { label: "Pasien", href: "/pasien" },
@@ -30,14 +65,23 @@ export default function useTambahPasienUmum() {
     const formik = useFormik({
         initialValues: {
             namaKlinik: '',
-            deskripsiKlinik: '',
-            nik: '',
+            address: '',
+            nikCari: '',
+            nik: patientData?.identityNumber,
+            email: '',
+            phone: patientData?.phoneNumber,
+            gender: '',
+            fullname: patientData?.fullName,
             // phonePasien: '',
+            nikGuardian: switchValue ? dataPasien?.nik : '',
             caraDatang: '',
-            namaPenanggungJawab: '',
-            phonePenanggungJawab: '',
-            hubungan: '',
-            jenisPembayaran: '',
+            fullnameGuardian: switchValue ? dataPasien?.fullname : '',
+            emailGuardian: switchValue ? dataPasien?.email : '',
+            genderGuardian: switchValue ? dataPasien?.gender : '',
+            addressGuardian: switchValue ? dataPasien?.address : '',
+            phoneGuardian: switchValue ? dataPasien?.phone : '62',
+
+            // create appointment
             jenisKunjungan: '',
             poli: '',
             doctor: '',
@@ -45,25 +89,112 @@ export default function useTambahPasienUmum() {
             riwayatPenyakit: '',
             alergi: '',
         },
+        enableReinitialize: true,
         validationSchema: Yup.object({
             nik: Yup.string().required('NIK is required'),
+            address: Yup.string().required('tes'),
+            nikCari: Yup.string()
+                .matches(/^[0-9]+$/, 'NIK harus berupa angka')
+                .min(12, 'NIK minimal 12 digit')
+                .max(14, 'NIK maksimal 14 digit')
+                .required('NIK wajib diisi'),
             // phonePasien: Yup.string().required('No. Handphone Pasien is required'),
             caraDatang: Yup.string().required('Cara datang is required'),
-            namaPenanggungJawab: Yup.string().required('Nama lengkap penanggung jawab is required'),
-            phonePenanggungJawab: Yup.string().required('No. Handphone penanggung jawab is required'),
-            hubungan: Yup.string().required('Hubungan penanggung jawab dengan pasien is required'),
-            jenisPembayaran: Yup.string().required('Jenis Pembayaran is required'),
             jenisKunjungan: Yup.string().required('Jenis Kunjungan is required'),
             poli: Yup.string().required('Poli yang dituju is required'),
             doctor: Yup.string().required('Pilih Dokter is required'),
             keluhan: Yup.string().required('Keluhan pasien is required'),
             riwayatPenyakit: Yup.string().required('Riwayat penyakit is required'),
             alergi: Yup.string().required('Alergi is required'),
+            nikGuardian: Yup.string().required('harus diisi is required'),
+            emailGuardian: Yup.string().required('EmailGuardian is required'),
+            fullnameGuardian: Yup.string().required('EmailGuardian is required'),
+            genderGuardian: Yup.string().required('EmailGuardian is required'),
+            addressGuardian: Yup.string().required('EmailGuardian is required'),
+            phoneGuardian: Yup.string().required('EmailGuardian is required'),
         }),
         onSubmit: (values) => {
             // console.log('Form submitted:', values);
         },
     });
+
+    const BpIcon = styled('span')(({ theme }) => ({
+        borderRadius: '50%',
+        width: 24,
+        height: 24,
+        boxShadow: 'inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)',
+        backgroundColor: '#f5f8fa',
+        backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))',
+        '.Mui-focusVisible &': {
+            outline: '2px auto red',
+            outlineOffset: 2,
+        },
+        'input:hover ~ &': {
+            backgroundColor: '#ebf1f5',
+            ...theme.applyStyles('dark', {
+                backgroundColor: '#30404d',
+            }),
+        },
+        'input:disabled ~ &': {
+            boxShadow: 'none',
+            background: 'rgba(206,217,224,.5)',
+            ...theme.applyStyles('dark', {
+                background: 'rgba(57,75,89,.5)',
+            }),
+        },
+        ...theme.applyStyles('dark', {
+            boxShadow: '0 0 0 1px rgb(16 22 26 / 40%)',
+            backgroundColor: '#394b59',
+            backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.05),hsla(0,0%,100%,0))',
+        }),
+    }));
+
+    const BpCheckedIcon = styled(BpIcon)({
+        backgroundColor: '#7367F0',
+        backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
+        '&::before': {
+            display: 'block',
+            width: 24,
+            height: 24,
+            backgroundImage: 'radial-gradient(#fff,#fff 28%,transparent 32%)',
+            content: '""',
+        },
+        'input:hover ~ &': {
+            backgroundColor: '#7367F0',
+        },
+    });
+
+    const changePage2 = () => {
+        const dataPatient = {
+            nik: formik.values.nik,
+            email: formik.values.email,
+            phone: formik.values.phone,
+            gender: formik.values.gender,
+            fullname: formik.values.fullname,
+            address: formik.values.address
+        }
+        setDataPasien(dataPatient)
+        console.log("tes data kirim", dataPatient);
+        setCurrentPage(2)
+    }
+
+    const handleDropdownPoli = (value: string, label: string) => {
+        console.log(`Selected Value: ${value}, Selected Label: ${label}`);
+        setIdClinic(value)
+        setClinicName(label);
+    };
+
+    function BpRadio(props: RadioProps) {
+        return (
+            <Radio
+                disableRipple
+                color="default"
+                checkedIcon={<BpCheckedIcon />}
+                icon={<BpIcon />}
+                {...props}
+            />
+        );
+    }
 
     useEffect(() => {
         const fetchDoctorData = async () => {
@@ -86,6 +217,41 @@ export default function useTambahPasienUmum() {
         fetchDoctorData();
     }, []);
 
+    const findPatientByNik = async (nik: string) => {
+        try {
+            const response = await GetPatientByNIKServices(nik);
+            console.log(response?.data);
+            setPatientData(response?.data);
+            const birthDate = response?.data.birthDateAndPlace.split(',')[1].trim();
+            const birthPlace = response?.data.birthDateAndPlace.split(',')[0];
+            setBirthDate(birthDate ? birthDate : "Data tidak ada")
+            setBirthPlace(birthPlace ? birthPlace : "Data tidak ada")
+            setPatientFullsPage(false);
+        } catch (error) {
+            console.error("Error fetching");
+
+        }
+    }
+
+    const putGuard = async () => {
+        try {
+            const tes = {
+                patientId: formik.values.fullnameGuardian,
+                guardianIdentityNumber: formik.values.nikGuardian,
+                guardianName: formik.values.fullnameGuardian,
+                guardianPhone: formik.values.phoneGuardian,
+                guardianEmail: formik.values.emailGuardian,
+                guardianGender: formik.values.genderGuardian,
+                guardianAddress: formik.values.addressGuardian
+            }
+
+            console.log("Data: ", tes)
+            setCurrentPage(3)
+        } catch (error) {
+
+        }
+    }
+
 
     const handleDropdownDocter = (value: string, label: string) => {
         console.log(`Selected Value: ${value}, Selected Label: ${label}`);
@@ -106,7 +272,7 @@ export default function useTambahPasienUmum() {
 
     const getPageStyle = (page: number) => {
         if (page === currentPage) {
-            return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
+            return { color: "#8F85F3", cursor: "pointer", };
         } else if (page < currentPage) {
             return { color: "#8F85F3", cursor: "pointer" };
         } else {
@@ -151,13 +317,54 @@ export default function useTambahPasienUmum() {
         }
     };
 
+    const createTicket = async () => {
+        const data = {
+            patientId: "b7a661c5-5f16-4e3f-933c-99d684feb9d5",
+            typeOfVisit: formik.values.jenisKunjungan,
+            clinicId: idClinic,
+            doctorId: idDoctor,
+            scheduleId: selectedScheduleId ? selectedScheduleId : '',
+            symptoms: formik.values.keluhan,
+            referenceDoc: "docs",
+        }
+        try {
+            console.log(data);
+            await CreateAppointment(data)
+            console.log('sukses')
+            setMainPages(false)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        const fetchClinicData = async () => {
+            try {
+                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
+                    timeout: 10000
+                });
+                setClinicOptions(response.data.data.content.map((item: Clinic) => ({
+                    id: item.id,
+                    name: item.name,
+                })));
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    console.error("Axios error:", error.message);
+                } else {
+                    console.error("Unexpected error:", error);
+                }
+            }
+        };
+        fetchClinicData();
+    }, []);
+
     const isCurrentPageValid = () => {
         if (currentPage === 1) {
-            return formik.values.nik;
+            return formik.values.nikCari;
         } else if (currentPage === 2) {
-            return formik.values.caraDatang && formik.values.namaPenanggungJawab && formik.values.phonePenanggungJawab && formik.values.hubungan;
+            return formik.values.nikGuardian && formik.values.fullnameGuardian && formik.values.emailGuardian && formik.values.addressGuardian;
         } else if (currentPage === 3) {
-            return formik.values.jenisPembayaran && formik.values.jenisKunjungan && formik.values.poli && formik.values.doctor && formik.values.keluhan && formik.values.riwayatPenyakit && formik.values.alergi;
+            return formik.values.phoneGuardian && formik.values.jenisKunjungan && formik.values.poli && formik.values.doctor && formik.values.keluhan && formik.values.riwayatPenyakit && formik.values.alergi;
         }
         return false;
     };
@@ -193,5 +400,14 @@ export default function useTambahPasienUmum() {
         doctorOptions,
         setIdDoctor,
         idDoctor,
+        findPatientByNik,
+        patientData,
+        BpRadio,
+        putGuard,
+        changePage2,
+        dataPasien,
+        clinicOptions,
+        handleDropdownPoli,
+        createTicket
     }
 }
