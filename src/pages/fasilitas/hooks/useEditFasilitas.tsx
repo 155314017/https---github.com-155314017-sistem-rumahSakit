@@ -6,6 +6,9 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 import { useNavigate, useParams } from 'react-router-dom';
 import { editFacility } from '../../../services/ManageFacility/EditFacilityService';
+import { FacilityServices } from '../../../services/ManageFacility/FacilityServices';
+import { GetFacilityByIdServices } from '../../../services/ManageFacility/GetFacilityByIdService';
+import { GetBuildingById } from '../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices';
 
 
 type Building = {
@@ -48,8 +51,6 @@ export default function useEditFasilitas() {
 
     useEffect(() => {
         if (startTime && endTime) {
-            const formattedStartTime = startTime.format("HH:mm");
-            const formattedEndTime = endTime.format("HH:mm");
             const dayOfWeek = startTime.format("dddd");
             const dayMapping: { [key: string]: string } = {
                 "Monday": "1",
@@ -70,10 +71,8 @@ export default function useEditFasilitas() {
     useEffect(() => {
         const fetchGedungData = async () => {
             try {
-                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
-                    timeout: 10000
-                });
-                setGedungOptions(response.data.data.content.map((item: Building) => ({
+                const response = await FacilityServices();
+                setGedungOptions(response.map((item: Building) => ({
                     id: item.id,
                     name: item.name,
                 })));
@@ -89,32 +88,23 @@ export default function useEditFasilitas() {
         const fetchData = async () => {
             try {
                 const token = Cookies.get("accessToken");
-                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${id}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    }
-                });
+                const response = await GetFacilityByIdServices(id,token);
+                
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${id}`);
-                setName(response.data.data.name);
-                setDescription(response.data.data.description);
-                setInitialOperationalCost(response.data.data.cost);
-                const buildingResponse = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${response.data.data.masterBuildingId}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    }
-                });
+                setName(response.name);
+                setDescription(response.description);
+                setInitialOperationalCost(response.cost);
+                const buildingResponse = await GetBuildingById(response.masterBuildingId,token);
 
-                setBuildingName(buildingResponse.data.data.id);
+                setBuildingName(buildingResponse.id);
 
-                if (response.data.data.schedules && response.data.data.schedules.length > 0) {
-                    const schedule = response.data.data.schedules[0];
+                if (response.schedules && response.schedules.length > 0) {
+                    const schedule = response.schedules[0];
                     setStartTime(dayjs.unix(schedule.startDateTime));
                     setEndTime(dayjs.unix(schedule.endDateTime));
                 }
 
-                setImagesData(response.data.data.images || []);
+                setImagesData(response.images || []);
             } catch (error) {
                 console.error('Error:', error);
             }

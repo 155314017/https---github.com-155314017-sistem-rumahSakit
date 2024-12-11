@@ -1,8 +1,8 @@
 
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 
 
 type ImageData = {
@@ -42,26 +42,18 @@ export default function useDetailGedung() {
       setLoading(true);
       try {
         const token = Cookies.get("accessToken");
-        const response = await axios.get(
-          `https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              accessToken: `${token}`,
-            }
-          }
-        );
-        setIds(response.data.data.id);
-        setName(response.data.data.name);
-        setAddress(response.data.data.address);
-        const imagesData = response.data.data.images;
+        const response = await GetBuildingById(id,token)
+        setIds(response.id);
+        setName(response.name);
+        setAddress(response.address);
+        const imagesData = response.images;
         const mappedImages = imagesData.map((image: ImageData) => ({
           imageName: image.imageName,
           imageType: image.imageType,
           imageData: `data:${image.imageType};base64,${image.imageData}`,
         }));
   
-        const largeImage = mappedImages[0]?.imageData || null;
+        const largeImage = mappedImages[0]?.imageData;
         const smallImages = mappedImages.slice(1).map((img: ImageData) => img.imageData);
   
         setLargeImage(largeImage); 

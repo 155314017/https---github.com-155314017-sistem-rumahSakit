@@ -6,6 +6,8 @@ import Cookies from "js-cookie";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { editRoom } from '../../../services/Admin Tenant/ManageRoom/EditRoomService';
+import { GetRoomByIdServices } from '../../../services/Admin Tenant/ManageRoom/GetRoomByIdServices';
+import { GetBuildingById } from '../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices';
 
 interface FormValues {
     namaKlinik: string;
@@ -69,24 +71,14 @@ export default function useEditRuangan() {
             setLoading(true);
             try {
                 const token = Cookies.get("accessToken");
-                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/room/${id}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    }
-                });
+                const response = await GetRoomByIdServices(id,token)
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/room/${id}`);
-                setRoomName(response.data.data.name);
-                setRoomType(response.data.data.type);
+                setRoomName(response.name);
+                setRoomType(response.type);
 
-                const buildingResponse = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${response.data.data.masterBuildingId}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    }
-                });
+                const buildingResponse = await GetBuildingById(response.masterBuildingId, token)
 
-                setBuildingName(buildingResponse.data.data.id);  // Store the building ID instead of name
+                setBuildingName(buildingResponse.id);  // Store the building ID instead of name
             } catch (error) {
                 console.error('Error fetching room data:', error);
             } finally {

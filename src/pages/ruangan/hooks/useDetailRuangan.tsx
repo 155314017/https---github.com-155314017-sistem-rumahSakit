@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { GetRoomByIdServices } from "../../../services/Admin Tenant/ManageRoom/GetRoomByIdServices";
 
 type ImageData = {
     imageName: string;
@@ -44,27 +45,19 @@ export default function useDetailRuangan() {
         setLoading(true);
         try {
             const token = Cookies.get("accessToken");
-            const response = await axios.get(
-                `https://hms.3dolphinsocial.com:8083/v1/manage/room/${id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        accessToken: `${token}`,
-                    }
-                }
-            );
-            setIds(response.data.data.id);
-            setName(response.data.data.name);
-            setType(response.data.data.type);
-            const imagesData = response.data.data.images;
-            setBuildingId(response.data.data.masterBuildingId);
+            const response = await GetRoomByIdServices(id, token);
+            setIds(response.id);
+            setName(response.name);
+            setType(response.type);
+            const imagesData = response.images;
+            setBuildingId(response.masterBuildingId);
             const mappedImages = imagesData.map((image: ImageData) => ({
                 imageName: image.imageName,
                 imageType: image.imageType,
                 imageData: `data:${image.imageType};base64,${image.imageData}`,
             }));
 
-            const largeImage = mappedImages[0]?.imageData || null;
+            const largeImage = mappedImages[0]?.imageData;
             const smallImages = mappedImages.slice(1).map((img: ImageData) => img.imageData);
 
             setLargeImage(largeImage);

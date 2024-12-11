@@ -13,58 +13,25 @@ export interface FacilityDataItem {
   deletedDateTime: number | null;
   masterBuildingId: string;
   cost: number;
-  images: string[];
+  images: {imageName: string; imageType: string; imageData: string }[];
   schedules: { id: string; startDateTime: number; endDateTime: number }[];
   operationalSchedule?: string;
 }
 
-export interface Pageable {
-  pageNumber: number;
-  pageSize: number;
-  sort: {
-    sorted: boolean;
-    empty: boolean;
-    unsorted: boolean;
-  };
-  offset: number;
-  paged: boolean;
-  unpaged: boolean;
-}
 
-export interface ApiResponse {
-  responseCode: string;
-  statusCode: string;
-  message: string;
-  data: {
-    content: FacilityDataItem[];
-    pageable: Pageable;
-    totalPages: number;
-    totalElements: number;
-    last: boolean;
-    size: number;
-    number: number;
-    sort: {
-      sorted: boolean;
-      empty: boolean;
-      unsorted: boolean;
-    };
-    numberOfElements: number;
-    first: boolean;
-    empty: boolean;
-  };
-}
 
-const API_URL =
-  "https://hms.3dolphinsocial.com:8083/v1/manage/facility/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc";
 
-export const FacilityServices = async (): Promise<FacilityDataItem[]> => {
-  const response = await axios.get<ApiResponse>(API_URL, {
-    timeout: 10000
-});
+
+export const GetFacilityByIdServices = async (id : string | undefined, accessToken: string | undefined): Promise<FacilityDataItem> => {
+  const response = await axios.get<FacilityDataItem>(`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${id}`, {
+    headers: {
+        'Content-Type': 'application/json',
+        'accessToken': `${accessToken}`
+    }});
 
   if (response.status === 200) {
     
-    response.data.data.content.forEach((item) => {
+    const item = response.data; 
       
 
       if (item.schedules.length > 0) {
@@ -111,9 +78,9 @@ export const FacilityServices = async (): Promise<FacilityDataItem[]> => {
       );
       console.log("Images:", item.images);
       console.log("----------------------------");
-    });
+ 
 
-    return response.data.data.content;
+    return response.data;
   } else {
     throw new Error(`API responded with status: ${response.status}`);
   }

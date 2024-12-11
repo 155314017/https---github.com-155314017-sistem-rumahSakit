@@ -5,6 +5,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom';
 import { createRoom } from '../../../services/Admin Tenant/ManageRoom/CreateRoomService';
+import { RoomServices } from '../../../services/Admin Tenant/ManageRoom/RoomServices';
 
 type Building = {
     id: string;
@@ -27,10 +28,8 @@ export default function useTambahRuangan() {
     useEffect(() => {
         const fetchGedungData = async () => {
             try {
-                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
-                    timeout: 10000
-                });
-                setGedungOptions(response.data.data.content.map((item: Building) => ({
+                const response = await RoomServices();
+                setGedungOptions(response.map((item: Building) => ({
                     id: item.id,
                     name: item.name,
                 })));

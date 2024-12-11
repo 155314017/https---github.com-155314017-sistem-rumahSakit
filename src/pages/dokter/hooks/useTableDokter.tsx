@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 
 import { DoctorDataItem, DoctorServices } from "../../../services/Admin Tenant/ManageDoctor/DoctorServices";
-import axios from "axios";
+import { GetDoctorServices } from "../../../services/Admin Tenant/ManageDoctor/GetDoctorService";
 export default function useTableDokter() {
     const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -31,8 +31,8 @@ export default function useTableDokter() {
       try {
         const names = await Promise.all(
           idClinic.map(async (id) => {
-            const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`);
-            return response.data.name; 
+            const response = await GetDoctorServices(id);
+            return response.name; 
           })
         );
         setClinicNames(names);
