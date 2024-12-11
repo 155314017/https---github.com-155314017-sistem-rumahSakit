@@ -7,6 +7,8 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 import { useParams, useNavigate } from 'react-router-dom';
 import { editSubfacility } from '../../../services/ManageFacility/EditSubfacilityService';
+import { GetSubFacilityById } from '../../../services/ManageFacility/GetSubFacilityByIdServices';
+import { FacilityServices } from '../../../services/ManageFacility/FacilityServices';
 
 type Facility = {
     id: string;
@@ -39,8 +41,6 @@ export default function useEditSubFasilitas() {
 
     useEffect(() => {
         if (startTime && endTime) {
-            const formattedStartTime = startTime.format("HH:mm");
-            const formattedEndTime = endTime.format("HH:mm");
             const dayOfWeek = startTime.format("dddd");
             const dayMapping: { [key: string]: string } = {
                 "Monday": "1",
@@ -63,16 +63,11 @@ export default function useEditSubFasilitas() {
             try {
                 
                 const token = Cookies.get("accessToken");
-                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/${id}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    }
-                });
-                setName(response.data.data.name);
-                setFacilityId(response.data.data.facilityDataId);
-                if (response.data.data.schedules && response.data.data.schedules.length > 0) {
-                    const schedule = response.data.data.schedules[0];
+                const response = await GetSubFacilityById(id,token);
+                setName(response.name || " ");
+                setFacilityId(response.facilityDataId);
+                if (response.schedules && response.schedules.length > 0) {
+                    const schedule = response.schedules[0];
                     setStartTime(dayjs.unix(schedule.startDateTime));
                     setEndTime(dayjs.unix(schedule.endDateTime));
                 }
@@ -87,10 +82,8 @@ export default function useEditSubFasilitas() {
     useEffect(() => {
         const fetchGedungData = async () => {
             try {
-                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/facility/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
-                    timeout: 10000
-                });
-                setFacilityOptions(response.data.data.content.map((item: Facility) => ({
+                const response = await FacilityServices();
+                setFacilityOptions(response.map((item: Facility) => ({
                     id: item.id,
                     name: item.name,
                 })));

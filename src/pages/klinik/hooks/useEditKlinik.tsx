@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import { useNavigate, useParams } from 'react-router-dom';
 import "dayjs/locale/id";
 import { editClinic } from '../../../services/Admin Tenant/ManageClinic/EditClinic';
+import { getClinic } from '../../../services/Admin Tenant/ManageClinic/GetClinic';
 
 
 type ImageData = {
@@ -38,15 +39,10 @@ export default function useEditKlinik() {
         const fetchData = async () => {
             try {
                 const token = Cookies.get("accessToken");
-                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    }
-                });
+                const response = await getClinic(id,token);
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`);
-                setName(response.data.data.name);
-                setDescription(response.data.data.description);
+                setName(response.name);
+                setDescription(response.description);
                 if (response.data.data.schedules && response.data.data.schedules.length > 0) {
                     const schedule = response.data.data.schedules[0];
                     setStartTime(dayjs.unix(schedule.startDateTime));
@@ -71,8 +67,7 @@ export default function useEditKlinik() {
 
     useEffect(() => {
         if (startTime && endTime) {
-            const formattedStartTime = startTime.format("HH:mm");
-            const formattedEndTime = endTime.format("HH:mm");
+            
             const dayOfWeek = startTime.format("dddd");
             const dayMapping: { [key: string]: string } = {
                 "Monday": "1",

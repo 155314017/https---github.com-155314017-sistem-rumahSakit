@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import dayjs from 'dayjs'
-import axios from 'axios'
-import Cookies from 'js-cookie'
 import { useFormik } from 'formik'
 import 'dayjs/locale/id'
 import { EditAmbulanceServices } from '../../../services/Admin Tenant/ManageAmbulance/EditAmbulanceServices'
+import { getAmbulanceByIdService } from '../../../services/Admin Tenant/ManageAmbulance/GetAmbulanceByIdService'
 
 interface FormValues {
   operationalCost: number
@@ -70,28 +69,19 @@ export default function useEditAmbulance() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = Cookies.get('accessToken')
-        const response = await axios.get(
-          `https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${id}`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              accessToken: `${token}`
-            }
-          }
-        )
+        const response = await getAmbulanceByIdService(id);
 
-        const data = response.data.data
+        const data = response
         setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${id}`)
-        setInitialOperationalCost(data.cost)
+        setInitialOperationalCost(data?.cost || 0)
 
-        if (data.schedules && data.schedules.length > 0) {
+        if (data?.schedules && data?.schedules.length > 0) {
           const schedule = data.schedules[0]
           setStartTime(dayjs.unix(schedule.startDateTime))
           setEndTime(dayjs.unix(schedule.endDateTime))
         }
 
-        setImagesData(data.images || [])
+        setImagesData(data?.images || [] )
       } catch (error) {
         console.error('Error:', error)
       }
