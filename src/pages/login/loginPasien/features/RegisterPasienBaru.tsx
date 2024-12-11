@@ -137,7 +137,7 @@ export default function RegisterPasienBaru() {
                                 </Typography>
 
                                 <Formik
-                                    initialValues={{ nik: data1.nik, email: data1.email, phone: '', fullname: '', gender: '', address: '', tempatLahir: '' }}
+                                    initialValues={{ nik: data1.nik, email: data1.email, phone: '', fullname: '', gender: '', address: '', tempatLahir: '', tanggalLahir: '', }}
                                     enableReinitialize
                                     validationSchema={validationSchema}
                                     onSubmit={async (values) => {
@@ -148,13 +148,13 @@ export default function RegisterPasienBaru() {
                                             email: values.email,
                                             gender: values.gender,
                                             address: values.address,
-                                            tempatLahir: values.tempatLahir,
+                                            birthDate: values.tanggalLahir,
+                                            birthPlace: values.tempatLahir,
                                         }
                                         setEmailOTP(values.email)
                                         console.log("data dikirm ke API: ", dataRegis)
                                         try {
                                             setButtonDis(true);
-
                                             const response = await RegisterPatient(dataRegis);
                                             console.log("response: ", response);
                                             showOtp()
@@ -338,6 +338,13 @@ export default function RegisterPasienBaru() {
                                                             <Box sx={{ overflow: 'hidden' }}>
                                                                 <DemoContainer components={['DatePicker']}>
                                                                     <DatePicker
+                                                                        onChange={(newValue) => {
+                                                                            if (newValue) {
+                                                                                const formattedDate = newValue.format("YYYY-MM-DD");
+                                                                                values.tanggalLahir = formattedDate;
+                                                                                console.log("tanggalLahir", formattedDate);
+                                                                            }
+                                                                        }}
                                                                         slotProps={{
                                                                             textField: {
                                                                                 placeholder: "Tanggal Lahir",
@@ -556,7 +563,7 @@ export default function RegisterPasienBaru() {
                                             const response = await VerifyOTPPatient(dataOTP)
                                             console.log("response : ", response)
                                             otpFormShown()
-                                            navigate('/register/pj', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!', data: data, idPatient: patientId } })
+                                            navigate('/register/pj', { state: { successAdd: true, data: data, idPatient: patientId } })
                                         } catch {
                                             console.log("error")
                                             showTemporaryAlertError()
