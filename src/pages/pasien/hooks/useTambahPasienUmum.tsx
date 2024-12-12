@@ -15,19 +15,23 @@ type Doctor = {
 };
 
 type ResponsePatient = {
+    id: string;
     identityNumber: string,
     fullName: string,
+    gender: string,
+    email: string,
     birthDateAndPlace: string,
     phoneNumber: string,
+    address: string,
 }
 
 type dataPasien = {
     nik: string | undefined;
-    email: string;
+    email: string | undefined;
     phone: string | undefined;
-    gender: string;
+    gender: string | undefined;
     fullname: string | undefined;
-    address: string;
+    address: string | undefined;
 }
 
 type Clinic = {
@@ -45,7 +49,18 @@ export default function useTambahPasienUmum() {
     const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
     const [selectedMethod, setSelectedMethod] = useState('');
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
-    const [patientData, setPatientData] = useState<ResponsePatient>();
+    // const [patientData, setPatientData] = useState<ResponsePatient | undefined>();
+    const [patientData, setPatientData] = useState<ResponsePatient>({
+        id: '',
+        identityNumber: '',
+        fullName: '',
+        gender: '',
+        email: '',
+        birthDateAndPlace: '',
+        phoneNumber: '',
+        address: '',
+    });
+
     const [dataPasien, setDataPasien] = useState<dataPasien>();
     const [idClinic, setIdClinic] = useState('');
     const [idDoctor, setIdDoctor] = useState('');
@@ -65,22 +80,24 @@ export default function useTambahPasienUmum() {
     const formik = useFormik({
         initialValues: {
             namaKlinik: '',
-            address: '',
+            address: patientData?.address,
             nikCari: '',
             nik: patientData?.identityNumber,
-            email: '',
+            email: patientData?.email,
             phone: patientData?.phoneNumber,
-            gender: '',
+            gender: patientData?.gender,
             fullname: patientData?.fullName,
             // phonePasien: '',
             nikGuardian: switchValue ? dataPasien?.nik : '',
+            typeGuardian: '',
             caraDatang: '',
             fullnameGuardian: switchValue ? dataPasien?.fullname : '',
             emailGuardian: switchValue ? dataPasien?.email : '',
             genderGuardian: switchValue ? dataPasien?.gender : '',
             addressGuardian: switchValue ? dataPasien?.address : '',
             phoneGuardian: switchValue ? dataPasien?.phone : '62',
-
+            birthPlaceGuardian: '',
+            birthDateGuardian: '',
             // create appointment
             jenisKunjungan: '',
             poli: '',
@@ -221,7 +238,11 @@ export default function useTambahPasienUmum() {
         try {
             const response = await GetPatientByNIKServices(nik);
             console.log(response?.data);
-            setPatientData(response?.data);
+
+
+            setPatientData(response?.data as ResponsePatient);
+
+
             const birthDate = response?.data.birthDateAndPlace.split(',')[1].trim();
             const birthPlace = response?.data.birthDateAndPlace.split(',')[0];
             setBirthDate(birthDate ? birthDate : "Data tidak ada")
@@ -236,17 +257,20 @@ export default function useTambahPasienUmum() {
     const putGuard = async () => {
         try {
             const tes = {
-                patientId: formik.values.fullnameGuardian,
+                patientId: patientData.id,
                 guardianIdentityNumber: formik.values.nikGuardian,
                 guardianName: formik.values.fullnameGuardian,
                 guardianPhone: formik.values.phoneGuardian,
                 guardianEmail: formik.values.emailGuardian,
                 guardianGender: formik.values.genderGuardian,
-                guardianAddress: formik.values.addressGuardian
+                guardianAddress: formik.values.addressGuardian,
+                guardianType: formik.values.typeGuardian,
+                guardianBirthPlace: formik.values.birthPlaceGuardian,
+                guardianBirthDate: formik.values.birthDateGuardian,
             }
 
             console.log("Data: ", tes)
-            setCurrentPage(3)
+            // setCurrentPage(3)
         } catch (error) {
 
         }
@@ -319,7 +343,7 @@ export default function useTambahPasienUmum() {
 
     const createTicket = async () => {
         const data = {
-            patientId: "b7a661c5-5f16-4e3f-933c-99d684feb9d5",
+            patientId: patientData?.id,
             typeOfVisit: formik.values.jenisKunjungan,
             clinicId: idClinic,
             doctorId: idDoctor,
@@ -362,7 +386,7 @@ export default function useTambahPasienUmum() {
         if (currentPage === 1) {
             return formik.values.nikCari;
         } else if (currentPage === 2) {
-            return formik.values.nikGuardian && formik.values.fullnameGuardian && formik.values.emailGuardian && formik.values.addressGuardian;
+            return formik.values.nikGuardian && formik.values.fullnameGuardian && formik.values.emailGuardian && formik.values.addressGuardian && formik.values.birthPlaceGuardian;
         } else if (currentPage === 3) {
             return formik.values.phoneGuardian && formik.values.jenisKunjungan && formik.values.poli && formik.values.doctor && formik.values.keluhan && formik.values.riwayatPenyakit && formik.values.alergi;
         }
