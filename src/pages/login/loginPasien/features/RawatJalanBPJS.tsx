@@ -35,13 +35,13 @@ interface FormValues {
 import useRawatJalanBPJS from "../hooks/useRawatJalanBPJS";
 export default function RawatJalanBPJS() {
     const {
-    showFormPage,
-    setSHowFormPage,
-    validationSchema,
+        showFormPage,
+        setSHowFormPage,
+        validationSchema,
     } = useRawatJalanBPJS();
-    
-  return (
-    <>
+
+    return (
+        <>
             <style>
                 {`
             :root {
@@ -86,7 +86,7 @@ export default function RawatJalanBPJS() {
                         }}
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
-                            // console.log("Form submitted with values:", values);
+                            console.log("Form submitted with values:", values);
                         }}
                     >
                         {({
@@ -222,7 +222,7 @@ export default function RawatJalanBPJS() {
 
                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                         {/* <CalenderPopover title="Pilih tanggal" /> */}
-                                                        <CustomCalender  />
+                                                        <CustomCalender doctorId={'1'} onChange={() => console.log("tes")} />
                                                     </Box>
                                                 </Box>
 
@@ -310,5 +310,5 @@ export default function RawatJalanBPJS() {
                 )}
             </Box>
         </>
-  )
+    )
 }

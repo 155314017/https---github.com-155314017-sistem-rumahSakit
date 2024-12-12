@@ -9,7 +9,6 @@ import {
 import logo from "../../../../img/St.carolus.png";
 import patientImage from "../../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
 import AlertWarning from "../../../../components/small/AlertWarning";
 import AlertSuccess from "../../../../components/small/AlertSuccess";
 import "react-phone-input-2/lib/style.css";

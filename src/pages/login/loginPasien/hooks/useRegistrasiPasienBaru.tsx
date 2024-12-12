@@ -167,7 +167,7 @@ export default function useRegistrasiPasienBaru() {
     };
 
     const validationCheck = async (values: FormValues) => {
-
+        console.log(values)
         // showOtp()
         return true;
     };

@@ -10,21 +10,21 @@ import ResetPassword from '../../../../services/Admin Tenant/Auth/ResetPassword'
 
 
 const validationSchema = Yup.object({
-    email: Yup.string().email('Email tidak valid').required('Email wajib diisi'),
-    password: Yup.string().required('Kata sandi wajib diisi')
-  })
-  
-  interface FormValues {
-    email: string
-    password: string
-  }
-  
-  interface FormResetPasswordValues {
-    email: string
-  }
-  
+  email: Yup.string().email('Email tidak valid').required('Email wajib diisi'),
+  password: Yup.string().required('Kata sandi wajib diisi')
+})
+
+interface FormValues {
+  email: string
+  password: string
+}
+
+interface FormResetPasswordValues {
+  email: string
+}
+
 export default function useLoginPegawai() {
-    const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const [showLogin, setShowLogin] = useState(true)
   const [showEmailChanged, setShowEmailChanged] = useState(true)
   const [emailError, setEmailError] = useState(false)

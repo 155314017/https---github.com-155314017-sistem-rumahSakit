@@ -6,8 +6,7 @@ import Modal from '@mui/material/Modal';
 import { Link } from 'react-router-dom';
 import { Avatar, Button, Card, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { bgcolor, Stack } from '@mui/system';
-import ModalKodeBooking from './ModalKodeBooking';
+import { Stack } from '@mui/system';
 import ModalKategoriPasien from './ModalKategoriPasien';
 
 const style = {

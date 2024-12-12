@@ -8,7 +8,6 @@ import { Avatar, Button, Card, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Stack } from '@mui/system';
 import ModalKodeBooking from './ModalKodeBooking';
-import ModalPilihPembayaran from './ModalPilihPembayaran';
 
 const style = {
     position: 'absolute',
@@ -37,10 +36,10 @@ const ModalKategoriPasien: React.FC<ModalKategoriPasienProps> = ({ open, onClose
         setOpenModalKodeBooking(true);
     };
 
-    const handlePilihPembayaran = () => {
-        onClose();
-        setOpenModalPilihPembayaran(true);
-    }
+    // const handlePilihPembayaran = () => {
+    //     onClose();
+    //     setOpenModalPilihPembayaran(true);
+    // }
 
     const handleBack = () => {
         setOpenModalPilihPembayaran(false);

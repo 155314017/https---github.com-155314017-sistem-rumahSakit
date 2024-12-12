@@ -1,9 +1,4 @@
 import axios from 'axios'
-import Cookies from 'js-cookie'
-
-interface CustomError extends Error {
-  responseCode?: number
-}
 
 interface Data {
   patientId: string | undefined
@@ -28,13 +23,8 @@ const CreateAppointment = async (data: Data) => {
     )
     console.log('Appointment created:', response.data)
     return response.data
-  } catch (error: any) {
-    const customError: CustomError = new Error(
-      error.response?.data?.message || error.message || 'Creation failed'
-    )
-    customError.responseCode = error.response?.status
-    console.error('Error in CreateAppointment:', customError)
-    throw customError
+  } catch (error) {
+    console.log('error', error)
   }
 }
 

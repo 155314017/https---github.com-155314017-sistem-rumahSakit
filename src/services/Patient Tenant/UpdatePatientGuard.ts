@@ -1,9 +1,4 @@
 import axios from 'axios'
-import Cookies from 'js-cookie'
-
-interface CustomError extends Error {
-  responseCode?: number
-}
 
 interface Data {
   patientId: string | undefined
@@ -34,13 +29,8 @@ const UpdatePatientGuards = async (data: Data) => {
     console.log('inside Login1 ')
     console.log('Response register: ', response)
     return response.data
-  } catch (error: any) {
-    const customError: CustomError = new Error(
-      error.response?.data?.message || error.message || 'Login failed'
-    )
-
-    customError.responseCode = error.response?.status
-    throw customError
+  } catch (error) {
+    console.log('error', error)
   }
 }
 

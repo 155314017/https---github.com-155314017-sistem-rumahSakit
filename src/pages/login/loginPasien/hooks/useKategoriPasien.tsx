@@ -1,6 +1,6 @@
 // import regisImg from "../../../img/registerPasienImage.png";
 // import logo from "../../../img/St.carolus.png";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function useKategoriPasien() {

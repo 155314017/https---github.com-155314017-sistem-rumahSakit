@@ -1,28 +1,23 @@
-import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography, CardMedia, FormControl, TextField, Radio, FormControlLabel, RadioGroup, CircularProgress } from "@mui/material";
 import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
 import axios from 'axios';
 import "react-phone-input-2/lib/style.css";
 import logo from "../../../../img/St.carolus.png";
 import imagePendaftaran from "../../../../assets/img/pendaftaran.jpeg";
 import FileUploader from "../../../../components/medium/FileUploader";
-import InformasiTicket from "../../../../components/small/InformasiTicket";
 import DropdownListAPI from '../../../../components/small/DropdownListAPI';
 import CustomCalender from '../../../../components/medium/CustomCalender';
 
 // Hooks
 import useRawatJalanUmum from '../hooks/useRawatJalanUmum';
-import CreateAppointment from '../../../../services/Patient Tenant/CreateAppointment';
-import Cookies from "js-cookie";
 import InformasiTicketAPI from '../../../../components/small/InformasiTicketAPI';
 import dayjs from 'dayjs';
 
-const validationSchema = Yup.object({
-    typeOfVisit: Yup.string().required("Jenis Kunjungan wajib diisi"),
-    symptoms: Yup.string().required("Keluhan wajib diisi"),
-    transportMethod: Yup.string().required("Cara datang/pengantar wajib diisi"),
-});
+// const validationSchema = Yup.object({
+//     typeOfVisit: Yup.string().required("Jenis Kunjungan wajib diisi"),
+//     symptoms: Yup.string().required("Keluhan wajib diisi"),
+//     transportMethod: Yup.string().required("Cara datang/pengantar wajib diisi"),
+// });
 
 interface FormValues {
     typeOfVisit: string;
@@ -39,7 +34,6 @@ export default function RawatJalanUmum() {
         selectedMethod,
         clinicOptions,
         doctorOptions,
-        setIdDoctor,
         idDoctor,
         handleScheduleChange,
         selectedScheduleId,

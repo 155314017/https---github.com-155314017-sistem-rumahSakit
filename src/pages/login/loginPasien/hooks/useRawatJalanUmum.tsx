@@ -21,7 +21,7 @@ type Doctor = {
 
 
 type dataTicket = {
-  nomorAntrian: any | undefined;
+  nomorAntrian: string | undefined;
   namaDokter: string;
   clinic: string;
   tanggalReservasi: string;
@@ -75,7 +75,7 @@ export default function useRawatJalanUmum() {
     setIdClinic(value)
     setClinicName(label);
   };
-  
+
 
   const handleDropdownDocter = (value: string, label: string) => {
     console.log(`Selected Value: ${value}, Selected Label: ${label}`);

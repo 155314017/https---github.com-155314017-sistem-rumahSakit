@@ -62,8 +62,6 @@ export default function useBioPjBaru() {
     const [otp, setOtp] = useState('');
     const [switchValue, setSwitchValue] = useState(false);
     const [patientId, setPatientId] = useState<string>('');
-    const [show, setShow] = useState(true);
-    const [notFound, setNotFound] = useState(false);
     const [noIdentity, setNoIdentity] = useState(false);
     const [currentView, setCurrentView] = useState('show')
     const location = useLocation();
@@ -246,8 +244,6 @@ export default function useBioPjBaru() {
         handleChangeGender,
         handleSwitchChange,
         value,
-        show,
-        notFound,
         otp,
         setOtp,
         BpRadio,

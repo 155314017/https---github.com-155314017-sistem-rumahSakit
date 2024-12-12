@@ -21,6 +21,7 @@ export default function useEditPasienUmum() {
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
         }),
         onSubmit: (values) => {
+            console.log(values);
         },
     });
 
@@ -74,12 +75,12 @@ export default function useEditPasienUmum() {
         }
     };
 
-  return {
-    formik,
-    breadcrumbItems,
-    currentPage,
-    setCurrentPage,
-    getPageStyle,
-    getBorderStyle
-  }
+    return {
+        formik,
+        breadcrumbItems,
+        currentPage,
+        setCurrentPage,
+        getPageStyle,
+        getBorderStyle
+    }
 }

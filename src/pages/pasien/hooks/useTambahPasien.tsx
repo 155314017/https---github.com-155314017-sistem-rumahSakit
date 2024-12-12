@@ -27,6 +27,7 @@ export default function useTambahPasien() {
     const handleTambahHari = () => {
         const selectedDayLabel = hari.find(day => day.value === selectedDay)?.label;
         const dateTime = selectedDayLabel + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
+        console.log(dateTime);
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -50,11 +51,13 @@ export default function useTambahPasien() {
             namaKlinik: Yup.string().required('Nama Klinik is required'),
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
         }),
+
         onSubmit: (values) => {
+            console.log(values);
         },
     });
 
-    return{
+    return {
         formik,
         breadcrumbItems,
         handleTambahHari,

@@ -1,4 +1,4 @@
-import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, OutlinedInput, Switch, RadioGroup, } from "@mui/material";
+import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, RadioGroup, } from "@mui/material";
 import patientImage from "../../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from 'formik';
 import AlertWarning from "../../../../components/small/AlertWarning";
@@ -21,11 +21,8 @@ export default function BioPjBaru() {
     const {
         validationSchema,
         handleSwitchChange,
-        show,
-        notFound,
         BpRadio,
         loginSuccess,
-        emailError,
         showAlert,
         switchValue,
         data,
@@ -138,7 +135,12 @@ export default function BioPjBaru() {
                                             guardianPhone: values.phone,
                                             guardianEmail: values.email,
                                             guardianGender: values.gender,
-                                            guardianAddress: values.address
+                                            guardianAddress: values.address,
+                                            // MASIH ERROR
+                                            guardianType: 'guardianType',
+                                            guardianRelation: 'relasi',
+                                            guardianBirthPlace: 'place',
+                                            guardianBirthDate: 'date',
                                         }
                                         console.log("data dikirm ke API: ", dataRegis)
                                         try {

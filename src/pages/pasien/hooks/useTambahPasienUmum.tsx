@@ -142,7 +142,7 @@ export default function useTambahPasienUmum() {
             phoneGuardian: Yup.string().required('EmailGuardian is required'),
         }),
         onSubmit: (values) => {
-            // console.log('Form submitted:', values);
+            console.log('Form submitted:', values);
         },
     });
 
@@ -254,14 +254,14 @@ export default function useTambahPasienUmum() {
             setPatientData(response?.data as ResponsePatient);
 
 
-            const birthDate = response?.data.birthDateAndPlace.split(',')[1].trim();
-            const birthPlace = response?.data.birthDateAndPlace.split(',')[0];
-            setBirthDate(birthDate ? birthDate : "Data tidak ada")
-            setBirthPlace(birthPlace ? birthPlace : "Data tidak ada")
+            const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
+            const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
+            setBirthDate(birthDateProcess ? birthDateProcess : "Data tidak ada")
+            setBirthPlace(birthPlaceProcess ? birthPlaceProcess : "Data tidak ada")
+            console.log(birthDate, birthPlace);
             setPatientFullsPage(false);
         } catch (error) {
-            console.error("Error fetching");
-
+            console.error("Error fetching", error);
         }
     }
 
@@ -286,7 +286,7 @@ export default function useTambahPasienUmum() {
             console.log("Data: ", tes)
             setCurrentPage(3)
         } catch (error) {
-
+            console.log(error)
         }
     }
 

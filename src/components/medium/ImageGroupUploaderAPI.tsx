@@ -36,8 +36,8 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, ap
                 });
 
                 const imagesData = response.data.data.images;
-                console.log("TESTING: ",response.data.data.images);
-                const mappedImages = imagesData.map((image: any) => ({
+                console.log("TESTING: ", response.data.data.images);
+                const mappedImages = imagesData.map((image: string | any) => ({
                     imageName: image.imageName,
                     imageType: image.imageType,
                     imageData: image.imageData,
@@ -56,7 +56,7 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, ap
                 setTes(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
-            } 
+            }
         };
 
         fetchData();
@@ -151,67 +151,67 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, ap
             {/* {tes ? (
                 <CircularProgress size={60} sx={{ ml:"50%"}}  />
             ) : ( */}
-                <Grid container justifyContent="center" alignItems="center" direction="column" spacing={4} maxHeight={'350px'} maxWidth={'100%'} >
-                    {images.map((imgData, index) => (
-                        <Grid key={index}>
-                            {imgData.error && (
-                                <Alert severity="error" sx={{ mb: 3 }}>
-                                    {imgData.error}
-                                </Alert>
-                            )}
+            <Grid container justifyContent="center" alignItems="center" direction="column" spacing={4} maxHeight={'350px'} maxWidth={'100%'} >
+                {images.map((imgData, index) => (
+                    <Grid key={index}>
+                        {imgData.error && (
+                            <Alert severity="error" sx={{ mb: 3 }}>
+                                {imgData.error}
+                            </Alert>
+                        )}
 
-                            <Box
-                                onClick={() => handleBoxClick(index)}
-                                onDragOver={handleDragOver}
-                                onDrop={(e) => handleDrop(e, index)}
-                                sx={{
-                                    border: tes ? "2px dashed #8F85F3" : "2px dashed gray",
-                                    borderRadius: "12px",
-                                    textAlign: "center",
-                                    width: "190px",
-                                    height: "160px",
-                                    backgroundColor: "#fafafa",
-                                    transition: "background-color 0.3s ease",
-                                    cursor: "pointer",
-                                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <input
-                                    type="file"
-                                    accept="image/jpeg, image/png, image/svg+xml, image/gif"
-                                    ref={(el) => (inputRefs.current[index] = el!)}
-                                    style={{ display: "none" }}
-                                    onChange={(e) => handleFileChange(e, index)}
-                                    disabled={tes}
+                        <Box
+                            onClick={() => handleBoxClick(index)}
+                            onDragOver={handleDragOver}
+                            onDrop={(e) => handleDrop(e, index)}
+                            sx={{
+                                border: tes ? "2px dashed #8F85F3" : "2px dashed gray",
+                                borderRadius: "12px",
+                                textAlign: "center",
+                                width: "190px",
+                                height: "160px",
+                                backgroundColor: "#fafafa",
+                                transition: "background-color 0.3s ease",
+                                cursor: "pointer",
+                                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <input
+                                type="file"
+                                accept="image/jpeg, image/png, image/svg+xml, image/gif"
+                                ref={(el) => (inputRefs.current[index] = el!)}
+                                style={{ display: "none" }}
+                                onChange={(e) => handleFileChange(e, index)}
+                                disabled={tes}
+                            />
+                            {tes ? (
+                                <CircularProgress sx={{ color: '#8F85F3' }} />
+                            ) : imgData.image ? (
+                                <img
+                                    src={imgData.image}
+                                    alt={`Uploaded ${index + 1}`}
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "contain",
+                                        borderRadius: "8px",
+                                    }}
                                 />
-                                {tes ? (
-                                    <CircularProgress sx={{ color:'#8F85F3'}} />
-                                ) : imgData.image ? (
-                                    <img
-                                        src={imgData.image}
-                                        alt={`Uploaded ${index + 1}`}
-                                        style={{
-                                            width: "100%",
-                                            height: "100%",
-                                            objectFit: "contain",
-                                            borderRadius: "8px",
-                                        }}
-                                    />
-                                ) : (
-                                    <Box>
-                                        <AddPhotoAlternateOutlinedIcon />
-                                        <Typography sx={{ color: "gray", fontSize: "18px" }}>
-                                            Foto {index + 1}
-                                        </Typography>
-                                    </Box>
-                                )}
-                            </Box>
-                        </Grid>
-                    ))}
-                </Grid>
+                            ) : (
+                                <Box>
+                                    <AddPhotoAlternateOutlinedIcon />
+                                    <Typography sx={{ color: "gray", fontSize: "18px" }}>
+                                        Foto {index + 1}
+                                    </Typography>
+                                </Box>
+                            )}
+                        </Box>
+                    </Grid>
+                ))}
+            </Grid>
             {/* )} */}
         </>
     );

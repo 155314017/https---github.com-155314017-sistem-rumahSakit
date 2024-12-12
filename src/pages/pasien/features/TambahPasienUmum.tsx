@@ -17,11 +17,9 @@ import FileUploader from '../../../components/medium/FileUploader';
 import PhoneInput from 'react-phone-input-2';
 import SwitchCustom from '../../../components/small/SwitchCustom';
 import CustomCalender from '../../../components/medium/CustomCalender';
-import InformasiTicket from '../../../components/small/InformasiTicket';
 //hooks
 import useTambahPasienUmum from '../hooks/useTambahPasienUmum';
 import DropdownListAPI from "../../../components/small/DropdownListAPI";
-import { Field } from "formik";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -41,15 +39,12 @@ export default function TambahPasienUmum() {
         switchValue,
         selectedMethod,
         mainPages,
-        setMainPages,
         guardFullPage,
         setGuardFullPage,
         patientFullPage,
-        setPatientFullsPage,
         handleRadioChange,
         handleScheduleChange,
         doctorOptions,
-        setIdDoctor,
         idDoctor,
         handleDropdownDocter,
         findPatientByNik,
@@ -57,11 +52,9 @@ export default function TambahPasienUmum() {
         BpRadio,
         putGuard,
         changePage2,
-        dataPasien,
         clinicOptions,
         handleDropdownPoli,
         createTicket,
-        setDataTickets,
         dataTickets
 
     } = useTambahPasienUmum();

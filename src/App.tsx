@@ -1,9 +1,9 @@
 import "./App.css";
-import Admin from "./Backup/admin/Admin";
+import Admin from "./pages/admin/features/Admin";
 function App() {
   return (
     <>
-      <Admin/>
+      <Admin />
     </>
   );
 }

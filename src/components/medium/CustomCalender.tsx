@@ -21,7 +21,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
     const [selectedTimeRange, setSelectedTimeRange] = useState<string | null>(null);
     const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
     const [inputValue, setInputValue] = useState<string>('');
-    const [schedules, setSchedules] = useState<any[]>([]);
+    const [schedules, setSchedules] = useState<string[]>([]);
     const [availableTimes, setAvailableTimes] = useState<{ [date: string]: { timeRange: string, scheduleId: string }[] }>({});
     const [availableDates, setAvailableDates] = useState<Set<string>>(new Set());
 
@@ -36,6 +36,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
             );
             if (response.data && response.data.data) {
                 setSchedules(response.data.data);
+                console.log(schedules)
                 processSchedules(response.data.data);
                 console.log("schedule: ", response.data.data)
             }
