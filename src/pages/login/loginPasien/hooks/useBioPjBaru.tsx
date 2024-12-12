@@ -12,7 +12,14 @@ const validationSchema = Yup.object({
         .min(12, 'NIK minimal 12 digit')
         .max(14, 'NIK maksimal 14 digit')
         .required('NIK wajib diisi'),
-    email: Yup.string().required('Email wajib diisi')
+    email: Yup.string().required('Email wajib diisi'),
+    phone: Yup.string()
+        .required('Isi nomor telepon')
+        .matches(/^[0-9]{10,15}$/, 'Nomor telepon tidak valid'),
+    fullname: Yup.string().required('Nama lengkap wajib diisi'),
+    gender: Yup.string().required('JenisK kelamin harus dipilih'),
+    birthPlace: Yup.string().required('Tempat lahir harus diisi'),
+    address: Yup.string().required('Tempat lahir harus diisi'),
 });
 
 // interface FormValues {
@@ -35,6 +42,8 @@ interface DataKirim {
     name: string;
     gender: string;
     address: string;
+    birthPlace: string;
+    birtDate: string;
 }
 
 export default function useBioPjBaru() {
@@ -44,7 +53,7 @@ export default function useBioPjBaru() {
     const [emailError, setEmailError] = useState(false);
     // const [, setNikError] = useState(false);
     // const [PasswordError,setPasswordError] = useState(false);
-    const [data, setData] = useState<DataKirim>({ identityNumber: '', email: '', phone: '', name: '', gender: '', address: '' });
+    const [data, setData] = useState<DataKirim>({ identityNumber: '', email: '', phone: '', name: '', gender: '', address: '', birthPlace: '', birtDate: '' });
     const [showAlert, setShowAlert] = useState(false);
     const [isCounting, setIsCounting] = useState(false);
     const [secondsLeft, setSecondsLeft] = useState(60);
@@ -55,32 +64,33 @@ export default function useBioPjBaru() {
     const [patientId, setPatientId] = useState<string>('');
     const [show, setShow] = useState(true);
     const [notFound, setNotFound] = useState(false);
+    const [noIdentity, setNoIdentity] = useState(false);
+    const [currentView, setCurrentView] = useState('show')
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (location.state && location.state.successSendDataPj) {
-            console.log(location.state.message);
-            console.log("DATA YANG DIKIRIM (Latest): ", location.state.data);
             setData(location.state.data);
             setSwitchValue(location.state.successSendDataPj)
-            console.log("Data yang di state kan: ", data)
             setPatientId(location.state.idPatient)
+        } else if (location.state && location.state.patientWithNoIdentity) {
+            setNoIdentity(true);
         }
     }, [location.state, navigate]);
 
     useEffect(() => {
-        console.log("Id Patient: ", patientId);
-
-        if (patientId === '') {
-            setShow(false);
-            setNotFound(true);
+        if (patientId == '' && !noIdentity) {
+            // setNotFound(true);
+            // setShow(false);
+            setCurrentView('notFound');
         } else {
-
-            setShowLogin(true);
-            setNotFound(false);
+            // setNotFound(false); 
+            // setShow(true); 
+            setCurrentView('show');
         }
-    }, [patientId]);
+
+    }, [patientId, noIdentity]);
 
     const otpFormShown = () => {
         // setShowEmailChanged(false);
@@ -252,7 +262,7 @@ export default function useBioPjBaru() {
         showLogin,
         showEmailChanged,
         resendSuccess,
-
-
+        noIdentity,
+        currentView,
     }
 }

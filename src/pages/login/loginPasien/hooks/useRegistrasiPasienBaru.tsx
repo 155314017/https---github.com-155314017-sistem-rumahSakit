@@ -15,8 +15,7 @@ const validationSchema = Yup.object({
         .max(14, 'NIK maksimal 14 digit')
         .required('NIK wajib diisi'),
     email: Yup.string().required('Email wajib diisi'),
-    address: Yup.string().required('Email wajib diisi')
-        .matches(/^[A-Za-z\s]+$/, "Nama hanya boleh berisi huruf"),
+    address: Yup.string().required('Email wajib diisi'),
     phone: Yup.string()
         .required('Isi nomor telepon')
         .matches(/^[0-9]{10,15}$/, 'Nomor telepon tidak valid'),
@@ -38,7 +37,8 @@ interface DataKirim {
     email: string;
     gender: string;
     address: string;
-    tempatLahir: string;
+    birthDate: string;
+    birthPlace: string;
 }
 
 interface DataAwal {
@@ -118,7 +118,7 @@ export default function useRegistrasiPasienBaru() {
     const [emailError, setEmailError] = useState(false);
     const [, setNikError] = useState(false);
     const [, setPasswordError] = useState(false);
-    const [data, setData] = useState<DataKirim>({ identityNumber: '', name: '', phone: '', email: '', gender: '', address: '', tempatLahir: '' });
+    const [data, setData] = useState<DataKirim>({ identityNumber: '', name: '', phone: '', email: '', gender: '', address: '', birthDate: '', birthPlace: '' });
     const [showAlert, setShowAlert] = useState(false);
     const [isCounting, setIsCounting] = useState(false);
     const [secondsLeft, setSecondsLeft] = useState(60);

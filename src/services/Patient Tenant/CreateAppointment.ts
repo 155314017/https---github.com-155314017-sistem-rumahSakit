@@ -6,7 +6,7 @@ interface CustomError extends Error {
 }
 
 interface Data {
-  patientId: string
+  patientId: string | undefined
   typeOfVisit: string
   clinicId: string
   doctorId: string
@@ -37,6 +37,5 @@ const CreateAppointment = async (data: Data) => {
     throw customError
   }
 }
-
 
 export default CreateAppointment
