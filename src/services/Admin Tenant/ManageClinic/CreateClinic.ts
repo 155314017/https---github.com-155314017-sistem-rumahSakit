@@ -20,23 +20,24 @@ export interface CreateClinicRequest {
 }
 
 export interface ApiResponse {
-  responseCode: string;
-  statusCode: string;
-  message: string;
-  data: CreateClinicRequest;
+  responseCode: string
+  statusCode: string
+  message: string
+  data: CreateClinicRequest
 }
 
-const BASE_URL = "https://hms.3dolphinsocial.com:8083/v1/manage/clinic/";
+const BASE_URL = 'https://hms.3dolphinsocial.com:8083/v1/manage/clinic/'
 
 export const createClinic = async (
   clinicData: CreateClinicRequest,
   accessToken: string | undefined
 ): Promise<ApiResponse> => {
   try {
-    const response = await axios.post<ApiResponse<null>>(BASE_URL, clinicData, {
+    console.log(clinicData)
+    const response = await axios.post<ApiResponse>(BASE_URL, clinicData, {
       headers: {
-        accessToken: accessToken,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        accessToken: `${accessToken}`
       }
     })
 
