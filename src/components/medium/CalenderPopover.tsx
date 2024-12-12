@@ -53,7 +53,7 @@ export default function CalenderPopover({ title }: Props) {
           horizontal: "left",
         }}
       >
-        <CustomCalender />
+        <CustomCalender doctorId="1" onChange={() => console.log('t')} />
       </Popover>
     </Box>
   );
