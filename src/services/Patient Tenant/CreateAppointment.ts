@@ -10,10 +10,9 @@ interface Data {
   referenceDoc: string
 }
 const CreateAppointment = async (data: Data) => {
-  console.log('Creating appointment with data:', data)
   try {
     const response = await axios.post(
-      'https://hms.3dolphinsocial.com:8083/v1/patient/create-appointments',
+      'https://hms.3dolphinsocial.com:8083/v1/patient/create-appointment',
       data,
       {
         headers: {

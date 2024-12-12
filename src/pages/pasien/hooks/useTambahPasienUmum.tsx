@@ -42,11 +42,12 @@ type Clinic = {
 };
 
 type dataTicket = {
-    nomorAntrian: any | undefined;
+    // nomorAntrian: any | undefined;
     namaDokter: string;
     clinic: string;
     tanggalReservasi: string;
     jadwalKonsul: string | null;
+    bookingCode: string
 }
 
 
@@ -293,7 +294,8 @@ export default function useTambahPasienUmum() {
 
     const handleDropdownDocter = (value: string, label: string) => {
         console.log(`Selected Value: ${value}, Selected Label: ${label}`);
-        setIdDoctor(value)
+        setIdDoctor(value);
+        console.log(idDoctor);
         setDocterName(label);
     };
 
@@ -368,15 +370,16 @@ export default function useTambahPasienUmum() {
         try {
             console.log(data);
             const response = await CreateAppointment(data)
-            const createdDateTimeFormatted = dayjs.unix(response.data.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
+            const createdDateTimeFormatted = dayjs.unix(response.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
             const dataSent = {
-                nomorAntrian: response.data.data.queueDatum.queueNumber,
+                // nomorAntrian: response.data.queueDatum.queueNumber,
                 namaDokter: docterName,
                 clinic: clinicName,
                 tanggalReservasi: createdDateTimeFormatted,
                 jadwalKonsul: selectedSchedule,
+                bookingCode: response.data.bookingCode
             }
-
+            console.log(dataSent);
             setDataTickets(dataSent)
             console.log('sukses')
             setMainPages(false)

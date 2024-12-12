@@ -78,8 +78,8 @@ export default function BioPjBaru() {
                             zIndex: "9999",
                             width: "40%",
                             left: "23%",
-                            top: '85%',
-                            // bottom: "0%",
+                            top: '87.6%',
+                            bottom: "0%",
                             transform: "translate(-50%, -50%)",
                         }}
                     >

@@ -110,7 +110,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/tambahPasien/Umum" element={<TambahPasienUmum />} />
           <Route path="/editPasien/BPJS" element={<EditPasienBPJS />} />
           <Route path="/editPasien/Umum" element={<EditPasienUmum />} />
-          <Route path="/pasienn" element={<PilihKategoriPasien/>} />
+          <Route path="/pasienn" element={<PilihKategoriPasien />} />
 
           {/* <Route path="/about" element={<About />} /> */}
 
@@ -133,6 +133,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
 
         {/* end no need auth */}
+
+        <Route path="/tes" element={<PilihKategoriPasien />} />
 
       </Routes>
     </Router>

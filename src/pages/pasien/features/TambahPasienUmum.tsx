@@ -108,7 +108,7 @@ export default function TambahPasienUmum() {
                                     onClick={() => setCurrentPage(2)}
                                     disableRipple
                                     disableElevation
-                                    disabled={currentPage === 1}
+                                    // disabled={currentPage === 1}
                                     sx={{
                                         ...getPageStyle(2),
                                         display: "flex",
@@ -133,7 +133,7 @@ export default function TambahPasienUmum() {
                                     onClick={() => setCurrentPage(3)}
                                     disableRipple
                                     disableElevation
-                                    disabled={currentPage === 1 || currentPage === 2}
+                                    // disabled={currentPage === 1 || currentPage === 2}
                                     sx={{
                                         ...getPageStyle(3),
                                         display: "flex",
@@ -786,7 +786,7 @@ export default function TambahPasienUmum() {
                             clinic={dataTickets?.clinic || "Unknown Clinic"}
                             jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
                             namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
-                            nomorAntrian={dataTickets?.nomorAntrian}
+                            nomorAntrian={dataTickets?.bookingCode}
                             tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
                         />
                     </Box>

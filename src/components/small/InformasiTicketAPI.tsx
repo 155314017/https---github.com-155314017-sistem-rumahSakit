@@ -13,7 +13,7 @@ type InformasiTicketProps = {
 
 const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi, jadwalKonsul }: InformasiTicketProps) => {
     return (
-        <Box width={"506px"} height={"504px"} borderRadius={"32px"} bgcolor={"#F1F0FE"} position={"relative"} padding={"25px"}>
+        <Box width={"506px"} height={"504px"} borderRadius={"32px"} bgcolor={"#ffffff"} position={"relative"} padding={"25px"}>
             <CardMedia
                 component="img"
                 height="162px"
