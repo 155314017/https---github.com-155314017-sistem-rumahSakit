@@ -78,6 +78,7 @@ export default function TambahFasilitas() {
     const handleTambahHari = () => {
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
+        console.log(operationalTime)
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -102,7 +103,7 @@ export default function TambahFasilitas() {
         initialValues: {
             deskripsiKlinik: '',
             masterBuildingId: '',
-            namaFasilitas:'',
+            namaFasilitas: '',
         },
         validationSchema: Yup.object({
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
@@ -136,7 +137,7 @@ export default function TambahFasilitas() {
             };
             const token = Cookies.get("accessToken");
             try {
-                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/facility/', data, {
+                await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/facility/', data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`

@@ -63,6 +63,7 @@ export default function TambahSubFasilitas() {
     const handleTambahHari = () => {
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
+        console.log(operationalTime)
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -114,7 +115,7 @@ export default function TambahSubFasilitas() {
             const token = Cookies.get("accessToken");
 
             try {
-                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/', data, {
+                await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/', data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`

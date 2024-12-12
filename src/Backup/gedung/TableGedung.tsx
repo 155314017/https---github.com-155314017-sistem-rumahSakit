@@ -61,8 +61,10 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
   const [open, setOpen] = useState(false);
   const [datas, setDatas] = useState<BuildingDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
-  const [pageNumber, setPageNumber] = useState(0);
-  const [pageSize, setPageSize] = useState(100);
+  // const [pageNumber, setPageNumber] = useState(0);
+  const [pageNumber] = useState(0);
+  // const [pageSize, setPageSize] = useState(100);
+  const [pageSize] = useState(100);
   const [sort, setSort] = useState('');
   const [orderBy, setOrderBy] = useState("createdDateTime=asc");
 
@@ -99,13 +101,13 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
   const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   useEffect(() => {
-    if (sort == "Nama Gedung A-Z"){
+    if (sort == "Nama Gedung A-Z") {
       setOrderBy('name=asc');
-    } else if (sort == "Nama Gedung Z-A"){
+    } else if (sort == "Nama Gedung Z-A") {
       setOrderBy('name=desc');
-    } else if (sort == "Nomor Gedung 1-9"){
+    } else if (sort == "Nomor Gedung 1-9") {
       setOrderBy('createdDateTime=asc');
-    } else if (sort == "Nomor Gedung 9-1"){
+    } else if (sort == "Nomor Gedung 9-1") {
       setOrderBy('createdDateTime=desc');
     }
   }, [sort])

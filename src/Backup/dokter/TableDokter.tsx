@@ -85,10 +85,11 @@ export default function TableDokter() {
         const names = await Promise.all(
           idClinic.map(async (id) => {
             const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`);
-            return response.data.name; 
+            return response.data.name;
           })
         );
         setClinicNames(names);
+        console.log(clinicNames)
       } catch (error) {
         console.log('Failed to fetch clinic names: ', error);
       }

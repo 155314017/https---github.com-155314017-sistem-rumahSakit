@@ -107,7 +107,7 @@ export default function EditGedung() {
             const token = Cookies.get("accessToken");
 
             try {
-                const response = await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/building/', data, {
+                await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/building/', data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`

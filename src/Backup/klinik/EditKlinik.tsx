@@ -77,8 +77,8 @@ export default function EditKlinik() {
 
     useEffect(() => {
         if (startTime && endTime) {
-            const formattedStartTime = startTime.format("HH:mm");
-            const formattedEndTime = endTime.format("HH:mm");
+            // const formattedStartTime = startTime.format("HH:mm");
+            // const formattedEndTime = endTime.format("HH:mm");
             const dayOfWeek = startTime.format("dddd");
             const dayMapping: { [key: string]: string } = {
                 "Monday": "1",
@@ -98,6 +98,7 @@ export default function EditKlinik() {
     const handleTambahHari = () => {
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
+        console.log(operationalTime)
     };
 
     const showTemporaryAlertError = async () => {

@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import bgImage from "../../assets/img/String.png";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AlertSuccess from "../../components/small/AlertSuccess";
 import ImageUploaderGroup from "../../components/medium/ImageUploaderGroup";
 import axios from "axios";
@@ -62,7 +62,7 @@ export default function TambahGedung() {
             const token = Cookies.get("accessToken");
 
             try {
-                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/building/', data, {
+                await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/building/', data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`
@@ -99,7 +99,7 @@ export default function TambahGedung() {
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
                     </Box>
-                    
+
 
                     <Box
                         position={"absolute"}

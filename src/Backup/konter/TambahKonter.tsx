@@ -49,6 +49,7 @@ export default function TambahKonter() {
     const handleTambahHari = () => {
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
+        console.log(operationalTime)
     };
 
     const handleImageChange = (images: ImageData[]) => {
@@ -110,7 +111,7 @@ export default function TambahKonter() {
             const token = Cookies.get("accessToken");
 
             try {
-                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/counter/', data, {
+                await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/counter/', data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`

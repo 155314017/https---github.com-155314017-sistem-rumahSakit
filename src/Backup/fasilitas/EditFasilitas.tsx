@@ -56,8 +56,8 @@ export default function EditFasilitas() {
 
     useEffect(() => {
         if (startTime && endTime) {
-            const formattedStartTime = startTime.format("HH:mm");
-            const formattedEndTime = endTime.format("HH:mm");
+            // const formattedStartTime = startTime.format("HH:mm");
+            // const formattedEndTime = endTime.format("HH:mm");
             const dayOfWeek = startTime.format("dddd");
             const dayMapping: { [key: string]: string } = {
                 "Monday": "1",
@@ -136,6 +136,7 @@ export default function EditFasilitas() {
     const handleTambahHari = () => {
         const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
         setOperationalTime(dateTime);
+        console.log(operationalTime)
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -199,7 +200,7 @@ export default function EditFasilitas() {
             const token = Cookies.get("accessToken");
 
             try {
-                const response = await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/facility/', data, {
+                await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/facility/', data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`

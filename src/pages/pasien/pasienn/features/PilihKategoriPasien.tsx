@@ -24,7 +24,7 @@ export default function PilihKategoriPasien() {
         }
         image={register}
         alt="Example Image"/>
-        <Box sx={style}>
+        <Box>
                 <Typography id="modal-modal-description" sx={{mb:2 , fontSize: '18px', fontWeight: 600 }}>
                     Pilih Kategori Pasien
                 </Typography>
