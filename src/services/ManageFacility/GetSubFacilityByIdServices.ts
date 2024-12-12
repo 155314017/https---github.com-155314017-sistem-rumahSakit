@@ -22,11 +22,11 @@ export interface FacilityRequest {
     images: { imageName: string; imageType: string; imageData: string }[];
 }
 
-export interface ApiResponse<T> {
+export interface ApiResponse {
     responseCode: string;
     statusCode: string;
     message: string;
-    data: T;
+    data: FacilityRequest;
 }
 
 
@@ -41,7 +41,7 @@ export const GetSubFacilityById = async (
 
     try {
         // Make the POST request to create the facility
-        const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/${id}`, {
+        const response = await axios.get<ApiResponse>(`https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'accessToken': `${token}`
@@ -51,7 +51,7 @@ export const GetSubFacilityById = async (
         // Handle successful response
         if (response.status === 200) {
             console.log("Facility created successfully:", response.data);
-            return response.data; // Return the response data
+            return response.data.data; // Return the response data
         } else {
             throw new Error(`API responded with status: ${response.status}`);
         }

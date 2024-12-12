@@ -14,6 +14,12 @@ export interface BuildingDataItem {
   images: {imageName: string; imageType: string; imageData: string }[];
 }
 
+export interface ApiResponse {
+  status: number
+  message: string
+  data: BuildingDataItem
+}
+
 
 
 
@@ -23,7 +29,7 @@ export const GetBuildingById = async (
   token : string | undefined 
 ): Promise<BuildingDataItem> => {
   try {
-    const response = await axios.get<BuildingDataItem>(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`, {
+    const response = await axios.get<ApiResponse>(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`, {
         headers: {
             'Content-Type': 'application/json',
             'accessToken': `${token}`
@@ -34,7 +40,8 @@ export const GetBuildingById = async (
       console.log('API connection successful:', response.data)
 
       // Menampilkan data gedung di console
-      const item = response.data
+      const item = response.data.data
+        console.log("print response",response.data.data)
         console.log('ID:', item.id)
         console.log('Name:', item.name)
         console.log('Address:', item.address)
@@ -55,7 +62,7 @@ export const GetBuildingById = async (
         console.log('----------------------------')
       
 
-      return response.data
+      return response.data.data
     } else {
       throw new Error(`API responded with status: ${response.status}`)
     }

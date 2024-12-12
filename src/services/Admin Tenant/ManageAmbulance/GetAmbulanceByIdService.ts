@@ -18,13 +18,20 @@ export interface AmbulanceData {
   schedules: { id: string; startDateTime: number; endDateTime: number }[];
 }
 
+export interface ApiResponse{
+  responseCode:string;
+  responseMessage:string;
+  statusCode:string;
+  data:AmbulanceData
+}
+
 // Layanan untuk mendapatkan data Ambulance
 export const getAmbulanceByIdService = async (id: string | undefined): Promise<AmbulanceData | null> => {
   try {
     const token = Cookies.get('accessToken');
     if (!token) throw new Error('Access token not found');
 
-    const response = await axios.get<AmbulanceData>(
+    const response = await axios.get<ApiResponse>(
       `https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${id}`,
       {
         headers: {
@@ -34,7 +41,7 @@ export const getAmbulanceByIdService = async (id: string | undefined): Promise<A
       }
     );
 
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error('Error fetching ambulance data:', error);
     return null;
