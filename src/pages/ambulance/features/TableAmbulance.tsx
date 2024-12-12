@@ -27,6 +27,7 @@ import BadgeStatus from '../../../components/small/BadgeStatus'
 
 //hooks
 import useTableAmbulance from '../hooks/useTableAmbulance'
+import React from 'react'
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
@@ -58,8 +59,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     import useTableAmbulance from '../hooks/useTableAmbulance';
   `
  
-  
-  export default function TableAmbulance() {
+  interface TableAmbulanceProps {
+    fetchDatas: () => void;
+    onSuccessDelete: () => void;
+  }
+  const TableAmbulance: React.FC<TableAmbulanceProps> = ({fetchDatas, onSuccessDelete}) => {
     const {page,
         isCollapsed,
         open,
@@ -73,7 +77,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         handleDeleteSuccess,
         toggleCollapse,
         confirmationDelete,
-      }= useTableAmbulance();
+      }= useTableAmbulance(fetchDatas, onSuccessDelete);
     return (
         <Box>
       <Box
@@ -337,7 +341,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
                               open={open}
                               onClose={() => setOpen(false)}
                               apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${deletedItems}`}
-                              onDeleteSuccess={() => handleDeleteSuccess}
+                              onDeleteSuccess={handleDeleteSuccess}
                             />
                             <Link
                               href="#"
@@ -415,4 +419,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
       
     )
   }
+
+  export default TableAmbulance
   

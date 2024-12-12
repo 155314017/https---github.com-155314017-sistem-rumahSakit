@@ -3,12 +3,9 @@ import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 import { FacilityServices, FacilityDataItem } from "../../../services/ManageFacility/FacilityServices";
 
-interface TableFacilityProps {
-    fetchDatas: () => void;
-    onSuccessDelete: () => void;
-  }
 
-export default function useTableFasilitas() {
+
+export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelete: () => void) {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState<boolean>(false);
@@ -84,10 +81,12 @@ export default function useTableFasilitas() {
     setOpen(true);
   };
 
-  const handleDeleteSuccess = ({fetchDatas, onSuccessDelete}: TableFacilityProps) => {
+  
+  const handleDeleteSuccess = () => {
+    console.log("Masuk Delete success");
     onSuccessDelete();
-    fetchDatas();
     fetchData();
+    fetchDatas();
   };
 
   return {

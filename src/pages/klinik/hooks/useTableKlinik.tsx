@@ -2,11 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Clinic, ClinicDataItem } from "../../../services/Admin Tenant/ManageClinic/Clinic";
 import { useNavigate } from "react-router-dom";
 
-interface TableClinicProps {
-    fetchDatas: () => void;
-    onSuccessDelete: () => void;
-  }
-export default function useTableKlinik() {
+
+export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: () => void) {
     const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
@@ -34,7 +31,7 @@ export default function useTableKlinik() {
     setOpen(true);
   };
 
-  const handleDeleteSuccess = ({ onSuccessDelete, fetchDatas }: TableClinicProps) => {
+  const handleDeleteSuccess = () => {
     onSuccessDelete();
     fetchDatas();
     fetchData();

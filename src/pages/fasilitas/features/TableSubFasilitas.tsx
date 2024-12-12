@@ -115,7 +115,11 @@ const StyledTableContainer = styled(TableContainer)`
   }
 `;
 
-export default function TableSubFasilitas() {
+interface TableSubFasilitasProps {
+    fetchDatas: () => void;
+    onSuccessDelete: () => void;
+  }
+const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({fetchDatas, onSuccessDelete}) => {
     const{
         page,
     isCollapsed,
@@ -133,7 +137,7 @@ export default function TableSubFasilitas() {
     handleDeleteSuccess,
     navigate,
     setOpen,
-    rowsPerPage}=useTableSubFasilitas();
+    rowsPerPage}=useTableSubFasilitas(fetchDatas, onSuccessDelete);
   return (
     <Box>
             <Box
@@ -396,7 +400,7 @@ export default function TableSubFasilitas() {
                                                         >
                                                             Hapus
                                                         </Link>
-                                                        <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/${deletedItems}`} onDeleteSuccess={()=> handleDeleteSuccess} />
+                                                        <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                                                         <Link
                                                             href="#"
                                                             mr={2}
@@ -477,3 +481,6 @@ export default function TableSubFasilitas() {
        
   )
 }
+
+
+export default TableSubFasilitas

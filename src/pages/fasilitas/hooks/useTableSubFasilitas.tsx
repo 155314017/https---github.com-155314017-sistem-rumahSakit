@@ -4,13 +4,10 @@ import { SubFacilityServices,SubFacilityDataItem} from "../../../services/Manage
 import { useNavigate } from "react-router-dom";
 // Define the interfaces
 
-interface TableSubFacilityProps {
-  fetchDatas: () => void;
-  onSuccessDelete: () => void;
-}
+
 
 // Custom hook
-export default function useTableSubFasilitas() {
+export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDelete: () => void) {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
@@ -88,7 +85,7 @@ useEffect(() => {
     setOpen(true);
   };
 
-  const handleDeleteSuccess = ({ fetchDatas, onSuccessDelete }: TableSubFacilityProps) => {
+  const handleDeleteSuccess = () => {
     onSuccessDelete();
     fetchDatas(); // Call the fetchDatas prop to refresh data
     fetchData();   // Refresh local data state

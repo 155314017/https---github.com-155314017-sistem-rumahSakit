@@ -60,7 +60,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
  
 //hooks
 import useTableFasilitas from "../hooks/useTableFasilitas";
-export default function TableFasilitas() {
+import React from "react";
+
+
+
+interface TableFacilityProps {
+  fetchDatas: () => void;
+  onSuccessDelete: () => void;
+}
+const TableFasilitas: React.FC<TableFacilityProps> = ({fetchDatas, onSuccessDelete}) => {
     const {
         page,
         isCollapsed,
@@ -76,8 +84,9 @@ export default function TableFasilitas() {
         confirmationDelete,
         handleDeleteSuccess,
         setOpen,
-      }=useTableFasilitas();
-    
+      }=useTableFasilitas(fetchDatas, onSuccessDelete);
+      
+      
       const navigate = useNavigate();
       
   return (
@@ -398,7 +407,7 @@ export default function TableFasilitas() {
                             >
                               Hapus
                             </Link>
-                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${deletedItems}`} onDeleteSuccess={() => handleDeleteSuccess} />
+                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                             <Link
                               href="#"
                               mr={2} 
@@ -473,3 +482,5 @@ export default function TableFasilitas() {
     
   )
 }
+
+export default TableFasilitas

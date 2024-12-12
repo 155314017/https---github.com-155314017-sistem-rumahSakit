@@ -33,26 +33,9 @@ export interface Pageable {
 }
 
 export interface ApiResponse {
-  responseCode: string;
-  statusCode: string;
-  message: string;
-  data: {
-    content: CounterDataItem[];
-    pageable: Pageable;
-    totalPages: number;
-    totalElements: number;
-    last: boolean;
-    size: number;
-    number: number;
-    sort: {
-      sorted: boolean;
-      empty: boolean;
-      unsorted: boolean;
-    };
-    numberOfElements: number;
-    first: boolean;
-    empty: boolean;
-  };
+  status: number
+  message: string
+  data: CounterDataItem
 }
 
 
@@ -62,7 +45,7 @@ export const GetCounterByIdServices = async (
     token : string | undefined
 ): Promise<CounterDataItem> => {
   try {
-    const response = await axios.get<CounterDataItem>(`https://hms.3dolphinsocial.com:8083/v1/manage/counter/${id}`, {
+    const response = await axios.get<ApiResponse>(`https://hms.3dolphinsocial.com:8083/v1/manage/counter/${id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`
@@ -72,7 +55,7 @@ export const GetCounterByIdServices = async (
     if (response.status === 200) {
       console.log("API connection successful:", response.data);
 
-      const item = response.data
+      const item = response.data.data
         console.log("ID:", item.id);
         console.log("Number:", item.name);
         console.log("Status:", item.location);
@@ -130,7 +113,7 @@ export const GetCounterByIdServices = async (
         console.log("----------------------------");
      
 
-      return response.data;
+      return response.data.data;
     } else {
       throw new Error(`API responded with status: ${response.status}`);
     }

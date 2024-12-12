@@ -56,8 +56,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
   //hooks
   import useTableKlinik from "../hooks/useTableKlinik";
+import React from "react";
 
-export default function TableKlinik() {
+interface TableKlinikgProps {
+  fetchDatas: () => void;
+  onSuccessDelete: () => void;
+}
+
+const TableKlinik: React.FC<TableKlinikgProps> = ({fetchDatas, onSuccessDelete}) => {
     const {
         page,
     isCollapsed,
@@ -73,7 +79,7 @@ export default function TableKlinik() {
     urutkan,
     toggleCollapse,
     navigate
-    }= useTableKlinik();
+    }= useTableKlinik(fetchDatas, onSuccessDelete);
   return (
     <Box>
     <Box
@@ -325,7 +331,7 @@ export default function TableKlinik() {
                               Hapus
                             </Link>
 
-                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${deletedItems}`} onDeleteSuccess={() => handleDeleteSuccess} />
+                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                             <Link
                               href="#"
                               onClick={() => navigate(`/editKlinik/${data.id}`)}
@@ -399,3 +405,6 @@ export default function TableKlinik() {
   </Box>
   )
 }
+
+
+export default TableKlinik

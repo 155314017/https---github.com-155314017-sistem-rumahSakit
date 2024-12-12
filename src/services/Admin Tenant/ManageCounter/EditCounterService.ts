@@ -14,6 +14,9 @@ export interface Image {
 export interface EditCounterRequest {
   name: string;
   location: string;
+  queueNumber: number;
+  additionalInfo: string;
+  masterTypeId: string;
   schedules: { startDateTime: number | undefined; endDateTime: number | undefined }[];
   images: { imageName: string; imageType: string; imageData: string }[];
 }

@@ -19,19 +19,19 @@ export interface CreateClinicRequest {
   images: { imageName: string; imageType: string; imageData: string }[]
 }
 
-export interface ApiResponse<T> {
-  responseCode: string
-  statusCode: string
-  message: string
-  data: T
+export interface ApiResponse {
+  responseCode: string;
+  statusCode: string;
+  message: string;
+  data: CreateClinicRequest;
 }
 
-const BASE_URL = 'https://hms.3dolphinsocial.com:8083/v1/manage/clinic'
+const BASE_URL = "https://hms.3dolphinsocial.com:8083/v1/manage/clinic/";
 
 export const createClinic = async (
   clinicData: CreateClinicRequest,
   accessToken: string | undefined
-): Promise<ApiResponse<null>> => {
+): Promise<ApiResponse> => {
   try {
     const response = await axios.post<ApiResponse<null>>(BASE_URL, clinicData, {
       headers: {
