@@ -42,7 +42,7 @@ type Clinic = {
 };
 
 type dataTicket = {
-    nomorAntrian: any | undefined;
+    nomorAntrian: string | undefined;
     namaDokter: string;
     clinic: string;
     tanggalReservasi: string;

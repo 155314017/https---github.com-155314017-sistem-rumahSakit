@@ -136,6 +136,9 @@ export default function useEditKonter() {
                 counterId: id,
                 name: values.namaKonter,
                 location: values.lokasiKonter,
+                queueNumber: 0,
+                additionalInfo: "",
+                masterTypeId: "c0178047-d6e7-4ce8-b4de-54756bedf031",
                 schedules: schedules,
                 images: imagesData.map(image => ({
                     imageName: image.imageName || "",

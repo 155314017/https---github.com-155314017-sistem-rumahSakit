@@ -54,8 +54,11 @@ const StyledTableContainer = styled(TableContainer)`
     cursor: pointer;
   }
 `;
-
-export default function TableKonter() {
+interface TableKonterProps {
+    fetchDatas: () => void;
+    onSuccessDelete: () => void;
+  }
+const TableKonter: React.FC<TableKonterProps> = ({fetchDatas, onSuccessDelete}) => {
     const{ page,
         isCollapsed,
         open,
@@ -69,7 +72,7 @@ export default function TableKonter() {
         urutkan,
         toggleCollapse,
         confirmationDelete,
-        handleDeleteSuccess}=useTableKonter();
+        handleDeleteSuccess}=useTableKonter(fetchDatas, onSuccessDelete);
   return (
     <Box>
             <Box
@@ -359,7 +362,7 @@ export default function TableKonter() {
                                                         >
                                                             Hapus
                                                         </Link>
-                                                        <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/counter/${deletedItems}`} onDeleteSuccess={() => handleDeleteSuccess} />
+                                                        <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/counter/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                                                         <Link
                                                             href="#"
                                                             mr={2}
@@ -418,3 +421,6 @@ export default function TableKonter() {
         </Box>
   )
 }
+
+
+export default TableKonter

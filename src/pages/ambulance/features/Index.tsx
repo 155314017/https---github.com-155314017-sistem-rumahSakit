@@ -12,7 +12,7 @@ import AlertSuccess from '../../../components/small/AlertSuccess'
 import MinorCrashIcon from '@mui/icons-material/MinorCrash'
 import AddBoxIcon from '@mui/icons-material/AddBox'
 
-import TableAmbulance from '../../../Backup/ambulance/TableAmbulance'
+import TableAmbulance from '../../../pages/ambulance/features/TableAmbulance'
 
 //hooks
 import useIndex from "../hooks/useIndex";

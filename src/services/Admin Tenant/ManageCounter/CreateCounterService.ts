@@ -14,15 +14,18 @@ export interface Image {
 export interface CreateCounterRequest {
   name: string;
   location: string;
+  queueNumber: number;
+  additionalInfo: string;
+  masterTypeId: string;
   schedules: { startDateTime: number | undefined; endDateTime: number | undefined }[];
   images: { imageName: string; imageType: string; imageData: string }[];
 }
 
-export interface ApiResponse<T> {
+export interface ApiResponse {
   responseCode: string;
   statusCode: string;
   message: string;
-  data: T;
+  data: CreateCounterRequest;
 }
 
 const BASE_URL = "https://hms.3dolphinsocial.com:8083/v1/manage/counter/";
@@ -30,9 +33,10 @@ const BASE_URL = "https://hms.3dolphinsocial.com:8083/v1/manage/counter/";
 export const createCounter = async (
   counterData: CreateCounterRequest,
   accessToken: string | undefined
-): Promise<ApiResponse<null>> => {
+): Promise<ApiResponse> => {
   try {
-    const response = await axios.post<ApiResponse<null>>(
+    console.log(counterData);
+    const response = await axios.post<ApiResponse>(
       BASE_URL,
       counterData,
       {

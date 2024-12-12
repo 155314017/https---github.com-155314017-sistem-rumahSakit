@@ -54,11 +54,8 @@ export interface BuildingDataItem {
   }
   
 
-  interface TableRoomProps {
-    fetchDatas: () => void;
-    onSuccessDelete: () => void;
-  }
-export default function useTableRuangan() {
+
+export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete: () => void) {
     const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
@@ -173,7 +170,7 @@ export default function useTableRuangan() {
     setIsCollapsed((prev) => !prev);
   };
 
-  const handleDeleteSuccess = ({ fetchDatas, onSuccessDelete }: TableRoomProps) => {
+  const handleDeleteSuccess = () => {
     fetchDatas();
     fetchData();
     onSuccessDelete();

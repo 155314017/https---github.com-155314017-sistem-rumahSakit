@@ -146,7 +146,7 @@ export default function useLoginPegawai() {
         console.log('gagal - unexpected response:', response)
         return false
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error during password reset:', error)
       return false
     }

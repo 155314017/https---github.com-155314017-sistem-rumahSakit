@@ -27,6 +27,7 @@ import {
 
   //hooks
 import useTableRuangan from "../hooks/useTableRuangan";
+import React from "react";
 
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -59,7 +60,13 @@ import useTableRuangan from "../hooks/useTableRuangan";
       cursor: pointer;
     }
   `;
-export default function TableRuangan() {
+
+  interface TableRuanganProps {
+    fetchDatas: () => void;
+    onSuccessDelete: () => void;
+  }
+
+const TableRuangan: React.FC<TableRuanganProps> = ({fetchDatas, onSuccessDelete}) => {
     const {
         page,
     isCollapsed,
@@ -79,7 +86,7 @@ export default function TableRuangan() {
     toggleCollapse,
     handleDeleteSuccess,
     navigate
-    } = useTableRuangan();
+    } = useTableRuangan(fetchDatas, onSuccessDelete);
   return (
     <Box>
     <Box
@@ -348,7 +355,7 @@ export default function TableRuangan() {
                           >
                             Hapus
                           </Link>
-                          <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/room/${deletedItems}`} onDeleteSuccess={() => handleDeleteSuccess} />
+                          <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/room/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                           <Link
                             href="#"
                             onClick={() => navigate(`/editRuangan/${data.id}`)}
@@ -429,3 +436,6 @@ export default function TableRuangan() {
   </Box>
   )
 }
+
+
+export default TableRuangan

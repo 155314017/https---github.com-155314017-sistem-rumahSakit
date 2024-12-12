@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { CounterDataItem, CounterServices } from "../../../services/Admin Tenant/ManageCounter/CounterServices";
 import { useNavigate } from "react-router-dom";
-interface TableKonterProps {
-    fetchDatas: () => void;
-    onSuccessDelete: () => void;
-}
-export default function useTableKonter() {
+
+export default function useTableKonter(fetchDatas: () => void, onSuccessDelete: () => void) {
     const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [open, setOpen] = React.useState<boolean>(false);
@@ -51,7 +48,7 @@ export default function useTableKonter() {
         setOpen(true);
     };
 
-    const handleDeleteSuccess = ({ onSuccessDelete, fetchDatas }: TableKonterProps) => {
+    const handleDeleteSuccess = () => {
         onSuccessDelete();
         fetchDatas();
         fetchData();

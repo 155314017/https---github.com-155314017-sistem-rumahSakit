@@ -8,8 +8,8 @@ import CardAdd from "../../../components/medium/CardAdd";
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import TableFasilitas from "../../../Backup/fasilitas/TableFasilitas";
-import TableSubFasilitas from "../../../Backup/fasilitas/TableSubFasilitas";
+import TableFasilitas from "../../../pages/fasilitas/features/TableFasilitas";
+import TableSubFasilitas from "../../../pages/fasilitas/features/TableSubFasilitas";
 import AlertSuccess from "../../../components/small/AlertSuccess";
 
 //hooks

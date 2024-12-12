@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Building, BuildingDataItem } from "../../../services/Admin Tenant/ManageBuilding/Building";
 import { useNavigate } from "react-router-dom";
-interface TableGedungProps {
-    fetchDatas: () => void;
-    onSuccessDelete: () => void;
-  }
-export default function useTableGedung() {
+
+export default function useTableGedung(fetchDatas: () => void, onSuccessDelete: () => void) {
     const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
@@ -68,11 +65,13 @@ export default function useTableGedung() {
   ];
 
 
-  const handleDeleteSuccess = ({onSuccessDelete, fetchDatas}: TableGedungProps) => {
+  const handleDeleteSuccess = () => {
+    fetchDatas();
+    console.log("Delete success");
     setOpen(false);
     onSuccessDelete();
     fetchData();
-    fetchDatas();
+    
   };
 
   const toggleCollapse = () => setIsCollapsed((prev) => !prev);

@@ -50,9 +50,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 //hooks
 import useTableGedung from "../hooks/useTableGedung";
+import React from "react";
 
-
-export default function TableGedung() {
+interface TableGedungProps {
+  fetchDatas: () => void;
+  onSuccessDelete: () => void;
+}
+const TableGedung: React.FC<TableGedungProps> = ({fetchDatas, onSuccessDelete}) => {
     const{page,
         isCollapsed,
         open,
@@ -67,7 +71,7 @@ export default function TableGedung() {
         urutkan,
         setSort,
         setOpen,
-        navigate}=useTableGedung();
+        navigate}=useTableGedung(fetchDatas,onSuccessDelete);
 
   return (
     <Box>
@@ -291,7 +295,7 @@ export default function TableGedung() {
                             open={open}
                             onClose={() => setOpen(false)}
                             apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/building/${deletedItems}`}
-                            onDeleteSuccess={()=> handleDeleteSuccess}
+                            onDeleteSuccess={handleDeleteSuccess}
                           />
                           <Link
                             onClick={() => navigate(`/editGedung/${data.id}`)}
@@ -351,3 +355,5 @@ export default function TableGedung() {
     
   )
 }
+
+export default TableGedung

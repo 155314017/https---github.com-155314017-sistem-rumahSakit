@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import SideBar from "../components/SideBar/SideBar";
-import Dashboard from "../Backup/dashboard";
+import Dashboard from "../pages/dashboard/features/Index";
 import Header from "../components/medium/Header";
 
 export default function Home() {

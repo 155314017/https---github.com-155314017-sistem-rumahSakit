@@ -7,12 +7,9 @@ import {
 
 
 
-  interface TableAmbulanceProps {
-    fetchDatas: () => void
-    onSuccessDelete: () => void
-  }
+ 
 
-export default function useTableAmbulance() {
+export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelete: () => void) {
   const [page, setPage] = useState(1)
   const [isCollapsed, setIsCollapsed] = useState(true)
   const [open, setOpen] = useState(false)
@@ -49,7 +46,7 @@ export default function useTableAmbulance() {
     console.log('Selected Value:', selectedValue)
   }
 
-  const handleDeleteSuccess = ({fetchDatas, onSuccessDelete}: TableAmbulanceProps) => {
+  const handleDeleteSuccess = () => {
     onSuccessDelete()
     fetchDatas()
     fetchData()
