@@ -25,6 +25,7 @@ import { Field } from "formik";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import InformasiTicketAPI from "../../../components/small/InformasiTicketAPI";
 
 
 export default function TambahPasienUmum() {
@@ -60,6 +61,8 @@ export default function TambahPasienUmum() {
         clinicOptions,
         handleDropdownPoli,
         createTicket,
+        setDataTickets,
+        dataTickets
 
     } = useTambahPasienUmum();
 
@@ -786,7 +789,13 @@ export default function TambahPasienUmum() {
 
                 {!mainPages && (
                     <Box marginLeft={"30%"} marginTop={"10%"}>
-                        <InformasiTicket />
+                        <InformasiTicketAPI
+                            clinic={dataTickets?.clinic || "Unknown Clinic"}
+                            jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
+                            namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
+                            nomorAntrian={dataTickets?.nomorAntrian}
+                            tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
+                        />
                     </Box>
                 )}
             </Box>

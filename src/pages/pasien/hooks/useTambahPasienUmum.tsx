@@ -8,6 +8,8 @@ import { styled } from '@mui/material/styles';
 import { Radio } from '@mui/material';
 import { RadioProps } from '@mui/material/Radio';
 import CreateAppointment from '../../../services/Patient Tenant/CreateAppointment';
+import UpdatePatientGuards from '../../../services/Patient Tenant/UpdatePatientGuard';
+import dayjs from 'dayjs';
 
 type Doctor = {
     id: string;
@@ -39,6 +41,14 @@ type Clinic = {
     name: string;
 };
 
+type dataTicket = {
+    nomorAntrian: any | undefined;
+    namaDokter: string;
+    clinic: string;
+    tanggalReservasi: string;
+    jadwalKonsul: string | null;
+}
+
 
 export default function useTambahPasienUmum() {
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -49,6 +59,7 @@ export default function useTambahPasienUmum() {
     const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
     const [selectedMethod, setSelectedMethod] = useState('');
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
+    const [dataTickets, setDataTickets] = useState<dataTicket>();
     // const [patientData, setPatientData] = useState<ResponsePatient | undefined>();
     const [patientData, setPatientData] = useState<ResponsePatient>({
         id: '',
@@ -264,13 +275,16 @@ export default function useTambahPasienUmum() {
                 guardianEmail: formik.values.emailGuardian,
                 guardianGender: formik.values.genderGuardian,
                 guardianAddress: formik.values.addressGuardian,
-                guardianType: formik.values.typeGuardian,
+                guardianType: 'guardianType',
+                guardianRelation: formik.values.typeGuardian,
                 guardianBirthPlace: formik.values.birthPlaceGuardian,
                 guardianBirthDate: formik.values.birthDateGuardian,
             }
 
+            const response = await UpdatePatientGuards(tes)
+            console.log(response)
             console.log("Data: ", tes)
-            // setCurrentPage(3)
+            setCurrentPage(3)
         } catch (error) {
 
         }
@@ -353,7 +367,17 @@ export default function useTambahPasienUmum() {
         }
         try {
             console.log(data);
-            await CreateAppointment(data)
+            const response = await CreateAppointment(data)
+            const createdDateTimeFormatted = dayjs.unix(response.data.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
+            const dataSent = {
+                nomorAntrian: response.data.data.queueDatum.queueNumber,
+                namaDokter: docterName,
+                clinic: clinicName,
+                tanggalReservasi: createdDateTimeFormatted,
+                jadwalKonsul: selectedSchedule,
+            }
+
+            setDataTickets(dataSent)
             console.log('sukses')
             setMainPages(false)
         } catch (err) {
@@ -432,6 +456,8 @@ export default function useTambahPasienUmum() {
         dataPasien,
         clinicOptions,
         handleDropdownPoli,
-        createTicket
+        createTicket,
+        setDataTickets,
+        dataTickets
     }
 }
