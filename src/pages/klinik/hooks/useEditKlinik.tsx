@@ -31,9 +31,7 @@ export default function useEditKlinik() {
 
     const navigate = useNavigate();
 
-    const handleImageChange = (images: ImageData[]) => {
-        setImagesData(images);
-    };
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,8 +41,8 @@ export default function useEditKlinik() {
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`);
                 setName(response.name);
                 setDescription(response.description);
-                if (response.data.data.schedules && response.data.data.schedules.length > 0) {
-                    const schedule = response.data.data.schedules[0];
+                if (response.schedules && response.schedules.length > 0) {
+                    const schedule = response.schedules[0];
                     setStartTime(dayjs.unix(schedule.startDateTime));
                     setEndTime(dayjs.unix(schedule.endDateTime));
                 }
@@ -54,6 +52,10 @@ export default function useEditKlinik() {
         };
         fetchData();
     }, [id]);
+
+    const handleImageChange = (images: ImageData[]) => {
+        setImagesData(images);
+    };
 
     const dayMapping: { [key: string]: number } = {
         "1": 1,

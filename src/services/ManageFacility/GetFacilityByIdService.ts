@@ -18,12 +18,18 @@ export interface FacilityDataItem {
   operationalSchedule?: string;
 }
 
+export interface ApiResponse {
+  status: number;
+  message: string;
+  data: FacilityDataItem;
+}
+
 
 
 
 
 export const GetFacilityByIdServices = async (id : string | undefined, accessToken: string | undefined): Promise<FacilityDataItem> => {
-  const response = await axios.get<FacilityDataItem>(`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${id}`, {
+  const response = await axios.get<ApiResponse>(`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${id}`, {
     headers: {
         'Content-Type': 'application/json',
         'accessToken': `${accessToken}`
@@ -31,7 +37,7 @@ export const GetFacilityByIdServices = async (id : string | undefined, accessTok
 
   if (response.status === 200) {
     
-    const item = response.data; 
+    const item = response.data.data; 
       
 
       if (item.schedules.length > 0) {
@@ -80,7 +86,7 @@ export const GetFacilityByIdServices = async (id : string | undefined, accessTok
       console.log("----------------------------");
  
 
-    return response.data;
+    return response.data.data;
   } else {
     throw new Error(`API responded with status: ${response.status}`);
   }
