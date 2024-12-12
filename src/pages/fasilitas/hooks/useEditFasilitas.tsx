@@ -6,9 +6,9 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 import { useNavigate, useParams } from 'react-router-dom';
 import { editFacility } from '../../../services/ManageFacility/EditFacilityService';
-import { FacilityServices } from '../../../services/ManageFacility/FacilityServices';
 import { GetFacilityByIdServices } from '../../../services/ManageFacility/GetFacilityByIdService';
 import { GetBuildingById } from '../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices';
+import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
 
 
 type Building = {
@@ -71,7 +71,7 @@ export default function useEditFasilitas() {
     useEffect(() => {
         const fetchGedungData = async () => {
             try {
-                const response = await FacilityServices();
+                const response = await Building();
                 setGedungOptions(response.map((item: Building) => ({
                     id: item.id,
                     name: item.name,
@@ -88,13 +88,13 @@ export default function useEditFasilitas() {
         const fetchData = async () => {
             try {
                 const token = Cookies.get("accessToken");
-                const response = await GetFacilityByIdServices(id,token);
-                
+                const response = await GetFacilityByIdServices(id, token);
+
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${id}`);
                 setName(response.name);
                 setDescription(response.description);
                 setInitialOperationalCost(response.cost);
-                const buildingResponse = await GetBuildingById(response.masterBuildingId,token);
+                const buildingResponse = await GetBuildingById(response.masterBuildingId, token);
 
                 setBuildingName(buildingResponse.id);
 
@@ -198,26 +198,26 @@ export default function useEditFasilitas() {
         },
     });
 
-  return {
-    apiUrl,
-    breadcrumbItems,
-    formik,
-    gedungOptions,
-    handleTambahHari,
-    handleImageChange,
-    successAlert,
-    setSelectedDay,
-    setStartTime,
-    setEndTime,
-    selectedDays,
-    showTemporaryAlertSuccess,
-    errorAlert,
-    operationalTime,
-    selectedDay,
-    startTime,
-    endTime,
-    imagesData,
-    initialOperationalCost,
+    return {
+        apiUrl,
+        breadcrumbItems,
+        formik,
+        gedungOptions,
+        handleTambahHari,
+        handleImageChange,
+        successAlert,
+        setSelectedDay,
+        setStartTime,
+        setEndTime,
+        selectedDays,
+        showTemporaryAlertSuccess,
+        errorAlert,
+        operationalTime,
+        selectedDay,
+        startTime,
+        endTime,
+        imagesData,
+        initialOperationalCost,
 
-  }
+    }
 }
