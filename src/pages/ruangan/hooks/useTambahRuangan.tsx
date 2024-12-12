@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom';
 import { createRoom } from '../../../services/Admin Tenant/ManageRoom/CreateRoomService';
 import { RoomServices } from '../../../services/Admin Tenant/ManageRoom/RoomServices';
+import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
 
 type Building = {
     id: string;
@@ -28,7 +29,7 @@ export default function useTambahRuangan() {
     useEffect(() => {
         const fetchGedungData = async () => {
             try {
-                const response = await RoomServices();
+                const response = await Building();
                 setGedungOptions(response.map((item: Building) => ({
                     id: item.id,
                     name: item.name,
