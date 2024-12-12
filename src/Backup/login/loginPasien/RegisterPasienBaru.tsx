@@ -1,14 +1,13 @@
-import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, OutlinedInput, RadioGroup, FormHelperText, CircularProgress, } from "@mui/material";
+import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, Radio, FormControl, RadioGroup, FormHelperText, CircularProgress, } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import patientImage from "../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import AlertWarning from "../../../components/small/AlertWarning";
 import AlertSuccess from "../../../components/small/AlertSuccess";
-import CustomButton from "../../../components/small/CustomButton";
 import OtpInput from 'react-otp-input';
 import 'react-phone-input-2/lib/style.css';
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import { useNavigate } from "react-router-dom";
 import RegisterPatient from "../../../services/Patient Tenant/RegisterPatient";
@@ -123,7 +122,6 @@ export default function RegisterPasienBaru() {
     const [showLogin, setShowLogin] = useState(true);
     const [showEmailChanged, setShowEmailChanged] = useState(false);
     const [emailError, setEmailError] = useState(false);
-    const [, setNikError] = useState(false);
     const [, setPasswordError] = useState(false);
     const [data, setData] = useState<DataKirim>({ identityNumber: '', name: '', phone: '', email: '', gender: '', address: '' });
     const [showAlert, setShowAlert] = useState(false);
@@ -148,22 +146,23 @@ export default function RegisterPasienBaru() {
         setOtp('');
     }
 
-    const handleClick = () => {
-        setShowLogin(true);
-        setShowEmailChanged(true);
-    };
+    // const handleClick = () => {
+    //     setShowLogin(true);
+    //     setShowEmailChanged(true);
+    // };
 
-    const showTemporaryAlert = async () => {
-        setShowAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setShowAlert(false);
-    };
+    // const showTemporaryAlert = async () => {
+    //     setShowAlert(true);
+    //     await new Promise((resolve) => setTimeout(resolve, 3000));
+    //     setShowAlert(false);
+    // };
 
 
     const showTemporarySuccessLogin = async () => {
         setLoginSuccess(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setLoginSuccess(false);
+        console.log(loginSuccess)
     };
 
     const showOtp = () => {
@@ -173,11 +172,11 @@ export default function RegisterPasienBaru() {
         setShowEmailChanged(true);
     };
 
-    const validationCheck = async (values: FormValues) => {
+    // const validationCheck = async (values: FormValues) => {
 
-        // showOtp()
-        return true;
-    };
+    //     // showOtp()
+    //     return true;
+    // };
 
     useEffect(() => {
         let timer: ReturnType<typeof setInterval>;
@@ -220,11 +219,11 @@ export default function RegisterPasienBaru() {
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const [value, setValue] = React.useState('WOMEN');
-    const handleChangeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue((event.target as HTMLInputElement).value);
-        console.log(value)
-    };
+    // const [value, setValue] = React.useState('WOMEN');
+    // const handleChangeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setValue((event.target as HTMLInputElement).value);
+    //     console.log(value)
+    // };
 
     useEffect(() => {
         if (location.state && location.state.succesSendData1) {

@@ -44,6 +44,7 @@ export default function EditPasienBPJS() {
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
         }),
         onSubmit: (values) => {
+            console.log(values)
         },
     });
 

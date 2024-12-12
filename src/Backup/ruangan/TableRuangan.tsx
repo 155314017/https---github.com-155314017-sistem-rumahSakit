@@ -125,8 +125,10 @@ const TableRuangan: React.FC<TableRoomProps> = ({ fetchDatas, onSuccessDelete })
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
   const [loading, setLoading] = useState(false);
-  const [pageNumber, setPageNumber] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  // const [pageNumber, setPageNumber] = useState(0);
+  // const [pageSize, setPageSize] = useState(10);
+  const pageSize = 10
+  const pageNumber = 0
   const [sort, setSort] = useState('');
   const [orderBy, setOrderBy] = useState("createdDateTime=asc");
 

@@ -8,7 +8,6 @@ import {
     FormControlLabel,
     Radio,
     RadioGroup,
-    FormLabel,
     InputLabel,
     Select,
     MenuItem,
@@ -19,9 +18,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import BreadCrumbs from "../../components/medium/BreadCrumbs";
 import bgImage from "../../assets/img/String.png";
-import PhoneInputComponent from '../../components/inputComponent/PhoneInputComponent';
 import FileUploader from '../../components/medium/FileUploader';
-import CalenderPopover from '../../components/medium/CalenderPopover';
 import { doctors } from '../../dummyData/dummyData';
 import PhoneInput from 'react-phone-input-2';
 import SwitchCustom from '../../components/small/SwitchCustom';
@@ -75,7 +72,7 @@ export default function TambahPasienUmum() {
             alergi: Yup.string().required('Alergi is required'),
         }),
         onSubmit: (values) => {
-            // console.log('Form submitted:', values);
+            console.log('Form submitted:', values);
         },
     });
 
@@ -622,7 +619,7 @@ export default function TambahPasienUmum() {
                                                     </FormControl>
                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                         {/* <CalenderPopover title="Pilih tanggal" /> */}
-                                                        <CustomCalender />
+                                                        <CustomCalender doctorId='1' onChange={() => console.log('r')} />
                                                     </Box>
                                                 </Box>
 

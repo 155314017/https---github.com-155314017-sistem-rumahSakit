@@ -5,7 +5,6 @@ import {
     TextField,
     Typography,
     Button,
-    Switch,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import logo from "../../../img/St.carolus.png";
@@ -34,13 +33,13 @@ interface FormValues {
     email: string;
 }
 
-const otpValidationSchema = Yup.object({
-    otp: Yup.string()
-        .matches(/^[0-9]+$/, "OTP harus berupa angka")
-        .min(4, "OTP minimal 4 digit")
-        .max(4, "OTP maksimal 4 digit")
-        .required("OTP wajib diisi"),
-});
+// const otpValidationSchema = Yup.object({
+//     otp: Yup.string()
+//         .matches(/^[0-9]+$/, "OTP harus berupa angka")
+//         .min(4, "OTP minimal 4 digit")
+//         .max(4, "OTP maksimal 4 digit")
+//         .required("OTP wajib diisi"),
+// });
 
 interface DataKirim {
     identityNumber: string;
@@ -53,18 +52,19 @@ interface DataKirim {
 
 export default function RegisterPJ() {
     //   const [showPassword, setShowPassword] = useState(false);
-    const [showLogin, setShowLogin] = useState(true);
-    const [showEmailChanged, setShowEmailChanged] = useState(true);
+    // const [showLogin, setShowLogin] = useState(true);
+    // const [showEmailChanged, setShowEmailChanged] = useState(true);
+
     const [emailError, setEmailError] = useState(false);
     const [nikError, setNikError] = useState(false);
-    const [, setPasswordError] = useState(false);
+    // const [, setPasswordError] = useState(false);
     const location = useLocation();
     const [showAlert, setShowAlert] = useState(false);
     const [isCounting, setIsCounting] = useState(false);
     const [secondsLeft, setSecondsLeft] = useState(60);
-    const [resendSuccess, setResendSuccess] = useState(false);
+    // const [resendSuccess, setResendSuccess] = useState(false);
     const [loginSuccess, setLoginSuccess] = useState(false);
-    const [otp, setOtp] = useState("");
+    // const [otp, setOtp] = useState("");
     const [data, setData] = useState<DataKirim>({ identityNumber: '', name: '', phone: '', email: '', gender: '', address: '' });
     const [patientId, setPatientId] = useState<string>('');
     const [show, setShow] = useState(true);
@@ -81,10 +81,10 @@ export default function RegisterPJ() {
     //   setOtp("");
     // };
 
-    const handleClick = () => {
-        setShowLogin(true);
-        setShowEmailChanged(true);
-    };
+    // const handleClick = () => {
+    //     setShowLogin(true);
+    //     setShowEmailChanged(true);
+    // };
 
     const showTemporaryAlert = async () => {
         setShowAlert(true);
@@ -98,11 +98,11 @@ export default function RegisterPJ() {
         setLoginSuccess(false);
     };
 
-    const showOtp = () => {
-        setEmailError(false);
-        setPasswordError(false);
-        setShowLogin(false);
-    };
+    // const showOtp = () => {
+    //     setEmailError(false);
+    //     setPasswordError(false);
+    //     setShowLogin(false);
+    // };
 
     const validationCheck = async (values: FormValues) => {
         console.log("nilai: ", values)
@@ -151,36 +151,36 @@ export default function RegisterPJ() {
         console.log("Id Patient: ", patientId);
 
         if (patientId === '') {
-            setShowLogin(false);
+            setShow(false);
             setNotFound(true);
         } else {
 
-            setShowLogin(true);
+            setShow(true);
             setNotFound(false);
         }
     }, [patientId]);
 
 
-    const handleResendClick = () => {
-        setIsCounting(true);
-        setSecondsLeft(60);
-        showTemporaryAlertSuccess();
-        console.log("Resend clicked");
-    };
+    // const handleResendClick = () => {
+    //     setIsCounting(true);
+    //     setSecondsLeft(60);
+    //     showTemporaryAlertSuccess();
+    //     console.log("Resend clicked");
+    // };
 
-    const showTemporaryAlertSuccess = async () => {
-        setResendSuccess(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setResendSuccess(false);
-    };
+    // const showTemporaryAlertSuccess = async () => {
+    //     setResendSuccess(true);
+    //     await new Promise((resolve) => setTimeout(resolve, 3000));
+    //     setResendSuccess(false);
+    // };
 
-    const formatTime = () => {
-        const minutes = Math.floor(secondsLeft / 60);
-        const seconds = secondsLeft % 60;
-        return `${minutes.toString().padStart(2, "0")}:${seconds
-            .toString()
-            .padStart(2, "0")}`;
-    };
+    // const formatTime = () => {
+    //     const minutes = Math.floor(secondsLeft / 60);
+    //     const seconds = secondsLeft % 60;
+    //     return `${minutes.toString().padStart(2, "0")}:${seconds
+    //         .toString()
+    //         .padStart(2, "0")}`;
+    // };
 
 
     const handleSwitchChange = (value: boolean) => {

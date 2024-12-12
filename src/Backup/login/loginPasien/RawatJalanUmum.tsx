@@ -21,8 +21,6 @@ import imagePendaftaran from "../../../assets/img/pendaftaran.jpeg";
 import { doctors } from "../../../dummyData/dummyData";
 import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
-import CalenderPopover from "../../../components/medium/CalenderPopover";
-import PoliSelect from "../../../components/inputComponent/PoliSelect";
 import CustomCalender from "../../../components/medium/CustomCalender";
 import CreateAppointment from "../../../services/Patient Tenant/CreateAppointment";
 import axios from "axios";
@@ -50,7 +48,8 @@ type Clinic = {
 };
 
 const RawatJalanUmum: React.FC = () => {
-    const [showFormPage, setSHowFormPage] = useState(true);
+    // const [showFormPage, setSHowFormPage] = useState(true);
+    const showFormPage = true;
     const [selectedMethod, setSelectedMethod] = useState<string>("");
     const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
 
@@ -287,7 +286,7 @@ const RawatJalanUmum: React.FC = () => {
 
                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                         {/* <CalenderPopover title="Pilih tanggal" /> */}
-                                                        <CustomCalender />
+                                                        <CustomCalender doctorId="1" onChange={() => console.log('r')} />
                                                     </Box>
                                                 </Box>
 

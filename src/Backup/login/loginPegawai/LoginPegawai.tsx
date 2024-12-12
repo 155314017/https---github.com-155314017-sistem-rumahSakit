@@ -26,7 +26,6 @@ import logo from '../../../../img/St.carolus.png'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Login from '../../../services/Admin Tenant/Auth/Login'
 import ResetPassword from '../../../services/Admin Tenant/Auth/ResetPassword'
-import { bgcolor } from '@mui/system'
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Email tidak valid').required('Email wajib diisi'),
@@ -46,8 +45,8 @@ export default function LoginPegawai() {
   const [showPassword, setShowPassword] = useState(false)
   const [showLogin, setShowLogin] = useState(true)
   const [showEmailChanged, setShowEmailChanged] = useState(true)
-  const [emailError, setEmailError] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
+  // const [emailError, setEmailError] = useState(false)
+  // const [passwordError, setPasswordError] = useState(false)
   const [isCounting, setIsCounting] = useState(false)
   const [secondsLeft, setSecondsLeft] = useState(60)
   const [resendSuccess, setResendSuccess] = useState(false)
@@ -66,8 +65,8 @@ export default function LoginPegawai() {
 
   const forgotPass = () => {
     setShowLogin(false)
-    setEmailError(false)
-    setPasswordError(false)
+    // setEmailError(false)
+    // setPasswordError(false)
   }
 
   const handleClick = () => {
@@ -79,6 +78,7 @@ export default function LoginPegawai() {
     setLoginSuccess(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
     setLoginSuccess(false)
+    console.log(loginSuccess)
   }
 
   const loginComponent = () => {

@@ -44,18 +44,18 @@ const otpValidationSchema = Yup.object({
 
 export default function LoginPasien() {
   //   const [showPassword, setShowPassword] = useState(false);
-  const [showLogin, setShowLogin] = useState(true)
-  const [showEmailChanged, setShowEmailChanged] = useState(true)
-  const [emailError, setEmailError] = useState(false)
-  const [, setNikError] = useState(false)
-  const [, setPasswordError] = useState(false)
+  // const [showLogin, setShowLogin] = useState(true)
+  // const [showEmailChanged, setShowEmailChanged] = useState(true)
+  // const [emailError, setEmailError] = useState(false)
+  // const [, setNikError] = useState(false)
+  // const [, setPasswordError] = useState(false)
 
   const [showAlert, setShowAlert] = useState(false)
   const [isCounting, setIsCounting] = useState(false)
   const [secondsLeft, setSecondsLeft] = useState(60)
-  const [resendSuccess, setResendSuccess] = useState(false)
+  // const [resendSuccess, setResendSuccess] = useState(false)
   const [loginSuccess, setLoginSuccess] = useState(false)
-  const [otp, setOtp] = useState('')
+  // const [otp, setOtp] = useState('')
 
   const navigate = useNavigate()
 
@@ -65,16 +65,16 @@ export default function LoginPasien() {
   //   setOtp("");
   // };
 
-  const handleClick = () => {
-    setShowLogin(true)
-    setShowEmailChanged(true)
-  }
+  // const handleClick = () => {
+  //   setShowLogin(true)
+  //   setShowEmailChanged(true)
+  // }
 
-  const showTemporaryAlert = async () => {
-    setShowAlert(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    setShowAlert(false)
-  }
+  // const showTemporaryAlert = async () => {
+  //   setShowAlert(true)
+  //   await new Promise(resolve => setTimeout(resolve, 3000))
+  //   setShowAlert(false)
+  // }
 
   const showTemporarySuccessLogin = async () => {
     setLoginSuccess(true)
@@ -82,11 +82,11 @@ export default function LoginPasien() {
     setLoginSuccess(false)
   }
 
-  const showOtp = () => {
-    setEmailError(false)
-    setPasswordError(false)
-    setShowLogin(false)
-  }
+  // const showOtp = () => {
+  //   setEmailError(false)
+  //   setPasswordError(false)
+  //   setShowLogin(false)
+  // }
 
   const validationCheck = async (values: FormValues) => {
 
@@ -109,24 +109,24 @@ export default function LoginPasien() {
     return () => clearInterval(timer)
   }, [isCounting, secondsLeft])
 
-  const handleResendClick = () => {
-    setIsCounting(true)
-    setSecondsLeft(60)
-    showTemporaryAlertSuccess()
-    console.log('Resend clicked')
-  }
+  // const handleResendClick = () => {
+  //   setIsCounting(true)
+  //   setSecondsLeft(60)
+  //   showTemporaryAlertSuccess()
+  //   console.log('Resend clicked')
+  // }
 
-  const showTemporaryAlertSuccess = async () => {
-    setResendSuccess(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    setResendSuccess(false)
-  }
+  // const showTemporaryAlertSuccess = async () => {
+  //   setResendSuccess(true)
+  //   await new Promise(resolve => setTimeout(resolve, 3000))
+  //   setResendSuccess(false)
+  // }
 
-  const formatTime = () => {
-    const minutes = Math.floor(secondsLeft / 60)
-    const seconds = secondsLeft % 60
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-  }
+  // const formatTime = () => {
+  //   const minutes = Math.floor(secondsLeft / 60)
+  //   const seconds = secondsLeft % 60
+  //   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+  // }
 
   return (
     <>

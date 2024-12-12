@@ -96,7 +96,7 @@ export default function TambahPegawai() {
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
         }),
         onSubmit: (values) => {
-            // console.log('Form submitted:', values);
+            console.log('Form submitted:', values);
         },
     });
 

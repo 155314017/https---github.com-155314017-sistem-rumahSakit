@@ -5,7 +5,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom';
 import { createRoom } from '../../../services/Admin Tenant/ManageRoom/CreateRoomService';
-import { RoomServices } from '../../../services/Admin Tenant/ManageRoom/RoomServices';
 import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
 
 type Building = {

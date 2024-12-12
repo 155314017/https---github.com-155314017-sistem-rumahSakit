@@ -84,7 +84,7 @@ export default function TambahRuangan() {
 
             const token = Cookies.get("accessToken");
             try {
-                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/room/', data, {
+                await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/room/', data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`
@@ -95,6 +95,7 @@ export default function TambahRuangan() {
                 navigate('/ruangan', { state: { successAdd: true, message: 'Ruangan berhasil ditambahkan!' } })
             } catch (error) {
                 showTemporaryAlertError();
+                console.log(error);
             }
         },
     });

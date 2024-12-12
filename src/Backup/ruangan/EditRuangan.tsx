@@ -126,7 +126,7 @@ export default function EditRuangan() {
 
             const token = Cookies.get("accessToken");
             try {
-                const response = await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/room/', data, {
+                await axios.put('https://hms.3dolphinsocial.com:8083/v1/manage/room/', data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`

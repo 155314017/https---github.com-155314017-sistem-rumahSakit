@@ -18,7 +18,6 @@ import imagePendaftaran from "../../../assets/img/pendaftaran.jpeg";
 import { doctors } from "../../../dummyData/dummyData";
 import FileUploader from "../../../components/medium/FileUploader";
 import InformasiTicket from "../../../components/small/InformasiTicket";
-import CalenderPopover from "../../../components/medium/CalenderPopover";
 import PoliSelect from "../../../components/inputComponent/PoliSelect";
 import CustomCalender from "../../../components/medium/CustomCalender";
 
@@ -89,7 +88,7 @@ const RawatJalanBPJS: React.FC = () => {
                         }}
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
-                            // console.log("Form submitted with values:", values);
+                            console.log("Form submitted with values:", values);
                         }}
                     >
                         {({
@@ -225,7 +224,7 @@ const RawatJalanBPJS: React.FC = () => {
 
                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                         {/* <CalenderPopover title="Pilih tanggal" /> */}
-                                                        <CustomCalender  />
+                                                        <CustomCalender doctorId="1" onChange={() => console.log('tes')} />
                                                     </Box>
                                                 </Box>
 

@@ -24,7 +24,6 @@ import bgImage from "../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
-import DataPegawai from "../../dummyData/dataPegawai";
 import { EmployeeDataItem, EmployeeServices } from "../../services/Admin Tenant/ManageEmployee/EmployeeServices";
 // import ModalDeleteConfirmation from "../../components/small/ModalDeleteConfirmation";
 
