@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { EditBuildingService } from "../../../services/Admin Tenant/ManageBuilding/EditBuildingService";
+import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 
 type ImageData = {
     imageName: string;
@@ -35,15 +36,10 @@ export default function useEditGedung() {
             setLoading(true);
             try {
                 const token = Cookies.get("accessToken");
-                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    }
-                });
+                const response = await GetBuildingById(id,token);
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`);
-                setName(response.data.data.name);
-                setAddress(response.data.data.address);
+                setName(response.name);
+                setAddress(response.address);
             } catch (error) {
                 console.error('Error saat menghapus data:', error);
             } finally {

@@ -7,6 +7,7 @@ import axios from 'axios';
 import "dayjs/locale/id";
 import { useNavigate, useParams } from 'react-router-dom';
 import { editCounter } from '../../../services/Admin Tenant/ManageCounter/EditCounterService';
+import { GetCounterByIdServices } from '../../../services/Admin Tenant/ManageCounter/GetCounterById';
 
 const jenisKonter = [
     { value: 1, label: "Asuransi" },
@@ -47,8 +48,6 @@ export default function useEditKonter() {
 
     useEffect(() => {
         if (startTime && endTime) {
-            const formattedStartTime = startTime.format("HH:mm");
-            const formattedEndTime = endTime.format("HH:mm");
             const dayOfWeek = startTime.format("dddd");
             const dayMapping: { [key: string]: string } = {
                 "Monday": "1",
@@ -69,17 +68,12 @@ export default function useEditKonter() {
         const fetchData = async () => {
             try {
                 const token = Cookies.get("accessToken");
-                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/counter/${id}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    }
-                });
+                const response = await GetCounterByIdServices(id,token);
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/counter/${id}`);
-                setName(response.data.data.name);
-                setLocation(response.data.data.location);
-                if (response.data.data.schedules && response.data.data.schedules.length > 0) {
-                    const schedule = response.data.data.schedules[0];
+                setName(response.name);
+                setLocation(response.location);
+                if (response.schedules && response.schedules.length > 0) {
+                    const schedule = response.schedules[0];
                     setStartTime(dayjs.unix(schedule.startDateTime));
                     setEndTime(dayjs.unix(schedule.endDateTime));
                 }

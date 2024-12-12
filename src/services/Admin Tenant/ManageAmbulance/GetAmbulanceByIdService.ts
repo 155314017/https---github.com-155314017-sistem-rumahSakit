@@ -14,12 +14,12 @@ export interface AmbulanceData {
   deletedBy: string | null;
   deletedDateTime: number | null;
   cost: number;
-  images: string[];
+  images: { imageName: string; imageType: string; imageData: string }[];
   schedules: { id: string; startDateTime: number; endDateTime: number }[];
 }
 
 // Layanan untuk mendapatkan data Ambulance
-export const getAmbulanceByIdService = async (id: string): Promise<AmbulanceData | null> => {
+export const getAmbulanceByIdService = async (id: string | undefined): Promise<AmbulanceData | null> => {
   try {
     const token = Cookies.get('accessToken');
     if (!token) throw new Error('Access token not found');

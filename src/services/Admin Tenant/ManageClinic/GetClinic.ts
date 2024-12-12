@@ -1,12 +1,19 @@
 import axios from "axios";
 
-export interface ClinicData {
+export interface ClinicDataItem {
   id: string;
   name: string;
-  address: string;
-  phone: string;
-  email: string;
-  // Tambahkan properti lain sesuai respons API
+  description: string;
+  additionalInfo: string;
+  createdBy: string;
+  createdDateTime: number;
+  updatedBy: string | null;
+  updatedDateTime: number | null;
+  deletedBy: string | null;
+  deletedDateTime: number | null;
+  images: string[];
+  schedules: { id: string; startDateTime: number; endDateTime: number }[];
+  operationalSchedule?: string;
 }
 
 export interface ApiResponse<T> {
@@ -19,11 +26,11 @@ export interface ApiResponse<T> {
 const BASE_URL = "http://localhost:8080/v1/manage/clinic";
 
 export const getClinic = async (
-  clinicId: string,
-  accessToken: string
-): Promise<ClinicData> => {
+  clinicId: string | undefined,
+  accessToken: string | undefined
+): Promise<ClinicDataItem> => {
   try {
-    const response = await axios.get<ApiResponse<ClinicData>>(
+    const response = await axios.get<ApiResponse<ClinicDataItem>>(
       `${BASE_URL}/${clinicId}`,
       {
         headers: {

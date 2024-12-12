@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { createFacility } from '../../../services/ManageFacility/CreateFacilityService';
+import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
 type Building = {
     id: string;
     name: string;
@@ -32,10 +33,8 @@ export default function useTambahFasilitas() {
     useEffect(() => {
         const fetchGedungData = async () => {
             try {
-                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
-                    timeout: 10000
-                });
-                setGedungOptions(response.data.data.content.map((item: Building) => ({
+                const response = await Building();
+                setGedungOptions(response.map((item: Building) => ({
                     id: item.id,
                     name: item.name,
                 })));
