@@ -74,8 +74,8 @@ export default function TambahPasienUmumOffline() {
             />
             <Box mt={3}>
                 {mainPages && (
-                    <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content' }}>
-                        <Box position={"absolute"} sx={{ top: 0, left: "50%", transform: "translateX(-50%)", display: "flex" }}>
+                    <Box mt={'15%'} position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content' }}>
+                        {/* <Box position={"absolute"} sx={{ top: 0, left: "50%", transform: "translateX(-50%)", display: "flex" }}>
                             <Box sx={{ width: "50px", height: "30px", bgcolor: "#F1F0FE" }}>
                                 <Box sx={{ width: "50px", height: "30px", bgcolor: "#fff", borderRadius: "0px 15px 0px 0px " }} />
                             </Box>
@@ -83,9 +83,7 @@ export default function TambahPasienUmumOffline() {
                             <Box sx={{ width: "50px", height: "30px", bgcolor: "#F1F0FE" }}>
                                 <Box sx={{ width: "50px", height: "30px", bgcolor: "#fff", borderRadius: "15px 0px 0px 0px " }} />
                             </Box>
-                        </Box>
-                        <Typography fontSize="20px" fontWeight="700" maxWidth={'20%'}>Pasien umum/asuransi</Typography>
-                        <Typography mt="1%" color="#A8A8BD" fontWeight="400" fontSize="16px"  >Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.</Typography>
+                        </Box> */}
                         <Box sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, gap: 8 }}>
                             <Box display={"flex"} flexDirection={"row"} width={"290px"}>
                                 <Button
@@ -477,7 +475,7 @@ export default function TambahPasienUmumOffline() {
                                                         }}
                                                         disabled={switchValue ? true : false}
                                                     />
-                                                    <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '80px', width: '100%' }}>
+                                                    {/* <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '80px', width: '100%' }}>
                                                         <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%' }}>
                                                             <FormLabel>Tempat Lahir</FormLabel>
                                                             <OutlinedInput
@@ -547,7 +545,7 @@ export default function TambahPasienUmumOffline() {
                                                                 </Box>
                                                             </LocalizationProvider>
                                                         </FormControl>
-                                                    </Box>
+                                                    </Box> */}
 
                                                     <Typography>Nama lengkap penanggung jawab</Typography>
                                                     <OutlinedInput

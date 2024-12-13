@@ -12,6 +12,14 @@ import * as Yup from "yup";
 import axios from "axios";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 import { Stack } from "@mui/system";
+import BreadCrumbs from "../../../../components/medium/BreadCrumbs";
+
+const breadcrumbItems = [
+    {
+        label: "Pasien Lama",
+        href: "/konter/tambahPasien",
+    }
+];
 
 const style = {
     position: "absolute" as const,
@@ -51,7 +59,7 @@ export default function PilihKategoriPasien() {
             <style>
                 {`
             :root {
-            background-color: #fff
+            background-color: #eeedf2
             }
             `}
             </style>
@@ -79,7 +87,7 @@ export default function PilihKategoriPasien() {
                         <Box width={'60%'} >
                             <Box
                                 sx={{
-                                    bgcolor: '#F1F0FE',
+                                    bgcolor: '#ffffff',
                                     width: '96%',
                                     height: '100px',
                                     borderRadius: '24px',
@@ -91,6 +99,7 @@ export default function PilihKategoriPasien() {
 
                                 }}
                             >
+
                                 <Typography id="modal-modal-description" fontWeight={600} fontSize={'24px'} lineHeight={'26px'}>
                                     Pilih Kategori Pasien
                                 </Typography>
@@ -302,15 +311,45 @@ export default function PilihKategoriPasien() {
 
                 {openModalPilihPembayaran && (
                     <>
+                        <CardMedia
+                            component="img"
+                            sx={{
+                                width: "60%",
+                                height: "350px",
+                                borderRadius: "24px",
+                                position: "relative",
+                                marginTop: "20px",
+                                "@media (max-width: 600px)": {
+                                    width: "100%"
+                                }
+                            }
+                            }
+                            image={register}
+                            alt="Example Image"
+                        />
+                        <Box
+                            sx={{
+                                bgcolor: '#ffffff',
+                                width: '57%',
+                                height: '100px',
+                                borderRadius: '24px',
+                                gap: '4px',
+                                padding: '24px',
+                                my: '2%',
+                                display: 'flex',
+                                flexDirection: 'column',
 
-                        <Typography id="modal-modal-title" sx={{ mt: 2, fontSize: '18px', fontWeight: 600 }}>
-                            Pilih kategori pasien
-                        </Typography>
-                        <Typography id="modal-modal-description" mb={2} color='#747487'>
-                            Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
-                        </Typography>
+                            }}
+                        >
+                            <Typography id="modal-modal-title" sx={{ mt: 2, fontSize: '18px', fontWeight: 600 }}>
+                                Pilih metode pembayaran
+                            </Typography>
+                            <Typography color="#747487" fontWeight={400} fontSize={'18px'}>
+                                Cara yang digunakan untuk menyelesaikan transaksi.
+                            </Typography>
+                        </Box>
 
-                        <Stack direction="column" spacing={3}>
+                        <Stack direction="column" width={'60%'} spacing={3}>
                             {/* Pasien BPJS */}
                             <Link to="/tambahPasien/umum/offline" style={{ textDecoration: "none" }}>
                                 <Card sx={cardStyle}>
@@ -338,23 +377,24 @@ export default function PilihKategoriPasien() {
                                     </Box>
                                 </Card>
                             </Link>
-                            <Button
-                                sx={{
-                                    padding: "10px 20px",
-                                    backgroundColor: "#8F85F3",
-                                    color: "white",
-                                    borderRadius: "8px",
-                                    cursor: "pointer",
-                                    fontWeight: 600,
-                                    width: "100%",
-                                    border: '1px solid #8F85F3',
-                                    ":hover": { backgroundColor: 'inherit', color: '#8F85F3' }
-                                }}
-                                onClick={handleBack}
-                            >
-                                Kembali ke pilihan sebelumnya
-                            </Button>
                         </Stack>
+                        <Button
+                            sx={{
+                                padding: "10px 20px",
+                                backgroundColor: "#8F85F3",
+                                color: "white",
+                                borderRadius: "8px",
+                                cursor: "pointer",
+                                fontWeight: 600,
+                                mt: '2%',
+                                width: "60%",
+                                border: '1px solid #8F85F3',
+                                ":hover": { backgroundColor: 'inherit', color: '#8F85F3' }
+                            }}
+                            onClick={handleBack}
+                        >
+                            Kembali ke pilihan sebelumnya
+                        </Button>
                     </>
                 )}
 

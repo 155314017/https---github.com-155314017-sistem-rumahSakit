@@ -134,6 +134,7 @@ export default function RawatJalanUmum() {
                             values,
                             errors,
                             touched,
+                            handleBlur,
                             handleChange,
                             isValid,
                             dirty,
@@ -152,18 +153,7 @@ export default function RawatJalanUmum() {
                                         bgcolor: 'transparent'
                                     }}
                                 >
-                                    <Box sx={{ ml: 10, width: '90%' }}>
-                                        <Box>
-                                            <CardMedia
-                                                component="img"
-                                                sx={{
-                                                    width: "112px",
-                                                    objectFit: "cover",
-                                                }}
-                                                image={logo}
-                                                alt="Example Logo"
-                                            />
-                                        </Box>
+                                    <Box sx={{ ml: 2, width: '100%' }}>
 
                                         <Typography
                                             sx={{
@@ -188,6 +178,7 @@ export default function RawatJalanUmum() {
                                                         variant="outlined"
                                                         value={values.typeOfVisit}
                                                         onChange={handleChange}
+                                                        onBlur={handleBlur}
                                                         sx={{
                                                             width: "100%",
                                                             borderRadius: "8px",
@@ -197,6 +188,7 @@ export default function RawatJalanUmum() {
                                                                 height: "44px",
                                                                 padding: "0 12px",
                                                                 border: "1px solid #8F85F3",
+                                                                backgroundColor: touched.typeOfVisit && errors.typeOfVisit ? "#ffcccc" : 'inherit',
                                                                 "& input": {
                                                                     height: "44px",
                                                                     padding: "0",
@@ -213,13 +205,6 @@ export default function RawatJalanUmum() {
                                                             },
                                                         }}
                                                     />
-                                                    {touched.typeOfVisit && errors.typeOfVisit && (
-                                                        <Typography
-                                                            sx={{ color: "red", fontSize: "12px", ml: 1 }}
-                                                        >
-                                                            {errors.typeOfVisit}
-                                                        </Typography>
-                                                    )}
                                                 </FormControl>
 
                                                 <Typography>Poli yang dituju</Typography>
@@ -261,18 +246,41 @@ export default function RawatJalanUmum() {
                                                         multiline
                                                         rows={4}
                                                         variant="outlined"
-                                                        sx={{ maxHeight: "107px", maxWidth: "100%" }}
+                                                        sx={{
+                                                            width: "100%",
+                                                            borderRadius: "8px",
+                                                            mb: 2,
+                                                            padding: "0",
+                                                            "& .MuiOutlinedInput-root": {
+                                                                padding: "0 12px",
+                                                                border: "1px solid #8F85F3",
+                                                                backgroundColor: touched.symptoms && errors.symptoms ? "#ffcccc" : 'inherit',
+                                                                "& input": {
+                                                                    padding: "0",
+                                                                },
+                                                                "& fieldset": {
+                                                                    borderColor: "#8F85F3",
+                                                                },
+                                                                "&:hover fieldset": {
+                                                                    borderColor: "#7A73E3",
+                                                                },
+                                                                "&.Mui-focused fieldset": {
+                                                                    borderColor: "#6B63D1",
+                                                                },
+                                                            },
+                                                        }}
                                                     />
+
                                                 </FormControl>
 
-                                                <Box mt={6}>
+                                                <Box>
                                                     <Typography>Jenis Pembayaran</Typography>
                                                     <RadioGroup
                                                         aria-label="transport-method"
                                                         name="transport-method"
                                                         value={selectedMethod}
                                                         onChange={handleRadioChange}
-                                                        sx={{ display: 'flex', flexDirection: 'column', border: '1px solid black', marginTop: '10px', borderRadius: '16px', padding: '16px 24px 16px 24px' }}
+                                                        sx={{ display: 'flex', flexDirection: 'column', border: '1px solid black', borderRadius: '16px', padding: '16px 24px 16px 24px' }}
                                                     >
                                                         <Box display={'flex'} flexDirection={'row'}>
                                                             <FormControlLabel value="asuransi" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Asuransi" />

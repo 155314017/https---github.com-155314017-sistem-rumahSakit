@@ -135,7 +135,7 @@ createRoot(document.getElementById('root')!).render(
 
         {/* end no need auth */}
 
-        <Route path="/tes" element={<PilihKategoriPasien />} />
+        <Route path="/konter/tambahPasien" element={<PilihKategoriPasien />} />
         <Route path="/tambahPasien/umum/offline" element={<TambahPasienUmumOffline />} />
 
       </Routes>

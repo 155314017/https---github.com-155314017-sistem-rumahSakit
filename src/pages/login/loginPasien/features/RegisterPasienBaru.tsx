@@ -129,7 +129,7 @@ export default function RegisterPasienBaru() {
                             }}
                         >
 
-                            <Box sx={{ ml: 4, width: '85%', }}>
+                            <Box sx={{ ml: 4, width: '85%', mt: '10%' }}>
                                 <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
                                 <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
                                     Silahkan masukkan nomor NIK (Nomor induk kependudukan) Pasien.
@@ -167,10 +167,10 @@ export default function RegisterPasienBaru() {
                                     {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
                                         <Form>
                                             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                                <Typography fontSize={'20px'} fontWeight={600} mb={'3%'}>
+                                                <Typography fontSize={'20px'} fontWeight={600} mb={'1%'}>
                                                     Isi data diri pasien
                                                 </Typography>
-                                                <FormLabel sx={{ fontSize: '18px' }}>NIK (Nomor induk kependudukan) Pasien</FormLabel>
+                                                <FormLabel sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>NIK (Nomor induk kependudukan) Pasien</FormLabel>
                                                 <Field
                                                     name="nik"
                                                     as={TextField}
@@ -180,7 +180,6 @@ export default function RegisterPasienBaru() {
                                                     sx={{
                                                         width: '100%',
                                                         height: '48px',
-                                                        marginTop: '10px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
                                                             backgroundColor: emailError ? '#ffcccc' : 'inherit',
@@ -201,7 +200,7 @@ export default function RegisterPasienBaru() {
                                                     disabled
                                                 />
 
-                                                <FormLabel sx={{ fontSize: '18px' }}>Email</FormLabel>
+                                                <FormLabel sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>Email</FormLabel>
                                                 <Field
                                                     name="email"
                                                     as={TextField}
@@ -211,7 +210,6 @@ export default function RegisterPasienBaru() {
                                                     sx={{
                                                         width: '100%',
                                                         height: '48px',
-                                                        marginTop: '10px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
                                                             backgroundColor: 'inherit',
@@ -232,7 +230,7 @@ export default function RegisterPasienBaru() {
                                                     disabled
                                                 />
 
-                                                <Typography mt={2} >
+                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }} >
                                                     No. Handphone Pasien{" "}
                                                     <span style={{ color: "#d32f2f" }}>*</span>{" "}
                                                 </Typography>
@@ -261,18 +259,17 @@ export default function RegisterPasienBaru() {
                                                     onBlur={handleBlur("phone")}
                                                 />
 
-                                                <FormLabel sx={{ fontSize: '18px' }}>Nama lengkap Pasien</FormLabel>
+                                                <FormLabel sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>Nama lengkap Pasien</FormLabel>
 
                                                 <Field
                                                     name="fullname"
                                                     as={TextField}
-                                                    placeholder="Masukka Nama lengkap penanggung jawab"
+                                                    placeholder="Masukkan Nama lengkap penanggung jawab"
                                                     variant="outlined"
                                                     fullWidth
                                                     sx={{
                                                         width: '100%',
                                                         height: '48px',
-                                                        marginTop: '10px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
                                                             backgroundColor: touched.fullname && errors.fullname ? "#ffcccc" : 'inherit',
@@ -295,9 +292,9 @@ export default function RegisterPasienBaru() {
                                                 // helperText={touched.fullname && errors.fullname}
                                                 />
 
-                                                <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '75px' }}>
+                                                <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '75px', mt: '10px' }}>
                                                     <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%' }}>
-                                                        <FormLabel>Tempat Lahir</FormLabel>
+                                                        <FormLabel sx={{ fontWeight: 400, fontSize: '16px' }} >Tempat Lahir</FormLabel>
                                                         <Field
                                                             name="tempatLahir"
                                                             as={TextField}
@@ -332,7 +329,7 @@ export default function RegisterPasienBaru() {
                                                     </FormControl>
 
                                                     <FormControl sx={{ width: '49%', overflow: 'hidden', height: '100%' }}>
-                                                        <FormLabel>Tanggal Lahir</FormLabel>
+                                                        <FormLabel sx={{ fontWeight: 400, fontSize: '16px' }} >Tanggal Lahir</FormLabel>
                                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                             <Box sx={{ overflow: 'hidden' }}>
                                                                 <DemoContainer components={['DatePicker']}>
@@ -365,7 +362,7 @@ export default function RegisterPasienBaru() {
                                                     </FormControl>
                                                 </Box>
 
-                                                <Typography mt={2} mb={1} >
+                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }} >
                                                     Jenis kelamin Pasien{" "}
                                                     <span style={{ color: "#d32f2f" }}>*</span>{" "}
                                                 </Typography>
@@ -387,7 +384,7 @@ export default function RegisterPasienBaru() {
                                                     </FormControl>
                                                 </Box>
 
-                                                <Typography sx={{ fontSize: "16px", mt: 2 }}>
+                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>
                                                     Alamat tempat tinggal Pasien<span style={{ color: "red" }}>*</span>
                                                 </Typography>
 

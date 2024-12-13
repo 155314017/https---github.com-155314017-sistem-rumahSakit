@@ -11,8 +11,9 @@ interface Props {
 export default function CardRawatJalan({ title, text, onClick }: Props) {
     return (
         <a 
-        href='#'
-        onClick={onClick}
+            href='#'
+            onClick={onClick}
+            style={{ textDecoration: 'none' }}  // Menghilangkan underline dari elemen <a>
         >
             <Card
                 sx={{
@@ -24,7 +25,7 @@ export default function CardRawatJalan({ title, text, onClick }: Props) {
                     backgroundColor: "#F1F0FE",
                     padding: "24px",
                     gap: "16px",
-                    boxShadow: "none", // Remove shadow
+                    boxShadow: "none", 
                 }}
             >
                 <Typography
@@ -33,7 +34,7 @@ export default function CardRawatJalan({ title, text, onClick }: Props) {
                         fontSize: "18px",
                         fontWeight: "600",
                         lineHeight: "20px",
-                        textDecoration: "none",
+                        textDecoration: "none", 
                     }}
                 >
                     {title}

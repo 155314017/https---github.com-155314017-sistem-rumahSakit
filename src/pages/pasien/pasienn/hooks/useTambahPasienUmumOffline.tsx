@@ -273,28 +273,28 @@ export default function useTambahPasienUmumOffline() {
     }
 
     const putGuard = async () => {
-        try {
-            const tes = {
-                patientId: patientData.id,
-                guardianIdentityNumber: formik.values.nikGuardian,
-                guardianName: formik.values.fullnameGuardian,
-                guardianPhone: formik.values.phoneGuardian,
-                guardianEmail: formik.values.emailGuardian,
-                guardianGender: formik.values.genderGuardian,
-                guardianAddress: formik.values.addressGuardian,
-                guardianType: 'guardianType',
-                guardianRelation: formik.values.typeGuardian,
-                guardianBirthPlace: formik.values.birthPlaceGuardian,
-                guardianBirthDate: formik.values.birthDateGuardian,
-            }
+        // try {
+        //     const tes = {
+        //         patientId: patientData.id,
+        //         guardianIdentityNumber: formik.values.nikGuardian,
+        //         guardianName: formik.values.fullnameGuardian,
+        //         guardianPhone: formik.values.phoneGuardian,
+        //         guardianEmail: formik.values.emailGuardian,
+        //         guardianGender: formik.values.genderGuardian,
+        //         guardianAddress: formik.values.addressGuardian,
+        //         guardianType: 'guardianType',
+        //         guardianRelation: formik.values.typeGuardian,
+        //         guardianBirthPlace: formik.values.birthPlaceGuardian,
+        //         guardianBirthDate: formik.values.birthDateGuardian,
+        //     }
 
-            const response = await UpdatePatientGuards(tes)
-            console.log(response)
-            console.log("Data: ", tes)
-            setCurrentPage(3)
-        } catch (error) {
-            console.log(error)
-        }
+        //     const response = await UpdatePatientGuards(tes)
+        //     console.log(response)
+        //     console.log("Data: ", tes)
+        setCurrentPage(3)
+        // } catch (error) {
+        //     console.log(error)
+        // }
     }
 
 
@@ -375,22 +375,23 @@ export default function useTambahPasienUmumOffline() {
         }
         try {
             console.log(data);
-            const response = await CreateAppointment(data)
-            const createdDateTimeFormatted = dayjs.unix(response.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
-            const dataSent = {
-                // nomorAntrian: response.data.queueDatum.queueNumber,
-                namaDokter: docterName,
-                clinic: clinicName,
-                tanggalReservasi: createdDateTimeFormatted,
-                jadwalKonsul: selectedSchedule,
-                bookingCode: response.data.bookingCode
-            }
-            console.log(dataSent);
-            setDataTickets(dataSent)
+            // const response = await CreateAppointment(data)
+            // const createdDateTimeFormatted = dayjs.unix(response.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
+            // const dataSent = {
+            //     // nomorAntrian: response.data.queueDatum.queueNumber,
+            //     namaDokter: docterName,
+            //     clinic: clinicName,
+            //     tanggalReservasi: createdDateTimeFormatted,
+            //     jadwalKonsul: selectedSchedule,
+            //     bookingCode: response.data.bookingCode
+            // }
+            // console.log(dataSent);
+            // setDataTickets(dataSent)
             console.log('sukses')
             setMainPages(false)
+            setCurrentPage(3);
         } catch (err) {
-            console.log(err)
+            console.log("tes")
         }
     }
 

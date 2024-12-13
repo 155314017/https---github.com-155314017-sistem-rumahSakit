@@ -23,6 +23,7 @@ const validationSchema = Yup.object({
         .matches(/^[A-Za-z\s]+$/, "Nama hanya boleh berisi huruf"),
     gender: Yup.string().required('JenisK kelamin harus dipilih'),
     tempatLahir: Yup.string().required('Tempat lahir harus diisi'),
+    tanggalLahir: Yup.string().required('Tempat lahir harus diisi'),
 });
 
 interface FormValues {

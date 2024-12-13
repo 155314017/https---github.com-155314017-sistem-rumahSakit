@@ -110,7 +110,7 @@ export default function LoginPasien() {
           }}
         >
           <Box sx={{ width: "80%" }}>
-            <img src={logo} alt="logo-carolus" />
+            {/* <img src={logo} alt="logo-carolus" /> */}
             <Typography sx={{ fontSize: "32px", fontWeight: "600" }}>
               Selamat Datang
             </Typography>
@@ -152,8 +152,8 @@ export default function LoginPasien() {
                       Isi data diri pasien
                     </Typography>
 
-                    <FormLabel sx={{ fontSize: "16px" }}>
-                      NIK (Nomor induk kependudukan) Pasien
+                    <FormLabel sx={{ fontSize: "16px", fontWeight: 400 }}>
+                      NIK (Nomor induk kependudukan) Pasien <span style={{ color: "red" }}>*</span>
                     </FormLabel>
                     <Field
                       name="nik"
@@ -187,8 +187,8 @@ export default function LoginPasien() {
                     // helperText={touched.nik && errors.nik}
                     />
 
-                    <FormLabel sx={{ fontSize: "18px", marginTop: "20px" }}>
-                      Email
+                    <FormLabel sx={{ fontSize: "16px", marginTop: "20px", fontWeight: 400 }}>
+                      Email <span style={{ color: "red" }}>*</span>
                     </FormLabel>
                     <Field
                       name="email"
@@ -261,7 +261,7 @@ export default function LoginPasien() {
             </Formik>
           </Box>
         </Box>
-      </Box>
+      </Box >
     </>
   )
 }
