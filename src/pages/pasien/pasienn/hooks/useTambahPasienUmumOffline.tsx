@@ -7,9 +7,6 @@ import 'react-phone-input-2/lib/style.css';
 import { styled } from '@mui/material/styles';
 import { Radio } from '@mui/material';
 import { RadioProps } from '@mui/material/Radio';
-import CreateAppointment from '../../../../services/Patient Tenant/CreateAppointment';
-import UpdatePatientGuards from '../../../../services/Patient Tenant/UpdatePatientGuard';
-import dayjs from 'dayjs';
 
 type Doctor = {
     id: string;
@@ -219,6 +216,7 @@ export default function useTambahPasienUmumOffline() {
         console.log(`Selected Value: ${value}, Selected Label: ${label}`);
         setIdClinic(value)
         setClinicName(label);
+        console.log(clinicName);
     };
 
     function BpRadio(props: RadioProps) {
@@ -303,11 +301,13 @@ export default function useTambahPasienUmumOffline() {
         setIdDoctor(value);
         console.log(idDoctor);
         setDocterName(label);
+        console.log(docterName);
     };
 
     const handleScheduleChange = (scheduleId: string, schedule: string) => {
         setSelectedScheduleId(scheduleId);
         setSelectedSchedule(schedule);
+        console.log(selectedSchedule)
         console.log('Jadwal Terpilih:', schedule);
         console.log('ID Jadwal Terpilih:', scheduleId);
     };

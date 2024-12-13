@@ -12,14 +12,6 @@ import * as Yup from "yup";
 import axios from "axios";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 import { Stack } from "@mui/system";
-import BreadCrumbs from "../../../../components/medium/BreadCrumbs";
-
-const breadcrumbItems = [
-    {
-        label: "Pasien Lama",
-        href: "/konter/tambahPasien",
-    }
-];
 
 const style = {
     position: "absolute" as const,
@@ -45,8 +37,8 @@ const otpValidationSchema = Yup.object({
 export default function PilihKategoriPasien() {
     const [openModalKodeBooking, setOpenModalKodeBooking] = useState(false);
     const [openModalPilihPembayaran, setOpenModalPilihPembayaran] = useState(false);
-    // const [mainPages, setMainPages] = useState(true);
-    // const [inputCodePages, setInputCodePages] = useState(false);
+    const [mainPages, setMainPages] = useState(true);
+    const [inputCodePages, setInputCodePages] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [infoTicket, setInfoTicket] = useState(false);
 
