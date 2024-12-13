@@ -1,5 +1,5 @@
 import { Button, CardMedia, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { bgcolor, Box } from "@mui/system";
 import my from "../../img/String.png"
 import logo from "../../img/St.carolus.png"
 
@@ -9,11 +9,12 @@ type InformasiTicketProps = {
     clinic: string;
     tanggalReservasi: string;
     jadwalKonsul: string | null;
+    bgcolor?: string;
 }
 
-const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi, jadwalKonsul }: InformasiTicketProps) => {
+const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi, jadwalKonsul, bgcolor = "#ffffff" }: InformasiTicketProps) => {
     return (
-        <Box width={"506px"} height={"504px"} borderRadius={"32px"} bgcolor={"#ffffff"} position={"relative"} padding={"25px"}>
+        <Box width={"506px"} height={"504px"} borderRadius={"32px"} bgcolor={bgcolor} position={"relative"} padding={"25px"}>
             <CardMedia
                 component="img"
                 height="162px"

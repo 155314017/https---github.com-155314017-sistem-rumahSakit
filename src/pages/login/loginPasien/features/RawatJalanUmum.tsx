@@ -281,7 +281,7 @@ export default function RawatJalanUmum() {
                                                         {selectedMethod === 'asuransi' && (
                                                             <Box>
                                                                 <Typography mb={'10px'}>Unggah kartu asuransi</Typography>
-                                                                <FileUploader />
+                                                                <FileUploader onBase64Change={(base64string) => console.log(base64string)} />
                                                                 <Typography fontSize={'14px'} color="#A8A8BD">Ukuran file maksimal 1mb</Typography>
                                                             </Box>
                                                         )}
@@ -291,7 +291,7 @@ export default function RawatJalanUmum() {
                                                 <Box mt={1}>
                                                     <Box mt={2}>
                                                         <Typography>Unggah surat rujukan</Typography>
-                                                        <FileUploader />
+                                                        <FileUploader onBase64Change={(base64String) => console.log(base64String)} />
                                                         <Typography fontSize={"14px"} color="#A8A8BD">
                                                             Ukuran maksimal 1mb
                                                         </Typography>
@@ -333,7 +333,7 @@ export default function RawatJalanUmum() {
                                                     backgroundColor: '#8F85F3',
                                                     ":hover": { backgroundColor: '#D5D1FB' },
                                                 }}
-                                            disabled={!isValid || !dirty}
+                                                disabled={!isValid || !dirty}
                                             >
                                                 Selesai
                                             </Button>
@@ -362,6 +362,7 @@ export default function RawatJalanUmum() {
                         <Box marginLeft={"10%"} marginTop={"10%"}>
                             {/* <InformasiTicket /> */}
                             <InformasiTicketAPI
+                                bgcolor="#F1F0FE"
                                 clinic={dataTickets?.clinic || "Unknown Clinic"}
                                 jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
                                 namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}

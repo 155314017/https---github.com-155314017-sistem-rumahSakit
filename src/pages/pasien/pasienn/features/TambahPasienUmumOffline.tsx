@@ -11,24 +11,24 @@ import {
     OutlinedInput,
     FormLabel,
 } from "@mui/material";
-import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import bgImage from "../../../assets/img/String.png";
-import FileUploader from '../../../components/medium/FileUploader';
+import bgImage from "../../../../img/String.png";
 import PhoneInput from 'react-phone-input-2';
-import SwitchCustom from '../../../components/small/SwitchCustom';
-import CustomCalender from '../../../components/medium/CustomCalender';
 //hooks
-import useTambahPasienUmum from '../hooks/useTambahPasienUmum';
-import DropdownListAPI from "../../../components/small/DropdownListAPI";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import InformasiTicketAPI from "../../../components/small/InformasiTicketAPI";
 import dayjs from "dayjs";
 import { Field } from "formik";
+import useTambahPasienUmumOffline from "../hooks/useTambahPasienUmumOffline";
+import BreadCrumbs from "../../../../components/medium/BreadCrumbs";
+import SwitchCustom from "../../../../components/small/SwitchCustom";
+import DropdownListAPI from "../../../../components/small/DropdownListAPI";
+import CustomCalender from "../../../../components/medium/CustomCalender";
+import FileUploader from "../../../../components/medium/FileUploader";
+import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 
 
-export default function TambahPasienUmum() {
+export default function TambahPasienUmumOffline() {
     const {
         formik,
         breadcrumbItems,
@@ -61,7 +61,7 @@ export default function TambahPasienUmum() {
         birthDate,
         birthPlace
 
-    } = useTambahPasienUmum();
+    } = useTambahPasienUmumOffline();
 
 
 
@@ -213,6 +213,7 @@ export default function TambahPasienUmum() {
                                                         borderRadius: '8px',
                                                         height: '48px',
                                                         width: '100%',
+                                                        bgcolor: '#E8E8E8',
                                                         '&:focus-within .MuiOutlinedInput-notchedOutline': {
                                                             borderColor: '#8F85F3',
                                                         },
@@ -221,46 +222,23 @@ export default function TambahPasienUmum() {
                                                     value={formik.values.nik}
                                                     onChange={formik.handleChange}
                                                     name="nik"
+                                                    disabled
                                                 />
-                                                <Typography>Email</Typography>
+                                                <Typography>Nama lengkap pasien</Typography>
                                                 <OutlinedInput
                                                     sx={{
-                                                        borderRadius: '8px',
-                                                        height: '48px',
                                                         width: '100%',
+                                                        maxHeight: '44px',
+                                                        borderRadius: '8px',
+                                                        bgcolor: '#E8E8E8',
                                                         '&:focus-within .MuiOutlinedInput-notchedOutline': {
                                                             borderColor: '#8F85F3',
                                                         },
                                                     }}
-                                                    placeholder='Masukkan email'
-                                                    value={formik.values.email}
-                                                    onChange={formik.handleChange}
-                                                    name="email"
-                                                />
-                                                <Typography>No Handphone pasien</Typography>
-                                                <PhoneInput
-                                                    country={"id"}
-                                                    value={patientData?.phoneNumber}
-                                                    onChange={(values) => formik.setFieldValue("phone", values)}
-                                                    // disabled={switchValue}
-                                                    // onChange={(value) => console.log("nomor: ", value)}
-                                                    inputStyle={{
-                                                        height: "48px",
-                                                        borderRadius: "8px",
-                                                        border: "1px solid #ccc",
-                                                        padding: "10px 40px 10px 60px",
-                                                        fontSize: "16px",
-                                                        width: "100%",
-
-                                                    }}
-                                                    buttonStyle={{
-                                                        borderRadius: "8px 0 0 8px",
-                                                        border: "1px solid #ccc",
-                                                    }}
-                                                    containerStyle={{
-                                                        marginBottom: "10px",
-                                                        width: "100%",
-                                                    }}
+                                                    name="fullname"
+                                                    value={patientData?.fullName}
+                                                    disabled
+                                                    onChange={(value) => formik.setFieldValue("fullname", value)}
                                                 />
 
                                                 <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '75px', width: '100%' }}>
@@ -273,6 +251,7 @@ export default function TambahPasienUmum() {
                                                             sx={{
                                                                 borderRadius: '8px',
                                                                 height: '44px',
+                                                                bgcolor: '#E8E8E8',
                                                                 '& .MuiOutlinedInput-root': {
                                                                     borderRadius: '8px',
                                                                     backgroundColor: formik.touched.birthPlacePatient && formik.errors.birthPlacePatient ? "#ffcccc" : 'inherit',
@@ -292,6 +271,7 @@ export default function TambahPasienUmum() {
                                                             onBlur={formik.handleBlur}
                                                             value={birthPlace}
                                                             error={formik.touched.birthPlacePatient && Boolean(formik.errors.birthPlacePatient)}
+                                                            disabled
                                                         // helperText={touched.fullname && errors.fullname}
                                                         />
 
@@ -318,6 +298,7 @@ export default function TambahPasienUmum() {
                                                                                     borderRadius: '8px',
                                                                                     height: '60px',
                                                                                     width: '100%',
+                                                                                    bgcolor: '#E8E8E8',
                                                                                     '& .MuiOutlinedInput-root': {
                                                                                         borderRadius: '8px',
                                                                                         height: '44px',
@@ -325,65 +306,42 @@ export default function TambahPasienUmum() {
                                                                                 },
                                                                             },
                                                                         }}
+                                                                        disabled
                                                                     />
                                                                 </DemoContainer>
                                                             </Box>
                                                         </LocalizationProvider>
                                                     </FormControl>
+
                                                 </Box>
+                                                <Typography>No Handphone pasien</Typography>
+                                                <PhoneInput
+                                                    country={"id"}
+                                                    value={patientData?.phoneNumber}
+                                                    onChange={(values) => formik.setFieldValue("phone", values)}
+                                                    // disabled={switchValue}
+                                                    // onChange={(value) => console.log("nomor: ", value)}
+                                                    inputStyle={{
+                                                        height: "48px",
+                                                        borderRadius: "8px",
+                                                        border: "1px solid #ccc",
+                                                        padding: "10px 40px 10px 60px",
+                                                        fontSize: "16px",
+                                                        width: "100%",
+                                                        backgroundColor: '#E8E8E8',
 
-                                                <Typography>Nama lengkap pasien</Typography>
-                                                <OutlinedInput
-                                                    sx={{
-                                                        width: '100%',
-                                                        maxHeight: '44px',
-                                                        borderRadius: '8px',
-                                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                            borderColor: '#8F85F3',
-                                                        },
                                                     }}
-                                                    name="fullname"
-                                                    value={patientData?.fullName}
-                                                    // onChange={formik.handleChange}
-                                                    onChange={(value) => formik.setFieldValue("fullname", value)}
-                                                />
-                                                <Typography>Jenis Kelamin Pasien</Typography>
-                                                <Box width={'98%'} maxHeight={'56px'} border={'1px solid #ccc'} borderRadius={'12px'} padding={'8px 12px 8px 12px'} gap={'24px'} >
-                                                    <FormControl>
-                                                        <RadioGroup
-                                                            aria-labelledby="gender-label"
-                                                            name="gender"
-                                                            value={patientData?.gender}
-                                                            onChange={(e) => formik.setFieldValue("gender", e.target.value)}
-                                                            row
-
-                                                        >
-                                                            <FormControlLabel value="WOMEN" control={<BpRadio />} label="Female" />
-                                                            <FormControlLabel value="MEN" control={<BpRadio />} label="Male" />
-                                                        </RadioGroup>
-                                                    </FormControl>
-                                                </Box>
-
-                                                <Typography>Alamat tempat tinggal pasien</Typography>
-                                                <OutlinedInput
-                                                    id="address"
-                                                    name="address"
-                                                    size="small"
-                                                    placeholder="Masukkan deskripsi"
-                                                    value={patientData?.address}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={() => formik.setTouched({ ...formik.touched, address: true })}
-                                                    error={formik.touched.address && Boolean(formik.errors.address)}
-                                                    sx={{
-                                                        height: '107px',
-                                                        alignItems: 'flex-start',
-                                                        borderRadius: '8px',
-                                                        width: '100%',
-                                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                            borderColor: '#8F85F3',
-                                                        },
+                                                    buttonStyle={{
+                                                        borderRadius: "8px 0 0 8px",
+                                                        border: "1px solid #ccc",
                                                     }}
+                                                    containerStyle={{
+                                                        marginBottom: "10px",
+                                                        width: "100%",
+                                                    }}
+                                                    disabled
                                                 />
+
                                             </Box>
                                         </Box>
                                     </Box>
@@ -469,7 +427,7 @@ export default function TambahPasienUmum() {
                                                             },
                                                         }}
                                                         placeholder='Masukkan NIK ktp'
-                                                        defaultValue={'tesNik'}
+                                                        defaultValue={'coba'}
                                                         value={formik.values.nikGuardian}
                                                         onChange={formik.handleChange}
                                                         name="nikGuardian"

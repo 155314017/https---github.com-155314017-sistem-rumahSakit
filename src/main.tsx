@@ -49,6 +49,7 @@ import EditKonter from './pages/konter/features/EditKonter';
 import RegisterPJ from './pages/login/penanggungJawab/features/RegisterPJ';
 import PrivateRoute from './services/Admin Tenant/Auth/PrivateRoute';
 import PilihKategoriPasien from './pages/pasien/pasienn/features/PilihKategoriPasien';
+import TambahPasienUmumOffline from './pages/pasien/pasienn/features/TambahPasienUmumOffline';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -135,6 +136,7 @@ createRoot(document.getElementById('root')!).render(
         {/* end no need auth */}
 
         <Route path="/tes" element={<PilihKategoriPasien />} />
+        <Route path="/tambahPasien/umum/offline" element={<TambahPasienUmumOffline />} />
 
       </Routes>
     </Router>

@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from 'axios';
-import GetPatientByNIKServices from '../../../services/Patient Tenant/GetPatientByNIKServices';
+import GetPatientByNIKServices from '../../../../services/Patient Tenant/GetPatientByNIKServices';
 import 'react-phone-input-2/lib/style.css';
 import { styled } from '@mui/material/styles';
 import { Radio } from '@mui/material';
 import { RadioProps } from '@mui/material/Radio';
-import CreateAppointment from '../../../services/Patient Tenant/CreateAppointment';
-import UpdatePatientGuards from '../../../services/Patient Tenant/UpdatePatientGuard';
+import CreateAppointment from '../../../../services/Patient Tenant/CreateAppointment';
+import UpdatePatientGuards from '../../../../services/Patient Tenant/UpdatePatientGuard';
 import dayjs from 'dayjs';
 
 type Doctor = {
@@ -53,7 +53,7 @@ type dataTicket = {
 }
 
 
-export default function useTambahPasienUmum() {
+export default function useTambahPasienUmumOffline() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [guardFullPage, setGuardFullPage] = useState(true);
     const [patientFullPage, setPatientFullsPage] = useState(true);
@@ -63,7 +63,6 @@ export default function useTambahPasienUmum() {
     const [selectedMethod, setSelectedMethod] = useState('');
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
     const [dataTickets, setDataTickets] = useState<dataTicket>();
-    const [buttonDis, setButtonDis] = useState(false);
     // const [patientData, setPatientData] = useState<ResponsePatient | undefined>();
     const [patientData, setPatientData] = useState<ResponsePatient>({
         id: '',
@@ -87,9 +86,9 @@ export default function useTambahPasienUmum() {
     const [clinicName, setClinicName] = useState('');
 
     const breadcrumbItems = [
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "Pasien", href: "/pasien" },
-        { label: "Tambah Pasien", href: "/tambahPasien/Umum" },
+        { label: "Pasien Lama", href: "/tes" },
+        // { label: "Pasien", href: "/pasien" },
+        // { label: "Tambah Pasien", href: "/tambahPasien/Umum" },
     ];
 
     const formik = useFormik({
@@ -375,7 +374,6 @@ export default function useTambahPasienUmum() {
             referenceDoc: formik.values.docs,
         }
         try {
-            setButtonDis(true);
             console.log(data);
             const response = await CreateAppointment(data)
             const createdDateTimeFormatted = dayjs.unix(response.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
@@ -391,7 +389,6 @@ export default function useTambahPasienUmum() {
             setDataTickets(dataSent)
             console.log('sukses')
             setMainPages(false)
-            setButtonDis(false)
         } catch (err) {
             console.log(err)
         }

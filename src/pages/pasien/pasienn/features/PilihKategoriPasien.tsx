@@ -9,6 +9,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import OTPInput from "react-otp-input";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
+import { Stack } from "@mui/system";
 
 const style = {
     position: "absolute" as const,
@@ -37,13 +40,18 @@ export default function PilihKategoriPasien() {
     const [mainPages, setMainPages] = useState(true);
     const [inputCodePages, setInputCodePages] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [infoTicket, setInfoTicket] = useState(false);
+
+    const handleBack = () => {
+        setOpenModalPilihPembayaran(false);
+    }
 
     return (
         <>
             <style>
                 {`
             :root {
-            background-color: #ccc
+            background-color: #fff
             }
             `}
             </style>
@@ -71,7 +79,7 @@ export default function PilihKategoriPasien() {
                         <Box width={'60%'} >
                             <Box
                                 sx={{
-                                    bgcolor: '#ffff',
+                                    bgcolor: '#F1F0FE',
                                     width: '96%',
                                     height: '100px',
                                     borderRadius: '24px',
@@ -94,38 +102,35 @@ export default function PilihKategoriPasien() {
                                 sx={{ display: "flex", flexDirection: "column", gap: 2 }}
                             >
                                 <Link
-                                    to="/tambahPasien/BPJS"
+                                    to="#"
                                     style={{ textDecoration: "none" }}
+                                    onClick={() => {
+                                        setOpenModalPilihPembayaran(true);
+                                        setMainPages(false);
+                                    }}
                                 >
                                     <Card
-                                        sx={{
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            width: "96%",
-                                            height: "128px",
-                                            borderRadius: "24px",
-                                            backgroundColor: "#F1F0FE",
-                                            padding: "24px",
-                                            gap: "16px",
-                                            boxShadow: "none", // Remove shadow
-                                        }}
+                                        sx={cardStyle}
                                     >
-                                        <Typography
-                                            sx={{
-                                                color: "#7367F0",
-                                                fontSize: "18px",
-                                                fontWeight: "600",
-                                                lineHeight: "20px",
-                                                textDecoration: "none",
-                                            }}
-                                        >
-                                            Pasien BPJS
-                                        </Typography>
-                                        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", textDecoration: "none" }}>
-                                            <Typography sx={{ textDecoration: "none" }}>
-                                                dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu dan berhak mendapatkan pelayanan kesehatan
+                                        <Avatar alt="Kode Booking" src="/src/img/filling.png" sx={{ width: '88px', height: '88px' }} />
+                                        <Box>
+                                            <Typography
+                                                sx={{
+                                                    color: "#7367F0",
+                                                    fontSize: "18px",
+                                                    fontWeight: "600",
+                                                    lineHeight: "20px",
+                                                    textDecoration: "none",
+                                                }}
+                                            >
+                                                Pasien Lama
                                             </Typography>
-                                            <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+                                            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", textDecoration: "none" }}>
+                                                <Typography sx={{ textDecoration: "none" }}>
+                                                    dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu dan berhak mendapatkan pelayanan kesehatan
+                                                </Typography>
+                                                <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+                                            </Box>
                                         </Box>
                                     </Card>
 
@@ -157,7 +162,7 @@ export default function PilihKategoriPasien() {
                                                 textDecoration: "none",
                                             }}
                                         >
-                                            Pasien umum
+                                            Pasien Baru
                                         </Typography>
                                         <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", textDecoration: "none" }}>
                                             <Typography sx={{ textDecoration: "none" }}>
@@ -167,13 +172,17 @@ export default function PilihKategoriPasien() {
                                         </Box>
                                     </Card>
                                 </Link>
-                                <Link to="#" style={{ textDecoration: "none" }} onClick={() => setOpenModalPilihPembayaran(true)} >
+                                <Link to="#" style={{ textDecoration: "none" }} onClick={() => {
+                                    setInputCodePages(true);
+                                    setMainPages(false);
+                                }} >
                                     <Card sx={cardStyle}>
                                         <Avatar alt="Kode Booking" src="/src/img/filling.png" sx={{ width: '88px', height: '88px' }} />
                                         <Box>
-                                            <Typography sx={titleStyle}>Pasien Baru</Typography>
+                                            <Typography sx={titleStyle}>Masukkan kode booking</Typography>
                                             <Box sx={descriptionBoxStyle}>
-                                                <Typography>Pasien yang baru pertama kali datang ke rumah sakit untuk keperluan berobat. </Typography>
+                                                <Typography>Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk
+                                                    check-in nomor antrian.</Typography>
                                                 <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
                                             </Box>
                                         </Box>
@@ -188,7 +197,10 @@ export default function PilihKategoriPasien() {
                 {inputCodePages && (
                     <Box sx={style}>
                         <IconButton
-                            onClick={() => setOpenModalKodeBooking(false)}
+                            onClick={() => {
+                                setInputCodePages(false);
+                                setMainPages(true);
+                            }}
                             sx={{
                                 position: 'absolute',
                                 top: 8,
@@ -211,8 +223,16 @@ export default function PilihKategoriPasien() {
                             onSubmit={async (values) => {
                                 console.log("Kode booking:", values.otp);
                                 setIsLoading(true);
-                                await new Promise((resolve) => setTimeout(resolve, 3000));
+                                // await new Promise((resolve) => setTimeout(resolve, 3000));
+                                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/patient/check-in', values.otp, {
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        // 'accessToken': `${token}`
+                                    },
+                                });
+                                console.log(response);
                                 setOpenModalKodeBooking(false)
+                                setInfoTicket(true);
                                 setIsLoading(false);
                             }}
                         >
@@ -279,7 +299,77 @@ export default function PilihKategoriPasien() {
                         </Formik>
                     </Box>
                 )}
-            </Box>
+
+                {openModalPilihPembayaran && (
+                    <>
+
+                        <Typography id="modal-modal-title" sx={{ mt: 2, fontSize: '18px', fontWeight: 600 }}>
+                            Pilih kategori pasien
+                        </Typography>
+                        <Typography id="modal-modal-description" mb={2} color='#747487'>
+                            Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
+                        </Typography>
+
+                        <Stack direction="column" spacing={3}>
+                            {/* Pasien BPJS */}
+                            <Link to="/tambahPasien/umum/offline" style={{ textDecoration: "none" }}>
+                                <Card sx={cardStyle}>
+                                    <Avatar alt="Kode Booking" src="/src/img/filling.png" sx={{ width: '88px', height: '88px' }} />
+                                    <Box>
+                                        <Typography sx={titleStyle}>Pasien Umum/asuransi</Typography>
+                                        <Box sx={descriptionBoxStyle}>
+                                            <Typography>Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.</Typography>
+                                            <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+                                        </Box>
+                                    </Box>
+                                </Card>
+                            </Link>
+
+                            {/* Pasien Umum */}
+                            <Link to="#" style={{ textDecoration: "none" }}>
+                                <Card sx={cardStyle}>
+                                    <Avatar alt="Kode Booking" src="/src/img/meidicine.png" sx={{ width: '88px', height: '88px' }} />
+                                    <Box>
+                                        <Typography sx={titleStyle}>Pasien non BPJS kesehatan</Typography>
+                                        <Box sx={descriptionBoxStyle}>
+                                            <Typography>Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.</Typography>
+                                            <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+                                        </Box>
+                                    </Box>
+                                </Card>
+                            </Link>
+                            <Button
+                                sx={{
+                                    padding: "10px 20px",
+                                    backgroundColor: "#8F85F3",
+                                    color: "white",
+                                    borderRadius: "8px",
+                                    cursor: "pointer",
+                                    fontWeight: 600,
+                                    width: "100%",
+                                    border: '1px solid #8F85F3',
+                                    ":hover": { backgroundColor: 'inherit', color: '#8F85F3' }
+                                }}
+                                onClick={handleBack}
+                            >
+                                Kembali ke pilihan sebelumnya
+                            </Button>
+                        </Stack>
+                    </>
+                )}
+
+
+                {infoTicket && (
+                    <InformasiTicketAPI
+                        clinic="clinic"
+                        jadwalKonsul={"sabtu"}
+                        namaDokter="udin"
+                        nomorAntrian={'1'}
+                        tanggalReservasi="20 agus"
+                    />
+                )}
+
+            </Box >
         </>
     )
 }
@@ -287,13 +377,21 @@ export default function PilihKategoriPasien() {
 const cardStyle = {
     display: "flex",
     flexDirection: "row",
-    width: "90%",
-    height: "80px",
     borderRadius: "24px",
     backgroundColor: "#F1F0FE",
     padding: "24px",
     gap: "16px",
     boxShadow: "none",
+
+    // display: "flex",
+    // flexDirection: "column",
+    width: "96%",
+    height: "100px",
+    // borderRadius: "24px",
+    // backgroundColor: "#F1F0FE",
+    // padding: "24px",
+    // gap: "16px",
+    // boxShadow: "none", // Remove shadow
 };
 
 const titleStyle = {
