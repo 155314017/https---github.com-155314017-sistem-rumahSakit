@@ -376,6 +376,7 @@ export default function useTambahPasienUmum() {
         }
         try {
             setButtonDis(true);
+            console.log(buttonDis);
             console.log(data);
             const response = await CreateAppointment(data)
             const createdDateTimeFormatted = dayjs.unix(response.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');

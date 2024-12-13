@@ -2,7 +2,6 @@ import { Box, Button, Typography, CardMedia, FormControl, TextField, Radio, Form
 import { Formik, Form } from 'formik';
 import axios from 'axios';
 import "react-phone-input-2/lib/style.css";
-import logo from "../../../../img/St.carolus.png";
 import imagePendaftaran from "../../../../assets/img/pendaftaran.jpeg";
 import FileUploader from "../../../../components/medium/FileUploader";
 import DropdownListAPI from '../../../../components/small/DropdownListAPI';

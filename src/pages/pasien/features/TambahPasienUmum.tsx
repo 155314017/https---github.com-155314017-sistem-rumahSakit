@@ -25,7 +25,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import InformasiTicketAPI from "../../../components/small/InformasiTicketAPI";
 import dayjs from "dayjs";
-import { Field } from "formik";
 
 
 export default function TambahPasienUmum() {

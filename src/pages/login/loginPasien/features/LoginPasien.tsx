@@ -6,7 +6,6 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-import logo from "../../../../img/St.carolus.png";
 import patientImage from "../../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from "formik";
 import AlertWarning from "../../../../components/small/AlertWarning";

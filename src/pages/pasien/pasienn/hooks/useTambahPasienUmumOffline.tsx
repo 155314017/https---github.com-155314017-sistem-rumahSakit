@@ -391,7 +391,7 @@ export default function useTambahPasienUmumOffline() {
             setMainPages(false)
             setCurrentPage(3);
         } catch (err) {
-            console.log("tes")
+            console.log("tes", err);
         }
     }
 

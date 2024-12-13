@@ -26,7 +26,6 @@ export default function RegisterPJ() {
     showAlert,
     loginSuccess,
     show,
-    notFound,
     showTemporarySuccessLogin,
     validationCheck,
     handleSwitchChange,

@@ -1,5 +1,5 @@
 import { Button, CardMedia, Typography } from "@mui/material";
-import { bgcolor, Box } from "@mui/system";
+import { Box } from "@mui/system";
 import my from "../../img/String.png"
 import logo from "../../img/St.carolus.png"
 
