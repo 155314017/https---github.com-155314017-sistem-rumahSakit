@@ -34,9 +34,15 @@ const otpValidationSchema = Yup.object({
 export default function PilihKategoriPasien() {
     const [openModalKodeBooking, setOpenModalKodeBooking] = useState(false);
     const [openModalPilihPembayaran, setOpenModalPilihPembayaran] = useState(false);
-    const [mainPages, setMainPages] = useState(true);
-    const [inputCodePages, setInputCodePages] = useState(false);
+    // const [mainPages, setMainPages] = useState(true);
+    // const [inputCodePages, setInputCodePages] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const mainPages = true;
+    const inputCodePages = false;
+
+
+    console.log(openModalKodeBooking);
+    console.log(openModalPilihPembayaran);
 
     return (
         <>
