@@ -186,18 +186,13 @@ export default function RawatJalanUmum() {
                                                             "& .MuiOutlinedInput-root": {
                                                                 height: "44px",
                                                                 padding: "0 12px",
-                                                                border: "1px solid #8F85F3",
+                                                                border: "1px solid #A8A8BD",
                                                                 backgroundColor: touched.typeOfVisit && errors.typeOfVisit ? "#ffcccc" : 'inherit',
                                                                 "& input": {
                                                                     height: "44px",
                                                                     padding: "0",
                                                                 },
-                                                                "& fieldset": {
-                                                                    borderColor: "#8F85F3",
-                                                                },
-                                                                "&:hover fieldset": {
-                                                                    borderColor: "#7A73E3",
-                                                                },
+
                                                                 "&.Mui-focused fieldset": {
                                                                     borderColor: "#6B63D1",
                                                                 },
@@ -252,19 +247,13 @@ export default function RawatJalanUmum() {
                                                             padding: "0",
                                                             "& .MuiOutlinedInput-root": {
                                                                 padding: "0 12px",
-                                                                border: "1px solid #8F85F3",
+                                                                border: "1px solid #A8A8BD",
                                                                 backgroundColor: touched.symptoms && errors.symptoms ? "#ffcccc" : 'inherit',
                                                                 "& input": {
                                                                     padding: "0",
                                                                 },
-                                                                "& fieldset": {
-                                                                    borderColor: "#8F85F3",
-                                                                },
-                                                                "&:hover fieldset": {
-                                                                    borderColor: "#7A73E3",
-                                                                },
                                                                 "&.Mui-focused fieldset": {
-                                                                    borderColor: "#6B63D1",
+                                                                    border: "1px solid #6B63D1",
                                                                 },
                                                             },
                                                         }}

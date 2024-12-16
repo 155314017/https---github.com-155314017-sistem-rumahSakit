@@ -42,7 +42,8 @@ export default function RegisterPasienBaru() {
         setData,
         navigate,
         data,
-        setOtp
+        setOtp,
+        loading
     } = useRegistrasiPasienBaru();
     return (
         <>   <style>
@@ -105,14 +106,14 @@ export default function RegisterPasienBaru() {
                         </Typography>
                     </Box>
                 </Box>
-
+                {resendSuccess && (
+                    <AlertSuccess label="Kode verifikasi berhasil dikirimkan !" />
+                )}
                 {showLogin && (
                     <>
 
                         {showAlert && <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />}
-                        {resendSuccess && (
-                            <AlertSuccess label="Kode verifikasi berhasil dikirimkan !" />
-                        )}
+
                         <Box
                             sx={{
                                 display: "flex",
@@ -136,7 +137,7 @@ export default function RegisterPasienBaru() {
                                 </Typography>
 
                                 <Formik
-                                    initialValues={{ nik: data1.nik, email: data1.email, phone: '', fullname: '', gender: '', address: '', tempatLahir: '', tanggalLahir: '', }}
+                                    initialValues={{ nik: data1?.nik || '', email: data1?.email || '', phone: '', fullname: '', gender: '', address: '', tempatLahir: '', tanggalLahir: '', }}
                                     enableReinitialize
                                     validationSchema={validationSchema}
                                     onSubmit={async (values) => {
@@ -510,12 +511,7 @@ export default function RegisterPasienBaru() {
                                 <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
                                     Data Not Found  !
                                 </Typography>
-                                <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                                    Are you sure you filled the field ?? Look sus !
-                                </Typography>
-                                <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                                    Keep playing kiddos !
-                                </Typography>
+
                             </Box>
                         </Box>
                     )}
@@ -554,10 +550,8 @@ export default function RegisterPasienBaru() {
                                             email: emailOTP,
                                             code: values.otp
                                         }
-                                        console.log("DATA OTP DIKIRIM : ", dataOTP)
                                         try {
-                                            const response = await VerifyOTPPatient(dataOTP)
-                                            console.log("response : ", response)
+                                            await VerifyOTPPatient(dataOTP)
                                             otpFormShown()
                                             navigate('/register/pj', { state: { successAdd: true, data: data, idPatient: patientId } })
                                         } catch {
@@ -619,7 +613,9 @@ export default function RegisterPasienBaru() {
                                                             fontSize: '16px',
                                                         }}
                                                     >
-                                                        {isCounting ? `${formatTime()}` : 'Kirim ulang tautan'}
+                                                        {loading ? <CircularProgress size={18} sx={{ color: '#8F85F3' }} /> :
+                                                            (isCounting ? `${formatTime()}` : 'Kirim ulang tautan')
+                                                        }
                                                     </Typography>
                                                 </Box>
                                                 <Button

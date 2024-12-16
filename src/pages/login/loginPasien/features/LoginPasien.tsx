@@ -129,10 +129,8 @@ export default function LoginPasien() {
               initialValues={{ nik: "", email: "" }}
               validationSchema={validationSchema}
               onSubmit={async (values) => {
-                if (await validationCheck(values)) {
-                  console.log(values);
-                  await showTemporarySuccessLogin();
-                }
+                await validationCheck(values)
+                // await showTemporarySuccessLogin();
               }}
             >
               {({
@@ -224,14 +222,20 @@ export default function LoginPasien() {
                     <Button
                       type="submit"
                       variant="contained"
-                      color="primary"
                       fullWidth
                       sx={{
                         width: "100%",
                         height: "48px",
                         mt: 5,
+                        color: '#EEEEF2',
+                        fontSize: '16px',
+                        fontWeight: 400,
                         backgroundColor: "#8F85F3",
                         ":hover": { backgroundColor: "#D5D1FB" },
+                        "&.Mui-disabled": {
+                          backgroundColor: "#A8A8BD",
+                          color: "white",
+                        },
                       }}
                       disabled={!isValid || !dirty}
                     >

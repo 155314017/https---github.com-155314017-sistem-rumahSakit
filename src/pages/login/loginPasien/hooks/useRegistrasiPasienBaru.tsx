@@ -43,8 +43,8 @@ interface DataKirim {
 }
 
 interface DataAwal {
-    nik: string;
-    email: string;
+    nik: '';
+    email: '';
 }
 
 const otpValidationSchema = Yup.object({
@@ -127,11 +127,12 @@ export default function useRegistrasiPasienBaru() {
     const [loginSuccess, setLoginSuccess] = useState(false);
     const [emailOTP, setEmailOTP] = useState('');
     const [otp, setOtp] = useState('');
-    const [data1, setData1] = useState<DataAwal>({ nik: '', email: '' });
+    const [data1, setData1] = useState<DataAwal | null>(null);
     const [patientId, setPatientId] = useState<string>('');
-    const [notFound, setNotFound] = useState(true);
+    const [notFound, setNotFound] = useState(false);
     const [buttonDis, setButtonDis] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -188,18 +189,20 @@ export default function useRegistrasiPasienBaru() {
     }, [isCounting, secondsLeft]);
 
     const handleResendClick = async () => {
+        setLoading(true);
         try {
-            console.log('handleResendClick');
-            const response = await RegisterPatient(data);
-            console.log("response: ", response);
+            await RegisterPatient(data);
+            console.log("pre")
+            showTemporaryAlertSuccess();
+            console.log("pass")
+            setLoading(false);
         } catch {
+            setLoading(false);
             console.log("error")
         }
         setIsCounting(true);
         setSecondsLeft(60);
-        showTemporaryAlertSuccess();
-        console.log("Resend clicked");
-
+        setLoading(false);
     };
 
     const showTemporaryAlertSuccess = async () => {
@@ -225,22 +228,30 @@ export default function useRegistrasiPasienBaru() {
             console.log(location.state.message);
             console.log("DATA YANG DIKIRIM dari Page 1: ", location.state.data);
             setData1(location.state.data);
-            // navigate(location.pathname, { replace: true, state: undefined });
+
         }
-    }, [location.state, navigate]);
+    }, [location.state]);
 
     useEffect(() => {
-        console.log("Data awal yang di state kan: ", data1);
-
-        if (data1.email === '') {
+        console.log("trace 1");
+        if (data1 != null) {
+            console.log("trace 2");
+            if (data1.email === '') {
+                setShowLogin(false);
+                setNotFound(true);
+                console.log("trace 2.1");
+            } else {
+                setShowLogin(true);
+                setNotFound(false);
+                console.log("trace 2.2");
+            }
+        } else {
+            console.log("data1 is null");
             setShowLogin(false);
             setNotFound(true);
-        } else {
-
-            setShowLogin(true);
-            setNotFound(false);
         }
     }, [data1]);
+
 
     const showTemporaryAlertError = async () => {
         console.log("ALERT ERROR ! ! !")
@@ -285,13 +296,7 @@ export default function useRegistrasiPasienBaru() {
         setNikError,
         navigate,
         data,
-        setOtp
-
-
-
-
-
-
-
+        setOtp,
+        loading,
     }
 }

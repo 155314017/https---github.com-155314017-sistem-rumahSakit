@@ -89,23 +89,16 @@ export default function useLoginPegawai() {
   };
 
   const validationCheck = async (values: FormValues) => {
-    console.log('inside validationCheck')
     try {
       const { email, password } = values
       const response = await Login(email, password)
-      console.log('Login response:', response)
-
       if (response.responseCode === '200') {
-        console.log('sukses')
         navigate('/dashboard', { state: { statusLogin: true } })
         return true
       } else {
-        console.log('gagal - unexpected response:', response)
         return false
       }
     } catch (error: any) {
-      // console.error("Error during login:", error);
-      // return false;
       if (error.responseCode == '401') {
         //salah password
         console.log(error.responseCode)

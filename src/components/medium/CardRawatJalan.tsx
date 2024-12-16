@@ -1,6 +1,7 @@
 import { Card, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import bgImage from "../../assets/img/String.png";
 
 interface Props {
     title: string;
@@ -10,42 +11,61 @@ interface Props {
 
 export default function CardRawatJalan({ title, text, onClick }: Props) {
     return (
-        <a 
-            href='#'
+        <Card
             onClick={onClick}
-            style={{ textDecoration: 'none' }}  // Menghilangkan underline dari elemen <a>
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "95%",
+                height: "128px",
+                borderRadius: "24px",
+                backgroundColor: "#F1F0FE",
+                padding: "24px",
+                gap: "16px",
+                boxShadow: "none",
+                position: "relative",
+                overflow: "hidden",
+                textDecoration: 'none',
+                cursor:'pointer'
+            }}
         >
-            <Card
+            <Box
                 sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "95%",
-                    height: "128px",
-                    borderRadius: "24px",
-                    backgroundColor: "#F1F0FE",
-                    padding: "24px",
-                    gap: "16px",
-                    boxShadow: "none", 
+                    position: "absolute",
+                    top: "-30px",
+                    right: "50px",
+                    zIndex: 0,
                 }}
             >
-                <Typography
-                    sx={{
-                        color: "#7367F0",
-                        fontSize: "18px",
-                        fontWeight: "600",
-                        lineHeight: "20px",
-                        textDecoration: "none", 
+                <img
+                    src={bgImage}
+                    alt="card-bg"
+                    style={{
+                        width: "130%",
+                        height: "100%",
+                        objectFit: "cover",
+
                     }}
-                >
-                    {title}
-                </Typography>
-                <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", textDecoration: "none" }}>
-                    <Typography sx={{ textDecoration: "none" }}>
-                        {text}
-                    </Typography>
-                    <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
-                </Box>
-            </Card>
-        </a>
+                />
+            </Box>
+
+            <Typography
+                sx={{
+                    color: "#7367F0",
+                    fontSize: "18px",
+                    fontWeight: "600",
+                    lineHeight: "20px",
+                    textDecoration: "none",
+                    zIndex: 1,
+                }}
+            >
+                {title}
+            </Typography>
+
+            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", zIndex: 1 }}>
+                <Typography>{text}</Typography>
+                <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+            </Box>
+        </Card>
     );
 }

@@ -33,20 +33,34 @@ export default function KategoriPasien() {
           flexDirection: "row",
         }}
       >
-        <Box>
-          <CardMedia
-            component="img"
+        <Box position={'absolute'} >
+          <Box sx={{ position: "relative" }}>
+            <CardMedia
+              component="img"
+              sx={{
+                width: "50%",
+                height: "100vh",
+                objectFit: "cover",
+                position: "fixed",
+                top: "0",
+                left: "0",
+              }}
+              image={regisImg}
+              alt="Example Image"
+            />
+          </Box>
+
+          {/* overlay */}
+          <Box
             sx={{
+              position: "fixed",
+              bgcolor: "rgba(0, 0, 0, 0.5)",
               width: "50%",
               height: "100vh",
-              objectFit: "cover",
-              position: "fixed",
               top: "0",
               left: "0",
             }}
-            image={regisImg}
-            alt="Example Image"
-          />
+          ></Box>
         </Box>
 
         <Box
@@ -74,7 +88,7 @@ export default function KategoriPasien() {
             <Typography
               sx={{ fontSize: "18px", lineHeight: "20px", color: "#A8A8BD", mb: 3 }}
             >
-              Desc
+              Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
             </Typography>
             {pasienBaru && (
               <>
