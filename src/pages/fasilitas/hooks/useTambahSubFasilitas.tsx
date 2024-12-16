@@ -12,6 +12,12 @@ type Facility = {
     name: string;
 };
 
+type Schedule = {
+  day: string
+  startTime: dayjs.Dayjs
+  endTime: dayjs.Dayjs
+}
+
 export default function useTambahSubFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
@@ -20,6 +26,7 @@ export default function useTambahSubFasilitas() {
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
     const [errorAlert, setErrorAlert] = useState(false);
     const [facilityOptions, setFacilityOptions] = useState<Facility[]>([]);
+    const [schedules, setSchedules] = useState<Schedule[]>([])
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -55,9 +62,22 @@ export default function useTambahSubFasilitas() {
 
 
     const handleTambahHari = () => {
-        const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
-        setOperationalTime(dateTime);
-    };
+        if (selectedDay && startTime && endTime) {
+          const newSchedule: Schedule = {
+            day: selectedDay,
+            startTime: startTime,
+            endTime: endTime
+          }
+          setSchedules([...schedules, newSchedule])
+          setSelectedDay('')
+          setStartTime(null)
+          setEndTime(null)
+        }
+      }
+
+      const handleDeleteSchedule = (index: number) => {
+        setSchedules(schedules.filter((_, i) => i !== index))
+      }
 
     const showTemporaryAlertSuccess = async () => {
         setSuccessAlert(true);
@@ -88,22 +108,20 @@ export default function useTambahSubFasilitas() {
         }),
         onSubmit: async (values) => {
 
-            const selectedDayOfWeek = dayMapping[selectedDay || "1"];
-            const adjustedStartTime = startTime?.day(selectedDayOfWeek);
-            const adjustedEndTime = endTime?.day(selectedDayOfWeek);
-
-            const schedules = [
-                {
-                    startDateTime: adjustedStartTime?.unix(),
-                    endDateTime: adjustedEndTime?.unix(),
-                }
-            ];
+            
+                const formattedSchedules = schedules.map(schedule => {
+                  const selectedDayOfWeek = dayMapping[schedule.day]
+                  return {
+                    startDateTime: schedule.startTime.day(selectedDayOfWeek).unix(),
+                    endDateTime: schedule.endTime.day(selectedDayOfWeek).unix()
+                  }
+                })
 
             const data = {
                 name: values.namaSubFasilitas,
                 facilityDataId: values.masterFacilityId,
                 additionalInfo: "hai",
-                schedules: schedules,
+                schedules: formattedSchedules,
             };
             const token = Cookies.get("accessToken");
 
@@ -141,6 +159,8 @@ export default function useTambahSubFasilitas() {
     successAlert,
     errorAlert,
     navigate,
+    handleDeleteSchedule,
+    schedules
     
   }
 }

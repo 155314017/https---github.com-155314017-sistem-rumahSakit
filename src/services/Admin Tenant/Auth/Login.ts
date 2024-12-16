@@ -8,7 +8,6 @@ interface CustomError extends Error {
 
 const Login = async (email: string, password: string) => {
   try {
-    console.log("inside Login");
     const response = await axios.post(
       "https://hms.3dolphinsocial.com:8083/v1/auth/login",
       { email, password },
@@ -18,14 +17,8 @@ const Login = async (email: string, password: string) => {
         },
       }
     );
-
-    console.log("inside Login1 ");
-    console.log("akses token", response.data.data.tokenValue);
-
-    // sessionStorage.setItem('accessToken', response.data.data.tokenValue)
     Cookies.set('accessToken', response.data.data.tokenValue)
     sessionStorage.setItem('username', email);
-
     return response.data;
   } catch (error: any) {
     const customError: CustomError = new Error(

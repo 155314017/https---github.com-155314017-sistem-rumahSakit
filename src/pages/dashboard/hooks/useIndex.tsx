@@ -94,7 +94,6 @@ export default function useIndex() {
     useEffect(() => {
       if (location.state && location.state.statusLogin) {
         showTemporarySuccessLogin()
-        console.log(location.state.message)
         navigate(location.pathname, { replace: true, state: undefined }) //clear state
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -59,31 +59,11 @@ export const GetFacilityByIdServices = async (id : string | undefined, accessTok
         const operationalSchedule = `${startDay}, ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
         item.operationalSchedule = operationalSchedule; // Menyimpan hari dan jam operasional ke item
 
-        console.log("Operational Schedule:", operationalSchedule);
       } else {
         console.log("No schedules available.");
       }
 
-      console.log(
-        "Created Date Time:",
-        new Date(item.createdDateTime * 1000).toLocaleString()
-      );
-      console.log("Updated By:", item.updatedBy);
-      console.log(
-        "Updated Date Time:",
-        item.updatedDateTime
-          ? new Date(item.updatedDateTime * 1000).toLocaleString()
-          : "N/A"
-      );
-      console.log("Deleted By:", item.deletedBy);
-      console.log(
-        "Deleted Date Time:",
-        item.deletedDateTime
-          ? new Date(item.deletedDateTime * 1000).toLocaleString()
-          : "N/A"
-      );
-      console.log("Images:", item.images);
-      console.log("----------------------------");
+    
  
 
     return response.data.data;

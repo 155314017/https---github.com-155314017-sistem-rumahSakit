@@ -66,7 +66,6 @@ export const EditAmbulanceServices = async (data: {
     });
 
     if (response.status === 200) {
-      console.log("Ambulance updated successfully:", response.data);
       return response.data.data.content; // Returning the ambulance data content
     } else {
       throw new Error(`API responded with status: ${response.status}`);

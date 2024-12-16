@@ -40,7 +40,6 @@ export const getClinic = async (
     );
 
     if (response.status === 200) {
-      console.log("Clinic data fetched successfully:", response.data.data);
       return response.data.data;
     } else {
       throw new Error(`API responded with status: ${response.status}`);

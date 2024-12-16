@@ -157,7 +157,7 @@ const TableGedung: React.FC<TableGedungProps> = ({fetchDatas, onSuccessDelete}) 
 
         <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
           <Box>
-            <Box mt={3} display={"flex"} justifyContent={"space-between"} sx={{ gap: 3 }}>
+            <Box mt={3} display={"flex"} justifyContent={"space-between"} sx={{ gap: 55 }}>
               <SearchBar />
               <DropdownList
                 options={urutkan}
@@ -300,17 +300,18 @@ const TableGedung: React.FC<TableGedungProps> = ({fetchDatas, onSuccessDelete}) 
                           <Link
                             onClick={() => navigate(`/editGedung/${data.id}`)}
                             mr={2}
-                            href="#"
+                            // href="#"
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",
                               color: "#8F85F3",
+                              cursor: "pointer",
                             }}
                           >
                             Ubah
                           </Link>
                           <Link
-                            href="#"
+                            // href="#"
                             onClick={() => navigate(`/detailGedung/${data.id}`)}
                             mr={2}
                             underline="hover"

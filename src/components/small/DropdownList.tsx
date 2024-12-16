@@ -56,7 +56,7 @@ export default function DropdownList({
           borderRadius: "8px",
           border: "1px solid #A8A8BD",
           color: "#A8A8BD",
-          bgcolor: "#fafafa",
+          bgcolor: "inherit",
         }}
         inputProps={{ "aria-label": "select dropdown" }}
       >

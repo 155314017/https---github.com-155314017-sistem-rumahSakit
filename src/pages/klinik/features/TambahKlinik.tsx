@@ -1,10 +1,11 @@
-import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
+import { Container, Box, Typography, Button, FormControl, OutlinedInput, IconButton } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/AlertSuccess";
 import DropdownList from "../../../components/small/DropdownList";
 import CustomTimePicker from "../../../components/small/CustomTimePicker";
 import ImageUploaderGroup from '../../../components/medium/ImageUploaderGroup';
+import { Delete as DeleteIcon } from '@mui/icons-material'
 
 //hooks
 import useTambahKlinik from "../hooks/useTambahKlinik";
@@ -20,7 +21,10 @@ export default function TambahKlinik() {
         handleImageChange,
         successAlert,
         errorAlert,
-        showTemporaryAlertSuccess}=useTambahKlinik();
+        showTemporaryAlertSuccess,
+        handleDeleteSchedule,
+        schedules
+    }=useTambahKlinik();
   return (
     <Container sx={{ py: 2 }}>
     <BreadCrumbs
@@ -128,6 +132,27 @@ export default function TambahKlinik() {
                     >
                         + Tambah hari
                     </Button>
+                    {schedules.map((schedule, index) => (
+                  <Box
+                    key={index}
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mt={2}
+                    sx={{
+                      border: '1px solid black',
+                      padding: '4px',
+                      borderRadius: '6px'
+                    }}
+                  >
+                    <Typography>{`${schedule.day}: ${schedule.startTime.format(
+                      'HH:mm'
+                    )} - ${schedule.endTime.format('HH:mm')}`}</Typography>
+                    <IconButton color="error" onClick={() => handleDeleteSchedule(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Box>
+                ))}
                 </Box>
 
                 <Button

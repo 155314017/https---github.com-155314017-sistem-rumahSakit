@@ -53,14 +53,9 @@ export const GetCounterByIdServices = async (
                 });
 
     if (response.status === 200) {
-      console.log("API connection successful:", response.data);
 
       const item = response.data.data
-        console.log("ID:", item.id);
-        console.log("Number:", item.name);
-        console.log("Status:", item.location);
-        console.log("Additional Info:", item.additionalInfo);
-        console.log("Created By:", item.createdBy);
+       
 
         // Check if schedules is defined and has items
         if (item.schedules && item.schedules.length > 0) {
@@ -85,32 +80,12 @@ export const GetCounterByIdServices = async (
           const operationalSchedule = `${startDay}, ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
           item.operationalSchedule = operationalSchedule; // Store operational schedule in item
 
-          console.log("Operational Schedule:", operationalSchedule);
         } else {
           console.log("No schedules available.");
           item.operationalSchedule = "Jadwal tidak tersedia"; // Optional: Set a default message
         }
 
-        console.log(
-          "Created Date Time:",
-          new Date(item.createdDateTime * 1000).toLocaleString()
-        );
-        console.log("Updated By:", item.updatedBy);
-        console.log(
-          "Updated Date Time:",
-          item.updatedDateTime
-            ? new Date(item.updatedDateTime * 1000).toLocaleString()
-            : "N/A"
-        );
-        console.log("Deleted By:", item.deletedBy);
-        console.log(
-          "Deleted Date Time:",
-          item.deletedDateTime
-            ? new Date(item.deletedDateTime * 1000).toLocaleString()
-            : "N/A"
-        );
-        console.log("Images:", item.images);
-        console.log("----------------------------");
+        
      
 
       return response.data.data;

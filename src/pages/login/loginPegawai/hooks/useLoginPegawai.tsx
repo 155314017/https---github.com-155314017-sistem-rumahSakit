@@ -7,8 +7,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import Login from '../../../../services/Admin Tenant/Auth/Login'
 import ResetPassword from '../../../../services/Admin Tenant/Auth/ResetPassword'
 
-
-
 const validationSchema = Yup.object({
   email: Yup.string().email('Email tidak valid').required('Email wajib diisi'),
   password: Yup.string().required('Kata sandi wajib diisi')
@@ -36,8 +34,8 @@ export default function useLoginPegawai() {
   const [successLogout, setSuccessLogout] = useState(false)
   const [wrongPassword, setWrongPassword] = useState(false)
   const [wrongEmail, setWrongEmail] = useState(false)
-  const [isChecked, setIsChecked] = useState(false);
-  const location = useLocation();
+  const [isChecked, setIsChecked] = useState(false)
+  const location = useLocation()
 
   const navigate = useNavigate()
 
@@ -58,7 +56,7 @@ export default function useLoginPegawai() {
 
   const showTemporarySuccessLogin = async () => {
     setLoginSuccess(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    await new Promise((resolve) => setTimeout(resolve, 3000))
     setLoginSuccess(false)
   }
 
@@ -67,52 +65,41 @@ export default function useLoginPegawai() {
   }
   const showTemporaryWrongEmail = async () => {
     setWrongEmail(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    await new Promise((resolve) => setTimeout(resolve, 3000))
     setWrongEmail(false)
   }
 
   const showTemporaryWrongPassword = async () => {
     setWrongPassword(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    await new Promise((resolve) => setTimeout(resolve, 3000))
     setWrongPassword(false)
   }
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(event.target.checked);
-    console.log("Status check: ", event.target.checked)
-    console.log("Status check: ", isChecked)
+    setIsChecked(event.target.checked)
+    console.log('Status check: ', event.target.checked)
+    console.log('Status check: ', isChecked)
     if (event.target.checked == true) {
-      console.log("simpan kata sandi")
+      console.log('simpan kata sandi')
     } else if (event.target.checked == false) {
-      console.log("tidak simpan")
+      console.log('tidak simpan')
     }
-  };
+  }
 
   const validationCheck = async (values: FormValues) => {
-    console.log('inside validationCheck')
     try {
       const { email, password } = values
       const response = await Login(email, password)
-      console.log('Login response:', response)
-
       if (response.responseCode === '200') {
-        console.log('sukses')
         navigate('/dashboard', { state: { statusLogin: true } })
         return true
       } else {
-        console.log('gagal - unexpected response:', response)
         return false
       }
     } catch (error: any) {
-      // console.error("Error during login:", error);
-      // return false;
       if (error.responseCode == '401') {
-        //salah password
-        console.log(error.responseCode)
         showTemporaryWrongPassword()
       } else if (error.responseCode == '404') {
-        //salah email
-        console.log(error.responseCode)
         showTemporaryWrongEmail()
       }
     }
@@ -121,29 +108,24 @@ export default function useLoginPegawai() {
   useEffect(() => {
     if (location.state && location.state.successLogOut) {
       showTemporarySuccessLogout()
-      console.log(location.state.message)
       navigate(location.pathname, { replace: true, state: undefined }) //clear state
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state, navigate])
 
   const showTemporarySuccessLogout = async () => {
-    console.log('Editing ambulance successful')
     setSuccessLogout(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    await new Promise((resolve) => setTimeout(resolve, 3000))
     setSuccessLogout(false)
   }
 
   const handleResetPassword = async (values: FormResetPasswordValues) => {
-    console.log('inside handleResetPassword')
     try {
       const email = values.email
       const response = await ResetPassword(email)
       if (response.responseCode === '200') {
-        console.log('email sent')
         return true
       } else {
-        console.log('gagal - unexpected response:', response)
         return false
       }
     } catch (error) {
@@ -156,7 +138,7 @@ export default function useLoginPegawai() {
     let timer: ReturnType<typeof setInterval>
     if (isCounting && secondsLeft > 0) {
       timer = setInterval(() => {
-        setSecondsLeft(prev => prev - 1)
+        setSecondsLeft((prev) => prev - 1)
       }, 1000)
     } else if (secondsLeft === 0) {
       setIsCounting(false)
@@ -169,12 +151,11 @@ export default function useLoginPegawai() {
   const handleResendClick = () => {
     setIsCounting(true)
     showTemporaryAlertSuccess()
-    console.log('Resend clicked')
   }
 
   const showTemporaryAlertSuccess = async () => {
     setResendSuccess(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    await new Promise((resolve) => setTimeout(resolve, 3000))
     setResendSuccess(false)
   }
 
@@ -222,6 +203,5 @@ export default function useLoginPegawai() {
     showTemporaryAlertSuccess,
     formatTime,
     isChecked
-
   }
 }

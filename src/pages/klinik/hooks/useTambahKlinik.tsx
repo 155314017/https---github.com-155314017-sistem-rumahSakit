@@ -13,6 +13,12 @@ type ImageData = {
     imageData: string;
 };
 
+type Schedule = {
+  day: string
+  startTime: dayjs.Dayjs
+  endTime: dayjs.Dayjs
+}
+
 export default function useTambahKlinik() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
@@ -20,7 +26,8 @@ export default function useTambahKlinik() {
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [errorAlert, setErrorAlert] = useState(false);
-    const [operationalTime, setOperationalTime] = useState<string | null>(null);
+    const [operationalTime] = useState<string | null>(null);
+    const [schedules, setSchedules] = useState<Schedule[]>([])
     const navigate = useNavigate();
 
     const showTemporaryAlertError = async () => {
@@ -42,9 +49,22 @@ export default function useTambahKlinik() {
 
 
     const handleTambahHari = () => {
-        const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
-        setOperationalTime(dateTime);
-    };
+        if (selectedDay && startTime && endTime) {
+          const newSchedule: Schedule = {
+            day: selectedDay,
+            startTime: startTime,
+            endTime: endTime
+          }
+          setSchedules([...schedules, newSchedule])
+          setSelectedDay('')
+          setStartTime(null)
+          setEndTime(null)
+        }
+      }
+
+      const handleDeleteSchedule = (index: number) => {
+        setSchedules(schedules.filter((_, i) => i !== index))
+      }
 
     const showTemporaryAlertSuccess = async () => {
         setSuccessAlert(true);
@@ -69,21 +89,19 @@ export default function useTambahKlinik() {
         }),
         onSubmit: async (values) => {
 
-            const selectedDayOfWeek = dayMapping[selectedDay || "1"];
-            const adjustedStartTime = startTime?.day(selectedDayOfWeek);
-            const adjustedEndTime = endTime?.day(selectedDayOfWeek);
-            const schedules = [
-                {
-                    startDateTime: adjustedStartTime?.unix(),
-                    endDateTime: adjustedEndTime?.unix(),
+            const formattedSchedules = schedules.map(schedule => {
+                const selectedDayOfWeek = dayMapping[schedule.day]
+                return {
+                  startDateTime: schedule.startTime.day(selectedDayOfWeek).unix(),
+                  endDateTime: schedule.endTime.day(selectedDayOfWeek).unix()
                 }
-            ];
+              })
 
             const data = {
                 name: values.namaKlinik,
                 description: values.deskripsiKlinik,
                 additionalInfo: "",
-                schedules: schedules,
+                schedules: formattedSchedules,
                 images: imagesData.map(image => ({
                     imageName: image.imageName || "",
                     imageType: image.imageType || "",
@@ -134,6 +152,8 @@ export default function useTambahKlinik() {
     successAlert,
     errorAlert,
     operationalTime,
-    showTemporaryAlertSuccess
+    showTemporaryAlertSuccess,
+    schedules,
+    handleDeleteSchedule
   }
 }

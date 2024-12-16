@@ -45,7 +45,6 @@ export const editClinic = async (
     );
 
     if (response.status === 200) {
-      console.log("Clinic created successfully:", response.data);
       return response.data;
     } else {
       throw new Error(`API responded with status: ${response.status}`);

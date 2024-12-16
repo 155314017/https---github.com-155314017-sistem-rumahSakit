@@ -1,5 +1,5 @@
-
-import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
+import { Delete as DeleteIcon } from '@mui/icons-material'
+import { Container, Box, Typography, Button, FormControl, OutlinedInput, IconButton } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/AlertSuccess";
@@ -9,7 +9,7 @@ import DropdownListAPI from '../../../components/small/DropdownListAPI';
 //hooks
 import useTambahSubFasilitas from "../hooks/useTambahSubFasilitas";
 
-
+import 'dayjs/locale/id'
 export default function TambahSubFasilitas() {
     const{breadcrumbItems,
         formik,
@@ -23,6 +23,8 @@ export default function TambahSubFasilitas() {
         facilityOptions,
         successAlert,
         errorAlert,
+        handleDeleteSchedule,
+        schedules
         }=useTambahSubFasilitas();
   return (  
     <Container sx={{ py: 2 }}>
@@ -180,6 +182,28 @@ export default function TambahSubFasilitas() {
                             >
                                 + Tambah hari
                             </Button>
+
+                            {schedules.map((schedule, index) => (
+                        <Box
+                            key={index}
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            mt={2}
+                            sx={{
+                            border: '1px solid black',
+                            padding: '4px',
+                            borderRadius: '6px'
+                            }}
+                        >
+                            <Typography>{`${schedule.day}: ${schedule.startTime.format(
+                            'HH:mm'
+                            )} - ${schedule.endTime.format('HH:mm')}`}</Typography>
+                            <IconButton color="error" onClick={() => handleDeleteSchedule(index)}>
+                            <DeleteIcon />
+                            </IconButton>
+                        </Box>
+                ))}
                         </Box>
 
                         <Button

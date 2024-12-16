@@ -50,7 +50,6 @@ export const GetRoomByIdServices = async (
     )
 
     if (response.status === 200) {
-      console.log('API connection successful:', response.data)
 
       return response.data.data
     } else {

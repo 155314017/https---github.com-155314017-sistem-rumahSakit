@@ -18,6 +18,13 @@ type ImageData = {
     imageType: string;
     imageData: string;
 };
+
+
+type Schedule = {
+  day: string
+  startTime: dayjs.Dayjs
+  endTime: dayjs.Dayjs
+}
 export default function useTambahKonter() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
@@ -26,6 +33,9 @@ export default function useTambahKonter() {
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [errorAlert, setErrorAlert] = useState(false);
+    const [schedules, setSchedules] = useState<Schedule[]>([])
+    dayjs.locale('id')
+
     const navigate = useNavigate();
 
     const dayMapping: { [key: string]: number } = {
@@ -39,9 +49,22 @@ export default function useTambahKonter() {
     };
 
     const handleTambahHari = () => {
-        const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
-        setOperationalTime(dateTime);
-    };
+        if (selectedDay && startTime && endTime) {
+          const newSchedule: Schedule = {
+            day: selectedDay,
+            startTime: startTime,
+            endTime: endTime
+          }
+          setSchedules([...schedules, newSchedule])
+          setSelectedDay('')
+          setStartTime(null)
+          setEndTime(null)
+        }
+      }
+    
+      const handleDeleteSchedule = (index: number) => {
+        setSchedules(schedules.filter((_, i) => i !== index))
+      }
 
     const handleImageChange = (images: ImageData[]) => {
         setImagesData(images);
@@ -77,16 +100,13 @@ export default function useTambahKonter() {
         }),
         onSubmit: async (values) => {
 
-            const selectedDayOfWeek = dayMapping[selectedDay || "1"];
-            const adjustedStartTime = startTime?.day(selectedDayOfWeek);
-            const adjustedEndTime = endTime?.day(selectedDayOfWeek);
-
-            const schedules = [
-                {
-                    startDateTime: adjustedStartTime?.unix(),
-                    endDateTime: adjustedEndTime?.unix(),
+            const formattedSchedules = schedules.map(schedule => {
+                const selectedDayOfWeek = dayMapping[schedule.day]
+                return {
+                  startDateTime: schedule.startTime.day(selectedDayOfWeek).unix(),
+                  endDateTime: schedule.endTime.day(selectedDayOfWeek).unix()
                 }
-            ];
+              })
 
             const data = {
                 name: values.namaKonter,
@@ -94,7 +114,7 @@ export default function useTambahKonter() {
                 queueNumber: 0,
                 additionalInfo: "",
                 masterTypeId: "c0178047-d6e7-4ce8-b4de-54756bedf031",
-                schedules: schedules,
+                schedules: formattedSchedules,
                 images: imagesData.map(image => ({
                     imageName: image.imageName || "",
                     imageType: image.imageType || "",
@@ -138,6 +158,8 @@ export default function useTambahKonter() {
     successAlert,
     errorAlert,
     jenisKonter,
-    showTemporaryAlertSuccess
+    showTemporaryAlertSuccess,
+    handleDeleteSchedule,
+    schedules
   }
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 import { FacilityServices, FacilityDataItem } from "../../../services/ManageFacility/FacilityServices";
+import { Schedule } from "@mui/icons-material";
 
 
 
@@ -83,7 +84,6 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
 
   
   const handleDeleteSuccess = () => {
-    console.log("Masuk Delete success");
     onSuccessDelete();
     fetchData();
     fetchDatas();
@@ -106,6 +106,7 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
     confirmationDelete,
     handleDeleteSuccess,
     setOpen,
+    Schedule
     
   };
 }

@@ -21,7 +21,6 @@ export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDe
   // Fetch data for the sub-facilities
   const fetchData = async () => {
     setIsLoading(true)
-    console.log('Fetching data...');
     try {
         const result = await SubFacilityServices();
         setDatas(result);

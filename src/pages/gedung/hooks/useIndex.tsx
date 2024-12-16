@@ -18,7 +18,6 @@ export default function useIndex() {
       const result = await Building();
       setData(result);
       setLoading(false);
-      console.log("fetch data")
     } catch (error) {
       console.log('Failed to fetch data from API', error);
     }

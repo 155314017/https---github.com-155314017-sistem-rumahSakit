@@ -39,17 +39,6 @@ export const EditBuildingService = async (data: {
     });
 
     if (response.status === 200) {
-      console.log("API connection successful:", response.data);
-      
-      // Log the created building data for debugging
-      console.log("Building ID:", response.data.id);
-      console.log("Name:", response.data.name);
-      console.log("Address:", response.data.address);
-      console.log("Additional Info:", response.data.additionalInfo);
-      console.log("Created By:", response.data.createdBy);
-      console.log("Created Date Time:", new Date(response.data.createdDateTime * 1000).toLocaleString());
-      console.log("Images:", response.data.images);
-      console.log("----------------------------");
 
       return response.data;
     } else {

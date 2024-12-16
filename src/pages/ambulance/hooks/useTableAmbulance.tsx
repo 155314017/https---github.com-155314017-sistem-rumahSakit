@@ -20,10 +20,8 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
   const navigate = useNavigate()
 
   const fetchData = async () => {
-    console.log('Fetching data...')
     try {
       const result = await AmbulanceServices()
-      console.log('Result: ', result)
       setDatas(result)
       // setData(result); // Set data to display in table
     } catch (error) {
@@ -61,7 +59,6 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
   const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
     event.preventDefault()
 
-    console.log('ID Gedung yang akan dihapus:', buildingId)
     setDeletedItems(buildingId)
 
     setOpen(true)

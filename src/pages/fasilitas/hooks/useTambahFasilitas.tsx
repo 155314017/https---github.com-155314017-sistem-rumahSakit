@@ -18,6 +18,12 @@ type ImageData = {
     imageType: string;
     imageData: string;
 };
+
+type Schedule = {
+  day: string
+  startTime: dayjs.Dayjs
+  endTime: dayjs.Dayjs
+}
 export default function useTambahFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
@@ -28,7 +34,9 @@ export default function useTambahFasilitas() {
     const [operationalCost, setOperationalCost] = useState<string | null>(null);
     const [errorAlert, setErrorAlert] = useState(false);
     const [gedungOptions, setGedungOptions] = useState<Building[]>([]);
+    const [schedules, setSchedules] = useState<Schedule[]>([]);
     const navigate = useNavigate();
+    dayjs.locale('id');
 
     useEffect(() => {
         const fetchGedungData = async () => {
@@ -64,9 +72,22 @@ export default function useTambahFasilitas() {
 
 
     const handleTambahHari = () => {
-        const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
-        setOperationalTime(dateTime);
+        if (selectedDay && startTime && endTime) {
+            const newSchedule: Schedule = {
+              day: selectedDay,
+              startTime: startTime,
+              endTime: endTime
+            }
+            setSchedules([...schedules, newSchedule])
+            setSelectedDay('')
+            setStartTime(null)
+            setEndTime(null)
+          }
     };
+
+    const handleDeleteSchedule = (index: number) => {
+        setSchedules(schedules.filter((_, i) => i !== index))
+      }
 
     const showTemporaryAlertSuccess = async () => {
         setSuccessAlert(true);
@@ -99,15 +120,13 @@ export default function useTambahFasilitas() {
         }),
         onSubmit: async (values) => {
 
-            const selectedDayOfWeek = dayMapping[selectedDay || "1"];
-            const adjustedStartTime = startTime?.day(selectedDayOfWeek);
-            const adjustedEndTime = endTime?.day(selectedDayOfWeek);
-            const schedules = [
-                {
-                    startDateTime: adjustedStartTime?.unix(),
-                    endDateTime: adjustedEndTime?.unix(),
+            const formattedSchedules = schedules.map(schedule => {
+                const selectedDayOfWeek = dayMapping[schedule.day]
+                return {
+                  startDateTime: schedule.startTime.day(selectedDayOfWeek).unix(),
+                  endDateTime: schedule.endTime.day(selectedDayOfWeek).unix()
                 }
-            ];
+              })
 
             const data = {
                 name: values.namaFasilitas,
@@ -115,7 +134,7 @@ export default function useTambahFasilitas() {
                 description: values.deskripsiKlinik,
                 cost: operationalCost ? parseInt(operationalCost.replace(/\D/g, '')) : 0,
                 additionalInfo: "hai",
-                schedules: schedules,
+                schedules: formattedSchedules,
                 images: imagesData.map(image => ({
                     imageName: image.imageName || "",
                     imageType: image.imageType || "",
@@ -132,8 +151,6 @@ export default function useTambahFasilitas() {
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
-                    console.error('Axios error message:', error.message);
-                    console.error('Response data:', error.response?.data);
                     showTemporaryAlertError();
                 } else {
                     console.error('Unexpected error:', error);
@@ -160,6 +177,8 @@ export default function useTambahFasilitas() {
     handleImageChange,
     errorAlert,
     successAlert,
-    showTemporaryAlertSuccess
+    showTemporaryAlertSuccess,
+    handleDeleteSchedule,
+    schedules
   }
 }

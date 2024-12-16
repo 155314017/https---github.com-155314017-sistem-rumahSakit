@@ -48,7 +48,6 @@ export const editSubfacility = async (
 
         // Handle successful response
         if (response.status === 200) {
-            console.log("Facility created successfully:", response.data);
             return response.data; // Return the response data
         } else {
             throw new Error(`API responded with status: ${response.status}`);

@@ -1,5 +1,5 @@
 
-import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
+import { Container, Box, Typography, Button, FormControl, OutlinedInput, IconButton } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/AlertSuccess";
@@ -9,8 +9,8 @@ import ImageUploaderGroup from '../../../components/medium/ImageUploaderGroup';
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr';
 import DropdownListAPI from '../../../components/small/DropdownListAPI';
 import useTambahFasilitas from '../hooks/useTambahFasilitas';
-
-
+import 'dayjs/locale/id';
+import { Delete as DeleteIcon } from '@mui/icons-material'
 
 
 export default function TambahFasilitas() {
@@ -27,7 +27,9 @@ export default function TambahFasilitas() {
         handleImageChange,
         errorAlert,
         successAlert,
-        showTemporaryAlertSuccess}=useTambahFasilitas();
+        showTemporaryAlertSuccess,
+        schedules,
+        handleDeleteSchedule}=useTambahFasilitas();
   return (
     <Container sx={{ py: 2 }}>
     <BreadCrumbs
@@ -144,6 +146,27 @@ export default function TambahFasilitas() {
                     >
                         + Tambah hari
                     </Button>
+                    {schedules.map((schedule, index) => (
+                  <Box
+                    key={index}
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mt={2}
+                    sx={{
+                      border: '1px solid black',
+                      padding: '4px',
+                      borderRadius: '6px'
+                    }}
+                  >
+                    <Typography>{`${schedule.day}: ${schedule.startTime.format(
+                      'HH:mm'
+                    )} - ${schedule.endTime.format('HH:mm')}`}</Typography>
+                    <IconButton color="error" onClick={() => handleDeleteSchedule(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Box>
+                ))}
                 </Box>
 
                 <Typography sx={{ fontSize: "16px", mt: 3 }}>Biaya Penanganan<span style={{ color: "red" }}>*</span></Typography>
