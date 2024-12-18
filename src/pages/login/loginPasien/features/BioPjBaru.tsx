@@ -256,7 +256,7 @@ export default function BioPjBaru() {
                                                     </RadioGroup>
                                                 </FormControl>
 
-                                                <FormControl sx={{ mt: '7%' }} >
+                                                <FormControl sx={{ mt: '9%' }} >
                                                     <Typography mt={2} >
                                                         No. Handphone penanggung jawab{" "}
                                                         <span style={{ color: "#d32f2f" }}>*</span>{" "}
@@ -464,7 +464,9 @@ export default function BioPjBaru() {
                                                         height: '48px',
                                                         marginTop: '20px',
                                                         backgroundColor: '#8F85F3',
-                                                        ":hover": { backgroundColor: '#D5D1FB' },
+                                                        ":hover": { backgroundColor: '#D5D1FB'
+                                                         },
+                                                         marginBottom: '7%',
                                                     }}
                                                     disabled={switchValue ? false : !isValid || !dirty}
                                                 >
