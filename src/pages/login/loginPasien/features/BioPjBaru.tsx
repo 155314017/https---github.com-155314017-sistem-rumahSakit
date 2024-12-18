@@ -114,7 +114,7 @@ export default function BioPjBaru() {
                     {currentView === 'show' &&
                         <>
                             {showAlert && <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />}
-                            <Box sx={{ width: '85%' }}>
+                            <Box sx={{ width: '85%', height: '85%' }}>
                                 <Typography sx={{ fontSize: '32px', fontWeight: '600', mt: '-5%' }}>Selamat Datang</Typography>
                                 <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
                                     Silahkan masukkan nomor NIK (Nomor induk kependudukan) penanggung jawab.
@@ -195,7 +195,7 @@ export default function BioPjBaru() {
                                                     // helperText={touched.nik && errors.nik}
                                                     disabled={switchValue}
                                                 />
-
+                                                
                                                 <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Email</FormLabel>
                                                 <Field
                                                     name="email"
@@ -229,8 +229,11 @@ export default function BioPjBaru() {
                                                     // helperText={touched.email && errors.email}
                                                     disabled={switchValue}
                                                 />
+                                                <Box sx={{display: 'flex', flexDirection:'column', justifyContent: 'space-between', marginTop: '20px'}}>
+                                                
+                                                <Box sx={{ display: 'flex', flexDirection: 'column'}}>
 
-                                                <FormControl sx={{ width: "100%", height: "56px" }}>
+                                                <FormControl sx={{ width: "100%", height: "auto" }}>
                                                     <Typography sx={{ fontSize: '16px', lineHeight: '18px', marginBottom: '15px', color: 'black' }}>
                                                         Cara datang/pengantar
                                                     </Typography>
@@ -255,8 +258,9 @@ export default function BioPjBaru() {
                                                         <FormControlLabel value="lainnya" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Lainnya" />
                                                     </RadioGroup>
                                                 </FormControl>
-
-                                                <FormControl sx={{ mt: '9.1%' }} >
+                                                </Box>
+                                                <Box sx={{ display: 'flex', flexDirection: 'column'}}>
+                                                <FormControl sx={{ mt: 2 }} >
                                                     <Typography mt={2} >
                                                         No. Handphone penanggung jawab{" "}
                                                         <span style={{ color: "#d32f2f" }}>*</span>{" "}
@@ -287,6 +291,9 @@ export default function BioPjBaru() {
                                                         onBlur={handleBlur("phone")}
                                                     />
                                                 </FormControl>
+                                                </Box>
+                                                </Box>
+                                                
 
                                                 <FormLabel sx={{ fontSize: '18px' }}>Nama lengkap penanggung jawab</FormLabel>
                                                 <Field
