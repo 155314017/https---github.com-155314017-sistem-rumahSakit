@@ -17,6 +17,12 @@ type ImageData = {
   imageData: string
 }
 
+type Schedule = {
+  day: string
+  startTime: dayjs.Dayjs
+  endTime: dayjs.Dayjs
+}
+
 export default function useEditAmbulance() {
   const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null)
   const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null)
@@ -27,10 +33,12 @@ export default function useEditAmbulance() {
   const [errorAlert, setErrorAlert] = useState(false)
   const [selectedDay, setSelectedDay] = useState<string | null>('1')
   const [selectedDays, setSelectedDays] = useState<string>('1')
+  const [edit, setEdit] = useState(false)
+  const [schedules, setSchedules] = useState<Schedule[]>([])
+  const [operationalSchedules, setOperationalSchedules] = useState<string[]>([])
+
   dayjs.locale('id')
-
   const navigate = useNavigate()
-
   const dayMapping: { [key: string]: number } = {
     '1': 1,
     '2': 2,
@@ -75,12 +83,32 @@ export default function useEditAmbulance() {
         setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${id}`)
         setInitialOperationalCost(data?.cost || 0)
 
-        if (data?.schedules && data?.schedules.length > 0) {
-          const schedule = data.schedules[0]
-          setStartTime(dayjs.unix(schedule.startDateTime))
-          setEndTime(dayjs.unix(schedule.endDateTime))
-        }
+        const schedules = data?.schedules || []
+        const schedule = schedules[0]
+        const startTime = dayjs.unix(schedule.startDateTime)
+        const endTime = dayjs.unix(schedule.endDateTime)
+        setStartTime(startTime)
+        setEndTime(endTime)
 
+
+        console.log(schedules)
+
+        const operationalSchedules: string[] = schedules.map((schedule) => {
+          const formattedStartTime = new Date(schedule.startDateTime * 1000);
+          const formattedEndTime = new Date(schedule.endDateTime * 1000);
+          const dayOfWeek = new Intl.DateTimeFormat('id-ID', { weekday: 'long' });
+          
+          const startDay = dayOfWeek.format(formattedStartTime);
+            const startHours = formattedStartTime.getHours().toString().padStart(2, '0');
+            const startMinutes = formattedStartTime.getMinutes().toString().padStart(2, '0');
+            const endHours = formattedEndTime.getHours().toString().padStart(2, '0');
+            const endMinutes = formattedEndTime.getMinutes().toString().padStart(2, '0');
+            return `${startDay}, ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
+        })
+        setOperationalSchedules(operationalSchedules)
+       
+        console.log("operational Schedules",operationalSchedules)
+        console.log("Schedules",schedules)
         setImagesData(data?.images || [] )
       } catch (error) {
         console.error('Error:', error)
@@ -88,6 +116,11 @@ export default function useEditAmbulance() {
     }
     fetchData()
   }, [id])
+
+  const handleEditSchedules = () => {
+      setEdit(true)
+      setSelectedDay
+  }
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -164,6 +197,8 @@ export default function useEditAmbulance() {
     breadcrumbItems,
     apiUrl,
     selectedDays,
-    initialOperationalCost
+    initialOperationalCost,
+    operationalSchedules,
+    handleEditSchedules
   }
 }
