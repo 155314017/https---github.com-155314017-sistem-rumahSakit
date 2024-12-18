@@ -130,7 +130,7 @@ export default function RegisterPasienBaru() {
                             }}
                         >
 
-                            <Box sx={{ ml: 4, width: '85%', mt: '10%' }}>
+                            <Box sx={{ ml: 4, width: '85%', height: '85%'}}>
                                 <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
                                 <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
                                     Silahkan masukkan nomor NIK (Nomor induk kependudukan) Pasien.
@@ -475,6 +475,7 @@ export default function RegisterPasienBaru() {
                                                         border: '1px solid #8F85F3',
                                                         color: '#8F85F3',
                                                         ":hover": { backgroundColor: '#8F85F3', color: '#ffff' },
+                                                        marginBottom: '20px'
                                                     }}
                                                 >
                                                     Pasien Tanpa Identitas
