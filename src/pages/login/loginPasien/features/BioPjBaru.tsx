@@ -256,7 +256,7 @@ export default function BioPjBaru() {
                                                     </RadioGroup>
                                                 </FormControl>
 
-                                                <FormControl sx={{ mt: '9%' }} >
+                                                <FormControl sx={{ mt: '9.1%' }} >
                                                     <Typography mt={2} >
                                                         No. Handphone penanggung jawab{" "}
                                                         <span style={{ color: "#d32f2f" }}>*</span>{" "}
@@ -482,6 +482,7 @@ export default function BioPjBaru() {
                                                         border: '1px solid #8F85F3',
                                                         color: '#8F85F3',
                                                         ":hover": { backgroundColor: '#8F85F3', color: '#ffff' },
+                                                        marginBottom: '20px',
                                                     }}
                                                 >
                                                     Kembali ke halaman data pasien

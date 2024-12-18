@@ -198,6 +198,7 @@ export default function useRegistrasiPasienBaru() {
             setLoading(false);
         } catch {
             setLoading(false);
+            alert("Terjadi kesalahan saat mengirim ulang kode. Silakan coba lagi.");
             console.log("error")
         }
         setIsCounting(true);
