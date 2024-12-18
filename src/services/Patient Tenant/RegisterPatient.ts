@@ -26,6 +26,7 @@ const RegisterPatient = async (data: Data) => {
     console.log('Response register: ', response)
     return response.data
   } catch (error) {
+    alert("Terjadi kesalahan saat mengirim ulang kode. Silakan coba lagi.");
     console.log('error', error)
   }
 }
