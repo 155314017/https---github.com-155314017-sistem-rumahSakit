@@ -63,7 +63,7 @@ const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi
 
                     </Box>
                 </Box>
-                <Box display={"flex"} flexDirection={"row"} gap={"80px"} justifyContent={'space-between'} maxWidth={'75%'} >
+                <Box display={"flex"} flexDirection={"row"} gap={"80px"} justifyContent={'space-between'} >
                     <Box display={"flex"} flexDirection={"column"} >
                         <Typography>Tanggal reservasi</Typography>
                         <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"} >{tanggalReservasi}</Typography>

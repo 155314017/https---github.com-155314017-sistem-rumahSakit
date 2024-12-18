@@ -840,7 +840,7 @@ export default function TambahPasienUmumOffline() {
                                 clinic={dataTickets?.clinic || "Unknown Clinic"}
                                 jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
                                 namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
-                                nomorAntrian={dataTickets?.bookingCode}
+                                nomorAntrian={dataTickets?.nomorAntrian || "Unknown Queue"}
                                 tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
                             />
                         </Box>
