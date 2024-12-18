@@ -259,8 +259,7 @@ export default function useTambahPasienUmumOffline() {
         try {
             const response = await GetPatientByNIKServices(nik);
             console.log(response?.data);
-
-
+            if(response?.responseCode === "200") {
             setPatientData(response?.data as ResponsePatient);
             const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
             const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
@@ -268,8 +267,18 @@ export default function useTambahPasienUmumOffline() {
             setBirthPlace(birthPlaceProcess ? birthPlaceProcess : "Data tidak ada")
             console.log(birthDate, birthPlace);
             setPatientFullsPage(false);
-        } catch (error) {
-            console.error("Error fetching", error);
+            console.log(response?.data);
+            }
+            
+        } catch (err: any) {
+            setPatientFullsPage(false);
+            if (err.responseCode && err.response.responseCode) {
+                alert(`Error: HTTP ${err.response.status} - ${err.response.message || 'Something went wrong'}`);
+            } else if (err.code) {
+                alert(`Error Code: ${err.code}`);
+            } else {
+                alert('Unknown error occurred');
+            }
         }
     }
 
