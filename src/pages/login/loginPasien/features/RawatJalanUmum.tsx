@@ -2,7 +2,6 @@ import { Box, Button, Typography, CardMedia, FormControl, TextField, Radio, Form
 import { Formik, Form } from 'formik';
 import axios from 'axios';
 import "react-phone-input-2/lib/style.css";
-import logo from "../../../../img/St.carolus.png";
 import imagePendaftaran from "../../../../assets/img/pendaftaran.jpeg";
 import FileUploader from "../../../../components/medium/FileUploader";
 import DropdownListAPI from '../../../../components/small/DropdownListAPI';
@@ -22,6 +21,7 @@ import dayjs from 'dayjs';
 interface FormValues {
     typeOfVisit: string;
     symptoms: string;
+    docs: string;
 }
 
 
@@ -68,20 +68,34 @@ export default function RawatJalanUmum() {
                     bgcolor: 'red'
                 }}
             >
-                <Box>
-                    <CardMedia
-                        component="img"
+                <Box position={'absolute'} >
+                    <Box sx={{ position: "relative" }}>
+                        <CardMedia
+                            component="img"
+                            sx={{
+                                width: "50%",
+                                height: "100vh",
+                                objectFit: "cover",
+                                position: "fixed",
+                                top: "0",
+                                left: "0",
+                            }}
+                            image={imagePendaftaran}
+                            alt="Example Image"
+                        />
+                    </Box>
+
+                    {/* overlay */}
+                    <Box
                         sx={{
+                            position: "fixed",
+                            bgcolor: "rgba(0, 0, 0, 0.5)",
                             width: "50%",
                             height: "100vh",
-                            objectFit: "cover",
-                            position: "fixed",
                             top: "0",
                             left: "0",
                         }}
-                        image={imagePendaftaran}
-                        alt="Example Image"
-                    />
+                    ></Box>
                 </Box>
 
                 {showFormPage && (
@@ -89,21 +103,25 @@ export default function RawatJalanUmum() {
                         initialValues={{
                             typeOfVisit: "",
                             symptoms: "",
+                            docs: "",
                         }}
                         validationSchema={validationSchema}
                         onSubmit={async (values) => {
                             // const token = Cookies.get("accessToken");
                             setButtonDis(true);
+                            console.log("id klinik: ", idClinic)
                             const data = {
-                                patientId: patientId,
+                                // patientId: patientId,
+                                patientId: "a9461920-b918-4e39-8cae-33f4f76e39cf",
                                 typeOfVisit: values.typeOfVisit,
                                 clinicId: idClinic,
                                 doctorId: idDoctor,
                                 scheduleId: selectedScheduleId,
                                 symptoms: values.symptoms,
-                                referenceDoc: 'tes'
+                                referenceDoc: values.docs,
                             }
                             try {
+                                console.log("data kirim ke api: ", data);
                                 const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/patient/create-appointment', data, {
                                     headers: {
                                         'Content-Type': 'application/json',
@@ -134,10 +152,12 @@ export default function RawatJalanUmum() {
                             values,
                             errors,
                             touched,
+                            handleBlur,
                             handleChange,
                             isValid,
                             dirty,
                             handleSubmit,
+                            setFieldValue,
                         }) => (
                             <Form onSubmit={handleSubmit}>
                                 <Box
@@ -152,18 +172,7 @@ export default function RawatJalanUmum() {
                                         bgcolor: 'transparent'
                                     }}
                                 >
-                                    <Box sx={{ ml: 10, width: '90%' }}>
-                                        <Box>
-                                            <CardMedia
-                                                component="img"
-                                                sx={{
-                                                    width: "112px",
-                                                    objectFit: "cover",
-                                                }}
-                                                image={logo}
-                                                alt="Example Logo"
-                                            />
-                                        </Box>
+                                    <Box sx={{ ml: 2, width: '100%' }}>
 
                                         <Typography
                                             sx={{
@@ -188,6 +197,7 @@ export default function RawatJalanUmum() {
                                                         variant="outlined"
                                                         value={values.typeOfVisit}
                                                         onChange={handleChange}
+                                                        onBlur={handleBlur}
                                                         sx={{
                                                             width: "100%",
                                                             borderRadius: "8px",
@@ -196,30 +206,19 @@ export default function RawatJalanUmum() {
                                                             "& .MuiOutlinedInput-root": {
                                                                 height: "44px",
                                                                 padding: "0 12px",
-                                                                border: "1px solid #8F85F3",
+                                                                border: "1px solid #A8A8BD",
+                                                                backgroundColor: touched.typeOfVisit && errors.typeOfVisit ? "#ffcccc" : 'inherit',
                                                                 "& input": {
                                                                     height: "44px",
                                                                     padding: "0",
                                                                 },
-                                                                "& fieldset": {
-                                                                    borderColor: "#8F85F3",
-                                                                },
-                                                                "&:hover fieldset": {
-                                                                    borderColor: "#7A73E3",
-                                                                },
+
                                                                 "&.Mui-focused fieldset": {
                                                                     borderColor: "#6B63D1",
                                                                 },
                                                             },
                                                         }}
                                                     />
-                                                    {touched.typeOfVisit && errors.typeOfVisit && (
-                                                        <Typography
-                                                            sx={{ color: "red", fontSize: "12px", ml: 1 }}
-                                                        >
-                                                            {errors.typeOfVisit}
-                                                        </Typography>
-                                                    )}
                                                 </FormControl>
 
                                                 <Typography>Poli yang dituju</Typography>
@@ -238,6 +237,7 @@ export default function RawatJalanUmum() {
                                                     sx={{ width: "100%" }}
                                                 >
                                                     <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
+                                                        <Typography>Dokter yang bertugas</Typography>
                                                         <DropdownListAPI
                                                             placeholder='Pilih dokter'
                                                             options={doctorOptions.map(({ id, name }) => ({ value: id, label: name }))}
@@ -247,6 +247,7 @@ export default function RawatJalanUmum() {
                                                     </FormControl>
 
                                                     <Box sx={{ ml: 2, width: "100%" }}>
+                                                        <Typography>Tanggal dan jam operasional</Typography>
                                                         <CustomCalender doctorId={idDoctor} onChange={handleScheduleChange} />
                                                     </Box>
                                                 </Box>
@@ -261,18 +262,35 @@ export default function RawatJalanUmum() {
                                                         multiline
                                                         rows={4}
                                                         variant="outlined"
-                                                        sx={{ maxHeight: "107px", maxWidth: "100%" }}
+                                                        sx={{
+                                                            width: "100%",
+                                                            borderRadius: "8px",
+                                                            mb: 2,
+                                                            padding: "0",
+                                                            "& .MuiOutlinedInput-root": {
+                                                                padding: "0 12px",
+                                                                border: "1px solid #A8A8BD",
+                                                                backgroundColor: touched.symptoms && errors.symptoms ? "#ffcccc" : 'inherit',
+                                                                "& input": {
+                                                                    padding: "0",
+                                                                },
+                                                                "&.Mui-focused fieldset": {
+                                                                    border: "1px solid #6B63D1",
+                                                                },
+                                                            },
+                                                        }}
                                                     />
+
                                                 </FormControl>
 
-                                                <Box mt={6}>
+                                                <Box>
                                                     <Typography>Jenis Pembayaran</Typography>
                                                     <RadioGroup
                                                         aria-label="transport-method"
                                                         name="transport-method"
                                                         value={selectedMethod}
                                                         onChange={handleRadioChange}
-                                                        sx={{ display: 'flex', flexDirection: 'column', border: '1px solid black', marginTop: '10px', borderRadius: '16px', padding: '16px 24px 16px 24px' }}
+                                                        sx={{ display: 'flex', flexDirection: 'column', border: '1px solid black', borderRadius: '16px', padding: '16px 24px 16px 24px' }}
                                                     >
                                                         <Box display={'flex'} flexDirection={'row'}>
                                                             <FormControlLabel value="asuransi" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Asuransi" />
@@ -281,7 +299,7 @@ export default function RawatJalanUmum() {
                                                         {selectedMethod === 'asuransi' && (
                                                             <Box>
                                                                 <Typography mb={'10px'}>Unggah kartu asuransi</Typography>
-                                                                <FileUploader />
+                                                                <FileUploader onBase64Change={(base64string) => console.log(base64string)} />
                                                                 <Typography fontSize={'14px'} color="#A8A8BD">Ukuran file maksimal 1mb</Typography>
                                                             </Box>
                                                         )}
@@ -291,11 +309,14 @@ export default function RawatJalanUmum() {
                                                 <Box mt={1}>
                                                     <Box mt={2}>
                                                         <Typography>Unggah surat rujukan</Typography>
-                                                        <FileUploader />
+                                                        <FileUploader
+                                                            onBase64Change={(base64String) => setFieldValue('docs', base64String)}
+                                                        />
                                                         <Typography fontSize={"14px"} color="#A8A8BD">
                                                             Ukuran maksimal 1mb
                                                         </Typography>
                                                     </Box>
+
                                                 </Box>
                                             </Box>
                                         </Box>
@@ -333,7 +354,7 @@ export default function RawatJalanUmum() {
                                                     backgroundColor: '#8F85F3',
                                                     ":hover": { backgroundColor: '#D5D1FB' },
                                                 }}
-                                            disabled={!isValid || !dirty}
+                                                disabled={!selectedMethod ? true : !isValid || !dirty}
                                             >
                                                 Selesai
                                             </Button>
@@ -362,6 +383,7 @@ export default function RawatJalanUmum() {
                         <Box marginLeft={"10%"} marginTop={"10%"}>
                             {/* <InformasiTicket /> */}
                             <InformasiTicketAPI
+                                bgcolor="#F1F0FE"
                                 clinic={dataTickets?.clinic || "Unknown Clinic"}
                                 jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
                                 namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}

@@ -26,7 +26,6 @@ export default function RegisterPJ() {
     showAlert,
     loginSuccess,
     show,
-    notFound,
     showTemporarySuccessLogin,
     validationCheck,
     handleSwitchChange,
@@ -273,7 +272,7 @@ export default function RegisterPJ() {
                 </Box>
             )}
 
-            {notFound && (
+            {/* {notFound && (
                 <Box
                     sx={{
                         display: "flex",
@@ -296,7 +295,7 @@ export default function RegisterPJ() {
                         </Typography>
                     </Box>
                 </Box>
-            )}
+            )} */}
 
 
 

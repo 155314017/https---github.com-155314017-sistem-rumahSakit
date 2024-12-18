@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { Button, Typography, Box, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const FileUploader: React.FC = () => {
+interface FileUploaderProps {
+  onBase64Change: (base64: string | null) => void;
+}
+
+const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
   const [fileName, setFileName] = useState<string | null>(null);
-  const [, setBase64String] = useState<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -12,7 +15,8 @@ const FileUploader: React.FC = () => {
       setFileName(file.name);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setBase64String(reader.result as string);
+        const base64String = reader.result as string;
+        onBase64Change(base64String); // Kirim Base64 ke parent
       };
       reader.readAsDataURL(file);
     }
@@ -20,7 +24,7 @@ const FileUploader: React.FC = () => {
 
   const handleRemoveFile = () => {
     setFileName(null);
-    setBase64String(null);
+    onBase64Change(null); // Set null ketika file dihapus
   };
 
   return (
@@ -91,15 +95,3 @@ const FileUploader: React.FC = () => {
 };
 
 export default FileUploader;
-
-{
-  /* <Button
-                variant="contained"
-                color="primary"
-                onClick={handleUpload}
-                sx={{ marginLeft: '20px' }}
-                disabled={!base64String}
-            >
-                Unggah
-            </Button> */
-}

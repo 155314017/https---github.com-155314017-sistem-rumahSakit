@@ -78,7 +78,8 @@ export default function useBioPjBaru() {
     }, [location.state, navigate]);
 
     useEffect(() => {
-        if (patientId == '' && !noIdentity) {
+        // if (patientId == '' && !noIdentity) {
+        if (data.email = '') {
             // setNotFound(true);
             // setShow(false);
             setCurrentView('notFound');

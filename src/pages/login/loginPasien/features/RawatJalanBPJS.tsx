@@ -8,6 +8,7 @@ import {
     FormControl,
     InputLabel,
     TextField,
+    IconButton,
 } from "@mui/material";
 import { Formik, Form } from "formik";
 import "react-phone-input-2/lib/style.css";
@@ -21,6 +22,10 @@ import CustomCalender from "../../../../components/medium/CustomCalender";
 
 
 
+//hooks
+import useRawatJalanBPJS from "../hooks/useRawatJalanBPJS";
+import { ExpandMoreOutlined } from "@mui/icons-material";
+
 interface FormValues {
     fullname: string;
     phone: string;
@@ -30,9 +35,6 @@ interface FormValues {
     docter: string;
     operationalDate: string;
 }
-
-//hooks
-import useRawatJalanBPJS from "../hooks/useRawatJalanBPJS";
 export default function RawatJalanBPJS() {
     const {
         showFormPage,
@@ -57,20 +59,34 @@ export default function RawatJalanBPJS() {
                     flexDirection: "row",
                 }}
             >
-                <Box>
-                    <CardMedia
-                        component="img"
+                <Box position={'absolute'} >
+                    <Box sx={{ position: "relative" }}>
+                        <CardMedia
+                            component="img"
+                            sx={{
+                                width: "50%",
+                                height: "100vh",
+                                objectFit: "cover",
+                                position: "fixed",
+                                top: "0",
+                                left: "0",
+                            }}
+                            image={imagePendaftaran}
+                            alt="Example Image"
+                        />
+                    </Box>
+
+                    {/* overlay */}
+                    <Box
                         sx={{
+                            position: "fixed",
+                            bgcolor: "rgba(0, 0, 0, 0.5)",
                             width: "50%",
                             height: "100vh",
-                            objectFit: "cover",
-                            position: "fixed",
                             top: "0",
                             left: "0",
                         }}
-                        image={imagePendaftaran}
-                        alt="Example Image"
-                    />
+                    ></Box>
                 </Box>
 
                 {showFormPage && (
@@ -196,10 +212,9 @@ export default function RawatJalanBPJS() {
                                                             labelId="doctor-label"
                                                             value={values.docter}
                                                             label="Pilih Dokter"
-                                                            onChange={(e) =>
-                                                                setFieldValue("docter", e.target.value)
-                                                            }
+                                                            onChange={(e) => setFieldValue("docter", e.target.value)}
                                                             sx={{ width: "100%", borderRadius: "8px" }}
+                                                            IconComponent={ExpandMoreOutlined}
                                                         >
                                                             {doctors.map((doctor) => (
                                                                 <MenuItem
@@ -240,7 +255,7 @@ export default function RawatJalanBPJS() {
                                                 <Box mt={4}>
                                                     <Box>
                                                         <Typography>Unggah kartu BPJS</Typography>
-                                                        <FileUploader />
+                                                        <FileUploader onBase64Change={(base64String) => console.log(base64String)} />
                                                         <Typography fontSize={"14px"} color="#A8A8BD">
                                                             Ukuran maksimal 1mb
                                                         </Typography>
@@ -248,7 +263,7 @@ export default function RawatJalanBPJS() {
 
                                                     <Box mt={2}>
                                                         <Typography>Unggah surat rujukan BPJS</Typography>
-                                                        <FileUploader />
+                                                        <FileUploader onBase64Change={(base64String) => console.log(base64String)} />
                                                         <Typography fontSize={"14px"} color="#A8A8BD">
                                                             Ukuran maksimal 1mb
                                                         </Typography>

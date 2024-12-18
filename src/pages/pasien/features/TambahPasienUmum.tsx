@@ -24,6 +24,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import InformasiTicketAPI from "../../../components/small/InformasiTicketAPI";
+import dayjs from "dayjs";
 
 
 export default function TambahPasienUmum() {
@@ -55,7 +56,9 @@ export default function TambahPasienUmum() {
         clinicOptions,
         handleDropdownPoli,
         createTicket,
-        dataTickets
+        dataTickets,
+        birthDate,
+        birthPlace
 
     } = useTambahPasienUmum();
 
@@ -258,6 +261,76 @@ export default function TambahPasienUmum() {
                                                         width: "100%",
                                                     }}
                                                 />
+
+                                                <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '75px', width: '100%' }}>
+                                                    <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%' }}>
+                                                        <FormLabel>Tempat Lahir</FormLabel>
+                                                        <OutlinedInput
+                                                            name="birthPlace"
+                                                            placeholder="Tempat Lahir"
+                                                            fullWidth
+                                                            sx={{
+                                                                borderRadius: '8px',
+                                                                height: '44px',
+                                                                '& .MuiOutlinedInput-root': {
+                                                                    borderRadius: '8px',
+                                                                    backgroundColor: formik.touched.birthPlacePatient && formik.errors.birthPlacePatient ? "#ffcccc" : 'inherit',
+                                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                        borderColor: '#8F85F3',
+                                                                    },
+                                                                },
+                                                                '& .MuiOutlinedInput-notchedOutline': {
+                                                                    border: '1px solid #ccc',
+                                                                },
+                                                                '& .MuiOutlinedInput-input': {
+                                                                    padding: '10px',
+                                                                    fontSize: '16px',
+                                                                },
+                                                            }}
+                                                            onChange={formik.handleChange}
+                                                            onBlur={formik.handleBlur}
+                                                            value={birthPlace}
+                                                            error={formik.touched.birthPlacePatient && Boolean(formik.errors.birthPlacePatient)}
+                                                        // helperText={touched.fullname && errors.fullname}
+                                                        />
+
+                                                    </FormControl>
+
+                                                    <FormControl sx={{ width: '49%', overflow: 'hidden', height: '100%' }}>
+                                                        <FormLabel>Tanggal Lahir</FormLabel>
+                                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                            <Box sx={{ overflow: 'hidden' }}>
+                                                                <DemoContainer components={['DatePicker']}>
+                                                                    <DatePicker
+                                                                        value={dayjs(birthDate)}
+                                                                        onChange={(newValue) => {
+                                                                            if (newValue) {
+                                                                                const formattedDate = newValue.format("YYYY-MM-DD");
+                                                                                formik.setFieldValue("birthDate", formattedDate);
+                                                                                console.log("tanggalLahir", formattedDate);
+                                                                            }
+                                                                        }}
+                                                                        slotProps={{
+                                                                            textField: {
+                                                                                placeholder: "Tanggal Lahir",
+                                                                                sx: {
+                                                                                    borderRadius: '8px',
+                                                                                    height: '60px',
+                                                                                    width: '100%',
+                                                                                    '& .MuiOutlinedInput-root': {
+                                                                                        borderRadius: '8px',
+                                                                                        height: '44px',
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        }}
+                                                                    />
+                                                                </DemoContainer>
+                                                            </Box>
+                                                        </LocalizationProvider>
+                                                    </FormControl>
+                                                </Box>
+
                                                 <Typography>Nama lengkap pasien</Typography>
                                                 <OutlinedInput
                                                     sx={{
@@ -274,7 +347,7 @@ export default function TambahPasienUmum() {
                                                     onChange={(value) => formik.setFieldValue("fullname", value)}
                                                 />
                                                 <Typography>Jenis Kelamin Pasien</Typography>
-                                                <Box width={'95.5%'} maxHeight={'56px'} border={'1px solid #ccc'} borderRadius={'12px'} padding={'8px 12px 8px 12px'} gap={'24px'} >
+                                                <Box width={'98%'} maxHeight={'56px'} border={'1px solid #ccc'} borderRadius={'12px'} padding={'8px 12px 8px 12px'} gap={'24px'} >
                                                     <FormControl>
                                                         <RadioGroup
                                                             aria-labelledby="gender-label"
@@ -395,7 +468,7 @@ export default function TambahPasienUmum() {
                                                             },
                                                         }}
                                                         placeholder='Masukkan NIK ktp'
-                                                        defaultValue={'memek'}
+                                                        defaultValue={'tesNik'}
                                                         value={formik.values.nikGuardian}
                                                         onChange={formik.handleChange}
                                                         name="nikGuardian"
@@ -458,9 +531,9 @@ export default function TambahPasienUmum() {
                                                                     mb: '5px',
                                                                     marginTop: '10px',
                                                                     borderRadius: '8px',
+                                                                    backgroundColor: switchValue ? "#E8E8E8" : "inherit",
                                                                     '& .MuiOutlinedInput-root': {
                                                                         borderRadius: '8px',
-                                                                        backgroundColor: 'inherit',
                                                                         '&:focus-within .MuiOutlinedInput-notchedOutline': {
                                                                             borderColor: '#8F85F3',
                                                                         },
@@ -475,6 +548,7 @@ export default function TambahPasienUmum() {
                                                                 }}
                                                                 value={formik.values.birthPlaceGuardian}
                                                                 onChange={formik.handleChange}
+                                                                disabled={switchValue}
                                                             />
 
                                                         </FormControl>
@@ -485,6 +559,7 @@ export default function TambahPasienUmum() {
                                                                 <Box sx={{ overflow: 'hidden' }}>
                                                                     <DemoContainer components={['DatePicker']}>
                                                                         <DatePicker
+                                                                            value={dayjs(formik.values.birthDateGuardian)}
                                                                             onChange={(newValue) => {
                                                                                 if (newValue) {
                                                                                     const formattedDate = newValue.format("YYYY-MM-DD");
@@ -500,12 +575,14 @@ export default function TambahPasienUmum() {
                                                                                         height: '60px',
                                                                                         width: '100%',
                                                                                         '& .MuiOutlinedInput-root': {
+                                                                                            backgroundColor: switchValue ? "#E8E8E8" : "inherit",
                                                                                             borderRadius: '8px',
                                                                                             height: '44px',
                                                                                         },
                                                                                     },
                                                                                 },
                                                                             }}
+                                                                            disabled={switchValue}
                                                                         />
                                                                     </DemoContainer>
                                                                 </Box>
@@ -738,7 +815,11 @@ export default function TambahPasienUmum() {
                                                             {selectedMethod == 'asuransi' && (
                                                                 <Box>
                                                                     <Typography mb={'10px'} >Unggah kartu asuransi</Typography>
-                                                                    <FileUploader />
+                                                                    <FileUploader
+                                                                        onBase64Change={(base64String) =>
+                                                                            formik.setFieldValue("asuranceDocs", base64String)
+                                                                        }
+                                                                    />
                                                                     <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
                                                                 </Box>
                                                             )}
@@ -747,7 +828,11 @@ export default function TambahPasienUmum() {
                                                 </Box>
                                                 <Box>
                                                     <Typography mb={'10px'} >Unggah surat rujukan</Typography>
-                                                    <FileUploader />
+                                                    <FileUploader
+                                                        onBase64Change={(base64String) =>
+                                                            formik.setFieldValue("docs", base64String)
+                                                        }
+                                                    />
                                                     <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
                                                 </Box>
                                             </Box>

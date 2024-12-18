@@ -42,7 +42,8 @@ export default function RegisterPasienBaru() {
         setData,
         navigate,
         data,
-        setOtp
+        setOtp,
+        loading
     } = useRegistrasiPasienBaru();
     return (
         <>   <style>
@@ -105,14 +106,14 @@ export default function RegisterPasienBaru() {
                         </Typography>
                     </Box>
                 </Box>
-
+                {resendSuccess && (
+                    <AlertSuccess label="Kode verifikasi berhasil dikirimkan !" />
+                )}
                 {showLogin && (
                     <>
 
                         {showAlert && <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />}
-                        {resendSuccess && (
-                            <AlertSuccess label="Kode verifikasi berhasil dikirimkan !" />
-                        )}
+
                         <Box
                             sx={{
                                 display: "flex",
@@ -129,14 +130,14 @@ export default function RegisterPasienBaru() {
                             }}
                         >
 
-                            <Box sx={{ ml: 4, width: '85%', }}>
+                            <Box sx={{ ml: 4, width: '85%', mt: '10%' }}>
                                 <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
                                 <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
                                     Silahkan masukkan nomor NIK (Nomor induk kependudukan) Pasien.
                                 </Typography>
 
                                 <Formik
-                                    initialValues={{ nik: data1.nik, email: data1.email, phone: '', fullname: '', gender: '', address: '', tempatLahir: '', tanggalLahir: '', }}
+                                    initialValues={{ nik: data1?.nik || '', email: data1?.email || '', phone: '', fullname: '', gender: '', address: '', tempatLahir: '', tanggalLahir: '', }}
                                     enableReinitialize
                                     validationSchema={validationSchema}
                                     onSubmit={async (values) => {
@@ -167,10 +168,10 @@ export default function RegisterPasienBaru() {
                                     {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
                                         <Form>
                                             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                                <Typography fontSize={'20px'} fontWeight={600} mb={'3%'}>
+                                                <Typography fontSize={'20px'} fontWeight={600} mb={'1%'}>
                                                     Isi data diri pasien
                                                 </Typography>
-                                                <FormLabel sx={{ fontSize: '18px' }}>NIK (Nomor induk kependudukan) Pasien</FormLabel>
+                                                <FormLabel sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>NIK (Nomor induk kependudukan) Pasien</FormLabel>
                                                 <Field
                                                     name="nik"
                                                     as={TextField}
@@ -180,7 +181,6 @@ export default function RegisterPasienBaru() {
                                                     sx={{
                                                         width: '100%',
                                                         height: '48px',
-                                                        marginTop: '10px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
                                                             backgroundColor: emailError ? '#ffcccc' : 'inherit',
@@ -201,7 +201,7 @@ export default function RegisterPasienBaru() {
                                                     disabled
                                                 />
 
-                                                <FormLabel sx={{ fontSize: '18px' }}>Email</FormLabel>
+                                                <FormLabel sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>Email</FormLabel>
                                                 <Field
                                                     name="email"
                                                     as={TextField}
@@ -211,7 +211,6 @@ export default function RegisterPasienBaru() {
                                                     sx={{
                                                         width: '100%',
                                                         height: '48px',
-                                                        marginTop: '10px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
                                                             backgroundColor: 'inherit',
@@ -232,7 +231,7 @@ export default function RegisterPasienBaru() {
                                                     disabled
                                                 />
 
-                                                <Typography mt={2} >
+                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }} >
                                                     No. Handphone Pasien{" "}
                                                     <span style={{ color: "#d32f2f" }}>*</span>{" "}
                                                 </Typography>
@@ -261,18 +260,17 @@ export default function RegisterPasienBaru() {
                                                     onBlur={handleBlur("phone")}
                                                 />
 
-                                                <FormLabel sx={{ fontSize: '18px' }}>Nama lengkap Pasien</FormLabel>
+                                                <FormLabel sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>Nama lengkap Pasien</FormLabel>
 
                                                 <Field
                                                     name="fullname"
                                                     as={TextField}
-                                                    placeholder="Masukka Nama lengkap penanggung jawab"
+                                                    placeholder="Masukkan Nama lengkap penanggung jawab"
                                                     variant="outlined"
                                                     fullWidth
                                                     sx={{
                                                         width: '100%',
                                                         height: '48px',
-                                                        marginTop: '10px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
                                                             backgroundColor: touched.fullname && errors.fullname ? "#ffcccc" : 'inherit',
@@ -295,9 +293,9 @@ export default function RegisterPasienBaru() {
                                                 // helperText={touched.fullname && errors.fullname}
                                                 />
 
-                                                <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '75px' }}>
+                                                <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '75px', mt: '10px' }}>
                                                     <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%' }}>
-                                                        <FormLabel>Tempat Lahir</FormLabel>
+                                                        <FormLabel sx={{ fontWeight: 400, fontSize: '16px' }} >Tempat Lahir</FormLabel>
                                                         <Field
                                                             name="tempatLahir"
                                                             as={TextField}
@@ -332,7 +330,7 @@ export default function RegisterPasienBaru() {
                                                     </FormControl>
 
                                                     <FormControl sx={{ width: '49%', overflow: 'hidden', height: '100%' }}>
-                                                        <FormLabel>Tanggal Lahir</FormLabel>
+                                                        <FormLabel sx={{ fontWeight: 400, fontSize: '16px' }} >Tanggal Lahir</FormLabel>
                                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                             <Box sx={{ overflow: 'hidden' }}>
                                                                 <DemoContainer components={['DatePicker']}>
@@ -365,7 +363,7 @@ export default function RegisterPasienBaru() {
                                                     </FormControl>
                                                 </Box>
 
-                                                <Typography mt={2} mb={1} >
+                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }} >
                                                     Jenis kelamin Pasien{" "}
                                                     <span style={{ color: "#d32f2f" }}>*</span>{" "}
                                                 </Typography>
@@ -387,7 +385,7 @@ export default function RegisterPasienBaru() {
                                                     </FormControl>
                                                 </Box>
 
-                                                <Typography sx={{ fontSize: "16px", mt: 2 }}>
+                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>
                                                     Alamat tempat tinggal Pasien<span style={{ color: "red" }}>*</span>
                                                 </Typography>
 
@@ -513,12 +511,7 @@ export default function RegisterPasienBaru() {
                                 <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
                                     Data Not Found  !
                                 </Typography>
-                                <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                                    Are you sure you filled the field ?? Look sus !
-                                </Typography>
-                                <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                                    Keep playing kiddos !
-                                </Typography>
+
                             </Box>
                         </Box>
                     )}
@@ -557,10 +550,8 @@ export default function RegisterPasienBaru() {
                                             email: emailOTP,
                                             code: values.otp
                                         }
-                                        console.log("DATA OTP DIKIRIM : ", dataOTP)
                                         try {
-                                            const response = await VerifyOTPPatient(dataOTP)
-                                            console.log("response : ", response)
+                                            await VerifyOTPPatient(dataOTP)
                                             otpFormShown()
                                             navigate('/register/pj', { state: { successAdd: true, data: data, idPatient: patientId } })
                                         } catch {
@@ -622,7 +613,9 @@ export default function RegisterPasienBaru() {
                                                             fontSize: '16px',
                                                         }}
                                                     >
-                                                        {isCounting ? `${formatTime()}` : 'Kirim ulang tautan'}
+                                                        {loading ? <CircularProgress size={18} sx={{ color: '#8F85F3' }} /> :
+                                                            (isCounting ? `${formatTime()}` : 'Kirim ulang tautan')
+                                                        }
                                                     </Typography>
                                                 </Box>
                                                 <Button

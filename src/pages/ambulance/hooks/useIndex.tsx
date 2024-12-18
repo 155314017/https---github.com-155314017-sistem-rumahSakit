@@ -33,7 +33,7 @@ export default function useIndex() {
     if (location.state && location.state.successAdd) {
       showTemporaryAlertSuccess()
       
-      navigate(location.pathname, { replace: true, state: undefined }) //clear state
+      navigate(location.pathname, { replace: true, state: undefined }) 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state, navigate])

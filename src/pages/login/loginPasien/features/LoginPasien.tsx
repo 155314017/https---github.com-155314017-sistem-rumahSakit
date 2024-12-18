@@ -6,7 +6,6 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-import logo from "../../../../img/St.carolus.png";
 import patientImage from "../../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from "formik";
 import AlertWarning from "../../../../components/small/AlertWarning";
@@ -110,7 +109,7 @@ export default function LoginPasien() {
           }}
         >
           <Box sx={{ width: "80%" }}>
-            <img src={logo} alt="logo-carolus" />
+            {/* <img src={logo} alt="logo-carolus" /> */}
             <Typography sx={{ fontSize: "32px", fontWeight: "600" }}>
               Selamat Datang
             </Typography>
@@ -130,10 +129,8 @@ export default function LoginPasien() {
               initialValues={{ nik: "", email: "" }}
               validationSchema={validationSchema}
               onSubmit={async (values) => {
-                if (await validationCheck(values)) {
-                  console.log(values);
-                  await showTemporarySuccessLogin();
-                }
+                await validationCheck(values)
+                // await showTemporarySuccessLogin();
               }}
             >
               {({
@@ -152,8 +149,8 @@ export default function LoginPasien() {
                       Isi data diri pasien
                     </Typography>
 
-                    <FormLabel sx={{ fontSize: "16px" }}>
-                      NIK (Nomor induk kependudukan) Pasien
+                    <FormLabel sx={{ fontSize: "16px", fontWeight: 400 }}>
+                      NIK (Nomor induk kependudukan) Pasien <span style={{ color: "red" }}>*</span>
                     </FormLabel>
                     <Field
                       name="nik"
@@ -187,8 +184,8 @@ export default function LoginPasien() {
                     // helperText={touched.nik && errors.nik}
                     />
 
-                    <FormLabel sx={{ fontSize: "18px", marginTop: "20px" }}>
-                      Email
+                    <FormLabel sx={{ fontSize: "16px", marginTop: "20px", fontWeight: 400 }}>
+                      Email <span style={{ color: "red" }}>*</span>
                     </FormLabel>
                     <Field
                       name="email"
@@ -225,14 +222,20 @@ export default function LoginPasien() {
                     <Button
                       type="submit"
                       variant="contained"
-                      color="primary"
                       fullWidth
                       sx={{
                         width: "100%",
                         height: "48px",
                         mt: 5,
+                        color: '#EEEEF2',
+                        fontSize: '16px',
+                        fontWeight: 400,
                         backgroundColor: "#8F85F3",
                         ":hover": { backgroundColor: "#D5D1FB" },
+                        "&.Mui-disabled": {
+                          backgroundColor: "#A8A8BD",
+                          color: "white",
+                        },
                       }}
                       disabled={!isValid || !dirty}
                     >
@@ -261,7 +264,7 @@ export default function LoginPasien() {
             </Formik>
           </Box>
         </Box>
-      </Box>
+      </Box >
     </>
   )
 }
