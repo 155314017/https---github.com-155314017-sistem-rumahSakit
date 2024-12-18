@@ -63,7 +63,9 @@ export default function useBioPjBaru() {
     const [switchValue, setSwitchValue] = useState(false);
     const [patientId, setPatientId] = useState<string>('');
     const [noIdentity, setNoIdentity] = useState(false);
-    const [currentView, setCurrentView] = useState('show')
+    const [currentView, setCurrentView] = useState('show');
+    const [show, setShow] = useState(true);
+    const [notFound, setNotFound] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -78,18 +80,18 @@ export default function useBioPjBaru() {
     }, [location.state, navigate]);
 
     useEffect(() => {
-        // if (patientId == '' && !noIdentity) {
-        if (data.email = '') {
-            // setNotFound(true);
-            // setShow(false);
+        if (patientId == '' && !noIdentity) {
+            setNotFound(true);
+            setShow(false);
             setCurrentView('notFound');
         } else {
-            // setNotFound(false); 
-            // setShow(true); 
+            setNotFound(false); 
+            setShow(true); 
             setCurrentView('show');
         }
 
-    }, [patientId, noIdentity]);
+    
+}, [patientId, noIdentity]);
 
     const otpFormShown = () => {
         // setShowEmailChanged(false);
@@ -261,5 +263,7 @@ export default function useBioPjBaru() {
         resendSuccess,
         noIdentity,
         currentView,
+        show,
+        notFound
     }
 }

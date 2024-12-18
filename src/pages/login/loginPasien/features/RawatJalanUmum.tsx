@@ -48,6 +48,8 @@ export default function RawatJalanUmum() {
         patientId,
         setButtonDis,
         buttonDis,
+        notFound,
+        show
     } = useRawatJalanUmum();
 
     return (
@@ -97,7 +99,10 @@ export default function RawatJalanUmum() {
                         }}
                     ></Box>
                 </Box>
-
+                {show && !notFound && (
+                    
+                
+                <Box>
                 {showFormPage && (
                     <Formik<FormValues>
                         initialValues={{
@@ -399,6 +404,49 @@ export default function RawatJalanUmum() {
                         </Box>
                     </Box>
                 )}
+            </Box>
+            )}
+            {notFound && (
+                <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    p: 5,
+                    position: "absolute",
+                    right: "0",
+                    top: "0",
+                    width: "45.9%",
+                    height: '91.7vh',
+                    bgcolor: '#ffff'
+                }}
+            >
+                <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    
+
+                    p: 5,
+                    position: "absolute",
+                    width: "50%",
+                }}
+            >
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
+                        Data Not Found  !
+                    </Typography>
+                    <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                        Are you sure you filled the field ?? Look sus !
+                    </Typography>
+                    <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                        Keep playing kiddos !
+                    </Typography>
+                </Box>
+            </Box>
+            </Box>
+            )}
             </Box >
         </>
     );

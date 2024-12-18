@@ -8,6 +8,8 @@ export default function useKategoriPasien() {
   const [patientId, setPatientId] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+  const [notFound, setNotFound] = useState(false);
+  const[show, setShow] = useState(true)
 
   useEffect(() => {
     if (location.state && location.state.succesSendData) {
@@ -20,10 +22,26 @@ export default function useKategoriPasien() {
   }, [patientId]);
 
 
+  useEffect(() => {
+    console.log("Id Patient: ", patientId);
+
+    if (patientId === '') {
+        setNotFound(true);
+        setShow(false)
+        
+    } else {
+
+        setNotFound(false);
+        setShow(true)
+        
+    }
+}, [patientId]);
   return {
     pasienBaru,
     setPasienBaru,
     navigate,
     patientId,
+    notFound,
+    show
   }
 }

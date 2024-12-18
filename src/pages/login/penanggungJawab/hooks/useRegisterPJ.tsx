@@ -141,10 +141,12 @@ export default function useRegisterPJ() {
         if (patientId === '') {
             setShowLogin(false);
             setNotFound(true);
+            setShow(false);
         } else {
 
             setShowLogin(true);
             setNotFound(false);
+            setShow(true);
         }
     }, [patientId]);
 
