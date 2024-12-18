@@ -5,7 +5,6 @@ import {
     Button,
     FormControl,
     FormControlLabel,
-    Radio,
     RadioGroup,
     TextField,
     OutlinedInput,
@@ -19,11 +18,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import useTambahPasienUmumOffline from "../hooks/useTambahPasienUmumOffline";
-import BreadCrumbs from "../../../../components/medium/BreadCrumbs";
 import SwitchCustom from "../../../../components/small/SwitchCustom";
 import DropdownListAPI from "../../../../components/small/DropdownListAPI";
 import CustomCalender from "../../../../components/medium/CustomCalender";
-import FileUploader from "../../../../components/medium/FileUploader";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 import bgImg from "../../../../assets/img/Bg-desktop.svg"
 import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
@@ -32,7 +29,6 @@ import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
 export default function TambahPasienUmumOffline() {
     const {
         formik,
-        breadcrumbItems,
         currentPage,
         setCurrentPage,
         getPageStyle,
@@ -40,12 +36,10 @@ export default function TambahPasienUmumOffline() {
         isCurrentPageValid,
         handleSwitchChange,
         switchValue,
-        selectedMethod,
         mainPages,
         guardFullPage,
         setGuardFullPage,
         patientFullPage,
-        handleRadioChange,
         handleScheduleChange,
         doctorOptions,
         idDoctor,

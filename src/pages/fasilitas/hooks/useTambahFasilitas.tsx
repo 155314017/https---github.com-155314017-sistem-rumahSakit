@@ -26,7 +26,7 @@ type Schedule = {
 }
 export default function useTambahFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
-    const [operationalTime, setOperationalTime] = useState<string | null>(null);
+    // const [operationalTime, setOperationalTime] = useState<string | null>(null);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
@@ -161,7 +161,7 @@ export default function useTambahFasilitas() {
   return {
     breadcrumbItems,
     formik,
-    operationalTime,
+    // operationalTime,
     selectedDay,
     setSelectedDay,
     startTime,

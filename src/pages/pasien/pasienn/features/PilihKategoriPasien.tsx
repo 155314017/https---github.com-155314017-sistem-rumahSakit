@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { bgcolor, maxWidth, Stack } from "@mui/system";
+import {  Stack } from "@mui/system";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 import GenerateQueuePatientServices from "../../../../services/Patient Tenant/GenerateQueuePatientServices";
 
@@ -544,25 +544,17 @@ export default function PilihKategoriPasien() {
     );
 }
 
-const cardStyle = {
-    display: "flex",
-    flexDirection: "row",
-    borderRadius: "24px",
-    backgroundColor: "#F1F0FE",
-    padding: "24px",
-    gap: "16px",
-    boxShadow: "none",
-
-    // display: "flex",
-    // flexDirection: "column",
-    width: "96%",
-    height: "100px",
-    // borderRadius: "24px",
-    // backgroundColor: "#F1F0FE",
-    // padding: "24px",
-    // gap: "16px",
-    // boxShadow: "none", // Remove shadow
-};
+// const cardStyle = {
+//     display: "flex",
+//     flexDirection: "row",
+//     borderRadius: "24px",
+//     backgroundColor: "#F1F0FE",
+//     padding: "24px",
+//     gap: "16px",
+//     boxShadow: "none",
+//     width: "96%",
+//     height: "100px",
+// };
 
 const titleStyle = {
     color: "#7367F0",

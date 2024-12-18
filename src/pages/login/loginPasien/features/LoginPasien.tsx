@@ -20,7 +20,7 @@ export default function LoginPasien() {
     showAlert,
     loginSuccess,
     validationCheck,
-    showTemporarySuccessLogin,
+    // showTemporarySuccessLogin,
     validationSchema,
     navigate,
 

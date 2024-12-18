@@ -45,7 +45,7 @@ export default function RawatJalanUmum() {
         selectedSchedule,
         setDataTickets,
         dataTickets,
-        patientId,
+        // patientId,
         setButtonDis,
         buttonDis,
     } = useRawatJalanUmum();
