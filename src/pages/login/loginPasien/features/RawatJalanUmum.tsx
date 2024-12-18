@@ -45,7 +45,7 @@ export default function RawatJalanUmum() {
         selectedSchedule,
         setDataTickets,
         dataTickets,
-        // patientId,
+        patientId,
         setButtonDis,
         buttonDis,
     } = useRawatJalanUmum();
@@ -111,8 +111,8 @@ export default function RawatJalanUmum() {
                             setButtonDis(true);
                             console.log("id klinik: ", idClinic)
                             const data = {
-                                // patientId: patientId,
-                                patientId: "a9461920-b918-4e39-8cae-33f4f76e39cf",
+                                patientId: patientId,
+                                // patientId: "a9461920-b918-4e39-8cae-33f4f76e39cf",
                                 typeOfVisit: values.typeOfVisit,
                                 clinicId: idClinic,
                                 doctorId: idDoctor,
