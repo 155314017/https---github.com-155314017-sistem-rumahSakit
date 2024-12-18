@@ -10,6 +10,7 @@ export default function useTablePasien() {
             try {
                 const result = await PatientServices();
                 setDatas(result);
+                console.log(result);
             } catch (error) {
                 console.log('Failed to fetch data from API: ', error);
             }

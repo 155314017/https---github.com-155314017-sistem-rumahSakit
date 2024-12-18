@@ -467,7 +467,7 @@ export default function TablePasien() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.id}
+                                                        {data.registrationDatumDto.typeOfVisit}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[

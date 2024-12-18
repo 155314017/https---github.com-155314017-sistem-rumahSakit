@@ -460,11 +460,11 @@ export default function PilihKategoriPasien() {
 
                 {infoTicket && (
                     <InformasiTicketAPI
-                        clinic="clinic"
-                        jadwalKonsul={"sabtu"}
-                        namaDokter="udin"
-                        nomorAntrian={'1'}
-                        tanggalReservasi="20 agus"
+                        clinic="Clinic A"
+                        jadwalKonsul={"Sabtu"}
+                        namaDokter="Tyo Herlambang"
+                        nomorAntrian={'2'}
+                        tanggalReservasi=""
                         onClose={() => {
                             console.log("Tombol close ditekan");
                             setInfoTicket(false);
