@@ -580,15 +580,16 @@ export default function TambahPasienUmumOffline() {
                                                             borderRadius: '12px',
                                                             padding: '8px 12px 8px 12px',
                                                             gap: '24px',
-                                                            backgroundColor: "inherit",
+                                                            backgroundColor: switchValue ? "#E8E8E8" : "inherit",
                                                             width: '97.5%',
                                                         }}
                                                         >
-                                                            <FormControl sx={{ width: '95%' }} >
+                                                            <FormControl sx={{ width: '95%', }} >
                                                                 <RadioGroup
                                                                     aria-labelledby="gender-label"
                                                                     name="typeGuardian"
-                                                                    value={formik.values.typeGuardian}
+                                                                    // value={formik.values.typeGuardian}
+                                                                    value={"KELUARGA"}
                                                                     onChange={(e) => formik.setFieldValue("typeGuardian", e.target.value)}
                                                                     row
                                                                     sx={{
@@ -598,11 +599,11 @@ export default function TambahPasienUmumOffline() {
                                                                         width: '100%',
                                                                     }}
                                                                 >
-                                                                    <FormControlLabel value="SENDIRI" control={<BpRadio />} label="Sendiri" />
-                                                                    <FormControlLabel value="KELUARGA" control={<BpRadio />} label="Keluarga" />
-                                                                    <FormControlLabel value="POLISI" control={<BpRadio />} label="Polisi" />
-                                                                    <FormControlLabel value="AMBULAN" control={<BpRadio />} label="Ambulan" />
-                                                                    <FormControlLabel value="LAINNYA" control={<BpRadio />} label="Lainnya" />
+                                                                    <FormControlLabel disabled={switchValue ? true : false} value="SENDIRI" control={<BpRadio />} label="Sendiri" />
+                                                                    <FormControlLabel disabled={switchValue ? true : false} value="KELUARGA" control={<BpRadio />} label="Keluarga" />
+                                                                    <FormControlLabel disabled={switchValue ? true : false} value="POLISI" control={<BpRadio />} label="Polisi" />
+                                                                    <FormControlLabel disabled={switchValue ? true : false} value="AMBULAN" control={<BpRadio />} label="Ambulan" />
+                                                                    <FormControlLabel disabled={switchValue ? true : false} value="LAINNYA" control={<BpRadio />} label="Lainnya" />
                                                                 </RadioGroup>
                                                             </FormControl>
                                                         </Box>

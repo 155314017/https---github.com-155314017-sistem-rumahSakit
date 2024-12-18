@@ -9,6 +9,7 @@ import { Radio } from '@mui/material';
 import { RadioProps } from '@mui/material/Radio';
 import dayjs from 'dayjs';
 import CreateAppointmentOffline from '../../../../services/ManagePatient/CreateAppoinmentOffline';
+import UpdatePatientGuards from '../../../../services/Patient Tenant/UpdatePatientGuard';
 
 type Doctor = {
     id: string;
@@ -273,28 +274,28 @@ export default function useTambahPasienUmumOffline() {
     }
 
     const putGuard = async () => {
-        // try {
-        //     const tes = {
-        //         patientId: patientData.id,
-        //         guardianIdentityNumber: formik.values.nikGuardian,
-        //         guardianName: formik.values.fullnameGuardian,
-        //         guardianPhone: formik.values.phoneGuardian,
-        //         guardianEmail: formik.values.emailGuardian,
-        //         guardianGender: formik.values.genderGuardian,
-        //         guardianAddress: formik.values.addressGuardian,
-        //         guardianType: 'guardianType',
-        //         guardianRelation: formik.values.typeGuardian,
-        //         guardianBirthPlace: formik.values.birthPlaceGuardian,
-        //         guardianBirthDate: formik.values.birthDateGuardian,
-        //     }
+        try {
+            const tes = {
+                patientId: patientData.id,
+                guardianIdentityNumber: formik.values.nikGuardian,
+                guardianName: formik.values.fullnameGuardian,
+                guardianPhone: formik.values.phoneGuardian,
+                guardianEmail: formik.values.emailGuardian,
+                guardianGender: formik.values.genderGuardian,
+                guardianAddress: formik.values.addressGuardian,
+                guardianType: 'KELUARGA',
+                guardianRelation: formik.values.typeGuardian,
+                guardianBirthPlace: formik.values.birthPlaceGuardian,
+                guardianBirthDate: formik.values.birthDateGuardian,
+            }
 
-        //     const response = await UpdatePatientGuards(tes)
-        //     console.log(response)
-        //     console.log("Data: ", tes)
-        setCurrentPage(3)
-        // } catch (error) {
-        //     console.log(error)
-        // }
+            const response = await UpdatePatientGuards(tes)
+            console.log(response)
+            console.log("Data: ", tes)
+            setCurrentPage(3)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
@@ -367,7 +368,8 @@ export default function useTambahPasienUmumOffline() {
 
     const createTicket = async () => {
         const data = {
-            patientId: patientData?.id,
+            // patientId: patientData?.id,
+            patientId: "a9461920-b918-4e39-8cae-33f4f76e39cf", //nanti diganti
             typeOfVisit: formik.values.jenisKunjungan,
             clinicId: idClinic,
             doctorId: idDoctor,

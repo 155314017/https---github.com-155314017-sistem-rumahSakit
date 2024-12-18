@@ -11,7 +11,7 @@ type InformasiTicketProps = {
     tanggalReservasi: string;
     jadwalKonsul: string | null;
     bgcolor?: string;
-    onClose?: () => void; 
+    onClose?: () => void;
 }
 
 const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi, jadwalKonsul, bgcolor = "#ffffff", onClose }: InformasiTicketProps) => {
@@ -19,7 +19,7 @@ const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi
         <Box width={"506px"} height={"504px"} borderRadius={"32px"} bgcolor={bgcolor} position={"relative"} padding={"25px"}>
             {onClose && (
                 <IconButton
-                    onClick={onClose} 
+                    onClick={onClose}
                     sx={{
                         position: 'absolute',
                         top: 8,
@@ -52,7 +52,7 @@ const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi
                     <Typography fontSize={"16px"} >Nomor antrian</Typography>
                     <Typography fontSize={"48px"} fontWeight={"600"} >{nomorAntrian}</Typography>
                 </Box>
-                <Box display={"flex"} flexDirection={"row"} gap={"60px"} >
+                <Box display={"flex"} flexDirection={"row"} gap={"60px"} justifyContent={'space-between'} maxWidth={'75%'} >
                     <Box>
                         <Typography>Dokter yang bertugas</Typography>
                         <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"} >{namaDokter}</Typography>
@@ -63,7 +63,7 @@ const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi
 
                     </Box>
                 </Box>
-                <Box display={"flex"} flexDirection={"row"} gap={"80px"} >
+                <Box display={"flex"} flexDirection={"row"} gap={"80px"} justifyContent={'space-between'} maxWidth={'75%'} >
                     <Box display={"flex"} flexDirection={"column"} >
                         <Typography>Tanggal reservasi</Typography>
                         <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"} >{tanggalReservasi}</Typography>
