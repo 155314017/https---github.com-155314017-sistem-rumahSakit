@@ -190,6 +190,7 @@ export default function useRegistrasiPasienBaru() {
 
     const handleResendClick = async () => {
         setLoading(true);
+        console.log("data kirim: ", data)
         try {
             await RegisterPatient(data);
             console.log("pre")
