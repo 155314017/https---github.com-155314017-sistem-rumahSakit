@@ -464,13 +464,27 @@ export default function BioPjBaru() {
                                                         height: '48px',
                                                         marginTop: '20px',
                                                         backgroundColor: '#8F85F3',
-                                                        ":hover": { backgroundColor: '#D5D1FB'
-                                                         },
-                                                         marginBottom: '7%',
+                                                        ":hover": {
+                                                            backgroundColor: '#D5D1FB'
+                                                        },
                                                     }}
                                                     disabled={switchValue ? false : !isValid || !dirty}
                                                 >
                                                     Lanjutkan
+                                                </Button>
+                                                <Button
+                                                    onClick={() => navigate('/register/pasien')}
+                                                    sx={{
+                                                        width: '100%',
+                                                        height: '48px',
+                                                        marginTop: '20px',
+                                                        backgroundColor: '#ffff',
+                                                        border: '1px solid #8F85F3',
+                                                        color: '#8F85F3',
+                                                        ":hover": { backgroundColor: '#8F85F3', color: '#ffff' },
+                                                    }}
+                                                >
+                                                    Kembali ke halaman data pasien
                                                 </Button>
 
                                                 {/* <CustomButton onClick={() => console.log("hai ")} label="Daftar pasien baru" /> */}

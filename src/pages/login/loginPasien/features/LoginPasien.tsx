@@ -243,7 +243,7 @@ export default function LoginPasien() {
                     </Button>
 
                     <Button
-                      onClick={() => navigate('/register/penanggungJawab', { state: { patientWithNoIdentity: true } })}
+                      onClick={() => navigate('/register/pj', { state: { patientWithNoIdentity: true } })}
                       sx={{
                         width: '100%',
                         height: '48px',

@@ -92,15 +92,17 @@ export default function useRegisterPJ() {
 
     const validationCheck = async (values: FormValues) => {
         console.log("nilai: ", values)
-        const { nik, email } = values;
-        const nikIsValid = nik === data.identityNumber;
-        const emailIsValid = email === data.email;
-        setNikError(!nikIsValid);
-        setEmailError(!emailIsValid);
+        if (switchValue) {
+            const { nik, email } = values;
+            const nikIsValid = nik === data.identityNumber;
+            const emailIsValid = email === data.email;
+            setNikError(!nikIsValid);
+            setEmailError(!emailIsValid);
 
-        if (!nikIsValid || !emailIsValid) {
-            await showTemporaryAlert();
-            return false;
+            if (!nikIsValid || !emailIsValid) {
+                await showTemporaryAlert();
+                return false;
+            }
         }
         // showOtp();s
         Cookies.set('dataPasien', JSON.stringify(data), { expires: 7 });
@@ -174,31 +176,31 @@ export default function useRegisterPJ() {
         console.log('Switch value:', value);
         console.log('Data: ', data);
     };
-  return {
-    validationSchema,
-    otpValidationSchema,
-    showLogin,
-    showEmailChanged,
-    emailError,
-    nikError,
-    showAlert,
-    resendSuccess,
-    loginSuccess,
-    otp,
-    setOtp,
-    show,
-    setShow,
-    notFound,
-    handleClick,
-    showTemporaryAlert,
-    showTemporarySuccessLogin,
-    showOtp,
-    validationCheck,
-    handleResendClick,
-    formatTime,
-    handleSwitchChange,
-    switchValue,
-    data,
-    
-  }
+    return {
+        validationSchema,
+        otpValidationSchema,
+        showLogin,
+        showEmailChanged,
+        emailError,
+        nikError,
+        showAlert,
+        resendSuccess,
+        loginSuccess,
+        otp,
+        setOtp,
+        show,
+        setShow,
+        notFound,
+        handleClick,
+        showTemporaryAlert,
+        showTemporarySuccessLogin,
+        showOtp,
+        validationCheck,
+        handleResendClick,
+        formatTime,
+        handleSwitchChange,
+        switchValue,
+        data,
+        navigate,
+    }
 }
