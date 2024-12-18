@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import {  Stack } from "@mui/system";
+import { Stack } from "@mui/system";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 import GenerateQueuePatientServices from "../../../../services/Patient Tenant/GenerateQueuePatientServices";
 
@@ -282,6 +282,7 @@ export default function PilihKategoriPasien() {
                                     setOpenModalKodeBooking(false);
                                     setInfoTicket(true);
                                     setIsLoading(false);
+                                    setInputCodePages(false);
                                 } catch (err: any) {
                                     console.log(err.status)
                                     setErrCode(true)
@@ -464,7 +465,14 @@ export default function PilihKategoriPasien() {
                         namaDokter="udin"
                         nomorAntrian={'1'}
                         tanggalReservasi="20 agus"
+                        onClose={() => {
+                            console.log("Tombol close ditekan");
+                            setInfoTicket(false);
+                            setMainPages(true);
+                        }}
                     />
+
+
                 )}
 
                 {tiketAntrianKonter && (
@@ -473,14 +481,14 @@ export default function PilihKategoriPasien() {
                         maxWidth={506}
                         maxHeight={288}
                         borderRadius={'32px'}
-                        padding={'24px'}
+                        padding={'32px'}
                         display={'flex'}
                         flexDirection={'column'}
-                        justifyContent={'space-between'} /* Konten tersebar rapi */
-                        alignItems={'center'} /* Konten berada di tengah horizontal */
-                        gap={3}
-                        position={'relative'} /* Untuk positioning tombol Close */
-                        boxShadow={'0px 4px 10px rgba(0, 0, 0, 0.1)'} /* Tambahan shadow agar lebih elegan */
+                        justifyContent={'space-between'}
+                        alignItems={'start'}
+                        gap={2}
+                        position={'relative'}
+                        boxShadow={'0px 4px 10px rgba(0, 0, 0, 0.1)'}
                     >
                         {/* Tombol Close */}
                         <IconButton
@@ -500,13 +508,13 @@ export default function PilihKategoriPasien() {
                         </IconButton>
 
                         {/* Bagian Header */}
-                        <Box textAlign={'center'} mb={2}>
+                        <Box textAlign={'start'} mb={2}>
                             <Typography fontWeight={600} fontSize={'20px'}>
                                 Rumah Sakit St. Carolus
                             </Typography>
                             <Typography
                                 fontWeight={400}
-                                fontSize={'14px'}
+                                fontSize={'16px'}
                                 color="#A8A8BD"
                                 lineHeight={1.5}
                             >
@@ -516,11 +524,11 @@ export default function PilihKategoriPasien() {
                         </Box>
 
                         {/* Bagian Nomor Antrian */}
-                        <Box textAlign={'center'} mb={2}>
+                        <Box textAlign={'start'} mb={2}>
                             <Typography fontWeight={400} fontSize={'16px'} color="#747487">
                                 Nomor antrian konter
                             </Typography>
-                            <Typography fontWeight={600} fontSize={'48px'} color="#6B63D1">
+                            <Typography fontWeight={600} fontSize={'48px'} color="##0A0A0D">
                                 {nomorAntrian}
                             </Typography>
                         </Box>
@@ -528,9 +536,9 @@ export default function PilihKategoriPasien() {
                         {/* Bagian Footer */}
                         <Typography
                             fontWeight={400}
-                            fontSize={'14px'}
+                            fontSize={'16px'}
                             color="#747487"
-                            textAlign={'center'}
+                            textAlign={'start'}
                             lineHeight={1.5}
                         >
                             Silahkan menuju konter dengan menyiapkan kartu tanda penduduk (KTP) untuk

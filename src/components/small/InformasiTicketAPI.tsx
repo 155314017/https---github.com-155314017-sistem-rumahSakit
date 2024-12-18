@@ -1,7 +1,8 @@
-import { Button, CardMedia, Typography } from "@mui/material";
+import { Button, CardMedia, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import my from "../../img/String.png"
 import logo from "../../img/St.carolus.png"
+import CloseIcon from '@mui/icons-material/Close';
 
 type InformasiTicketProps = {
     nomorAntrian: any | undefined;
@@ -10,11 +11,26 @@ type InformasiTicketProps = {
     tanggalReservasi: string;
     jadwalKonsul: string | null;
     bgcolor?: string;
+    onClose?: () => void; 
 }
 
-const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi, jadwalKonsul, bgcolor = "#ffffff" }: InformasiTicketProps) => {
+const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi, jadwalKonsul, bgcolor = "#ffffff", onClose }: InformasiTicketProps) => {
     return (
         <Box width={"506px"} height={"504px"} borderRadius={"32px"} bgcolor={bgcolor} position={"relative"} padding={"25px"}>
+            {onClose && (
+                <IconButton
+                    onClick={onClose} 
+                    sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        color: '#A8A8BD',
+                        zIndex: 10
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            )}
             <CardMedia
                 component="img"
                 height="162px"

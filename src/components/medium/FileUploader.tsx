@@ -3,11 +3,16 @@ import { Button, Typography, Box, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 interface FileUploaderProps {
-  onBase64Change: (base64: string | null) => void;
+  onBase64Change?: (base64: string | null) => void;
 }
 
 const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
   const [fileName, setFileName] = useState<string | null>(null);
+
+  const handleRemoveFile = () => {
+    setFileName(null);
+    onBase64Change?.(null); // Set null ketika file dihapus
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -16,16 +21,12 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
-        onBase64Change(base64String); // Kirim Base64 ke parent
+        onBase64Change?.(base64String); // Kirim Base64 ke parent
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleRemoveFile = () => {
-    setFileName(null);
-    onBase64Change(null); // Set null ketika file dihapus
-  };
 
   return (
     <Box sx={{ display: "flex", alignItems: "center", marginBottom: "5px" }}>
