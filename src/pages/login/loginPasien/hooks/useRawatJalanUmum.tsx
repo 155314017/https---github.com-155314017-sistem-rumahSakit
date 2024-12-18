@@ -68,6 +68,7 @@ export default function useRawatJalanUmum() {
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedMethod(event.target.value);
+    console.log(event.target.value);
   };
 
   const handleDropdownPoli = (value: string, label: string) => {

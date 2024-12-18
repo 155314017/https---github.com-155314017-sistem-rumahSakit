@@ -1,17 +1,18 @@
-import { Avatar, Box, CardMedia, IconButton, Button, CircularProgress, Typography } from "@mui/material";
+import { Avatar, Box, CardMedia, IconButton, Button, CircularProgress, Typography, TextField } from "@mui/material";
 import register from "../../../../assets/img/registerImg.jpg";
+import bgImg from "../../../../assets/img/Bg-desktop.svg"
 import { Link } from "react-router-dom";
 import { Card } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ModalKodeBooking from "../../../../components/small/ModalKodeBooking";
 import { useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
-import OTPInput from "react-otp-input";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { bgcolor, maxWidth, Stack } from "@mui/system";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
-import { Stack } from "@mui/system";
+import GenerateQueuePatientServices from "../../../../services/Patient Tenant/GenerateQueuePatientServices";
 
 const style = {
     position: "absolute" as const,
@@ -26,12 +27,11 @@ const style = {
     borderRadius: "16px",
 };
 
-const otpValidationSchema = Yup.object({
-    otp: Yup.string()
-        .matches(/^[0-9]+$/, "OTP harus berupa angka")
-        .min(6, "OTP minimal 6 digit")
-        .max(6, "OTP maksimal 6 digit")
-        .required("OTP wajib diisi"),
+const bookingCodeSchema = Yup.object({
+    bookingCode: Yup.string()
+        // .min(6, "Booking kode minimal 6 digit")
+        // .max(6, "Booking kode maksimal 6 digit")
+        .required("Booking kode wajib diisi"),
 });
 
 export default function PilihKategoriPasien() {
@@ -41,9 +41,29 @@ export default function PilihKategoriPasien() {
     const [inputCodePages, setInputCodePages] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [infoTicket, setInfoTicket] = useState(false);
+    const [nomorAntrian, setNomorAntrian] = useState<string | number>(0);
+    const [tiketAntrianKonter, setTiketAntrianKonter] = useState(false);
+    const [errCode, setErrCode] = useState(false)
 
     const handleBack = () => {
         setOpenModalPilihPembayaran(false);
+        setMainPages(true);
+    }
+
+    const pasienBaru = async () => {
+        const counterId = "f2ac5cf2-b023-4756-ac33-b7b493d065dd" //nanti diganti
+        setTiketAntrianKonter(true);
+        setMainPages(false);
+        try {
+            const response = await GenerateQueuePatientServices(counterId)
+            console.log(response);
+            setNomorAntrian(response);
+            console.log(response)
+
+        } catch {
+            console.log('error')
+        }
+
     }
 
     return (
@@ -56,27 +76,36 @@ export default function PilihKategoriPasien() {
             `}
             </style>
             <Box
-                sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100vh",
+                    backgroundImage: `url(${bgImg})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat"
+                }}
             >
+                {/* Halaman Utama */}
                 {mainPages && (
-                    <>
+                    <Box >
                         <CardMedia
                             component="img"
                             sx={{
-                                width: "60%",
+                                width: "100%",
                                 height: "350px",
                                 borderRadius: "24px",
                                 position: "relative",
                                 marginTop: "20px",
-                                "@media (max-width: 600px)": {
-                                    width: "100%"
-                                }
-                            }
-                            }
+                                boxShadow: 2
+                            }}
                             image={register}
                             alt="Example Image"
                         />
-                        <Box width={'60%'} >
+                        <Box width={'100%'}>
                             <Box
                                 sx={{
                                     bgcolor: '#ffffff',
@@ -88,19 +117,18 @@ export default function PilihKategoriPasien() {
                                     my: '2%',
                                     display: 'flex',
                                     flexDirection: 'column',
-
+                                    boxShadow: 2
                                 }}
                             >
-
                                 <Typography id="modal-modal-description" fontWeight={600} fontSize={'24px'} lineHeight={'26px'}>
                                     Pilih Kategori Pasien
                                 </Typography>
-                                <Typography color="#747487" fontWeight={400} fontSize={'18px'} >
+                                <Typography color="#747487" fontWeight={400} fontSize={'18px'}>
                                     Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
                                 </Typography>
                             </Box>
                             <Box
-                                sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                                sx={{ display: "flex", flexDirection: "column", gap: 0 }}
                             >
                                 <Link
                                     to="#"
@@ -111,79 +139,89 @@ export default function PilihKategoriPasien() {
                                     }}
                                 >
                                     <Card
-                                        sx={cardStyle}
+                                        sx={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            borderRadius: "24px",
+                                            padding: "16px",
+                                            boxShadow: 2,
+                                            marginBottom: "16px",
+                                            bgcolor: '#D5D1FB'
+                                        }}
                                     >
-                                        <Avatar alt="Kode Booking" src="/src/img/filling.png" sx={{ width: '88px', height: '88px' }} />
-                                        <Box>
-                                            <Typography
-                                                sx={{
-                                                    color: "#7367F0",
-                                                    fontSize: "18px",
-                                                    fontWeight: "600",
-                                                    lineHeight: "20px",
-                                                    textDecoration: "none",
-                                                }}
-                                            >
+                                        <Avatar alt="Kode Booking" src="/src/img/meidicine.png" sx={{ width: '88px', height: '88px' }} />
+                                        <Box sx={{ marginLeft: "16px" }}>
+                                            <Typography sx={{ color: "#7367F0", fontSize: "18px", fontWeight: "600" }}>
                                                 Pasien Lama
                                             </Typography>
-                                            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", textDecoration: "none" }}>
-                                                <Typography sx={{ textDecoration: "none" }}>
-                                                    dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu dan berhak mendapatkan pelayanan kesehatan
+                                            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: 'space-between' }}>
+                                                <Typography sx={{ textDecoration: "none", maxWidth: '80%' }}>
+                                                    Dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu, dan berhak mendapatkan pelayanan kesehatan.
                                                 </Typography>
                                                 <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
                                             </Box>
                                         </Box>
                                     </Card>
-
                                 </Link>
 
                                 <Link
-                                    to="/tambahPasien/Umum"
+                                    to=""
                                     style={{ textDecoration: "none" }}
+                                    onClick={pasienBaru}
                                 >
                                     <Card
                                         sx={{
                                             display: "flex",
-                                            flexDirection: "column",
-                                            width: "96%",
-                                            height: "128px",
+                                            flexDirection: "row",
+                                            alignItems: "center",
                                             borderRadius: "24px",
-                                            backgroundColor: "#F1F0FE",
-                                            padding: "24px",
-                                            gap: "16px",
-                                            boxShadow: "none", // Remove shadow
+                                            padding: "16px",
+                                            boxShadow: 2,
+                                            marginBottom: "16px",
+                                            bgcolor: '#D5D1FB'
                                         }}
                                     >
-                                        <Typography
-                                            sx={{
-                                                color: "#7367F0",
-                                                fontSize: "18px",
-                                                fontWeight: "600",
-                                                lineHeight: "20px",
-                                                textDecoration: "none",
-                                            }}
-                                        >
-                                            Pasien Baru
-                                        </Typography>
-                                        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", textDecoration: "none" }}>
-                                            <Typography sx={{ textDecoration: "none" }}>
-                                                Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.
+                                        <Avatar alt="Kode Booking" src="/src/img/filling.png" sx={{ width: '88px', height: '88px' }} />
+                                        <Box sx={{ marginLeft: "16px" }}>
+                                            <Typography sx={{ color: "#7367F0", fontSize: "18px", fontWeight: "600" }}>
+                                                Pasien Baru
                                             </Typography>
-                                            <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+                                            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: 'space-between' }}>
+                                                <Typography sx={{ textDecoration: "none", maxWidth: '80%' }}>
+                                                    Dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu, dan berhak mendapatkan pelayanan kesehatan.
+                                                </Typography>
+                                                <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+                                            </Box>
                                         </Box>
                                     </Card>
                                 </Link>
+
                                 <Link to="#" style={{ textDecoration: "none" }} onClick={() => {
                                     setInputCodePages(true);
                                     setMainPages(false);
                                 }} >
-                                    <Card sx={cardStyle}>
-                                        <Avatar alt="Kode Booking" src="/src/img/filling.png" sx={{ width: '88px', height: '88px' }} />
-                                        <Box>
-                                            <Typography sx={titleStyle}>Masukkan kode booking</Typography>
-                                            <Box sx={descriptionBoxStyle}>
-                                                <Typography>Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk
-                                                    check-in nomor antrian.</Typography>
+                                    <Card
+                                        sx={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            borderRadius: "24px",
+                                            padding: "16px",
+                                            boxShadow: 2,
+                                            marginBottom: "16px",
+                                            bgcolor: '#D5D1FB'
+                                        }}
+                                    >
+                                        <Avatar alt="Kode Booking" src="/src/img/qrcode.png" sx={{ width: '88px', height: '88px' }} />
+                                        <Box sx={{ marginLeft: "16px" }}>
+                                            <Typography sx={{ color: "#7367F0", fontSize: "18px", fontWeight: "600" }}>
+                                                Masukkan Kode Booking
+                                            </Typography>
+                                            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", width: '120%', justifyContent: 'space-between' }}>
+                                                <Typography sx={{ textDecoration: "none" }}>
+                                                    Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian.
+                                                </Typography>
                                                 <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
                                             </Box>
                                         </Box>
@@ -192,15 +230,18 @@ export default function PilihKategoriPasien() {
                             </Box>
                         </Box>
                         <ModalKodeBooking open={openModalKodeBooking} onClose={() => setOpenModalKodeBooking(false)} />
-                    </>
+                    </Box>
                 )}
 
+                {/* Halaman Input Kode Booking */}
                 {inputCodePages && (
-                    <Box sx={style}>
+                    <Box sx={{ ...style }}>
                         <IconButton
                             onClick={() => {
                                 setInputCodePages(false);
                                 setMainPages(true);
+                                setErrCode(false);
+                                setIsLoading(false)
                             }}
                             sx={{
                                 position: 'absolute',
@@ -219,60 +260,61 @@ export default function PilihKategoriPasien() {
                         </Typography>
 
                         <Formik
-                            initialValues={{ otp: "" }}
-                            validationSchema={otpValidationSchema}
+                            initialValues={{ bookingCode: "" }}
+                            validationSchema={bookingCodeSchema}
+                            enableReinitialize
                             onSubmit={async (values) => {
-                                console.log("Kode booking:", values.otp);
+                                console.log("Kode booking:", values.bookingCode);
                                 setIsLoading(true);
-                                // await new Promise((resolve) => setTimeout(resolve, 3000));
-                                const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/patient/check-in', values.otp, {
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        // 'accessToken': `${token}`
-                                    },
-                                });
-                                console.log(response);
-                                setOpenModalKodeBooking(false)
-                                setInfoTicket(true);
-                                setIsLoading(false);
+                                console.log(values.bookingCode)
+                                const bookingCode = { bookingCode: values.bookingCode };
+                                try {
+                                    const response = await axios.post(
+                                        'https://hms.3dolphinsocial.com:8083/v1/patient/check-in',
+                                        bookingCode,
+                                        {
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            }
+                                        }
+                                    )
+                                    console.log("respon: ", response)
+                                    setOpenModalKodeBooking(false);
+                                    setInfoTicket(true);
+                                    setIsLoading(false);
+                                } catch (err: any) {
+                                    console.log(err.status)
+                                    setErrCode(true)
+                                }
                             }}
                         >
                             {({ errors, touched, setFieldValue, values, isValid, dirty }) => (
                                 <Form>
-                                    <Field name="otp">
+                                    <Field name="bookingCode">
                                         {() => (
-                                            <OTPInput
-                                                value={values.otp}
-                                                onChange={(otp) => setFieldValue("otp", otp)}
-                                                numInputs={6}
-                                                shouldAutoFocus
-                                                renderSeparator={<span style={{ margin: "0 10px" }}> </span>}
-                                                renderInput={(props) => (
-                                                    <input
-                                                        {...props}
-                                                        style={{
-                                                            width: "68px",
-                                                            height: "58px",
-                                                            textAlign: "center",
-                                                            border: "1px solid #8F85F3",
-                                                            borderRadius: "8px",
-                                                            fontSize: "20px",
-                                                            margin: "0 4px",
-                                                            outline: "none",
-                                                            padding: "8px",
-                                                            color: "black",
-                                                            backgroundColor: "white",
-                                                        }}
-                                                    />
-                                                )}
+                                            <TextField
+                                                variant="outlined"
+                                                fullWidth
+                                                placeholder="Masukkan kode booking"
+                                                value={values.bookingCode}
+                                                onChange={(e) => setFieldValue("bookingCode", e.target.value)}
+                                                error={Boolean(errors.bookingCode && touched.bookingCode)}
+                                                helperText={errors.bookingCode && touched.bookingCode ? errors.bookingCode : ""}
+                                                sx={{
+                                                    borderRadius: "8px",
+                                                    fontSize: "16px",
+                                                    marginBottom: "16px",
+                                                }}
+                                                inputProps={{
+                                                    style: {
+                                                        padding: "10px",
+                                                        textAlign: "center",
+                                                    },
+                                                }}
                                             />
                                         )}
                                     </Field>
-                                    {errors.otp && touched.otp && (
-                                        <Typography color="error" sx={{ mt: 1, fontSize: "14px" }}>
-                                            {errors.otp}
-                                        </Typography>
-                                    )}
+
                                     <Box sx={{ mt: 3, textAlign: "right" }}>
                                         <Button
                                             type="submit"
@@ -288,11 +330,14 @@ export default function PilihKategoriPasien() {
                                             }}
                                             disabled={!isValid || !dirty || isLoading}
                                         >
-                                            {isLoading ? (
-                                                <CircularProgress size={25} sx={{ color: "white" }} />
-                                            ) : (
-                                                "Submit"
-                                            )}
+                                            {errCode ? "Tidak ada data booking" :
+                                                (isLoading ? (
+                                                    <CircularProgress size={25} sx={{ color: "white" }} />
+                                                ) : (
+                                                    "Submit"
+                                                ))
+                                            }
+
                                         </Button>
                                     </Box>
                                 </Form>
@@ -300,20 +345,17 @@ export default function PilihKategoriPasien() {
                         </Formik>
                     </Box>
                 )}
-
                 {openModalPilihPembayaran && (
-                    <>
+                    <Box>
                         <CardMedia
                             component="img"
                             sx={{
-                                width: "60%",
+                                width: "100%",
                                 height: "350px",
                                 borderRadius: "24px",
                                 position: "relative",
-                                marginTop: "20px",
-                                "@media (max-width: 600px)": {
-                                    width: "100%"
-                                }
+                                marginTop: "-25px",
+                                boxShadow: 2
                             }
                             }
                             image={register}
@@ -322,7 +364,7 @@ export default function PilihKategoriPasien() {
                         <Box
                             sx={{
                                 bgcolor: '#ffffff',
-                                width: '57%',
+                                width: '95%',
                                 height: '100px',
                                 borderRadius: '24px',
                                 gap: '4px',
@@ -330,10 +372,11 @@ export default function PilihKategoriPasien() {
                                 my: '2%',
                                 display: 'flex',
                                 flexDirection: 'column',
+                                boxShadowL: 2
 
                             }}
                         >
-                            <Typography id="modal-modal-title" sx={{ mt: 2, fontSize: '18px', fontWeight: 600 }}>
+                            <Typography id="modal-modal-title" fontWeight={600} fontSize={'24px'} lineHeight={'26px'}>
                                 Pilih metode pembayaran
                             </Typography>
                             <Typography color="#747487" fontWeight={400} fontSize={'18px'}>
@@ -341,12 +384,23 @@ export default function PilihKategoriPasien() {
                             </Typography>
                         </Box>
 
-                        <Stack direction="column" width={'60%'} spacing={3}>
+                        <Stack direction="column" width={'100%'} spacing={3}>
                             {/* Pasien BPJS */}
                             <Link to="/tambahPasien/umum/offline" style={{ textDecoration: "none" }}>
-                                <Card sx={cardStyle}>
+                                <Card
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        borderRadius: "24px",
+                                        padding: "16px",
+                                        boxShadow: 2,
+                                        marginBottom: "16px",
+                                        bgcolor: '#D5D1FB'
+                                    }}
+                                >
                                     <Avatar alt="Kode Booking" src="/src/img/filling.png" sx={{ width: '88px', height: '88px' }} />
-                                    <Box>
+                                    <Box >
                                         <Typography sx={titleStyle}>Pasien Umum/asuransi</Typography>
                                         <Box sx={descriptionBoxStyle}>
                                             <Typography>Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.</Typography>
@@ -358,7 +412,18 @@ export default function PilihKategoriPasien() {
 
                             {/* Pasien Umum */}
                             <Link to="#" style={{ textDecoration: "none" }}>
-                                <Card sx={cardStyle}>
+                                <Card
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        borderRadius: "24px",
+                                        padding: "16px",
+                                        boxShadow: 2,
+                                        marginBottom: "16px",
+                                        bgcolor: '#D5D1FB'
+                                    }}
+                                >
                                     <Avatar alt="Kode Booking" src="/src/img/meidicine.png" sx={{ width: '88px', height: '88px' }} />
                                     <Box>
                                         <Typography sx={titleStyle}>Pasien non BPJS kesehatan</Typography>
@@ -379,7 +444,8 @@ export default function PilihKategoriPasien() {
                                 cursor: "pointer",
                                 fontWeight: 600,
                                 mt: '2%',
-                                width: "60%",
+                                boxShadow: 2,
+                                width: "100%",
                                 border: '1px solid #8F85F3',
                                 ":hover": { backgroundColor: 'inherit', color: '#8F85F3' }
                             }}
@@ -387,7 +453,7 @@ export default function PilihKategoriPasien() {
                         >
                             Kembali ke pilihan sebelumnya
                         </Button>
-                    </>
+                    </Box>
                 )}
 
 
@@ -401,9 +467,81 @@ export default function PilihKategoriPasien() {
                     />
                 )}
 
+                {tiketAntrianKonter && (
+                    <Box
+                        bgcolor={'white'}
+                        maxWidth={506}
+                        maxHeight={288}
+                        borderRadius={'32px'}
+                        padding={'24px'}
+                        display={'flex'}
+                        flexDirection={'column'}
+                        justifyContent={'space-between'} /* Konten tersebar rapi */
+                        alignItems={'center'} /* Konten berada di tengah horizontal */
+                        gap={3}
+                        position={'relative'} /* Untuk positioning tombol Close */
+                        boxShadow={'0px 4px 10px rgba(0, 0, 0, 0.1)'} /* Tambahan shadow agar lebih elegan */
+                    >
+                        {/* Tombol Close */}
+                        <IconButton
+                            onClick={() => {
+                                setInputCodePages(false);
+                                setMainPages(true);
+                                setTiketAntrianKonter(false);
+                            }}
+                            sx={{
+                                position: 'absolute',
+                                top: 8,
+                                right: 8,
+                                color: '#A8A8BD',
+                            }}
+                        >
+                            <CloseIcon />
+                        </IconButton>
+
+                        {/* Bagian Header */}
+                        <Box textAlign={'center'} mb={2}>
+                            <Typography fontWeight={600} fontSize={'20px'}>
+                                Rumah Sakit St. Carolus
+                            </Typography>
+                            <Typography
+                                fontWeight={400}
+                                fontSize={'14px'}
+                                color="#A8A8BD"
+                                lineHeight={1.5}
+                            >
+                                Jl. Salemba Raya No.41, RT.3/RW.5, Paseban, Kec. Senen, Kota Jakarta
+                                Pusat, Daerah Khusus Ibukota Jakarta 10440
+                            </Typography>
+                        </Box>
+
+                        {/* Bagian Nomor Antrian */}
+                        <Box textAlign={'center'} mb={2}>
+                            <Typography fontWeight={400} fontSize={'16px'} color="#747487">
+                                Nomor antrian konter
+                            </Typography>
+                            <Typography fontWeight={600} fontSize={'48px'} color="#6B63D1">
+                                {nomorAntrian}
+                            </Typography>
+                        </Box>
+
+                        {/* Bagian Footer */}
+                        <Typography
+                            fontWeight={400}
+                            fontSize={'14px'}
+                            color="#747487"
+                            textAlign={'center'}
+                            lineHeight={1.5}
+                        >
+                            Silahkan menuju konter dengan menyiapkan kartu tanda penduduk (KTP) untuk
+                            melengkapi data diri Anda, terimakasih.
+                        </Typography>
+                    </Box>
+                )}
+
             </Box >
         </>
-    )
+    );
 }
 
 const cardStyle = {
@@ -439,4 +577,9 @@ const descriptionBoxStyle = {
     flexDirection: "row",
     alignItems: "center",
     textDecoration: "none",
+    // maxWidth: "80%",
+    justifyContent: "space-between",
+    // bgcolor: 'red',
+    width: "100%",
+
 };

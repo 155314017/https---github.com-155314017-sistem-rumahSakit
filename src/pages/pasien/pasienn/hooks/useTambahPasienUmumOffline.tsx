@@ -7,6 +7,8 @@ import 'react-phone-input-2/lib/style.css';
 import { styled } from '@mui/material/styles';
 import { Radio } from '@mui/material';
 import { RadioProps } from '@mui/material/Radio';
+import dayjs from 'dayjs';
+import CreateAppointmentOffline from '../../../../services/ManagePatient/CreateAppoinmentOffline';
 
 type Doctor = {
     id: string;
@@ -375,23 +377,25 @@ export default function useTambahPasienUmumOffline() {
         }
         try {
             console.log(data);
-            // const response = await CreateAppointment(data)
-            // const createdDateTimeFormatted = dayjs.unix(response.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
-            // const dataSent = {
-            //     // nomorAntrian: response.data.queueDatum.queueNumber,
-            //     namaDokter: docterName,
-            //     clinic: clinicName,
-            //     tanggalReservasi: createdDateTimeFormatted,
-            //     jadwalKonsul: selectedSchedule,
-            //     bookingCode: response.data.bookingCode
-            // }
-            // console.log(dataSent);
-            // setDataTickets(dataSent)
+            const response = await CreateAppointmentOffline(data)
+            const createdDateTimeFormatted = dayjs.unix(response.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
+            const dataSent = {
+                // nomorAntrian: response.data.queueDatum.queueNumber,
+                namaDokter: docterName,
+                clinic: clinicName,
+                tanggalReservasi: createdDateTimeFormatted,
+                jadwalKonsul: selectedSchedule,
+                bookingCode: response.data.bookingCode
+            }
+            console.log(dataSent);
+            setDataTickets(dataSent)
             console.log('sukses')
             setMainPages(false)
-            setCurrentPage(3);
+            // setCurrentPage(3);
         } catch (err) {
             console.log("tes", err);
+            setMainPages(false)
+            setCurrentPage(3);
         }
     }
 
