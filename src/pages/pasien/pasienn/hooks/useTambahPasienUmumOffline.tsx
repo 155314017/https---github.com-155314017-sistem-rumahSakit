@@ -131,7 +131,7 @@ export default function useTambahPasienUmumOffline() {
             nikCari: Yup.string()
                 .matches(/^[0-9]+$/, 'NIK harus berupa angka')
                 .min(12, 'NIK minimal 12 digit')
-                .max(14, 'NIK maksimal 14 digit')
+                .max(16, 'NIK maksimal 14 digit')
                 .required('NIK wajib diisi'),
             // phonePasien: Yup.string().required('No. Handphone Pasien is required'),
             caraDatang: Yup.string().required('Cara datang is required'),
