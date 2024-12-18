@@ -141,8 +141,14 @@ export default function RawatJalanUmum() {
                                 setDataTickets(dataSent)
                                 setShowFormPage(false)
                                 setButtonDis(false)
-                            } catch (err) {
-                                console.log(err)
+                            } catch (err: any) {
+                                if (err.response && err.response.status) {
+                                    alert(`Error: HTTP ${err.response.status} - ${err.response.statusText || 'Something went wrong'}`);
+                                } else if (err.code) {
+                                    alert(`Error Code: ${err.code}`);
+                                } else {
+                                    alert('Unknown error occurred');
+                                }
                             }
                             console.log("Form submitted with values: ", data);
                         }

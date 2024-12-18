@@ -93,8 +93,8 @@ export default function useRegisterPJ() {
     const validationCheck = async (values: FormValues) => {
         console.log("nilai: ", values)
         const { nik, email } = values;
-        const nikIsValid = nik === "1234567891011";
-        const emailIsValid = email === "chornaeld@gmail.com";
+        const nikIsValid = nik === data.identityNumber;
+        const emailIsValid = email === data.email;
         setNikError(!nikIsValid);
         setEmailError(!emailIsValid);
 

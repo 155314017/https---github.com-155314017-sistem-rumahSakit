@@ -14,6 +14,7 @@ import useBioPjBaru from "../hooks/useBioPjBaru";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import dayjs from "dayjs";
 
 
 
@@ -120,7 +121,7 @@ export default function BioPjBaru() {
                                 </Typography>
 
                                 <Formik
-                                    initialValues={{ nik: switchValue ? data.identityNumber : '', email: switchValue ? data.email : '', phone: switchValue ? data.phone : '', fullname: switchValue ? data.name : '', gender: switchValue ? data.gender : '', address: switchValue ? data.address : '', birthPlace: data.birthPlace }}
+                                    initialValues={{ relation: '', birthDate: switchValue ? data.birtDate : '', nik: switchValue ? data.identityNumber : '', email: switchValue ? data.email : '', phone: switchValue ? data.phone : '62', fullname: switchValue ? data.name : '', gender: switchValue ? data.gender : '', address: switchValue ? data.address : '', birthPlace: switchValue ? data.birthPlace : '' }}
                                     enableReinitialize
                                     validationSchema={validationSchema}
                                     onSubmit={async (values) => {
@@ -138,9 +139,9 @@ export default function BioPjBaru() {
                                             guardianAddress: values.address,
                                             // MASIH ERROR
                                             guardianType: 'guardianType',
-                                            guardianRelation: 'relasi',
-                                            guardianBirthPlace: 'place',
-                                            guardianBirthDate: 'date',
+                                            guardianRelation: values.relation,
+                                            guardianBirthPlace: values.birthPlace,
+                                            guardianBirthDate: values.birthDate,
                                         }
                                         console.log("data dikirm ke API: ", dataRegis)
                                         try {
@@ -230,11 +231,12 @@ export default function BioPjBaru() {
                                                 />
 
                                                 <FormControl sx={{ width: "100%", height: "56px" }}>
-                                                    <FormLabel sx={{ fontSize: '16px', lineHeight: '18px', marginBottom: '15px', color: 'black' }}>
+                                                    <Typography sx={{ fontSize: '16px', lineHeight: '18px', marginBottom: '15px', color: 'black' }}>
                                                         Cara datang/pengantar
-                                                    </FormLabel>
+                                                    </Typography>
                                                     <RadioGroup
                                                         aria-labelledby="demo-radio-buttons-group-label"
+                                                        onChange={(event) => setFieldValue("relation", event.target.value)}
                                                         sx={{
                                                             display: "flex",
                                                             flexDirection: "row",
@@ -260,6 +262,7 @@ export default function BioPjBaru() {
                                                         <span style={{ color: "#d32f2f" }}>*</span>{" "}
                                                     </Typography>
                                                     <PhoneInput
+                                                        disabled={switchValue}
                                                         country={"id"}
                                                         value={values.phone}
                                                         onChange={(phone) => setFieldValue("phone", phone)}
@@ -363,6 +366,15 @@ export default function BioPjBaru() {
                                                             <Box sx={{ overflow: 'hidden' }}>
                                                                 <DemoContainer components={['DatePicker']}>
                                                                     <DatePicker
+                                                                        disabled={switchValue}
+                                                                        value={dayjs(values.birthDate)}
+                                                                        onChange={(newValue) => {
+                                                                            if (newValue) {
+                                                                                const formattedDate = newValue.format("YYYY-MM-DD");
+                                                                                values.birthDate = formattedDate;
+                                                                                console.log("tanggalLahir", formattedDate);
+                                                                            }
+                                                                        }}
                                                                         slotProps={{
                                                                             textField: {
                                                                                 placeholder: "Tanggal Lahir",
@@ -394,8 +406,8 @@ export default function BioPjBaru() {
                                                                 onChange={(e) => setFieldValue("gender", e.target.value)}
                                                                 row
                                                             >
-                                                                <FormControlLabel value="WOMEN" control={<BpRadio />} label="Female" />
-                                                                <FormControlLabel value="MEN" control={<BpRadio />} label="Male" />
+                                                                <FormControlLabel disabled={switchValue ? true : false} value="WOMEN" control={<BpRadio />} label="Female" />
+                                                                <FormControlLabel disabled={switchValue ? true : false} value="MEN" control={<BpRadio />} label="Male" />
                                                             </RadioGroup>
                                                         </FormControl>
                                                     </FormControl>
@@ -403,6 +415,7 @@ export default function BioPjBaru() {
 
                                                 <Typography sx={{ fontSize: "16px", mt: 2 }}>Alamat tempat tinggal penanggung jawab<span style={{ color: "red" }}>*</span></Typography>
                                                 <Field
+                                                    disabled={switchValue}
                                                     name="address"
                                                     as={TextField}
                                                     placeholder="Masukkan tempat tinggal penanggung jawab"
@@ -489,7 +502,7 @@ export default function BioPjBaru() {
                         </Box>
                     }
                 </Box>
-            </Box>
+            </Box >
         </>
     );
 }
