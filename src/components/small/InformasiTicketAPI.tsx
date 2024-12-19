@@ -1,7 +1,10 @@
+import { useRef } from "react";
 import { Button, CardMedia, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import my from "../../img/String.png"
-import logo from "../../img/St.carolus.png"
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import my from "../../img/String.png";
+import logo from "../../img/St.carolus.png";
 import CloseIcon from '@mui/icons-material/Close';
 
 type InformasiTicketProps = {
@@ -10,22 +13,56 @@ type InformasiTicketProps = {
     clinic: string;
     tanggalReservasi: string;
     jadwalKonsul: string | null;
+    bookingCode: string;
     bgcolor?: string;
     onClose?: () => void;
-}
+};
 
-const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi, jadwalKonsul, bgcolor = "#ffffff", onClose }: InformasiTicketProps) => {
+const InformasiTicketAPI = ({
+    nomorAntrian,
+    namaDokter,
+    clinic,
+    tanggalReservasi,
+    jadwalKonsul,
+    bookingCode,
+    bgcolor = "#ffffff",
+    onClose,
+}: InformasiTicketProps) => {
+    const ticketRef = useRef<HTMLDivElement>(null);
+
+    const downloadTicketAsPDF = async () => {
+        if (!ticketRef.current) return;
+
+        const canvas = await html2canvas(ticketRef.current);
+        const imgData = canvas.toDataURL("image/png");
+
+        const pdf = new jsPDF("p", "mm", "a4");
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save("ticket.pdf");
+    };
+
     return (
-        <Box width={"506px"} height={"504px"} borderRadius={"32px"} bgcolor={bgcolor} position={"relative"} padding={"25px"}>
+        <Box
+            ref={ticketRef}
+            width={"506px"}
+            height={"fit-content"}
+            borderRadius={"32px"}
+            bgcolor={bgcolor}
+            position={"relative"}
+            padding={"25px"}
+        >
             {onClose && (
                 <IconButton
                     onClick={onClose}
                     sx={{
-                        position: 'absolute',
+                        position: "absolute",
                         top: 8,
                         right: 8,
-                        color: '#A8A8BD',
-                        zIndex: 10
+                        color: "#A8A8BD",
+                        zIndex: 10,
                     }}
                 >
                     <CloseIcon />
@@ -34,7 +71,7 @@ const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi
             <CardMedia
                 component="img"
                 height="162px"
-                sx={{ width: '200px', position: 'absolute', left: '63%', zIndex: '1', top: '1%' }}
+                sx={{ width: "200px", position: "absolute", left: "63%", zIndex: "1", top: "1%" }}
                 image={my}
                 alt="Example Image"
             />
@@ -46,53 +83,70 @@ const InformasiTicketAPI = ({ nomorAntrian, namaDokter, clinic, tanggalReservasi
                     image={logo}
                     alt="Example Logo"
                 />
-                <Typography color="#0A0A0D" fontSize={"20px"} fontWeight={"600"} >Rumah sakit St. Carolus</Typography>
-                <Typography color="#A8A8BD" fontSize={"16px"} >Jl. Salemba Raya No.41, RT.3/RW.5, Paseban, Kec. Senen, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10440</Typography>
-                <Box display={"flex"} flexDirection={"column"} >
-                    <Typography fontSize={"16px"} >Nomor antrian</Typography>
-                    <Typography fontSize={"48px"} fontWeight={"600"} >{nomorAntrian}</Typography>
+                <Typography color="#0A0A0D" fontSize={"20px"} fontWeight={"600"}>
+                    Rumah sakit St. Carolus
+                </Typography>
+                <Typography color="#A8A8BD" fontSize={"16px"}>
+                    Jl. Salemba Raya No.41, RT.3/RW.5, Paseban, Kec. Senen, Kota Jakarta
+                    Pusat, Daerah Khusus Ibukota Jakarta 10440
+                </Typography>
+                <Box display={"flex"} flexDirection={"column"}>
+                    <Typography fontSize={"16px"}>Nomor antrian</Typography>
+                    <Typography fontSize={"48px"} fontWeight={"600"}>
+                        {nomorAntrian}
+                    </Typography>
+                    <Typography fontSize={"16px"}>Booking Code</Typography>
+                    <Typography fontSize={"48px"} fontWeight={"600"}>
+                        {bookingCode}
+                    </Typography>
                 </Box>
-                <Box display={"flex"} flexDirection={"row"} gap={"60px"} justifyContent={'space-between'} maxWidth={'75%'} >
+                <Box display={"flex"} flexDirection={"row"} gap={"60px"} justifyContent={"space-between"} maxWidth={"75%"}>
                     <Box>
                         <Typography>Dokter yang bertugas</Typography>
-                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"} >{namaDokter}</Typography>
+                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                            {namaDokter}
+                        </Typography>
                     </Box>
                     <Box>
                         <Typography>Poli yang dituju</Typography>
-                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"} >{clinic}</Typography>
-
+                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                            {clinic}
+                        </Typography>
                     </Box>
                 </Box>
-                <Box display={"flex"} flexDirection={"row"} gap={"80px"} justifyContent={'space-between'} >
-                    <Box display={"flex"} flexDirection={"column"} >
+                <Box display={"flex"} flexDirection={"row"} gap={"80px"} justifyContent={"space-between"}>
+                    <Box display={"flex"} flexDirection={"column"}>
                         <Typography>Tanggal reservasi</Typography>
-                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"} >{tanggalReservasi}</Typography>
+                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                            {tanggalReservasi}
+                        </Typography>
                     </Box>
-                    <Box display={"flex"} flexDirection={"column"} >
+                    <Box display={"flex"} flexDirection={"column"}>
                         <Typography>Jadwal konsultasi</Typography>
-                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"} >{jadwalKonsul}</Typography>
+                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                            {jadwalKonsul}
+                        </Typography>
                     </Box>
                 </Box>
-
                 <Button
                     fullWidth
                     sx={{
-                        width: '100%',
-                        height: '48px',
-                        marginTop: '20px',
-                        backgroundColor: '#8F85F3',
-                        color: 'white',
-                        border: '1px solid',
-                        borderColor: '#8F85F3',
-                        borderRadius: '8px'
+                        width: "100%",
+                        height: "48px",
+                        marginTop: "20px",
+                        backgroundColor: "#8F85F3",
+                        color: "white",
+                        border: "1px solid",
+                        borderColor: "#8F85F3",
+                        borderRadius: "8px",
                     }}
+                    onClick={downloadTicketAsPDF}
                 >
                     Unduh tiket
                 </Button>
             </Box>
-
         </Box>
-    )
-}
+    );
+};
 
 export default InformasiTicketAPI;
