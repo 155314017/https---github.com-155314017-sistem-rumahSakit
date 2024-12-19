@@ -13,6 +13,17 @@ import axios from "axios";
 import { Stack } from "@mui/system";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 import GenerateQueuePatientServices from "../../../../services/Patient Tenant/GenerateQueuePatientServices";
+import { GetDoctorServices } from "../../../../services/Admin Tenant/ManageDoctor/GetDoctorService";
+import { getClinic } from "../../../../services/Admin Tenant/ManageClinic/GetClinic";
+import dayjs from "dayjs";
+
+type bookingCodeData = {
+    nomorAntrian: string,
+    namaDokter: string,
+    namaKlinik: string,
+    tanggalReserve: string,
+    jadwalKonsul: string,
+}
 
 const style = {
     position: "absolute" as const,
@@ -44,6 +55,7 @@ export default function PilihKategoriPasien() {
     const [nomorAntrian, setNomorAntrian] = useState<string | number>(0);
     const [tiketAntrianKonter, setTiketAntrianKonter] = useState(false);
     const [errCode, setErrCode] = useState(false)
+    const [dataKodeBooking, setDataKodeBooking] = useState<bookingCodeData>()
 
     const handleBack = () => {
         setOpenModalPilihPembayaran(false);
@@ -278,7 +290,17 @@ export default function PilihKategoriPasien() {
                                             }
                                         }
                                     )
-                                    console.log("respon: ", response)
+                                    const namaDokter = await GetDoctorServices(response.data.data.registrationDatum.doctorDataId)
+                                    const namaKlinik = await getClinic(response.data.data.registrationDatum.masterClinicId)
+                                    const dateReserve = dayjs(response.data.data.createdDateTime * 1000).format('YYYY-MM-DD HH:mm');
+                                    const dataBooking = {
+                                        nomorAntrian: response.data.data.queueNumber,
+                                        namaDokter: namaDokter.name,
+                                        namaKlinik: namaKlinik.name,
+                                        tanggalReserve: dateReserve,
+                                        jadwalKonsul: "belum",
+                                    }
+                                    setDataKodeBooking(dataBooking)
                                     setOpenModalKodeBooking(false);
                                     setInfoTicket(true);
                                     setIsLoading(false);
@@ -460,12 +482,12 @@ export default function PilihKategoriPasien() {
 
                 {infoTicket && (
                     <InformasiTicketAPI
-                        clinic="Clinic A"
-                        jadwalKonsul={"Sabtu"}
-                        namaDokter="Tyo Herlambang"
-                        nomorAntrian={'2'}
-                        tanggalReservasi=""
-                        bookingCode="2"
+                        clinic={dataKodeBooking?.namaKlinik}
+                        jadwalKonsul={dataKodeBooking?.jadwalKonsul}
+                        namaDokter={dataKodeBooking?.namaDokter}
+                        nomorAntrian={dataKodeBooking?.nomorAntrian}
+                        tanggalReservasi={dataKodeBooking?.tanggalReserve}
+                        bookingCode=""
                         onClose={() => {
                             console.log("Tombol close ditekan");
                             setInfoTicket(false);

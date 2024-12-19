@@ -9,11 +9,11 @@ import CloseIcon from '@mui/icons-material/Close';
 
 type InformasiTicketProps = {
     nomorAntrian: any | undefined;
-    namaDokter: string;
-    clinic: string;
-    tanggalReservasi: string;
-    jadwalKonsul: string | null;
-    bookingCode: string;
+    namaDokter: string | undefined;
+    clinic: string | undefined;
+    tanggalReservasi: string | undefined;
+    jadwalKonsul: string | null | undefined;
+    bookingCode?: string | undefined;
     bgcolor?: string;
     onClose?: () => void;
 };
@@ -95,10 +95,14 @@ const InformasiTicketAPI = ({
                     <Typography fontSize={"48px"} fontWeight={"600"}>
                         {nomorAntrian}
                     </Typography>
-                    <Typography fontSize={"16px"}>Booking Code</Typography>
-                    <Typography fontSize={"48px"} fontWeight={"600"}>
-                        {bookingCode}
-                    </Typography>
+                    {bookingCode != '' && (
+                        <>
+                            <Typography fontSize={"16px"}>Booking Code</Typography>
+                            <Typography fontSize={"48px"} fontWeight={"600"}>
+                                {bookingCode}
+                            </Typography>
+                        </>
+                    )}
                 </Box>
                 <Box display={"flex"} flexDirection={"row"} gap={"60px"} justifyContent={"space-between"} maxWidth={"75%"}>
                     <Box>
@@ -114,20 +118,38 @@ const InformasiTicketAPI = ({
                         </Typography>
                     </Box>
                 </Box>
-                <Box display={"flex"} flexDirection={"row"} gap={"80px"} justifyContent={"space-between"}>
-                    <Box display={"flex"} flexDirection={"column"}>
-                        <Typography>Tanggal reservasi</Typography>
-                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
-                            {tanggalReservasi}
-                        </Typography>
+                {bookingCode != '' && (
+                    <Box display={"flex"} flexDirection={"row"} gap={"80px"} justifyContent={"space-between"}>
+                        <Box display={"flex"} flexDirection={"column"}>
+                            <Typography>Tanggal reservasi</Typography>
+                            <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                                {tanggalReservasi}
+                            </Typography>
+                        </Box>
+                        <Box display={"flex"} flexDirection={"column"}>
+                            <Typography>Jadwal konsultasi</Typography>
+                            <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                                {jadwalKonsul}
+                            </Typography>
+                        </Box>
                     </Box>
-                    <Box display={"flex"} flexDirection={"column"}>
-                        <Typography>Jadwal konsultasi</Typography>
-                        <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
-                            {jadwalKonsul}
-                        </Typography>
+                )}
+                {bookingCode == '' && (
+                    <Box display={"flex"} flexDirection={"row"} gap={"80px"} justifyContent={"space-between"} width={'80%'} >
+                        <Box display={"flex"} flexDirection={"column"}>
+                            <Typography>Tanggal reservasi</Typography>
+                            <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                                {tanggalReservasi}
+                            </Typography>
+                        </Box>
+                        <Box display={"flex"} flexDirection={"column"}>
+                            <Typography>Jadwal konsultasi</Typography>
+                            <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                                {jadwalKonsul}
+                            </Typography>
+                        </Box>
                     </Box>
-                </Box>
+                )}
                 <Button
                     fullWidth
                     sx={{
