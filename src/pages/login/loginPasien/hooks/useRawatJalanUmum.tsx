@@ -26,6 +26,7 @@ type dataTicket = {
   clinic: string;
   tanggalReservasi: string;
   jadwalKonsul: string | null;
+  bookingCode: string;
 }
 
 

@@ -195,7 +195,7 @@ export default function BioPjBaru() {
                                                     // helperText={touched.nik && errors.nik}
                                                     disabled={switchValue}
                                                 />
-                                                
+
                                                 <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Email</FormLabel>
                                                 <Field
                                                     name="email"
@@ -229,71 +229,71 @@ export default function BioPjBaru() {
                                                     // helperText={touched.email && errors.email}
                                                     disabled={switchValue}
                                                 />
-                                                <Box sx={{display: 'flex', flexDirection:'column', justifyContent: 'space-between', marginTop: '20px'}}>
-                                                
-                                                <Box sx={{ display: 'flex', flexDirection: 'column'}}>
+                                                <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginTop: '20px' }}>
 
-                                                <FormControl sx={{ width: "100%", height: "auto" }}>
-                                                    <Typography sx={{ fontSize: '16px', lineHeight: '18px', marginBottom: '15px', color: 'black' }}>
-                                                        Cara datang/pengantar
-                                                    </Typography>
-                                                    <RadioGroup
-                                                        aria-labelledby="demo-radio-buttons-group-label"
-                                                        onChange={(event) => setFieldValue("relation", event.target.value)}
-                                                        sx={{
-                                                            display: "flex",
-                                                            flexDirection: "row",
-                                                            flexWrap: "wrap",
-                                                            border: "1px solid #A8A8BD",
-                                                            borderRadius: "16px",
-                                                            padding: '16px',
-                                                            gap: "24px",
-                                                            justifyContent: 'flex-start',
-                                                        }}
-                                                    >
-                                                        <FormControlLabel value="sendiri" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Sendiri" />
-                                                        <FormControlLabel value="keluarga" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Keluarga" />
-                                                        <FormControlLabel value="polisi" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Polisi" />
-                                                        <FormControlLabel value="ambulan" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Ambulan" />
-                                                        <FormControlLabel value="lainnya" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Lainnya" />
-                                                    </RadioGroup>
-                                                </FormControl>
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+
+                                                        <FormControl sx={{ width: "100%", height: "auto" }}>
+                                                            <Typography sx={{ fontSize: '16px', lineHeight: '18px', marginBottom: '15px', color: 'black' }}>
+                                                                Cara datang/pengantar
+                                                            </Typography>
+                                                            <RadioGroup
+                                                                aria-labelledby="demo-radio-buttons-group-label"
+                                                                onChange={(event) => setFieldValue("relation", event.target.value)}
+                                                                sx={{
+                                                                    display: "flex",
+                                                                    flexDirection: "row",
+                                                                    flexWrap: "wrap",
+                                                                    border: "1px solid #A8A8BD",
+                                                                    borderRadius: "16px",
+                                                                    padding: '16px',
+                                                                    gap: "24px",
+                                                                    justifyContent: 'flex-start',
+                                                                }}
+                                                            >
+                                                                <FormControlLabel value="sendiri" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Sendiri" />
+                                                                <FormControlLabel value="keluarga" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Keluarga" />
+                                                                <FormControlLabel value="polisi" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Polisi" />
+                                                                <FormControlLabel value="ambulan" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Ambulan" />
+                                                                <FormControlLabel value="lainnya" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Lainnya" />
+                                                            </RadioGroup>
+                                                        </FormControl>
+                                                    </Box>
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                                        <FormControl sx={{ mt: 2 }} >
+                                                            <Typography mt={2} >
+                                                                No. Handphone penanggung jawab{" "}
+                                                                <span style={{ color: "#d32f2f" }}>*</span>{" "}
+                                                            </Typography>
+                                                            <PhoneInput
+                                                                disabled={switchValue}
+                                                                country={"id"}
+                                                                value={values.phone}
+                                                                onChange={(phone) => setFieldValue("phone", phone)}
+                                                                inputStyle={{
+                                                                    height: "48px",
+                                                                    borderRadius: "8px",
+                                                                    border: touched.phone && errors.phone ? "1px solid #f44336" : "1px solid #ccc",
+                                                                    padding: "10px 40px 10px 60px",
+                                                                    backgroundColor: touched.phone && errors.phone ? "#ffcccc" : 'inherit',
+                                                                    fontSize: "16px",
+                                                                    width: "100%",
+                                                                    marginTop: "10px",
+                                                                }}
+                                                                buttonStyle={{
+                                                                    borderRadius: "8px 0 0 8px",
+                                                                    border: "1px solid #ccc",
+                                                                }}
+                                                                containerStyle={{
+                                                                    marginBottom: "10px",
+                                                                    width: "100%",
+                                                                }}
+                                                                onBlur={handleBlur("phone")}
+                                                            />
+                                                        </FormControl>
+                                                    </Box>
                                                 </Box>
-                                                <Box sx={{ display: 'flex', flexDirection: 'column'}}>
-                                                <FormControl sx={{ mt: 2 }} >
-                                                    <Typography mt={2} >
-                                                        No. Handphone penanggung jawab{" "}
-                                                        <span style={{ color: "#d32f2f" }}>*</span>{" "}
-                                                    </Typography>
-                                                    <PhoneInput
-                                                        disabled={switchValue}
-                                                        country={"id"}
-                                                        value={values.phone}
-                                                        onChange={(phone) => setFieldValue("phone", phone)}
-                                                        inputStyle={{
-                                                            height: "48px",
-                                                            borderRadius: "8px",
-                                                            border: touched.phone && errors.phone ? "1px solid #f44336" : "1px solid #ccc",
-                                                            padding: "10px 40px 10px 60px",
-                                                            backgroundColor: touched.phone && errors.phone ? "#ffcccc" : 'inherit',
-                                                            fontSize: "16px",
-                                                            width: "100%",
-                                                            marginTop: "10px",
-                                                        }}
-                                                        buttonStyle={{
-                                                            borderRadius: "8px 0 0 8px",
-                                                            border: "1px solid #ccc",
-                                                        }}
-                                                        containerStyle={{
-                                                            marginBottom: "10px",
-                                                            width: "100%",
-                                                        }}
-                                                        onBlur={handleBlur("phone")}
-                                                    />
-                                                </FormControl>
-                                                </Box>
-                                                </Box>
-                                                
+
 
                                                 <FormLabel sx={{ fontSize: '18px' }}>Nama lengkap penanggung jawab</FormLabel>
                                                 <Field
@@ -385,6 +385,8 @@ export default function BioPjBaru() {
                                                                         slotProps={{
                                                                             textField: {
                                                                                 placeholder: "Tanggal Lahir",
+                                                                                error: touched.birthDate && Boolean(errors.birthDate), // Error hanya saat touched dan ada error
+                                                                                helperText: touched.birthDate && errors.birthDate, // Menampilkan pesan error saat tidak valid
                                                                                 sx: {
                                                                                     borderRadius: '8px',
                                                                                     height: '60px',
@@ -401,6 +403,7 @@ export default function BioPjBaru() {
                                                             </Box>
                                                         </LocalizationProvider>
                                                     </FormControl>
+
                                                 </Box>
                                                 <FormLabel id="demo-controlled-radio-buttons-group">Jenis Kelamin Pasien</FormLabel>
                                                 <Box display={'flex'} flexDirection={'row'} padding={1} border={"1px solid #A8A8BD"} borderRadius={"12px"} pl={3}>

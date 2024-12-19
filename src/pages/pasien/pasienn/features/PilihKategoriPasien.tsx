@@ -465,6 +465,7 @@ export default function PilihKategoriPasien() {
                         namaDokter="Tyo Herlambang"
                         nomorAntrian={'2'}
                         tanggalReservasi=""
+                        bookingCode="2"
                         onClose={() => {
                             console.log("Tombol close ditekan");
                             setInfoTicket(false);

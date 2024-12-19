@@ -141,6 +141,7 @@ export default function RawatJalanUmum() {
                                     clinic: clinicName,
                                     tanggalReservasi: createdDateTimeFormatted,
                                     jadwalKonsul: selectedSchedule,
+                                    bookingCode: response.data.data.bookingCode
                                 }
 
                                 setDataTickets(dataSent)
@@ -400,6 +401,7 @@ export default function RawatJalanUmum() {
                                 namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
                                 nomorAntrian={dataTickets?.nomorAntrian}
                                 tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
+                                bookingCode={dataTickets?.bookingCode || "Unknown"}
                             />
                         </Box>
                     </Box>
