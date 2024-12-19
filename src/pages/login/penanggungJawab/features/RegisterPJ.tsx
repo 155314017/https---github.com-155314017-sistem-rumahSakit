@@ -27,11 +27,12 @@ export default function RegisterPJ() {
         loginSuccess,
         show,
         showTemporarySuccessLogin,
-        validationCheck,
         handleSwitchChange,
         switchValue,
         data,
         navigate,
+        notFound,
+        validationCheck
     } = useRegisterPJ();
     return (
         <>
@@ -137,10 +138,9 @@ export default function RegisterPJ() {
                                 enableReinitialize
                                 validationSchema={switchValue ? null : validationSchema}
                                 onSubmit={async (values) => {
-                                    if (await validationCheck(values)) {
-                                        console.log("nilai dikirim: ", values);
+                                        await validationCheck(values)
                                         await showTemporarySuccessLogin();
-                                    }
+                                    
                                 }}
                             >
                                 {({
@@ -273,7 +273,7 @@ export default function RegisterPJ() {
                         </Box>
                     )}
 
-                    {/* {notFound && (
+                    {notFound && (
                 <Box
                     sx={{
                         display: "flex",
@@ -296,8 +296,8 @@ export default function RegisterPJ() {
                         </Typography>
                     </Box>
                 </Box>
-            )} */}
-
+            )
+        }
 
 
                 </Box>

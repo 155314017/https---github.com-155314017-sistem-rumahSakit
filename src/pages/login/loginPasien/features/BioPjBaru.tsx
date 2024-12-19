@@ -31,6 +31,8 @@ export default function BioPjBaru() {
         navigate,
         noIdentity,
         currentView,
+        nikPjBaru,
+        emailPjBaru
     } = useBioPjBaru();
 
     return (
@@ -121,7 +123,7 @@ export default function BioPjBaru() {
                                 </Typography>
 
                                 <Formik
-                                    initialValues={{ relation: '', birthDate: switchValue ? data.birtDate : '', nik: switchValue ? data.identityNumber : '', email: switchValue ? data.email : '', phone: switchValue ? data.phone : '62', fullname: switchValue ? data.name : '', gender: switchValue ? data.gender : '', address: switchValue ? data.address : '', birthPlace: switchValue ? data.birthPlace : '' }}
+                                    initialValues={{ relation: '', birthDate: switchValue ? data.birtDate : '', nik: switchValue ? data.identityNumber : nikPjBaru, email: switchValue ? data.email : emailPjBaru, phone: switchValue ? data.phone : '62', fullname: switchValue ? data.name : '', gender: switchValue ? data.gender : '', address: switchValue ? data.address : '', birthPlace: switchValue ? data.birthPlace : '' }}
                                     enableReinitialize
                                     validationSchema={validationSchema}
                                     onSubmit={async (values) => {
@@ -190,10 +192,10 @@ export default function BioPjBaru() {
                                                     }}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    value={values.nik}
+                                                    value={values.nik || nikPjBaru}
                                                     error={touched.nik && Boolean(errors.nik)}
                                                     // helperText={touched.nik && errors.nik}
-                                                    disabled={switchValue}
+                                                    disabled={true}
                                                 />
 
                                                 <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Email</FormLabel>
@@ -224,10 +226,10 @@ export default function BioPjBaru() {
                                                     }}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    value={values.email}
+                                                    value={values.email || emailPjBaru}
                                                     error={touched.email && Boolean(errors.email)}
                                                     // helperText={touched.email && errors.email}
-                                                    disabled={switchValue}
+                                                    disabled={true}
                                                 />
                                                 <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginTop: '20px' }}>
 

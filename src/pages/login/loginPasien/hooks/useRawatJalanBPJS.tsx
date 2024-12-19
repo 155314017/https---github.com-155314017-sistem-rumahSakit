@@ -12,6 +12,7 @@ const validationSchema = Yup.object({
 
 export default function useRawatJalanBPJS() {
     const [showFormPage, setSHowFormPage] = useState(true);
+    
   return {
     showFormPage,
     setSHowFormPage,

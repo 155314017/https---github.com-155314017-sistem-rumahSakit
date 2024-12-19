@@ -15,6 +15,8 @@ export default function KategoriPasien() {
     setPasienBaru,
     navigate,
     patientId,
+    notFound,
+    show
   } = useKategoriPasien();
 
   return (
@@ -78,7 +80,9 @@ export default function KategoriPasien() {
             bgcolor: "#fff",
           }}
         >
-
+        {show && (
+          
+        
           <Box sx={{ display: "flex", flexDirection: "column", gap: "14px", width: '80%' }}>
             <Typography
               sx={{ fontSize: "32px", fontWeight: "600", lineHeight: "34px" }}
@@ -186,8 +190,38 @@ export default function KategoriPasien() {
                 </Button>
               </>
             )}
+            
+
           </Box>
+          )}
+          {notFound && (
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        p: 5,
+                        position: "absolute",
+                        width: "60%",
+                        flexDirection: 'column',
+                    }}
+                >
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
+                            Data Not Found  !
+                        </Typography>
+                        <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                            Are you sure you filled the field ?? Look sus !
+                        </Typography>
+                        <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                            Keep playing kiddos !
+                        </Typography>
+                    </Box>
+                </Box>
+            )}
         </Box>
+        
+
+
       </Box>
     </>
   );

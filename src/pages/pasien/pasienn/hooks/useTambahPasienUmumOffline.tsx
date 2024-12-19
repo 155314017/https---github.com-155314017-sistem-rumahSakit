@@ -10,6 +10,7 @@ import { RadioProps } from '@mui/material/Radio';
 import dayjs from 'dayjs';
 import CreateAppointmentOffline from '../../../../services/ManagePatient/CreateAppoinmentOffline';
 import UpdatePatientGuards from '../../../../services/Patient Tenant/UpdatePatientGuard';
+import AlertWarning from '../../../../components/small/AlertWarning';
 
 type Doctor = {
     id: string;
@@ -84,6 +85,7 @@ export default function useTambahPasienUmumOffline() {
     const [mainPages, setMainPages] = useState(true);
     const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
     const [clinicName, setClinicName] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
 
     const breadcrumbItems = [
         { label: "Pasien Lama", href: "/tes" },
@@ -243,10 +245,18 @@ export default function useTambahPasienUmumOffline() {
         fetchDoctorData();
     }, []);
 
+    const showTemporaryAlert = async () => {
+        setShowAlert(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setShowAlert(false);
+    };
+
     const findPatientByNik = async (nik: string) => {
         try {
             const response = await GetPatientByNIKServices(nik);
             console.log("Responseee: ", response?.data);
+            console.log(response);
+            if(response?.responseCode === "200") {
             setPatientData(response?.data as ResponsePatient);
             const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
             const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
@@ -254,8 +264,14 @@ export default function useTambahPasienUmumOffline() {
             setBirthPlace(birthPlaceProcess ? birthPlaceProcess : "Data tidak ada")
             console.log(birthDate, birthPlace);
             setPatientFullsPage(false);
-        } catch (error) {
-            console.error("Error fetching", error);
+            console.log(response?.data);
+            } 
+            
+        } catch (err: any) {
+            // setPatientFullsPage(false);
+           if(err.response.status === 404) {
+            showTemporaryAlert();
+           }
         }
     }
 
@@ -462,6 +478,7 @@ export default function useTambahPasienUmumOffline() {
         setDataTickets,
         dataTickets,
         birthDate,
-        birthPlace
+        birthPlace,
+        showAlert
     }
 }

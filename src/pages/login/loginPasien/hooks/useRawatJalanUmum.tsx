@@ -43,6 +43,8 @@ export default function useRawatJalanUmum() {
   const [selectedSchedule, setSelectedSchedule] = useState<string | null>(null);
   const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
   const [buttonDis, setButtonDis] = useState(false);
+  const [notFound, setNotFound] = useState(false);
+  const [show, setShow] = useState(true);
   const [patientId, setPatientId] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
@@ -129,6 +131,21 @@ export default function useRawatJalanUmum() {
     fetchDoctorData();
   }, []);
 
+
+  useEffect(() => {
+
+    if (patientId === '') {
+        setNotFound(true);
+        setShow(false)
+        
+    } else {
+
+        setNotFound(false);
+        setShow(true)
+        
+    }
+}, [patientId]);
+
   return {
     showFormPage,
     setShowFormPage,
@@ -155,5 +172,7 @@ export default function useRawatJalanUmum() {
     setButtonDis,
     buttonDis,
     calendarKey,
+    notFound,
+    show
   }
 }

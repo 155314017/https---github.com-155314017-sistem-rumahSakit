@@ -24,6 +24,7 @@ import CustomCalender from "../../../../components/medium/CustomCalender";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 import bgImg from "../../../../assets/img/Bg-desktop.svg"
 import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
+import AlertWarning from "../../../../components/small/AlertWarning";
 
 
 export default function TambahPasienUmumOffline() {
@@ -55,6 +56,7 @@ export default function TambahPasienUmumOffline() {
         dataTickets,
         birthDate,
         birthPlace
+        ,showAlert
 
     } = useTambahPasienUmumOffline();
 
@@ -87,16 +89,20 @@ export default function TambahPasienUmumOffline() {
                 width: '60%',
             }}>
                 <BreadCrumbBasic title="Pasien lama" description="Pasien yang pernah datang sebelumnya untuk keperluan berobat." onBackClick={() => window.history.back()} />
+                {showAlert && <AlertWarning teks="NIK Tidak Ditemukan. Silahkan coba lagi." />}
             </Box>
             <Container sx={{
                 pt: '80px',
             }}>
 
                 <Box mt={5}>
+                    
                     {mainPages && (
                         <Box mt={currentPage == 2 ? '20%' : '10%'} position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content' }}>
+                            
                             <Box sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, gap: 8 }}>
                                 <Box display={"flex"} flexDirection={"row"} width={"290px"}>
+                                    
                                     <Button
                                         onClick={() => setCurrentPage(1)}
                                         sx={{
