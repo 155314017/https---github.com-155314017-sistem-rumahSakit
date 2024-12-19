@@ -80,8 +80,8 @@ export default function TambahPasienUmumOffline() {
             <Box sx={{
                 position: 'absolute',
                 top: 0,
-                left: 370,
-                right: 0,
+                left: "auto",
+                right: "auto",
                 zIndex: 1000,
                 padding: '16px',
                 width: '60%',

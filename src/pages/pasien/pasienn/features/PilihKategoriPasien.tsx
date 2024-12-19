@@ -16,6 +16,10 @@ import GenerateQueuePatientServices from "../../../../services/Patient Tenant/Ge
 import { GetDoctorServices } from "../../../../services/Admin Tenant/ManageDoctor/GetDoctorService";
 import { getClinic } from "../../../../services/Admin Tenant/ManageClinic/GetClinic";
 import dayjs from "dayjs";
+import 'dayjs/locale/id';
+
+const formatDate = (timestamp: number) => dayjs.unix(timestamp).locale('id').format('DD MMMM YYYY');
+const formatTime = (timestamp: number) => dayjs.unix(timestamp).format('HH:mm');
 
 type bookingCodeData = {
     nomorAntrian: string,
@@ -290,6 +294,12 @@ export default function PilihKategoriPasien() {
                                             }
                                         }
                                     )
+                                    console.log("response: ", response.data.data.registrationDatum.scheduleDatum.startDateTime)
+
+                                    const dateTime = formatDate(response.data.data.registrationDatum.scheduleDatum.startDateTime);
+                                    const startTime = formatTime(response.data.data.registrationDatum.scheduleDatum.startDateTime);
+                                    const endTime = formatTime(response.data.data.registrationDatum.scheduleDatum.endDateTime);
+                                    const consultationSchedule = dateTime + ' ' + startTime + ' - ' + endTime
                                     const namaDokter = await GetDoctorServices(response.data.data.registrationDatum.doctorDataId)
                                     const namaKlinik = await getClinic(response.data.data.registrationDatum.masterClinicId)
                                     const dateReserve = dayjs(response.data.data.createdDateTime * 1000).format('YYYY-MM-DD HH:mm');
@@ -298,7 +308,7 @@ export default function PilihKategoriPasien() {
                                         namaDokter: namaDokter.name,
                                         namaKlinik: namaKlinik.name,
                                         tanggalReserve: dateReserve,
-                                        jadwalKonsul: "belum",
+                                        jadwalKonsul: consultationSchedule,
                                     }
                                     setDataKodeBooking(dataBooking)
                                     setOpenModalKodeBooking(false);

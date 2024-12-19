@@ -200,18 +200,6 @@ export default function useTambahPasienUmumOffline() {
     });
 
     const changePage2 = () => {
-        const dataPatient = {
-            nik: formik.values.nik,
-            email: formik.values.email,
-            phone: formik.values.phone,
-            gender: formik.values.gender,
-            fullname: formik.values.fullname,
-            address: formik.values.address,
-            birthDate: formik.values.birthDatePatient,
-            birthPlace: formik.values.birthPlacePatient
-        }
-        setDataPasien(dataPatient)
-        console.log("tes data kirim", dataPatient);
         setCurrentPage(2)
     }
 
@@ -258,9 +246,7 @@ export default function useTambahPasienUmumOffline() {
     const findPatientByNik = async (nik: string) => {
         try {
             const response = await GetPatientByNIKServices(nik);
-            console.log(response?.data);
-
-
+            console.log("Responseee: ", response?.data);
             setPatientData(response?.data as ResponsePatient);
             const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
             const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];

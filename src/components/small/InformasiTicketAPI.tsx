@@ -135,7 +135,7 @@ const InformasiTicketAPI = ({
                     </Box>
                 )}
                 {bookingCode == '' && (
-                    <Box display={"flex"} flexDirection={"row"} gap={"80px"} justifyContent={"space-between"} width={'80%'} >
+                    <Box display={"flex"} flexDirection={"row"} gap={"80px"} justifyContent={"space-between"} width={'103%'} >
                         <Box display={"flex"} flexDirection={"column"}>
                             <Typography>Tanggal reservasi</Typography>
                             <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
