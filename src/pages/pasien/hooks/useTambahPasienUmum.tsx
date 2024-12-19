@@ -44,7 +44,7 @@ type Clinic = {
 };
 
 type dataTicket = {
-    // nomorAntrian: any | undefined;
+    nomorAntrian: any | undefined;
     namaDokter: string;
     clinic: string;
     tanggalReservasi: string;
@@ -381,7 +381,7 @@ export default function useTambahPasienUmum() {
             const response = await CreateAppointment(data)
             const createdDateTimeFormatted = dayjs.unix(response.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
             const dataSent = {
-                // nomorAntrian: response.data.queueDatum.queueNumber,
+                nomorAntrian: response.data.queueDatum.queueNumber,
                 namaDokter: docterName,
                 clinic: clinicName,
                 tanggalReservasi: createdDateTimeFormatted,

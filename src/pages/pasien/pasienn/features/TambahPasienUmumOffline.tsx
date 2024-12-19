@@ -588,8 +588,8 @@ export default function TambahPasienUmumOffline() {
                                                                 <RadioGroup
                                                                     aria-labelledby="gender-label"
                                                                     name="typeGuardian"
-                                                                    // value={formik.values.typeGuardian}
-                                                                    value={"KELUARGA"}
+                                                                    value={formik.values.typeGuardian}
+                                                                    // value={""}
                                                                     onChange={(e) => formik.setFieldValue("typeGuardian", e.target.value)}
                                                                     row
                                                                     sx={{
@@ -842,6 +842,7 @@ export default function TambahPasienUmumOffline() {
                                 namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
                                 nomorAntrian={dataTickets?.nomorAntrian || "Unknown Queue"}
                                 tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
+                                bookingCode={dataTickets?.bookingCode || "Unknown Code"}
                             />
                         </Box>
                     )}
