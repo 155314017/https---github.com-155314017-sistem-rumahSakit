@@ -19,10 +19,17 @@ const baseUrl = 'https://hms.3dolphinsocial.com:8083'
 const GetPatientByNIKServices = async (nik: string): Promise<PatientResponse | null> => {
   try {
     const response = await axios.get<PatientResponse>(`${baseUrl}/v1/manage/patient/get/${nik}`)
-    return response.data
+    if (response.status === 200) {
+      
+      
+
+      return response.data
+    } else {
+      throw new Error(`API responded with status: ${response.status}`)
+    }
   } catch (error) {
-    console.error('Error fetching patient by NIK:', error)
-    return null
+    console.error('Error fetching Patient data:', error)
+    throw error
   }
 }
 

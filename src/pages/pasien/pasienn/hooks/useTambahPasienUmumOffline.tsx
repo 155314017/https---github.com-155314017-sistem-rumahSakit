@@ -10,6 +10,7 @@ import { RadioProps } from '@mui/material/Radio';
 import dayjs from 'dayjs';
 import CreateAppointmentOffline from '../../../../services/ManagePatient/CreateAppoinmentOffline';
 import UpdatePatientGuards from '../../../../services/Patient Tenant/UpdatePatientGuard';
+import AlertWarning from '../../../../components/small/AlertWarning';
 
 type Doctor = {
     id: string;
@@ -84,6 +85,7 @@ export default function useTambahPasienUmumOffline() {
     const [mainPages, setMainPages] = useState(true);
     const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
     const [clinicName, setClinicName] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
 
     const breadcrumbItems = [
         { label: "Pasien Lama", href: "/tes" },
@@ -255,10 +257,16 @@ export default function useTambahPasienUmumOffline() {
         fetchDoctorData();
     }, []);
 
+    const showTemporaryAlert = async () => {
+        setShowAlert(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setShowAlert(false);
+    };
+
     const findPatientByNik = async (nik: string) => {
         try {
             const response = await GetPatientByNIKServices(nik);
-            console.log(response?.data);
+            console.log(response);
             if(response?.responseCode === "200") {
             setPatientData(response?.data as ResponsePatient);
             const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
@@ -268,17 +276,13 @@ export default function useTambahPasienUmumOffline() {
             console.log(birthDate, birthPlace);
             setPatientFullsPage(false);
             console.log(response?.data);
-            }
+            } 
             
         } catch (err: any) {
-            setPatientFullsPage(false);
-            if (err.responseCode && err.response.responseCode) {
-                alert(`Error: HTTP ${err.response.status} - ${err.response.message || 'Something went wrong'}`);
-            } else if (err.code) {
-                alert(`Error Code: ${err.code}`);
-            } else {
-                alert('Unknown error occurred');
-            }
+            // setPatientFullsPage(false);
+           if(err.response.status === 404) {
+            showTemporaryAlert();
+           }
         }
     }
 
@@ -485,6 +489,7 @@ export default function useTambahPasienUmumOffline() {
         setDataTickets,
         dataTickets,
         birthDate,
-        birthPlace
+        birthPlace,
+        showAlert
     }
 }
