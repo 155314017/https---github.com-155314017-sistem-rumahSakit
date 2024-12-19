@@ -48,6 +48,7 @@ export default function RawatJalanUmum() {
         patientId,
         setButtonDis,
         buttonDis,
+        calendarKey,
     } = useRawatJalanUmum();
 
     return (
@@ -255,7 +256,7 @@ export default function RawatJalanUmum() {
 
                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                         <Typography>Tanggal dan jam operasional</Typography>
-                                                        <CustomCalender doctorId={idDoctor} onChange={handleScheduleChange} />
+                                                        <CustomCalender key={calendarKey} doctorId={idDoctor} onChange={handleScheduleChange} />
                                                     </Box>
                                                 </Box>
 

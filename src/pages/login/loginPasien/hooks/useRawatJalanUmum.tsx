@@ -46,6 +46,7 @@ export default function useRawatJalanUmum() {
   const [patientId, setPatientId] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+  const [calendarKey, setCalendarKey] = useState<number>(0);
 
   useEffect(() => {
     console.log("tes")
@@ -83,6 +84,7 @@ export default function useRawatJalanUmum() {
     console.log(`Selected Value: ${value}, Selected Label: ${label}`);
     setIdDoctor(value)
     setDocterName(label);
+    setCalendarKey((prevKey) => prevKey + 1);
   };
 
   useEffect(() => {
@@ -152,5 +154,6 @@ export default function useRawatJalanUmum() {
     patientId,
     setButtonDis,
     buttonDis,
+    calendarKey,
   }
 }
