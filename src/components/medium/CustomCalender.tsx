@@ -37,6 +37,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
             if (response.data && response.data.data) {
                 setSchedules(response.data.data);
                 processSchedules(response.data.data);
+                console.log(schedules)
             }
         } catch (error) {
             console.error('Error fetching schedules:', error);
