@@ -11,7 +11,6 @@ import dayjs from 'dayjs';
 import CreateAppointmentOffline from '../../../../services/ManagePatient/CreateAppoinmentOffline';
 import UpdatePatientGuards from '../../../../services/Patient Tenant/UpdatePatientGuard';
 import { getGuardianData } from '../../../../services/ManagePatient/getGuardianByPatientId';
-import { useNavigate } from 'react-router-dom';
 // import RegisterPatient from '../../../../services/Patient Tenant/RegisterPatient';
 
 type Doctor = {
