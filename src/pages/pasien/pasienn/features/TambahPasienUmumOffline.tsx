@@ -87,7 +87,12 @@ export default function TambahPasienUmumOffline() {
                 // right: "auto",
                 zIndex: 9999,
                 padding: '16px',
-                width: '60%',
+                width: {
+                    xs: '90%', // Untuk layar kecil (mobile)
+                    sm: '84%',  // Untuk layar sedang
+                    md: '90%',  // Untuk layar besar
+                    lg: '70%',
+                },
                 // bgcolor: 'blue'
             }}>
                 <BreadCrumbBasic title="Pasien lama" description="Pasien yang pernah datang sebelumnya untuk keperluan berobat." onBackClick={() => window.history.back()} />
