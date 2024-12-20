@@ -591,7 +591,7 @@ export default function TambahPasienUmumOffline() {
                                                             borderRadius: '12px',
                                                             padding: '8px 12px 8px 12px',
                                                             gap: '24px',
-                                                            backgroundColor: switchValue ? "#E8E8E8" : "inherit",
+                                                            backgroundColor: "inherit",
                                                             width: '97.5%',
                                                         }}
                                                         >
@@ -610,11 +610,11 @@ export default function TambahPasienUmumOffline() {
                                                                         width: '100%',
                                                                     }}
                                                                 >
-                                                                    <FormControlLabel disabled={switchValue ? true : false} value="SENDIRI" control={<BpRadio />} label="Sendiri" />
-                                                                    <FormControlLabel disabled={switchValue ? true : false} value="KELUARGA" control={<BpRadio />} label="Keluarga" />
-                                                                    <FormControlLabel disabled={switchValue ? true : false} value="POLISI" control={<BpRadio />} label="Polisi" />
-                                                                    <FormControlLabel disabled={switchValue ? true : false} value="AMBULAN" control={<BpRadio />} label="Ambulan" />
-                                                                    <FormControlLabel disabled={switchValue ? true : false} value="LAINNYA" control={<BpRadio />} label="Lainnya" />
+                                                                    <FormControlLabel value="SENDIRI" control={<BpRadio />} label="Sendiri" />
+                                                                    <FormControlLabel value="KELUARGA" control={<BpRadio />} label="Keluarga" />
+                                                                    <FormControlLabel value="POLISI" control={<BpRadio />} label="Polisi" />
+                                                                    <FormControlLabel value="AMBULAN" control={<BpRadio />} label="Ambulan" />
+                                                                    <FormControlLabel value="LAINNYA" control={<BpRadio />} label="Lainnya" />
                                                                 </RadioGroup>
                                                             </FormControl>
                                                         </Box>

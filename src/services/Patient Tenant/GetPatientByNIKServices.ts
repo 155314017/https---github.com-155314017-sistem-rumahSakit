@@ -6,6 +6,9 @@ interface PatientData {
   fullName: string
   birthDateAndPlace: string
   phoneNumber: string
+  email: string
+  gender: string
+  address: string
 }
 
 interface PatientResponse {
