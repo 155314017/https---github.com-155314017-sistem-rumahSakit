@@ -23,6 +23,8 @@ const RegisterPatient = async (data: Data) => {
 
     if (response.status === 200) {
       return response.data
+    } else  if (response.status === 400) {
+      return response.data
     } else {
       throw new Error(`API responded with status: ${response.status}`)
     }
