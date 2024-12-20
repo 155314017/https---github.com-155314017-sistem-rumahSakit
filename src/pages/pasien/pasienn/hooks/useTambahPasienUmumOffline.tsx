@@ -10,7 +10,7 @@ import { RadioProps } from '@mui/material/Radio';
 import dayjs from 'dayjs';
 import CreateAppointmentOffline from '../../../../services/ManagePatient/CreateAppoinmentOffline';
 import UpdatePatientGuards from '../../../../services/Patient Tenant/UpdatePatientGuard';
-import AlertWarning from '../../../../components/small/AlertWarning';
+import { getGuardianData } from '../../../../services/ManagePatient/getGuardianByPatientId';
 
 type Doctor = {
     id: string;
@@ -39,6 +39,17 @@ type dataPasien = {
     birthPlace: string | undefined;
 }
 
+type GuardianData = {
+    guardianType: string
+    guardianName: string
+    guardianRelation: string
+    guardianIdentityNumber: string
+    guardianPhone: string
+    guardianEmail: string
+    guardianAddress: string
+    guardianGender: string
+}
+
 type Clinic = {
     id: string;
     name: string;
@@ -64,6 +75,7 @@ export default function useTambahPasienUmumOffline() {
     const [selectedMethod, setSelectedMethod] = useState('');
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
     const [dataTickets, setDataTickets] = useState<dataTicket>();
+    const [dataGuards, setDataGuards] = useState<GuardianData>();
     // const [patientData, setPatientData] = useState<ResponsePatient | undefined>();
     const [patientData, setPatientData] = useState<ResponsePatient>({
         id: '',
@@ -106,14 +118,14 @@ export default function useTambahPasienUmumOffline() {
             birthDatePatient: birthDate,
             birthPlacePatient: birthPlace,
             // phonePasien: '',
-            nikGuardian: switchValue ? dataPasien?.nik : '',
+            nikGuardian: switchValue ? dataPasien?.nik : dataGuards?.guardianIdentityNumber,
             typeGuardian: '',
-            caraDatang: '',
-            fullnameGuardian: switchValue ? dataPasien?.fullname : '',
-            emailGuardian: switchValue ? dataPasien?.email : '',
-            genderGuardian: switchValue ? dataPasien?.gender : '',
-            addressGuardian: switchValue ? dataPasien?.address : '',
-            phoneGuardian: switchValue ? dataPasien?.phone : '62',
+            caraDatang: dataGuards?.guardianRelation.toUpperCase(),
+            fullnameGuardian: switchValue ? dataPasien?.fullname : dataGuards?.guardianName,
+            emailGuardian: switchValue ? dataPasien?.email : dataGuards?.guardianEmail,
+            genderGuardian: switchValue ? dataPasien?.gender : dataGuards?.guardianGender,
+            addressGuardian: switchValue ? dataPasien?.address : dataGuards?.guardianAddress,
+            phoneGuardian: switchValue ? dataPasien?.phone : dataGuards?.guardianPhone,
             birthPlaceGuardian: switchValue ? dataPasien?.birthPlace : '',
             birthDateGuardian: switchValue ? dataPasien?.birthDate : '',
             docs: '',
@@ -132,8 +144,8 @@ export default function useTambahPasienUmumOffline() {
             address: Yup.string().required('tes'),
             nikCari: Yup.string()
                 .matches(/^[0-9]+$/, 'NIK harus berupa angka')
-                .min(12, 'NIK minimal 12 digit')
-                .max(16, 'NIK maksimal 14 digit')
+                .min(16, 'NIK minimal 16 digit')
+                .max(16, 'NIK maksimal 16 digit')
                 .required('NIK wajib diisi'),
             // phonePasien: Yup.string().required('No. Handphone Pasien is required'),
             caraDatang: Yup.string().required('Cara datang is required'),
@@ -143,7 +155,11 @@ export default function useTambahPasienUmumOffline() {
             keluhan: Yup.string().required('Keluhan pasien is required'),
             riwayatPenyakit: Yup.string().required('Riwayat penyakit is required'),
             alergi: Yup.string().required('Alergi is required'),
-            nikGuardian: Yup.string().required('harus diisi is required'),
+            nikGuardian: Yup.string()
+                .matches(/^[0-9]+$/, 'NIK harus berupa angka')
+                .min(16, 'NIK minimal 16 digit')
+                .max(16, 'NIK maksimal 16 digit')
+                .required('NIK wajib diisi'),
             emailGuardian: Yup.string().required('EmailGuardian is required'),
             fullnameGuardian: Yup.string().required('EmailGuardian is required'),
             genderGuardian: Yup.string().required('EmailGuardian is required'),
@@ -254,24 +270,27 @@ export default function useTambahPasienUmumOffline() {
     const findPatientByNik = async (nik: string) => {
         try {
             const response = await GetPatientByNIKServices(nik);
-            console.log("Responseee: ", response?.data);
+            console.log("Responseee: ", response?.data.id);
             console.log(response);
-            if(response?.responseCode === "200") {
-            setPatientData(response?.data as ResponsePatient);
-            const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
-            const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
-            setBirthDate(birthDateProcess ? birthDateProcess : "Data tidak ada")
-            setBirthPlace(birthPlaceProcess ? birthPlaceProcess : "Data tidak ada")
-            console.log(birthDate, birthPlace);
-            setPatientFullsPage(false);
-            console.log(response?.data);
-            } 
-            
+            if (response?.responseCode === "200") {
+                const dataGuard = await getGuardianData(response.data.id)
+                setDataGuards(dataGuard);
+                console.log("TESTES GUARD: ", dataGuard.guardianRelation.toUpperCase())
+                setPatientData(response?.data as ResponsePatient);
+                const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
+                const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
+                setBirthDate(birthDateProcess ? birthDateProcess : "Data tidak ada")
+                setBirthPlace(birthPlaceProcess ? birthPlaceProcess : "Data tidak ada")
+                console.log(birthDate, birthPlace);
+                setPatientFullsPage(false);
+                console.log(response?.data);
+            }
+
         } catch (err: any) {
             // setPatientFullsPage(false);
-           if(err.response.status === 404) {
-            showTemporaryAlert();
-           }
+            if (err.response.status === 404) {
+                showTemporaryAlert();
+            }
         }
     }
 
@@ -370,8 +389,8 @@ export default function useTambahPasienUmumOffline() {
 
     const createTicket = async () => {
         const data = {
-            // patientId: patientData?.id,
-            patientId: "a9461920-b918-4e39-8cae-33f4f76e39cf", //nanti diganti
+            patientId: patientData?.id,
+            // patientId: "a9461920-b918-4e39-8cae-33f4f76e39cf", //nanti diganti
             typeOfVisit: formik.values.jenisKunjungan,
             clinicId: idClinic,
             doctorId: idDoctor,
@@ -382,16 +401,17 @@ export default function useTambahPasienUmumOffline() {
         try {
             console.log(data);
             const response = await CreateAppointmentOffline(data)
-            const createdDateTimeFormatted = dayjs.unix(response.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
+            console.log(response);
+            const createdDateTimeFormatted = dayjs.unix(response.scheduleDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
             const dataSent = {
-                nomorAntrian: response.data.queueDatum.queueNumber,
+                nomorAntrian: response.bookingCode,
                 namaDokter: docterName,
                 clinic: clinicName,
                 tanggalReservasi: createdDateTimeFormatted,
                 jadwalKonsul: selectedSchedule,
-                bookingCode: response.data.bookingCode
+                bookingCode: response.bookingCode
             }
-            console.log(dataSent);
+            console.log("DATA OLAH", dataSent);
             setDataTickets(dataSent)
             console.log('sukses')
             setMainPages(false)

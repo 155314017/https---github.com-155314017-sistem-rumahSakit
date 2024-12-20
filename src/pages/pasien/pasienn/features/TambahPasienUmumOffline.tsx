@@ -56,7 +56,7 @@ export default function TambahPasienUmumOffline() {
         dataTickets,
         birthDate,
         birthPlace
-        ,showAlert
+        , showAlert
 
     } = useTambahPasienUmumOffline();
 
@@ -76,33 +76,38 @@ export default function TambahPasienUmumOffline() {
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
-            py: 2
-
+            py: 2,
+            // bgcolor: 'yellow'
+            position: "relative",
         }}>
             <Box sx={{
-                position: 'absolute',
-                top: 0,
-                left: "auto",
-                right: "auto",
-                zIndex: 1000,
+                position: 'relative',
+                top: 'auto',
+                left: 0,
+                // right: "auto",
+                zIndex: 9999,
                 padding: '16px',
                 width: '60%',
+                // bgcolor: 'blue'
             }}>
                 <BreadCrumbBasic title="Pasien lama" description="Pasien yang pernah datang sebelumnya untuk keperluan berobat." onBackClick={() => window.history.back()} />
                 {showAlert && <AlertWarning teks="NIK Tidak Ditemukan. Silahkan coba lagi." />}
             </Box>
             <Container sx={{
                 pt: '80px',
+                // bgcolor: 'red',
+                marginTop: '-90px'
             }}>
 
+
                 <Box mt={5}>
-                    
+
                     {mainPages && (
                         <Box mt={currentPage == 2 ? '20%' : '10%'} position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content' }}>
-                            
+
                             <Box sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, gap: 8 }}>
                                 <Box display={"flex"} flexDirection={"row"} width={"290px"}>
-                                    
+
                                     <Button
                                         onClick={() => setCurrentPage(1)}
                                         sx={{
@@ -443,7 +448,7 @@ export default function TambahPasienUmumOffline() {
                                                             }}
                                                             placeholder='Masukkan NIK ktp'
                                                             defaultValue={'coba'}
-                                                            value={formik.values.nikGuardian}
+                                                            value={switchValue ? formik.values.nik : formik.values.nikGuardian}
                                                             onChange={formik.handleChange}
                                                             name="nikGuardian"
                                                             disabled={switchValue ? true : false}
@@ -594,7 +599,7 @@ export default function TambahPasienUmumOffline() {
                                                                 <RadioGroup
                                                                     aria-labelledby="gender-label"
                                                                     name="typeGuardian"
-                                                                    value={formik.values.typeGuardian}
+                                                                    value={formik.values.caraDatang}
                                                                     // value={""}
                                                                     onChange={(e) => formik.setFieldValue("typeGuardian", e.target.value)}
                                                                     row
@@ -846,7 +851,7 @@ export default function TambahPasienUmumOffline() {
                                 clinic={dataTickets?.clinic || "Unknown Clinic"}
                                 jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
                                 namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
-                                nomorAntrian={dataTickets?.nomorAntrian || "Unknown Queue"}
+                                nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
                                 tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
                                 bookingCode={dataTickets?.bookingCode || "Unknown Code"}
                             />

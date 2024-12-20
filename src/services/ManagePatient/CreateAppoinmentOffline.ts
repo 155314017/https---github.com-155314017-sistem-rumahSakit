@@ -12,7 +12,7 @@ interface Data {
 const CreateAppointmentOffline = async (data: Data) => {
   try {
     const response = await axios.post(
-      'https://hms.3dolphinsocial.com:8083/v1/patient/create-appointment',
+      'https://hms.3dolphinsocial.com:8083/v1/manage/patient/create-appointment',
       data,
       {
         headers: {
@@ -21,7 +21,7 @@ const CreateAppointmentOffline = async (data: Data) => {
       }
     )
     console.log('Appointment created:', response.data)
-    return response.data
+    return response.data.data
   } catch (error) {
     console.log('error', error)
   }
