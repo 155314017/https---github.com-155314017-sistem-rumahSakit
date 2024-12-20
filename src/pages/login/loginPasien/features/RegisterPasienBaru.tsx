@@ -130,7 +130,7 @@ export default function RegisterPasienBaru() {
                             }}
                         >
 
-                            <Box sx={{ ml: 4, width: '85%', height: '85%'}}>
+                            <Box sx={{ ml: 4, width: '85%', height: '85%' }}>
                                 <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
                                 <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
                                     Silahkan masukkan nomor NIK (Nomor induk kependudukan) Pasien.
@@ -155,14 +155,28 @@ export default function RegisterPasienBaru() {
                                         console.log("data dikirm ke API: ", dataRegis)
                                         try {
                                             setButtonDis(true);
+
                                             const response = await RegisterPatient(dataRegis);
                                             console.log("response: ", response);
-                                            showOtp()
-                                            setData(dataRegis)
-                                            setPatientId(response.data.id);
+
+                                            if (response.status === 200) {
+                                                showOtp();
+                                                setData(dataRegis);
+                                                setPatientId(response.data.id);
+                                            } else if (response.status === 400) {
+                                                alert("Error: Data yang dimasukkan tidak valid (400).");
+                                            } else if (response.status === 500) {
+                                                alert("Error: Terjadi kesalahan pada server (500).");
+                                            } else {
+                                                alert(`Error: Terjadi kesalahan tidak terduga (Status: ${response.status}).`);
+                                            }
                                         } catch (error) {
-                                            console.log("error", error)
+                                            console.error("error", error);
+                                            alert("Error: Terjadi kesalahan saat memproses permintaan.");
+                                        } finally {
+                                            setButtonDis(false);
                                         }
+
                                     }}
                                 >
                                     {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
@@ -552,13 +566,29 @@ export default function RegisterPasienBaru() {
                                             code: values.otp
                                         }
                                         try {
-                                            await VerifyOTPPatient(dataOTP)
-                                            otpFormShown()
-                                            navigate('/register/pj', { state: { successAdd: true, data: data, idPatient: patientId } })
-                                        } catch {
-                                            console.log("error")
-                                            showTemporaryAlertError()
+                                            const response = await VerifyOTPPatient(dataOTP);
+
+                                            if (response.status === 200) {
+                                                otpFormShown();
+                                                navigate('/register/pj', {
+                                                    state: {
+                                                        successAdd: true,
+                                                        data: data,
+                                                        idPatient: patientId
+                                                    }
+                                                });
+                                            } else if (response.status === 404) {
+                                                alert("Error: Data tidak ditemukan (404).");
+                                            } else if (response.status === 500) {
+                                                alert("Error: Terjadi kesalahan server (500).");
+                                            } else {
+                                                alert(`Error: Terjadi kesalahan tidak terduga (Status: ${response.status}).`);
+                                            }
+                                        } catch (error) {
+                                            console.error("Exception error:", error);
+                                            alert("Error: Terjadi kesalahan saat memproses permintaan.");
                                         }
+
 
                                     }}
                                 >
