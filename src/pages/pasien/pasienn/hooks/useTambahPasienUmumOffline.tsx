@@ -90,6 +90,8 @@ export default function useTambahPasienUmumOffline() {
         address: '',
     });
 
+    console.log(dataGuards);
+
     const [dataPasien, setDataPasien] = useState<dataPasien>();
     const [idClinic, setIdClinic] = useState('');
     const [idDoctor, setIdDoctor] = useState('');
