@@ -36,8 +36,7 @@ export default function useEditKlinik() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = Cookies.get("accessToken");
-                const response = await getClinic(id,token);
+                const response = await getClinic(id);
                 setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`);
                 setName(response.name);
                 setDescription(response.description);

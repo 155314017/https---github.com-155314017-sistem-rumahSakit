@@ -22,7 +22,7 @@ export default function RegisterPJ() {
     const {
         validationSchema,
         emailError,
-        nikError,
+        // nikError,
         showAlert,
         loginSuccess,
         show,
@@ -176,7 +176,7 @@ export default function RegisterPJ() {
                                                     marginTop: "10px",
                                                     "& .MuiOutlinedInput-root": {
                                                         borderRadius: "8px",
-                                                        backgroundColor: nikError ? "#ffcccc" : "inherit",
+                                                        backgroundColor: touched.nik && errors.nik ? "#ffcccc" : "inherit",
                                                     },
                                                     "& .MuiOutlinedInput-notchedOutline": {
                                                         border: "1px solid #ccc",

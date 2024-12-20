@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import * as Yup from 'yup'
-import Cookies from 'js-cookie'
 import 'react-phone-input-2/lib/style.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -39,7 +38,7 @@ export default function useRegisterPJ() {
   const [showLogin, setShowLogin] = useState(true)
   const [showEmailChanged, setShowEmailChanged] = useState(true)
   const [emailError, setEmailError] = useState(false)
-  const [nikError, setNikError] = useState(false)
+  // const [nikError, setNikError] = useState(false)
   const [, setPasswordError] = useState(false)
   const location = useLocation()
   const [showAlert, setShowAlert] = useState(false)
@@ -59,8 +58,6 @@ export default function useRegisterPJ() {
   const [patientId, setPatientId] = useState<string>('')
   const [show, setShow] = useState(true)
   const [notFound, setNotFound] = useState(false)
-  const [emailPJ, setEmailPJ] = useState(' ')
-  const [nikPj, setNikPj] = useState(' ')
   const navigate = useNavigate()
 
   const [switchValue, setSwitchValue] = useState(false)
@@ -179,7 +176,7 @@ export default function useRegisterPJ() {
     showLogin,
     showEmailChanged,
     emailError,
-    nikError,
+    // nikError,
     showAlert,
     resendSuccess,
     loginSuccess,
