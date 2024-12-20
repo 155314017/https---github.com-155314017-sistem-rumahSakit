@@ -9,11 +9,13 @@ import PhoneInput from "react-phone-input-2";
 import RegisterPatient from "../../../../services/Patient Tenant/RegisterPatient";
 import VerifyOTPPatient from "../../../../services/Patient Tenant/VerifyOTPPatient";
 
+
 //hooks
 import useRegistrasiPasienBaru from "../hooks/useRegistrasiPasienBaru";
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { useState } from "react";
 export default function RegisterPasienBaru() {
     const {
         otpFormShown,
@@ -25,9 +27,7 @@ export default function RegisterPasienBaru() {
         showLogin,
         notFound,
         buttonDis,
-        errorAlert,
         showEmailChanged,
-        showAlert,
         emailError,
         resendSuccess,
         isCounting,
@@ -45,6 +45,9 @@ export default function RegisterPasienBaru() {
         setOtp,
         loading
     } = useRegistrasiPasienBaru();
+
+    const [showAlertError, setShowAlertError] = useState(false);
+    const [showAlertError1, setShowAlertError1] = useState(false);
     return (
         <>   <style>
             {`
@@ -112,7 +115,7 @@ export default function RegisterPasienBaru() {
                 {showLogin && (
                     <>
 
-                        {showAlert && <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />}
+                        {showAlertError1 && <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />}
 
                         <Box
                             sx={{
@@ -157,16 +160,14 @@ export default function RegisterPasienBaru() {
                                             setButtonDis(true);
 
                                             const response = await RegisterPatient(dataRegis);
-                                            console.log("response: ", response);
+                                            console.log("response: ", response.responseCode);
 
-                                            if (response.status === 200) {
+                                            if (response.responseCode === "200") {
                                                 showOtp();
                                                 setData(dataRegis);
                                                 setPatientId(response.data.id);
-                                            } else if (response.status === 400) {
-                                                alert("Error: Data yang dimasukkan tidak valid (400).");
-                                            } else if (response.status === 500) {
-                                                alert("Error: Terjadi kesalahan pada server (500).");
+                                            } else {
+                                                setShowAlertError1(true);
                                             }
                                         } catch (error) {
                                             console.error("error", error);
@@ -530,7 +531,7 @@ export default function RegisterPasienBaru() {
                     )}
                 {showEmailChanged && (
                     <>
-                        {errorAlert && (
+                        {showAlertError && (
                             <AlertWarning teks="Kode OTP tidak valid !" />
                         )}
                         <Box
@@ -566,7 +567,7 @@ export default function RegisterPasienBaru() {
                                         try {
                                             const response = await VerifyOTPPatient(dataOTP);
 
-                                            if (response.status === 200) {
+                                            if (response.responseCode === "200") {
                                                 otpFormShown();
                                                 navigate('/register/pj', {
                                                     state: {
@@ -575,12 +576,10 @@ export default function RegisterPasienBaru() {
                                                         idPatient: patientId
                                                     }
                                                 });
-                                            } else if (response.status === 404) {
-                                                alert("Error: Data tidak ditemukan (404).");
-                                            } else if (response.status === 500) {
-                                                alert("Error: Terjadi kesalahan server (500).");
-                                            } else {
-                                                alert(`Error: Terjadi kesalahan tidak terduga (Status: ${response.status}).`);
+                                            } 
+                                              else {
+                                                setShowAlertError(true);
+                                                
                                             }
                                         } catch (error) {
                                             console.error("Exception error:", error);

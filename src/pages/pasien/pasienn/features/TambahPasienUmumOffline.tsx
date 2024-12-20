@@ -410,7 +410,7 @@ export default function TambahPasienUmumOffline() {
                                                     backgroundColor: switchValue ? "#E8E8E8" : "inherit"
                                                 }}
                                                 placeholder='Masukkan NIK ktp'
-                                                value={switchValue ? formik.values.nik : formik.values.nikGuardian}
+                                                value={formik.values.nikGuardian}
                                                 onChange={formik.handleChange}
                                                 name="nikGuardian"
                                                 disabled={switchValue}
@@ -457,7 +457,7 @@ export default function TambahPasienUmumOffline() {
                                                             }}
                                                             placeholder='Masukkan NIK ktp'
                                                             defaultValue={'coba'}
-                                                            value={switchValue ? formik.values.nik : formik.values.nikGuardian}
+                                                            value={formik.values.nikGuardian}
                                                             onChange={formik.handleChange}
                                                             name="nikGuardian"
                                                             disabled={switchValue ? true : false}
@@ -600,7 +600,7 @@ export default function TambahPasienUmumOffline() {
                                                             borderRadius: '12px',
                                                             padding: '8px 12px 8px 12px',
                                                             gap: '24px',
-                                                            backgroundColor: switchValue ? "#E8E8E8" : "inherit",
+                                                            backgroundColor:  "inherit",
                                                             width: '97.5%',
                                                         }}
                                                         >
@@ -619,11 +619,11 @@ export default function TambahPasienUmumOffline() {
                                                                         width: '100%',
                                                                     }}
                                                                 >
-                                                                    <FormControlLabel disabled={switchValue} value="SENDIRI" control={<BpRadio />} label="Sendiri" />
-                                                                    <FormControlLabel disabled={switchValue} value="KELUARGA" control={<BpRadio />} label="Keluarga" />
-                                                                    <FormControlLabel disabled={switchValue} value="POLISI" control={<BpRadio />} label="Polisi" />
-                                                                    <FormControlLabel disabled={switchValue} value="AMBULAN" control={<BpRadio />} label="Ambulan" />
-                                                                    <FormControlLabel disabled={switchValue} value="LAINNYA" control={<BpRadio />} label="Lainnya" />
+                                                                    <FormControlLabel value="SENDIRI" control={<BpRadio />} label="Sendiri" />
+                                                                    <FormControlLabel value="KELUARGA" control={<BpRadio />} label="Keluarga" />
+                                                                    <FormControlLabel value="POLISI" control={<BpRadio />} label="Polisi" />
+                                                                    <FormControlLabel value="AMBULAN" control={<BpRadio />} label="Ambulan" />
+                                                                    <FormControlLabel value="LAINNYA" control={<BpRadio />} label="Lainnya" />
                                                                 </RadioGroup>
                                                             </FormControl>
                                                         </Box>

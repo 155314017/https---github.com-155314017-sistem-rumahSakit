@@ -8,19 +8,34 @@ interface FileUploaderProps {
 
 const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
   const [fileName, setFileName] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null); // State untuk pesan error
 
   const handleRemoveFile = () => {
     setFileName(null);
+<<<<<<< HEAD
     onBase64Change?.(null); 
+=======
+    setError(null);
+    onBase64Change?.(null);
+>>>>>>> main
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+<<<<<<< HEAD
       if (file.size > 5 * 1024 * 1024) { // Batas ukuran file: 5MB
         alert("File terlalu besar! Harap unggah file dengan ukuran maksimal 5MB.");
         return;
       }
+=======
+      if (file.size > 1 * 1024 * 1024) { // 1MB = 1 * 1024 * 1024 bytes
+        setError("Ukuran file terlalu besar. Maksimum 1MB.");
+        return;
+      }
+
+      setError(null); // Reset error jika file valid
+>>>>>>> main
       setFileName(file.name);
 
       const reader = new FileReader();
@@ -37,68 +52,91 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center", marginBottom: "5px" }}>
-      <input
-        accept="*" // Ganti "image/*" jika hanya ingin file gambar
-        style={{ display: "none" }}
-        id="file-upload"
-        type="file"
-        onChange={handleFileChange}
-      />
-      <label htmlFor="file-upload">
-        <Button
-          variant="contained"
-          component="span"
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        marginBottom: "5px",
+        // border: `1px solid ${error ? "red" : "#E0E0E0"}`, // Border merah jika error
+        borderRadius: "8px",
+        padding: "8px",
+        transition: "border-color 0.3s ease",
+      }}
+    >
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <input
+          accept="*"
+          style={{ display: "none" }}
+          id="file-upload"
+          type="file"
+          onChange={handleFileChange}
+        />
+        <label htmlFor="file-upload">
+          <Button
+            variant="contained"
+            component="span"
+            sx={{
+              backgroundColor: "#8F85F3",
+              color: "white",
+              width: "150px",
+              height: "44px",
+              borderRadius: "6px 0px 0px 6px",
+              textTransform: "none",
+            }}
+          >
+            Unggah Berkas
+          </Button>
+        </label>
+
+        <Box
           sx={{
-            backgroundColor: "#8F85F3",
-            color: "white",
-            width: "150px",
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: error ? "#FFC1C1" : "#FAFAFA", // Background merah saat error
+            borderRadius: "0px 6px 6px 0px",
+            width: "100%",
             height: "44px",
-            borderRadius: "6px 0px 0px 6px",
-            textTransform: "none",
+            color: "black",
           }}
         >
-          Unggah Berkas
-        </Button>
-      </label>
-
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          backgroundColor: "#FAFAFA",
-          borderRadius: "0px 6px 6px 0px",
-          width: "100%",
-          height: "44px",
-          color: "black",
-        }}
-      >
-        {fileName ? (
-          <>
-            <Box
-              display={"flex"}
-              flexDirection={"row"}
-              justifyContent={"space-between"}
-              width={"100%"}
-              alignItems={"center"}
-            >
-              <Typography
-                variant="body1"
-                sx={{ marginRight: "10px", marginLeft: "15px" }}
+          {fileName ? (
+            <>
+              <Box
+                display={"flex"}
+                flexDirection={"row"}
+                justifyContent={"space-between"}
+                width={"100%"}
+                alignItems={"center"}
               >
-                {fileName}
-              </Typography>
-              <IconButton onClick={handleRemoveFile} sx={{ color: "black" }}>
-                <DeleteIcon />
-              </IconButton>
-            </Box>
-          </>
-        ) : (
-          <Typography variant="body1" sx={{ marginLeft: "15px" }}>
-            Tidak ada file yang diunggah
-          </Typography>
-        )}
+                <Typography
+                  variant="body1"
+                  sx={{ marginRight: "10px", marginLeft: "15px" }}
+                >
+                  {fileName}
+                </Typography>
+                <IconButton onClick={handleRemoveFile} sx={{ color: "black" }}>
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
+            </>
+          ) : (
+            <Typography variant="body1" sx={{ marginLeft: "15px" }}>
+              Tidak ada file yang diunggah
+            </Typography>
+          )}
+        </Box>
+
       </Box>
+
+      {error && (
+        <Typography
+          variant="body2"
+          color="error"
+          sx={{ marginTop: "5px", fontSize: "14px" }}
+        >
+          {error}
+        </Typography>
+      )}
     </Box>
   );
 };
