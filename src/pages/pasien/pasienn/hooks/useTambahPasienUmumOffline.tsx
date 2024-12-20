@@ -77,6 +77,7 @@ export default function useTambahPasienUmumOffline() {
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
     const [dataTickets, setDataTickets] = useState<dataTicket>();
     const [dataGuards, setDataGuards] = useState<GuardianData>();
+    const [calendarKey, setCalendarKey] = useState<number>(0);
     // const [patientData, setPatientData] = useState<ResponsePatient | undefined>();
     const [patientData, setPatientData] = useState<ResponsePatient>({
         id: '',
@@ -352,6 +353,7 @@ export default function useTambahPasienUmumOffline() {
         console.log(idDoctor);
         setDocterName(label);
         console.log(docterName);
+        setCalendarKey((prevKey) => prevKey + 1);
     };
 
     const handleScheduleChange = (scheduleId: string, schedule: string) => {
@@ -525,6 +527,7 @@ export default function useTambahPasienUmumOffline() {
         dataTickets,
         birthDate,
         birthPlace,
-        showAlert
+        showAlert,
+        calendarKey,
     }
 }

@@ -55,8 +55,9 @@ export default function TambahPasienUmumOffline() {
         createTicket,
         dataTickets,
         birthDate,
-        birthPlace
-        , showAlert
+        birthPlace,
+        showAlert,
+        calendarKey
 
     } = useTambahPasienUmumOffline();
 
@@ -741,7 +742,7 @@ export default function TambahPasienUmumOffline() {
                                                     <Typography>Poli yang dituju</Typography>
                                                     <DropdownListAPI
                                                         options={clinicOptions.map(({ id, name }) => ({ value: id, label: name }))}
-                                                        placeholder="Pilih Fasilitas Induk"
+                                                        placeholder="Pilih Klinik yang dituju"
                                                         onChange={handleDropdownPoli}
                                                         loading={false}
                                                     />
@@ -759,7 +760,7 @@ export default function TambahPasienUmumOffline() {
                                                         <Box sx={{ ml: 2, width: "100%" }}>
                                                             <Typography>Tanggal dan Jam Operasional</Typography>
                                                             {/* <CalenderPopover title="Pilih tanggal" /> */}
-                                                            <CustomCalender doctorId={idDoctor} onChange={handleScheduleChange} />
+                                                            <CustomCalender key={calendarKey} doctorId={idDoctor} onChange={handleScheduleChange} />
                                                         </Box>
                                                     </Box>
 
@@ -858,7 +859,7 @@ export default function TambahPasienUmumOffline() {
                                 namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
                                 nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
                                 tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
-                                bookingCode={''}
+                                // bookingCode={''}
                             />
                         </Box>
                     )}

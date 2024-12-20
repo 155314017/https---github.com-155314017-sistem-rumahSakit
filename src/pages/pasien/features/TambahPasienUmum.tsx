@@ -873,7 +873,7 @@ export default function TambahPasienUmum() {
                             namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
                             nomorAntrian={dataTickets?.nomorAntrian}
                             tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
-                            bookingCode={dataTickets?.bookingCode || "Unknown Code"}
+                            bookingCode={dataTickets?.bookingCode}
                         />
                     </Box>
                 )}
