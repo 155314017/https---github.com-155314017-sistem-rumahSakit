@@ -17,6 +17,9 @@ import { GetDoctorServices } from "../../../../services/Admin Tenant/ManageDocto
 import { getClinic } from "../../../../services/Admin Tenant/ManageClinic/GetClinic";
 import dayjs from "dayjs";
 import 'dayjs/locale/id';
+import medicineImg from "../../../../img/meidicine.png"
+import qrcodeImg from "../../../../img/qrcode.png"
+import fillingImg from "../../../../img/filling.png"
 
 const formatDate = (timestamp: number) => dayjs.unix(timestamp).locale('id').format('DD MMMM YYYY');
 const formatTime = (timestamp: number) => dayjs.unix(timestamp).format('HH:mm');
@@ -166,7 +169,7 @@ export default function PilihKategoriPasien() {
                                             bgcolor: '#D5D1FB'
                                         }}
                                     >
-                                        <Avatar alt="Kode Booking" src="/src/img/meidicine.png" sx={{ width: '88px', height: '88px' }} />
+                                        <Avatar alt="Kode Booking" src={medicineImg} sx={{ width: '88px', height: '88px' }} />
                                         <Box sx={{ marginLeft: "16px" }}>
                                             <Typography sx={{ color: "#7367F0", fontSize: "18px", fontWeight: "600" }}>
                                                 Pasien Lama
@@ -198,7 +201,7 @@ export default function PilihKategoriPasien() {
                                             bgcolor: '#D5D1FB'
                                         }}
                                     >
-                                        <Avatar alt="Kode Booking" src="/src/img/filling.png" sx={{ width: '88px', height: '88px' }} />
+                                        <Avatar alt="Kode Booking" src={fillingImg} sx={{ width: '88px', height: '88px' }} />
                                         <Box sx={{ marginLeft: "16px" }}>
                                             <Typography sx={{ color: "#7367F0", fontSize: "18px", fontWeight: "600" }}>
                                                 Pasien Baru
@@ -229,7 +232,7 @@ export default function PilihKategoriPasien() {
                                             bgcolor: '#D5D1FB'
                                         }}
                                     >
-                                        <Avatar alt="Kode Booking" src="/src/img/qrcode.png" sx={{ width: '88px', height: '88px' }} />
+                                        <Avatar alt="Kode Booking" src={qrcodeImg} sx={{ width: '88px', height: '88px' }} />
                                         <Box sx={{ marginLeft: "16px" }}>
                                             <Typography sx={{ color: "#7367F0", fontSize: "18px", fontWeight: "600" }}>
                                                 Masukkan Kode Booking
@@ -432,7 +435,7 @@ export default function PilihKategoriPasien() {
                                         bgcolor: '#D5D1FB'
                                     }}
                                 >
-                                    <Avatar alt="Kode Booking" src="/src/img/filling.png" sx={{ width: '88px', height: '88px' }} />
+                                    <Avatar alt="Kode Booking" src={fillingImg} sx={{ width: '88px', height: '88px' }} />
                                     <Box >
                                         <Typography sx={titleStyle}>Pasien Umum/asuransi</Typography>
                                         <Box sx={descriptionBoxStyle}>
@@ -457,7 +460,7 @@ export default function PilihKategoriPasien() {
                                         bgcolor: '#D5D1FB'
                                     }}
                                 >
-                                    <Avatar alt="Kode Booking" src="/src/img/meidicine.png" sx={{ width: '88px', height: '88px' }} />
+                                    <Avatar alt="Kode Booking" src={medicineImg} sx={{ width: '88px', height: '88px' }} />
                                     <Box>
                                         <Typography sx={titleStyle}>Pasien non BPJS kesehatan</Typography>
                                         <Box sx={descriptionBoxStyle}>
