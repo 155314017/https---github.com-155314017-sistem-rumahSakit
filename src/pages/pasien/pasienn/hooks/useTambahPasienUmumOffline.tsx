@@ -435,10 +435,10 @@ export default function useTambahPasienUmumOffline() {
         try {
             console.log(data);
             const response = await CreateAppointmentOffline(data)
-            console.log(response);
+            console.log(response.queueDatum.queueNumber);
             const createdDateTimeFormatted = dayjs.unix(response.scheduleDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
             const dataSent = {
-                nomorAntrian: response.bookingCode,
+                nomorAntrian: response.queueDatum.queueNumber,
                 namaDokter: docterName,
                 clinic: clinicName,
                 tanggalReservasi: createdDateTimeFormatted,
