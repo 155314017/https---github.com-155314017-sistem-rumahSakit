@@ -209,12 +209,12 @@ export default function KategoriPasien() {
                         <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
                             Data Not Found  !
                         </Typography>
-                        <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                        {/* <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
                             Are you sure you filled the field ?? Look sus !
                         </Typography>
                         <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
                             Keep playing kiddos !
-                        </Typography>
+                        </Typography> */}
                     </Box>
                 </Box>
             )}
