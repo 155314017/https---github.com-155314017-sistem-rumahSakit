@@ -48,6 +48,22 @@ export default function RegisterPasienBaru() {
 
     const [showAlertError, setShowAlertError] = useState(false);
     const [showAlertError1, setShowAlertError1] = useState(false);
+
+
+
+    const showTemporaryAlertErrorr = async () => {
+        console.log("ALERT ERROR ! ! !")
+        setShowAlertError(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setShowAlertError(false);
+    };
+
+    const showTemporaryAlertErrorr1 = async () => {
+        console.log("ALERT ERROR ! ! !")
+        setShowAlertError1(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setShowAlertError1(false);
+    };
     return (
         <>   <style>
             {`
@@ -115,7 +131,7 @@ export default function RegisterPasienBaru() {
                 {showLogin && (
                     <>
 
-                        {showAlertError1 && <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />}
+                        {showAlertError1 && <AlertWarning teks="Maaf Registrasi Gagal, silahkan coba lagi." />}
 
                         <Box
                             sx={{
@@ -167,11 +183,11 @@ export default function RegisterPasienBaru() {
                                                 setData(dataRegis);
                                                 setPatientId(response.data.id);
                                             } else {
-                                                setShowAlertError1(true);
+                                                showTemporaryAlertErrorr1();
                                             }
                                         } catch (error) {
-                                            console.error("error", error);
-                                            alert("Error: Terjadi kesalahan saat memproses permintaan.");
+                                            console.log('error', error);
+                                            showTemporaryAlertErrorr1();
                                         } finally {
                                             setButtonDis(false);
                                         }
@@ -578,12 +594,12 @@ export default function RegisterPasienBaru() {
                                                 });
                                             } 
                                               else {
-                                                setShowAlertError(true);
+                                                showTemporaryAlertErrorr();
                                                 
                                             }
                                         } catch (error) {
-                                            console.error("Exception error:", error);
-                                            alert("Error: Terjadi kesalahan saat memproses permintaan.");
+                                            console.log('error', error);
+                                            showTemporaryAlertErrorr();
                                         }
 
 

@@ -29,7 +29,6 @@ const RegisterPatient = async (data: Data) => {
       throw new Error(`API responded with status: ${response.status}`)
     }
   } catch (error) {
-    alert("Terjadi kesalahan saat mengirim ulang kode. Silakan coba lagi.");
     console.log('error', error)
   }
 }
