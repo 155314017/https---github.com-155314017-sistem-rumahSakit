@@ -100,6 +100,7 @@ export default function useTambahPasienUmumOffline() {
     const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
     const [clinicName, setClinicName] = useState('');
     const [showAlert, setShowAlert] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const breadcrumbItems = [
@@ -235,6 +236,7 @@ export default function useTambahPasienUmumOffline() {
         // } catch (err) {
         //     console.log(err);
         // }
+        // setPatientFullsPage(true);
         setCurrentPage(2)
     }
 
@@ -417,6 +419,8 @@ export default function useTambahPasienUmumOffline() {
     };
 
     const createTicket = async () => {
+        setIsLoading(true)
+
         const data = {
             patientId: patientData?.id,
             // patientId: "a9461920-b918-4e39-8cae-33f4f76e39cf", //nanti diganti
@@ -426,7 +430,8 @@ export default function useTambahPasienUmumOffline() {
             scheduleId: selectedScheduleId ? selectedScheduleId : '',
             symptoms: formik.values.keluhan,
             referenceDoc: formik.values.docs,
-        }
+        };
+
         try {
             console.log(data);
             const response = await CreateAppointmentOffline(data)
@@ -449,6 +454,8 @@ export default function useTambahPasienUmumOffline() {
             console.log("tes", err);
             setMainPages(false)
             setCurrentPage(3);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -530,5 +537,6 @@ export default function useTambahPasienUmumOffline() {
         birthPlace,
         showAlert,
         calendarKey,
+        isLoading,
     }
 }

@@ -9,6 +9,7 @@ import {
     TextField,
     OutlinedInput,
     FormLabel,
+    CircularProgress,
 } from "@mui/material";
 import bgImage from "../../../../img/String.png";
 import PhoneInput from 'react-phone-input-2';
@@ -59,6 +60,7 @@ export default function TambahPasienUmumOffline() {
         birthPlace,
         showAlert,
         calendarKey,
+        isLoading
 
     } = useTambahPasienUmumOffline();
 
@@ -827,7 +829,6 @@ export default function TambahPasienUmumOffline() {
 
                                             <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
                                                 <Button
-                                                    // onClick={() => setMainPages(false)}
                                                     onClick={createTicket}
                                                     sx={{
                                                         backgroundColor: "#8F85F3",
@@ -840,10 +841,14 @@ export default function TambahPasienUmumOffline() {
                                                             backgroundColor: "#7C75E2",
                                                         },
                                                     }}
-                                                // onClick={formik.handleSubmit}
                                                 >
-                                                    Simpan
+                                                    {isLoading ? (
+                                                        <CircularProgress sx={{ color: 'white' }} size={20} />
+                                                    ) : (
+                                                        "Simpan"
+                                                    )}
                                                 </Button>
+
                                             </Box>
                                         </Box>
                                     </Box>
