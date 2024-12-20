@@ -115,10 +115,11 @@ export default function TambahPasienUmumOffline() {
                         <Box mt={currentPage == 2 ? '20%' : '10%'} position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content' }}>
 
                             <Box sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, gap: 8 }}>
+                                {/* Step 1 */}
                                 <Box display={"flex"} flexDirection={"row"} width={"290px"}>
-
                                     <Button
                                         onClick={() => setCurrentPage(1)}
+                                        // disabled={currentPage > 1} // Nonaktifkan jika bukan langkah pertama
                                         sx={{
                                             display: "flex",
                                             flexDirection: "row",
@@ -133,15 +134,13 @@ export default function TambahPasienUmumOffline() {
                                         <Box sx={getBorderStyle(1)}>1</Box>
                                         <Typography sx={{ ml: 1, textTransform: 'none' }}>Data diri pasien</Typography>
                                     </Button>
-
-
                                 </Box>
+
+                                {/* Step 2 */}
                                 <Box display={"flex"} flexDirection={"row"} width={"400px"}>
                                     <Button
                                         onClick={() => setCurrentPage(2)}
-                                        disableRipple
-                                        disableElevation
-                                        // disabled={currentPage === 1}
+                                        disabled={currentPage < 2} // Nonaktifkan jika di langkah pertama atau langkah berikutnya
                                         sx={{
                                             ...getPageStyle(2),
                                             display: "flex",
@@ -158,15 +157,13 @@ export default function TambahPasienUmumOffline() {
                                             Data diri Penanggung Jawab Pasien
                                         </Typography>
                                     </Button>
-
-
                                 </Box>
+
+                                {/* Step 3 */}
                                 <Box display={"flex"} flexDirection={"row"} width={"350px"}>
                                     <Button
                                         onClick={() => setCurrentPage(3)}
-                                        disableRipple
-                                        disableElevation
-                                        // disabled={currentPage === 1 || currentPage === 2}
+                                        disabled={currentPage < 3} // Nonaktifkan jika bukan langkah terakhir
                                         sx={{
                                             ...getPageStyle(3),
                                             display: "flex",
@@ -185,6 +182,7 @@ export default function TambahPasienUmumOffline() {
                                     </Button>
                                 </Box>
                             </Box>
+
 
                             <Box position="absolute" sx={{ top: 0, right: 0 }}>
                                 <img src={bgImage} alt="bg-image" />
