@@ -11,27 +11,35 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
 
   const handleRemoveFile = () => {
     setFileName(null);
-    onBase64Change?.(null); // Set null ketika file dihapus
+    onBase64Change?.(null); 
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      if (file.size > 5 * 1024 * 1024) { // Batas ukuran file: 5MB
+        alert("File terlalu besar! Harap unggah file dengan ukuran maksimal 5MB.");
+        return;
+      }
       setFileName(file.name);
+
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
         onBase64Change?.(base64String); // Kirim Base64 ke parent
       };
+      reader.onerror = () => {
+        alert("Gagal membaca file. Silakan coba lagi.");
+        handleRemoveFile();
+      };
       reader.readAsDataURL(file);
     }
   };
 
-
   return (
     <Box sx={{ display: "flex", alignItems: "center", marginBottom: "5px" }}>
       <input
-        accept="*"
+        accept="*" // Ganti "image/*" jika hanya ingin file gambar
         style={{ display: "none" }}
         id="file-upload"
         type="file"
