@@ -167,8 +167,6 @@ export default function RegisterPasienBaru() {
                                                 alert("Error: Data yang dimasukkan tidak valid (400).");
                                             } else if (response.status === 500) {
                                                 alert("Error: Terjadi kesalahan pada server (500).");
-                                            } else {
-                                                alert(`Error: Terjadi kesalahan tidak terduga (Status: ${response.status}).`);
                                             }
                                         } catch (error) {
                                             console.error("error", error);
