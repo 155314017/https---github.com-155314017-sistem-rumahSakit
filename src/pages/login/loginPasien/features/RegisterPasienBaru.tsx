@@ -18,7 +18,7 @@ export default function RegisterPasienBaru() {
     const {
         otpFormShown,
         showOtp,
-        showTemporaryAlertError,
+        // showTemporaryAlertError,
         handleResendClick,
         formatTime,
         data1,
