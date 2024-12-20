@@ -859,7 +859,7 @@ export default function TambahPasienUmumOffline() {
                                 namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
                                 nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
                                 tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
-                                // bookingCode={''}
+                                bookingCode=""
                             />
                         </Box>
                     )}

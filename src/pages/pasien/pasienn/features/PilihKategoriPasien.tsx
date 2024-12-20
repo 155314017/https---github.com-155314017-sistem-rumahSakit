@@ -497,6 +497,7 @@ export default function PilihKategoriPasien() {
                         namaDokter={dataKodeBooking?.namaDokter}
                         nomorAntrian={dataKodeBooking?.nomorAntrian}
                         tanggalReservasi={dataKodeBooking?.tanggalReserve}
+                        bookingCode=""
                         onClose={() => {
                             console.log("Tombol close ditekan");
                             setInfoTicket(false);

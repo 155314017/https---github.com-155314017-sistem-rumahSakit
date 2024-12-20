@@ -13,7 +13,7 @@ type InformasiTicketProps = {
     clinic: string | undefined;
     tanggalReservasi: string | undefined;
     jadwalKonsul: string | null | undefined;
-    bookingCode?: string;
+    bookingCode: string;
     bgcolor?: string;
     onClose?: () => void;
 };
@@ -24,7 +24,7 @@ const InformasiTicketAPI = ({
     clinic,
     tanggalReservasi,
     jadwalKonsul,
-    bookingCode = '',
+    bookingCode,
     bgcolor = "#ffffff",
     onClose,
 }: InformasiTicketProps) => {
