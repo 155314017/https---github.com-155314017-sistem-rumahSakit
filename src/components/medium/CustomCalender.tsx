@@ -37,6 +37,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
             if (response.data && response.data.data) {
                 setSchedules(response.data.data);
                 processSchedules(response.data.data);
+                console.log(schedules);
             }
         } catch (error) {
             console.error('Error fetching schedules:', error);
@@ -100,7 +101,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box>
+            <Box sx={{ cursor: 'pointer' }} >
                 <InputBase value={inputValue}
                     onClick={handleOpen}
                     placeholder="Pilih jadwal"
@@ -113,7 +114,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
                         height: '40px',
                         backgroundColor: 'inherit',
                         color: '#333',
-                        cursor: 'pointer',
+                        cursor: 'grab',
                         position: 'relative',
                         '&:focus': {
                             borderColor: '#1976d2',
@@ -181,7 +182,8 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
                             <Grid container spacing={1}>
                                 {selectedDate &&
                                     availableTimes[selectedDate.format('YYYY-MM-DD')]?.map(({ timeRange, scheduleId }) => {
-                                        const [start, end] = timeRange.split(' - ').map((t) =>
+                                        // const [start, end] = timeRange.split(' - ').map((t) =>
+                                        const [start] = timeRange.split(' - ').map((t) =>
                                             dayjs(`${selectedDate.format('YYYY-MM-DD')}T${t}`)
                                         );
                                         const isDisabled = start.isBefore(now);
