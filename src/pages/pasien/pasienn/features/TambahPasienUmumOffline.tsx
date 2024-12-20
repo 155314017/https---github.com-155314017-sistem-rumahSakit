@@ -25,6 +25,7 @@ import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI"
 import bgImg from "../../../../assets/img/Bg-desktop.svg"
 import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
 import AlertWarning from "../../../../components/small/AlertWarning";
+import { useEffect } from "react";
 
 
 export default function TambahPasienUmumOffline() {
@@ -57,11 +58,13 @@ export default function TambahPasienUmumOffline() {
         birthDate,
         birthPlace,
         showAlert,
-        calendarKey
+        calendarKey,
 
     } = useTambahPasienUmumOffline();
 
-
+    useEffect(() => {
+        console.log(currentPage)
+    }, [currentPage]);
 
 
     return (
@@ -96,7 +99,7 @@ export default function TambahPasienUmumOffline() {
                 },
                 // bgcolor: 'blue'
             }}>
-                <BreadCrumbBasic title="Pasien lama" description="Pasien yang pernah datang sebelumnya untuk keperluan berobat." onBackClick={() => window.history.back()} />
+                <BreadCrumbBasic title="Pasien lama" description="Pasien yang pernah datang sebelumnya untuk keperluan berobat." onBackClick={() => currentPage > 1 ? setCurrentPage(currentPage - 1) : window.history.back()} />
                 {showAlert && <AlertWarning teks="NIK Tidak Ditemukan. Silahkan coba lagi." />}
             </Box>
             <Container sx={{
