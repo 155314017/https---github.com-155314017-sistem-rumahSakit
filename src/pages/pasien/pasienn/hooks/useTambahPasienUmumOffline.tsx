@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import CreateAppointmentOffline from '../../../../services/ManagePatient/CreateAppoinmentOffline';
 import UpdatePatientGuards from '../../../../services/Patient Tenant/UpdatePatientGuard';
 import { getGuardianData } from '../../../../services/ManagePatient/getGuardianByPatientId';
+// import RegisterPatient from '../../../../services/Patient Tenant/RegisterPatient';
 
 type Doctor = {
     id: string;
@@ -29,14 +30,14 @@ type ResponsePatient = {
 }
 
 type dataPasien = {
-    nik: string | undefined;
-    email: string | undefined;
-    phone: string | undefined;
-    gender: string | undefined;
-    fullname: string | undefined;
-    address: string | undefined;
-    birthDate: string | undefined;
-    birthPlace: string | undefined;
+    nik: string;
+    email: string;
+    phone: string;
+    gender: string;
+    fullname: string;
+    address: string;
+    birthDate: string;
+    birthPlace: string;
 }
 
 type GuardianData = {
@@ -120,7 +121,7 @@ export default function useTambahPasienUmumOffline() {
             // phonePasien: '',
             nikGuardian: switchValue ? dataPasien?.nik : dataGuards?.guardianIdentityNumber,
             typeGuardian: '',
-            caraDatang: dataGuards?.guardianRelation.toUpperCase(),
+            caraDatang: switchValue ? '' : dataGuards?.guardianType.toUpperCase(),
             fullnameGuardian: switchValue ? dataPasien?.fullname : dataGuards?.guardianName,
             emailGuardian: switchValue ? dataPasien?.email : dataGuards?.guardianEmail,
             genderGuardian: switchValue ? dataPasien?.gender : dataGuards?.guardianGender,
@@ -217,7 +218,21 @@ export default function useTambahPasienUmumOffline() {
         },
     });
 
-    const changePage2 = () => {
+    const changePage2 = async () => {
+        // try {
+        //     const data = {
+        //         identityNumber: dataPasien?.nik ?? "",
+        //         name: dataPasien?.fullname ?? "",
+        //         phone: dataPasien?.phone ?? "",
+        //         email: dataPasien?.email ?? "",
+        //         gender: dataPasien?.gender ?? "",
+        //         address: dataPasien?.address ?? "",
+        //     }
+        //     const response = await RegisterPatient(data)
+        //     console.log("RESPON REGIS: ", response)
+        // } catch (err) {
+        //     console.log(err);
+        // }
         setCurrentPage(2)
     }
 
@@ -270,18 +285,28 @@ export default function useTambahPasienUmumOffline() {
     const findPatientByNik = async (nik: string) => {
         try {
             const response = await GetPatientByNIKServices(nik);
-            console.log("Responseee: ", response?.data.id);
+            console.log("Responseee: ", response?.data);
             console.log(response);
             if (response?.responseCode === "200") {
                 const dataGuard = await getGuardianData(response.data.id)
                 setDataGuards(dataGuard);
-                console.log("TESTES GUARD: ", dataGuard.guardianRelation.toUpperCase())
                 setPatientData(response?.data as ResponsePatient);
                 const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
                 const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
                 setBirthDate(birthDateProcess ? birthDateProcess : "Data tidak ada")
                 setBirthPlace(birthPlaceProcess ? birthPlaceProcess : "Data tidak ada")
-                console.log(birthDate, birthPlace);
+                const dataGet = {
+                    nik: response?.data.identityNumber,
+                    email: response?.data.email,
+                    phone: response?.data.phoneNumber,
+                    fullname: response?.data.fullName,
+                    address: response?.data.address,
+                    gender: response?.data.gender,
+                    birthDate: birthDate,
+                    birthPlace: birthPlace
+                }
+
+                setDataPasien(dataGet)
                 setPatientFullsPage(false);
                 console.log(response?.data);
             }
@@ -304,7 +329,7 @@ export default function useTambahPasienUmumOffline() {
                 guardianEmail: formik.values.emailGuardian,
                 guardianGender: formik.values.genderGuardian,
                 guardianAddress: formik.values.addressGuardian,
-                guardianType: 'KELUARGA',
+                guardianType: formik.values.typeGuardian,
                 guardianRelation: formik.values.typeGuardian,
                 guardianBirthPlace: formik.values.birthPlaceGuardian,
                 guardianBirthDate: formik.values.birthDateGuardian,
