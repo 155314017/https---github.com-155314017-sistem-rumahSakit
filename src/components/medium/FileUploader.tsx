@@ -12,30 +12,19 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
 
   const handleRemoveFile = () => {
     setFileName(null);
-<<<<<<< HEAD
-    onBase64Change?.(null); 
-=======
     setError(null);
     onBase64Change?.(null);
->>>>>>> main
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-<<<<<<< HEAD
-      if (file.size > 5 * 1024 * 1024) { // Batas ukuran file: 5MB
-        alert("File terlalu besar! Harap unggah file dengan ukuran maksimal 5MB.");
-        return;
-      }
-=======
       if (file.size > 1 * 1024 * 1024) { // 1MB = 1 * 1024 * 1024 bytes
         setError("Ukuran file terlalu besar. Maksimum 1MB.");
         return;
       }
 
       setError(null); // Reset error jika file valid
->>>>>>> main
       setFileName(file.name);
 
       const reader = new FileReader();
