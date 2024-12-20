@@ -120,8 +120,8 @@ export default function useTambahPasienUmumOffline() {
             birthPlacePatient: birthPlace,
             // phonePasien: '',
             nikGuardian: switchValue ? dataPasien?.nik : dataGuards?.guardianIdentityNumber,
-            typeGuardian: '',
-            caraDatang: switchValue ? '' : dataGuards?.guardianType.toUpperCase(),
+            typeGuardian: switchValue ? 'SENDIRI' : dataGuards?.guardianType.toUpperCase(),
+            caraDatang: switchValue ? 'SENDIRI' : dataGuards?.guardianType.toUpperCase(),
             fullnameGuardian: switchValue ? dataPasien?.fullname : dataGuards?.guardianName,
             emailGuardian: switchValue ? dataPasien?.email : dataGuards?.guardianEmail,
             genderGuardian: switchValue ? dataPasien?.gender : dataGuards?.guardianGender,
@@ -289,6 +289,7 @@ export default function useTambahPasienUmumOffline() {
             console.log(response);
             if (response?.responseCode === "200") {
                 const dataGuard = await getGuardianData(response.data.id)
+                console.log("DATA GUARDS: ", dataGuard)
                 setDataGuards(dataGuard);
                 setPatientData(response?.data as ResponsePatient);
                 const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();

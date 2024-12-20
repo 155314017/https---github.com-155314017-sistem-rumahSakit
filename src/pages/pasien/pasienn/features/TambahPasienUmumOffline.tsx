@@ -596,7 +596,7 @@ export default function TambahPasienUmumOffline() {
                                                             borderRadius: '12px',
                                                             padding: '8px 12px 8px 12px',
                                                             gap: '24px',
-                                                            backgroundColor: "inherit",
+                                                            backgroundColor: switchValue ? "#E8E8E8" : "inherit",
                                                             width: '97.5%',
                                                         }}
                                                         >
@@ -604,7 +604,7 @@ export default function TambahPasienUmumOffline() {
                                                                 <RadioGroup
                                                                     aria-labelledby="gender-label"
                                                                     name="typeGuardian"
-                                                                    value={formik.values.caraDatang}
+                                                                    value={formik.values.typeGuardian}
                                                                     // value={""}
                                                                     onChange={(e) => formik.setFieldValue("typeGuardian", e.target.value)}
                                                                     row
@@ -615,11 +615,11 @@ export default function TambahPasienUmumOffline() {
                                                                         width: '100%',
                                                                     }}
                                                                 >
-                                                                    <FormControlLabel value="SENDIRI" control={<BpRadio />} label="Sendiri" />
-                                                                    <FormControlLabel value="KELUARGA" control={<BpRadio />} label="Keluarga" />
-                                                                    <FormControlLabel value="POLISI" control={<BpRadio />} label="Polisi" />
-                                                                    <FormControlLabel value="AMBULAN" control={<BpRadio />} label="Ambulan" />
-                                                                    <FormControlLabel value="LAINNYA" control={<BpRadio />} label="Lainnya" />
+                                                                    <FormControlLabel disabled={switchValue} value="SENDIRI" control={<BpRadio />} label="Sendiri" />
+                                                                    <FormControlLabel disabled={switchValue} value="KELUARGA" control={<BpRadio />} label="Keluarga" />
+                                                                    <FormControlLabel disabled={switchValue} value="POLISI" control={<BpRadio />} label="Polisi" />
+                                                                    <FormControlLabel disabled={switchValue} value="AMBULAN" control={<BpRadio />} label="Ambulan" />
+                                                                    <FormControlLabel disabled={switchValue} value="LAINNYA" control={<BpRadio />} label="Lainnya" />
                                                                 </RadioGroup>
                                                             </FormControl>
                                                         </Box>
@@ -858,7 +858,7 @@ export default function TambahPasienUmumOffline() {
                                 namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
                                 nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
                                 tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
-                                bookingCode={dataTickets?.bookingCode || "Unknown Code"}
+                                bookingCode={''}
                             />
                         </Box>
                     )}
