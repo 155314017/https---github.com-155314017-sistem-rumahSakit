@@ -157,15 +157,15 @@ export default function RegisterPasienBaru() {
                                             setButtonDis(true);
 
                                             const response = await RegisterPatient(dataRegis);
-                                            console.log("response: ", response);
+                                            console.log("response: ", response.responseCode);
 
-                                            if (response.status === 200) {
+                                            if (response.responseCode === "200") {
                                                 showOtp();
                                                 setData(dataRegis);
                                                 setPatientId(response.data.id);
-                                            } else if (response.status === 400) {
+                                            } else if (response.responseCode === "400") {
                                                 alert("Error: Data yang dimasukkan tidak valid (400).");
-                                            } else if (response.status === 500) {
+                                            } else if (response.responseCode === "500") {
                                                 alert("Error: Terjadi kesalahan pada server (500).");
                                             }
                                         } catch (error) {
@@ -566,7 +566,7 @@ export default function RegisterPasienBaru() {
                                         try {
                                             const response = await VerifyOTPPatient(dataOTP);
 
-                                            if (response.status === 200) {
+                                            if (response.responseCode === "200") {
                                                 otpFormShown();
                                                 navigate('/register/pj', {
                                                     state: {
@@ -575,9 +575,9 @@ export default function RegisterPasienBaru() {
                                                         idPatient: patientId
                                                     }
                                                 });
-                                            } else if (response.status === 404) {
+                                            } else if (response.status === "404") {
                                                 alert("Error: Data tidak ditemukan (404).");
-                                            } else if (response.status === 500) {
+                                            } else if (response.status === "500") {
                                                 alert("Error: Terjadi kesalahan server (500).");
                                             } else {
                                                 alert(`Error: Terjadi kesalahan tidak terduga (Status: ${response.status}).`);

@@ -21,10 +21,11 @@ const RegisterPatient = async (data: Data) => {
       }
     )
 
-    console.log('inside Login1 ')
-    console.log('ID pasien: ', response.data.data.id)
-    console.log('Response register: ', response)
-    return response.data
+    if (response.status === 200) {
+      return response.data
+    } else {
+      throw new Error(`API responded with status: ${response.status}`)
+    }
   } catch (error) {
     alert("Terjadi kesalahan saat mengirim ulang kode. Silakan coba lagi.");
     console.log('error', error)
