@@ -1,6 +1,6 @@
 import { Box, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import MediumCard from "../../../components/medium/MediumCard";
+import MediumCard from "../../../components/small/card/MediumCard";
 
 
 // icon 
@@ -8,7 +8,7 @@ import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import BedIcon from '@mui/icons-material/Bed';
 import PeopleIcon from '@mui/icons-material/People';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import CardAdd from "../../../components/medium/CardAdd";
+import CardAdd from "../../../components/small/card/CardAdd";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';

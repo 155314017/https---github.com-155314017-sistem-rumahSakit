@@ -2,8 +2,8 @@ import { Box, Grid } from "@mui/system";
 import { Typography } from "@mui/material";
 import SideBar from "../../../components/SideBar/SideBar";
 import Header from "../../../components/medium/Header";
-import MediumCard from "../../../components/medium/MediumCard";
-import CardAdd from "../../../components/medium/CardAdd";
+import MediumCard from "../../../components/small/card/MediumCard";
+import CardAdd from "../../../components/small/card/CardAdd";
 
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';

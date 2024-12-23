@@ -14,7 +14,7 @@ import {
     Collapse,
   } from "@mui/material";
   import SearchBar from "../../../components/small/SearchBar";
-  import DropdownList from "../../../components/small/DropdownList";
+  import DropdownList from "../../../components/small/dropdownlist/DropdownList";
   import { styled } from "@mui/material/styles";
   
   // icon
@@ -22,7 +22,7 @@ import {
   import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
   
   import bgImage from "../../../assets/img/String.png";
-  import ModalDeleteConfirmation from "../../../components/small/ModalDeleteConfirmation";
+  import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
 
 
   //hooks

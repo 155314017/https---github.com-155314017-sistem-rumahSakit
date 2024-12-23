@@ -3,8 +3,8 @@ import { Link } from "@mui/material";
 
 // components
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import ImageGrid from "../../../components/medium/ImageGrid";
-import CardDetail from "../../../components/medium/CardDetail";
+import ImageGrid from "../../../components/medium/imageComponent/ImageGrid";
+import CardDetail from "../../../components/small/card/CardDetail";
 
 // hooks
 import useDetailAmbulance from "../hooks/useDetailAmbulance";

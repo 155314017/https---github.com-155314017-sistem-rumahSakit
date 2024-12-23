@@ -4,7 +4,7 @@ import regisImg from "../../../../assets/img/registerImg.jpg";
 // import logo from "../../../img/St.carolus.png";
 import { Button, CardMedia, Typography } from "@mui/material";
 
-import CardRawatJalan from "../../../../components/medium/CardRawatJalan";
+import CardRawatJalan from "../../../../components/small/card/CardRawatJalan";
 
 //hooks
 import useKategoriPasien from "../hooks/useKategoriPasien";

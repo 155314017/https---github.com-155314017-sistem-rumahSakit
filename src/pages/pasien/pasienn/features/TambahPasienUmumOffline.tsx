@@ -20,12 +20,12 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import useTambahPasienUmumOffline from "../hooks/useTambahPasienUmumOffline";
 import SwitchCustom from "../../../../components/small/SwitchCustom";
-import DropdownListAPI from "../../../../components/small/DropdownListAPI";
+import DropdownListAPI from "../../../../components/small/dropdownlist/DropdownListAPI";
 import CustomCalender from "../../../../components/medium/CustomCalender";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 import bgImg from "../../../../assets/img/Bg-desktop.svg"
 import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
-import AlertWarning from "../../../../components/small/AlertWarning";
+import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import { useEffect } from "react";
 
 

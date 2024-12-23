@@ -1,7 +1,7 @@
 import { Box, CardMedia, IconButton, Button, CircularProgress, Typography, TextField } from "@mui/material";
 import register from "../../../../assets/img/registerImg.jpg";
 import bgImg from "../../../../assets/img/Bg-desktop.svg"
-import ModalKodeBooking from "../../../../components/small/ModalKodeBooking";
+import ModalKodeBooking from "../../../../components/small/modal/ModalKodeBooking";
 import { useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import { Formik, Form, Field } from "formik";
@@ -17,8 +17,8 @@ import 'dayjs/locale/id';
 import medicineImg from "../../../../img/meidicine.png"
 import qrcodeImg from "../../../../img/qrcode.png"
 import fillingImg from "../../../../img/filling.png"
-import CardAntrianCounter from "../../../../components/small/CardAntrianCounter";
-import PasienCard from "../../../../components/small/PasienCard";
+import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
+import PasienCard from "../../../../components/small/card/PasienCard";
 
 const formatDate = (timestamp: number) => dayjs.unix(timestamp).locale('id').format('DD MMMM YYYY');
 const formatTime = (timestamp: number) => dayjs.unix(timestamp).format('HH:mm');

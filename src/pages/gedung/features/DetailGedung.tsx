@@ -2,9 +2,9 @@ import { Container, Box } from "@mui/system";
 import { Link } from "@mui/material";
 
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import ImageGrid from "../../../components/medium/ImageGrid";
-import CardDetail from "../../../components/medium/CardDetail";
-import ModalDeleteConfirmation from "../../../components/small/ModalDeleteConfirmation";
+import ImageGrid from "../../../components/medium/imageComponent/ImageGrid";
+import CardDetail from "../../../components/small/card/CardDetail";
+import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
 
 //hooks
 import useDetailGedung from "../hooks/useDetailGedung";

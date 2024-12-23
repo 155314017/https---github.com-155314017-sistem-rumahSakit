@@ -15,7 +15,7 @@ import {
     CircularProgress
 } from "@mui/material";
 import SearchBar from "../../../components/small/SearchBar";
-import DropdownList from "../../../components/small/DropdownList";
+import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 import { styled } from "@mui/material/styles";
 import bgImage from "../../../assets/img/String.png";
 
@@ -23,7 +23,7 @@ import bgImage from "../../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
-import ModalDeleteConfirmation from "../../../components/small/ModalDeleteConfirmation";
+import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
 import useTableSubFasilitas from "../hooks/useTableSubFasilitas";
 
 

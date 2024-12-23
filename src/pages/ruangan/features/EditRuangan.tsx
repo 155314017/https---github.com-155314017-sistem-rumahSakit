@@ -1,10 +1,10 @@
 import { Container, Box, Typography, Button, FormControl, OutlinedInput, CircularProgress } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
-import AlertSuccess from "../../../components/small/AlertSuccess";
-import DropdownListAPI from '../../../components/small/DropdownListAPI';
-import ImageUploaderGroupAPI from '../../../components/medium/ImageGroupUploaderAPI';
-import DropdownList from '../../../components/small/DropdownList';
+import AlertSuccess from "../../../components/small/alert/AlertSuccess";
+import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
+import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/ImageGroupUploaderAPI';
+import DropdownList from '../../../components/small/dropdownlist/DropdownList';
 
 //hooks
 import useEditRuangan from "../hooks/useEditRuangan";

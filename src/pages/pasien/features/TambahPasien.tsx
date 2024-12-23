@@ -1,10 +1,10 @@
 import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
-import AlertSuccess from "../../../components/small/AlertSuccess";
-import DropdownList from "../../../components/small/DropdownList";
+import AlertSuccess from "../../../components/small/alert/AlertSuccess";
+import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 import CustomTimePicker from "../../../components/small/CustomTimePicker";
-import ImageUploaderGroup from '../../../components/medium/ImageUploaderGroup';
+import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageUploaderGroup';
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr';
 
 //hooks

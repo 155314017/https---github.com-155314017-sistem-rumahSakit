@@ -2,8 +2,8 @@ import { Container, Box } from "@mui/system";
 import { Typography, Button, FormControl, OutlinedInput, CircularProgress } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
-import AlertSuccess from "../../../components/small/AlertSuccess";
-import ImageUploaderGroupAPI from "../../../components/medium/ImageGroupUploaderAPI";
+import AlertSuccess from "../../../components/small/alert/AlertSuccess";
+import ImageUploaderGroupAPI from "../../../components/medium/imageComponent/ImageGroupUploaderAPI";
 import useEditGedung from "../hooks/useEditGedung";
 
 export default function EditGedung() {

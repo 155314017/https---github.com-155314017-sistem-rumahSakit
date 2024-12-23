@@ -19,7 +19,7 @@ import SwitchCustom from '../../../components/small/SwitchCustom';
 import CustomCalender from '../../../components/medium/CustomCalender';
 //hooks
 import useTambahPasienUmum from '../hooks/useTambahPasienUmum';
-import DropdownListAPI from "../../../components/small/DropdownListAPI";
+import DropdownListAPI from "../../../components/small/dropdownlist/DropdownListAPI";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";

@@ -7,8 +7,8 @@ import 'dayjs/locale/id'
 import BreadCrumbs from '../../../components/medium/BreadCrumbs'
 import CustomTimePicker from '../../../components/small/CustomTimePicker'
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr'
-import ImageUploaderGroupAPI from '../../../components/medium/ImageGroupUploaderAPI'
-import DropdownListAPI from '../../../components/small/DropdownListAPI'
+import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/ImageGroupUploaderAPI'
+import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI'
 
 // hooks
 import useEditAmbulance from '../hooks/useEditAmbulance'

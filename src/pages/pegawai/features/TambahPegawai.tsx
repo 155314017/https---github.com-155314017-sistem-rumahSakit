@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
-import DropdownList from "../../../components/small/DropdownList";
+import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 import DatePickerCustom from '../../../components/inputComponent/DatePickerCustom';
 import PhoneInputComponent from '../../../components/inputComponent/PhoneInputComponent';
 

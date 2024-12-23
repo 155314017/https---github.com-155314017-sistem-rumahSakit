@@ -2,15 +2,15 @@ import { Box, Grid } from "@mui/system";
 import { Typography, CircularProgress } from "@mui/material";
 import SideBar from "../../../components/SideBar/SideBar";
 import Header from "../../../components/medium/Header";
-import MediumCard from "../../../components/medium/MediumCard";
-import CardAdd from "../../../components/medium/CardAdd";
+import MediumCard from "../../../components/small/card/MediumCard";
+import CardAdd from "../../../components/small/card/CardAdd";
 
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import TableFasilitas from "../../../pages/fasilitas/features/TableFasilitas";
 import TableSubFasilitas from "../../../pages/fasilitas/features/TableSubFasilitas";
-import AlertSuccess from "../../../components/small/AlertSuccess";
+import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 
 //hooks
 import useIndex from "../hooks/useIndex";

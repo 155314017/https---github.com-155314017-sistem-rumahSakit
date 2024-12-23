@@ -1,9 +1,9 @@
 import { Container, Box } from "@mui/system";
 
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import ImageGrid from "../../../components/medium/ImageGrid";
+import ImageGrid from "../../../components/medium/imageComponent/ImageGrid";
 import CardDetailKlinik from "./CardDetailKlinik";
-import CardOperasionalKlinik from "../../../components/medium/CardOperasional";
+import CardOperasionalKlinik from "../../../components/small/card/CardOperasional";
 
 export default function DetailKlinik() {
     const breadcrumbItems = [

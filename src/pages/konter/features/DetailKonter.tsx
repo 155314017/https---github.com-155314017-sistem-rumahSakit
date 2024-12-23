@@ -1,10 +1,10 @@
 import { Container, Box } from "@mui/system";
 
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import ImageGrid from "../../../components/medium/ImageGrid";
+import ImageGrid from "../../../components/medium/imageComponent/ImageGrid";
 import { Link } from "@mui/material";
-import CardOperasionalKlinik from "../../../components/medium/CardOperasional";
-import CardDetail from "../../../components/medium/CardDetail";
+import CardOperasionalKlinik from "../../../components/small/card/CardOperasional";
+import CardDetail from "../../../components/small/card/CardDetail";
 
 
 

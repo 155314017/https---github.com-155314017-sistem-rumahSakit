@@ -2,14 +2,14 @@ import { Box, Grid } from "@mui/system";
 import { Typography } from "@mui/material";
 import SideBar from "../../../components/SideBar/SideBar";
 import Header from "../../../components/medium/Header";
-import MediumCard from "../../../components/medium/MediumCard";
-import CardAddOnClick from "../../../components/medium/CardAddOnClick";
+import MediumCard from "../../../components/small/card/MediumCard";
+import CardAddOnClick from "../../../components/small/card/CardAddOnClick";
 import TablePasien from "../../../pages/pasien/features/TablePasien";
 
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import ModalKategoriPasien from '../../../components/small/ModalKategoriPasien';
+import ModalKategoriPasien from '../../../components/small/modal/ModalKategoriPasien';
 
 //hooks
 import useIndex from "../hooks/useIndex";

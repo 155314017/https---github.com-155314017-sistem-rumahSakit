@@ -4,7 +4,7 @@ import axios from 'axios';
 import "react-phone-input-2/lib/style.css";
 import imagePendaftaran from "../../../../assets/img/pendaftaran.jpeg";
 import FileUploader from "../../../../components/medium/FileUploader";
-import DropdownListAPI from '../../../../components/small/DropdownListAPI';
+import DropdownListAPI from '../../../../components/small/dropdownlist/DropdownListAPI';
 import CustomCalender from '../../../../components/medium/CustomCalender';
 
 // Hooks

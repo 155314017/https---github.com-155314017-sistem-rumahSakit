@@ -2,10 +2,10 @@ import { Delete as DeleteIcon } from '@mui/icons-material'
 import { Container, Box, Typography, Button, FormControl, OutlinedInput, IconButton } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
-import AlertSuccess from "../../../components/small/AlertSuccess";
-import DropdownList from "../../../components/small/DropdownList";
+import AlertSuccess from "../../../components/small/alert/AlertSuccess";
+import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 import CustomTimePicker from "../../../components/small/CustomTimePicker";
-import DropdownListAPI from '../../../components/small/DropdownListAPI';
+import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
 //hooks
 import useTambahSubFasilitas from "../hooks/useTambahSubFasilitas";
 

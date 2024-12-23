@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 import patientImage from "../../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from "formik";
-import AlertWarning from "../../../../components/small/AlertWarning";
-import AlertSuccess from "../../../../components/small/AlertSuccess";
+import AlertWarning from "../../../../components/small/alert/AlertWarning";
+import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
 import "react-phone-input-2/lib/style.css";
 //hooks
 import useLoginPasien from "../hooks/useLoginPasien";

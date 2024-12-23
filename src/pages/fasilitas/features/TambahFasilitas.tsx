@@ -2,12 +2,12 @@
 import { Container, Box, Typography, Button, FormControl, OutlinedInput, IconButton } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
-import AlertSuccess from "../../../components/small/AlertSuccess";
-import DropdownList from "../../../components/small/DropdownList";
+import AlertSuccess from "../../../components/small/alert/AlertSuccess";
+import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 import CustomTimePicker from "../../../components/small/CustomTimePicker";
-import ImageUploaderGroup from '../../../components/medium/ImageUploaderGroup';
+import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageUploaderGroup';
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr';
-import DropdownListAPI from '../../../components/small/DropdownListAPI';
+import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
 import useTambahFasilitas from '../hooks/useTambahFasilitas';
 import 'dayjs/locale/id';
 import { Delete as DeleteIcon } from '@mui/icons-material'

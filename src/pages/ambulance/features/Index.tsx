@@ -2,11 +2,11 @@ import { Box, Grid } from '@mui/system'
 import { Typography } from '@mui/material'
 
 // components
-import CardAdd from '../../../components/medium/CardAdd'
-import MediumCard from '../../../components/medium/MediumCard'
+import CardAdd from '../../../components/small/card/CardAdd'
+import MediumCard from '../../../components/small/card/MediumCard'
 import Header from '../../../components/medium/Header'
 import SideBar from '../../../components/SideBar/SideBar'
-import AlertSuccess from '../../../components/small/AlertSuccess'
+import AlertSuccess from '../../../components/small/alert/AlertSuccess'
 
 // icon
 import MinorCrashIcon from '@mui/icons-material/MinorCrash'
