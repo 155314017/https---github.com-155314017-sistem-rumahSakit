@@ -1,20 +1,11 @@
 import { useState } from "react";
-import CloseIcon from '@mui/icons-material/Close';
-import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import { Stack } from "@mui/system";
-import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 import GenerateQueuePatientServices from "../../../../services/Patient Tenant/GenerateQueuePatientServices";
 import { GetDoctorServices } from "../../../../services/Admin Tenant/ManageDoctor/GetDoctorService";
 import { getClinic } from "../../../../services/Admin Tenant/ManageClinic/GetClinic";
 import dayjs from "dayjs";
 import 'dayjs/locale/id';
-import medicineImg from "../../../../img/meidicine.png"
-import qrcodeImg from "../../../../img/qrcode.png"
-import fillingImg from "../../../../img/filling.png"
-import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
-import PasienCard from "../../../../components/small/card/PasienCard";
+import PatientCheckIn from "../../../../services/Patient Tenant/PatientCheckIn";
 
 const formatDate = (timestamp: number) => dayjs.unix(timestamp).locale('id').format('DD MMMM YYYY');
 const formatTime = (timestamp: number) => dayjs.unix(timestamp).format('HH:mm');
@@ -59,13 +50,6 @@ export default function usePilihKategoriPasien() {
     const [errCode, setErrCode] = useState(false)
     const [dataKodeBooking, setDataKodeBooking] = useState<bookingCodeData>()
 
-    const breadcrumbItems = [
-        { label: "Pasien Lama", href: "/tes" },
-        // { label: "Pasien", href: "/pasien" },
-        // { label: "Tambah Pasien", href: "/tambahPasien/Umum" },
-    ];
-
-
 
     const handleBack = () => {
         setOpenModalPilihPembayaran(false);
@@ -94,26 +78,16 @@ export default function usePilihKategoriPasien() {
         console.log(values.bookingCode)
         const bookingCode = { bookingCode: values.bookingCode };
         try {
-            const response = await axios.post(
-                'check-in/api',
-                bookingCode,
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-            )
-            console.log("response: ", response.data.data.registrationDatum.scheduleDatum.startDateTime)
-
-            const dateTime = formatDate(response.data.data.registrationDatum.scheduleDatum.startDateTime);
-            const startTime = formatTime(response.data.data.registrationDatum.scheduleDatum.startDateTime);
-            const endTime = formatTime(response.data.data.registrationDatum.scheduleDatum.endDateTime);
+            const response = await PatientCheckIn(bookingCode)
+            const dateTime = formatDate(response.registrationDatum.scheduleDatum.startDateTime);
+            const startTime = formatTime(response.registrationDatum.scheduleDatum.startDateTime);
+            const endTime = formatTime(response.registrationDatum.scheduleDatum.endDateTime);
             const consultationSchedule = dateTime + ' ' + startTime + ' - ' + endTime
-            const namaDokter = await GetDoctorServices(response.data.data.registrationDatum.doctorDataId)
-            const namaKlinik = await getClinic(response.data.data.registrationDatum.masterClinicId)
-            const dateReserve = dayjs(response.data.data.createdDateTime * 1000).format('YYYY-MM-DD HH:mm');
+            const namaDokter = await GetDoctorServices(response.registrationDatum.doctorDataId)
+            const namaKlinik = await getClinic(response.registrationDatum.masterClinicId)
+            const dateReserve = dayjs(response.createdDateTime * 1000).format('YYYY-MM-DD HH:mm');
             const dataBooking = {
-                nomorAntrian: response.data.data.queueNumber,
+                nomorAntrian: response.queueNumber,
                 namaDokter: namaDokter.name,
                 namaKlinik: namaKlinik.name,
                 tanggalReserve: dateReserve,
@@ -132,8 +106,6 @@ export default function usePilihKategoriPasien() {
     }
 
     return {
-        formatDate,
-        formatTime,
         setOpenModalKodeBooking,
         openModalKodeBooking,
         openModalPilihPembayaran,
@@ -147,18 +119,15 @@ export default function usePilihKategoriPasien() {
         infoTicket,
         setInfoTicket,
         nomorAntrian,
-        setNomorAntrian,
         tiketAntrianKonter,
         setTiketAntrianKonter,
         errCode,
         setErrCode,
         dataKodeBooking,
-        setDataKodeBooking,
-        breadcrumbItems,
         handleBack,
         pasienBaru,
         bookingCodeSchema,
         style,
-        onSubmitKodeBooking,
+        onSubmitKodeBooking
     }
 }

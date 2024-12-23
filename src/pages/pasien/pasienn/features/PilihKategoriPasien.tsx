@@ -16,8 +16,6 @@ import usePilihKategoriPasien from "../hooks/usePilihKategoriPasien";
 
 export default function PilihKategoriPasien() {
     const {
-        formatDate,
-        formatTime,
         setOpenModalKodeBooking,
         openModalKodeBooking,
         openModalPilihPembayaran,
@@ -31,14 +29,11 @@ export default function PilihKategoriPasien() {
         infoTicket,
         setInfoTicket,
         nomorAntrian,
-        setNomorAntrian,
         tiketAntrianKonter,
         setTiketAntrianKonter,
         errCode,
         setErrCode,
         dataKodeBooking,
-        setDataKodeBooking,
-        breadcrumbItems,
         handleBack,
         pasienBaru,
         bookingCodeSchema,
