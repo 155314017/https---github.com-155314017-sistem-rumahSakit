@@ -1,9 +1,6 @@
-import { Avatar, Box, CardMedia, IconButton, Button, CircularProgress, Typography, TextField } from "@mui/material";
+import { Box, CardMedia, IconButton, Button, CircularProgress, Typography, TextField } from "@mui/material";
 import register from "../../../../assets/img/registerImg.jpg";
 import bgImg from "../../../../assets/img/Bg-desktop.svg"
-import { Link } from "react-router-dom";
-import { Card } from "@mui/material";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ModalKodeBooking from "../../../../components/small/ModalKodeBooking";
 import { useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
@@ -20,6 +17,8 @@ import 'dayjs/locale/id';
 import medicineImg from "../../../../img/meidicine.png"
 import qrcodeImg from "../../../../img/qrcode.png"
 import fillingImg from "../../../../img/filling.png"
+import CardAntrianCounter from "../../../../components/small/CardAntrianCounter";
+import PasienCard from "../../../../components/small/PasienCard";
 
 const formatDate = (timestamp: number) => dayjs.unix(timestamp).locale('id').format('DD MMMM YYYY');
 const formatTime = (timestamp: number) => dayjs.unix(timestamp).format('HH:mm');
@@ -149,103 +148,40 @@ export default function PilihKategoriPasien() {
                             <Box
                                 sx={{ display: "flex", flexDirection: "column", gap: 0 }}
                             >
-                                <Link
-                                    to="#"
-                                    style={{ textDecoration: "none" }}
-                                    onClick={() => {
-                                        setOpenModalPilihPembayaran(true);
-                                        setMainPages(false);
-                                    }}
-                                >
-                                    <Card
-                                        sx={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            borderRadius: "24px",
-                                            padding: "16px",
-                                            boxShadow: 2,
-                                            marginBottom: "16px",
-                                            bgcolor: '#D5D1FB'
-                                        }}
-                                    >
-                                        <Avatar alt="Kode Booking" src={medicineImg} sx={{ width: '88px', height: '88px' }} />
-                                        <Box sx={{ marginLeft: "16px" }}>
-                                            <Typography sx={{ color: "#7367F0", fontSize: "18px", fontWeight: "600" }}>
-                                                Pasien Lama
-                                            </Typography>
-                                            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: 'space-between' }}>
-                                                <Typography sx={{ textDecoration: "none", maxWidth: '80%' }}>
-                                                    Dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu, dan berhak mendapatkan pelayanan kesehatan.
-                                                </Typography>
-                                                <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
-                                            </Box>
-                                        </Box>
-                                    </Card>
-                                </Link>
+                                <PasienCard
+                                    avatarSrc={medicineImg}
+                                    description="Dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu, dan berhak mendapatkan pelayanan kesehatan."
+                                    title="Pasien Lama"
+                                    bgColor="#D5D1FB"
+                                    onClick={
+                                        () => {
+                                            setOpenModalPilihPembayaran(true);
+                                            setMainPages(false);
+                                        }
+                                    }
+                                />
 
-                                <Link
-                                    to=""
-                                    style={{ textDecoration: "none" }}
-                                    onClick={pasienBaru}
-                                >
-                                    <Card
-                                        sx={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            borderRadius: "24px",
-                                            padding: "16px",
-                                            boxShadow: 2,
-                                            marginBottom: "16px",
-                                            bgcolor: '#D5D1FB'
-                                        }}
-                                    >
-                                        <Avatar alt="Kode Booking" src={fillingImg} sx={{ width: '88px', height: '88px' }} />
-                                        <Box sx={{ marginLeft: "16px" }}>
-                                            <Typography sx={{ color: "#7367F0", fontSize: "18px", fontWeight: "600" }}>
-                                                Pasien Baru
-                                            </Typography>
-                                            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: 'space-between' }}>
-                                                <Typography sx={{ textDecoration: "none", maxWidth: '80%' }}>
-                                                    Dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu, dan berhak mendapatkan pelayanan kesehatan.
-                                                </Typography>
-                                                <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
-                                            </Box>
-                                        </Box>
-                                    </Card>
-                                </Link>
-
-                                <Link to="#" style={{ textDecoration: "none" }} onClick={() => {
-                                    setInputCodePages(true);
-                                    setMainPages(false);
-                                }} >
-                                    <Card
-                                        sx={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            borderRadius: "24px",
-                                            padding: "16px",
-                                            boxShadow: 2,
-                                            marginBottom: "16px",
-                                            bgcolor: '#D5D1FB'
-                                        }}
-                                    >
-                                        <Avatar alt="Kode Booking" src={qrcodeImg} sx={{ width: '88px', height: '88px' }} />
-                                        <Box sx={{ marginLeft: "16px" }}>
-                                            <Typography sx={{ color: "#7367F0", fontSize: "18px", fontWeight: "600" }}>
-                                                Masukkan Kode Booking
-                                            </Typography>
-                                            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", width: '120%', justifyContent: 'space-between' }}>
-                                                <Typography sx={{ textDecoration: "none" }}>
-                                                    Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian.
-                                                </Typography>
-                                                <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
-                                            </Box>
-                                        </Box>
-                                    </Card>
-                                </Link>
+                                <PasienCard
+                                    avatarSrc={fillingImg}
+                                    description="Dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu, dan berhak mendapatkan pelayanan kesehatan."
+                                    title="Pasien Baru"
+                                    bgColor="#D5D1FB"
+                                    onClick={
+                                        pasienBaru
+                                    }
+                                />
+                                <PasienCard
+                                    avatarSrc={qrcodeImg}
+                                    description=" Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian."
+                                    title="Masukkan Kode Booking"
+                                    bgColor="#D5D1FB"
+                                    onClick={
+                                        () => {
+                                            setInputCodePages(true);
+                                            setMainPages(false);
+                                        }
+                                    }
+                                />
                             </Box>
                         </Box>
                         <ModalKodeBooking open={openModalKodeBooking} onClose={() => setOpenModalKodeBooking(false)} />
@@ -422,54 +358,22 @@ export default function PilihKategoriPasien() {
 
                         <Stack direction="column" width={'100%'} spacing={3}>
                             {/* Pasien BPJS */}
-                            <Link to="/tambahPasien/umum/offline" style={{ textDecoration: "none" }}>
-                                <Card
-                                    sx={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        borderRadius: "24px",
-                                        padding: "16px",
-                                        boxShadow: 2,
-                                        marginBottom: "16px",
-                                        bgcolor: '#D5D1FB'
-                                    }}
-                                >
-                                    <Avatar alt="Kode Booking" src={fillingImg} sx={{ width: '88px', height: '88px' }} />
-                                    <Box >
-                                        <Typography sx={titleStyle}>Pasien Umum/asuransi</Typography>
-                                        <Box sx={descriptionBoxStyle}>
-                                            <Typography>Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.</Typography>
-                                            <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
-                                        </Box>
-                                    </Box>
-                                </Card>
-                            </Link>
+
+                            <PasienCard
+                                href="/tambahPasien/umum/offline"
+                                avatarSrc={fillingImg}
+                                title="Pasien Umum/Asuransi"
+                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
+                                bgColor="#D5D1FB"
+                            />
 
                             {/* Pasien Umum */}
-                            <Link to="#" style={{ textDecoration: "none" }}>
-                                <Card
-                                    sx={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        borderRadius: "24px",
-                                        padding: "16px",
-                                        boxShadow: 2,
-                                        marginBottom: "16px",
-                                        bgcolor: '#D5D1FB'
-                                    }}
-                                >
-                                    <Avatar alt="Kode Booking" src={medicineImg} sx={{ width: '88px', height: '88px' }} />
-                                    <Box>
-                                        <Typography sx={titleStyle}>Pasien non BPJS kesehatan</Typography>
-                                        <Box sx={descriptionBoxStyle}>
-                                            <Typography>Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.</Typography>
-                                            <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
-                                        </Box>
-                                    </Box>
-                                </Card>
-                            </Link>
+                            <PasienCard
+                                avatarSrc={medicineImg}
+                                title="Pasien non BPJS kesehatan"
+                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
+                                bgColor="#D5D1FB"
+                            />
                         </Stack>
                         <Button
                             sx={{
@@ -512,110 +416,18 @@ export default function PilihKategoriPasien() {
                 )}
 
                 {tiketAntrianKonter && (
-                    <Box
-                        bgcolor={'white'}
-                        maxWidth={506}
-                        maxHeight={288}
-                        borderRadius={'32px'}
-                        padding={'32px'}
-                        display={'flex'}
-                        flexDirection={'column'}
-                        justifyContent={'space-between'}
-                        alignItems={'start'}
-                        gap={2}
-                        position={'relative'}
-                        boxShadow={'0px 4px 10px rgba(0, 0, 0, 0.1)'}
-                    >
-                        {/* Tombol Close */}
-                        <IconButton
-                            onClick={() => {
-                                setInputCodePages(false);
-                                setMainPages(true);
-                                setTiketAntrianKonter(false);
-                            }}
-                            sx={{
-                                position: 'absolute',
-                                top: 8,
-                                right: 8,
-                                color: '#A8A8BD',
-                            }}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-
-                        {/* Bagian Header */}
-                        <Box textAlign={'start'} mb={2}>
-                            <Typography fontWeight={600} fontSize={'20px'}>
-                                Rumah Sakit St. Carolus
-                            </Typography>
-                            <Typography
-                                fontWeight={400}
-                                fontSize={'16px'}
-                                color="#A8A8BD"
-                                lineHeight={1.5}
-                            >
-                                Jl. Salemba Raya No.41, RT.3/RW.5, Paseban, Kec. Senen, Kota Jakarta
-                                Pusat, Daerah Khusus Ibukota Jakarta 10440
-                            </Typography>
-                        </Box>
-
-                        {/* Bagian Nomor Antrian */}
-                        <Box textAlign={'start'} mb={2}>
-                            <Typography fontWeight={400} fontSize={'16px'} color="#747487">
-                                Nomor antrian konter
-                            </Typography>
-                            <Typography fontWeight={600} fontSize={'48px'} color="##0A0A0D">
-                                {nomorAntrian}
-                            </Typography>
-                        </Box>
-
-                        {/* Bagian Footer */}
-                        <Typography
-                            fontWeight={400}
-                            fontSize={'16px'}
-                            color="#747487"
-                            textAlign={'start'}
-                            lineHeight={1.5}
-                        >
-                            Silahkan menuju konter dengan menyiapkan kartu tanda penduduk (KTP) untuk
-                            melengkapi data diri Anda, terimakasih.
-                        </Typography>
-                    </Box>
+                    <CardAntrianCounter
+                        nomorAntrian={nomorAntrian}
+                        onClose={() => {
+                            setInputCodePages(false);
+                            setMainPages(true);
+                            setTiketAntrianKonter(false);
+                        }
+                        }
+                    />
                 )}
 
             </Box >
         </>
     );
 }
-
-// const cardStyle = {
-//     display: "flex",
-//     flexDirection: "row",
-//     borderRadius: "24px",
-//     backgroundColor: "#F1F0FE",
-//     padding: "24px",
-//     gap: "16px",
-//     boxShadow: "none",
-//     width: "96%",
-//     height: "100px",
-// };
-
-const titleStyle = {
-    color: "#7367F0",
-    fontSize: "18px",
-    fontWeight: 600,
-    lineHeight: "20px",
-    textDecoration: "none",
-};
-
-const descriptionBoxStyle = {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    textDecoration: "none",
-    // maxWidth: "80%",
-    justifyContent: "space-between",
-    // bgcolor: 'red',
-    width: "100%",
-
-};
