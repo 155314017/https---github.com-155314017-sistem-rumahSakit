@@ -13,6 +13,7 @@ import fillingImg from "../../../../assets/img/filling.png"
 import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
 import PasienCard from "../../../../components/small/card/PasienCard";
 import usePilihKategoriPasien from "../hooks/usePilihKategoriPasien";
+import AlertWarning from "../../../../components/small/alert/AlertWarning";
 
 export default function PilihKategoriPasien() {
     const {
@@ -31,8 +32,8 @@ export default function PilihKategoriPasien() {
         nomorAntrian,
         tiketAntrianKonter,
         setTiketAntrianKonter,
-        errCode,
-        setErrCode,
+        noDataBooking,
+        setNoDataBooking,
         dataKodeBooking,
         handleBack,
         pasienBaru,
@@ -64,6 +65,7 @@ export default function PilihKategoriPasien() {
                     backgroundRepeat: "no-repeat"
                 }}
             >
+                {noDataBooking && <AlertWarning teks="Kode booking tidak terdaftar" />}
                 {/* Halaman Utama */}
                 {mainPages && (
                     <Box >
@@ -148,11 +150,12 @@ export default function PilihKategoriPasien() {
                 {/* Halaman Input Kode Booking */}
                 {inputCodePages && (
                     <Box sx={{ ...style }}>
+
                         <IconButton
                             onClick={() => {
                                 setInputCodePages(false);
                                 setMainPages(true);
-                                setErrCode(false);
+                                setNoDataBooking(false);
                                 setIsLoading(false)
                             }}
                             sx={{
@@ -217,15 +220,13 @@ export default function PilihKategoriPasien() {
                                                 fontWeight: 600,
                                                 width: "100%",
                                             }}
-                                            disabled={!isValid || !dirty || isLoading}
+                                            disabled={!isValid || !dirty}
                                         >
-                                            {errCode ? "Tidak ada data booking" :
-                                                (isLoading ? (
-                                                    <CircularProgress size={25} sx={{ color: "white" }} />
-                                                ) : (
-                                                    "Submit"
-                                                ))
-                                            }
+                                            {isLoading ? (
+                                                <CircularProgress size={25} sx={{ color: "white" }} />
+                                            ) : (
+                                                "Submit"
+                                            )}
 
                                         </Button>
                                     </Box>
@@ -235,7 +236,7 @@ export default function PilihKategoriPasien() {
                     </Box>
                 )}
                 {openModalPilihPembayaran && (
-                    <Box>
+                    <Box width={'54%'} >
                         <CardMedia
                             component="img"
                             sx={{
@@ -253,7 +254,7 @@ export default function PilihKategoriPasien() {
                         <Box
                             sx={{
                                 bgcolor: '#ffffff',
-                                width: '95%',
+                                width: '96%',
                                 height: '100px',
                                 borderRadius: '24px',
                                 gap: '4px',
@@ -261,7 +262,7 @@ export default function PilihKategoriPasien() {
                                 my: '2%',
                                 display: 'flex',
                                 flexDirection: 'column',
-                                boxShadowL: 2
+                                boxShadow: 2
 
                             }}
                         >

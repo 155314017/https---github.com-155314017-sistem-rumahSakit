@@ -47,7 +47,7 @@ export default function usePilihKategoriPasien() {
     const [infoTicket, setInfoTicket] = useState(false);
     const [nomorAntrian, setNomorAntrian] = useState<string | number>(0);
     const [tiketAntrianKonter, setTiketAntrianKonter] = useState(false);
-    const [errCode, setErrCode] = useState(false)
+    const [noDataBooking, setNoDataBooking] = useState(false)
     const [dataKodeBooking, setDataKodeBooking] = useState<bookingCodeData>()
 
 
@@ -100,10 +100,17 @@ export default function usePilihKategoriPasien() {
             setInputCodePages(false);
         } catch (err: any) {
             console.log(err.status)
-            setErrCode(true)
+            setIsLoading(false);
+            showTemporaryAlert();
         }
 
     }
+
+    const showTemporaryAlert = async () => {
+        setNoDataBooking(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setNoDataBooking(false);
+    };
 
     return {
         setOpenModalKodeBooking,
@@ -121,8 +128,8 @@ export default function usePilihKategoriPasien() {
         nomorAntrian,
         tiketAntrianKonter,
         setTiketAntrianKonter,
-        errCode,
-        setErrCode,
+        noDataBooking,
+        setNoDataBooking,
         dataKodeBooking,
         handleBack,
         pasienBaru,

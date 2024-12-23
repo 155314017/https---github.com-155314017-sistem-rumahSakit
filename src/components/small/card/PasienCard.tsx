@@ -59,6 +59,7 @@ const PasienCard: React.FC<PasienCardProps> = ({
                             flexDirection: "row",
                             alignItems: "center",
                             justifyContent: "space-between",
+                            width: '850px'
                         }}
                     >
                         <Typography
