@@ -6,7 +6,7 @@ import {
     Typography,
     Button,
 } from "@mui/material";
-import logo from "../../../../img/St.carolus.png";
+import logo from "../../../../assets/img/St.carolus.png";
 import patientImage from "../../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from "formik";
 import AlertWarning from "../../../../components/small/alert/AlertWarning";
@@ -138,9 +138,9 @@ export default function RegisterPJ() {
                                 enableReinitialize
                                 validationSchema={switchValue ? null : validationSchema}
                                 onSubmit={async (values) => {
-                                        await validationCheck(values)
-                                        await showTemporarySuccessLogin();
-                                    
+                                    await validationCheck(values)
+                                    await showTemporarySuccessLogin();
+
                                 }}
                             >
                                 {({
@@ -274,30 +274,30 @@ export default function RegisterPJ() {
                     )}
 
                     {notFound && (
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        p: 5,
-                        position: "absolute",
-                        width: "60%",
-                        flexDirection: 'column',
-                    }}
-                >
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                        <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
-                            Data Not Found  !
-                        </Typography>
-                        {/* <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                p: 5,
+                                position: "absolute",
+                                width: "60%",
+                                flexDirection: 'column',
+                            }}
+                        >
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                                <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
+                                    Data Not Found  !
+                                </Typography>
+                                {/* <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
                             Are you sure you filled the field ?? Look sus !
                         </Typography>
                         <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
                             Keep playing kiddos !
                         </Typography> */}
-                    </Box>
-                </Box>
-            )
-        }
+                            </Box>
+                        </Box>
+                    )
+                    }
 
 
                 </Box>

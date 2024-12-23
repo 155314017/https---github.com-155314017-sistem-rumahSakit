@@ -1,7 +1,7 @@
 import { Button, CardMedia, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import my from "../../img/String.png"
-import logo from "../../img/St.carolus.png"
+import my from "../../assets/img/String.png"
+import logo from "../../assets/img/St.carolus.png"
 
 export default function InformasiTicket() {
   return (

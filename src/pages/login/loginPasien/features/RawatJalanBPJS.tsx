@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { Formik, Form } from "formik";
 import "react-phone-input-2/lib/style.css";
-import logo from "../../../../img/St.carolus.png";
+import logo from "../../../../assets/img/St.carolus.png";
 import imagePendaftaran from "../../../../assets/img/pendaftaran.jpeg";
 import { doctors } from "../../../../dummyData/dummyData";
 import FileUploader from "../../../../components/medium/FileUploader";

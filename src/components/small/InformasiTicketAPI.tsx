@@ -3,8 +3,8 @@ import { Button, CardMedia, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import my from "../../img/String.png";
-import logo from "../../img/St.carolus.png";
+import my from "../../assets/img/String.png";
+import logo from "../../assets/img/St.carolus.png";
 import CloseIcon from '@mui/icons-material/Close';
 
 type InformasiTicketProps = {

@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { ElementType, ReactNode } from "react";
-import bgImage from "../../assets/img/String.png";
+import bgImage from "../../../assets/img/String.png";
 
 interface MediumCardProps {
   icon: ElementType;

@@ -1,7 +1,7 @@
 import { Card, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import bgImage from "../../assets/img/String.png";
+import bgImage from "../../../assets/img/String.png";
 
 interface Props {
     title: string;

@@ -11,7 +11,7 @@ import {
     FormLabel,
     CircularProgress,
 } from "@mui/material";
-import bgImage from "../../../../img/String.png";
+import bgImage from "../../../../assets/img/String.png";
 import PhoneInput from 'react-phone-input-2';
 //hooks
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
