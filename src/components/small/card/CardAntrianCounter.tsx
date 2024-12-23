@@ -22,11 +22,6 @@ const CardAntrianCounter: FC<CardAntrianCounterProps> = ({ nomorAntrian, onClose
             link.click();
         }
     };
-
-    const handleGoBack = () => {
-        navigate(-1);
-    };
-
     return (
         <Box
             id="card-antrian-counter"
@@ -98,19 +93,39 @@ const CardAntrianCounter: FC<CardAntrianCounterProps> = ({ nomorAntrian, onClose
             <Box display="flex" gap={2} mt={2} flexDirection={'column'} width={'100%'} >
                 <Button
                     onClick={handleDownload}
-                    style={{
+                    sx={{
                         padding: "10px 20px",
                         backgroundColor: "#8F85F3",
                         color: "white",
-                        border: "none",
                         borderRadius: "8px",
                         fontWeight: 600,
                         width: "100%",
+                        border: '1px solid #8F85F3',
+                        ':hover': {
+                            bgcolor: 'transparent',
+                            color: '#8F85F3'
+
+                        }
                     }}
                 >
                     Download Tiket
                 </Button>
-                <Button variant="outlined" color="secondary" onClick={handleGoBack}>
+                <Button variant="outlined" onClick={onClose}
+                    sx={{
+                        padding: "10px 20px",
+                        backgroundColor: "transparent",
+                        color: "#8F85F3",
+                        borderRadius: "8px",
+                        fontWeight: 600,
+                        width: "100%",
+                        border: '1px solid #8F85F3',
+                        ':hover': {
+                            bgcolor: '#8F85F3',
+                            color: 'white',
+                        }
+
+                    }}
+                >
                     Kembali ke halaman utama
                 </Button>
             </Box>

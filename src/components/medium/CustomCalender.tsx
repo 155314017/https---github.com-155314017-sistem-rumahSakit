@@ -37,7 +37,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
             if (response.data && response.data.data) {
                 setSchedules(response.data.data);
                 processSchedules(response.data.data);
-                console.log(schedules);
+                console.log(schedules)
             }
         } catch (error) {
             console.error('Error fetching schedules:', error);
@@ -67,6 +67,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
         setAvailableTimes(times);
     };
 
+
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -82,10 +83,11 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
 
         const formattedDate = selectedDate.format('MM/DD/YYYY');
         const selectedTime = `${formattedDate} ${timeRange}`;
-        setSelectedTimeRange(selectedTime);
+        setSelectedTimeRange(timeRange); // Store only the time range
         setInputValue(selectedTime);
         setSelectedScheduleId(scheduleId);
     };
+
 
     const handleSave = () => {
         if (!selectedScheduleId || !selectedTimeRange || !selectedDate) return;
@@ -97,11 +99,9 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
         handleClose();
     };
 
-    const now = dayjs();
-
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box sx={{ cursor: 'pointer' }} >
+            <Box>
                 <InputBase value={inputValue}
                     onClick={handleOpen}
                     placeholder="Pilih jadwal"
@@ -114,7 +114,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
                         height: '40px',
                         backgroundColor: 'inherit',
                         color: '#333',
-                        cursor: 'grab',
+                        cursor: 'pointer',
                         position: 'relative',
                         '&:focus': {
                             borderColor: '#1976d2',
@@ -156,9 +156,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
                                     setSelectedTimeRange(null);
                                     setInputValue('');
                                 }}
-                                shouldDisableDate={(date) =>
-                                    !availableDates.has(date.format('YYYY-MM-DD')) || date.isBefore(now, 'day')
-                                }
+                                shouldDisableDate={(date) => !availableDates.has(date.format('YYYY-MM-DD'))}
                                 slotProps={{
                                     day: {
                                         sx: {
@@ -180,59 +178,48 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
 
                         <Box sx={{ width: '50%' }}>
                             <Grid container spacing={1}>
-                                {selectedDate &&
-                                    availableTimes[selectedDate.format('YYYY-MM-DD')]?.map(({ timeRange, scheduleId }) => {
-                                        // const [start, end] = timeRange.split(' - ').map((t) =>
-                                        const [start] = timeRange.split(' - ').map((t) =>
-                                            dayjs(`${selectedDate.format('YYYY-MM-DD')}T${t}`)
-                                        );
-                                        const isDisabled = start.isBefore(now);
-
-                                        return (
-                                            <Grid item xs={4} key={timeRange}>
-                                                <Button
-                                                    onClick={() => handleTimeSelect(timeRange, scheduleId)}
-                                                    variant="text"
-                                                    disabled={isDisabled}
-                                                    sx={{
-                                                        width: '120px',
-                                                        padding: 0,
-                                                        height: '68px',
-                                                        borderRadius: '100px',
-                                                        bgcolor: selectedTimeRange === timeRange ? '#8F85F3' : 'transparent',
-                                                        color: isDisabled ? '#ccc' : '#000',
-                                                        border: selectedTimeRange === timeRange ? '1px solid #8F85F3' : '#8F85F3',
-                                                        '&:hover': {
-                                                            border: '1px solid #8F85F3',
-                                                        },
-                                                    }}
-                                                >
-                                                    {timeRange}
-                                                </Button>
-                                            </Grid>
-                                        );
-                                    })}
+                                {selectedDate && availableTimes[selectedDate.format('YYYY-MM-DD')]?.map(({ timeRange, scheduleId }) => (
+                                    <Grid item xs={4} key={timeRange}>
+                                        <Button
+                                            onClick={() => handleTimeSelect(timeRange, scheduleId)}
+                                            variant="text"
+                                            sx={{
+                                                width: '120px',
+                                                padding: 0,
+                                                height: '68px',
+                                                borderRadius: '100px',
+                                                bgcolor: 'transparent',
+                                                color: '#000',
+                                                border: selectedTimeRange === timeRange ? '1px solid #8F85F3' : '1px solid transparent',
+                                                '&:hover': {
+                                                    border: '1px solid #8F85F3',
+                                                },
+                                            }}
+                                        >
+                                            {timeRange}
+                                        </Button>
+                                    </Grid>
+                                ))}
                             </Grid>
+
                         </Box>
                     </Box>
 
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 4, padding: '10px 20px' }}>
-                        <Button
-                            onClick={handleClose}
+                        <Button onClick={handleClose}
                             sx={{
                                 width: '50%',
                                 border: '1px solid #8F85F3',
                                 color: '#8F85F3',
-                                '&:hover': {
-                                    backgroundColor: '#8F85F3',
-                                    color: '#fff',
+                                "&:hover": {
+                                    backgroundColor: "#8F85F3",
+                                    color: "#fff"
                                 },
                             }}
                         >
                             Cancel
                         </Button>
-                        <Button
-                            onClick={handleSave}
+                        <Button onClick={handleSave}
                             sx={{
                                 width: '50%',
                                 backgroundColor: '#8F85F3',

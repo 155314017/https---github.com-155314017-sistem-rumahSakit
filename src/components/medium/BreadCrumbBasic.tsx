@@ -16,7 +16,7 @@ export default function BreadCrumbBasic({
     return (
         <Box
             sx={{
-                height: "50px", 
+                height: "50px",
                 bgcolor: "#fff",
                 borderRadius: "24px",
                 position: "relative",

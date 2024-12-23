@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import CreateAppointmentOffline from '../../../../services/ManagePatient/CreateAppoinmentOffline';
 import UpdatePatientGuards from '../../../../services/Patient Tenant/UpdatePatientGuard';
 import { getGuardianData } from '../../../../services/ManagePatient/getGuardianByPatientId';
+import { useNavigate } from 'react-router-dom';
 // import RegisterPatient from '../../../../services/Patient Tenant/RegisterPatient';
 
 type Doctor = {
@@ -103,6 +104,7 @@ export default function useTambahPasienUmumOffline() {
     const [clinicName, setClinicName] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
 
     const breadcrumbItems = [
@@ -125,7 +127,7 @@ export default function useTambahPasienUmumOffline() {
             birthPlacePatient: birthPlace,
             // phonePasien: '',
             nikGuardian: switchValue ? dataPasien?.nik : '',
-            typeGuardian: '',
+            typeGuardian: 'SENDIRI',
             caraDatang: '',
             fullnameGuardian: switchValue ? dataPasien?.fullname : '',
             emailGuardian: switchValue ? dataPasien?.email : '',
@@ -435,9 +437,7 @@ export default function useTambahPasienUmumOffline() {
         };
 
         try {
-            console.log(data);
             const response = await CreateAppointmentOffline(data)
-            console.log(response.queueDatum.queueNumber);
             const createdDateTimeFormatted = dayjs.unix(response.scheduleDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
             const dataSent = {
                 nomorAntrian: response.queueDatum.queueNumber,
@@ -447,13 +447,10 @@ export default function useTambahPasienUmumOffline() {
                 jadwalKonsul: selectedSchedule,
                 bookingCode: response.bookingCode
             }
-            console.log("DATA OLAH", dataSent);
             setDataTickets(dataSent)
-            console.log('sukses')
             setMainPages(false)
             // setCurrentPage(3);
         } catch (err) {
-            console.log("tes", err);
             setMainPages(false)
             setCurrentPage(3);
         } finally {
@@ -498,6 +495,44 @@ export default function useTambahPasienUmumOffline() {
         console.log('Switch value:', value);
     };
 
+    const handleGoBack = () => {
+        if (currentPage === 1) {
+            // Logika untuk currentPage 1
+            console.log("Halaman 1");
+            if (patientFullPage == true) {
+                console.log("dikit")
+                navigate(-1)
+            } else if (patientFullPage == false) {
+                console.log("banyak")
+                setPatientFullsPage(true);
+            }
+        } else if (currentPage === 2) {
+            // Logika untuk currentPage 2
+            console.log("Halaman 2, kembali ke halaman kedua");
+            // setCurrentPage(currentPage - 1); // Contoh aksi
+            if (guardFullPage == true) {
+                console.log("dikit")
+                setCurrentPage(currentPage - 1);
+            } else if (guardFullPage == false) {
+                console.log("banyak")
+                setGuardFullPage(true);
+            }
+        } else if (currentPage === 3) {
+            // Logika untuk currentPage 3
+            console.log("Halaman 3, kembali ke halaman ketiga");
+            if (mainPages == false) {
+                console.log("ANCUR")
+                setCurrentPage(1);
+            } else if (mainPages == true) {
+                setCurrentPage(currentPage - 1); // Contoh aksi
+            }
+        } else {
+            console.log("TIDAK COCOK")
+            // Jika tidak ada kondisi yang cocok, kembali ke halaman sebelumnya
+            // window.history.back();
+        }
+    }
+
     return {
         formik,
         breadcrumbItems,
@@ -540,5 +575,6 @@ export default function useTambahPasienUmumOffline() {
         showAlert,
         calendarKey,
         isLoading,
+        handleGoBack,
     }
 }

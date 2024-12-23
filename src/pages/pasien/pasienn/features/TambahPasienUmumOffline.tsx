@@ -60,7 +60,8 @@ export default function TambahPasienUmumOffline() {
         birthPlace,
         showAlert,
         calendarKey,
-        isLoading
+        isLoading,
+        handleGoBack,
 
     } = useTambahPasienUmumOffline();
 
@@ -107,7 +108,12 @@ export default function TambahPasienUmumOffline() {
                     },
                     // bgcolor: 'blue'
                 }}>
-                    <BreadCrumbBasic title="Pasien lama" description="Pasien yang pernah datang sebelumnya untuk keperluan berobat." onBackClick={() => currentPage > 1 ? setCurrentPage(currentPage - 1) : window.history.back()} />
+                    <BreadCrumbBasic
+                        title="Pasien lama"
+                        description="Pasien yang pernah datang sebelumnya untuk keperluan berobat."
+                        onBackClick={handleGoBack}
+                    />
+
                     {showAlert && <AlertWarning teks="NIK Tidak Ditemukan. Silahkan coba lagi." />}
                 </Box>
 
@@ -600,7 +606,7 @@ export default function TambahPasienUmumOffline() {
                                                             borderRadius: '12px',
                                                             padding: '8px 12px 8px 12px',
                                                             gap: '24px',
-                                                            backgroundColor:  "inherit",
+                                                            backgroundColor: "inherit",
                                                             width: '97.5%',
                                                         }}
                                                         >
