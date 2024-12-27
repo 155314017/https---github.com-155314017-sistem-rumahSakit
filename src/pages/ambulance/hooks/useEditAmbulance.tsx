@@ -57,12 +57,14 @@ export default function useEditAmbulance() {
 
   useEffect(() => {
     if (startTime && endTime) {
-      const formattedStartTime = startTime.format('HH:mm')
-      const formattedEndTime = endTime.format('HH:mm')
-      const dayOfWeek = startTime.format('dddd')
-      console.log(errorAlert)
-      console.log(formattedStartTime)
-      console.log(formattedEndTime)
+      const formattedStartTime = dayjs(startTime).format('HH:mm'); // Format start time
+      const formattedEndTime = dayjs(endTime).format('HH:mm'); // Format end time
+      const dayOfWeek = dayjs(startTime).format('dddd'); // Get day name
+      
+      console.log(formattedStartTime);
+      console.log(formattedEndTime);
+      console.log(dayOfWeek);
+      
       const dayMapping: { [key: string]: string } = {
         Senin: '1',
         Selasa: '2',
@@ -71,38 +73,32 @@ export default function useEditAmbulance() {
         Jumat: '5',
         Sabtu: '6',
         Minggu: '7'
-      }
-
-      const dayValue = dayMapping[dayOfWeek] || '7'
-      setSelectedDays(dayValue)
-      
+      };
+  
+      const dayValue = dayMapping[dayOfWeek] || '7'; // Map day to corresponding value
+      setSelectedDays(dayValue); // Set selected day
+  
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startTime, endTime])
-
+  }, [startTime, endTime]);
+  
+  // Fetch data with Unix timestamps using dayjs
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch ambulance data by ID
         const response = await getAmbulanceByIdService(id);
         const data = response;
   
-        // Set API URL and initial operational cost
         setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${id}`);
         setInitialOperationalCost(data?.cost || 0);
   
-        // Convert Unix timestamp to human-readable time format
         const convertUnixToReadableTime = (timestamp: number) => {
-          const date = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
-
-          const dayOfWeek = date.getDay();
-          const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-          const day = dayNames[dayOfWeek];
-          const hours = date.getHours().toString().padStart(2, '0');
-          const minutes = date.getMinutes().toString().padStart(2, '0');
-
-          const time = `${hours}:${minutes}`;
-          return { day, time };
+          const date = dayjs(timestamp); // Use dayjs to parse Unix timestamp
+  
+          const dayOfWeek = date.format('dddd'); // Get the day of the week
+          const time = date.format('HH:mm'); // Get the formatted time (HH:mm)
+  
+          return { day: dayOfWeek, time };
         };
   
         const schedules = data?.schedules || [];
@@ -117,7 +113,7 @@ export default function useEditAmbulance() {
             endTime: end.time, // Extracted end time
           };
         });
-        // Set the state for schedules and images
+  
         setSchedules(formattedSchedules);
         setImagesData(data?.images || []);
   
@@ -148,49 +144,32 @@ export default function useEditAmbulance() {
     }),
     onSubmit: async (values) => {
       const formattedSchedules = schedules.map(schedule => {
-        const normalizedDay = schedule.day.trim().charAt(0).toUpperCase() + schedule.day.slice(1).toLowerCase()
-  
-        const selectedDayOfWeek = dayMapping[normalizedDay]
-  
-        if (selectedDayOfWeek === undefined) {
-          console.error('Invalid selectedDayOfWeek:', normalizedDay)
-          return null
-        }
-  
-        const parsedStartTime = dayjs(schedule.startTime, 'HH:mm', true)
-        const parsedEndTime = dayjs(schedule.endTime, 'HH:mm', true)
-  
-        if (!parsedStartTime.isValid() || !parsedEndTime.isValid()) {
-          console.error('Invalid time format:', schedule.startTime, schedule.endTime)
-          return null
-        }
-  
-        const referenceDate = dayjs().startOf('week')
-  
+        const normalizedDay = schedule.day.trim().charAt(0).toUpperCase() + schedule.day.slice(1).toLowerCase();
+        const selectedDayOfWeek = dayMapping[normalizedDay];
+    
+        const parsedStartTime = dayjs(schedule.startTime, 'HH:mm', true);
+        const parsedEndTime = dayjs(schedule.endTime, 'HH:mm', true);
+    
+        const referenceDate = dayjs().startOf('week');
+    
         const startDateTime = referenceDate
           .day(selectedDayOfWeek)
           .set('hour', parsedStartTime.hour())
           .set('minute', parsedStartTime.minute())
           .set('second', 0)
-  
+    
         const endDateTime = referenceDate
           .day(selectedDayOfWeek)
           .set('hour', parsedEndTime.hour())
           .set('minute', parsedEndTime.minute())
           .set('second', 0)
-  
-        if (!startDateTime.isValid() || !endDateTime.isValid()) {
-          console.error('Failed to set day for times:', startDateTime.toString(), endDateTime.toString())
-          return null
-        }
-  
-        // Convert startDateTime and endDateTime to UNIX timestamps (milliseconds)
+    
         return {
-          startDateTime: startDateTime.valueOf(), // Convert to number (timestamp)
-          endDateTime: endDateTime.valueOf() // Convert to number (timestamp)
-        }
-      }).filter(schedule => schedule !== null)
-  
+          startDateTime: startDateTime.valueOf(),
+          endDateTime: endDateTime.valueOf()
+        };
+      }).filter(schedule => schedule !== null);
+    
       const data = {
         ambulanceId: id,
         number: '999',
@@ -203,17 +182,19 @@ export default function useEditAmbulance() {
           imageType: image.imageType || '',
           imageData: image.imageData || ''
         }))
-      }
-  
+      };
+    
+      console.log("Data to be sent:", data); // Log the data before sending
+    
       try {
-        const response = await EditAmbulanceServices(data)
-        setUpdatedAmbulanceData(response)
+        const response = await EditAmbulanceServices(data);
+        setUpdatedAmbulanceData(response);
         navigate('/ambulance', {
           state: { successEdit: true, message: 'Ambulance updated successfully!' }
-        })
+        });
       } catch (error) {
-        console.error('Error editing ambulance:', error)
-        setErrorAlert(true)
+        console.error('Error editing ambulance:', error);
+        setErrorAlert(true);
       }
     }
   })
@@ -288,63 +269,121 @@ export default function useEditAmbulance() {
 
   
  
-const handleSaveAndAddDay = () => {
-  // Ensure all fields are filled out before saving
-  if (!selectedDay || !startTime || !endTime) {
-    console.error('Please complete all fields before saving.');
-    return;
-  }
-
-  // Parse the times as Dayjs objects
-  const parsedStartTime = dayjs(startTime, 'HH:mm');
-  const parsedEndTime = dayjs(endTime, 'HH:mm');
-
-  // Validate the times before proceeding
-  if (parsedStartTime.isValid() && parsedEndTime.isValid()) {
-    console.log('Start Hour:', parsedStartTime.hour());
-    console.log('End Hour:', parsedEndTime.hour());
-
-    // Standardize day format (if necessary)
-    let formattedDay = selectedDay;
-
-    if (formattedDay === '1') formattedDay = 'Senin';
-    else if (formattedDay === '2') formattedDay = 'Selasa';
-    else if (formattedDay === '3') formattedDay = 'Rabu';
-    else if (formattedDay === '4') formattedDay = 'Kamis';
-    else if (formattedDay === '5') formattedDay = 'Jumat';
-    else if (formattedDay === '6') formattedDay = 'Sabtu';
-    else if (formattedDay === '7') formattedDay = 'Minggu';
-
+  
+  
+ 
+  
+  const handleSaveAndAddDay = () => {
+    // Ensure all fields are filled out before saving
+    if (!selectedDay || !startTime || !endTime) {
+      console.error("Please complete all fields before saving.");
+      return;
+    }
+  
+    // Parse the times as Dayjs objects in the correct timezone
+    const parsedStartTime = dayjs(startTime, "HH:mm", true);
+    const parsedEndTime = dayjs(endTime, "HH:mm", true);
+  
+    // Check if the parsed times are valid
+    if (!parsedStartTime.isValid()) {
+      console.error("Invalid start time format:", startTime);
+      return;
+    }
+    if (!parsedEndTime.isValid()) {
+      console.error("Invalid end time format:", endTime);
+      return;
+    }
+  
+    // Validate that the start time is before the end time
+    if (parsedStartTime.isAfter(parsedEndTime)) {
+      // Handle the case where the schedule crosses midnight
+      parsedEndTime.add(1, 'day'); // Add one day to the end time if it crosses midnight
+    }
+  
+    // Define the mapping of days
+    const dayMapping = {
+      "1": "Senin",
+      "2": "Selasa",
+      "3": "Rabu",
+      "4": "Kamis",
+      "5": "Jumat",
+      "6": "Sabtu",
+      "7": "Minggu",
+    };
+  
+    // Validate and get the formatted day
+    if (!Object.keys(dayMapping).includes(selectedDay)) {
+      console.error("Invalid day selected:", selectedDay);
+      return;
+    }
+  
+    // Explicitly cast selectedDay as keyof typeof dayMapping
+    const formattedDay = dayMapping[selectedDay as keyof typeof dayMapping];
+  
+    // Get today's date and set the correct year/month/day to calculate the correct date
+    const today = dayjs();
+  
+    // Generate the full date with correct day of the week, keeping the time portion intact
+    const startDateTime = today
+      .day(parseInt(selectedDay)) // Set the day of the week
+      .hour(parsedStartTime.hour()) // Set the hour of the start time
+      .minute(parsedStartTime.minute()) // Set the minute of the start time
+      .second(0) // Reset seconds for accuracy
+      .millisecond(0); // Reset milliseconds for accuracy
+  
+    const endDateTime = today
+      .day(parseInt(selectedDay)) // Set the day of the week
+      .hour(parsedEndTime.hour()) // Set the hour of the end time
+      .minute(parsedEndTime.minute()) // Set the minute of the end time
+      .second(0) // Reset seconds
+      .millisecond(0); // Reset milliseconds
+  
+    // If end time is earlier than start time, increment the end day by 1
+    if (parsedEndTime.isBefore(parsedStartTime)) {
+      endDateTime.add(1, 'day');
+    }
+  
+    // Ensure that the start time is before the end time
+    if (startDateTime.isAfter(endDateTime)) {
+      console.error("Start time cannot be after end time.");
+      return;
+    }
+  
+    // Create the new schedule object
     const newSchedule = {
       day: formattedDay,
-      startTime: parsedStartTime.format('HH:mm'),
-      endTime: parsedEndTime.format('HH:mm'),
+      startTime: parsedStartTime.format("HH:mm"),
+      endTime: parsedEndTime.format("HH:mm"),
+      startDateTime: startDateTime.valueOf(), // Use the Unix timestamp for start time
+      endDateTime: endDateTime.valueOf(), // Use the Unix timestamp for end time
     };
-
-    if (editingIndex !== null) {
-      // If editing, update the schedule at the specific index
-      setSchedules((prevSchedules) => {
+  
+    // Update the schedules array
+    setSchedules((prevSchedules) => {
+      if (editingIndex !== null) {
+        // Update the schedule at the specific index
         const updatedSchedules = [...prevSchedules];
-        updatedSchedules[editingIndex] = newSchedule; // Update the schedule at the editing index
+        updatedSchedules[editingIndex] = newSchedule;
+        console.log("Updated Schedule:", newSchedule); // Log the updated schedule
         return updatedSchedules;
-      });
-      console.log('Updated Schedule:', newSchedule);
-    } else {
-      // If not editing (editingIndex is null), add a new schedule
-      setSchedules((prevSchedules) => [...prevSchedules, newSchedule]);
-      console.log('Saved New Schedule:', newSchedule);
-    }
-
-    // Optionally, clear the input fields after saving
-    setSelectedDay('');
+      } else {
+        // Add the new schedule
+        console.log("Saved New Schedule:", newSchedule);
+        return [...prevSchedules, newSchedule];
+      }
+    });
+  
+    // Clear the input fields and reset editing index
+    setSelectedDay("");
     setStartTime(null);
     setEndTime(null);
-    setEditingIndex(null);  // Reset the editingIndex after save
-  } else {
-    console.error('Invalid time format');
-  }
-};
-
+    setEditingIndex(null);
+  };
+  
+  
+  
+   
+  
   
   
   
