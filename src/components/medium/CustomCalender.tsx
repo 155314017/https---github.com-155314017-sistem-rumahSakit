@@ -25,7 +25,6 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
     const [availableTimes, setAvailableTimes] = useState<{ [date: string]: { timeRange: string, scheduleId: string }[] }>({});
     const [availableDates, setAvailableDates] = useState<Set<string>>(new Set());
 
-    console.log("tes")
 
     useEffect(() => {
         fetchSchedules();
