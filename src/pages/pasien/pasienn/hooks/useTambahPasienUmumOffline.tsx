@@ -11,7 +11,6 @@ import dayjs from 'dayjs';
 import CreateAppointmentOffline from '../../../../services/ManagePatient/CreateAppoinmentOffline';
 import UpdatePatientGuards from '../../../../services/Patient Tenant/UpdatePatientGuard';
 import { getGuardianData } from '../../../../services/ManagePatient/getGuardianByPatientId';
-import { useNavigate } from 'react-router-dom';
 // import RegisterPatient from '../../../../services/Patient Tenant/RegisterPatient';
 
 type Doctor = {
@@ -91,6 +90,8 @@ export default function useTambahPasienUmumOffline() {
         address: '',
     });
 
+    console.log(dataGuards);
+
     const [dataPasien, setDataPasien] = useState<dataPasien>();
     const [idClinic, setIdClinic] = useState('');
     const [idDoctor, setIdDoctor] = useState('');
@@ -101,6 +102,7 @@ export default function useTambahPasienUmumOffline() {
     const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
     const [clinicName, setClinicName] = useState('');
     const [showAlert, setShowAlert] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const breadcrumbItems = [
@@ -122,14 +124,14 @@ export default function useTambahPasienUmumOffline() {
             birthDatePatient: birthDate,
             birthPlacePatient: birthPlace,
             // phonePasien: '',
-            nikGuardian: switchValue ? dataPasien?.nik : dataGuards?.guardianIdentityNumber,
-            typeGuardian: switchValue ? 'SENDIRI' : dataGuards?.guardianType.toUpperCase(),
-            caraDatang: switchValue ? 'SENDIRI' : dataGuards?.guardianType.toUpperCase(),
-            fullnameGuardian: switchValue ? dataPasien?.fullname : dataGuards?.guardianName,
-            emailGuardian: switchValue ? dataPasien?.email : dataGuards?.guardianEmail,
-            genderGuardian: switchValue ? dataPasien?.gender : dataGuards?.guardianGender,
-            addressGuardian: switchValue ? dataPasien?.address : dataGuards?.guardianAddress,
-            phoneGuardian: switchValue ? dataPasien?.phone : dataGuards?.guardianPhone,
+            nikGuardian: switchValue ? dataPasien?.nik : '',
+            typeGuardian: '',
+            caraDatang: '',
+            fullnameGuardian: switchValue ? dataPasien?.fullname : '',
+            emailGuardian: switchValue ? dataPasien?.email : '',
+            genderGuardian: switchValue ? dataPasien?.gender : '',
+            addressGuardian: switchValue ? dataPasien?.address : '',
+            phoneGuardian: switchValue ? dataPasien?.phone : '62',
             birthPlaceGuardian: switchValue ? dataPasien?.birthPlace : '',
             birthDateGuardian: switchValue ? dataPasien?.birthDate : '',
             docs: '',
@@ -236,6 +238,7 @@ export default function useTambahPasienUmumOffline() {
         // } catch (err) {
         //     console.log(err);
         // }
+        // setPatientFullsPage(true);
         setCurrentPage(2)
     }
 
@@ -418,6 +421,8 @@ export default function useTambahPasienUmumOffline() {
     };
 
     const createTicket = async () => {
+        setIsLoading(true)
+
         const data = {
             patientId: patientData?.id,
             // patientId: "a9461920-b918-4e39-8cae-33f4f76e39cf", //nanti diganti
@@ -427,14 +432,15 @@ export default function useTambahPasienUmumOffline() {
             scheduleId: selectedScheduleId ? selectedScheduleId : '',
             symptoms: formik.values.keluhan,
             referenceDoc: formik.values.docs,
-        }
+        };
+
         try {
             console.log(data);
             const response = await CreateAppointmentOffline(data)
-            console.log(response);
+            console.log(response.queueDatum.queueNumber);
             const createdDateTimeFormatted = dayjs.unix(response.scheduleDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
             const dataSent = {
-                nomorAntrian: response.bookingCode,
+                nomorAntrian: response.queueDatum.queueNumber,
                 namaDokter: docterName,
                 clinic: clinicName,
                 tanggalReservasi: createdDateTimeFormatted,
@@ -450,6 +456,8 @@ export default function useTambahPasienUmumOffline() {
             console.log("tes", err);
             setMainPages(false)
             setCurrentPage(3);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -531,5 +539,6 @@ export default function useTambahPasienUmumOffline() {
         birthPlace,
         showAlert,
         calendarKey,
+        isLoading,
     }
 }

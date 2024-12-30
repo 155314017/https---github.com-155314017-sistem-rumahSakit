@@ -9,25 +9,25 @@ import PhoneInput from "react-phone-input-2";
 import RegisterPatient from "../../../../services/Patient Tenant/RegisterPatient";
 import VerifyOTPPatient from "../../../../services/Patient Tenant/VerifyOTPPatient";
 
+
 //hooks
 import useRegistrasiPasienBaru from "../hooks/useRegistrasiPasienBaru";
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { useState } from "react";
 export default function RegisterPasienBaru() {
     const {
         otpFormShown,
         showOtp,
-        showTemporaryAlertError,
+        // showTemporaryAlertError,
         handleResendClick,
         formatTime,
         data1,
         showLogin,
         notFound,
         buttonDis,
-        errorAlert,
         showEmailChanged,
-        showAlert,
         emailError,
         resendSuccess,
         isCounting,
@@ -45,6 +45,25 @@ export default function RegisterPasienBaru() {
         setOtp,
         loading
     } = useRegistrasiPasienBaru();
+
+    const [showAlertError, setShowAlertError] = useState(false);
+    const [showAlertError1, setShowAlertError1] = useState(false);
+
+
+
+    const showTemporaryAlertErrorr = async () => {
+        console.log("ALERT ERROR ! ! !")
+        setShowAlertError(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setShowAlertError(false);
+    };
+
+    const showTemporaryAlertErrorr1 = async () => {
+        console.log("ALERT ERROR ! ! !")
+        setShowAlertError1(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setShowAlertError1(false);
+    };
     return (
         <>   <style>
             {`
@@ -112,7 +131,7 @@ export default function RegisterPasienBaru() {
                 {showLogin && (
                     <>
 
-                        {showAlert && <AlertWarning teks="NIK atau Email yang Anda masukkan salah, silahkan coba lagi." />}
+                        {showAlertError1 && <AlertWarning teks="Maaf Registrasi Gagal, silahkan coba lagi." />}
 
                         <Box
                             sx={{
@@ -130,7 +149,7 @@ export default function RegisterPasienBaru() {
                             }}
                         >
 
-                            <Box sx={{ ml: 4, width: '85%', height: '85%'}}>
+                            <Box sx={{ ml: 4, width: '85%', height: '85%' }}>
                                 <Typography sx={{ fontSize: '32px', fontWeight: '600' }}>Selamat Datang</Typography>
                                 <Typography sx={{ color: 'gray', fontSize: '18px', marginBottom: '30px', width: '100%' }}>
                                     Silahkan masukkan nomor NIK (Nomor induk kependudukan) Pasien.
@@ -155,14 +174,24 @@ export default function RegisterPasienBaru() {
                                         console.log("data dikirm ke API: ", dataRegis)
                                         try {
                                             setButtonDis(true);
+
                                             const response = await RegisterPatient(dataRegis);
-                                            console.log("response: ", response);
-                                            showOtp()
-                                            setData(dataRegis)
-                                            setPatientId(response.data.id);
+                                            console.log("response: ", response.responseCode);
+
+                                            if (response.responseCode === "200") {
+                                                showOtp();
+                                                setData(dataRegis);
+                                                setPatientId(response.data.id);
+                                            } else {
+                                                showTemporaryAlertErrorr1();
+                                            }
                                         } catch (error) {
-                                            console.log("error", error)
+                                            console.log('error', error);
+                                            showTemporaryAlertErrorr1();
+                                        } finally {
+                                            setButtonDis(false);
                                         }
+
                                     }}
                                 >
                                     {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
@@ -518,7 +547,7 @@ export default function RegisterPasienBaru() {
                     )}
                 {showEmailChanged && (
                     <>
-                        {errorAlert && (
+                        {showAlertError && (
                             <AlertWarning teks="Kode OTP tidak valid !" />
                         )}
                         <Box
@@ -552,13 +581,27 @@ export default function RegisterPasienBaru() {
                                             code: values.otp
                                         }
                                         try {
-                                            await VerifyOTPPatient(dataOTP)
-                                            otpFormShown()
-                                            navigate('/register/pj', { state: { successAdd: true, data: data, idPatient: patientId } })
-                                        } catch {
-                                            console.log("error")
-                                            showTemporaryAlertError()
+                                            const response = await VerifyOTPPatient(dataOTP);
+
+                                            if (response.responseCode === "200") {
+                                                otpFormShown();
+                                                navigate('/register/pj', {
+                                                    state: {
+                                                        successAdd: true,
+                                                        data: data,
+                                                        idPatient: patientId
+                                                    }
+                                                });
+                                            } 
+                                              else {
+                                                showTemporaryAlertErrorr();
+                                                
+                                            }
+                                        } catch (error) {
+                                            console.log('error', error);
+                                            showTemporaryAlertErrorr();
                                         }
+
 
                                     }}
                                 >

@@ -9,6 +9,7 @@ import {
     TextField,
     OutlinedInput,
     FormLabel,
+    CircularProgress,
 } from "@mui/material";
 import bgImage from "../../../../img/String.png";
 import PhoneInput from 'react-phone-input-2';
@@ -59,6 +60,7 @@ export default function TambahPasienUmumOffline() {
         birthPlace,
         showAlert,
         calendarKey,
+        isLoading
 
     } = useTambahPasienUmumOffline();
 
@@ -84,30 +86,30 @@ export default function TambahPasienUmumOffline() {
             // bgcolor: 'yellow'
             position: "relative",
         }}>
-            <Box sx={{
-                position: 'relative',
-                top: 'auto',
-                left: 0,
-                // right: "auto",
-                zIndex: 9999,
-                padding: '16px',
-                width: {
-                    xs: '90%', // Untuk layar kecil (mobile)
-                    sm: '84%',  // Untuk layar sedang
-                    md: '90%',  // Untuk layar besar
-                    lg: '70%',
-                },
-                // bgcolor: 'blue'
-            }}>
-                <BreadCrumbBasic title="Pasien lama" description="Pasien yang pernah datang sebelumnya untuk keperluan berobat." onBackClick={() => currentPage > 1 ? setCurrentPage(currentPage - 1) : window.history.back()} />
-                {showAlert && <AlertWarning teks="NIK Tidak Ditemukan. Silahkan coba lagi." />}
-            </Box>
+
             <Container sx={{
                 pt: '80px',
                 // bgcolor: 'red',
                 marginTop: '-90px'
             }}>
-
+                <Box sx={{
+                    position: 'relative',
+                    top: 0,
+                    left: 0,
+                    // right: "auto",
+                    zIndex: 9999,
+                    padding: '16px',
+                    width: {
+                        xs: '90%', // Untuk layar kecil (mobile)
+                        sm: '84%',  // Untuk layar sedang
+                        md: '90%',  // Untuk layar besar
+                        lg: '100%',
+                    },
+                    // bgcolor: 'blue'
+                }}>
+                    <BreadCrumbBasic title="Pasien lama" description="Pasien yang pernah datang sebelumnya untuk keperluan berobat." onBackClick={() => currentPage > 1 ? setCurrentPage(currentPage - 1) : window.history.back()} />
+                    {showAlert && <AlertWarning teks="NIK Tidak Ditemukan. Silahkan coba lagi." />}
+                </Box>
 
                 <Box mt={5}>
 
@@ -115,10 +117,11 @@ export default function TambahPasienUmumOffline() {
                         <Box mt={currentPage == 2 ? '20%' : '10%'} position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content' }}>
 
                             <Box sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, gap: 8 }}>
+                                {/* Step 1 */}
                                 <Box display={"flex"} flexDirection={"row"} width={"290px"}>
-
                                     <Button
                                         onClick={() => setCurrentPage(1)}
+                                        // disabled={currentPage > 1} // Nonaktifkan jika bukan langkah pertama
                                         sx={{
                                             display: "flex",
                                             flexDirection: "row",
@@ -133,15 +136,13 @@ export default function TambahPasienUmumOffline() {
                                         <Box sx={getBorderStyle(1)}>1</Box>
                                         <Typography sx={{ ml: 1, textTransform: 'none' }}>Data diri pasien</Typography>
                                     </Button>
-
-
                                 </Box>
+
+                                {/* Step 2 */}
                                 <Box display={"flex"} flexDirection={"row"} width={"400px"}>
                                     <Button
                                         onClick={() => setCurrentPage(2)}
-                                        disableRipple
-                                        disableElevation
-                                        // disabled={currentPage === 1}
+                                        disabled={currentPage < 2} // Nonaktifkan jika di langkah pertama atau langkah berikutnya
                                         sx={{
                                             ...getPageStyle(2),
                                             display: "flex",
@@ -158,15 +159,13 @@ export default function TambahPasienUmumOffline() {
                                             Data diri Penanggung Jawab Pasien
                                         </Typography>
                                     </Button>
-
-
                                 </Box>
+
+                                {/* Step 3 */}
                                 <Box display={"flex"} flexDirection={"row"} width={"350px"}>
                                     <Button
                                         onClick={() => setCurrentPage(3)}
-                                        disableRipple
-                                        disableElevation
-                                        // disabled={currentPage === 1 || currentPage === 2}
+                                        disabled={currentPage < 3} // Nonaktifkan jika bukan langkah terakhir
                                         sx={{
                                             ...getPageStyle(3),
                                             display: "flex",
@@ -185,6 +184,7 @@ export default function TambahPasienUmumOffline() {
                                     </Button>
                                 </Box>
                             </Box>
+
 
                             <Box position="absolute" sx={{ top: 0, right: 0 }}>
                                 <img src={bgImage} alt="bg-image" />
@@ -410,7 +410,7 @@ export default function TambahPasienUmumOffline() {
                                                     backgroundColor: switchValue ? "#E8E8E8" : "inherit"
                                                 }}
                                                 placeholder='Masukkan NIK ktp'
-                                                value={switchValue ? formik.values.nik : formik.values.nikGuardian}
+                                                value={formik.values.nikGuardian}
                                                 onChange={formik.handleChange}
                                                 name="nikGuardian"
                                                 disabled={switchValue}
@@ -457,7 +457,7 @@ export default function TambahPasienUmumOffline() {
                                                             }}
                                                             placeholder='Masukkan NIK ktp'
                                                             defaultValue={'coba'}
-                                                            value={switchValue ? formik.values.nik : formik.values.nikGuardian}
+                                                            value={formik.values.nikGuardian}
                                                             onChange={formik.handleChange}
                                                             name="nikGuardian"
                                                             disabled={switchValue ? true : false}
@@ -600,7 +600,7 @@ export default function TambahPasienUmumOffline() {
                                                             borderRadius: '12px',
                                                             padding: '8px 12px 8px 12px',
                                                             gap: '24px',
-                                                            backgroundColor: switchValue ? "#E8E8E8" : "inherit",
+                                                            backgroundColor:  "inherit",
                                                             width: '97.5%',
                                                         }}
                                                         >
@@ -619,11 +619,11 @@ export default function TambahPasienUmumOffline() {
                                                                         width: '100%',
                                                                     }}
                                                                 >
-                                                                    <FormControlLabel disabled={switchValue} value="SENDIRI" control={<BpRadio />} label="Sendiri" />
-                                                                    <FormControlLabel disabled={switchValue} value="KELUARGA" control={<BpRadio />} label="Keluarga" />
-                                                                    <FormControlLabel disabled={switchValue} value="POLISI" control={<BpRadio />} label="Polisi" />
-                                                                    <FormControlLabel disabled={switchValue} value="AMBULAN" control={<BpRadio />} label="Ambulan" />
-                                                                    <FormControlLabel disabled={switchValue} value="LAINNYA" control={<BpRadio />} label="Lainnya" />
+                                                                    <FormControlLabel value="SENDIRI" control={<BpRadio />} label="Sendiri" />
+                                                                    <FormControlLabel value="KELUARGA" control={<BpRadio />} label="Keluarga" />
+                                                                    <FormControlLabel value="POLISI" control={<BpRadio />} label="Polisi" />
+                                                                    <FormControlLabel value="AMBULAN" control={<BpRadio />} label="Ambulan" />
+                                                                    <FormControlLabel value="LAINNYA" control={<BpRadio />} label="Lainnya" />
                                                                 </RadioGroup>
                                                             </FormControl>
                                                         </Box>
@@ -829,7 +829,6 @@ export default function TambahPasienUmumOffline() {
 
                                             <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
                                                 <Button
-                                                    // onClick={() => setMainPages(false)}
                                                     onClick={createTicket}
                                                     sx={{
                                                         backgroundColor: "#8F85F3",
@@ -842,10 +841,14 @@ export default function TambahPasienUmumOffline() {
                                                             backgroundColor: "#7C75E2",
                                                         },
                                                     }}
-                                                // onClick={formik.handleSubmit}
                                                 >
-                                                    Simpan
+                                                    {isLoading ? (
+                                                        <CircularProgress sx={{ color: 'white' }} size={20} />
+                                                    ) : (
+                                                        "Simpan"
+                                                    )}
                                                 </Button>
+
                                             </Box>
                                         </Box>
                                     </Box>

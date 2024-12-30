@@ -17,9 +17,11 @@ const VerifyOTPPatient = async (data: Data) => {
       }
     )
 
-    console.log('inside Login1 ')
-    console.log('Response register: ', response)
-    return response.data
+    if (response.status === 200) {
+      return response.data
+    } else {
+      throw new Error(`API responded with status: ${response.status}`)
+    }
   } catch (error) {
     console.log('error', error)
   }
