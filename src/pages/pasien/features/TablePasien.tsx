@@ -467,7 +467,7 @@ export default function TablePasien() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.registrationDatumDto.typeOfVisit}
+                                                        {data?.registrationDatumDto?.typeOfVisit || 'Not Available'}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[

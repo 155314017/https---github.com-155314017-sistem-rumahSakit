@@ -1,7 +1,9 @@
-import { Container, Box } from '@mui/system'
-import { Typography, Button } from '@mui/material'
-import bgImage from '../../../assets/img/String.png'
-import 'dayjs/locale/id'
+import { Container, Box } from '@mui/system';
+import { Typography, Button, IconButton } from '@mui/material';
+import bgImage from '../../../assets/img/String.png';
+import 'dayjs/locale/id';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // components
 import BreadCrumbs from '../../../components/medium/BreadCrumbs'
@@ -11,12 +13,18 @@ import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/Ima
 import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI'
 
 // hooks
-import useEditAmbulance from '../hooks/useEditAmbulance'
+import useEditAmbulance from '../hooks/useEditAmbulance';
+// import dayjs from 'dayjs';
+
+// type Schedule = {
+//   day: string;
+//   startTime: dayjs.Dayjs;
+//   endTime: dayjs.Dayjs;
+// };
 
 export default function EditAmbulance() {
   const {
     formik,
-    handleImageChange,
     setSelectedDay,
     startTime,
     setStartTime,
@@ -24,9 +32,17 @@ export default function EditAmbulance() {
     setEndTime,
     breadcrumbItems,
     apiUrl,
-    selectedDays,
-    initialOperationalCost
-  } = useEditAmbulance()
+    initialOperationalCost,
+    schedules,
+    setImagesData,
+    handleEditSchedule,
+    handleDeleteSchedule,
+    selectedDay,
+    handleSaveAndAddDay,
+    statusEdit,
+  } = useEditAmbulance();
+
+  
 
   return (
     <Container sx={{ py: 2 }}>
@@ -46,15 +62,15 @@ export default function EditAmbulance() {
             <img src={bgImage} alt="bg-image" />
           </Box>
 
-          <ImageUploaderGroupAPI onChange={handleImageChange} apiUrl={apiUrl} />
+          <ImageUploaderGroupAPI onChange={(images) => setImagesData(images)} apiUrl={apiUrl} />
 
           <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
             <Typography sx={{ fontSize: '16px' }}>
               Biaya Tarif<span style={{ color: 'red' }}>*</span>
             </Typography>
             <InputCurrencyIdr
-              onChange={value => {
-                formik.setFieldValue('operationalCost', value)
+              onChange={(value) => {
+                formik.setFieldValue('operationalCost', value);
               }}
               defaultValue={initialOperationalCost}
             />
@@ -74,38 +90,81 @@ export default function EditAmbulance() {
                 gap={'32px'}
               >
                 <Box display={'flex'} flexDirection={'column'} width={'100%'}>
-                  <Typography>Hari</Typography>
+                  <Typography>Hari </Typography>
                   <DropdownListAPI
-                    options={[
-                      { value: '1', label: 'Senin' },
-                      { value: '2', label: 'Selasa' },
-                      { value: '3', label: 'Rabu' },
-                      { value: '4', label: 'Kamis' },
-                      { value: '5', label: 'Jumat' },
-                      { value: '6', label: 'Sabtu' },
-                      { value: '7', label: 'Minggu' }
-                    ]}
-                    placeholder="Pilih hari"
-                    onChange={(value: string) => setSelectedDay(value)}
-                    loading={false}
-                    defaultValue={selectedDays}
-                  />
+                  defaultValue={selectedDay || ''}  // Ensure the dropdown value is bound to selectedDay
+                  options={[
+                    { value: '1', label: 'Senin' },
+                    { value: '2', label: 'Selasa' },
+                    { value: '3', label: 'Rabu' },
+                    { value: '4', label: 'Kamis' },
+                    { value: '5', label: 'Jumat' },
+                    { value: '6', label: 'Sabtu' },
+                    { value: '7', label: 'Minggu' },
+                  ]}
+                  placeholder="Pilih hari"
+                  onChange={(value: string) => {
+                    console.log("Day selected:", value);  // Debugging line
+                    setSelectedDay(value);
+                  }}
+                  loading={false}
+                />
                 </Box>
 
                 <Box display={'flex'} flexDirection={'column'} width={'100%'}>
                   <Typography>Jam mulai</Typography>
                   <CustomTimePicker
                     value={startTime}
-                    onChange={newValue => setStartTime(newValue)}
+                    onChange={(newValue) => setStartTime(newValue)}
                   />
                 </Box>
 
                 <Box display={'flex'} flexDirection={'column'} width={'100%'}>
                   <Typography>Jam selesai</Typography>
-                  <CustomTimePicker value={endTime} onChange={newValue => setEndTime(newValue)} />
+                  <CustomTimePicker value={endTime} onChange={(newValue) => setEndTime(newValue)} />
                 </Box>
               </Box>
-              
+
+              <Button
+                fullWidth
+                sx={{
+                  mt: 2,
+                  bgcolor: 'transparent',
+                  color: '#8F85F3',
+                  border: '1px solid #8F85F3',
+                  ':hover': { bgcolor: '#8F85F3', color: 'white' },
+                }}
+                onClick={handleSaveAndAddDay} // Call the function to add a new schedule
+              >
+                {statusEdit? 'Simpan' : '+ Tambah hari'}
+              </Button>
+
+              {schedules.map((schedule, index) => (
+              <Box
+                key={index}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                mt={2}
+                sx={{
+                  border: '1px solid black',
+                  padding: '4px',
+                  borderRadius: '6px',
+                }}
+              >
+                <Typography>
+                  {schedule.day},  {schedule.startTime ? schedule.startTime : 'N/A'} - {schedule.endTime ? schedule.endTime : 'N/A'}
+                </Typography>
+                <Box>
+                  <IconButton color="primary" onClick={() => handleEditSchedule(index)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton color="error" onClick={() => handleDeleteSchedule(index)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
+              </Box>
+            ))}
             </Box>
             <Button
               type="submit"
@@ -121,8 +180,8 @@ export default function EditAmbulance() {
                 boxShadow: 'none',
                 ':hover': {
                   bgcolor: '#a098f5',
-                  boxShadow: 'none'
-                }
+                  boxShadow: 'none',
+                },
               }}
               disabled={!formik.isValid || !formik.dirty}
             >
@@ -132,5 +191,5 @@ export default function EditAmbulance() {
         </Box>
       </Box>
     </Container>
-  )
+  );
 }
