@@ -14,18 +14,17 @@ import DropdownListAPI from '../../../components/small/DropdownListAPI';
 
 // hooks
 import useEditAmbulance from '../hooks/useEditAmbulance';
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 
-type Schedule = {
-  day: string;
-  startTime: dayjs.Dayjs;
-  endTime: dayjs.Dayjs;
-};
+// type Schedule = {
+//   day: string;
+//   startTime: dayjs.Dayjs;
+//   endTime: dayjs.Dayjs;
+// };
 
 export default function EditAmbulance() {
   const {
     formik,
-    handleAddSchedule,
     setSelectedDay,
     startTime,
     setStartTime,
@@ -35,12 +34,12 @@ export default function EditAmbulance() {
     apiUrl,
     initialOperationalCost,
     schedules,
-    updatedAmbulanceData,
     setImagesData,
     handleEditSchedule,
     handleDeleteSchedule,
     selectedDay,
-    handleSaveAndAddDay
+    handleSaveAndAddDay,
+    statusEdit,
   } = useEditAmbulance();
 
   
@@ -137,7 +136,7 @@ export default function EditAmbulance() {
                 }}
                 onClick={handleSaveAndAddDay} // Call the function to add a new schedule
               >
-                + Tambah hari
+                {statusEdit? 'Simpan' : '+ Tambah hari'}
               </Button>
 
               {schedules.map((schedule, index) => (

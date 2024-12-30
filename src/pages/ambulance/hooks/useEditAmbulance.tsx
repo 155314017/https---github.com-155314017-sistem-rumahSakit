@@ -43,6 +43,7 @@ export default function useEditAmbulance() {
   const [operationalSchedule, setOperationalSchedule] = useState<string[]>([]);
   const [updatedAmbulanceData, setUpdatedAmbulanceData] = useState<any>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [statusEdit, setStatusEdit] = useState(false);
 
 
   const dayMapping: { [key: string]: number } = {
@@ -219,6 +220,7 @@ export default function useEditAmbulance() {
   }
 
   function handleEditSchedule(index: number) {
+    setStatusEdit(true);
     const scheduleToEdit = schedules[index];
     console.log("Editing schedule at index:", index);
     console.log("Schedule to edit:", scheduleToEdit);
@@ -427,6 +429,7 @@ export default function useEditAmbulance() {
     updatedAmbulanceData,
     handleAddSchedule,
     setImagesData,
-    handleSaveAndAddDay
+    handleSaveAndAddDay,
+    statusEdit
   }
 }
