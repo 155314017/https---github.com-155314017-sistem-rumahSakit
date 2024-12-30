@@ -1,4 +1,5 @@
 import axios from "axios";
+import dayjs from 'dayjs';
 
 export interface FacilityDataItem {
   id: string;
@@ -64,37 +65,30 @@ export const FacilityServices = async (): Promise<FacilityDataItem[]> => {
 
   if (response.status === 200) {
     
-    response.data.data.content.forEach((item) => {
-      
-
-      if (item.schedules.length > 0) {
-        const operationalSchedules: string[] = item.schedules.map(
-          (schedule) => {
-            const startDate = new Date(schedule.startDateTime * 1000);
-            const endDate = new Date(schedule.endDateTime * 1000);
-
-            const formatter = new Intl.DateTimeFormat("id-ID", {
-              weekday: "long",
-            });
-
-            const startDay = formatter.format(startDate);
-            const startHours = startDate
-              .getHours()
-              .toString()
-              .padStart(2, "0");
-            const startMinutes = startDate
-              .getMinutes()
-              .toString()
-              .padStart(2, "0");
-            const endHours = endDate.getHours().toString().padStart(2, "0");
-            const endMinutes = endDate
-              .getMinutes()
-              .toString()
-              .padStart(2, "0");
-
-            return `${startDay}, ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
-          }
-        );
+    const convertUnixToReadableTime = (timestamp: number) => {
+                    const date = dayjs(timestamp); // Use dayjs to parse Unix timestamp
+            
+                    const dayOfWeek = date.format('dddd'); // Get the day of the week
+                    const time = date.format('HH:mm'); // Get the formatted time (HH:mm)
+            
+                    return { day: dayOfWeek, time };
+                  };
+    
+          response.data.data.content.forEach((item) => {
+            if (item.schedules.length > 0) {
+              const operationalSchedules: string[] = item.schedules.map((schedule) => {
+                const startDate = convertUnixToReadableTime(schedule.startDateTime);
+                const endDate = convertUnixToReadableTime(schedule.endDateTime);
+    
+    
+                const startDay = startDate.day;
+                const start = `${startDate.time}`;
+                const end = ` ${endDate.time}`;
+    
+                
+    
+                return `${startDay}, ${start} - ${end}`;
+              });
 
         item.operationalSchedule = operationalSchedules.join(" | "); // Combine all schedules with a separator
 

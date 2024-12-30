@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import dayjs from "dayjs";
 export interface CounterDataItem {
   id: string;
   masterTypeId: string;
@@ -13,9 +13,7 @@ export interface CounterDataItem {
   deletedBy: string | null;
   deletedDateTime: number | null;
   images: string[];
-  schedules:
-    | { id: string; startDateTime: number; endDateTime: number }[]
-    | null;
+  schedules: { id: string; startDateTime: number; endDateTime: number }[];
   operationalSchedule?: string;
 }
 
@@ -70,34 +68,36 @@ export const CounterServices = async (): Promise<CounterDataItem[]> => {
       }
 
       // Process each item in the content array
-      const counterData = content.map((item) => {
-        if (item.schedules && item.schedules.length > 0) {
-          const operationalSchedules: string[] = item.schedules.map((schedule) => {
-            const startDate = new Date(schedule.startDateTime * 1000);
-            const endDate = new Date(schedule.endDateTime * 1000);
-
-            const formatter = new Intl.DateTimeFormat("id-ID", {
-              weekday: "long",
+      const convertUnixToReadableTime = (timestamp: number) => {
+                      const date = dayjs(timestamp); // Use dayjs to parse Unix timestamp
+              
+                      const dayOfWeek = date.format('dddd'); // Get the day of the week
+                      const time = date.format('HH:mm'); // Get the formatted time (HH:mm)
+              
+                      return { day: dayOfWeek, time };
+                    };
+      
+            response.data.data.content.forEach((item) => {
+              if (item.schedules.length > 0) {
+                const operationalSchedules: string[] = item.schedules.map((schedule) => {
+                  const startDate = convertUnixToReadableTime(schedule.startDateTime);
+                  const endDate = convertUnixToReadableTime(schedule.endDateTime);
+      
+      
+                  const startDay = startDate.day;
+                  const start = `${startDate.time}`;
+                  const end = ` ${endDate.time}`;
+      
+                  
+      
+                  return `${startDay}, ${start} - ${end}`;
+                });
+                item.operationalSchedule = operationalSchedules.join(" | ");
+              } else {
+                item.operationalSchedule = "No schedules available.";
+              }
             });
-
-            const startDay = formatter.format(startDate);
-            const startHours = startDate.getHours().toString().padStart(2, "0");
-            const startMinutes = startDate.getMinutes().toString().padStart(2, "0");
-            const endHours = endDate.getHours().toString().padStart(2, "0");
-            const endMinutes = endDate.getMinutes().toString().padStart(2, "0");
-
-            return `${startDay}, ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
-          });
-
-          item.operationalSchedule = operationalSchedules.join(" | ");
-        } else {
-          item.operationalSchedule = "No schedules available.";
-        }
-
-        return item;
-      });
-
-      return counterData;
+            return response.data.data.content;
     } else {
       throw new Error(`API responded with status: ${response.status}`);
     }

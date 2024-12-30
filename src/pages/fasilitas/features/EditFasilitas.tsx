@@ -1,4 +1,4 @@
-import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
+import { Container, Box, Typography, Button, FormControl, OutlinedInput, IconButton } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
@@ -6,6 +6,8 @@ import CustomTimePicker from "../../../components/small/CustomTimePicker";
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr';
 import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
 import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/ImageGroupUploaderAPI';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 //hooks
 import useEditFasilitas from "../hooks/useEditFasilitas";
@@ -15,20 +17,23 @@ export default function EditFasilitas() {
     breadcrumbItems,
     formik,
     gedungOptions,
-    handleTambahHari,
     handleImageChange,
     successAlert,
     setSelectedDay,
     setStartTime,
     setEndTime,
-    selectedDays,
     showTemporaryAlertSuccess,
     errorAlert,
-    
     startTime,
     endTime,
-    
     initialOperationalCost,
+    handleSaveAndAddDay,
+    handleEditSchedule,
+    schedules,
+    handleDeleteSchedule,
+    statusEdit,
+    selectedDay,
+    
     }= useEditFasilitas()
   return (
     <Container sx={{ py: 2 }}>
@@ -99,6 +104,7 @@ export default function EditFasilitas() {
                         <Box display={'flex'} flexDirection={'column'} width={'100%'} >
                             <Typography>Hari</Typography>
                             <DropdownListAPI
+                                defaultValue={selectedDay || ''}
                                 options={[
                                     { value: "1", label: "Senin" },
                                     { value: "2", label: "Selasa" },
@@ -111,7 +117,7 @@ export default function EditFasilitas() {
                                 placeholder="Pilih hari"
                                 onChange={(value: string) => setSelectedDay(value)}
                                 loading={false}
-                                defaultValue={selectedDays}
+                                
                             />
                         </Box>
 
@@ -142,10 +148,36 @@ export default function EditFasilitas() {
                             border: '1px solid #8F85F3',
                             ":hover": { bgcolor: '#8F85F3', color: 'white' },
                         }}
-                        onClick={handleTambahHari}
+                        onClick={handleSaveAndAddDay}
                     >
-                        + Tambah hari
+                        {statusEdit? 'Simpan' : '+ Tambah hari'}
                     </Button>
+                    {schedules.map((schedule, index) => (
+              <Box
+                key={index}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                mt={2}
+                sx={{
+                  border: '1px solid black',
+                  padding: '4px',
+                  borderRadius: '6px',
+                }}
+              >
+                <Typography>
+                  {schedule.day},  {schedule.startTime ? schedule.startTime : 'N/A'} - {schedule.endTime ? schedule.endTime : 'N/A'}
+                </Typography>
+                <Box>
+                  <IconButton color="primary" onClick={() => handleEditSchedule(index)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton color="error" onClick={() => handleDeleteSchedule(index)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
+              </Box>
+            ))}
                 </Box>
 
                 <Typography sx={{ fontSize: "16px", mt: 3 }}>Biaya Penanganan<span style={{ color: "red" }}>*</span></Typography>

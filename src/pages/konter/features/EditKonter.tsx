@@ -6,7 +6,9 @@ import CustomTimePicker from "../../../components/small/CustomTimePicker";
 import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/ImageGroupUploaderAPI';
 import "dayjs/locale/id";
 import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
-import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
+import { Container, Box, Typography, Button, FormControl, OutlinedInput, IconButton } from "@mui/material";
+import { Delete as DeleteIcon } from '@mui/icons-material'
+import { Edit as EditIcon } from '@mui/icons-material'
 
 //hooks
 import useEditKonter from "../hooks/useEditKonter";
@@ -14,7 +16,6 @@ export default function EditKonter() {
     const {
         formik,
     handleImageChange,
-    handleTambahHari,
     breadcrumbItems,
     setSelectedDay,
     startTime,
@@ -24,8 +25,13 @@ export default function EditKonter() {
     successAlert,
     errorAlert,
     jenisKonter,
-    selectedDays,
-    apiUrl
+    apiUrl,
+    handleDeleteSchedule,
+    handleEditSchedule,
+    handleSaveAndAddDay,
+    statusEdit,
+    schedules,
+    selectedDay
     }=useEditKonter();
   return (
     <Container sx={{ py: 2 }}>
@@ -93,6 +99,7 @@ export default function EditKonter() {
                                 <Box display={'flex'} flexDirection={'column'} width={'100%'} >
                                     <Typography>Hari</Typography>
                                     <DropdownListAPI
+                                        defaultValue={selectedDay || ''}  
                                         options={[
                                             { value: "1", label: "Senin" },
                                             { value: "2", label: "Selasa" },
@@ -105,7 +112,7 @@ export default function EditKonter() {
                                         placeholder="Pilih hari"
                                         onChange={(value: string) => setSelectedDay(value)}
                                         loading={false}
-                                        defaultValue={selectedDays}
+                                        
                                     />
                                 </Box>
 
@@ -136,11 +143,38 @@ export default function EditKonter() {
                                     border: '1px solid #8F85F3',
                                     ":hover": { bgcolor: '#8F85F3', color: 'white' },
                                 }}
-                                onClick={handleTambahHari}
+                                onClick={handleSaveAndAddDay}
                             >
-                                + Tambah hari
+                                 {statusEdit? 'Simpan' : '+ Tambah hari'}
                             </Button>
-                        </Box>
+
+                            {schedules.map((schedule, index) => (
+                                <Box
+                                    key={index}
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    mt={2}
+                                    sx={{
+                                    border: '1px solid black',
+                                    padding: '4px',
+                                    borderRadius: '6px',
+                                    }}
+                                >
+                                    <Typography>
+                                    {schedule.day},  {schedule.startTime ? schedule.startTime : 'N/A'} - {schedule.endTime ? schedule.endTime : 'N/A'}
+                                    </Typography>
+                                    <Box>
+                                    <IconButton color="primary" onClick={() => handleEditSchedule(index)}>
+                                        <EditIcon />
+                                    </IconButton>
+                                    <IconButton color="error" onClick={() => handleDeleteSchedule(index)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                    </Box>
+                                </Box>
+                                ))}
+                                            </Box>
 
                         <Button
                             type="submit"
