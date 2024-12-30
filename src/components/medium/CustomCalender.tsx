@@ -114,7 +114,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
                         height: '40px',
                         backgroundColor: 'inherit',
                         color: '#333',
-                        cursor: 'grab',
+                        cursor: 'pointer',
                         position: 'relative',
                         '&:focus': {
                             borderColor: '#1976d2',
