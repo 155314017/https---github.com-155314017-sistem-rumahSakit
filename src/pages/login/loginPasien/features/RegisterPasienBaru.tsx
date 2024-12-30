@@ -560,7 +560,6 @@ export default function RegisterPasienBaru() {
                                 top: "0",
                                 width: "45%",
                                 flexDirection: 'column',
-                                // mr: "10%",
                                 mt: "15%",
                             }}
                         >

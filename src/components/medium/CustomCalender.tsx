@@ -25,7 +25,6 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
     const [availableTimes, setAvailableTimes] = useState<{ [date: string]: { timeRange: string, scheduleId: string }[] }>({});
     const [availableDates, setAvailableDates] = useState<Set<string>>(new Set());
 
-
     useEffect(() => {
         fetchSchedules();
     }, [doctorId]);
@@ -83,7 +82,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
 
         const formattedDate = selectedDate.format('MM/DD/YYYY');
         const selectedTime = `${formattedDate} ${timeRange}`;
-        setSelectedTimeRange(selectedTime);
+        setSelectedTimeRange(timeRange); // Store only the time range
         setInputValue(selectedTime);
         setSelectedScheduleId(scheduleId);
     };
@@ -194,15 +193,14 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
                                                 <Button
                                                     onClick={() => handleTimeSelect(timeRange, scheduleId)}
                                                     variant="text"
-                                                    disabled={isDisabled}
                                                     sx={{
                                                         width: '120px',
                                                         padding: 0,
                                                         height: '68px',
                                                         borderRadius: '100px',
-                                                        bgcolor: selectedTimeRange === timeRange ? '#8F85F3' : 'transparent',
-                                                        color: isDisabled ? '#ccc' : '#000',
-                                                        border: selectedTimeRange === timeRange ? '1px solid #8F85F3' : '#8F85F3',
+                                                        bgcolor: 'transparent',
+                                                        color: '#000',
+                                                        border: selectedTimeRange === timeRange ? '1px solid #8F85F3' : '1px solid transparent',
                                                         '&:hover': {
                                                             border: '1px solid #8F85F3',
                                                         },
