@@ -569,7 +569,7 @@ export default function RegisterPasienBaru() {
                                     Verifikasi
                                 </Typography>
                                 <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                                    Silahkan masukkan kode 4 digit yang dikirimkan ke nomor Anda .
+                                    Silahkan masukkan kode 4 digit yang dikirimkan ke email Anda .
                                 </Typography>
 
                                 <Formik
