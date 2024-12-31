@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -235,7 +236,7 @@ export default function useTambahPasienUmumOffline() {
         setClinicName(label);
         console.log(clinicName);
     };
-    
+
 
     function BpRadio(props: RadioProps) {
         return (
@@ -436,9 +437,10 @@ export default function useTambahPasienUmumOffline() {
             setDataTickets(dataSent)
             setMainPages(false)
             // setCurrentPage(3);
-        } catch (err) {
+        } catch (err: any) {
             setMainPages(false)
             setCurrentPage(3);
+            console.log(err);
         } finally {
             setIsLoading(false);
         }
@@ -475,7 +477,7 @@ export default function useTambahPasienUmumOffline() {
                 return formik.values.nikGuardian && formik.values.emailGuardian && formik.values.phoneGuardian && formik.values.fullnameGuardian && formik.values.typeGuardian && formik.values.genderGuardian && formik.values.addressGuardian;
             }
         } else if (currentPage === 3) {
-            return formik.values.jenisKunjungan ;
+            return formik.values.jenisKunjungan;
         }
         return false;
     };
