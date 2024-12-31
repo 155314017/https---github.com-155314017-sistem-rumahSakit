@@ -11,14 +11,14 @@ import { RadioProps } from '@mui/material/Radio';
 const validationSchema = Yup.object({
     nik: Yup.string()
         .matches(/^[0-9]+$/, 'NIK harus berupa angka')
-        .min(12, 'NIK minimal 12 digit')
-        .max(16, 'NIK maksimal 14 digit')
+        .min(14, 'NIK minimal 14 digit')
+        .max(16, 'NIK maksimal 16 digit')
         .required('NIK wajib diisi'),
     email: Yup.string().required('Email wajib diisi'),
     address: Yup.string().required('Email wajib diisi'),
     phone: Yup.string()
         .required('Isi nomor telepon')
-        .matches(/^[0-9]{10,15}$/, 'Nomor telepon tidak valid'),
+        .matches(/^[0-9]{10,14}$/, 'Nomor telepon tidak valid'),
     fullname: Yup.string().required('Wajib diisi')
         .matches(/^[A-Za-z\s]+$/, "Nama hanya boleh berisi huruf"),
     gender: Yup.string().required('JenisK kelamin harus dipilih'),

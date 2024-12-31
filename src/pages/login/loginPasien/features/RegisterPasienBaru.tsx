@@ -427,7 +427,7 @@ export default function RegisterPasienBaru() {
                                                     size="medium"
                                                     sx={{
                                                         width: '100%',
-                                                        height: '48px',
+                                                        height: 'auto',
                                                         marginTop: '10px',
                                                         marginBottom: '50px',
                                                         alignItems: 'flex-start',

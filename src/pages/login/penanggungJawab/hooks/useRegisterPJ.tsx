@@ -6,8 +6,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 const validationSchema = Yup.object({
   nik: Yup.string()
     .matches(/^[0-9]+$/, 'NIK harus berupa angka')
-    .min(12, 'NIK minimal 12 digit')
-    .max(16, 'NIK maksimal 14 digit')
+    .min(14, 'NIK minimal 14 digit')
+    .max(16, 'NIK maksimal 16 digit')
     .required('NIK wajib diisi'),
   email: Yup.string().email('email tidak valid').required('Email wajib diisi')
 })

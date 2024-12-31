@@ -163,7 +163,7 @@ export default function BioPjBaru() {
                                                     <Typography fontWeight={"bold"} maxWidth={"190px"} fontSize={'20px'} >
                                                         Isi data diri Penanggung jawab
                                                     </Typography>
-                                                    <SwitchCustom onChangeValue={handleSwitchChange} defaultValue={switchValue} disable={noIdentity} />
+                                                    <SwitchCustom onChangeValue={handleSwitchChange} defaultValue={switchValue} disable={switchValue ||noIdentity} />
                                                 </Box>
                                                 <FormLabel sx={{ fontSize: '18px' }}>NIK (Nomor induk kependudukan) Penanggung jawab</FormLabel>
                                                 <Field
@@ -332,7 +332,7 @@ export default function BioPjBaru() {
                                                 />
 
                                                 <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '85px' }}>
-                                                    <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%' }}>
+                                                    <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '41%' }}>
                                                         <FormLabel>Tempat Lahir</FormLabel>
                                                         <Field
                                                             name="birthPlace"
@@ -369,7 +369,7 @@ export default function BioPjBaru() {
 
                                                     </FormControl>
 
-                                                    <FormControl sx={{ width: '49%', overflow: 'hidden', height: '100%' }}>
+                                                    <FormControl sx={{ width: '57%', overflow: 'hidden', height: '100%' }}>
                                                         <FormLabel>Tanggal Lahir</FormLabel>
                                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                             <Box sx={{ overflow: 'hidden' }}>
