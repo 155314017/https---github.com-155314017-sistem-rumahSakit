@@ -226,22 +226,7 @@ export default function useTambahPasienUmumOffline() {
     });
 
     const changePage2 = async () => {
-        // try {
-        //     const data = {
-        //         identityNumber: dataPasien?.nik ?? "",
-        //         name: dataPasien?.fullname ?? "",
-        //         phone: dataPasien?.phone ?? "",
-        //         email: dataPasien?.email ?? "",
-        //         gender: dataPasien?.gender ?? "",
-        //         address: dataPasien?.address ?? "",
-        //     }
-        //     const response = await RegisterPatient(data)
-        //     console.log("RESPON REGIS: ", response)
-        // } catch (err) {
-        //     console.log(err);
-        // }
-        // setPatientFullsPage(true);
-        setCurrentPage(2)
+        setCurrentPage(2);
     }
 
     const handleDropdownPoli = (value: string, label: string) => {
@@ -250,6 +235,7 @@ export default function useTambahPasienUmumOffline() {
         setClinicName(label);
         console.log(clinicName);
     };
+    
 
     function BpRadio(props: RadioProps) {
         return (
@@ -483,9 +469,13 @@ export default function useTambahPasienUmumOffline() {
         if (currentPage === 1) {
             return formik.values.nikCari;
         } else if (currentPage === 2) {
-            return formik.values.nikGuardian && formik.values.fullnameGuardian && formik.values.emailGuardian && formik.values.addressGuardian && formik.values.birthPlaceGuardian;
+            if (guardFullPage == true) {
+                return formik.values.nikGuardian
+            } else if (guardFullPage == false) {
+                return formik.values.nikGuardian && formik.values.emailGuardian && formik.values.phoneGuardian && formik.values.fullnameGuardian && formik.values.typeGuardian && formik.values.genderGuardian && formik.values.addressGuardian;
+            }
         } else if (currentPage === 3) {
-            return formik.values.phoneGuardian && formik.values.jenisKunjungan && formik.values.poli && formik.values.doctor && formik.values.keluhan && formik.values.riwayatPenyakit && formik.values.alergi;
+            return formik.values.jenisKunjungan ;
         }
         return false;
     };

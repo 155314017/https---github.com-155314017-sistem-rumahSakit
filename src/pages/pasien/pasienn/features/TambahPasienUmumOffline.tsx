@@ -200,6 +200,7 @@ export default function TambahPasienUmumOffline() {
                                 <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                                     {patientFullPage && (
                                         <>
+
                                             <Typography>NIK (Nomor induk kependudukan) Pasien</Typography>
                                             <OutlinedInput
                                                 sx={{
@@ -440,7 +441,7 @@ export default function TambahPasienUmumOffline() {
                                                     borderRadius: "8px",
                                                     ":hover": { bgcolor: "#a098f5" },
                                                 }}
-                                            // disabled={!isCurrentPageValid()}
+                                                disabled={!isCurrentPageValid()}
                                             >
                                                 Selanjutnya
                                             </Button>
@@ -515,77 +516,6 @@ export default function TambahPasienUmumOffline() {
                                                             }}
                                                             disabled={switchValue ? true : false}
                                                         />
-                                                        {/* <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '80px', width: '100%' }}>
-                                                        <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%' }}>
-                                                            <FormLabel>Tempat Lahir</FormLabel>
-                                                            <OutlinedInput
-                                                                name="birthPlaceGuardian"
-                                                                placeholder="Tempat Lahir"
-                                                                fullWidth
-                                                                sx={{
-                                                                    width: '100%',
-                                                                    height: '44px',
-                                                                    mb: '5px',
-                                                                    marginTop: '10px',
-                                                                    borderRadius: '8px',
-                                                                    backgroundColor: switchValue ? "#E8E8E8" : "inherit",
-                                                                    '& .MuiOutlinedInput-root': {
-                                                                        borderRadius: '8px',
-                                                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                            borderColor: '#8F85F3',
-                                                                        },
-                                                                    },
-                                                                    '& .MuiOutlinedInput-notchedOutline': {
-                                                                        border: '1px solid #ccc',
-                                                                    },
-                                                                    '& .MuiOutlinedInput-input': {
-                                                                        padding: '10px',
-                                                                        fontSize: '16px',
-                                                                    },
-                                                                }}
-                                                                value={formik.values.birthPlaceGuardian}
-                                                                onChange={formik.handleChange}
-                                                                disabled={switchValue}
-                                                            />
-
-                                                        </FormControl>
-
-                                                        <FormControl sx={{ width: '49%', overflow: 'hidden', height: '100%' }}>
-                                                            <FormLabel>Tanggal Lahir</FormLabel>
-                                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                                <Box sx={{ overflow: 'hidden' }}>
-                                                                    <DemoContainer components={['DatePicker']}>
-                                                                        <DatePicker
-                                                                            value={dayjs(formik.values.birthDateGuardian)}
-                                                                            onChange={(newValue) => {
-                                                                                if (newValue) {
-                                                                                    const formattedDate = newValue.format("YYYY-MM-DD");
-                                                                                    formik.setFieldValue('birthDateGuardian', formattedDate);
-                                                                                    console.log("tanggalLahir", formattedDate);
-                                                                                }
-                                                                            }}
-                                                                            slotProps={{
-                                                                                textField: {
-                                                                                    placeholder: "Tanggal Lahir",
-                                                                                    sx: {
-                                                                                        borderRadius: '8px',
-                                                                                        height: '60px',
-                                                                                        width: '100%',
-                                                                                        '& .MuiOutlinedInput-root': {
-                                                                                            backgroundColor: switchValue ? "#E8E8E8" : "inherit",
-                                                                                            borderRadius: '8px',
-                                                                                            height: '44px',
-                                                                                        },
-                                                                                    },
-                                                                                },
-                                                                            }}
-                                                                            disabled={switchValue}
-                                                                        />
-                                                                    </DemoContainer>
-                                                                </Box>
-                                                            </LocalizationProvider>
-                                                        </FormControl>
-                                                    </Box> */}
 
                                                         <Typography>Nama lengkap penanggung jawab</Typography>
                                                         <OutlinedInput
@@ -707,7 +637,7 @@ export default function TambahPasienUmumOffline() {
                                                     borderRadius: "8px",
                                                     ":hover": { bgcolor: "#a098f5" },
                                                 }}
-                                            // disabled={!isCurrentPageValid()}
+                                                disabled={!isCurrentPageValid()}
                                             >
                                                 Selanjutnya
                                             </Button>
@@ -775,69 +705,13 @@ export default function TambahPasienUmumOffline() {
                                                             <CustomCalender key={calendarKey} doctorId={idDoctor} onChange={handleScheduleChange} />
                                                         </Box>
                                                     </Box>
-
-                                                    {/* <FormControl>
-                                                        <Typography sx={{ textTransform: "capitalize" }}>Keluhan pasien</Typography>
-                                                        <TextField
-                                                            id="outlined-multiline-static"
-                                                            multiline
-                                                            rows={4}
-                                                            variant="outlined"
-                                                            sx={{
-                                                                maxHeight: "107px",
-                                                                maxWidth: "100%",
-                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                    borderColor: '#8F85F3',
-                                                                },
-                                                            }}
-                                                            name="keluhan"
-                                                            value={formik.values.keluhan}
-                                                            onChange={formik.handleChange}
-                                                        />
-                                                        <Typography color="error">{formik.touched.keluhan && formik.errors.keluhan}</Typography>
-                                                    </FormControl> */}
-
-                                                    {/* <Box mt={4}>
-                                                        <Box>
-                                                            <RadioGroup
-                                                                aria-label="transport-method"
-                                                                name="transport-method"
-                                                                value={selectedMethod}
-                                                                onChange={handleRadioChange}
-                                                                sx={{ display: 'flex', flexDirection: 'column', border: '1px solid black', marginTop: '20px', marginBottom: '10px', borderRadius: '16px', padding: '16px 24px 16px 24px' }}
-                                                            >
-                                                                <Box display={'flex'} flexDirection={'row'} >
-                                                                    <FormControlLabel value="asuransi" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Asuransi" />
-                                                                    <FormControlLabel value="uang tunai dan debit" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Uang tunai dan debit" />
-                                                                </Box>
-                                                                {selectedMethod == 'asuransi' && (
-                                                                    <Box>
-                                                                        <Typography mb={'10px'} >Unggah kartu asuransi</Typography>
-                                                                        <FileUploader
-                                                                            onBase64Change={(base64String) =>
-                                                                                formik.setFieldValue("asuranceDocs", base64String)
-                                                                            }
-                                                                        />
-                                                                        <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
-                                                                    </Box>
-                                                                )}
-                                                            </RadioGroup>
-                                                        </Box>
-                                                    </Box> */}
-                                                    {/* <Box>
-                                                        <Typography mb={'10px'} >Unggah surat rujukan</Typography>
-                                                        <FileUploader
-                                                            onBase64Change={(base64String) =>
-                                                                formik.setFieldValue("docs", base64String)
-                                                            }
-                                                        />
-                                                        <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
-                                                    </Box> */}
                                                 </Box>
                                             </Box>
 
                                             <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
                                                 <Button
+                                                    variant="contained"
+                                                    color="inherit"
                                                     onClick={createTicket}
                                                     sx={{
                                                         backgroundColor: "#8F85F3",
@@ -850,6 +724,7 @@ export default function TambahPasienUmumOffline() {
                                                             backgroundColor: "#7C75E2",
                                                         },
                                                     }}
+                                                    disabled={!isCurrentPageValid()}
                                                 >
                                                     {isLoading ? (
                                                         <CircularProgress sx={{ color: 'white' }} size={20} />
