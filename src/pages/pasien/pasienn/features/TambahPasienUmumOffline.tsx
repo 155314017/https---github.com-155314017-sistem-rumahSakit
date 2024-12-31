@@ -413,7 +413,10 @@ export default function TambahPasienUmumOffline() {
                                                 sx={{
                                                     borderRadius: '8px',
                                                     height: '48px',
-                                                    backgroundColor: switchValue ? "#E8E8E8" : "inherit"
+                                                    backgroundColor: switchValue ? "#E8E8E8" : "inherit",
+                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                        borderColor: '#8F85F3',
+                                                    },
                                                 }}
                                                 placeholder='Masukkan NIK ktp'
                                                 value={formik.values.nikGuardian}
@@ -731,7 +734,7 @@ export default function TambahPasienUmumOffline() {
                                                                 "& .MuiOutlinedInput-root": {
                                                                     height: "44px",
                                                                     padding: "0 12px",
-                                                                    border: "1px solid #A8A8BD",
+                                                                    border: "none",
                                                                     "& input": {
                                                                         height: "44px",
                                                                         padding: "0",

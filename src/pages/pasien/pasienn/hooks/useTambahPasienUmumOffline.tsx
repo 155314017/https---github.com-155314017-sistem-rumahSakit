@@ -127,7 +127,7 @@ export default function useTambahPasienUmumOffline() {
             birthPlacePatient: birthPlace,
             // phonePasien: '',
             nikGuardian: switchValue ? dataPasien?.nik : '',
-            typeGuardian: 'SENDIRI',
+            typeGuardian: switchValue ? 'SENDIRI' : '',
             caraDatang: '',
             fullnameGuardian: switchValue ? dataPasien?.fullname : '',
             emailGuardian: switchValue ? dataPasien?.email : '',

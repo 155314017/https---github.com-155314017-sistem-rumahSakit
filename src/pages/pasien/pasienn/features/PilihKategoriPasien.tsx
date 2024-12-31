@@ -88,20 +88,20 @@ export default function PilihKategoriPasien() {
                                 sx={{
                                     bgcolor: '#ffffff',
                                     width: '96%',
-                                    height: '100px',
+                                    height: 'fit-content',
                                     borderRadius: '24px',
                                     gap: '4px',
                                     padding: '24px',
                                     my: '2%',
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    boxShadow: 2
+                                    boxShadow: 2,
                                 }}
                             >
                                 <Typography id="modal-modal-description" fontWeight={600} fontSize={'24px'} lineHeight={'26px'}>
                                     Pilih Kategori Pasien
                                 </Typography>
-                                <Typography color="#747487" fontWeight={400} fontSize={'18px'}>
+                                <Typography color="#747487" fontWeight={400} fontSize={'18px'} maxWidth={'85%'}>
                                     Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
                                 </Typography>
                             </Box>
@@ -197,6 +197,9 @@ export default function PilihKategoriPasien() {
                                                     borderRadius: "8px",
                                                     fontSize: "16px",
                                                     marginBottom: "16px",
+                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                        borderColor: '#8F85F3',
+                                                    },
                                                 }}
                                                 inputProps={{
                                                     style: {
@@ -237,7 +240,11 @@ export default function PilihKategoriPasien() {
                     </Box>
                 )}
                 {openModalPilihPembayaran && (
-                    <Box width={'54%'} >
+                    <Box
+                        sx={{
+                            width: '68%'
+                        }}
+                    >
                         <CardMedia
                             component="img"
                             sx={{
@@ -245,10 +252,9 @@ export default function PilihKategoriPasien() {
                                 height: "350px",
                                 borderRadius: "24px",
                                 position: "relative",
-                                marginTop: "-25px",
+                                marginTop: "20px",
                                 boxShadow: 2
-                            }
-                            }
+                            }}
                             image={register}
                             alt="Example Image"
                         />
@@ -256,7 +262,7 @@ export default function PilihKategoriPasien() {
                             sx={{
                                 bgcolor: '#ffffff',
                                 width: '96%',
-                                height: '100px',
+                                height: 'fit-content',
                                 borderRadius: '24px',
                                 gap: '4px',
                                 padding: '24px',
@@ -275,7 +281,7 @@ export default function PilihKategoriPasien() {
                             </Typography>
                         </Box>
 
-                        <Stack direction="column" width={'100%'} spacing={3}>
+                        <Stack direction="column" width={'100%'} spacing={0}>
                             {/* Pasien BPJS */}
 
                             <PasienCard

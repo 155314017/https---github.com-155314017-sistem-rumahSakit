@@ -183,7 +183,6 @@ export default function RawatJalanUmum() {
                                                 right: "0",
                                                 top: "0",
                                                 width: "45.85%",
-                                                bgcolor: 'transparent'
                                             }}
                                         >
                                             <Box sx={{ ml: 2, width: '100%' }}>

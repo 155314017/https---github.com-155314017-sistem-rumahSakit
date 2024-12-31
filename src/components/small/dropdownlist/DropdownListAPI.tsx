@@ -65,7 +65,7 @@ export default function DropdownListAPI({
                     height: "43px",
                     borderRadius: "8px",
                     // border: "1px solid #A8A8BD",
-                    color: "#A8A8BD",
+                    color: "black",
                 }}
                 inputProps={{ "aria-label": "select dropdown" }}
             >
