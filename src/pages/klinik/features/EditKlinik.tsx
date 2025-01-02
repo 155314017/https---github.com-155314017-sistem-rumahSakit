@@ -1,5 +1,5 @@
 //component
-import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
+import { Container, Box, Typography, Button, FormControl, OutlinedInput,IconButton  } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
@@ -7,6 +7,9 @@ import CustomTimePicker from "../../../components/small/CustomTimePicker";
 import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/ImageGroupUploaderAPI';
 import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
 import "dayjs/locale/id";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 //hooks
 import useEditKlinik from "../hooks/useEditKlinik";
@@ -15,7 +18,6 @@ import useEditKlinik from "../hooks/useEditKlinik";
 export default function EditKlinik() {
     const {
         formik,
-    handleTambahHari,
     breadcrumbItems,
     setSelectedDay,
     startTime,
@@ -27,7 +29,12 @@ export default function EditKlinik() {
     successAlert,
     apiUrl,
     handleImageChange,
-    selectedDays,
+    handleDeleteSchedule,
+    handleEditSchedule,
+    handleSaveAndAddDay,
+    schedules,
+    statusEdit,
+    selectedDay
     }=useEditKlinik();
   return (
     <Container sx={{ py: 2 }}>
@@ -87,6 +94,7 @@ export default function EditKlinik() {
                                 <Box display={'flex'} flexDirection={'column'} width={'100%'} >
                                     <Typography>Hari</Typography>
                                     <DropdownListAPI
+                                    defaultValue={selectedDay || ''}
                                         options={[
                                             { value: "1", label: "Senin" },
                                             { value: "2", label: "Selasa" },
@@ -99,7 +107,6 @@ export default function EditKlinik() {
                                         placeholder="Pilih hari"
                                         onChange={(value: string) => setSelectedDay(value)}
                                         loading={false}
-                                        defaultValue={selectedDays}
                                     />
                                 </Box>
 
@@ -130,10 +137,37 @@ export default function EditKlinik() {
                                     border: '1px solid #8F85F3',
                                     ":hover": { bgcolor: '#8F85F3', color: 'white' },
                                 }}
-                                onClick={handleTambahHari}
+                                onClick={handleSaveAndAddDay}
                             >
-                                + Tambah hari
+                                {statusEdit? 'Simpan' : '+ Tambah hari'}
                             </Button>
+
+                            {schedules.map((schedule, index) => (
+                                <Box
+                                    key={index}
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    mt={2}
+                                    sx={{
+                                    border: '1px solid black',
+                                    padding: '4px',
+                                    borderRadius: '6px',
+                                    }}
+                                >
+                                    <Typography>
+                                    {schedule.day},  {schedule.startTime ? schedule.startTime : 'N/A'} - {schedule.endTime ? schedule.endTime : 'N/A'}
+                                    </Typography>
+                                    <Box>
+                                    <IconButton color="primary" onClick={() => handleEditSchedule(index)}>
+                                        <EditIcon />
+                                    </IconButton>
+                                    <IconButton color="error" onClick={() => handleDeleteSchedule(index)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                    </Box>
+                                </Box>
+                                ))}
                         </Box>
 
                         <Button

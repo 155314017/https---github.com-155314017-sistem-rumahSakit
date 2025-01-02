@@ -90,12 +90,31 @@ export default function useTambahKlinik() {
         onSubmit: async (values) => {
 
             const formattedSchedules = schedules.map(schedule => {
-                const selectedDayOfWeek = dayMapping[schedule.day]
-                return {
-                  startDateTime: schedule.startTime.day(selectedDayOfWeek).unix(),
-                  endDateTime: schedule.endTime.day(selectedDayOfWeek).unix()
-                }
-              })
+                          const normalizedDay = schedule.day.trim().charAt(0).toUpperCase() + schedule.day.slice(1).toLowerCase();
+                          const selectedDayOfWeek = dayMapping[normalizedDay];
+                      
+                          const parsedStartTime = dayjs(schedule.startTime, 'HH:mm', true);
+                          const parsedEndTime = dayjs(schedule.endTime, 'HH:mm', true);
+                      
+                          const referenceDate = dayjs().startOf('week');
+                      
+                          const startDateTime = referenceDate
+                            .day(selectedDayOfWeek)
+                            .set('hour', parsedStartTime.hour())
+                            .set('minute', parsedStartTime.minute())
+                            .set('second', 0)
+                      
+                          const endDateTime = referenceDate
+                            .day(selectedDayOfWeek)
+                            .set('hour', parsedEndTime.hour())
+                            .set('minute', parsedEndTime.minute())
+                            .set('second', 0)
+                      
+                          return {
+                            startDateTime: startDateTime.valueOf(),
+                            endDateTime: endDateTime.valueOf()
+                          };
+                        }).filter(schedule => schedule !== null);
 
             const data = {
                 name: values.namaKlinik,

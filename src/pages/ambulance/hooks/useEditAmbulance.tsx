@@ -37,7 +37,6 @@ export default function useEditAmbulance() {
   // const [schedule, setSchedule] = useState<Schedule[]>([])
   const [schedules, setSchedules] = useState<any[]>([]);
   // const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [edit, setEdit] = useState(false);
   dayjs.locale('id')
   const navigate = useNavigate();
   const [operationalSchedule, setOperationalSchedule] = useState<string[]>([]);
