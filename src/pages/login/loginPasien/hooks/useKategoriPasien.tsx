@@ -25,7 +25,8 @@ export default function useKategoriPasien() {
   useEffect(() => {
     console.log("Id Patient: ", patientId);
 
-    if (patientId === '') {
+    const timeoutId = setTimeout(() => {
+      if (patientId === '') {
         setNotFound(true);
         setShow(false)
         
@@ -35,6 +36,13 @@ export default function useKategoriPasien() {
         setShow(true)
         
     }
+    }, 200);
+
+    return () => {
+      clearTimeout(timeoutId);
+    }
+
+    
 }, [patientId]);
   return {
     pasienBaru,

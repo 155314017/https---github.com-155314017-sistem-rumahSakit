@@ -56,7 +56,7 @@ export default function useBioPjBaru() {
   // const [, setNikError] = useState(false);
   // const [PasswordError,setPasswordError] = useState(false);
   const [data, setData] = useState<DataKirim>({
-    identityNumber: '',
+    identityNumber: '' ,
     email: '',
     phone: '',
     name: '',
@@ -64,7 +64,7 @@ export default function useBioPjBaru() {
     address: '',
     birthPlace: '',
     birtDate: ''
-  })
+  } )
   const [showAlert, setShowAlert] = useState(false)
   const [isCounting, setIsCounting] = useState(false)
   const [secondsLeft, setSecondsLeft] = useState(60)
@@ -81,6 +81,7 @@ export default function useBioPjBaru() {
   const [emailPjBaru, setEmailPjBaru] = useState('')
   const location = useLocation()
   const navigate = useNavigate()
+  const [selectedValue, setSelectedValue] = useState('sendiri'); 
 
   useEffect(() => {
     if (location.state && location.state.successSendDataPj) {
@@ -111,17 +112,25 @@ export default function useBioPjBaru() {
   }, [nikPjBaru, emailPjBaru])
 
   useEffect(() => {
-    console.log('Id Patient: ', patientId)
-    if (patientId == '' && !noIdentity) {
-      setNotFound(true)
-      setShow(false)
-      setCurrentView('notFound')
+    console.log('Id Patient: ', patientId);
+    const timeoutId = setTimeout(() => {
+      if (patientId === '' && !noIdentity) {
+        setNotFound(true);
+        setShow(false);
+        setCurrentView('notFound');
+        console.log('NOT FOUND');
     } else {
-      setNotFound(false)
-      setShow(true)
-      setCurrentView('show')
+        setNotFound(false);
+        setShow(true);
+        setCurrentView('show');
     }
-  }, [patientId, noIdentity])
+    }, 200);
+
+    return () => clearTimeout(timeoutId);
+    
+
+    // After the state has been updated, set loading to false
+}, [patientId, noIdentity]);
 
   const otpFormShown = () => {
     // setShowEmailChanged(false);
@@ -294,6 +303,8 @@ export default function useBioPjBaru() {
     show,
     notFound,
     nikPjBaru,
-    emailPjBaru
+    emailPjBaru,
+    selectedValue,
+    setSelectedValue,
   }
 }
