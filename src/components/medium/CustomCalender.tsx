@@ -27,6 +27,7 @@ const dummyMonthlySchedule = {
     ],
 };
 
+
 const dummyDailySchedule = {
     scheduleInterval: [
         {
@@ -200,7 +201,7 @@ const dummyDailySchedule = {
     ],
     exclusionInterval: [
         // { date: '2025-01-01', scheduleIntervalId: 1, allday: false },
-        { date: '2025-01-08', scheduleIntervalId: 2, allday: false },
+        // { date: '2025-01-22', allday: true },
         { date: '2025-01-22', scheduleIntervalId: 5, allday: false },
     ],
 };
