@@ -32,7 +32,9 @@ export default function BioPjBaru() {
         noIdentity,
         currentView,
         nikPjBaru,
-        emailPjBaru
+        emailPjBaru,
+        selectedValue,
+        setSelectedValue,
     } = useBioPjBaru();
 
     return (
@@ -241,7 +243,10 @@ export default function BioPjBaru() {
                                                             </Typography>
                                                             <RadioGroup
                                                                 aria-labelledby="demo-radio-buttons-group-label"
-                                                                onChange={(event) => setFieldValue("relation", event.target.value)}
+                                                                value={selectedValue}
+                                                                onChange={(event) => {
+                                                                    setSelectedValue(event.target.value); setFieldValue("relation", event.target.value)}}
+                                                                
                                                                 sx={{
                                                                     display: "flex",
                                                                     flexDirection: "row",

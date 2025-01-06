@@ -135,15 +135,21 @@ export default function useRegisterPJ() {
   useEffect(() => {
     console.log('Id Patient: ', patientId)
 
-    if (patientId === '') {
-      setShowLogin(false)
-      setNotFound(true)
-      setShow(false)
-    } else {
-      setShowLogin(true)
-      setNotFound(false)
-      setShow(true)
-    }
+    const timeoutId = setTimeout(() => {
+      if (patientId === '') {
+        setShowLogin(false)
+        setNotFound(true)
+        setShow(false)
+        
+      } else {
+        setShowLogin(true)
+        setNotFound(false)
+        setShow(true)
+      }
+    }, 200)
+
+    return () => clearTimeout(timeoutId)
+    
   }, [patientId])
 
   const handleResendClick = () => {
