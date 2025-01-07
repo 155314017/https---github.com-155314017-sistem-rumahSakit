@@ -406,6 +406,5 @@ export default function useEditKonter() {
     handleSaveAndAddDay,
     statusEdit,
     schedules,
-    selectedDay
   }
 }
