@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -16,11 +17,11 @@ type ImageData = {
     imageData: string;
 };
 
-type Schedule = {
-  day: string
-  startTime: dayjs.Dayjs
-  endTime: dayjs.Dayjs
-}
+// type Schedule = {
+//   day: string
+//   startTime: dayjs.Dayjs
+//   endTime: dayjs.Dayjs
+// }
 export default function useEditKlinik() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [selectedDay, setSelectedDay] = useState<string | null>('1')

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Box, Typography, IconButton, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import html2canvas from 'html2canvas';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 interface CardAntrianCounterProps {
     nomorAntrian: string | number;
@@ -10,7 +10,7 @@ interface CardAntrianCounterProps {
 }
 
 const CardAntrianCounter: FC<CardAntrianCounterProps> = ({ nomorAntrian, onClose }) => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const handleDownload = async () => {
         const element = document.getElementById('card-antrian-counter');

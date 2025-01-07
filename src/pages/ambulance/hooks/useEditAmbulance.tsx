@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
@@ -39,7 +40,7 @@ export default function useEditAmbulance() {
   // const [editingIndex, setEditingIndex] = useState<number | null>(null);
   dayjs.locale('id')
   const navigate = useNavigate();
-  const [operationalSchedule, setOperationalSchedule] = useState<string[]>([]);
+  // const [operationalSchedule, setOperationalSchedule] = useState<string[]>([]);
   const [updatedAmbulanceData, setUpdatedAmbulanceData] = useState<any>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [statusEdit, setStatusEdit] = useState(false);
@@ -420,10 +421,10 @@ export default function useEditAmbulance() {
     apiUrl,
     selectedDays,
     initialOperationalCost,
-    operationalSchedule,
+    // operationalSchedule,
     handleDeleteSchedule,
     handleEditSchedule,
-    edit,
+    // edit,
     schedules, // Expose the schedules array
     updatedAmbulanceData,
     handleAddSchedule,
