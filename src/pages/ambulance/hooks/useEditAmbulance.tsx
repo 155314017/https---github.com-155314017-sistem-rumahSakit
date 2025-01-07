@@ -421,11 +421,9 @@ export default function useEditAmbulance() {
     apiUrl,
     selectedDays,
     initialOperationalCost,
-    // operationalSchedule,
     handleDeleteSchedule,
     handleEditSchedule,
-    // edit,
-    schedules, // Expose the schedules array
+    schedules, 
     updatedAmbulanceData,
     handleAddSchedule,
     setImagesData,
