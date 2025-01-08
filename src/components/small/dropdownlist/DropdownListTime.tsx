@@ -6,6 +6,7 @@ import {
   CircularProgress,
   SelectChangeEvent,
 } from "@mui/material";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 interface Option {
   value: number;
@@ -20,7 +21,7 @@ interface DropdownListProps {
   loading: boolean;
 }
 
-export default function DropdownList({
+export default function DropdownListTime({
   options,
   placeholder,
   onChange,
@@ -53,16 +54,21 @@ export default function DropdownList({
         value={selectedOption}
         onChange={handleChange}
         displayEmpty
-        startAdornment={loading ? <CircularProgress size={20} /> : null}
+        // Gabungkan ikon jam dan spinner dalam startAdornment
+        startAdornment={
+          <Box sx={{ display: "flex", alignItems: "center", ml: 0, mr: 1 }}>
+            {loading && <CircularProgress size={20} sx={{ mr: 1 }} />}
+            <AccessTimeIcon fontSize="small" sx={{ color: "#8F85F3" }} />
+          </Box>
+        }
         sx={{
           width: "100%",
-          color: "#555", // Warna teks default saat belum memilih opsi
+          color: "#555",
           bgcolor: "#FFF",
           border: "1px solid #A8A8BD",
           borderRadius: "8px",
           height: "40px",
           transition: "border-color 0.3s ease-in-out",
-
           "&:hover": {
             borderColor: "#8F85F3",
           },
@@ -77,13 +83,30 @@ export default function DropdownList({
           },
         }}
         inputProps={{ "aria-label": "select dropdown" }}
+        // Menambahkan animasi dan scroll
         MenuProps={{
           PaperProps: {
             sx: {
-              animation: "fadeIn 0.2s ease-in-out",
-              "@keyframes fadeIn": {
-                "0%": { opacity: 0 },
-                "100%": { opacity: 1 },
+              maxHeight: 240, // Batas tinggi menu dropdown (px)
+              overflowY: "auto", // Memunculkan scroll saat konten melebihi maxHeight
+              animation: "fadeInAndScale 0.3s ease-in-out",
+              "@keyframes fadeInAndScale": {
+                "0%": {
+                  opacity: 0,
+                  transform: "scale(0.9)",
+                },
+                "100%": {
+                  opacity: 1,
+                  transform: "scale(1)",
+                },
+              },
+              // Opsional, styling scrollbar agar lebih halus atau sesuai selera
+              "&::-webkit-scrollbar": {
+                width: "6px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "#ccc",
+                borderRadius: "4px",
               },
             },
           },

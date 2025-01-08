@@ -5,7 +5,7 @@ import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
 import 'react-phone-input-2/lib/style.css';
 import PhoneInput from "react-phone-input-2";
-import SwitchCustom from "../../../../components/small/SwitchCustom";
+import SwitchCustom from "../../../../components/small/Switch/SwitchCustom";
 import UpdatePatientGuards from "../../../../services/Patient Tenant/UpdatePatientGuard";
 
 

@@ -15,7 +15,7 @@ import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import FileUploader from '../../../components/medium/FileUploader';
 import PhoneInput from 'react-phone-input-2';
-import SwitchCustom from '../../../components/small/SwitchCustom';
+import SwitchCustom from '../../../components/small/Switch/SwitchCustom';
 import CustomCalender from '../../../components/medium/CustomCalender';
 //hooks
 import useTambahPasienUmum from '../hooks/useTambahPasienUmum';

@@ -19,7 +19,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import useTambahPasienUmumOffline from "../hooks/useTambahPasienUmumOffline";
-import SwitchCustom from "../../../../components/small/SwitchCustom";
+import SwitchCustom from "../../../../components/small/Switch/SwitchCustom";
 import DropdownListAPI from "../../../../components/small/dropdownlist/DropdownListAPI";
 import CustomCalender from "../../../../components/medium/CustomCalender";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";

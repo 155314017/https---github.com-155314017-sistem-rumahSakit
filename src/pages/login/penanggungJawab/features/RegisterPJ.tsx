@@ -12,7 +12,7 @@ import { Formik, Form, Field } from "formik";
 import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
 import "react-phone-input-2/lib/style.css";
-import SwitchCustom from "../../../../components/small/SwitchCustom";
+import SwitchCustom from "../../../../components/small/Switch/SwitchCustom";
 
 
 //hooks

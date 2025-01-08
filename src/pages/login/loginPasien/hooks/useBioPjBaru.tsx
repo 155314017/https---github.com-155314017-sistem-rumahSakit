@@ -56,7 +56,7 @@ export default function useBioPjBaru() {
   // const [, setNikError] = useState(false);
   // const [PasswordError,setPasswordError] = useState(false);
   const [data, setData] = useState<DataKirim>({
-    identityNumber: '' ,
+    identityNumber: '',
     email: '',
     phone: '',
     name: '',
@@ -64,7 +64,7 @@ export default function useBioPjBaru() {
     address: '',
     birthPlace: '',
     birtDate: ''
-  } )
+  })
   const [showAlert, setShowAlert] = useState(false)
   const [isCounting, setIsCounting] = useState(false)
   const [secondsLeft, setSecondsLeft] = useState(60)
@@ -81,30 +81,32 @@ export default function useBioPjBaru() {
   const [emailPjBaru, setEmailPjBaru] = useState('')
   const location = useLocation()
   const navigate = useNavigate()
-  const [selectedValue, setSelectedValue] = useState('sendiri'); 
+  const [selectedValue, setSelectedValue] = useState('sendiri');
 
   useEffect(() => {
-    if (location.state && location.state.successSendDataPj) {
-      setData(location.state.data)
-      setSwitchValue(location.state.successSendDataPj)
-      setPatientId(location.state.idPatient)
-    } else if (location.state && location.state.patientWithNoIdentity) {
-      setNoIdentity(true)
-      setPatientId(location.state.idPatient)
-    } else {
-      console.log('MASUK SIR !')
-      setData(location.state.data)
-      setPatientId(location.state.idPatient)
-      setNikPjBaru(location.state. BioPjBaru.nik)
-      setEmailPjBaru(location.state. BioPjBaru.email)
+    const state = location.state;
 
-      console.log('NIK: ', location.state.nikPj)
-      console.log('Email: ', location.state.emailPj)
+    if (state?.successSendDataPj) {
+      setData(state.data ?? null);
+      setSwitchValue(state.successSendDataPj);
+      setPatientId(state.idPatient ?? '');
+    } else if (state?.patientWithNoIdentity) {
+      setNoIdentity(true);
+      setPatientId(state.idPatient ?? '');
+    } else if (state) {
+      console.log('data kosong !');
 
-      console.log('Data: ', data)
+      setData(state.data ?? null);
+      setPatientId(state.idPatient ?? '');
+      setNikPjBaru(state.BioPjBaru?.nik ?? '');
+      setEmailPjBaru(state.BioPjBaru?.email ?? '');
+
+      console.log('NIK: ', state.nikPj ?? '');
+      console.log('Email: ', state.emailPj ?? '');
+      console.log('Data: ', state.data ?? null);
     }
-    setPatientId(location.state.idPatient)
-  }, [location.state, navigate])
+  }, [location.state, navigate]);
+
 
   useEffect(() => {
     console.log('NIK PJEEE: ', nikPjBaru)
@@ -119,18 +121,18 @@ export default function useBioPjBaru() {
         setShow(false);
         setCurrentView('notFound');
         console.log('NOT FOUND');
-    } else {
+      } else {
         setNotFound(false);
         setShow(true);
         setCurrentView('show');
-    }
+      }
     }, 200);
 
     return () => clearTimeout(timeoutId);
-    
+
 
     // After the state has been updated, set loading to false
-}, [patientId, noIdentity]);
+  }, [patientId, noIdentity]);
 
   const otpFormShown = () => {
     // setShowEmailChanged(false);

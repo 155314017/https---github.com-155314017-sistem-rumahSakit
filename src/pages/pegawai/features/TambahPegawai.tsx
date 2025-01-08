@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     Container,
     Box,
@@ -13,17 +14,23 @@ import {
     FormControlLabel,
     Radio,
     RadioGroup,
-    Checkbox
+    Checkbox,
+    Divider
 } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import DropdownList from "../../../components/small/dropdownlist/DropdownList";
-import DatePickerCustom from '../../../components/inputComponent/DatePickerCustom';
-import PhoneInputComponent from '../../../components/inputComponent/PhoneInputComponent';
 
 //hooks
 import useTambahPegawai from "../hooks/useTambahPegawai";
-
+import InputCurrencyIdr from "../../../components/inputComponent/InputCurrencyIdr";
+import PhoneInput from "react-phone-input-2";
+import dayjs, { Dayjs } from "dayjs";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import MiniSwitchCustom from "../../../components/small/Switch/MiniSwitchCustom";
+import DropdownListTime from "../../../components/small/dropdownlist/DropdownListTime";
+import ExclusionModal from "../../../components/small/modal/ExclusionModal";
 
 export default function TambahPegawai() {
     const {
@@ -43,7 +50,27 @@ export default function TambahPegawai() {
         handleCheckboxChange,
         handleSelectAll,
         handleSelectAllActions,
-        handleIndividualCheckboxChange
+        handleIndividualCheckboxChange,
+        gender,
+        setGender,
+        senin,
+        setSenin,
+        selasa,
+        setSelasa,
+        rabu,
+        setRabu,
+        kamis,
+        setKamis,
+        jumat,
+        setJumat,
+        sabtu,
+        setSabtu,
+        minggu,
+        setMinggu,
+        jamOperasional,
+        isModalOpen,
+        handleOpenModal,
+        handleCloseModal
     } = useTambahPegawai();
     return (
         <Container sx={{ py: 2 }}>
@@ -53,7 +80,7 @@ export default function TambahPegawai() {
             />
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
-                    {/* membuat bentuk lengkung atas */}
+                    {/* Membuat bentuk lengkung atas */}
                     <Box
                         position={"absolute"}
                         sx={{
@@ -63,7 +90,7 @@ export default function TambahPegawai() {
                             display: "flex",
                         }}
                     >
-                        {/* lengkung kiri */}
+                        {/* Lengkung kiri */}
                         <Box
                             sx={{
                                 width: "50px",
@@ -81,7 +108,7 @@ export default function TambahPegawai() {
                             />
                         </Box>
 
-                        {/* kotak tengah */}
+                        {/* Kotak tengah */}
                         <Box
                             sx={{
                                 width: "600px",
@@ -91,7 +118,7 @@ export default function TambahPegawai() {
                             }}
                         />
 
-                        {/* lengkung kanan */}
+                        {/* Lengkung kanan */}
                         <Box
                             sx={{
                                 width: "50px",
@@ -112,7 +139,7 @@ export default function TambahPegawai() {
                     {/* ---------- */}
                     <Typography fontSize="20px" fontWeight="700">Formulir Tambah Pegawai</Typography>
                     <Box
-                        sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, gap: 42 }}
+                        sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, gap: 24 }}
                     >
                         <Box display={"flex"} flexDirection={"row"} width={"290px"}>
                             <Box
@@ -141,6 +168,21 @@ export default function TambahPegawai() {
                             >
                                 <Box sx={getBorderStyle(2)}>2</Box>
                                 <Typography sx={{ ml: 1 }}>
+                                    Jadwal Dokter
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Box display={"flex"} flexDirection={"row"} width={"290px"}>
+                            <Box
+                                display={"flex"}
+                                flexDirection={"row"}
+                                alignItems="center"
+                                onClick={() => setCurrentPage(3)} // Perbaiki halaman 3
+                                sx={getPageStyle(3)} // Perbaiki halaman 3
+                                mx={2}
+                            >
+                                <Box sx={getBorderStyle(3)}>3</Box>
+                                <Typography sx={{ ml: 1 }}>
                                     Hak Akses Pegawai
                                 </Typography>
                             </Box>
@@ -154,63 +196,109 @@ export default function TambahPegawai() {
                     {currentPage === 1 && (
                         <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                             <Typography fontWeight={600} fontSize={"16px"} mb={4} >1. Biodata</Typography>
+
+                            {/* NIP */}
                             <Typography sx={{ fontSize: "16px" }}>NIP (Nomor Induk Pegawai) </Typography>
                             <FormControl fullWidth sx={{ my: 1 }}>
                                 <OutlinedInput
                                     id="nip"
                                     name="nip"
                                     size="small"
-                                    placeholder="123456789"
+                                    placeholder="Masukkan NIP"
                                     disabled
                                     sx={{ bgcolor: '#EEEEF2' }}
-                                // value={formik.values.namaKlinik}
-                                // onChange={formik.handleChange}
-                                // onBlur={() => formik.setTouched({ ...formik.touched, namaKlinik: true })}
-                                // error={formik.touched.namaKlinik && Boolean(formik.errors.namaKlinik)}
+                                    value={formik.values.nip}
+                                    onChange={formik.handleChange}
+                                    onBlur={() => formik.setTouched({ ...formik.touched, nip: true })}
+                                    error={formik.touched.nip && Boolean(formik.errors.nip)}
                                 />
-                                {/* {formik.touched.namaKlinik && formik.errors.namaKlinik && (
-                                    <Typography color="error">{formik.errors.namaKlinik}</Typography>
-                                )} */}
                             </FormControl>
 
+                            {/* NIK */}
+                            <Typography sx={{ fontSize: "16px" }}>NIK (Nomor Induk KTP) </Typography>
+                            <FormControl fullWidth sx={{ my: 1 }}>
+                                <OutlinedInput
+                                    id="nik"
+                                    name="nik"
+                                    size="small"
+                                    placeholder="Masukkan NIK"
+                                    sx={{ bgcolor: 'inherit' }}
+                                    value={formik.values.nik}
+                                    onChange={formik.handleChange}
+                                    onBlur={() => formik.setTouched({ ...formik.touched, nik: true })}
+                                    error={formik.touched.nik && Boolean(formik.errors.nik)}
+                                />
+                            </FormControl>
+
+                            {/* Nama Pegawai */}
                             <Typography sx={{ fontSize: "16px" }}>Nama Pegawai<span style={{ color: "red" }}>*</span></Typography>
                             <FormControl fullWidth sx={{ my: 1 }}>
                                 <OutlinedInput
-                                    id="namaKlinik"
-                                    name="namaKlinik"
+                                    id="namaPegawai" // Perbaiki nama field
+                                    name="namaPegawai" // Perbaiki nama field
                                     size="small"
                                     placeholder="Masukkan Nama Pegawai"
-                                    value={formik.values.namaKlinik}
+                                    value={formik.values.namaPegawai} // Perbaiki nama field
                                     onChange={formik.handleChange}
-                                    onBlur={() => formik.setTouched({ ...formik.touched, namaKlinik: true })}
-                                    error={formik.touched.namaKlinik && Boolean(formik.errors.namaKlinik)}
+                                    onBlur={() => formik.setTouched({ ...formik.touched, namaPegawai: true })} // Perbaiki nama field
+                                    error={formik.touched.namaPegawai && Boolean(formik.errors.namaPegawai)} // Perbaiki nama field
                                 />
-                                {formik.touched.namaKlinik && formik.errors.namaKlinik && (
-                                    <Typography color="error">{formik.errors.namaKlinik}</Typography>
+                                {formik.touched.namaPegawai && formik.errors.namaPegawai && (
+                                    <Typography color="error">{formik.errors.namaPegawai}</Typography>
                                 )}
                             </FormControl>
 
+                            {/* Tanggal Lahir */}
                             <Typography sx={{ fontSize: "16px" }}>Tanggal Lahir<span style={{ color: "red" }}>*</span></Typography>
-                            <DatePickerCustom />
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DatePicker
+                                    value={formik.values.tanggalLahir ? dayjs(formik.values.tanggalLahir) : null} // Perbaiki value
+                                    onChange={(newValue: Dayjs | null) => {
+                                        if (newValue) {
+                                            const formattedDate = newValue.format("YYYY-MM-DD");
+                                            formik.setFieldValue("tanggalLahir", formattedDate);
+                                            console.log("tanggalLahir", formattedDate);
+                                        }
+                                    }}
+                                    slotProps={{
+                                        textField: {
+                                            placeholder: "Tanggal Lahir",
+                                            error: formik.touched.tanggalLahir && Boolean(formik.errors.tanggalLahir),
+                                            helperText: formik.touched.tanggalLahir && formik.errors.tanggalLahir,
+                                            sx: {
+                                                borderRadius: '8px',
+                                                height: '60px',
+                                                width: '100%',
+                                                '& .MuiOutlinedInput-root': {
+                                                    borderRadius: '8px',
+                                                    height: '44px',
+                                                },
+                                            },
+                                        },
+                                    }}
+                                />
+                            </LocalizationProvider>
 
-                            <Typography sx={{ fontSize: "16px" }}>Alamat Tempat TInggal<span style={{ color: "red" }}>*</span></Typography>
+                            {/* Alamat Tinggal */}
+                            <Typography sx={{ fontSize: "16px" }}>Alamat Tempat Tinggal<span style={{ color: "red" }}>*</span></Typography>
                             <FormControl fullWidth sx={{ my: 1 }}>
                                 <OutlinedInput
-                                    id="deskripsiKlinik"
-                                    name="deskripsiKlinik"
+                                    id="alamatTinggal"
+                                    name="alamatTinggal"
                                     size="small"
                                     placeholder="Masukkan alamat tempat tinggal pegawai"
-                                    value={formik.values.deskripsiKlinik}
+                                    value={formik.values.alamatTinggal}
                                     onChange={formik.handleChange}
-                                    onBlur={() => formik.setTouched({ ...formik.touched, deskripsiKlinik: true })}
-                                    error={formik.touched.deskripsiKlinik && Boolean(formik.errors.deskripsiKlinik)}
+                                    onBlur={() => formik.setTouched({ ...formik.touched, alamatTinggal: true })}
+                                    error={formik.touched.alamatTinggal && Boolean(formik.errors.alamatTinggal)}
                                     sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
                                 />
-                                {formik.touched.deskripsiKlinik && formik.errors.deskripsiKlinik && (
-                                    <Typography color="error">{formik.errors.deskripsiKlinik}</Typography>
+                                {formik.touched.alamatTinggal && formik.errors.alamatTinggal && (
+                                    <Typography color="error">{formik.errors.alamatTinggal}</Typography>
                                 )}
                             </FormControl>
 
+                            {/* Jenis Kelamin */}
                             <Typography>Jenis Kelamin<span style={{ color: 'red' }} >*</span></Typography>
 
                             <Box
@@ -224,8 +312,12 @@ export default function TambahPegawai() {
                             >
                                 <RadioGroup
                                     row // Mengatur radio button secara horizontal
-                                // value={selectedValue}
-                                // onChange={handleChange}
+                                    value={gender}
+                                    onChange={(event) => {
+                                        setGender(event.target.value);
+                                        formik.setFieldValue("jenisKelamin", event.target.value); // Perbaiki nama field
+                                        console.log(event.target.value);
+                                    }}
                                 >
                                     <FormControlLabel
                                         value="pria"
@@ -240,38 +332,137 @@ export default function TambahPegawai() {
                                 </RadioGroup>
                             </Box>
 
+                            {/* Status */}
                             <Typography mt={2} >Status<span style={{ color: 'red' }} >*</span></Typography>
                             <FormControl sx={{ width: '100%' }} >
                                 <OutlinedInput
-                                    id="deskripsiKlinik"
-                                    name="deskripsiKlinik"
+                                    id="status"
+                                    name="status"
                                     size="small"
                                     placeholder="Masukkan status pegawai"
                                     sx={{ borderRadius: '8px' }}
+                                    value={formik.values.status}
+                                    onChange={formik.handleChange}
+                                    onBlur={() => formik.setTouched({ ...formik.touched, status: true })}
+                                    error={formik.touched.status && Boolean(formik.errors.status)}
                                 />
+                                {formik.touched.status && formik.errors.status && (
+                                    <Typography color="error">{formik.errors.status}</Typography>
+                                )}
                             </FormControl>
 
-
+                            {/* Email */}
                             <Typography mt={2} >Email<span style={{ color: 'red' }} >*</span></Typography>
                             <FormControl sx={{ width: '100%' }} >
                                 <OutlinedInput
-                                    id="deskripsiKlinik"
-                                    name="deskripsiKlinik"
+                                    id="email"
+                                    name="email"
                                     size="small"
                                     placeholder="Masukkan email pegawai"
                                     sx={{ borderRadius: '8px' }}
+                                    value={formik.values.email}
+                                    onChange={formik.handleChange}
+                                    onBlur={() => formik.setTouched({ ...formik.touched, email: true })}
+                                    error={formik.touched.email && Boolean(formik.errors.email)}
                                 />
+                                {formik.touched.email && formik.errors.email && (
+                                    <Typography color="error">{formik.errors.email}</Typography>
+                                )}
                             </FormControl>
 
+                            {/* No. Handphone */}
                             <Typography mt={2} >No. Handphone<span style={{ color: 'red' }} >*</span></Typography>
-                            <PhoneInputComponent heightInput='44px' widthInput='100%' />
-                            <Typography mt={2} >Role Pegawai<span style={{ color: 'red' }} >*</span></Typography>
-                            <DropdownList placeholder='Pilih role pegawai' options={rolePegawai} loading={false} />
+                            <PhoneInput
+                                country={"id"}
+                                value={formik.values.nomorHandphone}
+                                onChange={(phone) => formik.setFieldValue("nomorHandphone", phone)}
+                                inputStyle={{
+                                    height: "48px",
+                                    borderRadius: "8px",
+                                    border: formik.touched.nomorHandphone && formik.errors.nomorHandphone ? "1px solid #f44336" : "1px solid #ccc",
+                                    padding: "10px 40px 10px 60px",
+                                    backgroundColor: formik.touched.nomorHandphone && formik.errors.nomorHandphone ? "#ffcccc" : 'inherit',
+                                    fontSize: "16px",
+                                    width: "100%",
+                                    marginTop: "10px",
+                                }}
+                                buttonStyle={{
+                                    borderRadius: "8px 0 0 8px",
+                                    border: "1px solid #ccc",
+                                }}
+                                containerStyle={{
+                                    marginBottom: "10px",
+                                    width: "100%",
+                                }}
+                                onBlur={() => formik.setTouched({ ...formik.touched, nomorHandphone: true })}
+                            />
+                            {formik.touched.nomorHandphone && formik.errors.nomorHandphone && (
+                                <Typography color="error">{formik.errors.nomorHandphone}</Typography>
+                            )}
 
+                            {/* Role Pegawai */}
+                            <Typography mt={2} >Role Pegawai<span style={{ color: 'red' }} >*</span></Typography>
+                            <DropdownList
+                                onChange={value => formik.setFieldValue('rolePegawai', value)}
+                                placeholder='Pilih role pegawai'
+                                options={rolePegawai}
+                                loading={false}
+                            />
+                            {formik.touched.rolePegawai && formik.errors.rolePegawai && (
+                                <Typography color="error">{formik.errors.rolePegawai}</Typography>
+                            )}
+
+                            {/* Jenis Spesialisasi */}
+                            <Typography mt={2} >Jenis Spesialisasi<span style={{ color: 'red' }} >*</span></Typography>
+                            <DropdownList
+                                onChange={value => formik.setFieldValue('jenisSpesialis', value)}
+                                placeholder='Pilih jenis spesialisasi'
+                                options={rolePegawai}
+                                loading={false}
+                            />
+                            {formik.touched.jenisSpesialis && formik.errors.jenisSpesialis && (
+                                <Typography color="error">{formik.errors.jenisSpesialis}</Typography>
+                            )}
+
+                            {/* Klinik */}
+                            <Typography mt={2} >Klinik<span style={{ color: 'red' }} >*</span></Typography>
+                            <DropdownList
+                                onChange={value => formik.setFieldValue('namaKlinik', value)}
+                                placeholder='Pilih klinik'
+                                options={rolePegawai}
+                                loading={false}
+                            />
+                            {formik.touched.namaKlinik && formik.errors.namaKlinik && (
+                                <Typography color="error">{formik.errors.namaKlinik}</Typography>
+                            )}
+
+                            {/* Tipe Antrian */}
+                            <Typography mt={2} >Tipe Antrian<span style={{ color: 'red' }} >*</span></Typography>
+                            <DropdownList
+                                onChange={value => formik.setFieldValue('tipeAntrian', value)}
+                                placeholder='Pilih tipe antrian'
+                                options={rolePegawai}
+                                loading={false}
+                            />
+                            {formik.touched.tipeAntrian && formik.errors.tipeAntrian && (
+                                <Typography color="error">{formik.errors.tipeAntrian}</Typography>
+                            )}
+
+                            {/* Biaya Penanganan */}
+                            <Typography sx={{ fontSize: '16px', mt: 2 }}>
+                                Biaya Tarif<span style={{ color: 'red' }}>*</span>
+                            </Typography>
+                            <InputCurrencyIdr
+                                onChange={value => formik.setFieldValue('biayaPenanganan', value)}
+                                defaultValue={0}
+                            />
+                            {formik.touched.biayaPenanganan && formik.errors.biayaPenanganan && (
+                                <Typography color="error">{formik.errors.biayaPenanganan}</Typography>
+                            )}
+
+                            {/* Tombol Submit */}
                             <Button
                                 type="submit"
-                                // onClick={showTemporaryAlertSuccess}
-                                onClick={() => setCurrentPage(2)}
                                 variant="contained"
                                 color="inherit"
                                 sx={{
@@ -283,7 +474,7 @@ export default function TambahPegawai() {
                                     borderRadius: "8px",
                                     ":hover": { bgcolor: "#a098f5" },
                                 }}
-                                disabled={!formik.isValid || !formik.dirty}
+                                disabled={!formik.isValid || !formik.dirty} // Opsional
                             >
                                 Selanjutnya
                             </Button>
@@ -291,10 +482,389 @@ export default function TambahPegawai() {
                     )}
 
                     {currentPage === 2 && (
+                        <Box mt={3} border={'1px solid #C5C5D3'} p={'24px'} borderRadius={'16px'} >
+                            <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'}  >
+                                <Typography>Jadwal Praktek</Typography>
+                                <Typography
+                                    onClick={handleOpenModal}
+                                    sx={{
+                                        color: "#8F85F3",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    + add exclusion
+                                </Typography>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <ExclusionModal
+                                        open={isModalOpen}
+                                        onClose={handleCloseModal}
+                                    />
+                                </LocalizationProvider>
+
+                            </Box>
+
+                            <Box display={'flex'} flexDirection={'column'} gap={3} >
+                                <Box mt={2} >
+                                    <Box display={'flex'} flexDirection={'row'} alignItems={'center'} mb={2} >
+                                        <MiniSwitchCustom label="Senin" colorLabel="black" onChangeValue={() => setSenin(!senin)} />
+                                        {senin && (
+                                            <Box
+                                                ml='auto'
+                                                display="flex"
+                                                flexDirection="column"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                            >
+                                                <Box
+                                                    display="flex"
+                                                    flexDirection="row"
+                                                    alignItems="center"
+                                                    justifyContent="center"
+                                                    gap={2}
+                                                >
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam mulai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                    <Typography>-</Typography>
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam selesai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                        )}
+                                        {!senin && (
+                                            <Typography
+                                                sx={{
+                                                    color: '#747487',
+                                                    bgcolor: '#EEEEF2',
+                                                    padding: '2px 16px 2px 16px',
+                                                    border: '1px solid #747487',
+                                                    borderRadius: '100px'
+                                                }}
+                                            >Tidak bekerja pada hari ini</Typography>
+                                        )}
+                                    </Box>
+                                    <Divider sx={{ color: '#C5C5D3' }} />
+                                </Box>
+                                <Box mt={2} >
+                                    <Box display={'flex'} flexDirection={'row'} alignItems={'center'} mb={2} >
+                                        <MiniSwitchCustom label="Selasa" colorLabel="black" onChangeValue={() => setSelasa(!selasa)} />
+                                        {selasa && (
+                                            <Box
+                                                ml='auto'
+                                                display="flex"
+                                                flexDirection="column"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                            >
+                                                <Box
+                                                    display="flex"
+                                                    flexDirection="row"
+                                                    alignItems="center"
+                                                    justifyContent="center"
+                                                    gap={2}
+                                                >
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam mulai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                    <Typography>-</Typography>
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam selesai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                        )}
+                                        {!selasa && (
+                                            <Typography
+                                                sx={{
+                                                    color: '#747487',
+                                                    bgcolor: '#EEEEF2',
+                                                    padding: '2px 16px 2px 16px',
+                                                    border: '1px solid #747487',
+                                                    borderRadius: '100px'
+                                                }}
+                                            >Tidak bekerja pada hari ini</Typography>
+                                        )}
+                                    </Box>
+                                    <Divider sx={{ color: '#C5C5D3' }} />
+                                </Box>
+                                <Box mt={2} >
+                                    <Box display={'flex'} flexDirection={'row'} alignItems={'center'} mb={2} >
+                                        <MiniSwitchCustom label="Rabu" colorLabel="black" onChangeValue={() => setRabu(!rabu)} />
+                                        {rabu && (
+                                            <Box
+                                                ml='auto'
+                                                display="flex"
+                                                flexDirection="column"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                            >
+                                                <Box
+                                                    display="flex"
+                                                    flexDirection="row"
+                                                    alignItems="center"
+                                                    justifyContent="center"
+                                                    gap={2}
+                                                >
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam mulai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                    <Typography>-</Typography>
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam selesai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                        )}
+                                        {!rabu && (
+                                            <Typography
+                                                sx={{
+                                                    color: '#747487',
+                                                    bgcolor: '#EEEEF2',
+                                                    padding: '2px 16px 2px 16px',
+                                                    border: '1px solid #747487',
+                                                    borderRadius: '100px'
+                                                }}
+                                            >Tidak bekerja pada hari ini</Typography>
+                                        )}
+                                    </Box>
+                                    <Divider sx={{ color: '#C5C5D3' }} />
+                                </Box>
+                                <Box mt={2} >
+                                    <Box display={'flex'} flexDirection={'row'} alignItems={'center'} mb={2} >
+                                        <MiniSwitchCustom label="Kamis" colorLabel="black" onChangeValue={() => setKamis(!kamis)} />
+                                        {kamis && (
+                                            <Box
+                                                ml='auto'
+                                                display="flex"
+                                                flexDirection="column"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                            >
+                                                <Box
+                                                    display="flex"
+                                                    flexDirection="row"
+                                                    alignItems="center"
+                                                    justifyContent="center"
+                                                    gap={2}
+                                                >
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam mulai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                    <Typography>-</Typography>
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam selesai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                        )}
+                                        {!kamis && (
+                                            <Typography
+                                                sx={{
+                                                    color: '#747487',
+                                                    bgcolor: '#EEEEF2',
+                                                    padding: '2px 16px 2px 16px',
+                                                    border: '1px solid #747487',
+                                                    borderRadius: '100px'
+                                                }}
+                                            >Tidak bekerja pada hari ini</Typography>
+                                        )}
+                                    </Box>
+                                    <Divider sx={{ color: '#C5C5D3' }} />
+                                </Box>
+                                <Box mt={2} >
+                                    <Box display={'flex'} flexDirection={'row'} alignItems={'center'} mb={2} >
+                                        <MiniSwitchCustom label="Jumat" colorLabel="black" onChangeValue={() => setJumat(!jumat)} />
+                                        {jumat && (
+                                            <Box
+                                                ml='auto'
+                                                display="flex"
+                                                flexDirection="column"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                            >
+                                                <Box
+                                                    display="flex"
+                                                    flexDirection="row"
+                                                    alignItems="center"
+                                                    justifyContent="center"
+                                                    gap={2}
+                                                >
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam mulai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                    <Typography>-</Typography>
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam selesai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                        )}
+                                        {!jumat && (
+                                            <Typography
+                                                sx={{
+                                                    color: '#747487',
+                                                    bgcolor: '#EEEEF2',
+                                                    padding: '2px 16px 2px 16px',
+                                                    border: '1px solid #747487',
+                                                    borderRadius: '100px'
+                                                }}
+                                            >Tidak bekerja pada hari ini</Typography>
+                                        )}
+                                    </Box>
+                                    <Divider sx={{ color: '#C5C5D3' }} />
+                                </Box>
+                                <Box mt={2} >
+                                    <Box display={'flex'} flexDirection={'row'} alignItems={'center'} mb={2} >
+                                        <MiniSwitchCustom label="Sabtu" colorLabel="black" onChangeValue={() => setSabtu(!sabtu)} />
+                                        {sabtu && (
+                                            <Box
+                                                ml='auto'
+                                                display="flex"
+                                                flexDirection="column"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                            >
+                                                <Box
+                                                    display="flex"
+                                                    flexDirection="row"
+                                                    alignItems="center"
+                                                    justifyContent="center"
+                                                    gap={2}
+                                                >
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam mulai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                    <Typography>-</Typography>
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam selesai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                        )}
+                                        {!sabtu && (
+                                            <Typography
+                                                sx={{
+                                                    color: '#747487',
+                                                    bgcolor: '#EEEEF2',
+                                                    padding: '2px 16px 2px 16px',
+                                                    border: '1px solid #747487',
+                                                    borderRadius: '100px'
+                                                }}
+                                            >Tidak bekerja pada hari ini</Typography>
+                                        )}
+                                    </Box>
+                                    <Divider sx={{ color: '#C5C5D3' }} />
+                                </Box>
+                                <Box mt={2} >
+                                    <Box display={'flex'} flexDirection={'row'} alignItems={'center'} mb={2} >
+                                        <MiniSwitchCustom label="Minggu" colorLabel="black" onChangeValue={() => setMinggu(!minggu)} />
+                                        {minggu && (
+                                            <Box
+                                                ml='auto'
+                                                display="flex"
+                                                flexDirection="column"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                            >
+                                                <Box
+                                                    display="flex"
+                                                    flexDirection="row"
+                                                    alignItems="center"
+                                                    justifyContent="center"
+                                                    gap={2}
+                                                >
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam mulai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                    <Typography>-</Typography>
+                                                    <DropdownListTime
+                                                        onChange={(value) => console.log(value)}
+                                                        placeholder="Pilih jam selesai"
+                                                        options={jamOperasional}
+                                                        loading={false}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                        )}
+                                        {!minggu && (
+                                            <Typography
+                                                sx={{
+                                                    color: '#747487',
+                                                    bgcolor: '#EEEEF2',
+                                                    padding: '2px 16px 2px 16px',
+                                                    border: '1px solid #747487',
+                                                    borderRadius: '100px'
+                                                }}
+                                            >Tidak bekerja pada hari ini</Typography>
+                                        )}
+                                    </Box>
+                                    <Divider sx={{ color: '#C5C5D3' }} />
+                                </Box>
+                            </Box>
+                            <Button
+                                // type="submit"
+                                variant="contained"
+                                color="inherit"
+                                sx={{
+                                    mt: 8,
+                                    width: "100%",
+                                    bgcolor: "#8F85F3",
+                                    color: "#fff",
+                                    textTransform: "none",
+                                    borderRadius: "8px",
+                                    ":hover": { bgcolor: "#a098f5" },
+                                }}
+                            // disabled={!formik.isValid || !formik.dirty} // Opsional
+                            >
+                                Selanjutnya
+                            </Button>
+                        </Box>
+                    )}
+
+                    {currentPage === 3 && (
                         <Box mt={3} >
                             <Typography fontWeight={600} fontSize={"16px"} mb={4} >1. Hak Akses Pegawai</Typography>
                             <Box>
-
                                 <Box mt={3}>
                                     <StyledTableContainer
                                         sx={{
@@ -464,8 +1034,6 @@ export default function TambahPegawai() {
                                     </StyledTableContainer>
                                     <Button
                                         type="submit"
-                                        // onClick={showTemporaryAlertSuccess}
-                                        // onClick={() => setCurrentPage(2)}
                                         variant="contained"
                                         color="inherit"
                                         sx={{
@@ -477,19 +1045,15 @@ export default function TambahPegawai() {
                                             borderRadius: "8px",
                                             ":hover": { bgcolor: "#a098f5" },
                                         }}
-                                        // disabled={!formik.isValid || !formik.dirty}
                                     >
                                         Selanjutnya
                                     </Button>
                                 </Box>
                             </Box>
                         </Box>
-
                     )}
                 </Box>
             </Box>
-
-
-        </Container>
+        </Container >
     );
 }
