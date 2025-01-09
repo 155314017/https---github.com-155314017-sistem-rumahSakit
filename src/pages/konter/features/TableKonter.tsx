@@ -376,7 +376,8 @@ const TableKonter: React.FC<TableKonterProps> = ({fetchDatas, onSuccessDelete}) 
                                                             Ubah
                                                         </Link>
                                                         <Link
-                                                            href="/detailGedung "
+                                                            href="#"
+                                                            onClick={() => navigate(`/detailKonter/${data.id}`)}
                                                             underline="hover"
                                                             sx={{
                                                                 textTransform: "capitalize",

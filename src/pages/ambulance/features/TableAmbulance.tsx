@@ -356,7 +356,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
                               Ubah
                             </Link>
                             <Link
-                              href="/detailAmbulance "
+                              href="#"
+                              onClick={() => navigate(`/detailAmbulance/${data.id}`)}
                               underline="hover"
                               sx={{
                                 textTransform: 'capitalize',

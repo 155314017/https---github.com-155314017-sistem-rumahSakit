@@ -8,11 +8,16 @@ import CardDetail from "../../../components/small/card/CardDetail";
 
 // hooks
 import useDetailAmbulance from "../hooks/useDetailAmbulance";
+import CardOperasionalKlinik from "../../../components/small/card/CardOperasional";
  export default function DetailAmbulance() {
     const {
-      breadcrumbItems,
-      largeImage,
-      smallImages
+          
+          breadcrumbItems,
+          largeImage,
+          smallImage,
+          handleDeleteSuccess,
+          
+          ambulanceData
     } = useDetailAmbulance()
    return (
     <Container sx={{ py: 2 }}>
@@ -22,17 +27,17 @@ import useDetailAmbulance from "../hooks/useDetailAmbulance";
       />
       <Box mt={3}>
         
-        <ImageGrid largeImage={largeImage} smallImages={smallImages} loading={false} />
+        <ImageGrid largeImage={largeImage} smallImages={smallImage} loading={false} />
       </Box>
 
       <Box mt={3}>
         <CardDetail
-          title="AB 1907 BCE"
+          title={ambulanceData?.number}
           columns={[
             { id: "biaya", label: "Biaya" },
             { id: "waktuPelayanan", label: "Waktu Pelayanan" },
           ]}
-          data={[{ biaya: "Rp. 100.000", waktuPelayanan: "2 jam" }]}
+          data={[{ biaya: ambulanceData?.cost, waktuPelayanan: ambulanceData?.additionalInfo }]}
           actions={() => (
             <>
               <Link underline="hover" sx={{ color: "#8F85F3" }} href="/hapus">
@@ -45,6 +50,20 @@ import useDetailAmbulance from "../hooks/useDetailAmbulance";
           )}
         />
       </Box>
+      <Box mt={3}>
+                <CardOperasionalKlinik
+                    title="Jam Operasional"
+                    data={ambulanceData?.operationalSchedule || {
+                        senin: "-",
+                        selasa: "-",
+                        rabu: "-",
+                        kamis: "-",
+                        jumat: "-",
+                        sabtu: "-",
+                        minggu: "-",
+                    }}
+                />
+            </Box>
     </Container>
      
    )

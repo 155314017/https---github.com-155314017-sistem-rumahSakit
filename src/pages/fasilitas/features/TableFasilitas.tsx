@@ -421,7 +421,8 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({fetchDatas, onSuccessDele
                               Ubah
                             </Link>
                             <Link
-                              href="/detailFasilitas "
+                              href="#"
+                              onClick={() => navigate(`/detailFasilitas/${data.id}`)}
                               underline="hover"
                               sx={{
                                 textTransform: "capitalize",

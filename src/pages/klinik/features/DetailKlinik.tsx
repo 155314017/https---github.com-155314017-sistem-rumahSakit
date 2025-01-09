@@ -5,29 +5,21 @@ import ImageGrid from "../../../components/medium/imageComponent/ImageGrid";
 import CardDetailKlinik from "./CardDetailKlinik";
 import CardOperasionalKlinik from "../../../components/small/card/CardOperasional";
 
-export default function DetailKlinik() {
-    const breadcrumbItems = [
-        {
-            label: "Dashboard",
-            href: "/dashboard",
-        },
-        {
-            label: "Klinik",
-            href: "/klinik",
-        },
-        {
-            label: "Detail Klinik",
-            href: "/detailKlinik",
-        },
-    ];
 
-    const largeImage = "path_to_your_large_image.jpg";
-    const smallImages = [
-        "path_to_image1.jpg",
-        "path_to_image2.jpg",
-        "path_to_image3.jpg",
-        "path_to_image4.jpg",
-    ];
+
+//hooks
+import useDetailKlinik from "../hooks/useDetailKlinik";
+
+export default function DetailKlinik() {
+    const {
+    name,
+    breadcrumbItems,
+    largeImage,
+    smallImage,
+    loading,
+    
+    clinicData
+    } = useDetailKlinik();
 
     return (
         <Container sx={{ py: 2 }}>
@@ -36,15 +28,15 @@ export default function DetailKlinik() {
                 onBackClick={() => window.history.back()}
             />
             <Box mt={3}>
-                <ImageGrid largeImage={largeImage} smallImages={smallImages} loading={false} />
+                <ImageGrid largeImage={largeImage} smallImages={smallImage} loading={loading} />
             </Box>
 
             <Box mt={3}>
                 <CardDetailKlinik
-                    title="Jam Operasional"
+                    title="Daftar Klinik"
                     data={{
-                        biaya: "K 204",
-                        waktuPelayanan: "Sayap Timur lt.2",
+                        biaya: name,
+                        waktuPelayanan: clinicData?.description || "",
                         aksi: {
                             hapusLink: "#",
                             ubahLink: "#",
@@ -56,14 +48,14 @@ export default function DetailKlinik() {
             <Box mt={3}>
                 <CardOperasionalKlinik
                     title="Jam Operasional"
-                    data={{
-                        senin: "10.30 - 15.00",
-                        selasa: "10.30 - 15.00",
-                        rabu: "10.30 - 15.00",
-                        kamis: "10.30 - 15.00",
-                        jumat: "10.30 - 15.00",
-                        sabtu: "10.30 - 15.00",
-                        minggu: "10.30 - 15.00",
+                    data={clinicData?.operationalSchedule || {
+                        senin: "-",
+                        selasa: "-",
+                        rabu: "-",
+                        kamis: "-",
+                        jumat: "-",
+                        sabtu: "-",
+                        minggu: "-",
                     }}
                 />
             </Box>

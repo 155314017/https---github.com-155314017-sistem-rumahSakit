@@ -36,7 +36,6 @@ export const getAmbulanceByIdService = async (id: string | undefined): Promise<A
       {
         headers: {
           'Content-Type': 'application/json',
-          accessToken: token,
         },
       }
     );

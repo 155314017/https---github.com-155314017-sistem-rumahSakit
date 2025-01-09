@@ -50,6 +50,7 @@ import RegisterPJ from './pages/login/penanggungJawab/features/RegisterPJ';
 import PrivateRoute from './services/Admin Tenant/Auth/PrivateRoute';
 import PilihKategoriPasien from './pages/pasien/pasienn/features/PilihKategoriPasien';
 import TambahPasienUmumOffline from './pages/pasien/pasienn/features/TambahPasienUmumOffline';
+import DetailFasilitas from './pages/fasilitas/features/DetailFasilitas';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -64,7 +65,7 @@ createRoot(document.getElementById('root')!).render(
 
           {/* Ambulance */}
           <Route path="/ambulance" element={<Ambulance />} />
-          <Route path="/detailAmbulance" element={<DetailAmbulance />} />
+          <Route path="/detailAmbulance/:id" element={<DetailAmbulance />} />
           <Route path="/tambahAmbulance" element={<TambahAmbulance />} />
           <Route path="/editAmbulance/:id" element={<EditAmbulance />} />
 
@@ -73,13 +74,13 @@ createRoot(document.getElementById('root')!).render(
 
           {/* Page Klinik */}
           <Route path="/klinik" element={<Klinik />} />
-          <Route path="/detailKlinik" element={<DetailKlinik />} />
+          <Route path="/detailKlinik/:id" element={<DetailKlinik />} />
           <Route path="/tambahKlinik" element={<TambahKlinik />} />
           <Route path="/editKlinik/:id" element={<EditKlinik />} />
 
           {/* Page Konter */}
           <Route path="/konter" element={<Konter />} />
-          <Route path="/detailKonter" element={<DetailKonter />} />
+          <Route path="/detailKonter/:id" element={<DetailKonter />} />
           <Route path="/tambahKonter" element={<TambahKonter />} />
           <Route path="/editKonter/:id" element={<EditKonter />} />
 
@@ -91,7 +92,7 @@ createRoot(document.getElementById('root')!).render(
 
           {/* Page Fasilitas */}
           <Route path="/fasilitas" element={<Fasilitas />} />
-          <Route path="/detailFasilitas" element={<DetailRuangan />} />
+          <Route path="/detailFasilitas/:id" element={<DetailFasilitas />} />
           <Route path="/tambahFasilitas" element={<TambahFasilitas />} />
           <Route path="/tambahSubFasilitas" element={<TambahSubFasilitas />} />
           <Route path="/editSubFasilitas/:id" element={<EditSUbFasilitas />} />

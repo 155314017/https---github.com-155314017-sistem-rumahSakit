@@ -345,7 +345,8 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({fetchDatas, onSuccessDelete})
                               Ubah
                             </Link>
                             <Link
-                              href="/detailKlinik"
+                              href="#"
+                              onClick={() => navigate(`/detailKlinik/${data.id}`)}
                               underline="hover"
                               sx={{
                                 textTransform: "capitalize",

@@ -12,7 +12,7 @@ export interface CounterDataItem {
   updatedDateTime: number | null;
   deletedBy: string | null;
   deletedDateTime: number | null;
-  images: string[];
+  images: {imageName: string; imageType: string; imageData: string }[];
   schedules:
     | { id: string; startDateTime: number; endDateTime: number }[]
     | null; // Make sure to handle null

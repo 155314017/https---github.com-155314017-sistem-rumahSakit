@@ -13,8 +13,17 @@ import useDetailKonter from "../hooks/useDetailKonter";
 export default function DetailKonter() {
     const {
         breadcrumbItems,
-    largeImage,
-    smallImages
+        largeImage,
+        smallImage,
+        loading,
+        confirmationDelete,
+        open,
+        handleDeleteSuccess,
+        name,
+        description,
+        deletedItems,
+        navigate,
+        counterData,
     }=useDetailKonter();
     
   return (
@@ -24,19 +33,19 @@ export default function DetailKonter() {
                 onBackClick={() => window.history.back()}
             />
             <Box mt={3}>
-                <ImageGrid largeImage={largeImage} smallImages={smallImages} loading={false} />
+                <ImageGrid largeImage={largeImage} smallImages={smallImage} loading={false} />
             </Box>
 
             <Box mt={3}>
                 <CardDetail
-                    title="Nama Konter"
+                    title={name} // Replace with the actual building name
                     columns={[
                         { id: "nomorKonter", label: "No. Konter" },
                         { id: "tipeKonter", label: "Tipe Konter" },
                         { id: "lokasiKonter", label: "Lokasi Konter" },
                         
                     ]}
-                    data={[{ nomorKonter: "1234", tipeKonter: "Asuransi", lokasiKonter: "Paingan" }]}
+                    data={[{ nomorKonter: counterData?.id, tipeKonter: counterData?.additionalInfo, lokasiKonter: counterData?.location }]}
                     actions={() => (
                         <>
                             <Link underline="hover" sx={{ color: "#8F85F3" }} href="/hapus">
@@ -53,14 +62,14 @@ export default function DetailKonter() {
             <Box mt={3}>
                 <CardOperasionalKlinik
                     title="Jam Operasional"
-                    data={{
-                        senin: "10.30 - 15.00",
-                        selasa: "10.30 - 15.00",
-                        rabu: "10.30 - 15.00",
-                        kamis: "10.30 - 15.00",
-                        jumat: "10.30 - 15.00",
-                        sabtu: "10.30 - 15.00",
-                        minggu: "10.30 - 15.00",
+                    data={counterData?.operationalSchedule || {
+                        senin: "-",
+                        selasa: "-",
+                        rabu: "-",
+                        kamis: "-",
+                        jumat: "-",
+                        sabtu: "-",
+                        minggu: "-",
                     }}
                 />
             </Box>
