@@ -7,6 +7,13 @@ import {
     TableContainer,
 } from "@mui/material";
 
+export interface Exclusion {
+    id: number;
+    date: string;
+    type: string;
+    time: string;
+}
+
 export default function useTambahPegawai() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [gender, setGender] = useState('');
@@ -76,17 +83,17 @@ export default function useTambahPegawai() {
         { value: 2, label: "08:00 am" },
         { value: 3, label: "09:00 am" },
         { value: 4, label: "10:00 am" },
-        { value: 4, label: "11:00 am" },
-        { value: 4, label: "12:00 am" },
-        { value: 4, label: "01:00 pm" },
-        { value: 4, label: "02:00 pm" },
-        { value: 4, label: "03:00 pm" },
-        { value: 4, label: "04:00 pm" },
-        { value: 4, label: "05:00 pm" },
-        { value: 4, label: "06:00 pm" },
-        { value: 4, label: "07:00 pm" },
-        { value: 4, label: "08:00 pm" },
-        { value: 4, label: "09:00 pm" },
+        { value: 5, label: "11:00 am" }, // Perbaiki value
+        { value: 6, label: "12:00 pm" }, // Perbaiki label dan value
+        { value: 7, label: "01:00 pm" },
+        { value: 8, label: "02:00 pm" },
+        { value: 9, label: "03:00 pm" },
+        { value: 10, label: "04:00 pm" },
+        { value: 11, label: "05:00 pm" },
+        { value: 12, label: "06:00 pm" },
+        { value: 13, label: "07:00 pm" },
+        { value: 14, label: "08:00 pm" },
+        { value: 15, label: "09:00 pm" },
     ];
 
     const formik = useFormik({
@@ -235,6 +242,19 @@ export default function useTambahPegawai() {
         setIsModalOpen(false);
     };
 
+    // State untuk Exclusions
+    const [exclusions, setExclusions] = useState<Exclusion[]>([]);
+    const [exclusionIdCounter, setExclusionIdCounter] = useState<number>(1);
+
+    const addExclusion = (exclusion: Omit<Exclusion, 'id'>) => {
+        setExclusions([...exclusions, { ...exclusion, id: exclusionIdCounter }]);
+        setExclusionIdCounter(exclusionIdCounter + 1);
+    };
+
+    const removeExclusion = (id: number) => {
+        setExclusions(exclusions.filter(exclusion => exclusion.id !== id));
+    };
+
     return {
         currentPage,
         setCurrentPage,
@@ -275,6 +295,9 @@ export default function useTambahPegawai() {
         jamOperasional,
         isModalOpen,
         handleOpenModal,
-        handleCloseModal
+        handleCloseModal,
+        exclusions, // Tambahkan exclusions
+        addExclusion, // Tambahkan addExclusion
+        removeExclusion, // Tambahkan removeExclusion
     }
 }

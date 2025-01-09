@@ -15,14 +15,16 @@ import {
     Radio,
     RadioGroup,
     Checkbox,
-    Divider
+    Divider,
+    IconButton,
+    TableContainer
 } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 
 //hooks
-import useTambahPegawai from "../hooks/useTambahPegawai";
+import useTambahPegawai, { Exclusion } from "../hooks/useTambahPegawai";
 import InputCurrencyIdr from "../../../components/inputComponent/InputCurrencyIdr";
 import PhoneInput from "react-phone-input-2";
 import dayjs, { Dayjs } from "dayjs";
@@ -31,6 +33,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import MiniSwitchCustom from "../../../components/small/Switch/MiniSwitchCustom";
 import DropdownListTime from "../../../components/small/dropdownlist/DropdownListTime";
 import ExclusionModal from "../../../components/small/modal/ExclusionModal";
+import CloseIcon from "@mui/icons-material/Close";
+import styled from "@emotion/styled";
 
 export default function TambahPegawai() {
     const {
@@ -38,7 +42,6 @@ export default function TambahPegawai() {
         setCurrentPage,
         labels,
         StyledTableRow,
-        StyledTableContainer,
         breadcrumbItems,
         rolePegawai,
         formik,
@@ -70,8 +73,35 @@ export default function TambahPegawai() {
         jamOperasional,
         isModalOpen,
         handleOpenModal,
-        handleCloseModal
+        handleCloseModal,
+        exclusions,
+        addExclusion,
+        removeExclusion,
     } = useTambahPegawai();
+
+    const handleSaveExclusion = (exclusion: Omit<Exclusion, 'id'>) => {
+        addExclusion(exclusion);
+    };
+    const StyledTableContainer = styled(TableContainer)`
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #8f85f3;
+    border-radius: 10px;
+    border: 2px solid #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #6c63ff;
+    cursor: pointer;
+  }
+`;
     return (
         <Container sx={{ py: 2 }}>
             <BreadCrumbs
@@ -374,6 +404,7 @@ export default function TambahPegawai() {
                             <Typography mt={2} >No. Handphone<span style={{ color: 'red' }} >*</span></Typography>
                             <PhoneInput
                                 country={"id"}
+                                countryCodeEditable={false}
                                 value={formik.values.nomorHandphone}
                                 onChange={(phone) => formik.setFieldValue("nomorHandphone", phone)}
                                 inputStyle={{
@@ -498,9 +529,9 @@ export default function TambahPegawai() {
                                     <ExclusionModal
                                         open={isModalOpen}
                                         onClose={handleCloseModal}
+                                        onSave={handleSaveExclusion} // Tambahkan prop onSave
                                     />
                                 </LocalizationProvider>
-
                             </Box>
 
                             <Box display={'flex'} flexDirection={'column'} gap={3} >
@@ -841,8 +872,150 @@ export default function TambahPegawai() {
                                     <Divider sx={{ color: '#C5C5D3' }} />
                                 </Box>
                             </Box>
+
+                            {/* Tambahkan daftar exclusions di sini */}
+                            {exclusions.length > 0 && (
+                                <Box mt={3}>
+                                    <Typography variant="h6" gutterBottom>
+                                        Daftar Exclusion
+                                    </Typography>
+                                    <StyledTableContainer
+                                        sx={{
+                                            mt: 2,
+                                            boxShadow: "none",
+                                            mb: 2,
+                                            maxHeight: "610px",
+                                            borderRadius: "16px",
+                                        }}>
+                                        <Table stickyHeader sx={{ width: '100%' }}>
+                                            <TableHead >
+                                                <TableRow >
+                                                    <TableCell
+                                                        width="25%"
+                                                        sx={{
+                                                            fontSize: '14px',
+                                                            fontWeight: 700,
+                                                            color: '#292B2C',
+                                                            bgcolor: '#F1F0FE',
+                                                            textAlign: 'center',
+                                                        }}
+                                                    >
+                                                        Tanggal
+                                                    </TableCell>
+                                                    <TableCell
+                                                        width="25%"
+                                                        sx={{
+                                                            fontSize: '14px',
+                                                            fontWeight: 700,
+                                                            color: '#292B2C',
+                                                            bgcolor: '#F1F0FE',
+                                                            textAlign: 'center',
+                                                        }}
+                                                    >
+                                                        Type
+                                                    </TableCell>
+                                                    <TableCell
+                                                        width="25%"
+                                                        sx={{
+                                                            fontSize: '14px',
+                                                            fontWeight: 700,
+                                                            color: '#292B2C',
+                                                            bgcolor: '#F1F0FE',
+                                                            textAlign: 'center',
+                                                        }}
+                                                    >
+                                                        Time
+                                                    </TableCell>
+                                                    <TableCell
+                                                        width="25%"
+                                                        sx={{
+                                                            fontSize: '14px',
+                                                            fontWeight: 700,
+                                                            color: '#292B2C',
+                                                            bgcolor: '#F1F0FE',
+                                                            textAlign: 'center',
+                                                        }}
+                                                    >
+                                                        Aksi
+                                                    </TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {exclusions.map((exclusion) => (
+                                                    <TableRow key={exclusion.id}>
+                                                        <TableCell
+                                                            sx={{
+                                                                color: '#292B2C',
+                                                                fontSize: '14px',
+                                                                overflow: 'hidden',
+                                                                textOverflow: 'ellipsis',
+                                                                whiteSpace: 'nowrap',
+                                                                maxWidth: '150px',
+                                                                textTransform: 'capitalize',
+                                                                textAlign: 'center',
+                                                            }}
+                                                        >
+                                                            {exclusion.date}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            sx={{
+                                                                color: '#292B2C',
+                                                                fontSize: '14px',
+                                                                overflow: 'hidden',
+                                                                textOverflow: 'ellipsis',
+                                                                whiteSpace: 'nowrap',
+                                                                maxWidth: '150px',
+                                                                textTransform: 'capitalize',
+                                                                textAlign: 'center',
+                                                            }}
+                                                        >
+                                                            {exclusion.type}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            sx={{
+                                                                color: '#292B2C',
+                                                                fontSize: '14px',
+                                                                overflow: 'hidden',
+                                                                textOverflow: 'ellipsis',
+                                                                whiteSpace: 'nowrap',
+                                                                maxWidth: '150px',
+                                                                textTransform: 'capitalize',
+                                                                textAlign: 'center',
+                                                            }}
+                                                        >
+                                                            {exclusion.time}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            sx={{
+                                                                color: '#292B2C',
+                                                                fontSize: '14px',
+                                                                overflow: 'hidden',
+                                                                textOverflow: 'ellipsis',
+                                                                whiteSpace: 'nowrap',
+                                                                maxWidth: '150px',
+                                                                textTransform: 'capitalize',
+                                                                textAlign: 'center',
+                                                            }}
+                                                        >
+                                                            <Typography
+                                                                onClick={() => removeExclusion(exclusion.id)}
+                                                                sx={{
+                                                                    cursor: 'pointer',
+                                                                    color:'#8F85F3'
+                                                                }}
+                                                            >
+                                                                Hapus
+                                                            </Typography>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </StyledTableContainer>
+                                </Box>
+                            )}
+
                             <Button
-                                // type="submit"
                                 variant="contained"
                                 color="inherit"
                                 sx={{
@@ -854,7 +1027,6 @@ export default function TambahPegawai() {
                                     borderRadius: "8px",
                                     ":hover": { bgcolor: "#a098f5" },
                                 }}
-                            // disabled={!formik.isValid || !formik.dirty} // Opsional
                             >
                                 Selanjutnya
                             </Button>
