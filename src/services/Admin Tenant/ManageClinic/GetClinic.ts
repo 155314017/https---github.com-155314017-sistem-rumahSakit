@@ -11,7 +11,7 @@ export interface ClinicDataItem {
   updatedDateTime: number | null
   deletedBy: string | null
   deletedDateTime: number | null
-  images: string[]
+  images: {imageName: string; imageType: string; imageData: string }[];
   schedules: { id: string; startDateTime: number; endDateTime: number }[]
   operationalSchedule?: string
 }
@@ -26,6 +26,7 @@ export interface ApiResponse<T> {
 const BASE_URL = 'https://hms.3dolphinsocial.com:8083/v1/manage/clinic'
 
 export const getClinic = async (clinicId: string | undefined): Promise<ClinicDataItem> => {
+  // const token = Cookies.get('accessToken')
   try {
     const response = await axios.get<ApiResponse<ClinicDataItem>>(`${BASE_URL}/${clinicId}`, {
       headers: {

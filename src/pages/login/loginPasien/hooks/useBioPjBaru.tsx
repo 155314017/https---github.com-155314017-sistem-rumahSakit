@@ -114,19 +114,22 @@ export default function useBioPjBaru() {
   }, [nikPjBaru, emailPjBaru])
 
   useEffect(() => {
-    console.log('Id Patient: ', patientId);
     const timeoutId = setTimeout(() => {
-      if (patientId === '' && !noIdentity) {
+      if (!patientId && !noIdentity) {
         setNotFound(true);
         setShow(false);
         setCurrentView('notFound');
-        console.log('NOT FOUND');
       } else {
+        const timeoutId = setTimeout(() => {
         setNotFound(false);
         setShow(true);
         setCurrentView('show');
+        },50)
+
+        return () => clearTimeout(timeoutId);
+        
       }
-    }, 200);
+    },100);
 
     return () => clearTimeout(timeoutId);
 
