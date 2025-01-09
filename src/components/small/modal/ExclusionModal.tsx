@@ -56,10 +56,9 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
         startTime: '',
         endTime: '',
     });
-
-    // Fungsi Pembantu untuk Mengonversi String Waktu ke Menit sejak Tengah Malam
     const timeStringToMinutes = (timeStr: string): number => {
         const [time, modifier] = timeStr.split(' ');
+        // eslint-disable-next-line prefer-const
         let [hours, minutes] = time.split(':').map(Number);
         if (modifier.toLowerCase() === 'pm' && hours !== 12) {
             hours += 12;
@@ -72,7 +71,7 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
 
     // Fungsi Validasi
     const validate = () => {
-        let tempErrors = { date: '', type: '', startTime: '', endTime: '' };
+        const tempErrors = { date: '', type: '', startTime: '', endTime: '' };
         let isValid = true;
 
         if (!selectedDate) {
@@ -116,6 +115,7 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
             const exclusionData: Omit<Exclusion, 'id'> = {
                 date: formattedDate,
                 type: selectedType,
+                time: ""
             };
 
             if (selectedType === "Operasi") {
@@ -179,12 +179,11 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
                     maxWidth: '550px',
                     paddingY: '32px',
                     overflowY: 'auto',
-                    /* Mengizinkan pengguliran tetapi menyembunyikan scrollbar */
                     '&::-webkit-scrollbar': {
                         display: 'none',
                     },
-                    scrollbarWidth: 'none', // Firefox
-                    '-ms-overflow-style': 'none', // IE and Edge legacy
+                    scrollbarWidth: 'none', 
+                    '-ms-overflow-style': 'none', 
                 }}
             >
                 {/* Field Tanggal */}
@@ -242,8 +241,7 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
                         options={typeExclusion}
                         placeholder="Type Exclusion"
                         onChange={(value) => setSelectedType(value)}
-                        value={selectedType}
-                        // Tambahkan styling kondisional jika diperlukan
+                        // value={selectedType}
                     />
                     {errors.type && (
                         <Typography variant="caption" color="error">
@@ -279,7 +277,7 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
                                         placeholder="Pilih jam mulai"
                                         options={jamOperasional}
                                         loading={false}
-                                        value={startTime}
+                                        // value={startTime}
                                     />
                                     {errors.startTime && (
                                         <Typography variant="caption" color="error">
@@ -294,7 +292,7 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
                                         placeholder="Pilih jam selesai"
                                         options={jamOperasional}
                                         loading={false}
-                                        value={endTime}
+                                        // value={endTime}
                                     />
                                     {errors.endTime && (
                                         <Typography variant="caption" color="error">
@@ -311,6 +309,7 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
             <DialogActions>
                 <Button
                     sx={{
+                        mb: 2,
                         bgcolor: '#8F85F3',
                         color: 'white',
                         width: '100%',

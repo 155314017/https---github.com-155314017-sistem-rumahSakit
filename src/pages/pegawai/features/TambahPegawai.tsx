@@ -15,9 +15,7 @@ import {
     Radio,
     RadioGroup,
     Checkbox,
-    Divider,
-    IconButton,
-    TableContainer
+    Divider
 } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
@@ -33,8 +31,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import MiniSwitchCustom from "../../../components/small/Switch/MiniSwitchCustom";
 import DropdownListTime from "../../../components/small/dropdownlist/DropdownListTime";
 import ExclusionModal from "../../../components/small/modal/ExclusionModal";
-import CloseIcon from "@mui/icons-material/Close";
-import styled from "@emotion/styled";
 
 export default function TambahPegawai() {
     const {
@@ -42,6 +38,7 @@ export default function TambahPegawai() {
         setCurrentPage,
         labels,
         StyledTableRow,
+        StyledTableContainer,
         breadcrumbItems,
         rolePegawai,
         formik,
@@ -74,34 +71,16 @@ export default function TambahPegawai() {
         isModalOpen,
         handleOpenModal,
         handleCloseModal,
-        exclusions,
+        handleSubmitPage3,
         addExclusion,
+        exclusions,
         removeExclusion,
-    } = useTambahPegawai();
 
+    } = useTambahPegawai();
+    const isSelectAllActionsDisabled = checkedItems.slice(1).every(item => !item);
     const handleSaveExclusion = (exclusion: Omit<Exclusion, 'id'>) => {
         addExclusion(exclusion);
     };
-    const StyledTableContainer = styled(TableContainer)`
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #8f85f3;
-    border-radius: 10px;
-    border: 2px solid #f1f1f1;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: #6c63ff;
-    cursor: pointer;
-  }
-`;
     return (
         <Container sx={{ py: 2 }}>
             <BreadCrumbs
@@ -404,7 +383,6 @@ export default function TambahPegawai() {
                             <Typography mt={2} >No. Handphone<span style={{ color: 'red' }} >*</span></Typography>
                             <PhoneInput
                                 country={"id"}
-                                countryCodeEditable={false}
                                 value={formik.values.nomorHandphone}
                                 onChange={(phone) => formik.setFieldValue("nomorHandphone", phone)}
                                 inputStyle={{
@@ -529,9 +507,10 @@ export default function TambahPegawai() {
                                     <ExclusionModal
                                         open={isModalOpen}
                                         onClose={handleCloseModal}
-                                        onSave={handleSaveExclusion} // Tambahkan prop onSave
+                                        onSave={handleSaveExclusion}
                                     />
                                 </LocalizationProvider>
+
                             </Box>
 
                             <Box display={'flex'} flexDirection={'column'} gap={3} >
@@ -872,7 +851,6 @@ export default function TambahPegawai() {
                                     <Divider sx={{ color: '#C5C5D3' }} />
                                 </Box>
                             </Box>
-
                             {/* Tambahkan daftar exclusions di sini */}
                             {exclusions.length > 0 && (
                                 <Box mt={3}>
@@ -1000,8 +978,8 @@ export default function TambahPegawai() {
                                                             <Typography
                                                                 onClick={() => removeExclusion(exclusion.id)}
                                                                 sx={{
-                                                                    cursor: 'pointer',
-                                                                    color:'#8F85F3'
+                                                                    color: '#8F85F3',
+                                                                    cursor:'pointer'
                                                                 }}
                                                             >
                                                                 Hapus
@@ -1014,8 +992,8 @@ export default function TambahPegawai() {
                                     </StyledTableContainer>
                                 </Box>
                             )}
-
                             <Button
+                                // type="submit"
                                 variant="contained"
                                 color="inherit"
                                 sx={{
@@ -1027,6 +1005,7 @@ export default function TambahPegawai() {
                                     borderRadius: "8px",
                                     ":hover": { bgcolor: "#a098f5" },
                                 }}
+                            // disabled={!formik.isValid || !formik.dirty} // Opsional
                             >
                                 Selanjutnya
                             </Button>
@@ -1034,8 +1013,10 @@ export default function TambahPegawai() {
                     )}
 
                     {currentPage === 3 && (
-                        <Box mt={3} >
-                            <Typography fontWeight={600} fontSize={"16px"} mb={4} >1. Hak Akses Pegawai</Typography>
+                        <Box mt={3}>
+                            <Typography fontWeight={600} fontSize={"16px"} mb={4}>
+                                1. Hak Akses Pegawai
+                            </Typography>
                             <Box>
                                 <Box mt={3}>
                                     <StyledTableContainer
@@ -1077,7 +1058,7 @@ export default function TambahPegawai() {
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                {/* Checkbox Pilih Semua */}
+                                                {/* Checkbox Pilih Semua Menu */}
                                                 <StyledTableRow>
                                                     <TableCell
                                                         sx={{ color: "#292B2C", fontSize: "14px" }}
@@ -1085,13 +1066,19 @@ export default function TambahPegawai() {
                                                     >
                                                         <FormControlLabel
                                                             sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
-                                                            control={<Checkbox sx={{
-                                                                color: '#A8A8BD',
-                                                                borderRadius: '4px',
-                                                                '&.Mui-checked': {
-                                                                    color: '#7367F0',
-                                                                },
-                                                            }} checked={checkedItems.every(Boolean)} onChange={handleSelectAll} />}
+                                                            control={
+                                                                <Checkbox
+                                                                    sx={{
+                                                                        color: '#A8A8BD',
+                                                                        borderRadius: '4px',
+                                                                        '&.Mui-checked': {
+                                                                            color: '#7367F0',
+                                                                        },
+                                                                    }}
+                                                                    checked={checkedItems[0]}
+                                                                    onChange={handleSelectAll}
+                                                                />
+                                                            }
                                                             label="Pilih semua menu"
                                                         />
                                                     </TableCell>
@@ -1112,6 +1099,7 @@ export default function TambahPegawai() {
                                                                     }}
                                                                     checked={selectAllChecked}
                                                                     onChange={handleSelectAllActions}
+                                                                    disabled={isSelectAllActionsDisabled} // Tambahkan properti disabled
                                                                 />
                                                             }
                                                             label="Pilih semua tindakan"
@@ -1127,17 +1115,19 @@ export default function TambahPegawai() {
                                                         >
                                                             <FormControlLabel
                                                                 sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
-                                                                control={<Checkbox
-                                                                    sx={{
-                                                                        color: '#A8A8BD',
-                                                                        borderRadius: '4px',
-                                                                        '&.Mui-checked': {
-                                                                            color: '#7367F0',
-                                                                        },
-                                                                    }}
-                                                                    checked={checkedItems[index + 1]}
-                                                                    onChange={handleCheckboxChange(index + 1)}
-                                                                />}
+                                                                control={
+                                                                    <Checkbox
+                                                                        sx={{
+                                                                            color: '#A8A8BD',
+                                                                            borderRadius: '4px',
+                                                                            '&.Mui-checked': {
+                                                                                color: '#7367F0',
+                                                                            },
+                                                                        }}
+                                                                        checked={checkedItems[index + 1]}
+                                                                        onChange={handleCheckboxChange(index + 1)}
+                                                                    />
+                                                                }
                                                                 label={label}
                                                             />
                                                         </TableCell>
@@ -1159,6 +1149,7 @@ export default function TambahPegawai() {
                                                                             }}
                                                                             checked={menuActions[index].view}
                                                                             onChange={handleIndividualCheckboxChange(index, 'view')}
+                                                                            disabled={!checkedItems[index + 1]}
                                                                         />
                                                                     }
                                                                     label="View"
@@ -1176,6 +1167,7 @@ export default function TambahPegawai() {
                                                                             }}
                                                                             checked={menuActions[index].edit}
                                                                             onChange={handleIndividualCheckboxChange(index, 'edit')}
+                                                                            disabled={!checkedItems[index + 1]}
                                                                         />
                                                                     }
                                                                     label="Edit"
@@ -1193,6 +1185,7 @@ export default function TambahPegawai() {
                                                                             }}
                                                                             checked={menuActions[index].delete}
                                                                             onChange={handleIndividualCheckboxChange(index, 'delete')}
+                                                                            disabled={!checkedItems[index + 1]}
                                                                         />
                                                                     }
                                                                     label="Delete"
@@ -1205,7 +1198,7 @@ export default function TambahPegawai() {
                                         </Table>
                                     </StyledTableContainer>
                                     <Button
-                                        type="submit"
+                                        onClick={handleSubmitPage3} // Panggil handler saat klik
                                         variant="contained"
                                         color="inherit"
                                         sx={{

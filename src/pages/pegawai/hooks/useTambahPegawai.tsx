@@ -1,3 +1,5 @@
+// hooks/useTambahPegawai.tsx
+
 import React, { useState } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -83,8 +85,8 @@ export default function useTambahPegawai() {
         { value: 2, label: "08:00 am" },
         { value: 3, label: "09:00 am" },
         { value: 4, label: "10:00 am" },
-        { value: 5, label: "11:00 am" }, // Perbaiki value
-        { value: 6, label: "12:00 pm" }, // Perbaiki label dan value
+        { value: 5, label: "11:00 am" },
+        { value: 6, label: "12:00 pm" },
         { value: 7, label: "01:00 pm" },
         { value: 8, label: "02:00 pm" },
         { value: 9, label: "03:00 pm" },
@@ -126,7 +128,7 @@ export default function useTambahPegawai() {
                 .required('Isi nomor telepon')
                 .matches(/^[0-9]{10,15}$/, 'Nomor telepon tidak valid')
                 .min(10, 'Nomor telepon minimal 10 digit')
-                .max(14, 'Nomor telepon maksimal 14 digit'),
+                .max(15, 'Nomor telepon maksimal 15 digit'), // Perbaiki max digit
             rolePegawai: Yup.string().required('Role Pegawai diperlukan'),
             jenisSpesialis: Yup.string().required('Jenis Spesialisasi diperlukan'),
             tipeAntrian: Yup.string().required('Tipe Antrian diperlukan'),
@@ -185,7 +187,7 @@ export default function useTambahPegawai() {
     };
 
     // State untuk mengelola status checkbox
-    const [checkedItems, setCheckedItems] = useState(labels.slice(0).map(() => false));
+    const [checkedItems, setCheckedItems] = useState<boolean[]>(labels.slice(0).map(() => false));
 
     const [menuActions, setMenuActions] = useState(
         labels.slice(1).map(() => ({
@@ -195,44 +197,101 @@ export default function useTambahPegawai() {
         }))
     );
 
-    const [selectAllChecked, setSelectAllChecked] = useState(false);
+    const [selectAllChecked, setSelectAllChecked] = useState<boolean>(false);
 
-    // Handler untuk checkbox individual
+    // Derived state: Menentukan apakah 'Pilih Semua Tindakan' harus disabled
+    const isSelectAllActionsDisabled = checkedItems.slice(1).every(item => !item);
+
+    // Handler untuk checkbox individual (menu)
     const handleCheckboxChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
         const updatedCheckedItems = [...checkedItems];
         updatedCheckedItems[index] = event.target.checked;
         setCheckedItems(updatedCheckedItems);
+
+        const updatedMenuActions = [...menuActions];
+
+        if (!event.target.checked) {
+            // Jika menu di-uncheck, reset tindakan aksesnya
+            updatedMenuActions[index - 1].view = false;
+            updatedMenuActions[index - 1].edit = false;
+            updatedMenuActions[index - 1].delete = false;
+            setMenuActions(updatedMenuActions);
+
+            // 'Pilih Semua Tindakan' harus di-uncheck jika ada menu yang di-uncheck
+            setSelectAllChecked(false);
+        } else {
+            // Jika menu di-check, tindakan akses tetap seperti sebelumnya
+            setMenuActions(updatedMenuActions);
+
+            // Periksa apakah semua tindakan akses pada semua menu yang dipilih sudah tercentang
+            const allSelectedActionsChecked = updatedCheckedItems.slice(1).every((isChecked, idx) => {
+                if (isChecked) {
+                    const actions = updatedMenuActions[idx];
+                    return actions.view && actions.edit && actions.delete;
+                }
+                return true; // Jika menu tidak dipilih, abaikan
+            });
+
+            setSelectAllChecked(allSelectedActionsChecked);
+        }
     };
 
+    // Handler untuk checkbox 'Pilih Semua Tindakan'
     const handleSelectAllActions = (event: React.ChangeEvent<HTMLInputElement>) => {
         const isChecked = event.target.checked;
         setSelectAllChecked(isChecked);
 
-        // Update status tindakan untuk semua menu
-        const updatedMenuActions = menuActions.map(() => ({
-            view: isChecked,
-            edit: isChecked,
-            delete: isChecked,
-        }));
+        const updatedMenuActions = menuActions.map((action, idx) => {
+            if (checkedItems[idx + 1]) { // Memeriksa apakah menu ini dipilih
+                return {
+                    view: isChecked,
+                    edit: isChecked,
+                    delete: isChecked,
+                };
+            }
+            return action; // Menu tidak dipilih, tetap tidak berubah
+        });
         setMenuActions(updatedMenuActions);
     };
 
+    // Handler untuk checkbox 'Pilih Semua Menu'
     const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
         const isChecked = event.target.checked;
         setCheckedItems(checkedItems.map(() => isChecked));
+
+        if (!isChecked) {
+            // Reset semua tindakan akses jika "Pilih semua menu" di-uncheck
+            setMenuActions(menuActions.map(() => ({
+                view: false,
+                edit: false,
+                delete: false,
+            })));
+            setSelectAllChecked(false); // Reset select all actions
+        } else {
+            // Jika "Pilih semua menu" di-check, reset "Pilih Semua Tindakan"
+            setSelectAllChecked(false);
+        }
     };
 
+    // Handler untuk checkbox individual (tindakan akses)
     const handleIndividualCheckboxChange = (menuIndex: number, action: keyof typeof menuActions[0]) => (event: React.ChangeEvent<HTMLInputElement>) => {
         const updatedMenuActions = [...menuActions];
-        updatedMenuActions[menuIndex][action] = event.target.checked;
-        setMenuActions(updatedMenuActions);
 
-        // Update "Pilih semua tindakan" berdasarkan status individual
-        const allActionsChecked = updatedMenuActions.every(item => item[action]);
+        // Perbarui tindakan akses berdasarkan action yang diubah
+        if (action === 'view') {
+            updatedMenuActions[menuIndex].view = event.target.checked;
+        } else if (action === 'edit') {
+            updatedMenuActions[menuIndex].edit = event.target.checked;
+        } else if (action === 'delete') {
+            updatedMenuActions[menuIndex].delete = event.target.checked;
+        }
+
+        setMenuActions(updatedMenuActions);
+        const allActionsChecked = updatedMenuActions.every(item => item.view && item.edit && item.delete);
         setSelectAllChecked(allActionsChecked);
     };
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const handleOpenModal = () => {
         setIsModalOpen(true);
@@ -253,6 +312,23 @@ export default function useTambahPegawai() {
 
     const removeExclusion = (id: number) => {
         setExclusions(exclusions.filter(exclusion => exclusion.id !== id));
+    };
+
+    const handleSubmitPage3 = () => {
+        const selectedMenus = labels.slice(1).map((label, index) => ({
+            menu: label,
+            isSelected: checkedItems[index + 1],
+            actions: checkedItems[index + 1] ? menuActions[index] : { view: false, edit: false, delete: false },
+        }));
+
+        console.log("Hasil Pilihan Hak Akses Pegawai:");
+        selectedMenus.forEach(menu => {
+            if (menu.isSelected) {
+                console.log(`${menu.menu}: view=${menu.actions.view}, edit=${menu.actions.edit}, delete=${menu.actions.delete}`);
+            } else {
+                console.log(`${menu.menu}: ${menu.isSelected}`);
+            }
+        });
     };
 
     return {
@@ -296,8 +372,10 @@ export default function useTambahPegawai() {
         isModalOpen,
         handleOpenModal,
         handleCloseModal,
-        exclusions, // Tambahkan exclusions
-        addExclusion, // Tambahkan addExclusion
-        removeExclusion, // Tambahkan removeExclusion
+        exclusions,
+        addExclusion,
+        removeExclusion,
+        handleSubmitPage3,
+        isSelectAllActionsDisabled,
     }
 }
