@@ -4,7 +4,55 @@ import axios from "axios";
 import { FacilityServices, FacilityDataItem } from "../../../services/ManageFacility/FacilityServices";
 import { Schedule } from "@mui/icons-material";
 
+export interface BuildingDataItem {
+  id: string;
+  name: string;
+  address: string;
+  additionalInfo: string;
+  createdBy: string;
+  createdDateTime: number;
+  updatedBy: string | null;
+  updatedDateTime: number | null;
+  deletedBy: string | null;
+  deletedDateTime: number | null;
+  images: string[];
+}
 
+export interface Pageable {
+  pageNumber: number;
+  pageSize: number;
+  sort: {
+    sorted: boolean;
+    empty: boolean;
+    unsorted: boolean;
+  };
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export interface ApiResponse {
+  responseCode: string;
+  statusCode: string;
+  message: string;
+  data: {
+    content: BuildingDataItem[];
+    pageable: Pageable;
+    totalPages: number;
+    totalElements: number;
+    last: boolean;
+    size: number;
+    number: number;
+    sort: {
+      sorted: boolean;
+      empty: boolean;
+      unsorted: boolean;
+    };
+    numberOfElements: number;
+    first: boolean;
+    empty: boolean;
+  };
+}
 
 export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelete: () => void) {
   const [page, setPage] = useState(1);
@@ -21,7 +69,9 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
     try {
       const result = await FacilityServices();
       setDatas(result);
+      
       const buildingIds = result.map((data) => data.masterBuildingId);
+      console.log("Building IDs:", buildingIds);
       setDataIdBuilding(buildingIds);
     } catch (error) {
       console.log("Failed to fetch data from API: ", error);
@@ -38,7 +88,9 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
       try {
         const responses = await Promise.all(
           dataIdBuilding.map((id) =>
-            axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`)
+            axios
+              .get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`)
+              .catch(() => ({ data: { data: { name: "Data Gedung Tidak Ditemukan" } } }))
           )
         );
 
@@ -48,6 +100,7 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
         });
 
         setBuildings(facilitiesData);
+        console.log("Buildings:", buildings);
       } catch (err) {
         console.error("Error:", err);
       }

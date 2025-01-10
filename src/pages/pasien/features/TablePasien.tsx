@@ -66,7 +66,8 @@ export default function TablePasien() {
     sortir,
     urutkan,
     toggleCollapse,
-    confirmationDelete
+    confirmationDelete,
+    clinics
     } = useTablePasien();
     return (
         <Box>
@@ -371,7 +372,7 @@ export default function TablePasien() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.id}
+                                                        {data?.registrationDatumDto?.typeOfVisit || "Not Available"}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[
@@ -403,7 +404,7 @@ export default function TablePasien() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.id}
+                                                        {data?.registrationDatumDto?.symptomps || "Not Available"}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[
@@ -419,7 +420,7 @@ export default function TablePasien() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.id}
+                                                        {clinics[index]}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[
@@ -435,7 +436,7 @@ export default function TablePasien() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.id}
+                                                        {data.operationalSchedule}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[
