@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 import { DoctorDataItem, DoctorServices } from "../../../services/Admin Tenant/ManageDoctor/DoctorServices";
@@ -9,6 +10,7 @@ export default function useTableDokter() {
   const [datas, setDatas] = useState<DoctorDataItem[]>([]);
   const [idClinic, setIdClinic] = useState<string[]>([]);
   const [clinicNames, setClinicNames] = useState<string[]>([]);
+  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -90,7 +92,8 @@ export default function useTableDokter() {
     sortir,
     urutkan,
     toggleCollapse,
-    confirmationDelete
+    confirmationDelete,
+    navigate
 
   }
 }
