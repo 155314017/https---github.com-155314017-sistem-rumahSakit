@@ -51,6 +51,7 @@ import PrivateRoute from './services/Admin Tenant/Auth/PrivateRoute';
 import PilihKategoriPasien from './pages/pasien/pasienn/features/PilihKategoriPasien';
 import TambahPasienUmumOffline from './pages/pasien/pasienn/features/TambahPasienUmumOffline';
 import DetailFasilitas from './pages/fasilitas/features/DetailFasilitas';
+import DetailDokter from './pages/dokter/features/DetailDokter';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -105,6 +106,7 @@ createRoot(document.getElementById('root')!).render(
 
           {/* Page Dokter  */}
           <Route path="/dokter" element={<Dokter />} />
+          <Route path="/detailDokter" element={<DetailDokter />} />
 
           {/* Page Pasien  */}
           <Route path="/pasien" element={<Pasien />} />

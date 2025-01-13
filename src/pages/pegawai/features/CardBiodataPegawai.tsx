@@ -7,6 +7,7 @@ export default function CardBiodataPegawai() {
             position={"relative"}
             p={1}
             height="fit-content "
+            width={'100%'}
             sx={{ borderRadius: "24px", bgcolor: "#ffff", overflow: "hidden", pb: 4 }}
         >
 

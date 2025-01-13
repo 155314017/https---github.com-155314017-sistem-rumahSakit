@@ -1,15 +1,15 @@
 import { Container, Box } from "@mui/system";
 
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import CardIzinAkses from "./CardIzinAkses";
-import CardBiodataPegawai from "./CardBiodataPegawai";
-import CardJamPraktek from "./CardJamPraktek";
-import useDetailPegawai from "../hooks/useDetailPegawai";
+import CardIzinAkses from "../../pegawai/features/CardIzinAkses";
+import CardBiodataPegawai from "../../pegawai/features/CardBiodataPegawai";
+import CardJamPraktek from "../../pegawai/features/CardJamPraktek";
+import useDetailDokter from "../hooks/useDetailDokter";
 
-export default function DetailPegawai() {
+export default function DetailDokter() {
    const {
        breadcrumbItems
-   } = useDetailPegawai();
+   } = useDetailDokter();
 
 
     return (

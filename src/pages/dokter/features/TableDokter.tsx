@@ -406,7 +406,7 @@ export default function TableDokter() {
                             Ubah
                           </Link>
                           <Link
-                            href="/detailGedung "
+                            href="/detailDokter"
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",
