@@ -47,14 +47,14 @@ export default function DetailDokter() {
                         )}
                     /> */}
                     <CardBiodataPegawai 
-                    tanggalDitambahkan= {doctorData?.employeeData.updatedBy || "Data Tidak Ditemukan"}
-                    namaPegawai= {doctorData?.employeeData.name || "Data Tidak Ditemukan"}
-                    jenisKelamin= {doctorData?.employeeData.gender || "Data Tidak Ditemukan"}
-                    alamat= {doctorData?.employeeData.address || "Data Tidak Ditemukan"}
-                    nomorIndukPegawai= {doctorData?.employeeData.employeeNumber || "Data Tidak Ditemukan"}
-                    rolePegawai= {doctorData?.employeeData.role || "Data Tidak Ditemukan"}
-                    noHandphone= {doctorData?.employeeData.phone || "Data Tidak Ditemukan"}
-                    dokumen= {doctorData?.employeeData.additionalInfo || "Data Tidak Ditemukan"}
+                    tanggalDitambahkan= {doctorData?.employeeData?.updatedBy || "Data Tidak Ditemukan"}
+                    namaPegawai= {doctorData?.employeeData?.name || "Data Tidak Ditemukan"}
+                    jenisKelamin= {doctorData?.employeeData?.gender || "Data Tidak Ditemukan"}
+                    alamat= {doctorData?.employeeData?.address || "Data Tidak Ditemukan"}
+                    nomorIndukPegawai= {doctorData?.employeeData?.employeeNumber || "Data Tidak Ditemukan"}
+                    rolePegawai= {doctorData?.employeeData?.role || "Data Tidak Ditemukan"}
+                    noHandphone= {doctorData?.employeeData?.phone || "Data Tidak Ditemukan"}
+                    dokumen= {doctorData?.employeeData?.additionalInfo || "Data Tidak Ditemukan"}
                     avatarUrl= {""}
                     onUbahData={() => {}}
                     onHapusData={() => {}}

@@ -149,6 +149,7 @@ export default function useDetailDokter() {
                   defaultSchedule[mappedDay] = `${startTime} - ${endTime}`;
                 }
               });
+              
           
               console.log(defaultSchedule);
             
@@ -172,6 +173,7 @@ export default function useDetailDokter() {
           
                 // setLargeImage(mappedImages[0]?.imageData || "");
                 // setSmallImages(mappedImages.slice(1).map((img: ImageData) => img.imageData || ""));
+                console.log("doctor Data", ambulanceResponse);
               } catch (error) {
                 console.error("Error fetching data:", error);
               } finally {

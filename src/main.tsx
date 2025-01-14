@@ -101,7 +101,7 @@ createRoot(document.getElementById('root')!).render(
 
           {/* Page Pegawai  */}
           <Route path="/pegawai" element={<Pegawai />} />
-          <Route path="/detailPegawai" element={<DetailPegawai />} />
+          <Route path="/detailPegawai/:id" element={<DetailPegawai />} />
           <Route path="/tambahPegawai" element={<TambahPegawai />} />
 
           {/* Page Dokter  */}

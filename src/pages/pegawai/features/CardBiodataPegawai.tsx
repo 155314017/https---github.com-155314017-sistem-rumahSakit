@@ -3,7 +3,7 @@ import { Avatar, Typography } from '@mui/material';
 
 
 interface CardBiodataPegawaiProps {
-    tanggalDitambahkan: string;
+    tanggalDitambahkan: string | number;
     namaPegawai: string;
     jenisKelamin: string;
     alamat: string;

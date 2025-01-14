@@ -86,8 +86,9 @@ export const GetDoctorServices = async (id: string | undefined): Promise<DoctorD
     )
 
     if (response.status === 200) {
-      console.log('API connection successful:', response.data.data.data)
-      return response.data.data.data // Pastikan mengakses `data` dari respons
+      console.log('API connection successful:', response.data.data)
+
+      return response.data.data // Pastikan mengakses `data` dari respons
     } else {
       throw new Error(`API responded with status: ${response.status}`)
     }

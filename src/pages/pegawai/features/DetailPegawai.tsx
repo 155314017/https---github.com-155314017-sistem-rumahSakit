@@ -8,7 +8,12 @@ import useDetailPegawai from "../hooks/useDetailPegawai";
 
 export default function DetailPegawai() {
    const {
-       breadcrumbItems
+    breadcrumbItems,
+    name,
+    deletedItems,
+    employeeData,
+    handleDeleteSuccess,
+    confirmationDelete,
    } = useDetailPegawai();
 
 
@@ -41,7 +46,19 @@ export default function DetailPegawai() {
                             </>
                         )}
                     /> */}
-                    <CardBiodataPegawai />
+                    <CardBiodataPegawai
+                    tanggalDitambahkan= {employeeData?.createdDateTime || "Data Tidak Ditemukan"}
+                    namaPegawai= {employeeData?.name || "Data Tidak Ditemukan"}
+                    jenisKelamin= {employeeData?.gender || "Data Tidak Ditemukan"}
+                    alamat= {employeeData?.address || "Data Tidak Ditemukan"}
+                    nomorIndukPegawai= {employeeData?.employeeNumber || "Data Tidak Ditemukan"}
+                    rolePegawai= {employeeData?.role || "Data Tidak Ditemukan"}
+                    noHandphone= {employeeData?.phone || "Data Tidak Ditemukan"}
+                    dokumen= {employeeData?.additionalInfo || "Data Tidak Ditemukan"}
+                    avatarUrl= {""}
+                    onUbahData={() => {}}
+                    onHapusData={() => {}}
+                    />
                     <CardJamPraktek />
                 </Box>
                 <Box mt={3} >
