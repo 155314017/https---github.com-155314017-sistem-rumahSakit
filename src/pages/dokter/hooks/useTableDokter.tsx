@@ -37,13 +37,15 @@ export default function useTableDokter() {
               const response = await getClinic(id);
               return response.name || "Data Clinic Tidak Tercatat";
             } catch (error) {
-              if (error.response && error.response.status === 404) {
-                // Jika status 404, beri nama default
-                return "Data Clinic Tidak Tercatat";
-              } else {
-                console.error(`Error fetching clinic with ID ${id}:`, error);
-                return "Terjadi Kesalahan";
-              }
+                  console.error("Error fetching clinic name:", error);
+              
+                  // Jika status 404, beri nama default
+                  return "Data Clinic Tidak Tercatat";
+                
+                  
+                
+              
+              
             }
           })
         );

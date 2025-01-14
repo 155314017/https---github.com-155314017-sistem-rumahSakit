@@ -321,7 +321,6 @@ export default function useTambahPegawai() {
             actions: checkedItems[index + 1] ? menuActions[index] : { view: false, edit: false, delete: false },
         }));
 
-        console.log("Hasil Pilihan Hak Akses Pegawai:");
         selectedMenus.forEach(menu => {
             if (menu.isSelected) {
                 console.log(`${menu.menu}: view=${menu.actions.view}, edit=${menu.actions.edit}, delete=${menu.actions.delete}`);

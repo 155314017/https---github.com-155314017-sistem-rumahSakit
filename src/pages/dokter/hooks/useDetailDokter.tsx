@@ -88,10 +88,8 @@ interface Schedule {
   };
 
 export default function useDetailDokter() {
-    const [name, setName] = useState<string>("");
     const [deletedItems, setDeletedItems] = useState<string>("");
     const [open, setOpen] = useState(false);
-    const [response, setResponse] = useState<DoctorDataItem | null>(null); // Correct type for response
     const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -134,7 +132,6 @@ export default function useDetailDokter() {
                 Minggu: "minggu",
               };
           
-              console.log("masuk convert",schedules);
             
               schedules.forEach((schedule) => {
                 const startDay = dayjs(schedule.startDateTime).format("dddd"); // Day in English
@@ -151,7 +148,6 @@ export default function useDetailDokter() {
               });
               
           
-              console.log(defaultSchedule);
             
               return defaultSchedule;
             };
@@ -159,7 +155,6 @@ export default function useDetailDokter() {
             const fetchData = async () => {
               setLoading(true);
               try {
-                console.log(id);
                 const ambulanceResponse = await GetDoctorServices(id); 
                 const data = ambulanceResponse; // Access the data from the response
                 const operationalSchedule = convertSchedulesToReadableList(data?.schedules || []);
@@ -173,7 +168,6 @@ export default function useDetailDokter() {
           
                 // setLargeImage(mappedImages[0]?.imageData || "");
                 // setSmallImages(mappedImages.slice(1).map((img: ImageData) => img.imageData || ""));
-                console.log("doctor Data", ambulanceResponse);
               } catch (error) {
                 console.error("Error fetching data:", error);
               } finally {
@@ -197,12 +191,12 @@ export default function useDetailDokter() {
             };
           
           
-            console.log(response);
 
 
     return {
         breadcrumbItems,
-        name,
+        open,
+        loading,
         deletedItems,
         doctorData,
         handleDeleteSuccess,

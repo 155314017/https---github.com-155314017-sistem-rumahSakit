@@ -15,7 +15,7 @@ export default function useTableKonter(fetchDatas: () => void, onSuccessDelete: 
             const result = await CounterServices();
             setDatas(result); // Store the result in datas state
         } catch (error) {
-            console.log('Failed to fetch data from API: ', error);
+            console.error('Failed to fetch data from API: ', error);
         }
     };
     useEffect(() => {

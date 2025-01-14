@@ -15,23 +15,18 @@ import {
     Radio,
     RadioGroup,
     Checkbox,
-    Divider
 } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 
 //hooks
-import useTambahPegawai, { Exclusion } from "../hooks/useTambahPegawai";
+import useTambahPegawai from "../hooks/useTambahPegawai";
 import InputCurrencyIdr from "../../../components/inputComponent/InputCurrencyIdr";
 import PhoneInput from "react-phone-input-2";
 import dayjs, { Dayjs } from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import MiniSwitchCustom from "../../../components/small/Switch/MiniSwitchCustom";
-import DropdownListTime from "../../../components/small/dropdownlist/DropdownListTime";
-import ExclusionModal from "../../../components/small/modal/ExclusionModal";
-import DayOperational from "../../../components/medium/DayOperational";
 import TestKalender from "../../../components/medium/TestKalender";
 
 export default function TambahPegawai() {
@@ -55,34 +50,13 @@ export default function TambahPegawai() {
         handleIndividualCheckboxChange,
         gender,
         setGender,
-        senin,
-        setSenin,
-        selasa,
-        setSelasa,
-        rabu,
-        setRabu,
-        kamis,
-        setKamis,
-        jumat,
-        setJumat,
-        sabtu,
-        setSabtu,
-        minggu,
-        setMinggu,
-        jamOperasional,
-        isModalOpen,
-        handleOpenModal,
-        handleCloseModal,
+        
         handleSubmitPage3,
-        addExclusion,
-        exclusions,
-        removeExclusion,
+        
 
     } = useTambahPegawai();
     const isSelectAllActionsDisabled = checkedItems.slice(1).every(item => !item);
-    const handleSaveExclusion = (exclusion: Omit<Exclusion, 'id'>) => {
-        addExclusion(exclusion);
-    };
+    
     return (
         <Container sx={{ py: 2, minWidth: '1500px' }}>
             <BreadCrumbs
@@ -268,7 +242,6 @@ export default function TambahPegawai() {
                                         if (newValue) {
                                             const formattedDate = newValue.format("YYYY-MM-DD");
                                             formik.setFieldValue("tanggalLahir", formattedDate);
-                                            console.log("tanggalLahir", formattedDate);
                                         }
                                     }}
                                     slotProps={{
@@ -327,7 +300,6 @@ export default function TambahPegawai() {
                                     onChange={(event) => {
                                         setGender(event.target.value);
                                         formik.setFieldValue("jenisKelamin", event.target.value); // Perbaiki nama field
-                                        console.log(event.target.value);
                                     }}
                                 >
                                     <FormControlLabel

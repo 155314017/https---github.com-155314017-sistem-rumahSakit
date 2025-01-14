@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
 import { GetEmployeeByIdServices } from "../../../services/Admin Tenant/ManageEmployee/GetEmployeeByIdService";
 
 
@@ -71,7 +70,6 @@ export default function useDetailPegawai() {
     const [name, setName] = useState<string>("");
     const [deletedItems, setDeletedItems] = useState<string>("");
     const [open, setOpen] = useState(false);
-    const [response, setResponse] = useState<EmployeeData | null>(null); // Correct type for response
     const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -174,16 +172,18 @@ export default function useDetailPegawai() {
             };
           
           
-            console.log(response);
 
 
     return {
+      setName,
         breadcrumbItems,
         name,
         deletedItems,
         employeeData,
         handleDeleteSuccess,
         confirmationDelete,
+        open,
+        loading
     }
         
 }

@@ -13,7 +13,7 @@ import {
 import bgImage from "../../../assets/img/String.png";
 
 interface DetailCardProps {
-  title: string;
+  title: string | undefined;
   columns: Array<{ id: string; label: string }>;
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   data: Array<Record<string, any>>;

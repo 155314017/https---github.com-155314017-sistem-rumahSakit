@@ -53,13 +53,10 @@ export default function useEditKonter() {
 
     useEffect(() => {
         if (startTime && endTime) {
-            const formattedStartTime = dayjs(startTime).format('HH:mm'); // Format start time
-                  const formattedEndTime = dayjs(endTime).format('HH:mm'); // Format end time
+           
                   const dayOfWeek = dayjs(startTime).format('dddd'); // Get day name
                   
-                  console.log(formattedStartTime);
-                  console.log(formattedEndTime);
-                  console.log(dayOfWeek);
+                  
                   
                   const dayMapping: { [key: string]: string } = {
                     Senin: '1',
@@ -214,8 +211,7 @@ export default function useEditKonter() {
      function handleEditSchedule(index: number) {
               setStatusEdit(true);
               const scheduleToEdit = schedules[index];
-              console.log("Editing schedule at index:", index);
-              console.log("Schedule to edit:", scheduleToEdit);
+              
             
               if (scheduleToEdit) {
                 try {
@@ -233,11 +229,9 @@ export default function useEditKonter() {
                   // Check if the day from scheduleToEdit exists in the map
                   const mappedDayValue = dayMap[scheduleToEdit.day];
             
-                  console.log("Mapping day:", mappedDayValue);
             
                   if (mappedDayValue) {
                     setSelectedDay(mappedDayValue); // Set numeric value for dropdown
-                    console.log("Selected day after mapping:", mappedDayValue); // Debugging line
                   } else {
                     console.error("Invalid day name:", scheduleToEdit.day);
                     return; // Exit the function if the day is invalid
@@ -355,11 +349,9 @@ export default function useEditKonter() {
                     // Update the schedule at the specific index
                     const updatedSchedules = [...prevSchedules];
                     updatedSchedules[editingIndex] = newSchedule;
-                    console.log("Updated Schedule:", newSchedule); // Log the updated schedule
                     return updatedSchedules;
                   } else {
                     // Add the new schedule
-                    console.log("Saved New Schedule:", newSchedule);
                     return [...prevSchedules, newSchedule];
                   }
                 });

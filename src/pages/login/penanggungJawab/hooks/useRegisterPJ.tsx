@@ -123,17 +123,14 @@ export default function useRegisterPJ() {
 
   useEffect(() => {
     if (location.state && location.state.successAdd) {
-      console.log(location.state.message)
-      console.log('DATA YANG DIKIRIM: ', location.state.data)
+      
       setData(location.state.data)
-      console.log('Data yang di state kan: ', data)
       setPatientId(location.state.idPatient)
       // navigate(location.pathname, { replace: true, state: undefined });
     }
   }, [location.state, navigate])
 
   useEffect(() => {
-    console.log('Id Patient: ', patientId)
 
     const timeoutId = setTimeout(() => {
       if (patientId === '') {
@@ -156,7 +153,6 @@ export default function useRegisterPJ() {
     setIsCounting(true)
     setSecondsLeft(60)
     showTemporaryAlertSuccess()
-    console.log('Resend clicked')
   }
 
   const showTemporaryAlertSuccess = async () => {
@@ -173,8 +169,7 @@ export default function useRegisterPJ() {
 
   const handleSwitchChange = (value: boolean) => {
     setSwitchValue(value)
-    console.log('Switch value:', value)
-    console.log('Data: ', data)
+    
   }
   return {
     validationSchema,

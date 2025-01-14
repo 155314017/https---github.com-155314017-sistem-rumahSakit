@@ -28,7 +28,7 @@ export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDe
         setDataIdFacility(facilityIds);
         setIsLoading(false)
     } catch (error) {
-        console.log('Failed to fetch data from API: ', error);
+        console.error('Failed to fetch data from API: ', error);
     }
 };
 useEffect(() => {

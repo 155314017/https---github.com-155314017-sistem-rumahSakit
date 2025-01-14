@@ -15,14 +15,10 @@ export default function DetailKonter() {
         breadcrumbItems,
         largeImage,
         smallImage,
-        loading,
-        confirmationDelete,
-        open,
+        
         handleDeleteSuccess,
         name,
-        description,
-        deletedItems,
-        navigate,
+        
         counterData,
     }=useDetailKonter();
     
@@ -48,7 +44,7 @@ export default function DetailKonter() {
                     data={[{ nomorKonter: counterData?.id, tipeKonter: counterData?.additionalInfo, lokasiKonter: counterData?.location }]}
                     actions={() => (
                         <>
-                            <Link underline="hover" sx={{ color: "#8F85F3" }} href="/hapus">
+                            <Link underline="hover" sx={{ color: "#8F85F3" }} href="/hapus" onClick={handleDeleteSuccess}>
                                 Hapus
                             </Link>
                             <Link underline="hover" sx={{ color: "#8F85F3" }} href="/ubah">

@@ -1,9 +1,6 @@
 
-import React from 'react'
 
 import { useState } from "react";
-import * as Yup from "yup";
-import GenerateQueuePatientServices from "../../../services/Patient Tenant/GenerateQueuePatientServices";
 import { GetDoctorServices } from "../../../services/Admin Tenant/ManageDoctor/GetDoctorService";
 import { getClinic } from "../../../services/Admin Tenant/ManageClinic/GetClinic";
 import dayjs from "dayjs";
@@ -21,17 +18,13 @@ export default function useLihatTiket() {
     const [isLoading, setIsLoading] = useState(false);
     const [infoTicket, setInfoTicket] = useState(false);
     const [nomorAntrian, setNomorAntrian] = useState<string | number>(0);
-    const [tiketAntrianKonter, setTiketAntrianKonter] = useState(false);
-    const [noDataBooking, setNoDataBooking] = useState(false)
     const [dataKodeBooking, setDataKodeBooking] = useState<bookingCodeData>()
     
 
 
 
     const onSubmitKodeBooking = async (values: any) => {
-        console.log("Kode booking:", values.bookingCode);
         setIsLoading(true);
-        console.log(values.bookingCode)
         const bookingCode = { bookingCode: values.bookingCode };
         try {
             const response = await PatientCheckIn(bookingCode)
@@ -55,7 +48,7 @@ export default function useLihatTiket() {
             setIsLoading(false);
             setInputCodePages(false);
         } catch (err: any) {
-            console.log(err.status)
+            console.error(err.status)
             setIsLoading(false);
         }
 
