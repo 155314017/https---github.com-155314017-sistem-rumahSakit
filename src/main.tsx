@@ -51,6 +51,7 @@ import PrivateRoute from './services/Admin Tenant/Auth/PrivateRoute';
 import PilihKategoriPasien from './pages/pasien/pasienn/features/PilihKategoriPasien';
 import TambahPasienUmumOffline from './pages/pasien/pasienn/features/TambahPasienUmumOffline';
 import DetailFasilitas from './pages/fasilitas/features/DetailFasilitas';
+import TestKalender from './components/medium/TestKalender';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -138,6 +139,8 @@ createRoot(document.getElementById('root')!).render(
 
         <Route path="/offline/tambahPasien" element={<PilihKategoriPasien />} />
         <Route path="/tambahPasien/umum/offline" element={<TambahPasienUmumOffline />} />
+
+        <Route path="/kalender" element={<TestKalender />} />
 
       </Routes>
     </Router>

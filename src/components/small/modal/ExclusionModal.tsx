@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import React, { useState, useEffect } from "react";
 import {
     Dialog,
     DialogTitle,
@@ -56,6 +58,7 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
         startTime: '',
         endTime: '',
     });
+
     const timeStringToMinutes = (timeStr: string): number => {
         const [time, modifier] = timeStr.split(' ');
         // eslint-disable-next-line prefer-const
@@ -69,7 +72,37 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
         return hours * 60 + minutes;
     };
 
-    // Fungsi Validasi
+    // Function to Validate Start and End Times
+    const validateTimes = (currentStart: string, currentEnd: string) => {
+        const tempErrors = { ...errors };
+        let isValid = true;
+
+        if (selectedType === "Operasi") {
+            if (currentStart && currentEnd) {
+                const startMinutes = timeStringToMinutes(currentStart);
+                const endMinutes = timeStringToMinutes(currentEnd);
+
+                if (startMinutes > endMinutes) {
+                    tempErrors.startTime = 'Jam mulai tidak boleh lebih dari jam selesai.';
+                    tempErrors.endTime = 'Jam selesai tidak boleh kurang dari jam mulai.';
+                    isValid = false;
+                    console.error('Start time cannot be after end time.');
+                } else {
+                    tempErrors.startTime = '';
+                    tempErrors.endTime = '';
+                }
+            } else {
+                // Reset errors if one of the times is not selected
+                tempErrors.startTime = '';
+                tempErrors.endTime = '';
+            }
+        }
+
+        setErrors(tempErrors);
+        return isValid;
+    };
+
+    // Validation Function
     const validate = () => {
         const tempErrors = { date: '', type: '', startTime: '', endTime: '' };
         let isValid = true;
@@ -100,6 +133,7 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
                     tempErrors.startTime = 'Jam mulai tidak boleh lebih dari jam selesai.';
                     tempErrors.endTime = 'Jam selesai tidak boleh kurang dari jam mulai.';
                     isValid = false;
+                    console.error('Start time cannot be after end time.');
                 }
             }
         }
@@ -108,7 +142,7 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
         return isValid;
     };
 
-    // Fungsi Menyimpan Data
+    // Save Data Function
     const handleSave = () => {
         if (validate()) {
             const formattedDate = selectedDate!.format('YYYY-MM-DD');
@@ -126,9 +160,9 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
 
             onSave(exclusionData);
 
-            // Reset form setelah menyimpan
+            // Reset form after saving
             setSelectedDate(null);
-            setSelectedType('Cuti');
+            setSelectedType('');
             setStartTime('');
             setEndTime('');
             setErrors({ date: '', type: '', startTime: '', endTime: '' });
@@ -136,7 +170,7 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
         }
     };
 
-    // Fungsi untuk Menentukan Validitas Form
+    // Determine if Form is Valid
     const isFormValid = () => {
         if (!selectedDate || !selectedType) return false;
         if (selectedType === "Operasi") {
@@ -146,6 +180,18 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
             if (startMinutes > endMinutes) return false;
         }
         return true;
+    };
+
+    // Handle Start Time Change with Validation
+    const handleStartTimeChange = (value: string) => {
+        setStartTime(value);
+        validateTimes(value, endTime);
+    };
+
+    // Handle End Time Change with Validation
+    const handleEndTimeChange = (value: string) => {
+        setEndTime(value);
+        validateTimes(startTime, value);
     };
 
     return (
@@ -182,8 +228,8 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
                     '&::-webkit-scrollbar': {
                         display: 'none',
                     },
-                    scrollbarWidth: 'none', 
-                    '-ms-overflow-style': 'none', 
+                    scrollbarWidth: 'none',
+                    '-ms-overflow-style': 'none',
                 }}
             >
                 {/* Field Tanggal */}
@@ -193,8 +239,8 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
                         border: "1px solid #A8A8BD",
                         borderRadius: '16px',
                         mb: 3,
-                        backgroundColor: errors.date ? '#ffe6e6' : 'transparent', // Background merah jika error
-                        borderColor: errors.date ? 'red' : '#A8A8BD', // Border merah jika error
+                        backgroundColor: 'transparent',
+                        borderColor: errors.date ? 'red' : '#A8A8BD',
                     }}
                 >
                     <Typography>Select Date<span style={{ color: "red" }}>*</span></Typography>
@@ -231,8 +277,8 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
                         padding: "24px",
                         border: "1px solid #A8A8BD",
                         borderRadius: '16px',
-                        backgroundColor: errors.type ? '#ffe6e6' : 'transparent', // Background merah jika error
-                        borderColor: errors.type ? 'red' : '#A8A8BD', // Border merah jika error
+                        backgroundColor: 'transparent',
+                        borderColor: errors.type ? 'red' : '#A8A8BD',
                     }}
                 >
                     <Typography>Type Exclusion<span style={{ color: "red" }}>*</span></Typography>
@@ -241,7 +287,7 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
                         options={typeExclusion}
                         placeholder="Type Exclusion"
                         onChange={(value) => setSelectedType(value)}
-                        // value={selectedType}
+                        value={selectedType}
                     />
                     {errors.type && (
                         <Typography variant="caption" color="error">
@@ -265,40 +311,42 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
                                 justifyContent="center"
                                 gap={2}
                                 sx={{
-                                    backgroundColor: (errors.startTime || errors.endTime) ? '#ffe6e6' : 'transparent',
+                                    backgroundColor: 'transparent',
                                     borderRadius: '8px',
                                     padding: '8px',
-                                    border: (errors.startTime || errors.endTime) ? '1px solid red' : 'none',
+                                    border: 'none',
                                 }}
                             >
                                 <Box sx={{ width: '100%' }}>
                                     <DropdownListTime
-                                        onChange={(value) => setStartTime(value)}
+                                        onChange={handleStartTimeChange}
                                         placeholder="Pilih jam mulai"
                                         options={jamOperasional}
                                         loading={false}
-                                        // value={startTime}
+                                        value={startTime}
+                                        error={!!errors.startTime} // Pass error prop
                                     />
-                                    {errors.startTime && (
+                                    {/* {errors.startTime && (
                                         <Typography variant="caption" color="error">
                                             {errors.startTime}
                                         </Typography>
-                                    )}
+                                    )} */}
                                 </Box>
                                 <Typography>-</Typography>
                                 <Box sx={{ width: '100%' }}>
                                     <DropdownListTime
-                                        onChange={(value) => setEndTime(value)}
+                                        onChange={handleEndTimeChange}
                                         placeholder="Pilih jam selesai"
                                         options={jamOperasional}
                                         loading={false}
-                                        // value={endTime}
+                                        value={endTime}
+                                        error={!!errors.endTime} // Pass error prop
                                     />
-                                    {errors.endTime && (
+                                    {/* {errors.endTime && (
                                         <Typography variant="caption" color="error">
                                             {errors.endTime}
                                         </Typography>
-                                    )}
+                                    )} */}
                                 </Box>
                             </Box>
                         </Box>

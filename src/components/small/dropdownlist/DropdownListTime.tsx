@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
-interface Option {
+export interface Option {
   value: number;
   label: string;
 }
@@ -19,6 +19,8 @@ interface DropdownListProps {
   onChange?: (value: string) => void;
   defaultValue?: string;
   loading: boolean;
+  value?: string;
+  error?: boolean; // Added error prop
 }
 
 export default function DropdownListTime({
@@ -27,12 +29,14 @@ export default function DropdownListTime({
   onChange,
   defaultValue = "",
   loading,
+  value,
+  error = false, // Destructure error with default value
 }: DropdownListProps) {
-  const [selectedOption, setSelectedOption] = useState<string>(defaultValue);
+  const [selectedOption, setSelectedOption] = useState<string>(value || defaultValue);
 
   useEffect(() => {
-    setSelectedOption(defaultValue);
-  }, [defaultValue]);
+    setSelectedOption(value || defaultValue);
+  }, [value, defaultValue]);
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setSelectedOption(event.target.value);
@@ -54,7 +58,7 @@ export default function DropdownListTime({
         value={selectedOption}
         onChange={handleChange}
         displayEmpty
-        // Gabungkan ikon jam dan spinner dalam startAdornment
+        // Combine the clock icon and spinner in startAdornment
         startAdornment={
           <Box sx={{ display: "flex", alignItems: "center", ml: 0, mr: 1 }}>
             {loading && <CircularProgress size={20} sx={{ mr: 1 }} />}
@@ -64,11 +68,11 @@ export default function DropdownListTime({
         sx={{
           width: "100%",
           color: "#555",
-          bgcolor: "#FFF",
+          bgcolor: error ? "#FFCCCC" : "#FFF", // Change background color on error
           border: "1px solid #A8A8BD",
           borderRadius: "8px",
           height: "40px",
-          transition: "border-color 0.3s ease-in-out",
+          transition: "border-color 0.3s ease-in-out, background-color 0.3s ease-in-out",
           "&:hover": {
             borderColor: "#8F85F3",
           },
@@ -83,12 +87,12 @@ export default function DropdownListTime({
           },
         }}
         inputProps={{ "aria-label": "select dropdown" }}
-        // Menambahkan animasi dan scroll
+        // Adding animation and scroll
         MenuProps={{
           PaperProps: {
             sx: {
-              maxHeight: 240, // Batas tinggi menu dropdown (px)
-              overflowY: "auto", // Memunculkan scroll saat konten melebihi maxHeight
+              maxHeight: 240, // Dropdown menu height limit (px)
+              overflowY: "auto", // Show scrollbar when content exceeds maxHeight
               animation: "fadeInAndScale 0.3s ease-in-out",
               "@keyframes fadeInAndScale": {
                 "0%": {
@@ -100,7 +104,7 @@ export default function DropdownListTime({
                   transform: "scale(1)",
                 },
               },
-              // Opsional, styling scrollbar agar lebih halus atau sesuai selera
+              // Optional: Smooth scrollbar styling
               "&::-webkit-scrollbar": {
                 width: "6px",
               },
