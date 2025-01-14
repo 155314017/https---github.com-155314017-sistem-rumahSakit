@@ -62,20 +62,16 @@ export default function usePilihKategoriPasien() {
         setMainPages(false);
         try {
             const response = await GenerateQueuePatientServices(counterId)
-            console.log(response);
             setNomorAntrian(response);
-            console.log(response)
 
         } catch {
-            console.log('error')
+            console.error('error')
         }
 
     }
 
     const onSubmitKodeBooking = async (values: any) => {
-        console.log("Kode booking:", values.bookingCode);
         setIsLoading(true);
-        console.log(values.bookingCode)
         const bookingCode = { bookingCode: values.bookingCode };
         try {
             const response = await PatientCheckIn(bookingCode)
@@ -99,7 +95,6 @@ export default function usePilihKategoriPasien() {
             setIsLoading(false);
             setInputCodePages(false);
         } catch (err: any) {
-            console.log(err.status)
             setIsLoading(false);
             showTemporaryAlert();
         }

@@ -15,8 +15,6 @@ import CardOperasionalKlinik from "../../../components/small/card/CardOperasiona
           breadcrumbItems,
           largeImage,
           smallImage,
-          handleDeleteSuccess,
-          
           ambulanceData
     } = useDetailAmbulance()
    return (

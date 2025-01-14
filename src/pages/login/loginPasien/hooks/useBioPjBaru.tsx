@@ -94,23 +94,19 @@ export default function useBioPjBaru() {
       setNoIdentity(true);
       setPatientId(state.idPatient ?? '');
     } else if (state) {
-      console.log('data kosong !');
 
       setData(state.data ?? null);
       setPatientId(state.idPatient ?? '');
       setNikPjBaru(state.BioPjBaru?.nik ?? '');
       setEmailPjBaru(state.BioPjBaru?.email ?? '');
 
-      console.log('NIK: ', state.nikPj ?? '');
-      console.log('Email: ', state.emailPj ?? '');
-      console.log('Data: ', state.data ?? null);
+      
     }
   }, [location.state, navigate]);
 
 
   useEffect(() => {
-    console.log('NIK PJEEE: ', nikPjBaru)
-    console.log('EMAIL PJEEE: ', emailPjBaru)
+    
   }, [nikPjBaru, emailPjBaru])
 
   useEffect(() => {
@@ -166,12 +162,11 @@ export default function useBioPjBaru() {
     setShowLogin(false)
   }
 
-  const validationCheck = async (values: DataKirim) => {
-    // showOtp()
-    console.log('Data siap kirim', values)
+  // const validationCheck = async (values: DataKirim) => {
+  //   // showOtp()
 
-    return true
-  }
+  //   return true
+  // }
 
   useEffect(() => {
     let timer: ReturnType<typeof setInterval>
@@ -283,7 +278,6 @@ export default function useBioPjBaru() {
     handleClick,
     showTemporaryAlert,
     showTemporarySuccessLogin,
-    validationCheck,
     handleResendClick,
     formatTime,
     handleChangeGender,

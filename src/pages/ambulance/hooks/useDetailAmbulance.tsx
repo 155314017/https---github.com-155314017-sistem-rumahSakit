@@ -48,12 +48,8 @@ type OperationalSchedule = {
 
 
 export default function useDetailAmbulance() {
-  const [name, setName] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
     const [deletedItems, setDeletedItems] = useState<string>("");
     const [open, setOpen] = useState(false);
-    const [ids, setIds] = useState<string>("") || "";
-    const [response, setResponse] = useState<AmbulanceDataItem | null>(null); // Correct type for response
     const { id } = useParams();
     const navigate = useNavigate();
     const [largeImage, setLargeImage] = useState<string>("");
@@ -147,7 +143,7 @@ export default function useDetailAmbulance() {
       
         const handleDeleteSuccess = () => {
           setOpen(false);
-          navigate("/gedung", { state: { successDelete: true, message: "Gedung berhasil dihapus!" } });
+          navigate("/ambulance", { state: { successDelete: true, message: "Gedung berhasil dihapus!" } });
         };
       
         const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
@@ -157,16 +153,16 @@ export default function useDetailAmbulance() {
         };
       
       
-        console.log(response);
       
         return {
-          name,
           breadcrumbItems,
           largeImage,
           smallImage,
           handleDeleteSuccess,
           confirmationDelete,
-          
+          open,
+          loading,
+          deletedItems,
           ambulanceData
         };
 }

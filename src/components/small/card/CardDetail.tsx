@@ -13,7 +13,7 @@ import {
 import bgImage from "../../../assets/img/String.png";
 
 interface DetailCardProps {
-  title: string;
+  title: string | undefined;
   columns: Array<{ id: string; label: string }>;
   data: Array<Record<string, any>>;
   actions?: (row: Record<string, any>) => JSX.Element;

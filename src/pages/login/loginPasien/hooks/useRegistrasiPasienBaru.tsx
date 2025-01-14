@@ -26,10 +26,7 @@ const validationSchema = Yup.object({
     tanggalLahir: Yup.string().required('Tempat lahir harus diisi'),
 });
 
-interface FormValues {
-    nik: string;
-    email: string;
-}
+
 
 interface DataKirim {
     identityNumber: string;
@@ -168,11 +165,7 @@ export default function useRegistrasiPasienBaru() {
         setShowEmailChanged(true);
     };
 
-    const validationCheck = async (values: FormValues) => {
-        console.log(values)
-        // showOtp()
-        return true;
-    };
+    
 
     useEffect(() => {
         let timer: ReturnType<typeof setInterval>;
@@ -190,17 +183,13 @@ export default function useRegistrasiPasienBaru() {
 
     const handleResendClick = async () => {
         setLoading(true);
-        console.log("data kirim: ", data)
         try {
             await RegisterPatient(data);
-            console.log("pre")
             showTemporaryAlertSuccess();
-            console.log("pass")
             setLoading(false);
         } catch {
             setLoading(false);
             alert("Terjadi kesalahan saat mengirim ulang kode. Silakan coba lagi.");
-            console.log("error")
         }
         setIsCounting(true);
         setSecondsLeft(60);
@@ -222,33 +211,25 @@ export default function useRegistrasiPasienBaru() {
     const [value, setValue] = React.useState('WOMEN');
     const handleChangeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue((event.target as HTMLInputElement).value);
-        console.log(value)
     };
 
     useEffect(() => {
         if (location.state && location.state.succesSendData1) {
-            console.log(location.state.message);
-            console.log("DATA YANG DIKIRIM dari Page 1: ", location.state.data);
             setData1(location.state.data);
 
         }
     }, [location.state]);
 
     useEffect(() => {
-        console.log("trace 1");
         if (data1 != null) {
-            console.log("trace 2");
             if (data1.email === '') {
                 setShowLogin(false);
                 setNotFound(true);
-                console.log("trace 2.1");
             } else {
                 setShowLogin(true);
                 setNotFound(false);
-                console.log("trace 2.2");
             }
         } else {
-            console.log("data1 is null");
             setShowLogin(false);
             setNotFound(true);
         }
@@ -256,7 +237,6 @@ export default function useRegistrasiPasienBaru() {
 
 
     const showTemporaryAlertError = async () => {
-        console.log("ALERT ERROR ! ! !")
         setErrorAlert(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setErrorAlert(false);
@@ -264,7 +244,6 @@ export default function useRegistrasiPasienBaru() {
     return {
         otpFormShown,
         showOtp,
-        validationCheck,
         showTemporaryAlert,
         showTemporaryAlertSuccess,
         showTemporaryAlertError,

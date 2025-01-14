@@ -77,13 +77,7 @@ export default function useLoginPegawai() {
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked)
-    console.log('Status check: ', event.target.checked)
-    console.log('Status check: ', isChecked)
-    if (event.target.checked == true) {
-      console.log('simpan kata sandi')
-    } else if (event.target.checked == false) {
-      console.log('tidak simpan')
-    }
+    
   }
 
   const validationCheck = async (values: FormValues) => {

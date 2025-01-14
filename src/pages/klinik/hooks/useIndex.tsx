@@ -23,7 +23,7 @@ export default function useIndex() {
             setData(result);
             setIsLoading(false)
         } catch (error) {
-            console.log('Failed to fetch data from API' + error);
+            console.error('Failed to fetch data from API' + error);
         }
     };
     useEffect(() => {

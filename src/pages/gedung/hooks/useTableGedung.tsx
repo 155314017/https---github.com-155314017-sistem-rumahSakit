@@ -24,7 +24,7 @@ export default function useTableGedung(fetchDatas: () => void, onSuccessDelete: 
       const result = await Building(pageNumber, pageSize, orderBy);
       setDatas(result);
     } catch (error) {
-      console.log("Failed to fetch data from API:", error);
+      console.error("Failed to fetch data from API:", error);
     }
   };
 
@@ -67,7 +67,6 @@ export default function useTableGedung(fetchDatas: () => void, onSuccessDelete: 
 
   const handleDeleteSuccess = () => {
     fetchDatas();
-    console.log("Delete success");
     setOpen(false);
     onSuccessDelete();
     fetchData();

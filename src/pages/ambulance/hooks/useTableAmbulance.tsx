@@ -25,7 +25,7 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
       setDatas(result)
       // setData(result); // Set data to display in table
     } catch (error) {
-      console.log('Failed to fetch data from API: ', error)
+      console.error('Failed to fetch data from API: ', error)
     }
   }
   useEffect(() => {

@@ -71,10 +71,9 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
       setDatas(result);
       
       const buildingIds = result.map((data) => data.masterBuildingId);
-      console.log("Building IDs:", buildingIds);
       setDataIdBuilding(buildingIds);
     } catch (error) {
-      console.log("Failed to fetch data from API: ", error);
+      console.error("Failed to fetch data from API: ", error);
     }
   };
 
@@ -100,7 +99,6 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
         });
 
         setBuildings(facilitiesData);
-        console.log("Buildings:", buildings);
       } catch (err) {
         console.error("Error:", err);
       }

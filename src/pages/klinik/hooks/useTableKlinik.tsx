@@ -17,7 +17,7 @@ export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: 
       const result = await Clinic();
       setDatas(result); 
     } catch (error) {
-      console.log('Failed to fetch data from API: ', error);
+      console.error('Failed to fetch data from API: ', error);
     }
   };
   useEffect(() => {
