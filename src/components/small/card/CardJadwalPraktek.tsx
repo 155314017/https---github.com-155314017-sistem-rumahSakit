@@ -20,7 +20,10 @@ export default function CardJadwalPraktek() {
             padding={2}
         >
             <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Typography>Jadwal Praktek</Typography>
+                <Box display={'flex'} flexDirection={'row'} alignItems={'center'} gap={2} >
+                    <Box width={'16px'} height={'16px'} borderRadius={'16px'} bgcolor={'#D5D1FB'} />
+                    <Typography>Jadwal Praktek</Typography>
+                </Box>
                 <IconButton onClick={handleToggleCollapse} size="small">
                     {isCollapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
                 </IconButton>

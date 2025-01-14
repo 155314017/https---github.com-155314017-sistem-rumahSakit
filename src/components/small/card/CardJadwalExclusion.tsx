@@ -20,7 +20,10 @@ export default function CardJadwalExclusion() {
             padding={2}
         >
             <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Typography>Jadwal Pengecualian</Typography>
+                <Box display={'flex'} flexDirection={'row'} alignItems={'center'} gap={2} >
+                    <Box width={'16px'} height={'16px'} borderRadius={'16px'} bgcolor={'#B8E0C9'} />
+                    <Typography>Jadwal Pengecualian</Typography>
+                </Box>
                 <IconButton onClick={handleToggleCollapse} size="small">
                     {isCollapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
                 </IconButton>

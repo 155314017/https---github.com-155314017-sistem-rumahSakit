@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import type React from 'react';
-import { useState, useRef, useEffect, type MouseEvent } from 'react'
+import { useState, useRef, useEffect, type MouseEvent } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import '../../../node_modules/@fullcalendar/common/main.css';
+import '@fullcalendar/common/main.css';
 import 'dayjs/locale/id';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-
 import {
     Container,
     Typography,
@@ -25,6 +23,7 @@ import {
     MenuItem,
     FormControl,
     Menu,
+    Alert,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { DateCalendar, DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -35,8 +34,6 @@ import CardJadwalExclusion from '../small/card/CardJadwalExclusion';
 import DropdownList from '../small/dropdownlist/DropdownList';
 import DropdownListTime from '../small/dropdownlist/DropdownListTime';
 import { CloseOutlined } from '@mui/icons-material';
-import DayOperational from './DayOperational';
-import ModalPilihTanggal from '../small/modal/ModalPilihTanggal';
 
 // Interface Event
 interface Event {
@@ -45,8 +42,18 @@ interface Event {
     start: string;
     end?: string;
     allDay?: boolean;
+    type?: string;
+    senin?: boolean;
+    selasa?: boolean;
+    rabu?: boolean;
+    kamis?: boolean;
+    jumat?: boolean;
+    sabtu?: boolean;
+    minggu?: boolean;
+    notes?: string;
 }
 
+// Styled Dialog with slide animations
 const StyledDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiPaper-root': {
         position: 'fixed',
@@ -55,33 +62,34 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
         margin: 0,
         borderTopLeftRadius: '16px',
         borderBottomLeftRadius: '16px',
-        minHeight: '100%', 
-        width: '40vw', 
+        minHeight: '100%',
+        width: '40vw',
         maxWidth: 'none',
         boxShadow: theme.shadows[5],
-        animation: 'slideIn 0.5s ease-out', 
+        animation: 'slideIn 0.5s ease-out',
         '&.slideOut': {
-            animation: 'slideOut 0.5s ease-in forwards', 
+            animation: 'slideOut 0.5s ease-in forwards',
         },
     },
 }));
 
+// Operational hours
 const jamOperasional = [
-    { value: 1, label: "07:00 am" },
-    { value: 2, label: "08:00 am" },
-    { value: 3, label: "09:00 am" },
-    { value: 4, label: "10:00 am" },
-    { value: 5, label: "11:00 am" },
-    { value: 6, label: "12:00 pm" },
-    { value: 7, label: "01:00 pm" },
-    { value: 8, label: "02:00 pm" },
-    { value: 9, label: "03:00 pm" },
-    { value: 10, label: "04:00 pm" },
-    { value: 11, label: "05:00 pm" },
-    { value: 12, label: "06:00 pm" },
-    { value: 13, label: "07:00 pm" },
-    { value: 14, label: "08:00 pm" },
-    { value: 15, label: "09:00 pm" },
+    { value: "07:00 am", label: "07:00 am" },
+    { value: "08:00 am", label: "08:00 am" },
+    { value: "09:00 am", label: "09:00 am" },
+    { value: "10:00 am", label: "10:00 am" },
+    { value: "11:00 am", label: "11:00 am" },
+    { value: "12:00 pm", label: "12:00 pm" },
+    { value: "01:00 pm", label: "01:00 pm" },
+    { value: "02:00 pm", label: "02:00 pm" },
+    { value: "03:00 pm", label: "03:00 pm" },
+    { value: "04:00 pm", label: "04:00 pm" },
+    { value: "05:00 pm", label: "05:00 pm" },
+    { value: "06:00 pm", label: "06:00 pm" },
+    { value: "07:00 pm", label: "07:00 pm" },
+    { value: "08:00 pm", label: "08:00 pm" },
+    { value: "09:00 pm", label: "09:00 pm" },
 ];
 
 // Keyframes for animations
@@ -109,25 +117,29 @@ const GlobalStyles = styled('style')`
   }
 `;
 
+// Styled Container for FullCalendar
 const StyledContainer = styled(Container)(({ theme }) => ({
     borderRadius: '16px',
     minWidth: '100%',
     padding: theme.spacing(4),
     '& .fc-event': {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: '#8F85F3',
         border: 'none',
         borderRadius: theme.shape.borderRadius,
         color: '#fff',
         fontSize: '0.875rem',
-    },
-    '& .fc-event:hover': {
-        backgroundColor: theme.palette.secondary.dark,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     '& .fc-timegrid-slot': {
         borderBottom: '1px solid #e0e0e0',
     },
+    '& .fc-daygrid-day-number': {
+        color: 'black',
+    },
     '& .fc-col-header-cell': {
-        borderTop: 'none',
+        border: 'none',
+        textAlign: 'center',
     },
 }));
 
@@ -135,72 +147,50 @@ const TestKalender: React.FC = () => {
     const [events, setEvents] = useState<Event[]>([
         {
             id: '1',
-            title: 'Praktik Sesi 1',
-            start: '2025-01-21T10:00:00',
-            end: '2025-01-21T11:00:00',
+            title: 'Praktek',
+            start: dayjs().add(1, 'day').format('YYYY-MM-DDT10:00:00'),
+            end: dayjs().add(1, 'day').format('YYYY-MM-DDT11:00:00'),
+            type: 'Praktek',
+            senin: true,
+            selasa: false,
+            rabu: true,
+            kamis: true,
+            jumat: false,
+            sabtu: false,
+            minggu: false,
         },
         {
             id: '2',
-            title: 'Praktik Sesi 2',
-            start: '2025-01-20T09:00:00',
-            end: '2025-01-25T17:00:00',
+            title: 'Praktek',
+            start: dayjs().subtract(1, 'day').format('YYYY-MM-DDT09:00:00'),
+            end: dayjs().subtract(1, 'day').format('YYYY-MM-DDT17:00:00'),
+            type: 'Praktek',
+            senin: false,
+            selasa: false,
+            rabu: false,
+            kamis: false,
+            jumat: false,
+            sabtu: false,
+            minggu: false,
         },
     ]);
-    const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modal
-    const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [open, setOpen] = useState(false);
+    const [openExclusion, setOpenExclusion] = useState(false);
     const [currentDate, setCurrentDate] = useState(dayjs());
-
-    useEffect(() => {
-        console.log('Tanggal yang diformat: ', currentDate.format('dddd, D MMMM YYYY'));
-    }, [currentDate]);
-
     const [closeAnimation, setCloseAnimation] = useState(false);
     const [newEvent, setNewEvent] = useState({
-        title: '',
-        dateStart: '',
-        timeStart: '',
-        dateEnd: '',
-        timeEnd: '',
+        type: 'Praktek',
+        startTime: '',
+        endTime: '',
+        senin: false,
+        selasa: false,
+        rabu: false,
+        kamis: false,
+        jumat: false,
+        sabtu: false,
+        minggu: false,
+        notes: '',
     });
-
-    const [currentView, setCurrentView] = useState<string>('dayGridMonth');
-    const calendarRef = useRef<FullCalendar>(null);
-
-    const handleOpenModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleDateChange = (date: string | null) => {
-        setSelectedDate(date);
-        handleCloseModal();
-    };
-
-    dayjs.locale('id');
-    const handleChangeTipeJadwal = (value: string) => {
-        if (value === 'Praktek') {
-            console.log("Praktek");
-            setOpenExclusion(false);
-            setOpen(true);
-        } else if (value === 'Pengecualian') {
-            console.log("Pengecualian");
-            setOpen(false);
-            setOpenExclusion(true);
-        }
-    };
-    const tipeJadwal = [
-        { value: 1, label: "Praktek" },
-        { value: 2, label: "Pengecualian" },
-    ];
-
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const openMenu = Boolean(anchorEl);
-
-    const [openExclusion, setOpenExclusion] = useState(false);
     const [newExclusion, setNewExclusion] = useState({
         exclusionTitle: '',
         exclusionDateStart: '',
@@ -209,13 +199,64 @@ const TestKalender: React.FC = () => {
         exclusionTimeEnd: '',
         exclusionNotes: '',
     });
+    const [currentView, setCurrentView] = useState<string>('dayGridMonth');
+    const calendarRef = useRef<FullCalendar>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const openMenu = Boolean(anchorEl);
+    const [errorPraktek, setErrorPraktek] = useState<string>('');
+    const [errorExclusion, setErrorExclusion] = useState<string>('');
 
-    // Handler untuk membuka menu
+    const days = [
+        { label: 'Min', value: 'minggu' },
+        { label: 'Sen', value: 'senin' },
+        { label: 'Sel', value: 'selasa' },
+        { label: 'Rab', value: 'rabu' },
+        { label: 'Kam', value: 'kamis' },
+        { label: 'Jum', value: 'jumat' },
+        { label: 'Sab', value: 'sabtu' },
+    ];
+
+    const tipeJadwal = [
+        { value: 1, label: "Praktek" },
+        { value: 2, label: "Pengecualian" },
+    ];
+
+    // Log formatted current date whenever it changes
+    useEffect(() => {
+        console.log('Tanggal yang diformat: ', currentDate.format('dddd, D MMMM YYYY'));
+    }, [currentDate]);
+
+    // Mengarahkan FullCalendar ke currentDate setiap kali currentDate berubah
+    useEffect(() => {
+        if (calendarRef.current) {
+            const calendarApi = calendarRef.current.getApi();
+            calendarApi.gotoDate(currentDate.format('YYYY-MM-DD'));
+        }
+    }, [currentDate]);
+
+    // Render event content
+    const renderEventContent = (eventInfo: any) => {
+        return (
+            <div style={{ textAlign: 'center' }}>
+                <strong>{eventInfo.event.title}</strong>
+            </div>
+        );
+    };
+
+    const handleEventChange = (field: keyof typeof newEvent, value: string | boolean) => {
+        setNewEvent({ ...newEvent, [field]: value });
+    };
+
+    const handleExclusionChange = (field: keyof typeof newExclusion, value: string) => {
+        setNewExclusion({ ...newExclusion, [field]: value });
+    };
+
+
+    // Handlers untuk menu
     const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
-    // Handler untuk menutup menu
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
@@ -226,32 +267,90 @@ const TestKalender: React.FC = () => {
         if (type === 'Praktek') {
             setCloseAnimation(false);
             setOpen(true);
+            setOpenExclusion(false);
         } else if (type === 'Pengecualian') {
             setCloseAnimation(false);
             setOpenExclusion(true);
+            setOpen(false);
         }
     };
 
-    // Handler untuk menutup modal Praktek
-    const handleClose = () => {
-        setCloseAnimation(true); 
-        setTimeout(() => {
-            setOpen(false); // Tutup modal setelah animasi selesai
-            setNewEvent({
-                title: '',
-                dateStart: '',
-                timeStart: '',
-                dateEnd: '',
-                timeEnd: '',
-            }); // Reset state setelah modal tertutup
-        }, 500); 
+    // Handler untuk memilih tipe jadwal dari DropdownList
+    const handleChangeTipeJadwal = (value: string) => {
+        if (value === 'Praktek') {
+            setCloseAnimation(false);
+            setOpen(true);
+            setOpenExclusion(false);
+        } else if (value === 'Pengecualian') {
+            setCloseAnimation(false);
+            setOpenExclusion(true);
+            setOpen(false);
+        }
     };
 
-    // Handler untuk menutup modal Pengecualian
-    const handleCloseExclusion = () => {
-        setCloseAnimation(true); // Aktifkan animasi keluar
+    // Validasi untuk Praktek
+    const validatePraktek = () => {
+        const { type, startTime, endTime } = newEvent;
+        const isAnyDaySelected = ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'minggu'].some(day => newEvent[day as keyof typeof newEvent]);
+        if (!type || !startTime || !endTime || !isAnyDaySelected) {
+            setErrorPraktek('Harap isi tipe jadwal, waktu mulai, waktu selesai, dan pilih setidaknya satu hari.');
+            return false;
+        }
+        const start = dayjs(startTime, ['hh:mm a', 'hh:mm A']);
+        const end = dayjs(endTime, ['hh:mm a', 'hh:mm A']);
+        if (end.isBefore(start)) {
+            setErrorPraktek('Waktu selesai tidak boleh sebelum waktu mulai.');
+            return false;
+        }
+        setErrorPraktek('');
+        return true;
+    };
+
+    // Validasi untuk Pengecualian
+    const validateExclusion = () => {
+        const { exclusionTitle, exclusionDateStart, exclusionTimeStart, exclusionDateEnd, exclusionTimeEnd } = newExclusion;
+        if (!exclusionTitle || !exclusionDateStart || !exclusionTimeStart) {
+            setErrorExclusion('Harap isi judul, tanggal mulai, dan waktu mulai.');
+            return false;
+        }
+        if (exclusionDateEnd && exclusionTimeEnd) {
+            const startDateTime = dayjs(`${exclusionDateStart}T${exclusionTimeStart}`);
+            const endDateTime = dayjs(`${exclusionDateEnd}T${exclusionTimeEnd}`);
+            if (endDateTime.isBefore(startDateTime)) {
+                setErrorExclusion('Tanggal selesai tidak boleh sebelum tanggal mulai.');
+                return false;
+            }
+        }
+        setErrorExclusion('');
+        return true;
+    };
+
+    // Handlers for closing modals with animation
+    const handleClosePraktek = () => {
+        setCloseAnimation(true);
         setTimeout(() => {
-            setOpenExclusion(false); 
+            setOpen(false);
+            setNewEvent({
+                type: 'Praktek',
+                startTime: '',
+                endTime: '',
+                senin: false,
+                selasa: false,
+                rabu: false,
+                kamis: false,
+                jumat: false,
+                sabtu: false,
+                minggu: false,
+                notes: '',
+            });
+            setErrorPraktek('');
+        }, 500);
+    };
+
+    const handleCloseExclusion = () => {
+        setCloseAnimation(true);
+        setTimeout(() => {
+            setOpenExclusion(false);
             setNewExclusion({
                 exclusionTitle: '',
                 exclusionDateStart: '',
@@ -259,116 +358,163 @@ const TestKalender: React.FC = () => {
                 exclusionDateEnd: '',
                 exclusionTimeEnd: '',
                 exclusionNotes: '',
-            }); // Reset state setelah modal tertutup
-        }, 500); 
+            });
+            setErrorExclusion('');
+        }, 500);
     };
 
-    // Handler untuk perubahan input pada form Praktek
+    // Handlers for form changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewEvent({ ...newEvent, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        handleEventChange(name as keyof typeof newEvent, value);
     };
 
-    // Handler untuk perubahan input pada form Pengecualian
     const handleChangeExclusion = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewExclusion({ ...newExclusion, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        handleExclusionChange(name as keyof typeof newExclusion, value);
     };
 
-    // Handler tombol Prev
+    // Toggle hari
+    const toggleDay = (day: string) => {
+        handleEventChange(day as keyof typeof newEvent, !newEvent[day as keyof typeof newEvent]);
+    };
+
+    // Calendar navigation
     const handlePrev = () => {
         if (calendarRef.current) {
             const calendarApi = calendarRef.current.getApi();
-            calendarApi.prev(); // Navigasi ke periode sebelumnya
-            setCurrentDate(dayjs(calendarApi.getDate())); // Update tanggal
+            calendarApi.prev();
+            setCurrentDate(dayjs(calendarApi.getDate()));
         }
     };
 
-    // Handler tombol Next
     const handleNext = () => {
         if (calendarRef.current) {
             const calendarApi = calendarRef.current.getApi();
-            calendarApi.next(); // Navigasi ke periode berikutnya
-            setCurrentDate(dayjs(calendarApi.getDate())); // Update tanggal
+            calendarApi.next();
+            setCurrentDate(dayjs(calendarApi.getDate()));
         }
     };
 
+    // Function to calculate the next date based on selected day
+    const getNextDateForDay = (dayValue: string): string => {
+        const daysMap: { [key: string]: number } = {
+            'senin': 1,
+            'selasa': 2,
+            'rabu': 3,
+            'kamis': 4,
+            'jumat': 5,
+            'sabtu': 6,
+            'minggu': 0,
+        };
+        const targetDay = daysMap[dayValue];
+        const today = currentDate.day(); // day() returns 0 (Sun) to 6 (Sat)
+        let daysToAdd = targetDay - today;
+        if (daysToAdd < 0) daysToAdd += 7;
+        const targetDate = currentDate.add(daysToAdd, 'day');
+        return targetDate.format('YYYY-MM-DD');
+    };
+
+    // Adding new event (Praktek)
     const handleAddEvent = () => {
-        const { title, dateStart, timeStart, dateEnd, timeEnd } = newEvent;
+        if (validatePraktek()) {
+            const { type, startTime, endTime, notes } = newEvent;
+            const selectedDaysArray = Object.keys(newEvent).filter(day => 
+                ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'minggu'].includes(day) && newEvent[day as keyof typeof newEvent]
+            );
 
-        if (title && dateStart && timeStart) {
-            const startDateTime = `${dateStart}T${timeStart}`;
-            const endDateTime = dateEnd && timeEnd ? `${dateEnd}T${timeEnd}` : undefined;
+            const newEvents: Event[] = selectedDaysArray.map((day, index) => {
+                const date = getNextDateForDay(day);
+                // Convert time to 24-hour format
+                const startTime24 = dayjs(startTime, ['hh:mm a', 'hh:mm A']).format('HH:mm:ss');
+                const endTime24 = dayjs(endTime, ['hh:mm a', 'hh:mm A']).format('HH:mm:ss');
+                return {
+                    id: (events.length + index + 1).toString(),
+                    title: type, // Menggunakan 'type' sebagai 'title' di FullCalendar
+                    start: `${date}T${startTime24}`,
+                    end: `${date}T${endTime24}`,
+                    type: type,
+                    [day]: true,
+                    notes: notes,
+                };
+            });
 
-            if (endDateTime && dayjs(endDateTime).isBefore(dayjs(startDateTime))) {
-                alert('Tanggal selesai tidak boleh sebelum tanggal mulai.');
-                return;
-            }
+            setEvents([...events, ...newEvents]);
 
-            const eventToAdd: Event = {
-                id: (events.length + 1).toString(),
-                title,
-                start: startDateTime,
-                end: endDateTime,
-            };
-            setEvents([...events, eventToAdd]);
-            handleClose();
-        } else {
-            alert('Harap isi judul, tanggal mulai, dan waktu mulai.');
+            // Cetak data ke konsol
+            console.log('Events Praktek Ditambahkan:', newEvents);
+
+            handleClosePraktek();
         }
     };
 
-    // Handler untuk menambahkan pengecualian
+    // Adding exclusion (Pengecualian)
     const handleAddExclusion = () => {
-        const { exclusionTitle, exclusionDateStart, exclusionTimeStart, exclusionDateEnd, exclusionTimeEnd, exclusionNotes } = newExclusion;
+        if (validateExclusion()) {
+            const { exclusionTitle, exclusionDateStart, exclusionTimeStart, exclusionDateEnd, exclusionTimeEnd, exclusionNotes } = newExclusion;
 
-        if (exclusionTitle && exclusionDateStart && exclusionTimeStart) {
             const startDateTime = `${exclusionDateStart}T${exclusionTimeStart}`;
             const endDateTime = exclusionDateEnd && exclusionTimeEnd ? `${exclusionDateEnd}T${exclusionTimeEnd}` : undefined;
-
-            if (endDateTime && dayjs(endDateTime).isBefore(dayjs(startDateTime))) {
-                alert('Tanggal selesai tidak boleh sebelum tanggal mulai.');
-                return;
-            }
 
             const exclusionToAdd: Event = {
                 id: (events.length + 1).toString(),
                 title: exclusionTitle,
                 start: startDateTime,
                 end: endDateTime,
-                allDay: false, 
+                allDay: false,
+                notes: exclusionNotes,
             };
 
             setEvents([...events, exclusionToAdd]);
+
+            // Cetak data ke konsol
+            console.log('Event Pengecualian Ditambahkan:', exclusionToAdd);
+
             handleCloseExclusion();
-        } else {
-            alert('Harap isi judul, tanggal mulai, dan waktu mulai.');
         }
     };
 
-    // Handle perubahan view kalender
+    // Handle view change
     const handleViewChange = (view: string) => {
         if (calendarRef.current) {
             const calendarApi = calendarRef.current.getApi();
-            calendarApi.changeView(view); // Ubah tampilan kalender
+            calendarApi.changeView(view);
         }
-        setCurrentView(view); // Simpan pilihan view
+        setCurrentView(view);
     };
 
+    // Initialize calendar date to currentDate on mount
     useEffect(() => {
         if (calendarRef.current) {
             const calendarApi = calendarRef.current.getApi();
-            calendarApi.gotoDate('2025-01-13'); // Pindahkan ke tanggal awal 
+            calendarApi.gotoDate(currentDate.format('YYYY-MM-DD'));
         }
-    }, []);
+    }, []); // Empty dependency array ensures this runs only once on mount
 
     return (
         <>
             <GlobalStyles />
 
-            <Box bgcolor={'white'} width={'94%'} ml={'2%'} border={'1px solid #C5C5D3'} borderRadius={'16px'} padding={0}>
+            <Box
+                bgcolor={'white'}
+                width={'94%'}
+                ml={'2%'}
+                border={'1px solid #C5C5D3'}
+                borderRadius={'16px'}
+                padding={0}
+            >
                 <StyledContainer>
-                    <Box maxWidth={'100%'} display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'} mb={'2%'}>
-                        <Typography>Jadwal Praktek</Typography>
-                        <div>
+                    {/* Header */}
+                    <Box
+                        maxWidth={'100%'}
+                        display={'flex'}
+                        flexDirection={'row'}
+                        alignItems={'center'}
+                        justifyContent={'space-between'}
+                        mb={'2%'}
+                    >
+                        <Typography variant="h6">Jadwal Praktek</Typography>
+                        <Box>
                             <Button
                                 variant="contained"
                                 onClick={handleMenuOpen}
@@ -388,27 +534,29 @@ const TestKalender: React.FC = () => {
                                     vertical: 'top',
                                     horizontal: 'right',
                                 }}
-                                sx={{
-                                    color: 'red'
-                                }}
                             >
                                 <MenuItem onClick={() => handleMenuSelect('Praktek')}>Praktek</MenuItem>
                                 <MenuItem onClick={() => handleMenuSelect('Pengecualian')}>Pengecualian</MenuItem>
                             </Menu>
-                        </div>
+                        </Box>
                     </Box>
+
+                    {/* Main Content */}
                     <Box display="flex" flexDirection="row" gap={4}>
+                        {/* Sidebar */}
                         <Box width="35%" display="flex" flexDirection="column" gap={3}>
                             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="id">
-                                <Box sx={{ border: '1px solid #C5C5D3', borderRadius: '16px', padding: 2 }}>
+                                <Box
+                                    sx={{
+                                        border: '1px solid #C5C5D3',
+                                        borderRadius: '16px',
+                                        padding: 2
+                                    }}
+                                >
                                     <DateCalendar
                                         value={currentDate}
                                         onMonthChange={(newMonth) => {
-                                            if (calendarRef.current) {
-                                                const calendarApi = calendarRef.current.getApi();
-                                                calendarApi.gotoDate(newMonth.format('YYYY-MM-DD')); 
-                                            }
-                                            setCurrentDate(newMonth); // Perbarui state
+                                            setCurrentDate(newMonth);
                                         }}
                                         slotProps={{
                                             day: {
@@ -438,47 +586,59 @@ const TestKalender: React.FC = () => {
                             <CardJadwalExclusion />
                         </Box>
 
-                        <Box width="85%" display="flex" flexDirection="column" gap={3} padding={'8px 0 8px 0'} borderRadius={'16px'}>
+                        {/* Calendar */}
+                        <Box
+                            width="85%"
+                            display="flex"
+                            flexDirection="column"
+                            gap={3}
+                            padding={'8px 0'}
+                            borderRadius={'16px'}
+                        >
+                            {/* Calendar Header */}
                             <Box display="flex" justifyContent="space-between" alignItems="center">
-                                <Box
-                                    display="flex"
-                                    justifyContent="space-between"
-                                    alignItems="center"
-                                >
+                                <Box display="flex" alignItems="center" gap={2}>
                                     <Typography variant="h5">{currentDate.format('dddd, D MMMM YYYY')}</Typography>
-
                                     <Box display="flex" gap={0}>
                                         <NavigateBeforeIcon sx={{ cursor: 'pointer' }} onClick={handlePrev} />
                                         <NavigateNextIcon sx={{ cursor: 'pointer' }} onClick={handleNext} />
                                     </Box>
                                 </Box>
                                 <Box display="flex" alignItems="center" flexDirection={'row'} gap={2}>
-                                    <Typography>Format</Typography>
+                                    <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}>Format</Typography>
                                     <FormControl size="small">
                                         <Select
                                             value={currentView}
                                             onChange={(e) => handleViewChange(e.target.value as string)}
+                                            sx={{
+                                                minWidth: '200px',
+                                                minHeight: '38px',
+                                                borderRadius: '8px',
+                                                border: '1px solid #A8A8BD',
+                                            }}
                                         >
-                                            <MenuItem value="dayGridMonth">Bulan</MenuItem>
-                                            <MenuItem value="timeGridWeek">Minggu</MenuItem>
-                                            <MenuItem value="timeGridDay">Hari</MenuItem>
+                                            <MenuItem sx={{ color: '#8F85F3' }} value="dayGridMonth">Bulan</MenuItem>
+                                            <MenuItem sx={{ color: '#8F85F3' }} value="timeGridWeek">Minggu</MenuItem>
+                                            <MenuItem sx={{ color: '#8F85F3' }} value="timeGridDay">Hari</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Box>
                             </Box>
 
+                            {/* FullCalendar */}
                             <FullCalendar
                                 ref={calendarRef}
                                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                                initialView="dayGridMonth"
+                                initialView={currentView}
                                 locale="id"
                                 timeZone="local"
-                                initialDate={currentDate.format('YYYY-MM-DD')}
                                 headerToolbar={false}
                                 height="85vh"
                                 events={events}
                                 selectable
                                 dayMaxEvents
+                                eventContent={renderEventContent}
+                                editable
                             />
                         </Box>
                     </Box>
@@ -486,37 +646,96 @@ const TestKalender: React.FC = () => {
                     {/* Modal Tambah Jadwal Praktek */}
                     <StyledDialog
                         open={open}
-                        onClose={handleClose}
+                        onClose={handleClosePraktek}
                         classes={{ paper: closeAnimation ? 'slideOut' : '' }}
                     >
-                        <Box display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'} maxWidth={'95%'} >
+                        <Box
+                            display={'flex'}
+                            flexDirection={'row'}
+                            alignItems={'center'}
+                            justifyContent={'space-between'}
+                            maxWidth={'95%'}
+                        >
                             <DialogTitle>Tambah Jadwal Baru</DialogTitle>
-                            <CloseOutlined sx={{ cursor: 'pointer' }} onClick={handleClose} />
+                            <CloseOutlined sx={{ cursor: 'pointer' }} onClick={handleClosePraktek} />
                         </Box>
                         <DialogContent>
                             <Box display="flex" flexDirection="column" gap={2}>
+                                {/* Tipe Jadwal */}
                                 <Typography>Tipe Jadwal</Typography>
-                                <DropdownList defaultValue='Praktek' onChange={handleChangeTipeJadwal} loading={false} options={tipeJadwal} placeholder='Pilih tipe jadwal' />
-                                <Box borderRadius={'16px'} padding={2} border={'1px solid #C5C5D3'} display="flex" gap={2} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'} >
-                                    <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}  >Jam</Typography>
-                                    <Box display="flex" gap={2} flexDirection={'row'} >
-                                        <DropdownListTime placeholder='Jam mulai' loading={false} options={jamOperasional} />
-                                        <DropdownListTime placeholder='Jam selesai' loading={false} options={jamOperasional} />
+                                <DropdownList
+                                    defaultValue='Praktek'
+                                    onChange={handleChangeTipeJadwal}
+                                    loading={false}
+                                    options={tipeJadwal}
+                                    placeholder='Pilih tipe jadwal'
+                                />
+
+                                {/* Waktu Mulai dan Selesai */}
+                                <Box
+                                    borderRadius={'16px'}
+                                    padding={2}
+                                    border={'1px solid #C5C5D3'}
+                                    display="flex"
+                                    gap={2}
+                                    flexDirection={'row'}
+                                    alignItems={'center'}
+                                    justifyContent={'space-between'}
+                                >
+                                    <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}>Jam</Typography>
+                                    <Box display="flex" gap={2} flexDirection={'row'}>
+                                        <DropdownListTime
+                                            placeholder='Jam mulai'
+                                            loading={false}
+                                            options={jamOperasional}
+                                            onChange={(value) => handleEventChange('startTime', value)}
+                                        />
+                                        <DropdownListTime
+                                            placeholder='Jam selesai'
+                                            loading={false}
+                                            options={jamOperasional}
+                                            onChange={(value) => handleEventChange('endTime', value)}
+                                        />
                                     </Box>
                                 </Box>
-                                <Box display="flex" gap={2} flexDirection={'column'} border={'1px solid #C5C5D3'} borderRadius={'16px'} padding={2} >
-                                    <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'} >Ulang pada hari</Typography>
-                                    <Box display={'flex'} flexDirection={'row'} gap={2} >
-                                        <Button sx={{ border: '1px solid #8F85F3', color: '#8F85F3', borderRadius: '16px', padding: 1, '&:hover': { bgcolor: '#8F85F3', color: 'white' } }} >Min</Button>
-                                        <Button sx={{ border: '1px solid #8F85F3', color: '#8F85F3', borderRadius: '16px', padding: 1, '&:hover': { bgcolor: '#8F85F3', color: 'white' } }} >Sen</Button>
-                                        <Button sx={{ border: '1px solid #8F85F3', color: '#8F85F3', borderRadius: '16px', padding: 1, '&:hover': { bgcolor: '#8F85F3', color: 'white' } }} >Sel</Button>
-                                        <Button sx={{ border: '1px solid #8F85F3', color: '#8F85F3', borderRadius: '16px', padding: 1, '&:hover': { bgcolor: '#8F85F3', color: 'white' } }} >Rab</Button>
-                                        <Button sx={{ border: '1px solid #8F85F3', color: '#8F85F3', borderRadius: '16px', padding: 1, '&:hover': { bgcolor: '#8F85F3', color: 'white' } }} >Kam</Button>
-                                        <Button sx={{ border: '1px solid #8F85F3', color: '#8F85F3', borderRadius: '16px', padding: 1, '&:hover': { bgcolor: '#8F85F3', color: 'white' } }} >Jum</Button>
-                                        <Button sx={{ border: '1px solid #8F85F3', color: '#8F85F3', borderRadius: '16px', padding: 1, '&:hover': { bgcolor: '#8F85F3', color: 'white' } }} >Sab</Button>
+
+                                {/* Pilihan Hari */}
+                                <Box
+                                    display="flex"
+                                    gap={2}
+                                    flexDirection={'column'}
+                                    border={'1px solid #C5C5D3'}
+                                    borderRadius={'16px'}
+                                    padding={2}
+                                >
+                                    <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}>Ulang pada hari</Typography>
+                                    <Box display={'flex'} flexDirection={'row'} gap={2}>
+                                        {days.map((day) => (
+                                            <Button
+                                                key={day.value}
+                                                onClick={() => toggleDay(day.value)}
+                                                sx={{
+                                                    border: '1px solid #8F85F3',
+                                                    color: newEvent[day.value as keyof typeof newEvent] ? '#fff' : '#8F85F3',
+                                                    backgroundColor: newEvent[day.value as keyof typeof newEvent] ? '#8F85F3' : 'transparent',
+                                                    borderRadius: '16px',
+                                                    padding: 1,
+                                                    '&:hover': {
+                                                        bgcolor: '#8F85F3',
+                                                        color: 'white',
+                                                    },
+                                                    transition: 'background-color 0.3s, color 0.3s',
+                                                }}
+                                            >
+                                                {day.label}
+                                            </Button>
+                                        ))}
                                     </Box>
                                 </Box>
+
+                                {/* Catatan */}
                                 <TextField
+                                    name="notes"
                                     placeholder="Masukkan catatan"
                                     multiline
                                     rows={4}
@@ -526,12 +745,26 @@ const TestKalender: React.FC = () => {
                                             borderRadius: '16px',
                                         },
                                     }}
+                                    value={newEvent.notes}
+                                    onChange={handleChange}
                                 />
-
+                                {errorPraktek && <Alert severity="error">{errorPraktek}</Alert>}
                             </Box>
                         </DialogContent>
                         <DialogActions>
-                            <Button sx={{ padding: 1, mb: '1%', bgcolor: '#8F85F3', color: 'white', borderRadius: '8px' }} onClick={handleAddEvent} fullWidth >Simpan</Button>
+                            <Button
+                                sx={{
+                                    padding: 1,
+                                    mb: '1%',
+                                    bgcolor: '#8F85F3',
+                                    color: 'white',
+                                    borderRadius: '8px'
+                                }}
+                                onClick={handleAddEvent}
+                                fullWidth
+                            >
+                                Simpan
+                            </Button>
                         </DialogActions>
                     </StyledDialog>
 
@@ -541,68 +774,121 @@ const TestKalender: React.FC = () => {
                         onClose={handleCloseExclusion}
                         classes={{ paper: closeAnimation ? 'slideOut' : '' }}
                     >
-                        <DialogTitle>Tambah Pengecualian Baru</DialogTitle>
+                        <Box
+                            display={'flex'}
+                            flexDirection={'row'}
+                            alignItems={'center'}
+                            justifyContent={'space-between'}
+                            maxWidth={'95%'}
+                        >
+                            <DialogTitle>Tambah Pengecualian Baru</DialogTitle>
+                            <CloseOutlined sx={{ cursor: 'pointer' }} onClick={handleCloseExclusion} />
+                        </Box>
                         <DialogContent>
                             <Box display="flex" flexDirection="column" gap={2}>
                                 <Typography>Tipe Jadwal</Typography>
-                                <DropdownList defaultValue='Pengecualian' onChange={handleChangeTipeJadwal} loading={false} options={tipeJadwal} placeholder='Pilih tipe jadwal' />
-                                <Typography>Judul jadwal</Typography>
-                                <TextField sx={{
-                                    '& .MuiInputBase-root': {
-                                        borderRadius: '8px',
-                                    },
-                                }}
-                                    placeholder='Masukkan judul jadwal'
+                                <DropdownList
+                                    defaultValue='Pengecualian'
+                                    onChange={handleChangeTipeJadwal}
+                                    loading={false}
+                                    options={tipeJadwal}
+                                    placeholder='Pilih tipe jadwal'
                                 />
-                                <Box borderRadius={'16px'} padding={2} border={'1px solid #C5C5D3'} display="flex" gap={2} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'} >
-                                    <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}  >Jam</Typography>
-                                    <Box display="flex" gap={2} flexDirection={'row'} >
-                                        <DropdownListTime placeholder='Jam mulai' loading={false} options={jamOperasional} />
-                                        <DropdownListTime placeholder='Jam selesai' loading={false} options={jamOperasional} />
+                                <Typography>Judul jadwal</Typography>
+                                <TextField
+                                    name="exclusionTitle"
+                                    sx={{
+                                        '& .MuiInputBase-root': {
+                                            borderRadius: '8px',
+                                        },
+                                    }}
+                                    placeholder='Masukkan judul jadwal'
+                                    value={newExclusion.exclusionTitle}
+                                    onChange={handleChangeExclusion}
+                                />
+                                <Box
+                                    borderRadius={'16px'}
+                                    padding={2}
+                                    border={'1px solid #C5C5D3'}
+                                    display="flex"
+                                    gap={2}
+                                    flexDirection={'row'}
+                                    alignItems={'center'}
+                                    justifyContent={'space-between'}
+                                >
+                                    <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}>Jam</Typography>
+                                    <Box display="flex" gap={2} flexDirection={'row'}>
+                                        <DropdownListTime
+                                            placeholder='Jam mulai'
+                                            loading={false}
+                                            options={jamOperasional}
+                                            onChange={(value) => handleExclusionChange('exclusionTimeStart', value)}
+                                        />
+                                        <DropdownListTime
+                                            placeholder='Jam selesai'
+                                            loading={false}
+                                            options={jamOperasional}
+                                            onChange={(value) => handleExclusionChange('exclusionTimeEnd', value)}
+                                        />
                                     </Box>
                                 </Box>
-                                <Box display="flex" gap={2} flexDirection={'column'} border={'1px solid #C5C5D3'} borderRadius={'16px'} padding={2}>
+                                <Box
+                                    display="flex"
+                                    gap={2}
+                                    flexDirection={'column'}
+                                    border={'1px solid #C5C5D3'}
+                                    borderRadius={'16px'}
+                                    padding={2}
+                                >
                                     <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}>Tanggal</Typography>
                                     <Box display={'flex'} flexDirection={'row'} gap={2}>
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                                             <Box>
                                                 <Typography>Mulai</Typography>
                                                 <DatePicker
-                                                    slots={{
-                                                        textField: TextField,
-                                                    }}
+                                                    name="exclusionDateStart"
+                                                    slots={{ textField: TextField }}
                                                     slotProps={{
                                                         textField: {
                                                             fullWidth: true,
                                                             margin: 'normal',
                                                         },
                                                     }}
-                                                    value={null} 
-                                                    onChange={(newValue) => console.log(newValue)} 
+                                                    value={newExclusion.exclusionDateStart ? dayjs(newExclusion.exclusionDateStart) : null}
+                                                    onChange={(newValue) => {
+                                                        setNewExclusion({
+                                                            ...newExclusion,
+                                                            exclusionDateStart: newValue ? newValue.format('YYYY-MM-DD') : ''
+                                                        });
+                                                    }}
                                                 />
                                             </Box>
                                             <Typography>-</Typography>
                                             <Box>
                                                 <Typography>Selesai</Typography>
                                                 <DatePicker
-                                                    slots={{
-                                                        textField: TextField,
-                                                    }}
+                                                    name="exclusionDateEnd"
+                                                    slots={{ textField: TextField }}
                                                     slotProps={{
                                                         textField: {
                                                             fullWidth: true,
                                                             margin: 'normal',
                                                         },
                                                     }}
-                                                    value={null} 
-                                                    onChange={(newValue) => console.log(newValue)} 
+                                                    value={newExclusion.exclusionDateEnd ? dayjs(newExclusion.exclusionDateEnd) : null}
+                                                    onChange={(newValue) => {
+                                                        setNewExclusion({
+                                                            ...newExclusion,
+                                                            exclusionDateEnd: newValue ? newValue.format('YYYY-MM-DD') : ''
+                                                        });
+                                                    }}
                                                 />
                                             </Box>
                                         </LocalizationProvider>
                                     </Box>
                                 </Box>
-
                                 <TextField
+                                    name="exclusionNotes"
                                     placeholder="Masukkan catatan"
                                     multiline
                                     rows={4}
@@ -612,12 +898,26 @@ const TestKalender: React.FC = () => {
                                             borderRadius: '16px',
                                         },
                                     }}
+                                    value={newExclusion.exclusionNotes}
+                                    onChange={handleChangeExclusion}
                                 />
-
+                                {errorExclusion && <Alert severity="error">{errorExclusion}</Alert>}
                             </Box>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={handleAddExclusion} fullWidth sx={{ padding: 1, mb: '1%', bgcolor: '#8F85F3', color: 'white', borderRadius: '8px' }}>Tambah</Button>
+                            <Button
+                                onClick={handleAddExclusion}
+                                fullWidth
+                                sx={{
+                                    padding: 1,
+                                    mb: '1%',
+                                    bgcolor: '#8F85F3',
+                                    color: 'white',
+                                    borderRadius: '8px'
+                                }}
+                            >
+                                Tambah
+                            </Button>
                         </DialogActions>
                     </StyledDialog>
                 </StyledContainer>
