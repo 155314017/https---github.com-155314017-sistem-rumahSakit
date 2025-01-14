@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getClinic } from "../../../services/Admin Tenant/ManageClinic/GetClinic";
 import dayjs from "dayjs";
 import { getAmbulanceByIdService } from "../../../services/Admin Tenant/ManageAmbulance/GetAmbulanceByIdService";
 

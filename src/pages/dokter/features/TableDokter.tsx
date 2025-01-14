@@ -17,6 +17,7 @@ import {
   import DropdownList from "../../../components/small/dropdownlist/DropdownList";
   import { styled } from "@mui/material/styles";
   import bgImage from "../../../assets/img/String.png";
+ 
   
   // icon
   import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
@@ -68,7 +69,9 @@ export default function TableDokter() {
         sortir,
         urutkan,
         toggleCollapse,
-        confirmationDelete}=useTableDokter()
+        confirmationDelete,
+      navigate,
+      clinicNames}=useTableDokter()
   return (
     <Box>
     <Box
@@ -340,7 +343,7 @@ export default function TableDokter() {
                           ]}
                           align="left"
                         >
-                          {data.parentClinicId}
+                          {clinicNames[index]}
                         </TableCell>
                         <TableCell
                           sx={[
@@ -406,7 +409,8 @@ export default function TableDokter() {
                             Ubah
                           </Link>
                           <Link
-                            href="/detailGedung "
+                            href="#"
+                            onClick={() => navigate(`/detailDokter/${data.id}`)}
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",

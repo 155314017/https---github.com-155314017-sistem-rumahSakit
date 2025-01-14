@@ -1,20 +1,20 @@
 import { Container, Box } from "@mui/system";
 
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import CardIzinAkses from "./CardIzinAkses";
-import CardBiodataPegawai from "./CardBiodataPegawai";
-import CardJamPraktek from "./CardJamPraktek";
-import useDetailPegawai from "../hooks/useDetailPegawai";
+import CardIzinAkses from "../../pegawai/features/CardIzinAkses";
+import CardBiodataPegawai from "../../pegawai/features/CardBiodataPegawai";
+import CardJamPraktek from "../../pegawai/features/CardJamPraktek";
+import useDetailDokter from "../hooks/useDetailDokter";
 
-export default function DetailPegawai() {
+export default function DetailDokter() {
    const {
     breadcrumbItems,
     name,
     deletedItems,
-    employeeData,
+    doctorData,
     handleDeleteSuccess,
     confirmationDelete,
-   } = useDetailPegawai();
+   } = useDetailDokter();
 
 
     return (
@@ -46,30 +46,32 @@ export default function DetailPegawai() {
                             </>
                         )}
                     /> */}
-                    <CardBiodataPegawai
-                    tanggalDitambahkan= {employeeData?.createdDateTime || "Data Tidak Ditemukan"}
-                    namaPegawai= {employeeData?.name || "Data Tidak Ditemukan"}
-                    jenisKelamin= {employeeData?.gender || "Data Tidak Ditemukan"}
-                    alamat= {employeeData?.address || "Data Tidak Ditemukan"}
-                    nomorIndukPegawai= {employeeData?.employeeNumber || "Data Tidak Ditemukan"}
-                    rolePegawai= {employeeData?.role || "Data Tidak Ditemukan"}
-                    noHandphone= {employeeData?.phone || "Data Tidak Ditemukan"}
-                    dokumen= {employeeData?.additionalInfo || "Data Tidak Ditemukan"}
+                    <CardBiodataPegawai 
+                    tanggalDitambahkan= {doctorData?.employeeData?.updatedBy || "Data Tidak Ditemukan"}
+                    namaPegawai= {doctorData?.employeeData?.name || "Data Tidak Ditemukan"}
+                    jenisKelamin= {doctorData?.employeeData?.gender || "Data Tidak Ditemukan"}
+                    alamat= {doctorData?.employeeData?.address || "Data Tidak Ditemukan"}
+                    nomorIndukPegawai= {doctorData?.employeeData?.employeeNumber || "Data Tidak Ditemukan"}
+                    rolePegawai= {doctorData?.employeeData?.role || "Data Tidak Ditemukan"}
+                    noHandphone= {doctorData?.employeeData?.phone || "Data Tidak Ditemukan"}
+                    dokumen= {doctorData?.employeeData?.additionalInfo || "Data Tidak Ditemukan"}
                     avatarUrl= {""}
                     onUbahData={() => {}}
                     onHapusData={() => {}}
+                    
                     />
                     <CardJamPraktek 
-                     title="Jam Operasional"
-                     data={employeeData?.operationalSchedule || {
-                         senin: "-",
-                         selasa: "-",
-                         rabu: "-",
-                         kamis: "-",
-                         jumat: "-",
-                         sabtu: "-",
-                         minggu: "-",
-                     }}/>
+                    title="Jam Operasional"
+                    data={doctorData?.operationalSchedule || {
+                        senin: "-",
+                        selasa: "-",
+                        rabu: "-",
+                        kamis: "-",
+                        jumat: "-",
+                        sabtu: "-",
+                        minggu: "-",
+                    }}
+                    />
                 </Box>
                 <Box mt={3} >
                     <CardIzinAkses />
