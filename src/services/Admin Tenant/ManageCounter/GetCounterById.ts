@@ -81,7 +81,6 @@ export const GetCounterByIdServices = async (
           item.operationalSchedule = operationalSchedule; // Store operational schedule in item
 
         } else {
-          console.log("No schedules available.");
           item.operationalSchedule = "Jadwal tidak tersedia"; // Optional: Set a default message
         }
 

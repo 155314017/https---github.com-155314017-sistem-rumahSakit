@@ -20,10 +20,9 @@ const CreateAppointment = async (data: Data) => {
         }
       }
     )
-    console.log('Appointment created:', response.data)
     return response.data
   } catch (error) {
-    console.log('error', error)
+    console.error('error', error)
   }
 }
 

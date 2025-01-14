@@ -76,7 +76,6 @@ export const GetEmployeeByIdServices = async (id: string | undefined): Promise<E
     )
 
     if (response.status === 200) {
-      console.log('API connection successful:', response.data.data)
 
       return response.data.data // Pastikan mengakses `data` dari respons
     } else {

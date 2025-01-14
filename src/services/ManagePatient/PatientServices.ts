@@ -164,9 +164,7 @@ export const PatientServices = async (): Promise<PatientDataItem[]> => {
       });
 
 
-      if (patients.length > 0) {
-        console.log('First patient registrationDatumDto:', patients[0].registrationDatumDto)
-      }
+      
 
       return patients // Kembalikan semua data pasien
     } else {

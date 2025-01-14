@@ -1,4 +1,5 @@
 import axios from "axios";
+import dayjs from "dayjs";
 
 export interface FacilityDataItem {
   id: string;
@@ -15,7 +16,7 @@ export interface FacilityDataItem {
   cost: number;
   images: {imageName: string; imageType: string; imageData: string }[];
   schedules: { id: string; startDateTime: number; endDateTime: number }[];
-  operationalSchedule?: string;
+  operationalSchedules?: string;
 }
 
 export interface ApiResponse {
@@ -36,32 +37,35 @@ export const GetFacilityByIdServices = async (id : string | undefined, accessTok
     }});
 
   if (response.status === 200) {
+    const convertUnixToReadableTime = (timestamp: number) => {
+                        const date = dayjs(timestamp); // Use dayjs to parse Unix timestamp
+                
+                        const dayOfWeek = date.format('dddd'); // Get the day of the week
+                        const time = date.format('HH:mm'); // Get the formatted time (HH:mm)
+                
+                        return { day: dayOfWeek, time };
+                      };
     
     const item = response.data.data; 
       
 
       if (item.schedules.length > 0) {
-        const { startDateTime, endDateTime } = item.schedules[0];
+        const operationalSchedules: string[] = item.schedules.map((schedule) => {
+          const startDate = convertUnixToReadableTime(schedule.startDateTime);
+          const endDate = convertUnixToReadableTime(schedule.endDateTime);
 
-        const startDate = new Date(startDateTime * 1000);
-        const endDate = new Date(endDateTime * 1000);
 
-        const formatter = new Intl.DateTimeFormat("id-ID", {
-          weekday: "long",
+          const startDay = startDate.day;
+          const start = `${startDate.time}`;
+          const end = ` ${endDate.time}`;
+
+          
+
+          return `${startDay}, ${start} - ${end}`;
         });
+        item.operationalSchedules = operationalSchedules.join(" | ");
 
-        const startDay = formatter.format(startDate);
-        const startHours = startDate.getHours().toString().padStart(2, "0");
-        const startMinutes = startDate.getMinutes().toString().padStart(2, "0");
-        const endHours = endDate.getHours().toString().padStart(2, "0");
-        const endMinutes = endDate.getMinutes().toString().padStart(2, "0");
-
-        const operationalSchedule = `${startDay}, ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
-        item.operationalSchedule = operationalSchedule; // Menyimpan hari dan jam operasional ke item
-
-      } else {
-        console.log("No schedules available.");
-      }
+      } 
 
     
  

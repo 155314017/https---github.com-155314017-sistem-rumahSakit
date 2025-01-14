@@ -62,35 +62,8 @@ export const DoctorServices = async (): Promise<DoctorDataItem[]> => {
     const response = await axios.get<ApiResponse>(API_URL);
 
     if (response.status === 200) {
-      console.log("API connection successful:", response.data);
 
-      response.data.data.content.forEach((item) => {
-        console.log("ID:", item.id);
-        console.log("Number:", item.name);
-        console.log("Additional Info:", item.additionalInfo);
-        console.log("Created By:", item.createdBy);
-        console.log("id klinik: ", item.parentClinicId)
-        console.log(
-          "Created Date Time:",
-          new Date(item.createdDateTime * 1000).toLocaleString()
-        );
-        console.log("Updated By:", item.updatedBy);
-        console.log(
-          "Updated Date Time:",
-          item.updatedDateTime
-            ? new Date(item.updatedDateTime * 1000).toLocaleString()
-            : "N/A"
-        );
-        console.log("Deleted By:", item.deletedBy);
-        console.log(
-          "Deleted Date Time:",
-          item.deletedDateTime
-            ? new Date(item.deletedDateTime * 1000).toLocaleString()
-            : "N/A"
-        );
-        console.log("Images:", item.images);
-        console.log("----------------------------");
-      });
+      
 
       return response.data.data.content;
     } else {

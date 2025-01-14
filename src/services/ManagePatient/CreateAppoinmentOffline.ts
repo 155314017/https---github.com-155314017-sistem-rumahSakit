@@ -20,10 +20,9 @@ const CreateAppointmentOffline = async (data: Data) => {
         }
       }
     )
-    console.log('Appointment created:', response.data)
     return response.data.data
   } catch (error) {
-    console.log('error', error)
+    console.error('error', error)
   }
 }
 

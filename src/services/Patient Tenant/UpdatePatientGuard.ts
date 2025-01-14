@@ -15,7 +15,6 @@ interface Data {
 }
 const UpdatePatientGuards = async (data: Data) => {
   try {
-    console.log('inside RegisterPatient')
     const response = await axios.put(
       'https://hms.3dolphinsocial.com:8083/v1/patient/register',
       data,
@@ -26,11 +25,10 @@ const UpdatePatientGuards = async (data: Data) => {
       }
     )
 
-    console.log('inside Login1 ')
-    console.log('Response register: ', response)
+    
     return response.data
   } catch (error) {
-    console.log('error', error)
+    console.error('error', error)
   }
 }
 

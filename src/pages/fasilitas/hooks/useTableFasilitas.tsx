@@ -89,7 +89,7 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
           dataIdBuilding.map((id) =>
             axios
               .get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`)
-              .catch(() => ({ data: { data: { name: "Data Gedung Tidak Ditemukan" } } }))
+              .catch(() => ({ data: { data: { name: "Data Facility Tidak Ditemukan" } } }))
           )
         );
 

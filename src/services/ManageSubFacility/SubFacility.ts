@@ -93,9 +93,7 @@ export const SubFacilityServices = async (): Promise<SubFacilityDataItem[]> => {
 
         item.operationalSchedule = operationalSchedules.join(" | "); // Combine all schedules with a separator
 
-      } else {
-        console.log("No schedules available.");
-      }
+      } 
 
       
     });

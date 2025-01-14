@@ -124,10 +124,33 @@ const CardDetail: React.FC<DetailCardProps> = ({
                   key={rowIndex}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  {columns.map((columns) => (
-                    <TableCell key={columns.id} sx={{ fontWeight: "700" }}>
-                      {row[columns.id] || "-"}
-                    </TableCell>
+                  {columns.map((column) => (
+                    column.id === "jamOperational" ? (
+                      <TableCell
+                        key={column.id}
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          maxWidth: "150px",
+                          fontSize: "14px",
+                          textTransform: "capitalize",
+                          fontWeight: "700"
+                        }}
+                        align="center"
+                      >
+                        {row[column.id] || "-"}
+                      </TableCell>
+                    ) : (
+                      <TableCell
+                        key={column.id}
+                        sx={{
+                          fontWeight: "700",
+                        }}
+                      >
+                        {row[column.id] || "-"}
+                      </TableCell>
+                    )
                   ))}
                   {actions && (
                     <TableCell sx={{ display: "flex", gap: 3 }}>
