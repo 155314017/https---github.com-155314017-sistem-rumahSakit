@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 import { DoctorDataItem, DoctorServices } from "../../../services/Admin Tenant/ManageDoctor/DoctorServices";
-import { GetDoctorServices } from "../../../services/Admin Tenant/ManageDoctor/GetDoctorService";
+import { getClinic } from "../../../services/Admin Tenant/ManageClinic/GetClinic";
 export default function useTableDokter() {
     const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [datas, setDatas] = useState<DoctorDataItem[]>([]);
   const [idClinic, setIdClinic] = useState<string[]>([]);
   const [clinicNames, setClinicNames] = useState<string[]>([]);
+  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -16,7 +18,7 @@ export default function useTableDokter() {
       try {
         const result = await DoctorServices();
         setDatas(result);
-        const clinicId = result.map((data) => data.parentClinicId);
+        const clinicId = result.map((data) => data.parentClinicId).filter((id): id is string => !!id);
         setIdClinic(clinicId)
       } catch (error) {
         console.log('Failed to fetch data from API: ', error);
@@ -29,18 +31,30 @@ export default function useTableDokter() {
   useEffect(() => {
     const fetchClinicNames = async () => {
       try {
-        const names = await Promise.all(
+        const responses = await Promise.all(
           idClinic.map(async (id) => {
-            const response = await GetDoctorServices(id);
-            return response.name; 
+            try {
+              const response = await getClinic(id);
+              return response.name || "Data Clinic Tidak Tercatat";
+            } catch (error) {
+              if (error.response && error.response.status === 404) {
+                // Jika status 404, beri nama default
+                return "Data Clinic Tidak Tercatat";
+              } else {
+                console.error(`Error fetching clinic with ID ${id}:`, error);
+                return "Terjadi Kesalahan";
+              }
+            }
           })
         );
-        setClinicNames(names);
-      } catch (error) {
-        console.log('Failed to fetch clinic names: ', error);
+  
+        console.log("Clinics:", responses);
+        setClinicNames(responses);
+      } catch (err) {
+        console.error("Error fetching clinic names:", err);
       }
     };
-
+  
     if (idClinic.length > 0) {
       fetchClinicNames();
     }
@@ -90,7 +104,8 @@ export default function useTableDokter() {
     sortir,
     urutkan,
     toggleCollapse,
-    confirmationDelete
+    confirmationDelete,
+    navigate
 
   }
 }

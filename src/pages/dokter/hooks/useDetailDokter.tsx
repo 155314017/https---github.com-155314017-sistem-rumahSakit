@@ -1,25 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import { GetEmployeeByIdServices } from "../../../services/Admin Tenant/ManageEmployee/GetEmployeeByIdService";
+import { GetDoctorServices } from "../../../services/Admin Tenant/ManageDoctor/GetDoctorService";
 
 
-
-interface MenuPrivilege {
+interface Schedule {
     id: string;
-    masterMenuId: string;
-    masterUserId: string;
-    canCreate: boolean;
-    canRead: boolean;
-    canUpdate: boolean;
-    canDelete: boolean;
-    createdDateTime: number;
-    updatedDateTime: number | null;
-    deletedDateTime: number | null;
-    updatedBy: string | null;
-    deletedBy: string | null;
-    createdBy: string;
+    startDateTime: number;
+    endDateTime: number;
+    typeId: string;
     additionalInfo: string | null;
+    createdBy: string;
+    createdDateTime: number;
+    updatedBy: string | null;
+    updatedDateTime: string | null;
+    deletedBy: string | null;
+    deletedDateTime: string | null;
   }
   
   interface MasterUser {
@@ -38,12 +34,9 @@ interface MenuPrivilege {
     createdBy: string;
     createdDateTime: number;
     updatedBy: string | null;
-    updatedDateTime: number | null;
+    updatedDateTime: string | null;
     deletedBy: string | null;
-    deletedDateTime: number | null;
-    additionalInfo: string | null;
-    statusActive: string | null;
-    menuPrivileges: MenuPrivilege[];
+    deletedDateTime: string | null;
   }
   
   interface EmployeeData {
@@ -56,8 +49,8 @@ interface MenuPrivilege {
     additionalInfo: string | null;
     createdBy: string;
     createdDateTime: number;
-    updatedBy: string | null;
-    updatedDateTime: number | null;
+    updatedBy: string;
+    updatedDateTime: number;
     deletedBy: string | null;
     deletedDateTime: string | null;
     employeeNumber: string;
@@ -65,82 +58,112 @@ interface MenuPrivilege {
     role: string;
     masterUser: MasterUser;
   }
+  
+  interface DoctorDataItem {
+    id: string;
+    name: string;
+    specialty: string;
+    additionalInfo: string | null;
+    createdBy: string;
+    createdDateTime: number;
+    updatedBy: string;
+    updatedDateTime: number;
+    deletedBy: string | null;
+    deletedDateTime: string | null;
+    schedules: Schedule[];
+    cost: number;
+    parentClinicId: string;
+    employeeData: EmployeeData;
+    operationalSchedule?: OperationalSchedule;
+  }
 
+  type OperationalSchedule = {
+    senin: string;
+    selasa: string;
+    rabu: string;
+    kamis: string;
+    jumat: string;
+    sabtu: string;
+    minggu: string;
+  };
 
-export default function useDetailPegawai() {
+export default function useDetailDokter() {
     const [name, setName] = useState<string>("");
     const [deletedItems, setDeletedItems] = useState<string>("");
     const [open, setOpen] = useState(false);
-    const [response, setResponse] = useState<EmployeeData | null>(null); // Correct type for response
+    const [response, setResponse] = useState<DoctorDataItem | null>(null); // Correct type for response
     const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const [employeeData, setEmployeeData] = useState<EmployeeData | null>(null);
+    const [doctorData, setDoctorData] = useState<DoctorDataItem | null>(null);
+
     const breadcrumbItems = [
         {
             label: "Dashboard",
             href: "/dashboard",
         },
         {
-            label: "Pegawai",
-            href: "/pegawai",
+            label: "Dokter",
+            href: "/dokter",
         },
         {
-            label: "Detail Pegawai",
-            href: "/detailPegawai",
+            label: "Detail Dokter",
+            href: "/detailDokter",
         },
     ];
-        // const convertSchedulesToReadableList = (schedules: Schedule[]) => {
-        //       const defaultSchedule: OperationalSchedule = {
-        //         senin: "",
-        //         selasa: "",
-        //         rabu: "",
-        //         kamis: "",
-        //         jumat: "",
-        //         sabtu: "",
-        //         minggu: "",
-        //       };
+
+
+    const convertSchedulesToReadableList = (schedules: Schedule[]) => {
+              const defaultSchedule: OperationalSchedule = {
+                senin: "",
+                selasa: "",
+                rabu: "",
+                kamis: "",
+                jumat: "",
+                sabtu: "",
+                minggu: "",
+              };
             
-        //       const daysMap: { [key: string]: keyof OperationalSchedule } = {
-        //         Senin: "senin",
-        //         Selasa: "selasa",
-        //         Rabu: "rabu",
-        //         Kamis: "kamis",
-        //         Jumat: "jumat",
-        //         Sabtu: "sabtu",
-        //         Minggu: "minggu",
-        //       };
+              const daysMap: { [key: string]: keyof OperationalSchedule } = {
+                Senin: "senin",
+                Selasa: "selasa",
+                Rabu: "rabu",
+                Kamis: "kamis",
+                Jumat: "jumat",
+                Sabtu: "sabtu",
+                Minggu: "minggu",
+              };
           
-        //       console.log("masuk convert",schedules);
+              console.log("masuk convert",schedules);
             
-        //       schedules.forEach((schedule) => {
-        //         const startDay = dayjs(schedule.startDateTime).format("dddd"); // Day in English
-        //         const startTime = dayjs(schedule.startDateTime).format("HH:mm");
-        //         const endTime = dayjs(schedule.endDateTime).format("HH:mm");
+              schedules.forEach((schedule) => {
+                const startDay = dayjs(schedule.startDateTime).format("dddd"); // Day in English
+                const startTime = dayjs(schedule.startDateTime).format("HH:mm");
+                const endTime = dayjs(schedule.endDateTime).format("HH:mm");
           
             
-        //         const mappedDay = daysMap[startDay] || ""; // Map to localized day name
+                const mappedDay = daysMap[startDay] || ""; // Map to localized day name
             
-        //         // Only update if mappedDay is valid
-        //         if (mappedDay) {
-        //           defaultSchedule[mappedDay] = `${startTime} - ${endTime}`;
-        //         }
-        //       });
+                // Only update if mappedDay is valid
+                if (mappedDay) {
+                  defaultSchedule[mappedDay] = `${startTime} - ${endTime}`;
+                }
+              });
               
           
-        //       console.log(defaultSchedule);
+              console.log(defaultSchedule);
             
-        //       return defaultSchedule;
-        //     };
+              return defaultSchedule;
+            };
           
             const fetchData = async () => {
               setLoading(true);
               try {
                 console.log(id);
-                const employeeResponse = await GetEmployeeByIdServices(id); 
-                const data = employeeResponse; // Access the data from the response
-                // const operationalSchedule = convertSchedulesToReadableList(data?.schedules || []);
-                setEmployeeData(data);
+                const ambulanceResponse = await GetDoctorServices(id); 
+                const data = ambulanceResponse; // Access the data from the response
+                const operationalSchedule = convertSchedulesToReadableList(data?.schedules || []);
+                setDoctorData({ ...data, operationalSchedule} as DoctorDataItem);
                 // const imagesData = data?.images || [];
                 // const mappedImages = imagesData.map((image: ImageData) => ({
                 //   imageName: image.imageName,
@@ -150,7 +173,7 @@ export default function useDetailPegawai() {
           
                 // setLargeImage(mappedImages[0]?.imageData || "");
                 // setSmallImages(mappedImages.slice(1).map((img: ImageData) => img.imageData || ""));
-                console.log("doctor Data", employeeResponse);
+                console.log("doctor Data", ambulanceResponse);
               } catch (error) {
                 console.error("Error fetching data:", error);
               } finally {
@@ -181,7 +204,7 @@ export default function useDetailPegawai() {
         breadcrumbItems,
         name,
         deletedItems,
-        employeeData,
+        doctorData,
         handleDeleteSuccess,
         confirmationDelete,
     }

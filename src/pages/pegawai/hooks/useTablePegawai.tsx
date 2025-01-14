@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import * as React from 'react';
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -11,6 +12,7 @@ export default function useTablePegawai() {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [datas, setDatas] = useState<EmployeeDataItem[]>([]);
   // const [open, setOpen] = React.useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,6 +71,7 @@ export default function useTablePegawai() {
     sortir,
     urutkan,
     toggleCollapse,
-    confirmationDelete
+    confirmationDelete,
+    navigate
   }
 }

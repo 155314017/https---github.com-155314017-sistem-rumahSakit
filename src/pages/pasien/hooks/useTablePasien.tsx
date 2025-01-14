@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { PatientDataItem, PatientServices } from "../../../services/ManagePatient/PatientServices";
+import axios from "axios";
 export default function useTablePasien() {
     const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [datas, setDatas] = useState<PatientDataItem[]>([]);
+    const [dataIdClinic, setDataIdClinic] = useState<string[]>([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -11,6 +14,11 @@ export default function useTablePasien() {
                 const result = await PatientServices();
                 setDatas(result);
                 console.log(result);
+                const clinicIds = result
+                .map((item) => item.registrationDatumDto?.masterClinicId)
+                .filter((id): id is string => !!id);
+                setDataIdClinic(clinicIds);
+                setLoading(false);
             } catch (error) {
                 console.log('Failed to fetch data from API: ', error);
             }
@@ -18,6 +26,33 @@ export default function useTablePasien() {
 
         fetchData();
     }, []);
+
+    const [clinics, setClinics] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchClinics = async () => {
+      try {
+        const responses = await Promise.all(
+          dataIdClinic.map((id) => axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`))
+        );
+
+        const CLinicData = responses.map((response) => {
+          const name = response.data.data.name;
+          return name ? name : "Data Gedung Tidak Tercatat";
+        });
+        console.log("Clinics:",CLinicData);
+        setClinics(CLinicData);
+        
+      } catch (err) {
+        console.error('Error:', err);
+      }
+    };
+
+    if (dataIdClinic.length > 0) {
+      fetchClinics();
+    }
+  }, [dataIdClinic]);
+
 
     const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
@@ -60,6 +95,8 @@ export default function useTablePasien() {
     sortir,
     urutkan,
     toggleCollapse,
-    confirmationDelete
+    confirmationDelete,
+    clinics,
+    loading
   }
 }

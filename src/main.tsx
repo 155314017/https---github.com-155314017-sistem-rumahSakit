@@ -52,7 +52,8 @@ import PilihKategoriPasien from './pages/pasien/pasienn/features/PilihKategoriPa
 import TambahPasienUmumOffline from './pages/pasien/pasienn/features/TambahPasienUmumOffline';
 import DetailFasilitas from './pages/fasilitas/features/DetailFasilitas';
 import TestKalender from './components/medium/TestKalender';
-
+import DetailDokter from './pages/dokter/features/DetailDokter';
+// biome-ignore lint/style/noNonNullAssertion: <explanation>
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Router>
@@ -101,11 +102,12 @@ createRoot(document.getElementById('root')!).render(
 
           {/* Page Pegawai  */}
           <Route path="/pegawai" element={<Pegawai />} />
-          <Route path="/detailPegawai" element={<DetailPegawai />} />
+          <Route path="/detailPegawai/:id" element={<DetailPegawai />} />
           <Route path="/tambahPegawai" element={<TambahPegawai />} />
 
           {/* Page Dokter  */}
           <Route path="/dokter" element={<Dokter />} />
+          <Route path="/detailDokter/:id" element={<DetailDokter />} />
 
           {/* Page Pasien  */}
           <Route path="/pasien" element={<Pasien />} />

@@ -70,7 +70,8 @@ export default function TablePegawai() {
         sortir,
         urutkan,
         toggleCollapse,
-        confirmationDelete
+        confirmationDelete,
+        navigate
     } = useTablePegawai();
   
 
@@ -362,7 +363,8 @@ export default function TablePegawai() {
                                 Ubah
                               </Link>
                               <Link
-                                href="/detailPegawai"
+                                href="#"
+                                onClick={()=> navigate(`/detailPegawai/${data.id}`) }
                                 underline="hover"
                                 sx={{
                                   textTransform: "capitalize",
