@@ -70,7 +70,8 @@ export default function TableDokter() {
         urutkan,
         toggleCollapse,
         confirmationDelete,
-      navigate}=useTableDokter()
+      navigate,
+      clinicNames}=useTableDokter()
   return (
     <Box>
     <Box
@@ -342,7 +343,7 @@ export default function TableDokter() {
                           ]}
                           align="left"
                         >
-                          {data.parentClinicId}
+                          {clinicNames[index]}
                         </TableCell>
                         <TableCell
                           sx={[
