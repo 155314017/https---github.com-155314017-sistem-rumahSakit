@@ -15,7 +15,9 @@ import bgImage from "../../../assets/img/String.png";
 interface DetailCardProps {
   title: string;
   columns: Array<{ id: string; label: string }>;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   data: Array<Record<string, any>>;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   actions?: (row: Record<string, any>) => JSX.Element;
 }
 
@@ -118,6 +120,7 @@ const CardDetail: React.FC<DetailCardProps> = ({
             <TableBody>
               {data.map((row, rowIndex) => (
                 <TableRow
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   key={rowIndex}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+import type React from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Typography from '@mui/material/Typography';
@@ -35,12 +37,6 @@ const ModalKategoriPasien: React.FC<ModalKategoriPasienProps> = ({ open, onClose
         onClose();
         setOpenModalKodeBooking(true);
     };
-
-    // const handlePilihPembayaran = () => {
-    //     onClose();
-    //     setOpenModalPilihPembayaran(true);
-    // }
-
     const handleBack = () => {
         setOpenModalPilihPembayaran(false);
     }

@@ -1,6 +1,5 @@
 import { Button } from "@mui/material";
 
-// Definisikan interface untuk props
 interface ButtonCustomProps {
   text: string;
 }

@@ -8,7 +8,6 @@ export default function CustomDateTimePicker() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateTimePicker']}>
                 <DateTimePicker
-                    // label="Basic date time picker"
                     sx={{
                         width: '258px',
                         '& .MuiInputBase-root': {

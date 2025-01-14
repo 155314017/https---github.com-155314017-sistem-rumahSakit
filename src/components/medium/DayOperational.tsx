@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import {
     Box,
     Typography,
     Button,
     IconButton,
 } from '@mui/material';
-import DropdownListTime, { Option } from '../small/dropdownlist/DropdownListTime';
+import DropdownListTime, { type Option } from '../small/dropdownlist/DropdownListTime';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 
 interface DayOperationalProps {
@@ -45,12 +46,8 @@ const DayOperational: React.FC<DayOperationalProps> = ({ dayName, jamOperasional
             prevSessions.map(session => {
                 if (session.id === id) {
                     const updatedSession = { ...session, [field]: value };
-
-                    // Find corresponding Option objects
                     const startOption = jamOperasional.find(option => option.label === (field === 'start' ? value : session.start));
                     const endOption = jamOperasional.find(option => option.label === (field === 'end' ? value : session.end));
-
-                    // Initialize error flags
                     let isStartInvalid = false;
                     let isEndInvalid = false;
 
@@ -103,6 +100,7 @@ const DayOperational: React.FC<DayOperationalProps> = ({ dayName, jamOperasional
                             width="100%"
                         >
                             <DropdownListTime
+                                // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                                 onChange={(value: any) => handleSessionChange(session.id, 'start', value)}
                                 placeholder="Pilih jam mulai"
                                 options={jamOperasional}
@@ -112,6 +110,7 @@ const DayOperational: React.FC<DayOperationalProps> = ({ dayName, jamOperasional
                             />
                             <Typography>-</Typography>
                             <DropdownListTime
+                                // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                                 onChange={(value: any) => handleSessionChange(session.id, 'end', value)}
                                 placeholder="Pilih jam selesai"
                                 options={jamOperasional}

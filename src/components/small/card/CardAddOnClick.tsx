@@ -1,5 +1,5 @@
 import { Box, Typography, Stack } from "@mui/material";
-import { ElementType } from "react";
+import type { ElementType } from "react";
 import bgImage from "../../../assets/img/String.png";
 import { Link } from "react-router-dom";
 
@@ -7,7 +7,7 @@ interface CardAddProps {
     icon: ElementType;
     title: string;
     link: string;
-    onClick: () => void;  // Tambahkan onClick props
+    onClick: () => void;  
 }
 
 export default function CardAddOnClick({ icon: Icon, title, link, onClick }: CardAddProps) {
@@ -30,10 +30,10 @@ export default function CardAddOnClick({ icon: Icon, title, link, onClick }: Car
                         {title}
                     </Typography>
                     <Link
-                        to={link} // Gunakan `to` untuk navigasi, bukan `href`
+                        to={link} 
                         onClick={(e) => {
-                            e.preventDefault();  // Hentikan navigasi default
-                            onClick();  // Panggil fungsi untuk memunculkan modal
+                            e.preventDefault();  
+                            onClick();  
                         }}
                         style={{
                             fontSize: "16px",

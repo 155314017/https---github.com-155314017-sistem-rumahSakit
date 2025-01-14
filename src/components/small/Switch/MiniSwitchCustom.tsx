@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import Switch, { SwitchProps } from '@mui/material/Switch';
+import Switch, { type SwitchProps } from '@mui/material/Switch';
 import { FormControlLabel } from '@mui/material';
 import { useState, useEffect } from "react";
 
@@ -74,7 +74,6 @@ type SwitchCustomProps = {
 const MiniSwitchCustom: React.FC<SwitchCustomProps> = ({ defaultValue = false, onChangeValue, disable = false, label = "value", colorLabel = 'black' }) => {
     const [checked, setChecked] = useState(defaultValue);
 
-    // Sync state with prop defaultValue when it changes
     useEffect(() => {
         setChecked(defaultValue);
     }, [defaultValue]);

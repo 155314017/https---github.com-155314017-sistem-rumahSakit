@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Box, Select, MenuItem, CircularProgress } from "@mui/material";
-import { SelectChangeEvent } from "@mui/material/Select";
+import type { SelectChangeEvent } from "@mui/material/Select";
 
 interface Option {
     value: string;
@@ -64,7 +64,6 @@ export default function DropdownListAPI({
                     flex: 1,
                     height: "43px",
                     borderRadius: "8px",
-                    // border: "1px solid #A8A8BD",
                     color: "black",
                 }}
                 inputProps={{ "aria-label": "select dropdown" }}
@@ -74,7 +73,7 @@ export default function DropdownListAPI({
                 </MenuItem>
                 {options.map((option) => (
                     <MenuItem key={option[valueField]} value={option[valueField]} sx={{ color: "#8F85F3" }}>
-                        {option[labelField]} {/* Display the label based on labelField */}
+                        {option[labelField]} 
                     </MenuItem>
                 ))}
             </Select>

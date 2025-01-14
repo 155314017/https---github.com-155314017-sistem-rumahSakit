@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import { Button, Typography, Box, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -19,7 +20,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (file.size > 1 * 1024 * 1024) { // 1MB = 1 * 1024 * 1024 bytes
+      if (file.size > 1 * 1024 * 1024) { 
         setError("Ukuran file terlalu besar. Maksimum 1MB.");
         return;
       }
@@ -30,7 +31,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
-        onBase64Change?.(base64String); // Kirim Base64 ke parent
+        onBase64Change?.(base64String); // Kirim Base64
       };
       reader.onerror = () => {
         alert("Gagal membaca file. Silakan coba lagi.");

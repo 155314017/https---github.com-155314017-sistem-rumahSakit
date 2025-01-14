@@ -119,7 +119,6 @@ export default function Header() {
         <Typography fontSize="18px">Role</Typography>
       </Box>
 
-      {/* avatar and notify */}
       <Box
         sx={{
           height: "48px",
@@ -156,7 +155,6 @@ export default function Header() {
           </Box>
         </Popover>
 
-        {/* avatar and menu */}
         <Box
           display="flex"
           alignItems="center"
@@ -198,7 +196,6 @@ export default function Header() {
                     textTransform: "capitalize",
                   }}
                 >
-                  {/* full name */}
                   {username}
                 </Typography>
                 <Typography

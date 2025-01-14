@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import React, { useState, useRef, useEffect, MouseEvent } from 'react';
+import type React from 'react';
+import { useState, useRef, useEffect, type MouseEvent } from 'react'
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -46,7 +47,6 @@ interface Event {
     allDay?: boolean;
 }
 
-// Styled Dialog
 const StyledDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiPaper-root': {
         position: 'fixed',
@@ -55,13 +55,13 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
         margin: 0,
         borderTopLeftRadius: '16px',
         borderBottomLeftRadius: '16px',
-        minHeight: '100%', // Full height
-        width: '40vw', // 40% of screen width
+        minHeight: '100%', 
+        width: '40vw', 
         maxWidth: 'none',
         boxShadow: theme.shadows[5],
-        animation: 'slideIn 0.5s ease-out', // Slide in animation
+        animation: 'slideIn 0.5s ease-out', 
         '&.slideOut': {
-            animation: 'slideOut 0.5s ease-in forwards', // Slide out animation
+            animation: 'slideOut 0.5s ease-in forwards', 
         },
     },
 }));
@@ -152,7 +152,6 @@ const TestKalender: React.FC = () => {
     const [currentDate, setCurrentDate] = useState(dayjs());
 
     useEffect(() => {
-        // Formatkan tanggal ke format Indonesia
         console.log('Tanggal yang diformat: ', currentDate.format('dddd, D MMMM YYYY'));
     }, [currentDate]);
 
@@ -168,17 +167,14 @@ const TestKalender: React.FC = () => {
     const [currentView, setCurrentView] = useState<string>('dayGridMonth');
     const calendarRef = useRef<FullCalendar>(null);
 
-    // Fungsi untuk membuka modal
     const handleOpenModal = () => {
         setIsModalOpen(true);
     };
 
-    // Fungsi untuk menutup modal
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
 
-    // Fungsi untuk menerima tanggal dari modal
     const handleDateChange = (date: string | null) => {
         setSelectedDate(date);
         handleCloseModal();
@@ -201,11 +197,9 @@ const TestKalender: React.FC = () => {
         { value: 2, label: "Pengecualian" },
     ];
 
-    // State untuk menu pilihan
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const openMenu = Boolean(anchorEl);
 
-    // State untuk modal pengecualian
     const [openExclusion, setOpenExclusion] = useState(false);
     const [newExclusion, setNewExclusion] = useState({
         exclusionTitle: '',
@@ -240,7 +234,7 @@ const TestKalender: React.FC = () => {
 
     // Handler untuk menutup modal Praktek
     const handleClose = () => {
-        setCloseAnimation(true); // Aktifkan animasi keluar
+        setCloseAnimation(true); 
         setTimeout(() => {
             setOpen(false); // Tutup modal setelah animasi selesai
             setNewEvent({
@@ -250,14 +244,14 @@ const TestKalender: React.FC = () => {
                 dateEnd: '',
                 timeEnd: '',
             }); // Reset state setelah modal tertutup
-        }, 500); // Durasi animasi (500ms)
+        }, 500); 
     };
 
     // Handler untuk menutup modal Pengecualian
     const handleCloseExclusion = () => {
         setCloseAnimation(true); // Aktifkan animasi keluar
         setTimeout(() => {
-            setOpenExclusion(false); // Tutup modal setelah animasi selesai
+            setOpenExclusion(false); 
             setNewExclusion({
                 exclusionTitle: '',
                 exclusionDateStart: '',
@@ -266,7 +260,7 @@ const TestKalender: React.FC = () => {
                 exclusionTimeEnd: '',
                 exclusionNotes: '',
             }); // Reset state setelah modal tertutup
-        }, 500); // Durasi animasi (500ms)
+        }, 500); 
     };
 
     // Handler untuk perubahan input pada form Praktek
@@ -297,7 +291,6 @@ const TestKalender: React.FC = () => {
         }
     };
 
-    // Handler untuk menambahkan event Praktek
     const handleAddEvent = () => {
         const { title, dateStart, timeStart, dateEnd, timeEnd } = newEvent;
 
@@ -341,7 +334,7 @@ const TestKalender: React.FC = () => {
                 title: exclusionTitle,
                 start: startDateTime,
                 end: endDateTime,
-                allDay: false, // Contoh properti tambahan
+                allDay: false, 
             };
 
             setEvents([...events, exclusionToAdd]);
@@ -363,7 +356,7 @@ const TestKalender: React.FC = () => {
     useEffect(() => {
         if (calendarRef.current) {
             const calendarApi = calendarRef.current.getApi();
-            calendarApi.gotoDate('2025-01-13'); // Pindahkan ke tanggal awal secara eksplisit
+            calendarApi.gotoDate('2025-01-13'); // Pindahkan ke tanggal awal 
         }
     }, []);
 
@@ -413,7 +406,7 @@ const TestKalender: React.FC = () => {
                                         onMonthChange={(newMonth) => {
                                             if (calendarRef.current) {
                                                 const calendarApi = calendarRef.current.getApi();
-                                                calendarApi.gotoDate(newMonth.format('YYYY-MM-DD')); // Sinkronkan FullCalendar
+                                                calendarApi.gotoDate(newMonth.format('YYYY-MM-DD')); 
                                             }
                                             setCurrentDate(newMonth); // Perbarui state
                                         }}
@@ -435,7 +428,7 @@ const TestKalender: React.FC = () => {
                                         }}
                                         onChange={(value) => {
                                             if (value) {
-                                                setCurrentDate(value); // Sinkronkan state jika tanggal dipilih di DateCalendar
+                                                setCurrentDate(value);
                                             }
                                         }}
                                     />

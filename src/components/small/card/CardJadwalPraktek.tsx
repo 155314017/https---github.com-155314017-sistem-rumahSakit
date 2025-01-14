@@ -7,30 +7,25 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 export default function CardJadwalPraktek() {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
-    // Handler untuk toggle collapse
     const handleToggleCollapse = () => {
         setIsCollapsed(!isCollapsed);
     };
 
     return (
         <Box
-            // width={'100%'}
             display={'flex'}
             flexDirection={'column'}
             border={'1px solid #C5C5D3'}
             borderRadius={'16px'}
             padding={2}
         >
-            {/* Header dengan Judul dan Tombol Collapse */}
             <Box display="flex" justifyContent="space-between" alignItems="center">
-                {/* <Box bgcolor={'#D5D1FB'} minWidth={'16px'} minHeight={'16px'} borderRadius={'16px'} ></Box> */}
                 <Typography>Jadwal Praktek</Typography>
                 <IconButton onClick={handleToggleCollapse} size="small">
                     {isCollapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
                 </IconButton>
             </Box>
 
-            {/* Konten yang Bisa Di-collapse */}
             {!isCollapsed && (
                 <Box display={'flex'} flexDirection={'column'} gap={1} mt={2}>
                     <Box display={'flex'} justifyContent="space-between">

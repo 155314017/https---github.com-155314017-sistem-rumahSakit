@@ -1,5 +1,5 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
-import { SvgIconComponent } from "@mui/icons-material"; 
+import type { SvgIconComponent } from "@mui/icons-material"; 
 import my from '../../img/String.png';
 
 interface CardCustomProps {

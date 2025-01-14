@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import Calendar from 'react-calendar';
 import { TextField, Typography } from '@mui/material';
 import 'react-calendar/dist/Calendar.css';

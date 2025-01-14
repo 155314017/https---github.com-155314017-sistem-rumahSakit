@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import {
   Box,
   Button,
@@ -11,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs, { type Dayjs } from "dayjs";
 
 const hours = Array.from({ length: 12 }, (_, i) => i + 7); // Jam dari 07 hingga 18
 const minutes = ["00", "15", "30", "45"];
@@ -160,7 +161,6 @@ const DateTimeRangePicker: React.FC = () => {
           </Grid>
         </DialogContent>
 
-        {/* Actions */}
         <DialogActions>
           <Button onClick={handleClose} color="secondary" type="button">
             Cancel

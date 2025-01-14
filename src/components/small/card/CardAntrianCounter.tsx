@@ -1,8 +1,7 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Box, Typography, IconButton, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import html2canvas from 'html2canvas';
-// import { useNavigate } from 'react-router-dom';
 
 interface CardAntrianCounterProps {
     nomorAntrian: string | number;
@@ -10,8 +9,6 @@ interface CardAntrianCounterProps {
 }
 
 const CardAntrianCounter: FC<CardAntrianCounterProps> = ({ nomorAntrian, onClose }) => {
-    // const navigate = useNavigate();
-
     const handleDownload = async () => {
         const element = document.getElementById('card-antrian-counter');
         if (element) {
@@ -51,7 +48,7 @@ const CardAntrianCounter: FC<CardAntrianCounterProps> = ({ nomorAntrian, onClose
                 <CloseIcon />
             </IconButton>
 
-            {/* Bagian Header */}
+            {/* Header */}
             <Box textAlign={'start'} mb={2}>
                 <Typography fontWeight={600} fontSize={'20px'}>
                     Rumah Sakit St. Carolus
@@ -67,7 +64,7 @@ const CardAntrianCounter: FC<CardAntrianCounterProps> = ({ nomorAntrian, onClose
                 </Typography>
             </Box>
 
-            {/* Bagian Nomor Antrian */}
+            {/* Nomor Antrian */}
             <Box textAlign={'start'} mb={2}>
                 <Typography fontWeight={400} fontSize={'16px'} color="#747487">
                     Nomor antrian konter
@@ -77,7 +74,7 @@ const CardAntrianCounter: FC<CardAntrianCounterProps> = ({ nomorAntrian, onClose
                 </Typography>
             </Box>
 
-            {/* Bagian Footer */}
+            {/* Footer */}
             <Typography
                 fontWeight={400}
                 fontSize={'16px'}

@@ -14,8 +14,8 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { DateCalendar } from "@mui/x-date-pickers";
 import DropdownList from "../dropdownlist/DropdownList";
-import { Dayjs } from "dayjs";
-import { Exclusion } from "../../../pages/pegawai/hooks/useTambahPegawai";
+import type { Dayjs } from "dayjs";
+import type { Exclusion } from "../../../pages/pegawai/hooks/useTambahPegawai";
 import DropdownListTime from "../dropdownlist/DropdownListTime";
 
 interface ExclusionModalProps {
@@ -72,7 +72,6 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
         return hours * 60 + minutes;
     };
 
-    // Function to Validate Start and End Times
     const validateTimes = (currentStart: string, currentEnd: string) => {
         const tempErrors = { ...errors };
         let isValid = true;
@@ -86,13 +85,12 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
                     tempErrors.startTime = 'Jam mulai tidak boleh lebih dari jam selesai.';
                     tempErrors.endTime = 'Jam selesai tidak boleh kurang dari jam mulai.';
                     isValid = false;
-                    console.error('Start time cannot be after end time.');
+                    console.error('Jam mulai tidak boleh lebih dari jam selesai.');
                 } else {
                     tempErrors.startTime = '';
                     tempErrors.endTime = '';
                 }
             } else {
-                // Reset errors if one of the times is not selected
                 tempErrors.startTime = '';
                 tempErrors.endTime = '';
             }
@@ -145,6 +143,7 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
     // Save Data Function
     const handleSave = () => {
         if (validate()) {
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
             const formattedDate = selectedDate!.format('YYYY-MM-DD');
             const exclusionData: Omit<Exclusion, 'id'> = {
                 date: formattedDate,
@@ -159,8 +158,6 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
             }
 
             onSave(exclusionData);
-
-            // Reset form after saving
             setSelectedDate(null);
             setSelectedType('');
             setStartTime('');
@@ -170,7 +167,6 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
         }
     };
 
-    // Determine if Form is Valid
     const isFormValid = () => {
         if (!selectedDate || !selectedType) return false;
         if (selectedType === "Operasi") {
@@ -182,13 +178,11 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
         return true;
     };
 
-    // Handle Start Time Change with Validation
     const handleStartTimeChange = (value: string) => {
         setStartTime(value);
         validateTimes(value, endTime);
     };
 
-    // Handle End Time Change with Validation
     const handleEndTimeChange = (value: string) => {
         setEndTime(value);
         validateTimes(startTime, value);

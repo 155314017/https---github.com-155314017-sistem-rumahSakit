@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs'; // Mengimpor tipe secara eksplisit
 
 export default function ModalPilihTanggal() {
@@ -41,7 +40,7 @@ export default function ModalPilihTanggal() {
                             value={selectedDate}
                             onChange={(newValue) => setSelectedDate(newValue)}
                             slots={{
-                                textField: TextField, // Gantikan `renderInput` dengan slots
+                                textField: TextField, 
                             }}
                             slotProps={{
                                 textField: {

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Typography from '@mui/material/Typography';
