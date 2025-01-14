@@ -60,7 +60,18 @@ export default function DetailDokter() {
                     onHapusData={() => {}}
                     
                     />
-                    <CardJamPraktek />
+                    <CardJamPraktek 
+                    title="Jam Operasional"
+                    data={doctorData?.operationalSchedule || {
+                        senin: "-",
+                        selasa: "-",
+                        rabu: "-",
+                        kamis: "-",
+                        jumat: "-",
+                        sabtu: "-",
+                        minggu: "-",
+                    }}
+                    />
                 </Box>
                 <Box mt={3} >
                     <CardIzinAkses />

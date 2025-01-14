@@ -59,7 +59,17 @@ export default function DetailPegawai() {
                     onUbahData={() => {}}
                     onHapusData={() => {}}
                     />
-                    <CardJamPraktek />
+                    <CardJamPraktek 
+                     title="Jam Operasional"
+                     data={employeeData?.operationalSchedule || {
+                         senin: "-",
+                         selasa: "-",
+                         rabu: "-",
+                         kamis: "-",
+                         jumat: "-",
+                         sabtu: "-",
+                         minggu: "-",
+                     }}/>
                 </Box>
                 <Box mt={3} >
                     <CardIzinAkses />

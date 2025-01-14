@@ -1,8 +1,22 @@
 import { Box } from '@mui/system'
 import { Typography } from '@mui/material';
 
-export default function CardJamPraktek() {
+interface DetailCardProps {
+    title: string;
+    data: {
+        senin: string;
+        selasa: string;
+        rabu: string;
+        kamis: string;
+        jumat: string;
+        sabtu: string;
+        minggu: string;
+    };
+}
+
+const CardJamPraktek: React.FC<DetailCardProps> = ({ title, data }) => {
     return (
+        <div>
         <Box
             position={"relative"}
             p={3}
@@ -95,13 +109,13 @@ export default function CardJamPraktek() {
 
                 <Box maxWidth={'50%'} display={'flex'} flexDirection={'column'} gap={2} >
 
-                    <Typography>10:30-15:00</Typography>
-                    <Typography>10:30-15:00</Typography>
-                    <Typography>10:30-15:00</Typography>
-                    <Typography>10:30-15:00</Typography>
-                    <Typography>10:30-15:00</Typography>
-                    <Typography>10:30-15:00</Typography>
-                    <Typography>10:30-15:00</Typography>
+                    <Typography>{data.senin}</Typography>
+                    <Typography>{data.selasa}</Typography>
+                    <Typography>{data.rabu}</Typography>
+                    <Typography>{data.kamis}</Typography>
+                    <Typography>{data.jumat}</Typography>
+                    <Typography>{data.sabtu}</Typography>
+                    <Typography>{data.minggu}</Typography>
 
                 </Box>
 
@@ -109,5 +123,8 @@ export default function CardJamPraktek() {
             </Box>
 
         </Box>
+        </div>
     )
-}
+};
+
+export default CardJamPraktek;
