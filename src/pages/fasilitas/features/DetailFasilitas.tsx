@@ -51,7 +51,7 @@ export default function DetailFasilitas() {
                         { id: "jamOperational", label: "Jam Operasional" },
 
                     ]}
-                    data={[{ nomorRuangan: facilityData?.id,  namaGedung: buildingName, deskripsi: facilityData?.description, hargaFacilitas: facilityData?.cost, Harga: facilityData?.cost }]}
+                    data={[{ nomorRuangan: facilityData?.id,  namaGedung: buildingName, deskripsi: facilityData?.description, hargaFacilitas: facilityData?.cost, Harga: facilityData?.cost, jamOperational: facilityData?.operationalSchedules }]}
                     actions={() => (
                         <>
                             <ModalDeleteConfirmation

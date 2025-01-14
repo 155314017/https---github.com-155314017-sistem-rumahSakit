@@ -33,6 +33,7 @@ export interface FacilityDataItem {
     cost: number;
     images: ImageData[];
     schedules: ScheduleData[];
+    operationalSchedules?: string;
      operationalSchedule?: OperationalSchedule;
 }
 
