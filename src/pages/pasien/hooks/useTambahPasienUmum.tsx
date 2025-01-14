@@ -63,7 +63,7 @@ export default function useTambahPasienUmum() {
     const [selectedMethod, setSelectedMethod] = useState('');
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
     const [dataTickets, setDataTickets] = useState<dataTicket>();
-    const [buttonDis, setButtonDis] = useState(false);
+    const [ setButtonDis] = useState(false);
     // const [patientData, setPatientData] = useState<ResponsePatient | undefined>();
     const [patientData, setPatientData] = useState<ResponsePatient>({
         id: '',
@@ -212,12 +212,10 @@ export default function useTambahPasienUmum() {
             birthPlace: formik.values.birthPlacePatient
         }
         setDataPasien(dataPatient)
-        console.log("tes data kirim", dataPatient);
         setCurrentPage(2)
     }
 
     const handleDropdownPoli = (value: string, label: string) => {
-        console.log(`Selected Value: ${value}, Selected Label: ${label}`);
         setIdClinic(value)
         setClinicName(label);
     };
@@ -258,7 +256,6 @@ export default function useTambahPasienUmum() {
     const findPatientByNik = async (nik: string) => {
         try {
             const response = await GetPatientByNIKServices(nik);
-            console.log(response?.data);
 
 
             setPatientData(response?.data as ResponsePatient);
@@ -266,7 +263,6 @@ export default function useTambahPasienUmum() {
             const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
             setBirthDate(birthDateProcess ? birthDateProcess : "Data tidak ada")
             setBirthPlace(birthPlaceProcess ? birthPlaceProcess : "Data tidak ada")
-            console.log(birthDate, birthPlace);
             setPatientFullsPage(false);
         } catch (error) {
             console.error("Error fetching", error);
@@ -289,28 +285,21 @@ export default function useTambahPasienUmum() {
                 guardianBirthDate: formik.values.birthDateGuardian,
             }
 
-            const response = await UpdatePatientGuards(tes)
-            console.log(response)
-            console.log("Data: ", tes)
             setCurrentPage(3)
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     }
 
 
     const handleDropdownDocter = (value: string, label: string) => {
-        console.log(`Selected Value: ${value}, Selected Label: ${label}`);
         setIdDoctor(value);
-        console.log(idDoctor);
         setDocterName(label);
     };
 
     const handleScheduleChange = (scheduleId: string, schedule: string) => {
         setSelectedScheduleId(scheduleId);
         setSelectedSchedule(schedule);
-        console.log('Jadwal Terpilih:', schedule);
-        console.log('ID Jadwal Terpilih:', scheduleId);
     };
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -376,8 +365,6 @@ export default function useTambahPasienUmum() {
         }
         try {
             setButtonDis(true);
-            console.log(buttonDis);
-            console.log(data);
             const response = await CreateAppointment(data)
             const createdDateTimeFormatted = dayjs.unix(response.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
             const dataSent = {
@@ -388,13 +375,11 @@ export default function useTambahPasienUmum() {
                 jadwalKonsul: selectedSchedule,
                 bookingCode: response.data.bookingCode
             }
-            console.log(dataSent);
             setDataTickets(dataSent)
-            console.log('sukses')
             setMainPages(false)
             setButtonDis(false)
         } catch (err) {
-            console.log(err)
+            console.error(err)
         }
     }
 
@@ -432,7 +417,6 @@ export default function useTambahPasienUmum() {
 
     const handleSwitchChange = (value: boolean) => {
         setSwitchValue(value);
-        console.log('Switch value:', value);
     };
 
     return {

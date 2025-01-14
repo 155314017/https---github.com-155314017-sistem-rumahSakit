@@ -9,11 +9,8 @@ import useDetailDokter from "../hooks/useDetailDokter";
 export default function DetailDokter() {
    const {
     breadcrumbItems,
-    name,
-    deletedItems,
     doctorData,
     handleDeleteSuccess,
-    confirmationDelete,
    } = useDetailDokter();
 
 
@@ -57,7 +54,7 @@ export default function DetailDokter() {
                     dokumen= {doctorData?.employeeData?.additionalInfo || "Data Tidak Ditemukan"}
                     avatarUrl= {""}
                     onUbahData={() => {}}
-                    onHapusData={() => {}}
+                    onHapusData={() => handleDeleteSuccess()}
                     
                     />
                     <CardJamPraktek 

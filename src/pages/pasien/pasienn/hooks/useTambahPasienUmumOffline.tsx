@@ -92,7 +92,6 @@ export default function useTambahPasienUmumOffline() {
         address: '',
     });
 
-    console.log(dataGuards);
 
     const [dataPasien, setDataPasien] = useState<dataPasien>();
     const [idClinic, setIdClinic] = useState('');
@@ -231,10 +230,8 @@ export default function useTambahPasienUmumOffline() {
     }
 
     const handleDropdownPoli = (value: string, label: string) => {
-        console.log(`Selected Value: ${value}, Selected Label: ${label}`);
         setIdClinic(value)
         setClinicName(label);
-        console.log(clinicName);
     };
 
 
@@ -280,11 +277,8 @@ export default function useTambahPasienUmumOffline() {
     const findPatientByNik = async (nik: string) => {
         try {
             const response = await GetPatientByNIKServices(nik);
-            console.log("Responseee: ", response?.data);
-            console.log(response);
             if (response?.responseCode === "200") {
                 const dataGuard = await getGuardianData(response.data.id)
-                console.log("DATA GUARDS: ", dataGuard)
                 setDataGuards(dataGuard);
                 setPatientData(response?.data as ResponsePatient);
                 const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
@@ -304,7 +298,6 @@ export default function useTambahPasienUmumOffline() {
 
                 setDataPasien(dataGet)
                 setPatientFullsPage(false);
-                console.log(response?.data);
             }
 
         } catch (err: any) {
@@ -331,31 +324,23 @@ export default function useTambahPasienUmumOffline() {
                 guardianBirthDate: formik.values.birthDateGuardian,
             }
 
-            const response = await UpdatePatientGuards(tes)
-            console.log(response)
-            console.log("Data: ", tes)
             setCurrentPage(3)
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     }
 
 
     const handleDropdownDocter = (value: string, label: string) => {
-        console.log(`Selected Value: ${value}, Selected Label: ${label}`);
         setIdDoctor(value);
-        console.log(idDoctor);
         setDocterName(label);
-        console.log(docterName);
         setCalendarKey((prevKey) => prevKey + 1);
     };
 
     const handleScheduleChange = (scheduleId: string, schedule: string) => {
         setSelectedScheduleId(scheduleId);
         setSelectedSchedule(schedule);
-        console.log(selectedSchedule)
-        console.log('Jadwal Terpilih:', schedule);
-        console.log('ID Jadwal Terpilih:', scheduleId);
+        
     };
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -440,7 +425,6 @@ export default function useTambahPasienUmumOffline() {
         } catch (err: any) {
             setMainPages(false)
             setCurrentPage(3);
-            console.log(err);
         } finally {
             setIsLoading(false);
         }
@@ -484,42 +468,32 @@ export default function useTambahPasienUmumOffline() {
 
     const handleSwitchChange = (value: boolean) => {
         setSwitchValue(value);
-        console.log('Switch value:', value);
     };
 
     const handleGoBack = () => {
         if (currentPage === 1) {
             // Logika untuk currentPage 1
-            console.log("Halaman 1");
             if (patientFullPage == true) {
-                console.log("dikit")
                 navigate(-1)
             } else if (patientFullPage == false) {
-                console.log("banyak")
                 setPatientFullsPage(true);
             }
         } else if (currentPage === 2) {
             // Logika untuk currentPage 2
-            console.log("Halaman 2, kembali ke halaman kedua");
             // setCurrentPage(currentPage - 1); // Contoh aksi
             if (guardFullPage == true) {
-                console.log("dikit")
                 setCurrentPage(currentPage - 1);
             } else if (guardFullPage == false) {
-                console.log("banyak")
                 setGuardFullPage(true);
             }
         } else if (currentPage === 3) {
             // Logika untuk currentPage 3
-            console.log("Halaman 3, kembali ke halaman ketiga");
             if (mainPages == false) {
-                console.log("ANCUR")
                 setCurrentPage(1);
             } else if (mainPages == true) {
                 setCurrentPage(currentPage - 1); // Contoh aksi
             }
         } else {
-            console.log("TIDAK COCOK")
             // Jika tidak ada kondisi yang cocok, kembali ke halaman sebelumnya
             // window.history.back();
         }

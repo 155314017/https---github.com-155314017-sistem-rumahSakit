@@ -9,11 +9,11 @@ import useDetailPegawai from "../hooks/useDetailPegawai";
 export default function DetailPegawai() {
    const {
     breadcrumbItems,
-    name,
-    deletedItems,
+    // name,
+    // deletedItems,
     employeeData,
     handleDeleteSuccess,
-    confirmationDelete,
+    // confirmationDelete,
    } = useDetailPegawai();
 
 
@@ -57,7 +57,7 @@ export default function DetailPegawai() {
                     dokumen= {employeeData?.additionalInfo || "Data Tidak Ditemukan"}
                     avatarUrl= {""}
                     onUbahData={() => {}}
-                    onHapusData={() => {}}
+                    onHapusData={() => handleDeleteSuccess()}
                     />
                     <CardJamPraktek 
                      title="Jam Operasional"

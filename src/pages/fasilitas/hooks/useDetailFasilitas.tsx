@@ -51,7 +51,6 @@ type OperationalSchedule = {
 
 export default function useDetailFasilitas() {
   const [name, setName] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
     const [deletedItems, setDeletedItems] = useState<string>("");
     const [open, setOpen] = useState(false);
     const [ids, setIds] = useState<string>("") || "";
@@ -100,7 +99,6 @@ export default function useDetailFasilitas() {
             Minggu: "minggu",
           };
       
-          console.log("masuk convert",schedules);
         
           schedules.forEach((schedule) => {
             const startDay = dayjs(schedule.startDateTime).format("dddd"); // Day in English
@@ -116,7 +114,6 @@ export default function useDetailFasilitas() {
             }
           });
       
-          console.log(defaultSchedule);
         
           return defaultSchedule;
         };
@@ -124,7 +121,6 @@ export default function useDetailFasilitas() {
         const fetchData = async () => {
           setLoading(true);
           try {
-            console.log(id);
             const accessToken = Cookies.get("accessToken");
             const facilityResponse = await GetFacilityByIdServices(id, accessToken); 
             const data = facilityResponse; // Access the data from the response
@@ -137,7 +133,6 @@ export default function useDetailFasilitas() {
               imageType: image.imageType,
               imageData: `data:${image.imageType};base64,${image.imageData}`,
             }));
-            console.log("name", data.name);
             setName(data.name);
       
             setLargeImage(mappedImages[0]?.imageData || "");
@@ -188,6 +183,7 @@ export default function useDetailFasilitas() {
       
       
         return {
+          setIds,
           name,
           breadcrumbItems,
           largeImage,

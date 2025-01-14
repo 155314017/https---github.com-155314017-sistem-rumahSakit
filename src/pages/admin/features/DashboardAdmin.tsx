@@ -14,9 +14,7 @@ import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 
-// table
-// import TableRuangan from "../../../Backup/ruangan/TableRuangan";
-// import TablePegawai from "../../../Backup/pegawai/TablePegawai";
+
 import TableAntrianPasien from "./TableAntrianPasien";
 
 export default function DashboardAdmin() {

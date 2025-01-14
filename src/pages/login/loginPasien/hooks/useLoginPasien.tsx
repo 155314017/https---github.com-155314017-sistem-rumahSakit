@@ -98,7 +98,6 @@ export default function useLoginPasien() {
     setIsCounting(true)
     setSecondsLeft(60)
     showTemporaryAlertSuccess()
-    console.log('Resend clicked')
   }
 
   const showTemporaryAlertSuccess = async () => {

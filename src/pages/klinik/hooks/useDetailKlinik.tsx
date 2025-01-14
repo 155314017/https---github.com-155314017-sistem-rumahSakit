@@ -49,7 +49,6 @@ export default function useDetailKlinik() {
   const [deletedItems, setDeletedItems] = useState<string>("");
   const [open, setOpen] = useState(false);
   const [ids, setIds] = useState<string>("");
-  const [response, setResponse] = useState<ClinicDataItem | null>(null); // Correct type for response
   const { id } = useParams();
   const navigate = useNavigate();
   const [largeImage, setLargeImage] = useState<string>("");
@@ -93,13 +92,10 @@ export default function useDetailKlinik() {
       Minggu: "minggu",
     };
 
-    console.log("masuk convert",schedules);
   
     schedules.forEach((schedule) => {
       const startDay = dayjs(schedule.startDateTime).format("dddd"); // Day in English
-      console.log(startDay);
       const startTime = dayjs(schedule.startDateTime).format("HH:mm");
-      console.log(startTime);
       const endTime = dayjs(schedule.endDateTime).format("HH:mm");
 
   
@@ -111,7 +107,6 @@ export default function useDetailKlinik() {
       }
     });
 
-    console.log(defaultSchedule);
   
     return defaultSchedule;
   };
@@ -119,14 +114,11 @@ export default function useDetailKlinik() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      console.log(id);
       const clinicResponse = await getClinic(id); 
       const data = clinicResponse; // Access the data from the response
-      console.log(data);
       setIds(data.id);
       setName(data.name);
       setDescription(data.description || ""); 
-      console.log(data.schedules);
       const operationalSchedule = convertSchedulesToReadableList(data.schedules);
       setClinicData({ ...data, operationalSchedule});
       const imagesData = data.images || [];
@@ -161,7 +153,6 @@ export default function useDetailKlinik() {
   };
 
 
-  console.log(response);
 
   return {
     name,
@@ -171,7 +162,13 @@ export default function useDetailKlinik() {
     handleDeleteSuccess,
     confirmationDelete,
     loading,
+    description,
+    deletedItems,
+    setOpen,
+    navigate,
+    open,
+    ids,
+    clinicData,
     
-    clinicData
   };
 }

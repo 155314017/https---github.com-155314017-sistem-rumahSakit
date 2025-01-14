@@ -13,14 +13,13 @@ export default function useTablePasien() {
             try {
                 const result = await PatientServices();
                 setDatas(result);
-                console.log(result);
                 const clinicIds = result
                 .map((item) => item.registrationDatumDto?.masterClinicId)
                 .filter((id): id is string => !!id);
                 setDataIdClinic(clinicIds);
                 setLoading(false);
             } catch (error) {
-                console.log('Failed to fetch data from API: ', error);
+                console.error('Failed to fetch data from API: ', error);
             }
         };
 
@@ -40,7 +39,6 @@ export default function useTablePasien() {
           const name = response.data.data.name;
           return name ? name : "Data Gedung Tidak Tercatat";
         });
-        console.log("Clinics:",CLinicData);
         setClinics(CLinicData);
         
       } catch (err) {

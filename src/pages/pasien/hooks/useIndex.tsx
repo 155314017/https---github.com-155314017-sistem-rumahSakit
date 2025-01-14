@@ -13,7 +13,7 @@ export default function useIndex() {
                 const result = await PatientServices();
                 setData(result);
             } catch (error) {
-                console.log('Failed to fetch data from API' + error);
+                console.error('Failed to fetch data from API' + error);
             }
         };
 

@@ -51,39 +51,31 @@ export default function useRawatJalanUmum() {
   const [calendarKey, setCalendarKey] = useState<number>(0);
 
   useEffect(() => {
-    console.log("tes")
     if (location.state && location.state.succesSendData) {
-      console.log("tes1")
       setPatientId(location.state.data)
     }
   }, [location.state, navigate]);
 
-  useEffect(() => {
-    console.log("PASIEN ID RAWAT JALAN: ", patientId);
-  }, [patientId]);
+  
 
   const handleScheduleChange = (scheduleId: string, schedule: string) => {
     setSelectedScheduleId(scheduleId);
     setSelectedSchedule(schedule);
-    console.log('Jadwal Terpilih:', schedule);
-    console.log('ID Jadwal Terpilih:', scheduleId);
+    
   };
 
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedMethod(event.target.value);
-    console.log(event.target.value);
   };
 
   const handleDropdownPoli = (value: string, label: string) => {
-    console.log(`Selected Value: ${value}, Selected Label: ${label}`);
     setIdClinic(value)
     setClinicName(label);
   };
 
 
   const handleDropdownDocter = (value: string, label: string) => {
-    console.log(`Selected Value: ${value}, Selected Label: ${label}`);
     setIdDoctor(value)
     setDocterName(label);
     setCalendarKey((prevKey) => prevKey + 1);

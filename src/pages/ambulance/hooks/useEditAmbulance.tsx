@@ -58,13 +58,9 @@ export default function useEditAmbulance() {
 
   useEffect(() => {
     if (startTime && endTime) {
-      const formattedStartTime = dayjs(startTime).format('HH:mm'); // Format start time
-      const formattedEndTime = dayjs(endTime).format('HH:mm'); // Format end time
       const dayOfWeek = dayjs(startTime).format('dddd'); // Get day name
       
-      console.log(formattedStartTime);
-      console.log(formattedEndTime);
-      console.log(dayOfWeek);
+      
       
       const dayMapping: { [key: string]: string } = {
         Senin: '1',
@@ -118,7 +114,6 @@ export default function useEditAmbulance() {
         setSchedules(formattedSchedules);
         setImagesData(data?.images || []);
   
-        console.log("Formatted schedules", formattedSchedules);
   
       } catch (error) {
         console.error('Error:', error);
@@ -185,7 +180,6 @@ export default function useEditAmbulance() {
         }))
       };
     
-      console.log("Data to be sent:", data); // Log the data before sending
     
       try {
         const response = await EditAmbulanceServices(data);
@@ -194,8 +188,8 @@ export default function useEditAmbulance() {
           state: { successEdit: true, message: 'Ambulance updated successfully!' }
         });
       } catch (error) {
-        console.error('Error editing ambulance:', error);
         setErrorAlert(true);
+        console.error('Error submitting form:', error);
       }
     }
   })
@@ -222,8 +216,7 @@ export default function useEditAmbulance() {
   function handleEditSchedule(index: number) {
     setStatusEdit(true);
     const scheduleToEdit = schedules[index];
-    console.log("Editing schedule at index:", index);
-    console.log("Schedule to edit:", scheduleToEdit);
+    
   
     if (scheduleToEdit) {
       try {
@@ -243,9 +236,7 @@ export default function useEditAmbulance() {
   
         if (mappedDayValue) {
           setSelectedDay(mappedDayValue); // Set numeric value for dropdown
-          console.log("Selected day after mapping:", mappedDayValue); // Debugging line
         } else {
-          console.error("Invalid day name:", scheduleToEdit.day);
           return; // Exit the function if the day is invalid
         }
   
@@ -256,9 +247,7 @@ export default function useEditAmbulance() {
         if (parsedStartTime.isValid() && parsedEndTime.isValid()) {
           setStartTime(parsedStartTime); // Set start time in the time picker (formatted as string)
           setEndTime(parsedEndTime); // Set end time in the time picker (formatted as string)
-        } else {
-          console.error("Invalid time format in schedule:", scheduleToEdit);
-        }
+        } 
         setEditingIndex(index); // Set editing index to identify the schedule being edited
       } catch (error) {
         console.error("Error parsing schedule times:", error);
@@ -366,11 +355,9 @@ export default function useEditAmbulance() {
         // Update the schedule at the specific index
         const updatedSchedules = [...prevSchedules];
         updatedSchedules[editingIndex] = newSchedule;
-        console.log("Updated Schedule:", newSchedule); // Log the updated schedule
         return updatedSchedules;
       } else {
         // Add the new schedule
-        console.log("Saved New Schedule:", newSchedule);
         return [...prevSchedules, newSchedule];
       }
     });

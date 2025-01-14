@@ -55,7 +55,6 @@ export default function useDetailKonter() {
     const [description, setDescription] = useState<string>("");
     const [deletedItems, setDeletedItems] = useState<string>("");
     const [open, setOpen] = useState(false);
-    const [ids, setIds] = useState<string>("") || "";
     const { id } = useParams();
     const navigate = useNavigate();
     const [largeImage, setLargeImage] = useState<string>("");
@@ -205,5 +204,9 @@ export default function useDetailKonter() {
     deletedItems,
     navigate,
     counterData,
+    buildingName,
+    buildingId,
+    setDescription,
+    setBuildingId
   }
 }
