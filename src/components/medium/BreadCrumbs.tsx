@@ -54,10 +54,10 @@ export default function BreadCrumbs({
           <ArrowBackIosRoundedIcon sx={{ fontSize: "14px" }} />
         </Button>
 
-        {/* breadcrumb */}
         <Breadcrumbs separator="›">
           {breadcrumbItems.map((item, index) => (
             <Link
+              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
               key={index}
               underline="hover"
               color={item.isCurrent ? "#8F85F3" : "inherit"}

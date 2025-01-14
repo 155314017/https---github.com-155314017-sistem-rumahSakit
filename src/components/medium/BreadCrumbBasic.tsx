@@ -48,7 +48,6 @@ export default function BreadCrumbBasic({
                     <ArrowBackIosRoundedIcon sx={{ fontSize: "14px" }} />
                 </Button>
 
-                {/* Judul dan Deskripsi */}
                 <Box>
                     <Typography variant="h6" sx={{ fontSize: "18px", fontWeight: 600 }}>
                         {title}
