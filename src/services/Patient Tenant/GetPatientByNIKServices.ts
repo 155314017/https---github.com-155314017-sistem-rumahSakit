@@ -23,7 +23,6 @@ const baseUrl = 'https://hms.3dolphinsocial.com:8083'
 const GetPatientByNIKServices = async (nik: string): Promise<PatientResponse | null> => {
   try {
     const response = await axios.get<PatientResponse>(`${baseUrl}/v1/manage/patient/get/${nik}`)
-    console.log('TES RESPONSE: ', response)
     if (response.status === 200) {
       return response.data
     } else {

@@ -33,7 +33,6 @@ export const createClinic = async (
   accessToken: string | undefined
 ): Promise<ApiResponse> => {
   try {
-    console.log(clinicData)
     const response = await axios.post<ApiResponse>(BASE_URL, clinicData, {
       headers: {
         'Content-Type': 'application/json',

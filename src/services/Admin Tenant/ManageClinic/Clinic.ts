@@ -90,9 +90,7 @@ export const Clinic = async (): Promise<ClinicDataItem[]> => {
 
           item.operationalSchedule = operationalSchedules.join(" | "); // Combine all schedules with a separator
 
-        } else {
-          console.log("No schedules available.");
-        }
+        } 
 
         
       });

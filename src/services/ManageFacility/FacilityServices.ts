@@ -92,10 +92,7 @@ export const FacilityServices = async (): Promise<FacilityDataItem[]> => {
 
         item.operationalSchedule = operationalSchedules.join(" | "); // Combine all schedules with a separator
 
-      } else {
-        console.log("No schedules available.");
-      }
-
+      } 
       
       
       

@@ -14,7 +14,6 @@ const GenerateQueuePatientServices = async (clinicId: string): Promise<number | 
     const response = await axios.get<QueueResponse>(
       `https://hms.3dolphinsocial.com:8083/v1/manage/counter/${clinicId}/generate-queue`
     )
-    console.log('sukses', response)
     return response.data.data.queueNumber
   } catch (error) {
     console.error('Error fetching queue number:', error)

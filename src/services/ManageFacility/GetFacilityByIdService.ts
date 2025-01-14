@@ -59,9 +59,7 @@ export const GetFacilityByIdServices = async (id : string | undefined, accessTok
         const operationalSchedule = `${startDay}, ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
         item.operationalSchedule = operationalSchedule; // Menyimpan hari dan jam operasional ke item
 
-      } else {
-        console.log("No schedules available.");
-      }
+      } 
 
     
  

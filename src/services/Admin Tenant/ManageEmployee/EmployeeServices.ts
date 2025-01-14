@@ -107,29 +107,9 @@ export const EmployeeServices = async (
     })
 
     if (response.status === 200) {
-      console.log('API connection successful:', response.data)
+      
 
-      response.data.data.content.forEach((item) => {
-        console.log('ID:', item.id)
-        console.log('Name:', item.name)
-        console.log('Additional Info:', item.additionalInfo || 'N/A')
-        console.log('Created By:', item.createdBy || 'N/A')
-        console.log(
-          'Created Date Time:',
-          item.createdDateTime ? new Date(item.createdDateTime).toLocaleString() : 'N/A'
-        )
-        console.log('Updated By:', item.updatedBy || 'N/A')
-        console.log(
-          'Updated Date Time:',
-          item.updatedDateTime ? new Date(item.updatedDateTime).toLocaleString() : 'N/A'
-        )
-        console.log('Deleted By:', item.deletedBy || 'N/A')
-        console.log(
-          'Deleted Date Time:',
-          item.deletedDateTime ? new Date(item.deletedDateTime).toLocaleString() : 'N/A'
-        )
-        console.log('----------------------------')
-      })
+     
 
       return response.data.data.content
     } else {

@@ -24,7 +24,6 @@ export const getGuardianData = async (patientId: string): Promise<GuardianData> 
     })
 
     const data = response.data.data as GuardianData
-    console.log('DATA API : ', data)
     return {
       guardianType: data.guardianType,
       guardianName: data.guardianName,

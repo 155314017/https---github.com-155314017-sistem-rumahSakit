@@ -80,7 +80,6 @@ export const CreateAmbulanceServices = async (data: {
     })
 
     if (response.status === 200) {
-      console.log('API connection successful:', response.data)
 
       const content = response.data?.data?.content
       if (!content || content.length === 0) {

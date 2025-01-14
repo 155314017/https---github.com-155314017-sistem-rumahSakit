@@ -6,7 +6,6 @@ interface Data {
 }
 const VerifyOTPPatient = async (data: Data) => {
   try {
-    console.log('inside RegisterPatient')
     const response = await axios.post(
       'https://hms.3dolphinsocial.com:8083/v1/patient/verify',
       data,
@@ -23,7 +22,7 @@ const VerifyOTPPatient = async (data: Data) => {
       throw new Error(`API responded with status: ${response.status}`)
     }
   } catch (error) {
-    console.log('error', error)
+    console.error('error', error)
   }
 }
 
