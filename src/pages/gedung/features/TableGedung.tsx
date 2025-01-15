@@ -1,4 +1,3 @@
-
 import {
   Box,
   Stack,
@@ -294,7 +293,7 @@ const TableGedung: React.FC<TableGedungProps> = ({fetchDatas, onSuccessDelete}) 
                           <ModalDeleteConfirmation
                             open={open}
                             onClose={() => setOpen(false)}
-                            apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/building/${deletedItems}`}
+                            apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${deletedItems}`}
                             onDeleteSuccess={handleDeleteSuccess}
                           />
                           <Link

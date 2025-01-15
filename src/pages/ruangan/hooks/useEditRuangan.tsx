@@ -51,7 +51,7 @@ export default function useEditRuangan() {
     useEffect(() => {
         const fetchGedungData = async () => {
             try {
-                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
+                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`, {
                     timeout: 10000
                 });
                 setGedungOptions(response.data.data.content.map((item: Building) => ({
@@ -72,7 +72,7 @@ export default function useEditRuangan() {
             try {
                 const token = Cookies.get("accessToken");
                 const response = await GetRoomByIdServices(id,token)
-                setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/room/${id}`);
+                setApiUrl(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/${id}`);
                 setRoomName(response.name);
                 setRoomType(response.type);
 

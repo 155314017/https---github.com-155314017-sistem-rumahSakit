@@ -78,7 +78,7 @@ export default function useEditKonter() {
             try {
                 const token = Cookies.get("accessToken");
                 const response = await GetCounterByIdServices(id,token);
-                setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/counter/${id}`);
+                setApiUrl(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/counter/${id}`);
                 setName(response.name);
                 setLocation(response.location);
                 const convertUnixToReadableTime = (timestamp: number) => {

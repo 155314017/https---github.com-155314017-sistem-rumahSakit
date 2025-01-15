@@ -67,7 +67,7 @@ const ModalKodeBooking: React.FC<{ open: boolean; onClose: () => void }> = ({ op
                         setIsLoading(true);
                         try {
                             const response = await axios.post(
-                                "https://hms.3dolphinsocial.com:8083/v1/patient/check-in",
+                                `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/patient/check-in`,
                                 { bookingCode: values.bookingCode },
                                 {
                                     headers: {

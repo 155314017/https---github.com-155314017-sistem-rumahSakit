@@ -32,7 +32,7 @@ export default function useTambahSubFasilitas() {
     useEffect(() => {
         const fetchFacilityData = async () => {
             try {
-                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/facility/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
+                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`, {
                     timeout: 10000
                 });
                 setFacilityOptions(response.data.data.content.map((item: Facility) => ({

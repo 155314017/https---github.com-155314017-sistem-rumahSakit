@@ -52,7 +52,7 @@ export default function DetailRuangan() {
                             <ModalDeleteConfirmation
                                 open={open}
                                 onClose={() => setOpen(false)}
-                                apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/room/${deletedItems}`}
+                                apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/${deletedItems}`}
                                 onDeleteSuccess={handleDeleteSuccess}
                             />
                             <Link

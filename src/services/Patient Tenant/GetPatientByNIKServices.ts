@@ -18,7 +18,7 @@ interface PatientResponse {
   data: PatientData
 }
 
-const baseUrl = 'https://hms.3dolphinsocial.com:8083'
+const baseUrl = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}`
 
 const GetPatientByNIKServices = async (nik: string): Promise<PatientResponse | null> => {
   try {

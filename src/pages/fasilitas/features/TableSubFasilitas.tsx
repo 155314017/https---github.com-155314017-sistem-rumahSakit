@@ -400,7 +400,7 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({fetchDatas, onSucc
                                                         >
                                                             Hapus
                                                         </Link>
-                                                        <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
+                                                        <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/subfacility/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
                                                         <Link
                                                             href="#"
                                                             mr={2}

@@ -112,7 +112,7 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
     const fetchBuildings = async () => {
       try {
         const responses = await Promise.all(
-          dataIdBuilding.map((id) => axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`))
+          dataIdBuilding.map((id) => axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${id}`))
         );
 
         const facilitiesData = responses.map((response) => {

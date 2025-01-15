@@ -50,8 +50,7 @@ export interface ApiResponse {
   };
 }
 
-const API_URL =
-  "https://hms.3dolphinsocial.com:8083/v1/manage/tenant/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc";
+const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/tenant/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`;
 
 export const Tenant = async (): Promise<DataItem[]> => {
   const response = await axios.get<ApiResponse>(API_URL);

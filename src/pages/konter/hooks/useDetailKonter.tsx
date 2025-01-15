@@ -176,7 +176,7 @@ export default function useDetailKonter() {
                 try {
                     const token = Cookies.get("accessToken");
                     const response = await axios.get(
-                        `https://hms.3dolphinsocial.com:8083/v1/manage/building/${buildingId}`,
+                        `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${buildingId}`,
                         {
                             headers: {
                                 "Content-Type": "application/json",

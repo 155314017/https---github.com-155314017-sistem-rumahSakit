@@ -23,7 +23,7 @@ export interface ApiResponse<T> {
   data: T
 }
 
-const BASE_URL = 'https://hms.3dolphinsocial.com:8083/v1/manage/clinic'
+const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic`
 
 export const getClinic = async (clinicId: string | undefined): Promise<ClinicDataItem> => {
   // const token = Cookies.get('accessToken')

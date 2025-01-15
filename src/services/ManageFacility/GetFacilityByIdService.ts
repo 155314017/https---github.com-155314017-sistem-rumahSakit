@@ -30,7 +30,7 @@ export interface ApiResponse {
 
 
 export const GetFacilityByIdServices = async (id : string | undefined, accessToken: string | undefined): Promise<FacilityDataItem> => {
-  const response = await axios.get<ApiResponse>(`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${id}`, {
+  const response = await axios.get<ApiResponse>(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/${id}`, {
     headers: {
         'Content-Type': 'application/json',
         'accessToken': `${accessToken}`

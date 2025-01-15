@@ -45,7 +45,7 @@ export const GetCounterByIdServices = async (
     token : string | undefined
 ): Promise<CounterDataItem> => {
   try {
-    const response = await axios.get<ApiResponse>(`https://hms.3dolphinsocial.com:8083/v1/manage/counter/${id}`, {
+    const response = await axios.get<ApiResponse>(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/counter/${id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'accessToken': `${token}`

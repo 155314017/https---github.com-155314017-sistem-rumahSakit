@@ -12,7 +12,7 @@ interface Data {
 const CreateAppointmentOffline = async (data: Data) => {
   try {
     const response = await axios.post(
-      'https://hms.3dolphinsocial.com:8083/v1/manage/patient/create-appointment',
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/patient/create-appointment`,
       data,
       {
         headers: {

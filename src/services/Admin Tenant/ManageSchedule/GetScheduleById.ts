@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = 'https://hms.3dolphinsocial.com:8083/v1/manage/schedule'
+const baseURL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/schedule`
 
 export interface ScheduleData {
   id: string
@@ -29,3 +29,5 @@ export const getScheduleById = async (id: string): Promise<ScheduleData> => {
     throw error
   }
 }
+
+export default getScheduleById

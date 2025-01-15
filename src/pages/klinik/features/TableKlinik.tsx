@@ -331,7 +331,12 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({fetchDatas, onSuccessDelete})
                               Hapus
                             </Link>
 
-                            <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
+                            <ModalDeleteConfirmation 
+                              open={open} 
+                              onClose={() => setOpen(false)} 
+                              apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/${deletedItems}`} 
+                              onDeleteSuccess={handleDeleteSuccess} 
+                            />
                             <Link
                               href="#"
                               onClick={() => navigate(`/editKlinik/${data.id}`)}
