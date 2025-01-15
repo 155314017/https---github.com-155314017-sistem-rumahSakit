@@ -1,11 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useState, useRef, useEffect, type MouseEvent } from 'react';
-import FullCalendar from '@fullcalendar/react';
+import React, {
+    useState,
+    useRef,
+    useEffect,
+    MouseEvent,
+    forwardRef,
+    useImperativeHandle
+} from 'react';
+import FullCalendar, { EventContentArg } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import '@fullcalendar/common/main.css';
+import '@fullcalendar/core';
+import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
@@ -28,14 +36,13 @@ import {
 import { styled } from '@mui/material/styles';
 import { DateCalendar, DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
 import CardJadwalPraktek from '../small/card/CardJadwalPraktek';
 import CardJadwalExclusion from '../small/card/CardJadwalExclusion';
 import DropdownList from '../small/dropdownlist/DropdownList';
 import DropdownListTime from '../small/dropdownlist/DropdownListTime';
 import { CloseOutlined } from '@mui/icons-material';
 
-// Interface Event
+// Definisikan interface untuk Event dan Session
 interface Event {
     id: string;
     title: string;
@@ -43,17 +50,49 @@ interface Event {
     end?: string;
     allDay?: boolean;
     type?: string;
-    senin?: boolean;
-    selasa?: boolean;
-    rabu?: boolean;
-    kamis?: boolean;
-    jumat?: boolean;
-    sabtu?: boolean;
-    minggu?: boolean;
     notes?: string;
+    color?: string;
+    textColor?: string;
+    borderColor?: string;
 }
 
-// Styled Dialog with slide animations
+interface Session {
+    id: string;
+    startTime: string;
+    endTime: string;
+    selectedDays: string[];
+    notes: string;
+}
+
+// Definisikan interface untuk data yang akan diekspose ke parent
+interface KalenderData {
+    praktek: PraktekData[];
+    exclusion: ExclusionData[];
+}
+
+interface PraktekData {
+    id: string;
+    startTime: string;
+    endTime: string;
+    selectedDay: string[];
+    notes: string;
+    type: string;
+}
+
+interface ExclusionData {
+    id: string;
+    start: string;
+    end?: string;
+    title: string;
+    type: string;
+    notes: string;
+    allDay?: boolean;
+}
+
+interface TestKalenderRef {
+    getData: () => KalenderData;
+}
+
 const StyledDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiPaper-root': {
         position: 'fixed',
@@ -73,7 +112,6 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-// Operational hours
 const jamOperasional = [
     { value: "07:00 am", label: "07:00 am" },
     { value: "08:00 am", label: "08:00 am" },
@@ -92,7 +130,6 @@ const jamOperasional = [
     { value: "09:00 pm", label: "09:00 pm" },
 ];
 
-// Keyframes for animations
 const GlobalStyles = styled('style')`
   @keyframes slideIn {
     from {
@@ -117,13 +154,11 @@ const GlobalStyles = styled('style')`
   }
 `;
 
-// Styled Container for FullCalendar
 const StyledContainer = styled(Container)(({ theme }) => ({
     borderRadius: '16px',
     minWidth: '100%',
     padding: theme.spacing(4),
     '& .fc-event': {
-        backgroundColor: '#8F85F3',
         border: 'none',
         borderRadius: theme.shape.borderRadius,
         color: '#fff',
@@ -133,51 +168,85 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     },
     '& .fc-timegrid-slot': {
         borderBottom: '1px solid #e0e0e0',
+        height: '75px'
     },
     '& .fc-daygrid-day-number': {
         color: 'black',
+        marginRight: '40%',
+        marginTop: '5%',
     },
     '& .fc-col-header-cell': {
         border: 'none',
         textAlign: 'center',
     },
+    '& .fc-now-indicator-line': {
+        backgroundColor: '#00FF00 !important',
+        height: '2px !important',
+        width: '1px !important',
+    },
+    '& .fc-now-indicator-arrow': {
+        borderTopColor: '#00FF00 !important',
+    },
+    '& .fc-day-today .fc-daygrid-day-number': {
+        backgroundColor: '#7367F0',
+        borderRadius: '100px',
+        padding: '4px',
+        color: 'white',
+    },
+    '& .fc-day-today': {
+        backgroundColor: 'inherit !important',
+    },
+    '& .fc-day-today .fc-daygrid-day-number::before': {
+        content: '""',
+        display: 'block',
+        width: '100%',
+        height: '100%',
+        borderRadius: '50%',
+        border: '2px solid #7367F0',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: 1,
+    },
+    '& .fc-event-praktek': {
+        backgroundColor: '#D5D1FB !important',
+        borderColor: '#5A5AA5 !important',
+        color: '#000000 !important',
+        width: '100% !important',
+        height: '100% !important',
+    },
+    '& .fc-event-exclusion': {
+        backgroundColor: '#B8E0C9 !important',
+        borderColor: '#388E3C !important',
+        color: '#000000 !important',
+        width: '100% !important',
+        height: '100% !important',
+    },
+    '& .fc-event-praktek:hover, & .fc-event-exclusion:hover': {
+        opacity: 0.8,
+    },
+    '@media (max-width: 768px)': {
+        '& .fc-timegrid-slot-label': {
+            fontSize: '0.8rem',
+        },
+        '& .fc-timegrid-slot-frame': {
+            padding: '5px',
+        },
+    },
 }));
 
-const TestKalender: React.FC = () => {
-    const [events, setEvents] = useState<Event[]>([
-        {
-            id: '1',
-            title: 'Praktek',
-            start: dayjs().add(1, 'day').format('YYYY-MM-DDT10:00:00'),
-            end: dayjs().add(1, 'day').format('YYYY-MM-DDT11:00:00'),
-            type: 'Praktek',
-            senin: true,
-            selasa: false,
-            rabu: true,
-            kamis: true,
-            jumat: false,
-            sabtu: false,
-            minggu: false,
-        },
-        {
-            id: '2',
-            title: 'Praktek',
-            start: dayjs().subtract(1, 'day').format('YYYY-MM-DDT09:00:00'),
-            end: dayjs().subtract(1, 'day').format('YYYY-MM-DDT17:00:00'),
-            type: 'Praktek',
-            senin: false,
-            selasa: false,
-            rabu: false,
-            kamis: false,
-            jumat: false,
-            sabtu: false,
-            minggu: false,
-        },
-    ]);
+const TestKalender: React.FC<any, TestKalenderRef> = forwardRef((props, ref) => {
+    // State management
+    const [events, setEvents] = useState<Event[]>([]);
+    const [sessions, setSessions] = useState<Session[]>([]);
+    const [exclusionEvents, setExclusionEvents] = useState<Event[]>([]);
     const [open, setOpen] = useState(false);
     const [openExclusion, setOpenExclusion] = useState(false);
     const [currentDate, setCurrentDate] = useState(dayjs());
-    const [closeAnimation, setCloseAnimation] = useState(false);
+    const [currentView, setCurrentView] = useState<string>('timeGridDay');
+    const calendarRef = useRef<FullCalendar>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const openMenu = Boolean(anchorEl);
     const [newEvent, setNewEvent] = useState({
         type: 'Praktek',
         startTime: '',
@@ -199,12 +268,9 @@ const TestKalender: React.FC = () => {
         exclusionTimeEnd: '',
         exclusionNotes: '',
     });
-    const [currentView, setCurrentView] = useState<string>('dayGridMonth');
-    const calendarRef = useRef<FullCalendar>(null);
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const openMenu = Boolean(anchorEl);
     const [errorPraktek, setErrorPraktek] = useState<string>('');
     const [errorExclusion, setErrorExclusion] = useState<string>('');
+    const [availableDates, setAvailableDates] = useState<Set<string>>(new Set());
 
     const days = [
         { label: 'Min', value: 'minggu' },
@@ -217,16 +283,48 @@ const TestKalender: React.FC = () => {
     ];
 
     const tipeJadwal = [
-        { value: 1, label: "Praktek" },
-        { value: 2, label: "Pengecualian" },
+        { value: 'Praktek', label: "Praktek" },
+        { value: 'Pengecualian', label: "Pengecualian" },
     ];
 
-    // Log formatted current date whenever it changes
+    // Mengatur fungsi untuk mengekspos data ke parent
+    useImperativeHandle(ref, () => ({
+        getData: () => getKalenderData(),
+    }));
+
+    const getKalenderData = (): KalenderData => {
+        // Mapping sessions to praktek array
+        const praktek: PraktekData[] = sessions.map(session => ({
+            id: session.id,
+            startTime: session.startTime,
+            endTime: session.endTime,
+            selectedDay: session.selectedDays,
+            notes: session.notes,
+            type: 'Praktek',
+        }));
+
+        // Mapping exclusionEvents to exclusion array
+        const exclusion: ExclusionData[] = exclusionEvents.map(event => ({
+            id: event.id,
+            start: event.start,
+            end: event.end,
+            title: event.title,
+            type: event.type || '',
+            notes: event.notes || '',
+            allDay: event.allDay || false,
+        }));
+
+        return {
+            praktek,
+            exclusion,
+        };
+    };
+
+    // Hooks useEffect
     useEffect(() => {
         console.log('Tanggal yang diformat: ', currentDate.format('dddd, D MMMM YYYY'));
     }, [currentDate]);
 
-    // Mengarahkan FullCalendar ke currentDate setiap kali currentDate berubah
     useEffect(() => {
         if (calendarRef.current) {
             const calendarApi = calendarRef.current.getApi();
@@ -234,15 +332,101 @@ const TestKalender: React.FC = () => {
         }
     }, [currentDate]);
 
-    // Render event content
-    const renderEventContent = (eventInfo: any) => {
+    useEffect(() => {
+        const generatedEvents: Event[] = [];
+
+        sessions.forEach(session => {
+            const { startTime, endTime, selectedDays, notes, id } = session;
+            const startDate = dayjs().startOf('day');
+            const endDate = dayjs().add(1, 'year').endOf('day');
+
+            selectedDays.forEach(day => {
+                const dayMap: { [key: string]: number } = {
+                    'minggu': 0,
+                    'senin': 1,
+                    'selasa': 2,
+                    'rabu': 3,
+                    'kamis': 4,
+                    'jumat': 5,
+                    'sabtu': 6,
+                };
+                const targetDay = dayMap[day];
+                let current = startDate.day(targetDay);
+                if (current.isBefore(startDate, 'day')) {
+                    current = current.add(1, 'week');
+                }
+
+                while (current.isBefore(endDate, 'day')) {
+                    const formattedDate = current.format('YYYY-MM-DD');
+                    const startTime24 = dayjs(startTime, ['hh:mm a', 'hh:mm A']).format('HH:mm:ss');
+                    const endTime24 = dayjs(endTime, ['hh:mm a', 'hh:mm A']).format('HH:mm:ss');
+
+                    generatedEvents.push({
+                        id: `${id}-${day}-${formattedDate}`,
+                        title: 'Praktek',
+                        start: `${formattedDate}T${startTime24}`,
+                        end: `${formattedDate}T${endTime24}`,
+                        type: 'Praktek',
+                        notes: notes,
+                        color: '#8F85F3',
+                        textColor: '#FFFFFF',
+                        borderColor: '#5A5AA5',
+                    });
+
+                    current = current.add(1, 'week');
+                }
+            });
+        });
+
+        setEvents([...generatedEvents, ...exclusionEvents]);
+
+        const updatedAvailableDates = new Set<string>();
+        sessions.forEach(session => {
+            session.selectedDays.forEach(day => {
+                const dayMap: { [key: string]: number } = {
+                    'minggu': 0,
+                    'senin': 1,
+                    'selasa': 2,
+                    'rabu': 3,
+                    'kamis': 4,
+                    'jumat': 5,
+                    'sabtu': 6,
+                };
+                const targetDay = dayMap[day];
+                let current = dayjs().startOf('day').day(targetDay);
+                const endDate = dayjs().add(1, 'year').endOf('day');
+                if (current.isBefore(dayjs(), 'day')) {
+                    current = current.add(1, 'week');
+                }
+                while (current.isBefore(endDate, 'day')) {
+                    updatedAvailableDates.add(current.format('YYYY-MM-DD'));
+                    current = current.add(1, 'week');
+                }
+            });
+        });
+
+        setAvailableDates(updatedAvailableDates);
+    }, [sessions, exclusionEvents]);
+
+    useEffect(() => {
+        console.log('Available Dates:', Array.from(availableDates));
+    }, [availableDates]);
+
+    const renderEventContent = (eventInfo: EventContentArg) => {
+        const start = dayjs(eventInfo.event.start).format('hh:mm a');
+        const end = dayjs(eventInfo.event.end).format('hh:mm a');
+
         return (
             <div style={{ textAlign: 'center' }}>
                 <strong>{eventInfo.event.title}</strong>
+                <div style={{ fontSize: '0.75rem' }}>
+                    {start} - {end}
+                </div>
             </div>
         );
     };
 
+    // Handlers for event and exclusion changes
     const handleEventChange = (field: keyof typeof newEvent, value: string | boolean) => {
         setNewEvent({ ...newEvent, [field]: value });
     };
@@ -251,8 +435,7 @@ const TestKalender: React.FC = () => {
         setNewExclusion({ ...newExclusion, [field]: value });
     };
 
-
-    // Handlers untuk menu
+    // Menu handlers
     const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -261,34 +444,28 @@ const TestKalender: React.FC = () => {
         setAnchorEl(null);
     };
 
-    // Handler untuk memilih jenis modal
     const handleMenuSelect = (type: 'Praktek' | 'Pengecualian') => {
         handleMenuClose();
         if (type === 'Praktek') {
-            setCloseAnimation(false);
             setOpen(true);
             setOpenExclusion(false);
         } else if (type === 'Pengecualian') {
-            setCloseAnimation(false);
             setOpenExclusion(true);
             setOpen(false);
         }
     };
 
-    // Handler untuk memilih tipe jadwal dari DropdownList
     const handleChangeTipeJadwal = (value: string) => {
         if (value === 'Praktek') {
-            setCloseAnimation(false);
             setOpen(true);
             setOpenExclusion(false);
         } else if (value === 'Pengecualian') {
-            setCloseAnimation(false);
             setOpenExclusion(true);
             setOpen(false);
         }
     };
 
-    // Validasi untuk Praktek
+    // Validation functions
     const validatePraktek = () => {
         const { type, startTime, endTime } = newEvent;
         const isAnyDaySelected = ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'minggu'].some(day => newEvent[day as keyof typeof newEvent]);
@@ -306,7 +483,6 @@ const TestKalender: React.FC = () => {
         return true;
     };
 
-    // Validasi untuk Pengecualian
     const validateExclusion = () => {
         const { exclusionTitle, exclusionDateStart, exclusionTimeStart, exclusionDateEnd, exclusionTimeEnd } = newExclusion;
         if (!exclusionTitle || !exclusionDateStart || !exclusionTimeStart) {
@@ -314,8 +490,8 @@ const TestKalender: React.FC = () => {
             return false;
         }
         if (exclusionDateEnd && exclusionTimeEnd) {
-            const startDateTime = dayjs(`${exclusionDateStart}T${exclusionTimeStart}`);
-            const endDateTime = dayjs(`${exclusionDateEnd}T${exclusionTimeEnd}`);
+            const startDateTime = dayjs(`${exclusionDateStart}T${exclusionTimeStart}`, 'YYYY-MM-DDThh:mm a');
+            const endDateTime = dayjs(`${exclusionDateEnd}T${exclusionTimeEnd}`, 'YYYY-MM-DDThh:mm a');
             if (endDateTime.isBefore(startDateTime)) {
                 setErrorExclusion('Tanggal selesai tidak boleh sebelum tanggal mulai.');
                 return false;
@@ -325,61 +501,55 @@ const TestKalender: React.FC = () => {
         return true;
     };
 
-    // Handlers for closing modals with animation
+    // Close modal handlers
     const handleClosePraktek = () => {
-        setCloseAnimation(true);
-        setTimeout(() => {
-            setOpen(false);
-            setNewEvent({
-                type: 'Praktek',
-                startTime: '',
-                endTime: '',
-                senin: false,
-                selasa: false,
-                rabu: false,
-                kamis: false,
-                jumat: false,
-                sabtu: false,
-                minggu: false,
-                notes: '',
-            });
-            setErrorPraktek('');
-        }, 500);
+        setOpen(false);
+        setNewEvent({
+            type: 'Praktek',
+            startTime: '',
+            endTime: '',
+            senin: false,
+            selasa: false,
+            rabu: false,
+            kamis: false,
+            jumat: false,
+            sabtu: false,
+            minggu: false,
+            notes: '',
+        });
+        setErrorPraktek('');
     };
 
     const handleCloseExclusion = () => {
-        setCloseAnimation(true);
-        setTimeout(() => {
-            setOpenExclusion(false);
-            setNewExclusion({
-                exclusionTitle: '',
-                exclusionDateStart: '',
-                exclusionTimeStart: '',
-                exclusionDateEnd: '',
-                exclusionTimeEnd: '',
-                exclusionNotes: '',
-            });
-            setErrorExclusion('');
-        }, 500);
+        setOpenExclusion(false);
+        setNewExclusion({
+            exclusionTitle: '',
+            exclusionDateStart: '',
+            exclusionTimeStart: '',
+            exclusionDateEnd: '',
+            exclusionTimeEnd: '',
+            exclusionNotes: '',
+        });
+        setErrorExclusion('');
     };
 
-    // Handlers for form changes
+    // Input change handlers
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         handleEventChange(name as keyof typeof newEvent, value);
     };
 
-    const handleChangeExclusion = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeExclusionField = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         handleExclusionChange(name as keyof typeof newExclusion, value);
     };
 
-    // Toggle hari
+    // Toggle day selection
     const toggleDay = (day: string) => {
         handleEventChange(day as keyof typeof newEvent, !newEvent[day as keyof typeof newEvent]);
     };
 
-    // Calendar navigation
+    // Calendar navigation handlers
     const handlePrev = () => {
         if (calendarRef.current) {
             const calendarApi = calendarRef.current.getApi();
@@ -396,85 +566,56 @@ const TestKalender: React.FC = () => {
         }
     };
 
-    // Function to calculate the next date based on selected day
-    const getNextDateForDay = (dayValue: string): string => {
-        const daysMap: { [key: string]: number } = {
-            'senin': 1,
-            'selasa': 2,
-            'rabu': 3,
-            'kamis': 4,
-            'jumat': 5,
-            'sabtu': 6,
-            'minggu': 0,
-        };
-        const targetDay = daysMap[dayValue];
-        const today = currentDate.day(); // day() returns 0 (Sun) to 6 (Sat)
-        let daysToAdd = targetDay - today;
-        if (daysToAdd < 0) daysToAdd += 7;
-        const targetDate = currentDate.add(daysToAdd, 'day');
-        return targetDate.format('YYYY-MM-DD');
-    };
-
-    // Adding new event (Praktek)
+    // Add event handlers
     const handleAddEvent = () => {
         if (validatePraktek()) {
-            const { type, startTime, endTime, notes } = newEvent;
-            const selectedDaysArray = Object.keys(newEvent).filter(day => 
+            const { startTime, endTime, notes } = newEvent;
+            const selectedDaysArray = Object.keys(newEvent).filter(day =>
                 ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'minggu'].includes(day) && newEvent[day as keyof typeof newEvent]
             );
 
-            const newEvents: Event[] = selectedDaysArray.map((day, index) => {
-                const date = getNextDateForDay(day);
-                // Convert time to 24-hour format
-                const startTime24 = dayjs(startTime, ['hh:mm a', 'hh:mm A']).format('HH:mm:ss');
-                const endTime24 = dayjs(endTime, ['hh:mm a', 'hh:mm A']).format('HH:mm:ss');
-                return {
-                    id: (events.length + index + 1).toString(),
-                    title: type, // Menggunakan 'type' sebagai 'title' di FullCalendar
-                    start: `${date}T${startTime24}`,
-                    end: `${date}T${endTime24}`,
-                    type: type,
-                    [day]: true,
-                    notes: notes,
-                };
-            });
+            const newSession: Session = {
+                id: `session-${Date.now()}`,
+                startTime,
+                endTime,
+                selectedDays: selectedDaysArray,
+                notes,
+            };
 
-            setEvents([...events, ...newEvents]);
-
-            // Cetak data ke konsol
-            console.log('Events Praktek Ditambahkan:', newEvents);
-
+            setSessions([...sessions, newSession]);
+            console.log('Sesi Praktek Ditambahkan:', newSession);
             handleClosePraktek();
         }
     };
 
-    // Adding exclusion (Pengecualian)
     const handleAddExclusion = () => {
         if (validateExclusion()) {
             const { exclusionTitle, exclusionDateStart, exclusionTimeStart, exclusionDateEnd, exclusionTimeEnd, exclusionNotes } = newExclusion;
-
-            const startDateTime = `${exclusionDateStart}T${exclusionTimeStart}`;
-            const endDateTime = exclusionDateEnd && exclusionTimeEnd ? `${exclusionDateEnd}T${exclusionTimeEnd}` : undefined;
+            const startDateTime = dayjs(`${exclusionDateStart}T${exclusionTimeStart}`, 'YYYY-MM-DDThh:mm a').toISOString();
+            const endDateTime = exclusionTimeEnd
+                ? dayjs(`${exclusionDateEnd}T${exclusionTimeEnd}`, 'YYYY-MM-DDThh:mm a').toISOString()
+                : undefined;
 
             const exclusionToAdd: Event = {
-                id: (events.length + 1).toString(),
+                id: `exclusion-${Date.now()}`,
                 title: exclusionTitle,
                 start: startDateTime,
                 end: endDateTime,
                 allDay: false,
                 notes: exclusionNotes,
+                type: 'Pengecualian',
+                color: '#B8E0C9',
+                textColor: '#000000',
+                borderColor: '#388E3C',
             };
 
-            setEvents([...events, exclusionToAdd]);
-
-            // Cetak data ke konsol
+            setExclusionEvents([...exclusionEvents, exclusionToAdd]);
             console.log('Event Pengecualian Ditambahkan:', exclusionToAdd);
-
             handleCloseExclusion();
         }
     };
 
-    // Handle view change
+    // View change handler
     const handleViewChange = (view: string) => {
         if (calendarRef.current) {
             const calendarApi = calendarRef.current.getApi();
@@ -483,18 +624,9 @@ const TestKalender: React.FC = () => {
         setCurrentView(view);
     };
 
-    // Initialize calendar date to currentDate on mount
-    useEffect(() => {
-        if (calendarRef.current) {
-            const calendarApi = calendarRef.current.getApi();
-            calendarApi.gotoDate(currentDate.format('YYYY-MM-DD'));
-        }
-    }, []); // Empty dependency array ensures this runs only once on mount
-
     return (
         <>
             <GlobalStyles />
-
             <Box
                 bgcolor={'white'}
                 width={'94%'}
@@ -506,7 +638,6 @@ const TestKalender: React.FC = () => {
                 <StyledContainer>
                     {/* Header */}
                     <Box
-                        maxWidth={'100%'}
                         display={'flex'}
                         flexDirection={'row'}
                         alignItems={'center'}
@@ -535,16 +666,74 @@ const TestKalender: React.FC = () => {
                                     horizontal: 'right',
                                 }}
                             >
-                                <MenuItem onClick={() => handleMenuSelect('Praktek')}>Praktek</MenuItem>
-                                <MenuItem onClick={() => handleMenuSelect('Pengecualian')}>Pengecualian</MenuItem>
+
+                                <MenuItem
+                                    sx={{
+                                        color: '#8F85F3',
+                                        borderRadius: '16px',
+                                        marginX: '12px',
+                                        mt: '6px',
+                                        '&:hover': { bgcolor: '#D5D1FB' },
+                                        '&.Mui-selected': {
+                                            backgroundColor: '#8F85F3',
+                                            color: '#fff',
+                                            '&:hover': {
+                                                backgroundColor: '#6E6CB2',
+                                            }
+                                        }
+                                    }}
+                                    onClick={() => handleMenuSelect('Praktek')}>
+                                    Praktek
+                                </MenuItem>
+                                <MenuItem
+                                    sx={{
+                                        color: '#8F85F3',
+                                        borderRadius: '16px',
+                                        marginX: '12px',
+                                        mt: '6px',
+                                        '&:hover': { bgcolor: '#D5D1FB' },
+                                        '&.Mui-selected': {
+                                            backgroundColor: '#8F85F3',
+                                            color: '#fff',
+                                            '&:hover': {
+                                                backgroundColor: '#6E6CB2',
+                                            }
+                                        }
+                                    }}
+                                    onClick={() => handleMenuSelect('Pengecualian')}>
+                                    Pengecualian
+                                </MenuItem>
                             </Menu>
                         </Box>
                     </Box>
 
-                    {/* Main Content */}
+                    {/* Konten Utama */}
                     <Box display="flex" flexDirection="row" gap={4}>
                         {/* Sidebar */}
-                        <Box width="35%" display="flex" flexDirection="column" gap={3}>
+                        <Box
+                            width="35%"
+                            display="flex"
+                            flexDirection="column"
+                            paddingY={2}
+                            gap={3}
+                            sx={{
+                                overflowY: 'auto',
+                                maxHeight: '85vh',
+                                '&::-webkit-scrollbar': {
+                                    width: '60px',
+                                },
+                                '&::-webkit-scrollbar-track': {
+                                    background: 'transparent',
+                                },
+                                '&::-webkit-scrollbar-thumb': {
+                                    backgroundColor: '#D5D1FB',
+                                    borderRadius: '3px',
+                                    border: '1px solid #D5D1FB',
+                                },
+                                scrollbarWidth: 'none',
+                                scrollbarColor: '#D5D1FB transparent',
+                            }}
+                        >
                             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="id">
                                 <Box
                                     sx={{
@@ -558,6 +747,7 @@ const TestKalender: React.FC = () => {
                                         onMonthChange={(newMonth) => {
                                             setCurrentDate(newMonth);
                                         }}
+                                        shouldDisableDate={(date) => !availableDates.has(date.format('YYYY-MM-DD'))}
                                         slotProps={{
                                             day: {
                                                 sx: {
@@ -582,20 +772,22 @@ const TestKalender: React.FC = () => {
                                     />
                                 </Box>
                             </LocalizationProvider>
-                            <CardJadwalPraktek />
-                            <CardJadwalExclusion />
+                            <CardJadwalPraktek sessions={sessions} />
+                            {exclusionEvents.map((event) => (
+                                <CardJadwalExclusion key={event.id} event={event} />
+                            ))}
                         </Box>
 
-                        {/* Calendar */}
+                        {/* Kalender */}
                         <Box
-                            width="85%"
+                            width="100%"
                             display="flex"
                             flexDirection="column"
                             gap={3}
                             padding={'8px 0'}
                             borderRadius={'16px'}
                         >
-                            {/* Calendar Header */}
+                            {/* Header Kalender */}
                             <Box display="flex" justifyContent="space-between" alignItems="center">
                                 <Box display="flex" alignItems="center" gap={2}>
                                     <Typography variant="h5">{currentDate.format('dddd, D MMMM YYYY')}</Typography>
@@ -617,15 +809,66 @@ const TestKalender: React.FC = () => {
                                                 border: '1px solid #A8A8BD',
                                             }}
                                         >
-                                            <MenuItem sx={{ color: '#8F85F3' }} value="dayGridMonth">Bulan</MenuItem>
-                                            <MenuItem sx={{ color: '#8F85F3' }} value="timeGridWeek">Minggu</MenuItem>
-                                            <MenuItem sx={{ color: '#8F85F3' }} value="timeGridDay">Hari</MenuItem>
+                                            <MenuItem
+                                                sx={{
+                                                    color: '#8F85F3',
+                                                    borderRadius: '16px',
+                                                    marginX: '12px',
+                                                    mt: '6px',
+                                                    '&:hover': { bgcolor: '#D5D1FB' },
+                                                    '&.Mui-selected': {
+                                                        backgroundColor: '#8F85F3',
+                                                        color: '#fff',
+                                                        '&:hover': {
+                                                            backgroundColor: '#6E6CB2',
+                                                        }
+                                                    }
+                                                }}
+                                                value="dayGridMonth">
+                                                Bulan
+                                            </MenuItem>
+                                            <MenuItem
+                                                sx={{
+                                                    color: '#8F85F3',
+                                                    borderRadius: '16px',
+                                                    marginX: '12px',
+                                                    mt: '6px',
+                                                    '&:hover': { bgcolor: '#D5D1FB' },
+                                                    '&.Mui-selected': {
+                                                        backgroundColor: '#8F85F3',
+                                                        color: '#fff',
+                                                        '&:hover': {
+                                                            backgroundColor: '#6E6CB2',
+                                                        }
+                                                    }
+                                                }}
+                                                value="timeGridWeek">
+                                                Minggu
+                                            </MenuItem>
+                                            <MenuItem
+                                                sx={{
+                                                    color: '#8F85F3',
+                                                    borderRadius: '16px',
+                                                    marginX: '12px',
+                                                    mt: '6px',
+                                                    '&:hover': { bgcolor: '#D5D1FB' },
+                                                    '&.Mui-selected': {
+                                                        backgroundColor: '#8F85F3',
+                                                        color: '#fff',
+                                                        '&:hover': {
+                                                            backgroundColor: '#6E6CB2',
+                                                        }
+                                                    }
+                                                }}
+                                                value="timeGridDay">
+                                                Hari
+                                            </MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Box>
                             </Box>
 
-                            {/* FullCalendar */}
+                            {/* Komponen FullCalendar */}
                             <FullCalendar
                                 ref={calendarRef}
                                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -638,17 +881,35 @@ const TestKalender: React.FC = () => {
                                 selectable
                                 dayMaxEvents
                                 eventContent={renderEventContent}
-                                editable
+                                nowIndicator={true}
+                                views={{
+                                    timeGridWeek: {
+                                        titleFormat: { month: 'long', year: 'numeric' },
+                                        slotDuration: '01:00:00',
+                                        slotLabelInterval: '01:00',
+                                    },
+                                    timeGridDay: {
+                                        titleFormat: { month: 'long', year: 'numeric', day: 'numeric' },
+                                        slotDuration: '01:00:00',
+                                        slotLabelInterval: '01:00',
+                                    },
+                                }}
+                                slotMinTime="00:00:00"
+                                slotMaxTime="24:00:00"
+                                eventOverlap={false}
+                                eventDisplay="block"
+                                eventClassNames={(arg) => {
+                                    if (arg.event.extendedProps.type === 'Pengecualian') {
+                                        return ['fc-event-exclusion'];
+                                    }
+                                    return ['fc-event-praktek'];
+                                }}
                             />
                         </Box>
                     </Box>
 
-                    {/* Modal Tambah Jadwal Praktek */}
-                    <StyledDialog
-                        open={open}
-                        onClose={handleClosePraktek}
-                        classes={{ paper: closeAnimation ? 'slideOut' : '' }}
-                    >
+                    {/* Modal Praktek */}
+                    <StyledDialog open={open} onClose={handleClosePraktek}>
                         <Box
                             display={'flex'}
                             flexDirection={'row'}
@@ -661,7 +922,6 @@ const TestKalender: React.FC = () => {
                         </Box>
                         <DialogContent>
                             <Box display="flex" flexDirection="column" gap={2}>
-                                {/* Tipe Jadwal */}
                                 <Typography>Tipe Jadwal</Typography>
                                 <DropdownList
                                     defaultValue='Praktek'
@@ -670,8 +930,6 @@ const TestKalender: React.FC = () => {
                                     options={tipeJadwal}
                                     placeholder='Pilih tipe jadwal'
                                 />
-
-                                {/* Waktu Mulai dan Selesai */}
                                 <Box
                                     borderRadius={'16px'}
                                     padding={2}
@@ -698,8 +956,6 @@ const TestKalender: React.FC = () => {
                                         />
                                     </Box>
                                 </Box>
-
-                                {/* Pilihan Hari */}
                                 <Box
                                     display="flex"
                                     gap={2}
@@ -732,8 +988,6 @@ const TestKalender: React.FC = () => {
                                         ))}
                                     </Box>
                                 </Box>
-
-                                {/* Catatan */}
                                 <TextField
                                     name="notes"
                                     placeholder="Masukkan catatan"
@@ -768,12 +1022,8 @@ const TestKalender: React.FC = () => {
                         </DialogActions>
                     </StyledDialog>
 
-                    {/* Modal Tambah Jadwal Pengecualian */}
-                    <StyledDialog
-                        open={openExclusion}
-                        onClose={handleCloseExclusion}
-                        classes={{ paper: closeAnimation ? 'slideOut' : '' }}
-                    >
+                    {/* Modal Pengecualian */}
+                    <StyledDialog open={openExclusion} onClose={handleCloseExclusion}>
                         <Box
                             display={'flex'}
                             flexDirection={'row'}
@@ -804,7 +1054,7 @@ const TestKalender: React.FC = () => {
                                     }}
                                     placeholder='Masukkan judul jadwal'
                                     value={newExclusion.exclusionTitle}
-                                    onChange={handleChangeExclusion}
+                                    onChange={handleChangeExclusionField}
                                 />
                                 <Box
                                     borderRadius={'16px'}
@@ -899,7 +1149,7 @@ const TestKalender: React.FC = () => {
                                         },
                                     }}
                                     value={newExclusion.exclusionNotes}
-                                    onChange={handleChangeExclusion}
+                                    onChange={handleChangeExclusionField}
                                 />
                                 {errorExclusion && <Alert severity="error">{errorExclusion}</Alert>}
                             </Box>
@@ -924,6 +1174,7 @@ const TestKalender: React.FC = () => {
             </Box>
         </>
     );
-};
+
+});
 
 export default TestKalender;

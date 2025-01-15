@@ -9,7 +9,7 @@ import {
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 export interface Option {
-  value: number;
+  value: number | string;
   label: string;
 }
 
@@ -30,7 +30,7 @@ export default function DropdownListTime({
   defaultValue = "",
   loading,
   value,
-  error = false, 
+  error = false,
 }: DropdownListProps) {
   const [selectedOption, setSelectedOption] = useState<string>(value || defaultValue);
 
@@ -67,7 +67,7 @@ export default function DropdownListTime({
         sx={{
           width: "100%",
           color: "#555",
-          bgcolor: error ? "#FFCCCC" : "#FFF", 
+          bgcolor: error ? "#FFCCCC" : "#FFF",
           border: "1px solid #A8A8BD",
           borderRadius: "8px",
           height: "40px",
@@ -89,8 +89,8 @@ export default function DropdownListTime({
         MenuProps={{
           PaperProps: {
             sx: {
-              maxHeight: 240, 
-              overflowY: "auto", 
+              maxHeight: 240,
+              overflowY: "auto",
               animation: "fadeInAndScale 0.3s ease-in-out",
               "@keyframes fadeInAndScale": {
                 "0%": {

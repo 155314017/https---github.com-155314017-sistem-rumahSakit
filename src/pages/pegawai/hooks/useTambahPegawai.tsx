@@ -116,13 +116,20 @@ export default function useTambahPegawai() {
             biayaPenanganan: '',
         },
         validationSchema: Yup.object({
-            namaPegawai: Yup.string().required('Nama Pegawai diperlukan'),
+            namaPegawai: Yup.string()
+                .required('Nama Pegawai diperlukan')
+                .matches(/^[A-Za-z]+$/, 'Nama hanya boleh berisi huruf (A-Z)'),
             nip: Yup.string().required('NIP diperlukan'),
-            nik: Yup.string().required('NIK diperlukan'),
+            nik: Yup.string()
+                .required('NIK diperlukan')
+                .matches(/^\d+$/, 'NIK hanya boleh berisi angka')
+                .length(16, 'NIK harus terdiri dari 16 digit'),
             tanggalLahir: Yup.string().required('Tanggal Lahir diperlukan'),
             alamatTinggal: Yup.string().required('Alamat Tinggal diperlukan'),
             jenisKelamin: Yup.string().required('Jenis Kelamin diperlukan'),
-            status: Yup.string().required('Status diperlukan'),
+            status: Yup.string()
+                .required('Status diperlukan')
+                .matches(/^[A-Za-z]+$/, 'Status hanya boleh berisi huruf (A-Z)'),
             email: Yup.string().email('Email tidak valid').required('Email diperlukan'),
             nomorHandphone: Yup.string()
                 .required('Isi nomor telepon')
@@ -132,7 +139,7 @@ export default function useTambahPegawai() {
             rolePegawai: Yup.string().required('Role Pegawai diperlukan'),
             jenisSpesialis: Yup.string().required('Jenis Spesialisasi diperlukan'),
             tipeAntrian: Yup.string().required('Tipe Antrian diperlukan'),
-            biayaPenanganan: Yup.string().required('Biaya Penanganan diperlukan'),
+            biayaPenanganan: Yup.number().required('Biaya Penanganan diperlukan'),
         }),
         onSubmit: (values) => {
             console.log('Form submitted:', values);

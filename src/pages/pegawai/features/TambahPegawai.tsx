@@ -28,6 +28,32 @@ import dayjs, { Dayjs } from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TestKalender from "../../../components/medium/TestKalender";
+import { useRef } from "react";
+
+// Import interface KalenderData dari TestKalender atau definisikan ulang jika diperlukan
+interface PraktekData {
+    id: string;
+    startTime: string;
+    endTime: string;
+    selectedDay: string[];
+    notes: string;
+    type: string;
+}
+
+interface ExclusionData {
+    id: string;
+    start: string;
+    end?: string;
+    title: string;
+    type: string;
+    notes: string;
+    allDay?: boolean;
+}
+
+interface KalenderData {
+    praktek: PraktekData[];
+    exclusion: ExclusionData[];
+}
 
 export default function TambahPegawai() {
     const {
@@ -50,15 +76,31 @@ export default function TambahPegawai() {
         handleIndividualCheckboxChange,
         gender,
         setGender,
-        
+
         handleSubmitPage3,
-        
+
 
     } = useTambahPegawai();
     const isSelectAllActionsDisabled = checkedItems.slice(1).every(item => !item);
-    
+    const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
+
+    // Handler untuk tombol 'Simpan'
+    const handleSimpan = () => {
+        if (kalenderRef.current) {
+            const data = kalenderRef.current.getData();
+            console.log('Praktek:', data.praktek);
+            console.log('Exclusion:', data.exclusion);
+            // Jika ingin menampilkan dalam format yang lebih rapi
+            console.log('Praktek:', JSON.stringify(data.praktek, null, 2));
+            console.log('Exclusion:', JSON.stringify(data.exclusion, null, 2));
+            // Anda bisa melakukan tindakan lain dengan data ini, seperti mengirim ke API
+        } else {
+            console.log('Ref belum terhubung ke TestKalender');
+        }
+    };
+
     return (
-        <Container sx={{ py: 2, minWidth: '1500px' }}>
+        <Container sx={{ py: 2, minWidth: '100%' }}>
             <BreadCrumbs
                 breadcrumbItems={breadcrumbItems}
                 onBackClick={() => window.history.back()}
@@ -124,7 +166,7 @@ export default function TambahPegawai() {
                     {/* ---------- */}
                     <Typography fontSize="20px" fontWeight="700">Formulir Tambah Pegawai</Typography>
                     <Box
-                        sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, gap: 24 }}
+                        sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, justifyContent: 'space-between', ml: 2 }}
                     >
                         <Box display={"flex"} flexDirection={"row"} width={"290px"}>
                             <Box
@@ -207,7 +249,26 @@ export default function TambahPegawai() {
                                     name="nik"
                                     size="small"
                                     placeholder="Masukkan NIK"
-                                    sx={{ bgcolor: 'inherit' }}
+                                    sx={{
+                                        width: "100%",
+                                        height: "48px",
+                                        marginTop: "10px",
+                                        borderRadius: "8px",
+                                        backgroundColor: formik.touched.nik && formik.errors.nik ? "#ffcccc" : "inherit",
+                                        "& .MuiOutlinedInput-notchedOutline": {
+                                            border: "1px solid #ccc",
+                                        },
+                                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: '#8F85F3',
+                                        },
+                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: '#8F85F3',
+                                        },
+                                        "& .MuiOutlinedInput-input": {
+                                            padding: "10px",
+                                            fontSize: "16px",
+                                        },
+                                    }}
                                     value={formik.values.nik}
                                     onChange={formik.handleChange}
                                     onBlur={() => formik.setTouched({ ...formik.touched, nik: true })}
@@ -219,25 +280,45 @@ export default function TambahPegawai() {
                             <Typography sx={{ fontSize: "16px" }}>Nama Pegawai<span style={{ color: "red" }}>*</span></Typography>
                             <FormControl fullWidth sx={{ my: 1 }}>
                                 <OutlinedInput
-                                    id="namaPegawai" // Perbaiki nama field
-                                    name="namaPegawai" // Perbaiki nama field
+                                    id="namaPegawai"
+                                    name="namaPegawai"
                                     size="small"
+                                    sx={{
+                                        width: "100%",
+                                        height: "48px",
+                                        marginTop: "10px",
+                                        borderRadius: "8px",
+                                        backgroundColor: formik.touched.namaPegawai && formik.errors.namaPegawai ? "#ffcccc" : "inherit",
+                                        "& .MuiOutlinedInput-notchedOutline": {
+                                            border: "1px solid #ccc",
+                                        },
+                                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: '#8F85F3',
+                                        },
+                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: '#8F85F3',
+                                        },
+                                        "& .MuiOutlinedInput-input": {
+                                            padding: "10px",
+                                            fontSize: "16px",
+                                        },
+                                    }}
                                     placeholder="Masukkan Nama Pegawai"
-                                    value={formik.values.namaPegawai} // Perbaiki nama field
+                                    value={formik.values.namaPegawai}
                                     onChange={formik.handleChange}
-                                    onBlur={() => formik.setTouched({ ...formik.touched, namaPegawai: true })} // Perbaiki nama field
-                                    error={formik.touched.namaPegawai && Boolean(formik.errors.namaPegawai)} // Perbaiki nama field
+                                    onBlur={() => formik.setTouched({ ...formik.touched, namaPegawai: true })}
+                                    error={formik.touched.namaPegawai && Boolean(formik.errors.namaPegawai)}
                                 />
-                                {formik.touched.namaPegawai && formik.errors.namaPegawai && (
+                                {/* {formik.touched.namaPegawai && formik.errors.namaPegawai && (
                                     <Typography color="error">{formik.errors.namaPegawai}</Typography>
-                                )}
+                                )} */}
                             </FormControl>
 
                             {/* Tanggal Lahir */}
                             <Typography sx={{ fontSize: "16px" }}>Tanggal Lahir<span style={{ color: "red" }}>*</span></Typography>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker
-                                    value={formik.values.tanggalLahir ? dayjs(formik.values.tanggalLahir) : null} // Perbaiki value
+                                    value={formik.values.tanggalLahir ? dayjs(formik.values.tanggalLahir) : null}
                                     onChange={(newValue: Dayjs | null) => {
                                         if (newValue) {
                                             const formattedDate = newValue.format("YYYY-MM-DD");
@@ -246,16 +327,28 @@ export default function TambahPegawai() {
                                     }}
                                     slotProps={{
                                         textField: {
-                                            placeholder: "Tanggal Lahir",
+                                            placeholder: "Masukkan Tanggal Lahir",
                                             error: formik.touched.tanggalLahir && Boolean(formik.errors.tanggalLahir),
                                             helperText: formik.touched.tanggalLahir && formik.errors.tanggalLahir,
                                             sx: {
-                                                borderRadius: '8px',
-                                                height: '60px',
-                                                width: '100%',
+                                                width: "100%",
                                                 '& .MuiOutlinedInput-root': {
                                                     borderRadius: '8px',
-                                                    height: '44px',
+                                                    height: '50px',
+                                                    backgroundColor: formik.touched.tanggalLahir && formik.errors.tanggalLahir ? "#ffcccc" : "inherit",
+                                                    '& .MuiOutlinedInput-notchedOutline': {
+                                                        border: "1px solid #ccc",
+                                                    },
+                                                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                                                        borderColor: '#8F85F3',
+                                                    },
+                                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                                        borderColor: '#8F85F3',
+                                                    },
+                                                },
+                                                '& .MuiInputBase-input': {
+                                                    padding: "10px",
+                                                    fontSize: "16px",
                                                 },
                                             },
                                         },
@@ -270,16 +363,35 @@ export default function TambahPegawai() {
                                     id="alamatTinggal"
                                     name="alamatTinggal"
                                     size="small"
+                                    sx={{
+                                        width: "100%",
+                                        height: "48px",
+                                        marginTop: "10px",
+                                        borderRadius: "8px",
+                                        backgroundColor: formik.touched.alamatTinggal && formik.errors.alamatTinggal ? "#ffcccc" : "inherit",
+                                        "& .MuiOutlinedInput-notchedOutline": {
+                                            border: "1px solid #ccc",
+                                        },
+                                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: '#8F85F3',
+                                        },
+                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: '#8F85F3',
+                                        },
+                                        "& .MuiOutlinedInput-input": {
+                                            padding: "10px",
+                                            fontSize: "16px",
+                                        },
+                                    }}
                                     placeholder="Masukkan alamat tempat tinggal pegawai"
                                     value={formik.values.alamatTinggal}
                                     onChange={formik.handleChange}
                                     onBlur={() => formik.setTouched({ ...formik.touched, alamatTinggal: true })}
                                     error={formik.touched.alamatTinggal && Boolean(formik.errors.alamatTinggal)}
-                                    sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
                                 />
-                                {formik.touched.alamatTinggal && formik.errors.alamatTinggal && (
+                                {/* {formik.touched.alamatTinggal && formik.errors.alamatTinggal && (
                                     <Typography color="error">{formik.errors.alamatTinggal}</Typography>
-                                )}
+                                )} */}
                             </FormControl>
 
                             {/* Jenis Kelamin */}
@@ -295,11 +407,11 @@ export default function TambahPegawai() {
                                 pl={2}
                             >
                                 <RadioGroup
-                                    row // Mengatur radio button secara horizontal
+                                    row
                                     value={gender}
                                     onChange={(event) => {
                                         setGender(event.target.value);
-                                        formik.setFieldValue("jenisKelamin", event.target.value); // Perbaiki nama field
+                                        formik.setFieldValue("jenisKelamin", event.target.value);
                                     }}
                                 >
                                     <FormControlLabel
@@ -316,22 +428,41 @@ export default function TambahPegawai() {
                             </Box>
 
                             {/* Status */}
-                            <Typography mt={2} >Status<span style={{ color: 'red' }} >*</span></Typography>
+                            <Typography mt={2} >Status perkawinan<span style={{ color: 'red' }} >*</span></Typography>
                             <FormControl sx={{ width: '100%' }} >
                                 <OutlinedInput
                                     id="status"
                                     name="status"
                                     size="small"
                                     placeholder="Masukkan status pegawai"
-                                    sx={{ borderRadius: '8px' }}
+                                    sx={{
+                                        width: "100%",
+                                        height: "48px",
+                                        marginTop: "10px",
+                                        borderRadius: "8px",
+                                        backgroundColor: formik.touched.status && formik.errors.status ? "#ffcccc" : "inherit",
+                                        "& .MuiOutlinedInput-notchedOutline": {
+                                            border: "1px solid #ccc",
+                                        },
+                                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: '#8F85F3',
+                                        },
+                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: '#8F85F3',
+                                        },
+                                        "& .MuiOutlinedInput-input": {
+                                            padding: "10px",
+                                            fontSize: "16px",
+                                        },
+                                    }}
                                     value={formik.values.status}
                                     onChange={formik.handleChange}
                                     onBlur={() => formik.setTouched({ ...formik.touched, status: true })}
                                     error={formik.touched.status && Boolean(formik.errors.status)}
                                 />
-                                {formik.touched.status && formik.errors.status && (
+                                {/* {formik.touched.status && formik.errors.status && (
                                     <Typography color="error">{formik.errors.status}</Typography>
-                                )}
+                                )} */}
                             </FormControl>
 
                             {/* Email */}
@@ -342,20 +473,40 @@ export default function TambahPegawai() {
                                     name="email"
                                     size="small"
                                     placeholder="Masukkan email pegawai"
-                                    sx={{ borderRadius: '8px' }}
+                                    sx={{
+                                        width: "100%",
+                                        height: "48px",
+                                        marginTop: "10px",
+                                        borderRadius: "8px",
+                                        backgroundColor: formik.touched.email && formik.errors.email ? "#ffcccc" : "inherit",
+                                        "& .MuiOutlinedInput-notchedOutline": {
+                                            border: "1px solid #ccc",
+                                        },
+                                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: '#8F85F3',
+                                        },
+                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: '#8F85F3',
+                                        },
+                                        "& .MuiOutlinedInput-input": {
+                                            padding: "10px",
+                                            fontSize: "16px",
+                                        },
+                                    }}
                                     value={formik.values.email}
                                     onChange={formik.handleChange}
                                     onBlur={() => formik.setTouched({ ...formik.touched, email: true })}
                                     error={formik.touched.email && Boolean(formik.errors.email)}
                                 />
-                                {formik.touched.email && formik.errors.email && (
+                                {/* {formik.touched.email && formik.errors.email && (
                                     <Typography color="error">{formik.errors.email}</Typography>
-                                )}
+                                )} */}
                             </FormControl>
 
                             {/* No. Handphone */}
                             <Typography mt={2} >No. Handphone<span style={{ color: 'red' }} >*</span></Typography>
                             <PhoneInput
+                                countryCodeEditable={false}
                                 country={"id"}
                                 value={formik.values.nomorHandphone}
                                 onChange={(phone) => formik.setFieldValue("nomorHandphone", phone)}
@@ -379,9 +530,9 @@ export default function TambahPegawai() {
                                 }}
                                 onBlur={() => formik.setTouched({ ...formik.touched, nomorHandphone: true })}
                             />
-                            {formik.touched.nomorHandphone && formik.errors.nomorHandphone && (
+                            {/* {formik.touched.nomorHandphone && formik.errors.nomorHandphone && (
                                 <Typography color="error">{formik.errors.nomorHandphone}</Typography>
-                            )}
+                            )} */}
 
                             {/* Role Pegawai */}
                             <Typography mt={2} >Role Pegawai<span style={{ color: 'red' }} >*</span></Typography>
@@ -391,9 +542,9 @@ export default function TambahPegawai() {
                                 options={rolePegawai}
                                 loading={false}
                             />
-                            {formik.touched.rolePegawai && formik.errors.rolePegawai && (
+                            {/* {formik.touched.rolePegawai && formik.errors.rolePegawai && (
                                 <Typography color="error">{formik.errors.rolePegawai}</Typography>
-                            )}
+                            )} */}
 
                             {/* Jenis Spesialisasi */}
                             <Typography mt={2} >Jenis Spesialisasi<span style={{ color: 'red' }} >*</span></Typography>
@@ -403,9 +554,9 @@ export default function TambahPegawai() {
                                 options={rolePegawai}
                                 loading={false}
                             />
-                            {formik.touched.jenisSpesialis && formik.errors.jenisSpesialis && (
+                            {/* {formik.touched.jenisSpesialis && formik.errors.jenisSpesialis && (
                                 <Typography color="error">{formik.errors.jenisSpesialis}</Typography>
-                            )}
+                            )} */}
 
                             {/* Klinik */}
                             <Typography mt={2} >Klinik<span style={{ color: 'red' }} >*</span></Typography>
@@ -415,9 +566,9 @@ export default function TambahPegawai() {
                                 options={rolePegawai}
                                 loading={false}
                             />
-                            {formik.touched.namaKlinik && formik.errors.namaKlinik && (
+                            {/* {formik.touched.namaKlinik && formik.errors.namaKlinik && (
                                 <Typography color="error">{formik.errors.namaKlinik}</Typography>
-                            )}
+                            )} */}
 
                             {/* Tipe Antrian */}
                             <Typography mt={2} >Tipe Antrian<span style={{ color: 'red' }} >*</span></Typography>
@@ -427,9 +578,9 @@ export default function TambahPegawai() {
                                 options={rolePegawai}
                                 loading={false}
                             />
-                            {formik.touched.tipeAntrian && formik.errors.tipeAntrian && (
+                            {/* {formik.touched.tipeAntrian && formik.errors.tipeAntrian && (
                                 <Typography color="error">{formik.errors.tipeAntrian}</Typography>
-                            )}
+                            )} */}
 
                             {/* Biaya Penanganan */}
                             <Typography sx={{ fontSize: '16px', mt: 2 }}>
@@ -439,9 +590,9 @@ export default function TambahPegawai() {
                                 onChange={value => formik.setFieldValue('biayaPenanganan', value)}
                                 defaultValue={0}
                             />
-                            {formik.touched.biayaPenanganan && formik.errors.biayaPenanganan && (
+                            {/* {formik.touched.biayaPenanganan && formik.errors.biayaPenanganan && (
                                 <Typography color="error">{formik.errors.biayaPenanganan}</Typography>
-                            )}
+                            )} */}
 
                             {/* Tombol Submit */}
                             <Button
@@ -457,7 +608,7 @@ export default function TambahPegawai() {
                                     borderRadius: "8px",
                                     ":hover": { bgcolor: "#a098f5" },
                                 }}
-                                disabled={!formik.isValid || !formik.dirty} // Opsional
+                                disabled={!formik.isValid || !formik.dirty} 
                             >
                                 Selanjutnya
                             </Button>
@@ -465,7 +616,18 @@ export default function TambahPegawai() {
                     )}
 
                     {currentPage === 2 && (
-                        <TestKalender />
+                        <>
+                            <TestKalender ref={kalenderRef} />
+
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleSimpan}
+                                sx={{ marginTop: '20px', width: '100%', bgcolor: '#8F85F3' }}
+                            >
+                                Simpan
+                            </Button>
+                        </>
                     )}
 
                     {currentPage === 3 && (
