@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { EditBuildingService } from "../../../services/Admin Tenant/ManageBuilding/EditBuildingService";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
+import { EditImageService } from "../../../services/Admin Tenant/ManageImage/EditImageServices";
 
 type ImageData = {
     imageName: string;
@@ -37,7 +38,7 @@ export default function useEditGedung() {
             try {
                 const token = Cookies.get("accessToken");
                 const response = await GetBuildingById(id,token);
-                setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`);
+                setApiUrl(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${id}`);
                 setName(response.name);
                 setAddress(response.address);
             } catch (error) {
@@ -98,10 +99,24 @@ export default function useEditGedung() {
 
             try {
                 await EditBuildingService(data);
+
+                const imageRequest = {
+                    parentId: id || "",
+                    images: imagesData.map(({ imageName = "", imageType = "", imageData = "" }) => ({
+                        imageName,
+                        imageType, 
+                        imageData
+                    }))
+                };
+
+                if (imagesData.length > 0) {
+                    await EditImageService(imageRequest);
+                }
+
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/gedung', { state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' } })
+                navigate('/gedung', { state: { successEdit: true, message: 'Gedung berhasil diubah!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {

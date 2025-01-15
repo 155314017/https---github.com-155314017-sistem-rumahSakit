@@ -1,9 +1,8 @@
-
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useParams, useNavigate } from "react-router-dom";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
-
+import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 
 type ImageData = {
   imageName: string;
@@ -42,25 +41,28 @@ export default function useDetailGedung() {
       setLoading(true);
       try {
         const token = Cookies.get("accessToken");
-        const response = await GetBuildingById(id,token)
-        setIds(response.id);
-        setName(response.name);
-        setAddress(response.address);
-        const imagesData = response.images;
-        const mappedImages = imagesData.map((image: ImageData) => ({
-          imageName: image.imageName,
-          imageType: image.imageType,
-          imageData: `data:${image.imageType};base64,${image.imageData}`,
-        }));
-  
-        const largeImage = mappedImages[0]?.imageData;
-        const smallImages = mappedImages.slice(1).map((img: ImageData) => img.imageData);
-  
-        setLargeImage(largeImage); 
-        setSmallImages(smallImages);
-        setLoading(false)
+        const buildingResponse = await GetBuildingById(id, token);
+        setIds(buildingResponse.id);
+        setName(buildingResponse.name);
+        setAddress(buildingResponse.address);
+
+        if (buildingResponse.id) {
+          const imageResponse = await GetImageByParentId(buildingResponse.id);
+          if (imageResponse?.data?.length > 0) {
+            setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
+            setSmallImages(imageResponse.data.map((img) => 
+              `data:${img.imageType};base64,${img.imageData}`
+            ));
+          } else {
+            setLargeImage("");
+            setSmallImages([]);
+          }
+        }
+        
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(false);
       }
     };
   
