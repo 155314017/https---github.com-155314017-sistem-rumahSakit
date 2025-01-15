@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { GetRoomByIdServices } from "../../../services/Admin Tenant/ManageRoom/GetRoomByIdServices";
+import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 
 type ImageData = {
     imageName: string;
@@ -48,22 +49,25 @@ export default function useDetailRuangan() {
             setIds(response.id);
             setName(response.name);
             setType(response.type);
-            const imagesData = response.images;
             setBuildingId(response.masterBuildingId);
-            const mappedImages = imagesData.map((image: ImageData) => ({
-                imageName: image.imageName,
-                imageType: image.imageType,
-                imageData: `data:${image.imageType};base64,${image.imageData}`,
-            }));
 
-            const largeImage = mappedImages[0]?.imageData;
-            const smallImages = mappedImages.slice(1).map((img: ImageData) => img.imageData);
+            if (response.id) {
+                const imageResponse = await GetImageByParentId(response.id);
+                if (imageResponse?.data?.length > 0) {
+                    setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
+                    setSmallImages(imageResponse.data.map((img) => 
+                        `data:${img.imageType};base64,${img.imageData}`
+                    ));
+                } else {
+                    setLargeImage("");
+                    setSmallImages([]);
+                }
+            }
 
-            setLargeImage(largeImage);
-            setSmallImages(smallImages);
-            setLoading(false)
+            setLoading(false);
         } catch (error) {
             console.error("Error fetching data:", error);
+            setLoading(false);
         }
     };
 
