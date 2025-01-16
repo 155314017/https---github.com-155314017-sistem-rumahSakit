@@ -41,6 +41,7 @@ import CardJadwalExclusion from '../small/card/CardJadwalExclusion';
 import DropdownList from '../small/dropdownlist/DropdownList';
 import DropdownListTime from '../small/dropdownlist/DropdownListTime';
 import { CloseOutlined } from '@mui/icons-material';
+import ModalUbahNoHp from '../small/modal/ModalUbahNoHp';
 
 // Definisikan interface untuk Event dan Session
 interface Event {
@@ -247,6 +248,7 @@ const TestKalender: React.FC<any, TestKalenderRef> = forwardRef((props, ref) => 
     const calendarRef = useRef<FullCalendar>(null);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const openMenu = Boolean(anchorEl);
+    const [openModalKodeBooking, setOpenModalKodeBooking] = useState(false);
     const [newEvent, setNewEvent] = useState({
         type: 'Praktek',
         startTime: '',
@@ -439,6 +441,7 @@ const TestKalender: React.FC<any, TestKalenderRef> = forwardRef((props, ref) => 
     const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
 
     const handleMenuClose = () => {
         setAnchorEl(null);
@@ -649,6 +652,7 @@ const TestKalender: React.FC<any, TestKalenderRef> = forwardRef((props, ref) => 
                             <Button
                                 variant="contained"
                                 onClick={handleMenuOpen}
+                                // onClick={() => setOpenModalKodeBooking(true)}
                                 sx={{ bgcolor: '#8F85F3', color: 'white' }}
                             >
                                 Tambah Jadwal
@@ -1021,6 +1025,8 @@ const TestKalender: React.FC<any, TestKalenderRef> = forwardRef((props, ref) => 
                             </Button>
                         </DialogActions>
                     </StyledDialog>
+
+                    <ModalUbahNoHp open={openModalKodeBooking} onClose={() => setOpenModalKodeBooking(false)} />
 
                     {/* Modal Pengecualian */}
                     <StyledDialog open={openExclusion} onClose={handleCloseExclusion}>

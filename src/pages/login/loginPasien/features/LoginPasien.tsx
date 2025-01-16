@@ -20,9 +20,7 @@ export default function LoginPasien() {
     showAlert,
     loginSuccess,
     validationCheck,
-    // showTemporarySuccessLogin,
     validationSchema,
-    navigate,
 
   } = useLoginPasien()
 
@@ -109,7 +107,6 @@ export default function LoginPasien() {
           }}
         >
           <Box sx={{ width: "80%" }}>
-            {/* <img src={logo} alt="logo-carolus" /> */}
             <Typography sx={{ fontSize: "32px", fontWeight: "600" }}>
               Selamat Datang
             </Typography>
@@ -126,11 +123,10 @@ export default function LoginPasien() {
             </Typography>
 
             <Formik
-              initialValues={{ nik: "", email: "" }}
+              initialValues={{ nik: "" }}
               validationSchema={validationSchema}
               onSubmit={async (values) => {
                 await validationCheck(values)
-                // await showTemporarySuccessLogin();
               }}
             >
               {({
@@ -141,7 +137,6 @@ export default function LoginPasien() {
                 values,
                 isValid,
                 dirty,
-                //   setFieldValue,
               }) => (
                 <Form>
                   <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -181,44 +176,9 @@ export default function LoginPasien() {
                       onBlur={handleBlur}
                       value={values.nik}
                       error={touched.nik && Boolean(errors.nik)}
-                    // helperText={touched.nik && errors.nik}
                     />
 
-                    <FormLabel sx={{ fontSize: "16px", marginTop: "20px", fontWeight: 400 }}>
-                      Email <span style={{ color: "red" }}>*</span>
-                    </FormLabel>
-                    <Field
-                      name="email"
-                      as={TextField}
-                      placeholder="Masukkan Email"
-                      variant="outlined"
-                      fullWidth
-                      sx={{
-                        width: "100%",
-                        height: "48px",
-                        marginTop: "10px",
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: "8px",
-                          backgroundColor: touched.email && errors.email ? "#ffcccc" : "inherit",
-                          '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                            borderColor: '#8F85F3',
-                          },
-                        },
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          border: "1px solid #ccc",
-                        },
-                        "& .MuiOutlinedInput-input": {
-                          padding: "10px",
-                          fontSize: "16px",
-                        },
-                      }}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.email}
-                      error={touched.email && Boolean(errors.email)}
-                    // helperText={touched.email && errors.email}
-                    />
-
+                    {/* API /v1/manage/patient/get/{identity} */}
                     <Button
                       type="submit"
                       variant="contained"
@@ -241,23 +201,6 @@ export default function LoginPasien() {
                     >
                       Lanjutkan
                     </Button>
-
-                    <Button
-                      onClick={() => navigate('/register/pj', { state: { patientWithNoIdentity: true } })}
-                      sx={{
-                        width: '100%',
-                        height: '48px',
-                        marginTop: '20px',
-                        backgroundColor: '#ffff',
-                        border: '1px solid #8F85F3',
-                        color: '#8F85F3',
-                        ":hover": { backgroundColor: '#8F85F3', color: '#ffff' },
-                      }}
-                    >
-                      Pasien Tanpa Identitas
-                    </Button>
-
-                    {/* <CustomButton onClick={() => console.log("hai ")} label="Daftar pasien baru" /> */}
                   </Box>
                 </Form>
               )}

@@ -121,17 +121,20 @@ createRoot(document.getElementById('root')!).render(
 
         </Route>
 
-
         {/* no need auth */}
-
+        {/* yang dipakai */}
         {/* register pasien */}
         <Route path="/register/pasien" element={<LoginPasien />} /> {/*1*/}
         <Route path="/register/pasien/baru" element={<RegisterPasienBaru />} /> {/*2*/}
+        <Route path="/kategori/pasien" element={<KategoriPasien />} /> {/*5*/}
+        <Route path="/rawatjalan/umum" element={<RawatJalanUmum />} /> {/*Selected Umum*/}
+        {/* end yang dipakai  */}
+
+
+
         <Route path="/register/pj" element={<RegisterPJ />} /> {/*3*/}
         <Route path="/register/penanggungJawab" element={<BioPjBaru />} /> {/*4*/}
-        <Route path="/kategori/pasien" element={<KategoriPasien />} /> {/*5*/}
         <Route path="/rawatjalan/bpjs" element={<RawatJalanBPJS />} /> {/*Selected BPJS*/}
-        <Route path="/rawatjalan/umum" element={<RawatJalanUmum />} /> {/*Selected Umum*/}
         {/* login pegawai */}
         <Route path="/" element={<LoginPegawai />} />
         <Route path="/login/pegawai" element={<LoginPegawai />} />

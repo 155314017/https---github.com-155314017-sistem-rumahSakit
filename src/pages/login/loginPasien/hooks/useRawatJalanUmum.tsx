@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
+import dayjs from 'dayjs';
 import React, { useEffect } from 'react'
 import { useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -29,6 +31,11 @@ type dataTicket = {
   bookingCode: string;
 }
 
+interface dataPatient {
+  patientId: string,
+  needAdmin: boolean,
+}
+
 
 export default function useRawatJalanUmum() {
   const [showFormPage, setShowFormPage] = useState(true);
@@ -43,25 +50,24 @@ export default function useRawatJalanUmum() {
   const [selectedSchedule, setSelectedSchedule] = useState<string | null>(null);
   const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
   const [buttonDis, setButtonDis] = useState(false);
-  const [notFound, setNotFound] = useState(false);
-  const [show, setShow] = useState(true);
-  const [patientId, setPatientId] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   const [calendarKey, setCalendarKey] = useState<number>(0);
+  const [patientData, setPatientData] = useState<dataPatient>();
 
   useEffect(() => {
     if (location.state && location.state.succesSendData) {
-      setPatientId(location.state.data)
+      console.log(location.state.data)
+      setPatientData(location.state.data)
     }
   }, [location.state, navigate]);
 
-  
+
 
   const handleScheduleChange = (scheduleId: string, schedule: string) => {
     setSelectedScheduleId(scheduleId);
     setSelectedSchedule(schedule);
-    
+
   };
 
 
@@ -80,6 +86,43 @@ export default function useRawatJalanUmum() {
     setDocterName(label);
     setCalendarKey((prevKey) => prevKey + 1);
   };
+
+  // create ticket appointment
+  const createTicket = async (data: any) => {
+    try {
+      const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/patient/create-appointment', data, {
+        headers: {
+          'Content-Type': 'application/json',
+          // 'accessToken': `${token}`
+        },
+      });
+      console.log("sukses: ", response.data.data.queueDatum)
+      const createdDateTimeFormatted = dayjs.unix(response.data.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
+      
+      // object to send to Ticket Appoint
+      const dataSent = {
+        nomorAntrian: response.data.data.queueDatum.queueNumber,
+        namaDokter: docterName,
+        clinic: clinicName,
+        tanggalReservasi: createdDateTimeFormatted,
+        jadwalKonsul: selectedSchedule,
+        bookingCode: response.data.data.bookingCode
+      }
+
+      setDataTickets(dataSent)
+      setShowFormPage(false)
+      setButtonDis(false)
+    } catch (err: any) {
+      if (err.response && err.response.status) {
+        alert(`Error: HTTP ${err.response.status} - ${err.response.statusText || 'Something went wrong'}`);
+      } else if (err.code) {
+        alert(`Error Code: ${err.code}`);
+      } else {
+        alert('Unknown error occurred');
+      }
+    }
+    console.log("Form submitted with values: ", data);
+  }
 
   useEffect(() => {
     const fetchClinicData = async () => {
@@ -123,21 +166,6 @@ export default function useRawatJalanUmum() {
     fetchDoctorData();
   }, []);
 
-
-  useEffect(() => {
-
-    if (patientId === '') {
-        setNotFound(true);
-        setShow(false)
-        
-    } else {
-
-        setNotFound(false);
-        setShow(true)
-        
-    }
-}, [patientId]);
-
   return {
     showFormPage,
     setShowFormPage,
@@ -160,11 +188,10 @@ export default function useRawatJalanUmum() {
     selectedSchedule,
     setDataTickets,
     dataTickets,
-    patientId,
     setButtonDis,
     buttonDis,
     calendarKey,
-    notFound,
-    show
+    patientData,
+    createTicket
   }
 }

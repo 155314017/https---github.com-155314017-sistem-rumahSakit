@@ -72,7 +72,7 @@ export default function EditFasilitas() {
                 <DropdownListAPI
                     options={gedungOptions.map(({ id, name }) => ({ value: id, label: name }))}
                     placeholder="Pilih gedung"
-                    defaultValue={formik.values.masterBuildingId}
+                    // defaultValue={formik.values.masterBuildingId}
                     onChange={(selectedOptionValue) => {
                         formik.setFieldValue('masterBuildingId', selectedOptionValue);
                     }}
