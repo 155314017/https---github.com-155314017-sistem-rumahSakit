@@ -6,7 +6,6 @@ export interface BuildingDataItem {
   name: string;
   address: string;
   additionalInfo: string;
-  images: { imageName: string; imageType: string; imageData: string }[];
   createdBy: string;
   createdDateTime: number;
   updatedBy: string | null;
@@ -22,7 +21,6 @@ export const EditBuildingService = async (data: {
   name: string;
   address: string;
   additionalInfo: string;
-  images: { imageName: string; imageType: string; imageData: string }[];
 }): Promise<BuildingDataItem> => {
   const token = Cookies.get("accessToken");
 

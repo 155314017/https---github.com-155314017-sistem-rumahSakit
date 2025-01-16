@@ -27,7 +27,6 @@ export default function useEditGedung() {
     const [loading, setLoading] = useState<boolean>(true);
     const [name, setName] = useState<string>('');
     const [address, setAddress] = useState<string>('');
-    const [apiUrl, setApiUrl] = useState('');
     const { id } = useParams();
 
     const navigate = useNavigate();
@@ -38,7 +37,6 @@ export default function useEditGedung() {
             try {
                 const token = Cookies.get("accessToken");
                 const response = await GetBuildingById(id,token);
-                setApiUrl(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${id}`);
                 setName(response.name);
                 setAddress(response.address);
             } catch (error) {
@@ -89,12 +87,7 @@ export default function useEditGedung() {
                 buildingId: id,
                 name: values.namaGedung,
                 address: values.alamatGedung,
-                additionalInfo: "",
-                images: imagesData.map(image => ({
-                    imageName: image.imageName || "",
-                    imageType: image.imageType || "",
-                    imageData: image.imageData || "",
-                })),
+                additionalInfo: ""
             };
 
             try {
@@ -142,6 +135,6 @@ export default function useEditGedung() {
       loading,
       successAlert,
       errorAlert,
-      apiUrl
+      id
   }
 }

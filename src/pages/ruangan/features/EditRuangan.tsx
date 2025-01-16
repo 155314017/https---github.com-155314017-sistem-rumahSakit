@@ -20,7 +20,8 @@ export default function EditRuangan() {
         loading,
         apiUrl,
         gedungOptions,
-        jenisRuangan
+        jenisRuangan,
+        id
     } = useEditRuangan();
 
     return (
@@ -93,7 +94,7 @@ export default function EditRuangan() {
                         </Box>
                     </Box>
 
-                    <ImageUploaderGroupAPI onChange={handleImageChange} apiUrl={apiUrl} />
+                    <ImageUploaderGroupAPI onChange={handleImageChange} parentId={id || ''} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Ruangan<span style={{ color: "red" }}>*</span></Typography>

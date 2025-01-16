@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getClinic } from "../../../services/Admin Tenant/ManageClinic/GetClinic";
+import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 import dayjs from "dayjs";
 
 // Image data type
@@ -115,21 +116,25 @@ export default function useDetailKlinik() {
     setLoading(true);
     try {
       const clinicResponse = await getClinic(id); 
-      const data = clinicResponse; // Access the data from the response
+      const data = clinicResponse;
       setIds(data.id);
       setName(data.name);
       setDescription(data.description || ""); 
       const operationalSchedule = convertSchedulesToReadableList(data.schedules);
       setClinicData({ ...data, operationalSchedule});
-      const imagesData = data.images || [];
-      const mappedImages = imagesData.map((image: ImageData) => ({
-        imageName: image.imageName,
-        imageType: image.imageType,
-        imageData: `data:${image.imageType};base64,${image.imageData}`,
-      }));
 
-      setLargeImage(mappedImages[0]?.imageData || "");
-      setSmallImages(mappedImages.slice(1).map((img: ImageData) => img.imageData || ""));
+      if (data && data.id) {
+        const imageResponse = await GetImageByParentId(data.id);
+        if (imageResponse?.data?.length > 0) {
+            setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
+            setSmallImages(imageResponse.data.slice(1).map((img) => 
+                `data:${img.imageType};base64,${img.imageData}`
+            ));
+        } else {
+            setLargeImage("");
+            setSmallImages([]);
+        }
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {

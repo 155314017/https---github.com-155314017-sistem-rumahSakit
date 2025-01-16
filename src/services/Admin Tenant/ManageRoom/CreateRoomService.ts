@@ -18,7 +18,6 @@ export interface CreateRoomRequest {
     masterBuildingId: string;
     type: string;
     additionalInfo: string;
-    images: { imageName: string; imageType: string; imageData: string }[];
 }
 
 export interface RoomDataItem {
@@ -33,7 +32,6 @@ export interface RoomDataItem {
     updatedDateTime: number | null;
     deletedBy: string | null;
     deletedDateTime: number | null;
-    images: string[];
 }
 
 const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/`;

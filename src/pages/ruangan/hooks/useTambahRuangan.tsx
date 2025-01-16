@@ -72,8 +72,7 @@ export default function useTambahRuangan() {
                 name: values.namaKlinik,
                 masterBuildingId: values.masterBuildingId,
                 type: values.jenisRuangan,
-                additionalInfo: "add info,",
-                images: []
+                additionalInfo: "add info,"
             };
 
             const token = Cookies.get("accessToken");

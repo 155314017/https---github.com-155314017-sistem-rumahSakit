@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { editRoom } from '../../../services/Admin Tenant/ManageRoom/EditRoomService';
 import { GetRoomByIdServices } from '../../../services/Admin Tenant/ManageRoom/GetRoomByIdServices';
 import { GetBuildingById } from '../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices';
+import { EditImageService } from '../../../services/Admin Tenant/ManageImage/EditImageServices';
 
 interface FormValues {
     namaKlinik: string;
@@ -107,16 +108,40 @@ export default function useEditRuangan() {
                 masterBuildingId: values.masterBuildingId,
                 type: values.jenisRuangan,
                 additionalInfo: "add info,",
-                images: imagesData,
             };
 
             const token = Cookies.get("accessToken");
             try {
                 await editRoom(data, token);
+
+                const imageRequest = {
+                    parentId: id || "",
+                    images: imagesData.map(({ imageName = "", imageType = "", imageData = "" }) => ({
+                        imageName,
+                        imageType,
+                        imageData
+                    }))
+                };
+
+                if (imagesData.length > 0) {
+                    await EditImageService(imageRequest);
+                }
+
                 setSuccessAlert(true);
                 navigate('/ruangan', { state: { successEdit: true, message: 'Ruangan berhasil di edit!' } })
             } catch (error) {
                 console.error('Error editing room:', error);
+                if (axios.isAxiosError(error)) {
+                    console.error('Axios error message:', error.message);
+                    console.error('Response data:', error.response?.data);
+                    if (error.response) {
+                        console.error('Response status:', error.response.status);
+                    } else {
+                        console.error('Error message:', error.message);
+                    }
+                } else {
+                    console.error('Unexpected error:', error);
+                }
                 setErrorAlert(true);
             }
         },
@@ -134,6 +159,7 @@ export default function useEditRuangan() {
         loading,
         apiUrl,
         gedungOptions,
-        jenisRuangan
+        jenisRuangan,
+        id
     }
 }

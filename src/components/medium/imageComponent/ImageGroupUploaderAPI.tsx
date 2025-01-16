@@ -1,9 +1,8 @@
-import React, { useState, useEffect, DragEvent, ChangeEvent, useRef } from "react";
-import { Box, Typography, CircularProgress, Alert } from "@mui/material";
-import { Grid } from "@mui/system";
 import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
-import Cookies from "js-cookie";
-import axios from "axios";
+import { Alert, Box, CircularProgress, Typography } from "@mui/material";
+import { Grid } from "@mui/system";
+import React, { ChangeEvent, DragEvent, useEffect, useRef, useState } from "react";
+import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 
 interface ImageDatas {
     image: string | null;
@@ -16,51 +15,47 @@ interface ImageDatas {
 
 interface ImageUploaderGroupProps {
     onChange: (images: { imageName: string; imageType: string; imageData: string }[]) => void;
-    apiUrl: string;
+    parentId: string;
 }
 
-const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, apiUrl }) => {
+const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, parentId }) => {
     const [images, setImages] = useState<ImageDatas[]>(Array(5).fill({ image: null, imageBase64: "", type: "", name: "", loading: false, error: "" }));
     const inputRefs = useRef<HTMLInputElement[]>([]);
     const [tes, setTes] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchData = async () => {
+            console.log("parentId: ", parentId);
             try {
-                const token = Cookies.get("accessToken");
-                const response = await axios.get(apiUrl, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accessToken': `${token}`
-                    }
-                });
+                const imageResponse = await GetImageByParentId(parentId);
+            
+                if (imageResponse?.data?.length > 0) {
+                    const mappedImages = imageResponse.data.map((image: any) => ({
+                        imageName: image.imageName,
+                        imageType: image.imageType,
+                        imageData: image.imageData,
+                    }));
 
-                const imagesData = response.data.data.images;
-                console.log("TESTING: ", response.data.data.images);
-                const mappedImages = imagesData.map((image: string | any) => ({
-                    imageName: image.imageName,
-                    imageType: image.imageType,
-                    imageData: image.imageData,
-                }));
+                    const initialImages = images.map((img, index) => ({
+                        ...img,
+                        image: mappedImages[index]?.imageData ? `data:${mappedImages[index].imageType};base64,${mappedImages[index].imageData}` : null,
+                        imageBase64: mappedImages[index]?.imageData || "",
+                        type: mappedImages[index]?.imageType || "",
+                        name: mappedImages[index]?.imageName || "",
+                    }));
 
-                const initialImages = images.map((img, index) => ({
-                    ...img,
-                    image: mappedImages[index]?.imageData ? `data:${mappedImages[index].imageType};base64,${mappedImages[index].imageData}` : null,
-                    imageBase64: mappedImages[index]?.imageData || "",
-                    type: mappedImages[index]?.imageType || "",
-                    name: mappedImages[index]?.imageName || "",
-                }));
-
-                setImages(initialImages);
-                onChange(mappedImages);
+                    setImages(initialImages);
+                    onChange(mappedImages);
+                }
                 setTes(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
+                setTes(false);
             }
         };
 
         fetchData();
-    }, [apiUrl]);
+    }, [parentId]);
 
     const validateFile = (file: File): boolean => {
         const validTypes = ["image/jpeg", "image/png", "image/svg+xml", "image/gif"];

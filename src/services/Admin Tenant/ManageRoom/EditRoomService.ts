@@ -6,18 +6,11 @@ export interface Schedule {
     endDateTime: string;   // ISO 8601 format
 }
 
-export interface Image {
-    imageName: string;
-    imageType: string;
-    imageData: string; // Base64 encoded image
-}
-
 export interface EditRoomRequest {
     name: string;
     masterBuildingId: string;
     type: string;
     additionalInfo: string;
-    images: { imageName: string; imageType: string; imageData: string }[];
 }
 
 export interface ApiResponse<T> {
