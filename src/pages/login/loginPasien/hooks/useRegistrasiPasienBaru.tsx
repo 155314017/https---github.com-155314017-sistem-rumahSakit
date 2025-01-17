@@ -221,7 +221,7 @@ export default function useRegistrasiPasienBaru() {
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const [value, setValue] = React.useState('WOMEN');
+    const [value, setValue] = React.useState('');
     const handleChangeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue((event.target as HTMLInputElement).value);
     };
@@ -230,6 +230,7 @@ export default function useRegistrasiPasienBaru() {
     useEffect(() => {
         if (location.state && location.state.patientData) {
             setData1(location.state.data);
+            console.log('tes', location.state.data)
         }
     }, [location.state]);
 

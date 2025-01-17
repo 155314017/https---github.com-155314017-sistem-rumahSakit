@@ -127,7 +127,7 @@ export default function RegisterPasienBaru() {
                                 </Typography>
 
                                 <Formik
-                                    initialValues={{ nik: data1?.nik, email: data1?.email, phone: data1?.phone, fullname: data1?.fullname, gender: data1?.gender, address: data1?.address, tempatLahir: data1?.birthPlace, tanggalLahir: data1?.birthDate, }}
+                                    initialValues={{ nik: data1?.nik || '', email: data1?.email || '', phone: data1?.phone || '', fullname: data1?.fullname || '', gender: data1?.gender || '', address: data1?.address || '', tempatLahir: data1?.birthPlace || '', tanggalLahir: data1?.birthDate || '', }}
                                     enableReinitialize
                                     validationSchema={validationSchema}
                                     onSubmit={(value) => console.log(value)}
@@ -344,17 +344,17 @@ export default function RegisterPasienBaru() {
                                                             value={values.gender}
                                                             onChange={(e) => {
                                                                 setFieldValue("gender", e.target.value);
-                                                                console.log(e.target.value);
                                                             }}
                                                             row
                                                         >
-                                                            <FormControlLabel disabled value="WOMEN" control={<BpRadio />} label="Female" />
-                                                            <FormControlLabel disabled value="MEN" control={<BpRadio />} label="Male" />
+                                                            <FormControlLabel value="WOMEN" control={<BpRadio />} label="Female" />
+                                                            <FormControlLabel value="MEN" control={<BpRadio />} label="Male" />
                                                         </RadioGroup>
                                                         {touched.gender && errors.gender && (
                                                             <FormHelperText error>{errors.gender}</FormHelperText>
                                                         )}
                                                     </FormControl>
+
                                                 </Box>
 
                                                 <Typography sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>

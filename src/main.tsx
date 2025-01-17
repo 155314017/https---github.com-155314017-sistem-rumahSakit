@@ -128,6 +128,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/register/pasien/baru" element={<RegisterPasienBaru />} /> {/*2*/}
         <Route path="/kategori/pasien" element={<KategoriPasien />} /> {/*5*/}
         <Route path="/rawatjalan/umum" element={<RawatJalanUmum />} /> {/*Selected Umum*/}
+        <Route path="/offline/tambahPasien" element={<PilihKategoriPasien />} />
+        <Route path="/tambahPasien/umum/offline" element={<TambahPasienUmumOffline />} />
         {/* end yang dipakai  */}
 
 
@@ -142,8 +144,6 @@ createRoot(document.getElementById('root')!).render(
 
         {/* end no need auth */}
 
-        <Route path="/offline/tambahPasien" element={<PilihKategoriPasien />} />
-        <Route path="/tambahPasien/umum/offline" element={<TambahPasienUmumOffline />} />
 
         <Route path="/kalender" element={<TestKalender />} />
 
