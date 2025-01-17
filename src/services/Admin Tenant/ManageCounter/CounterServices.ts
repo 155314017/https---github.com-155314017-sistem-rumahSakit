@@ -53,8 +53,7 @@ export interface ApiResponse {
   };
 }
 
-const API_URL =
-  "https://hms.3dolphinsocial.com:8083/v1/manage/counter/?pageNumber=0&pageSize=10&orderBy=id=desc";
+const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/counter/?pageNumber=0&pageSize=10&orderBy=id=desc`;
 
 export const CounterServices = async (): Promise<CounterDataItem[]> => {
   try {

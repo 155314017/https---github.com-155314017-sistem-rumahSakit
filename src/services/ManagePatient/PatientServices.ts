@@ -126,17 +126,14 @@ export interface ApiResponse {
   }
 }
 
+const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/patient/?pageNumber=0&pageSize=10&orderBy=id=asc`;
 
-const API_URL =
-  'https://hms.3dolphinsocial.com:8083/v1/manage/patient/?pageNumber=0&pageSize=10&orderBy=id=asc';
-
-
-  const convertUnixToReadableTime = (timestamp: number) => {
-    const date = dayjs(timestamp);
-    const dayOfWeek = date.format('dddd'); // Hari dalam seminggu
-    const time = date.format('HH:mm'); // Format waktu HH:mm
-    return { day: dayOfWeek, time };
-  };
+const convertUnixToReadableTime = (timestamp: number) => {
+  const date = dayjs(timestamp);
+  const dayOfWeek = date.format('dddd'); // Hari dalam seminggu
+  const time = date.format('HH:mm'); // Format waktu HH:mm
+  return { day: dayOfWeek, time };
+};
 
 export const PatientServices = async (): Promise<PatientDataItem[]> => {
   try {
@@ -162,7 +159,6 @@ export const PatientServices = async (): Promise<PatientDataItem[]> => {
           item.operationalSchedule = 'No schedule available.';
         }
       });
-
 
       
 

@@ -7,7 +7,7 @@ interface Data {
 const VerifyOTPPatient = async (data: Data) => {
   try {
     const response = await axios.post(
-      'https://hms.3dolphinsocial.com:8083/v1/patient/verify',
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/patient/verify`,
       data,
       {
         headers: {

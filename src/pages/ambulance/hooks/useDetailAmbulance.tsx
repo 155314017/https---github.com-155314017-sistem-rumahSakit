@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { getAmbulanceByIdService } from "../../../services/Admin Tenant/ManageAmbulance/GetAmbulanceByIdService";
+import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 
 // Image data type
 type ImageData = {
@@ -118,18 +119,22 @@ export default function useDetailAmbulance() {
           try {
             console.log(id);
             const ambulanceResponse = await getAmbulanceByIdService(id); 
-            const data = ambulanceResponse; // Access the data from the response
+            const data = ambulanceResponse; 
             const operationalSchedule = convertSchedulesToReadableList(data?.schedules || []);
             setAmbulanceData({ ...data, operationalSchedule} as AmbulanceDataItem);
-            const imagesData = data?.images || [];
-            const mappedImages = imagesData.map((image: ImageData) => ({
-              imageName: image.imageName,
-              imageType: image.imageType,
-              imageData: `data:${image.imageType};base64,${image.imageData}`,
-            }));
-      
-            setLargeImage(mappedImages[0]?.imageData || "");
-            setSmallImages(mappedImages.slice(1).map((img: ImageData) => img.imageData || ""));
+
+            if (data && data.id) {
+                const imageResponse = await GetImageByParentId(data.id);
+                if (imageResponse?.data?.length > 0) {
+                    setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
+                    setSmallImages(imageResponse.data.slice(1).map((img) => 
+                        `data:${img.imageType};base64,${img.imageData}`
+                    ));
+                } else {
+                    setLargeImage("");
+                    setSmallImages([]);
+                }
+            }
           } catch (error) {
             console.error("Error fetching data:", error);
           } finally {

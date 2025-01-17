@@ -6,7 +6,6 @@ export interface BuildingDataItem {
   name: string;
   address: string;
   additionalInfo: string;
-  images: { imageName: string; imageType: string; imageData: string }[];
   createdBy: string;
   createdDateTime: number;
   updatedBy: string | null;
@@ -15,14 +14,13 @@ export interface BuildingDataItem {
   deletedDateTime: number | null;
 }
 
-const API_URL = "https://hms.3dolphinsocial.com:8083/v1/manage/building/";
+const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/`;
 
 // Function to create a building
 export const EditBuildingService = async (data: {
   name: string;
   address: string;
   additionalInfo: string;
-  images: { imageName: string; imageType: string; imageData: string }[];
 }): Promise<BuildingDataItem> => {
   const token = Cookies.get("accessToken");
 

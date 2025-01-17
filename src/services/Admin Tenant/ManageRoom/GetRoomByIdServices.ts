@@ -40,7 +40,7 @@ export const GetRoomByIdServices = async (
 ): Promise<RoomDataItem> => {
   try {
     const response = await axios.get<ApiResponse>(
-      `https://hms.3dolphinsocial.com:8083/v1/manage/room/${id}`,
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/${id}`,
       {
         headers: {
           'Content-Type': 'application/json',

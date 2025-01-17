@@ -9,7 +9,7 @@ interface CustomError extends Error {
 const Login = async (email: string, password: string) => {
   try {
     const response = await axios.post(
-      "https://hms.3dolphinsocial.com:8083/v1/auth/login",
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/auth/login`,
       { email, password },
       {
         headers: {

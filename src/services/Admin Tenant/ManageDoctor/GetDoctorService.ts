@@ -82,7 +82,7 @@ interface ApiResponse {
 export const GetDoctorServices = async (id: string | undefined): Promise<DoctorDataItem> => {
   try {
     const response = await axios.get<{ data:ApiResponse }>(
-      `https://hms.3dolphinsocial.com:8083/v1/manage/doctor/${id}`
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/doctor/${id}`
     )
 
     if (response.status === 200) {

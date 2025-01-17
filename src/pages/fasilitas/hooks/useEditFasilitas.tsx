@@ -105,7 +105,7 @@ export default function useEditFasilitas() {
                 const token = Cookies.get("accessToken");
                 const response = await GetFacilityByIdServices(id, token);
 
-                setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${id}`);
+                setApiUrl(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/${id}`);
                 setName(response.name);
                 setDescription(response.description);
                 setInitialOperationalCost(response.cost);
@@ -452,8 +452,8 @@ export default function useEditFasilitas() {
         handleAddSchedule,
         schedules,
         handleDeleteSchedule,
-        statusEdit
-
+        statusEdit,
+        id
 
 
 

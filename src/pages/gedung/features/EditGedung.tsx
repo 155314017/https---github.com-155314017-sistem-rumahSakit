@@ -13,7 +13,7 @@ export default function EditGedung() {
         loading,
         successAlert,
         errorAlert,
-        apiUrl}=useEditGedung();
+        id}=useEditGedung();
   return (
     <Container sx={{ py: 2 }}>
             <BreadCrumbs breadcrumbItems={breadcrumbItems}
@@ -81,7 +81,7 @@ export default function EditGedung() {
                     </Box>
 
 
-                    <ImageUploaderGroupAPI onChange={handleImageChange} apiUrl={apiUrl} />
+                    <ImageUploaderGroupAPI onChange={handleImageChange} parentId={id || ''} />
 
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>

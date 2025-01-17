@@ -31,7 +31,8 @@ export default function EditKonter() {
     handleSaveAndAddDay,
     statusEdit,
     schedules,
-    selectedDay
+    selectedDay,
+    id
     }=useEditKonter();
   return (
     <Container sx={{ py: 2 }}>
@@ -46,7 +47,7 @@ export default function EditKonter() {
                         <img src={bgImage} alt="bg-image" />
                     </Box>
 
-                    <ImageUploaderGroupAPI onChange={handleImageChange} apiUrl={apiUrl} />
+                    <ImageUploaderGroupAPI onChange={handleImageChange} parentId={id || ''} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Konter<span style={{ color: "red" }}>*</span></Typography>
