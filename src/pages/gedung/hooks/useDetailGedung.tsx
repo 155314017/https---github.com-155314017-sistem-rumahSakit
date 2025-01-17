@@ -1,14 +1,9 @@
-import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 
-type ImageData = {
-  imageName: string;
-  imageType: string;
-  imageData: string;
-};
 
 export default function useDetailGedung() {
     const [name, setName] = useState<string>("");

@@ -401,8 +401,8 @@ export default function useEditKlinik() {
     schedules,
     handleDeleteSchedule,
     statusEdit,
-    handleEditSchedule
-
+    handleEditSchedule,
+    id
 
   }
 }

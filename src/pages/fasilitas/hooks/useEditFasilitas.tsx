@@ -452,8 +452,8 @@ export default function useEditFasilitas() {
         handleAddSchedule,
         schedules,
         handleDeleteSchedule,
-        statusEdit
-
+        statusEdit,
+        id
 
 
 

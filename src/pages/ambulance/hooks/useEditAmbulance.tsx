@@ -415,6 +415,7 @@ export default function useEditAmbulance() {
     handleAddSchedule,
     setImagesData,
     handleSaveAndAddDay,
-    statusEdit
+    statusEdit,
+    id
   }
 }
