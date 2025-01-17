@@ -109,7 +109,8 @@ export default function RawatJalanUmum() {
                                     symptoms: values.symptoms,
                                     phoneNumber: values.phoneCP,
                                     email: values.emailCP,
-                                    needAdmin: patientData?.needAdmin
+                                    needAdmin: patientData?.needAdmin,
+                                    offline: false,
                                 }
                                 // function for create appointment
                                 createTicket(data);
@@ -273,7 +274,7 @@ export default function RawatJalanUmum() {
 
                                                         <Box sx={{ ml: 2, width: "100%" }}>
                                                             <Typography>Tanggal dan jam operasional</Typography>
-                                                            <CustomCalender key={calendarKey} doctorId={idDoctor} onChange={handleScheduleChange} />
+                                                            <CustomCalender key={calendarKey} typeId={idDoctor} onChange={handleScheduleChange} />
                                                         </Box>
                                                     </Box>
 
@@ -412,7 +413,6 @@ export default function RawatJalanUmum() {
                                     clinic={dataTickets?.clinic || "Unknown Clinic"}
                                     jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
                                     namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
-                                    nomorAntrian={dataTickets?.nomorAntrian}
                                     tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
                                     bookingCode={dataTickets?.bookingCode || "Unknown"}
                                 />

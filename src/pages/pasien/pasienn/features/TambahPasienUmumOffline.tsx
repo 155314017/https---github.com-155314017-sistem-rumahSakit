@@ -719,7 +719,7 @@ export default function TambahPasienUmumOffline() {
                                                         <Box sx={{ ml: 2, width: "100%" }}>
                                                             <Typography>Tanggal dan Jam Operasional</Typography>
                                                             {/* <CalenderPopover title="Pilih tanggal" /> */}
-                                                            <CustomCalender key={calendarKey} doctorId={idDoctor} onChange={handleScheduleChange} />
+                                                            <CustomCalender key={calendarKey} typeId={idDoctor} onChange={handleScheduleChange} />
                                                         </Box>
                                                     </Box>
                                                 </Box>
@@ -764,7 +764,7 @@ export default function TambahPasienUmumOffline() {
                                 clinic={dataTickets?.clinic || "Unknown Clinic"}
                                 jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
                                 namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
-                                nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
+                                // nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
                                 tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
                                 bookingCode=""
                             />

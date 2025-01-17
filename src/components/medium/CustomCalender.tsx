@@ -1,73 +1,157 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { Box, InputBase, Popover, IconButton, Button, Grid } from '@mui/material';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import dayjs, { Dayjs } from 'dayjs';
-import { ExpandMoreOutlined } from '@mui/icons-material';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Box, InputBase, Popover, IconButton, Button } from '@mui/material';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { ExpandMoreOutlined } from '@mui/icons-material';
+import { Dayjs } from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
-const formatDate = (timestamp: number) => dayjs.unix(timestamp).format('YYYY-MM-DD');
-const formatTime = (timestamp: number) => dayjs.unix(timestamp).format('HH:mm');
-
-type CalenderProps = {
-    doctorId: string;
-    onChange: (scheduleId: string, schedule: string) => void;
-};
-
-const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
+const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (scheduleId: string, schedule: string) => void; }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
     const [selectedTimeRange, setSelectedTimeRange] = useState<string | null>(null);
     const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
     const [inputValue, setInputValue] = useState<string>('');
-    const [schedules, setSchedules] = useState<string[]>([]);
-    const [availableTimes, setAvailableTimes] = useState<{ [date: string]: { timeRange: string, scheduleId: string }[] }>({});
+    const [availableTimes, setAvailableTimes] = useState<{ [date: string]: { timeRange: string, scheduleId: string, disabled: boolean }[] }>({});
     const [availableDates, setAvailableDates] = useState<Set<string>>(new Set());
 
-    useEffect(() => {
-        fetchSchedules();
-    }, [doctorId]);
-
-    const fetchSchedules = async () => {
-        try {
-            const response = await axios.get(
-                `https://hms.3dolphinsocial.com:8083/v1/manage/schedule-interval/${doctorId}`
-            );
-            if (response.data && response.data.data) {
-                console.log('i', response.data.data)
-                setSchedules(response.data.data);
-                processSchedules(response.data.data);
-                console.log(schedules)
-            }
-        } catch (error) {
-            console.error('Error fetching schedules:', error);
+    const dummySchedules = [
+        {
+            startTime: "13:30",
+            endTime: "16:30",
+            typeId: "1",
+            maxCapacity: 6,
+            monday: true,
+            tuesday: true,
+            wednesday: true,
+            thursday: true,
+            friday: true,
+            saturday: true,
+            sunday: true,
+        },
+        {
+            startTime: "10:35",
+            endTime: "12:35",
+            typeId: "2",
+            maxCapacity: 6,
+            monday: true,
+            tuesday: true,
+            wednesday: true,
+            thursday: true,
+            friday: true,
+            saturday: true,
+            sunday: true,
+        },
+        {
+            startTime: "11:35",
+            endTime: "12:35",
+            typeId: "3",
+            maxCapacity: 6,
+            monday: true,
+            tuesday: true,
+            wednesday: true,
+            thursday: true,
+            friday: true,
+            saturday: true,
+            sunday: true,
         }
-    };
+    ];
 
-    const processSchedules = (scheduleData: any[]) => {
-        const times: { [date: string]: { timeRange: string, scheduleId: string }[] } = {};
-        const dates: Set<string> = new Set();
+    const exclusionInterval = [
+        { date: '2025-01-27', scheduleIntervalId: '1', allday: false },
+    ];
 
-        scheduleData.forEach((schedule) => {
-            const startDate = formatDate(schedule.startDateTime);
-            const startTime = formatTime(schedule.startTime);
-            const endTime = formatTime(schedule.endTime);
-            const timeRange = `${startTime} - ${endTime}`;
-
-            dates.add(startDate);
-
-            if (!times[startDate]) {
-                times[startDate] = [];
+    useEffect(() => {
+        const fetchSchedules = async () => {
+            try {
+                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/schedule-interval/${typeId}`);
+                if (response.data && response.data.schedules) {
+                    processSchedules(response.data.schedules);
+                } else {
+                    processSchedules(dummySchedules);
+                }
+            } catch (error) {
+                console.error('Error fetching schedules:', error);
+                processSchedules(dummySchedules);
             }
+        };
 
-            times[startDate].push({ timeRange, scheduleId: schedule.id });
-        });
+        fetchSchedules();
+    }, [typeId]);
+
+    const processSchedules = (schedules: any[]): void => {
+        const times: { [date: string]: { timeRange: string; scheduleId: string; disabled: boolean }[] } = {};
+        const dates = new Set<string>();
+        const now = dayjs();
+
+        const startDate = now.startOf('day');
+        const endDate = startDate.add(1, 'year');
+
+        for (let date = startDate; date.isBefore(endDate, 'day'); date = date.add(1, 'day')) {
+            const formattedDate = date.format('YYYY-MM-DD');
+            const dayName = date.locale('en').format('dddd').toLowerCase();
+            const exclusionForDate = exclusionInterval.find((exclusion) => exclusion.date === formattedDate);
+
+            if (exclusionForDate) {
+                if (exclusionForDate.allday) {
+                    times[formattedDate] = [];
+                    dates.add(formattedDate); 
+                } else {
+                    schedules.forEach((schedule: any) => {
+                        if (schedule.typeId === exclusionForDate.scheduleIntervalId) {
+                            if (!times[formattedDate]) {
+                                times[formattedDate] = [];
+                            }
+
+                            const timeRange = `${schedule.startTime} - ${schedule.endTime}`;
+                            times[formattedDate].push({
+                                timeRange,
+                                scheduleId: schedule.typeId,
+                                disabled: true, 
+                            });
+                            dates.add(formattedDate);
+                        } else {
+                            if (!times[formattedDate]) {
+                                times[formattedDate] = [];
+                            }
+
+                            const timeRange = `${schedule.startTime} - ${schedule.endTime}`;
+                            times[formattedDate].push({
+                                timeRange,
+                                scheduleId: schedule.typeId,
+                                disabled: false, 
+                            });
+                            dates.add(formattedDate);
+                        }
+                    });
+                }
+            } else {
+                schedules.forEach((schedule: any) => {
+                    if (schedule[dayName]) { 
+                        if (!times[formattedDate]) {
+                            times[formattedDate] = [];
+                        }
+
+                        const timeRange = `${schedule.startTime} - ${schedule.endTime}`;
+                        times[formattedDate].push({
+                            timeRange,
+                            scheduleId: schedule.typeId,
+                            disabled: false, 
+                        });
+
+                        dates.add(formattedDate); 
+                    }
+                });
+            }
+        }
 
         setAvailableDates(dates);
         setAvailableTimes(times);
     };
+
 
 
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -82,19 +166,17 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
 
     const handleTimeSelect = (timeRange: string, scheduleId: string) => {
         if (!selectedDate) return;
-
-        const formattedDate = selectedDate.format('MM/DD/YYYY');
+        const formattedDate = selectedDate.locale('id').format('DD MMMM YYYY');
         const selectedTime = `${formattedDate} ${timeRange}`;
-        setSelectedTimeRange(timeRange); // Store only the time range
+        setSelectedTimeRange(timeRange);
         setInputValue(selectedTime);
         setSelectedScheduleId(scheduleId);
     };
 
-
     const handleSave = () => {
         if (!selectedScheduleId || !selectedTimeRange || !selectedDate) return;
-        const formattedDate = dayjs(selectedDate).format('DD/MMM/YYYY');
-        const timeRange = selectedTimeRange.split(' ').slice(-3).join(' ');
+        const formattedDate = dayjs(selectedDate).format('YYYY-MM-DD');
+        const timeRange = selectedTimeRange.split(' - ').join(' to ');
         const selectedSchedule = `${formattedDate}, ${timeRange}`;
 
         onChange(selectedScheduleId, selectedSchedule);
@@ -104,7 +186,8 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Box>
-                <InputBase value={inputValue}
+                <InputBase
+                    value={inputValue}
                     onClick={handleOpen}
                     placeholder="Pilih jadwal"
                     readOnly
@@ -158,7 +241,13 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
                                     setSelectedTimeRange(null);
                                     setInputValue('');
                                 }}
-                                shouldDisableDate={(date) => !availableDates.has(date.format('YYYY-MM-DD'))}
+                                shouldDisableDate={(date) => {
+                                    const exclusionForDate = exclusionInterval.find((exclusion) => exclusion.date === date.format('YYYY-MM-DD'));
+                                    if (exclusionForDate && exclusionForDate.allday) {
+                                        return true; // Disable seluruh tanggal
+                                    }
+                                    return !availableDates.has(date.format('YYYY-MM-DD'));  // Menonaktifkan tanggal jika tidak ada jadwal
+                                }}
                                 slotProps={{
                                     day: {
                                         sx: {
@@ -178,50 +267,57 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
                             />
                         </Box>
 
-                        <Box sx={{ width: '50%' }}>
-                            <Grid container spacing={1}>
-                                {selectedDate && availableTimes[selectedDate.format('YYYY-MM-DD')]?.map(({ timeRange, scheduleId }) => (
-                                    <Grid item xs={4} key={timeRange}>
-                                        <Button
-                                            onClick={() => handleTimeSelect(timeRange, scheduleId)}
-                                            variant="text"
-                                            sx={{
-                                                width: '120px',
-                                                padding: 0,
-                                                height: '68px',
-                                                borderRadius: '100px',
-                                                bgcolor: 'transparent',
-                                                color: '#000',
-                                                border: selectedTimeRange === timeRange ? '1px solid #8F85F3' : '1px solid transparent',
-                                                '&:hover': {
-                                                    border: '1px solid #8F85F3',
-                                                },
-                                            }}
-                                        >
-                                            {timeRange}
-                                        </Button>
-                                    </Grid>
+                        <Box sx={{ width: '50%', overflowY: 'auto', maxHeight: '300px', padding: '0 10px' }}>
+                            <Box
+                                sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(3, 1fr)',
+                                    gap: '10px',
+                                }}
+                            >
+                                {selectedDate && availableTimes[selectedDate.format('YYYY-MM-DD')]?.map(({ timeRange, scheduleId, disabled }) => (
+                                    <Button
+                                        key={timeRange}
+                                        onClick={() => handleTimeSelect(timeRange, scheduleId)}
+                                        variant="text"
+                                        disabled={disabled}
+                                        sx={{
+                                            width: '100%',
+                                            padding: 1,
+                                            height: '40px',
+                                            borderRadius: '8px',
+                                            bgcolor: selectedTimeRange === timeRange ? '#8F85F3' : 'transparent',
+                                            color: selectedTimeRange === timeRange ? '#fff' : '#000',
+                                            border: selectedTimeRange === timeRange ? '1px solid #8F85F3' : '1px solid #ccc',
+                                            '&:hover': {
+                                                border: '1px solid #8F85F3',
+                                            },
+                                        }}
+                                    >
+                                        {timeRange}
+                                    </Button>
                                 ))}
-                            </Grid>
-
+                            </Box>
                         </Box>
                     </Box>
 
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 4, padding: '10px 20px' }}>
-                        <Button onClick={handleClose}
+                        <Button
+                            onClick={handleClose}
                             sx={{
                                 width: '50%',
                                 border: '1px solid #8F85F3',
                                 color: '#8F85F3',
                                 "&:hover": {
                                     backgroundColor: "#8F85F3",
-                                    color: "#fff"
+                                    color: "#fff",
                                 },
                             }}
                         >
                             Cancel
                         </Button>
-                        <Button onClick={handleSave}
+                        <Button
+                            onClick={handleSave}
                             sx={{
                                 width: '50%',
                                 backgroundColor: '#8F85F3',
@@ -240,4 +336,5 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
     );
 };
 
-export default CustomCalender;
+export default CustomCalendar;
+

@@ -8,7 +8,6 @@ import logo from "../../assets/img/St.carolus.png";
 import CloseIcon from '@mui/icons-material/Close';
 
 type InformasiTicketProps = {
-  nomorAntrian: any | undefined;
   namaDokter: string | undefined;
   clinic: string | undefined;
   tanggalReservasi: string | undefined;
@@ -19,7 +18,6 @@ type InformasiTicketProps = {
 };
 
 const InformasiTicketAPI = ({
-  nomorAntrian,
   namaDokter,
   clinic,
   tanggalReservasi,
@@ -29,7 +27,6 @@ const InformasiTicketAPI = ({
   onClose,
 }: InformasiTicketProps) => {
 
-  // Untuk menyembunyikan/menampilkan tombol
   const [showButton, setShowButton] = useState(true);
 
   const ticketRef = useRef<HTMLDivElement>(null);
@@ -38,29 +35,25 @@ const InformasiTicketAPI = ({
     if (!ticketRef.current) return;
 
     try {
-      // Sembunyikan tombol sebelum screenshot
       setShowButton(false);
 
-      // Atur properti scale agar hasil lebih tajam
       const canvas = await html2canvas(ticketRef.current, {
-        scale: 2, // Coba ubah ke 2 atau 3 sesuai kebutuhan
-        useCORS: true, // Pastikan gambar bisa diakses (jika cross-origin)
+        scale: 2,
+        useCORS: true,
       });
 
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
 
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      // Proporsi tinggi disesuaikan dengan lebar PDF
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
 
-      pdf.save(`ticket-${nomorAntrian || "antrian"}.pdf`);
+      pdf.save(`ticket antrian}.pdf`);
     } catch (error) {
       console.error("Gagal mengunduh PDF: ", error);
     } finally {
-      // Tampilkan tombol kembali
       setShowButton(true);
     }
   };
@@ -73,7 +66,6 @@ const InformasiTicketAPI = ({
       bgcolor={bgcolor}
       position={"relative"}
       padding={"25px"}
-      // Pastikan overflow tampak rapi
       sx={{ overflow: "hidden" }}
     >
       {onClose && (
@@ -119,10 +111,6 @@ const InformasiTicketAPI = ({
           Pusat, Daerah Khusus Ibukota Jakarta 10440
         </Typography>
         <Box display={"flex"} flexDirection={"column"}>
-          <Typography fontSize={"16px"}>Nomor antrian</Typography>
-          <Typography fontSize={"48px"} fontWeight={"600"}>
-            {nomorAntrian}
-          </Typography>
           {bookingCode !== "" && (
             <>
               <Typography fontSize={"16px"}>Booking Code</Typography>
