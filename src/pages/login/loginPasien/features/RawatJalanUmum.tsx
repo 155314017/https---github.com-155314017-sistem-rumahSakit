@@ -100,7 +100,7 @@ export default function RawatJalanUmum() {
                             onSubmit={async (values) => {
                                 // object proccess for create appointment
                                 const data = {
-                                    idPatient: patientData?.patientId || null,
+                                    patientId: patientData?.patientId || null,
                                     typeOfVisit: values.typeOfVisit,
                                     clinicId: idClinic,
                                     doctorId: idDoctor,

@@ -23,7 +23,6 @@ type Doctor = {
 
 
 type dataTicket = {
-  nomorAntrian: string | undefined;
   namaDokter: string;
   clinic: string;
   tanggalReservasi: string;
@@ -90,22 +89,22 @@ export default function useRawatJalanUmum() {
   // create ticket appointment
   const createTicket = async (data: any) => {
     try {
-      const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/patient/create-appointment', data, {
+      const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/registration/', data, {
         headers: {
           'Content-Type': 'application/json',
           // 'accessToken': `${token}`
         },
       });
-      console.log("sukses: ", response.data.data.queueDatum)
-      const createdDateTimeFormatted = dayjs.unix(response.data.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
+      console.log("sukses: ", response.data.data)
+      // const createdDateTimeFormatted = dayjs.unix(response.data.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
       
       // object to send to Ticket Appoint
       const dataSent = {
-        nomorAntrian: response.data.data.queueDatum.queueNumber,
+        // nomorAntrian: response.data.data.queueDatum.queueNumber,
         namaDokter: docterName,
         clinic: clinicName,
-        tanggalReservasi: createdDateTimeFormatted,
-        jadwalKonsul: selectedSchedule,
+        tanggalReservasi: response.data.data.scheduleDate,
+        jadwalKonsul: response.data.data.scheduleIntervalId,
         bookingCode: response.data.data.bookingCode
       }
 

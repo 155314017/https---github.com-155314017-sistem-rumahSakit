@@ -33,7 +33,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
     const fetchSchedules = async () => {
         try {
             const response = await axios.get(
-                `https://hms.3dolphinsocial.com:8083/v1/manage/doctor/schedules/${doctorId}`
+                `https://hms.3dolphinsocial.com:8083/v1/manage/schedule-interval/${doctorId}`
             );
             if (response.data && response.data.data) {
                 console.log('i', response.data.data)
@@ -52,8 +52,8 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
 
         scheduleData.forEach((schedule) => {
             const startDate = formatDate(schedule.startDateTime);
-            const startTime = formatTime(schedule.startDateTime);
-            const endTime = formatTime(schedule.endDateTime);
+            const startTime = formatTime(schedule.startTime);
+            const endTime = formatTime(schedule.endTime);
             const timeRange = `${startTime} - ${endTime}`;
 
             dates.add(startDate);
