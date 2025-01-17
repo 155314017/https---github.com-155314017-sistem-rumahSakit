@@ -277,6 +277,7 @@ export default function useTambahPasienUmumOffline() {
     const findPatientByNik = async (nik: string) => {
         try {
             const response = await GetPatientByNIKServices(nik);
+            console.log('data pasien: ', response)
             if (response?.responseCode === "200") {
                 const dataGuard = await getGuardianData(response.data.id)
                 setDataGuards(dataGuard);
@@ -340,7 +341,7 @@ export default function useTambahPasienUmumOffline() {
     const handleScheduleChange = (scheduleId: string, schedule: string) => {
         setSelectedScheduleId(scheduleId);
         setSelectedSchedule(schedule);
-        
+
     };
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {

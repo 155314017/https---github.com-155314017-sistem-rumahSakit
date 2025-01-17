@@ -27,6 +27,7 @@ import bgImg from "../../../../assets/img/Bg-desktop.svg"
 import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
 import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import { useEffect } from "react";
+import CardCustomInformation from "../../../../components/small/card/CardCustomInformation";
 
 
 export default function TambahPasienUmumOffline() {
@@ -243,6 +244,7 @@ export default function TambahPasienUmumOffline() {
                                         <Box>
                                             <Box height={"fit-content"} width={"100%"} borderRadius={"16px"} display="flex" flexDirection="column" justifyContent="center">
                                                 <Box display={"flex"} flexDirection="column" alignItems="flex-start" gap={"5px"} width={'99%'}>
+                                                    <CardCustomInformation />
                                                     <Typography>NIK (Nomor induk kependudukan) Pasien</Typography>
                                                     <OutlinedInput
                                                         sx={{
@@ -260,6 +262,21 @@ export default function TambahPasienUmumOffline() {
                                                         name="nik"
                                                         disabled
                                                     />
+                                                    <FormControl>
+                                                        <FormLabel>Email</FormLabel>
+                                                        <OutlinedInput
+                                                            sx={{
+                                                                width: '100%',
+                                                                maxHeight: '44px',
+                                                                borderRadius: '8px',
+                                                                bgcolor: '#E8E8E8',
+                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                    borderColor: '#8F85F3',
+                                                                },
+                                                            }}
+
+                                                        />
+                                                    </FormControl>
                                                     <Typography>Nama lengkap pasien</Typography>
                                                     <OutlinedInput
                                                         sx={{
