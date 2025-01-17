@@ -12,6 +12,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import dayjs from "dayjs";
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 export default function RegisterPasienBaru() {
     const {
         otpFormShown,
@@ -138,6 +139,22 @@ export default function RegisterPasienBaru() {
                                                 <Typography fontSize={'20px'} fontWeight={600} mb={'1%'}>
                                                     Konfirmasi data diri pasien
                                                 </Typography>
+                                                <Box
+                                                    bgcolor={'#F1F0FE'}
+                                                    border={'2px solid #8F85F3'}
+                                                    borderRadius={'8px'}
+                                                    padding={'8px 16px 8px 16px'}
+                                                    display={'flex'}
+                                                    flexDirection={'row'}
+                                                    gap={'6px'}
+                                                    justifyContent={'center'}
+                                                    alignItems={'center'}
+                                                >
+                                                    <ErrorOutlineOutlinedIcon sx={{ color: '#7367F0', width: '20px', height: '20px' }} />
+                                                    <Typography color="#7367F0" fontWeight={400} fontSize={'16px'} lineHeight={'18px'} >
+                                                        Harap periksa kembali data diri Anda, jika ada data yang tidak sesuai anda dapat merubahnya di Admin dengan mengklik tombol ubah data.
+                                                    </Typography>
+                                                </Box>
                                                 <FormLabel sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>NIK (Nomor induk kependudukan) Pasien</FormLabel>
                                                 <Field
                                                     name="nik"
@@ -150,10 +167,8 @@ export default function RegisterPasienBaru() {
                                                         height: '48px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: emailError ? '#ffcccc' : 'inherit',
-                                                        },
-                                                        '& .MuiOutlinedInput-notchedOutline': {
-                                                            border: '1px solid #ccc',
+                                                            bgcolor: '#EEEEF2',
+                                                            border: '1px solid #A8A8BD',
                                                         },
                                                         '& .MuiOutlinedInput-input': {
                                                             padding: '10px',
@@ -179,10 +194,8 @@ export default function RegisterPasienBaru() {
                                                         height: '48px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: 'inherit',
-                                                        },
-                                                        '& .MuiOutlinedInput-notchedOutline': {
-                                                            border: '1px solid #ccc',
+                                                            bgcolor: '#EEEEF2',
+                                                            border: '1px solid #A8A8BD',
                                                         },
                                                         '& .MuiOutlinedInput-input': {
                                                             padding: '10px',
@@ -208,10 +221,11 @@ export default function RegisterPasienBaru() {
                                                     onChange={(phone) => setFieldValue("phone", phone)}
                                                     inputStyle={{
                                                         height: "48px",
+                                                        cursor: 'default',
                                                         borderRadius: "8px",
                                                         border: touched.phone && errors.phone ? "1px solid #f44336" : "1px solid #ccc",
                                                         padding: "10px 40px 10px 60px",
-                                                        backgroundColor: touched.phone && errors.phone ? "#ffcccc" : 'inherit',
+                                                        backgroundColor: '#EEEEF2',
                                                         fontSize: "16px",
                                                         width: "100%",
                                                         marginTop: "10px",
@@ -240,13 +254,8 @@ export default function RegisterPasienBaru() {
                                                         height: '48px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: touched.fullname && errors.fullname ? "#ffcccc" : 'inherit',
-                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                borderColor: '#8F85F3',
-                                                            },
-                                                        },
-                                                        '& .MuiOutlinedInput-notchedOutline': {
-                                                            border: '1px solid #ccc',
+                                                            bgcolor: '#EEEEF2',
+                                                            border: '1px solid #A8A8BD',
                                                         },
                                                         '& .MuiOutlinedInput-input': {
                                                             padding: '10px',
@@ -270,17 +279,12 @@ export default function RegisterPasienBaru() {
                                                             variant="outlined"
                                                             fullWidth
                                                             sx={{
-                                                                borderRadius: '8px',
-                                                                height: '44px',
+                                                                width: '100%',
+                                                                height: '48px',
                                                                 '& .MuiOutlinedInput-root': {
                                                                     borderRadius: '8px',
-                                                                    backgroundColor: touched.tempatLahir && errors.tempatLahir ? "#ffcccc" : 'inherit',
-                                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                        borderColor: '#8F85F3',
-                                                                    },
-                                                                },
-                                                                '& .MuiOutlinedInput-notchedOutline': {
-                                                                    border: '1px solid #ccc',
+                                                                    bgcolor: '#EEEEF2',
+                                                                    border: '1px solid #A8A8BD',
                                                                 },
                                                                 '& .MuiOutlinedInput-input': {
                                                                     padding: '10px',
@@ -310,12 +314,14 @@ export default function RegisterPasienBaru() {
                                                                                 console.log("tanggalLahir", formattedDate);
                                                                             }
                                                                         }}
+
                                                                         slotProps={{
                                                                             textField: {
                                                                                 placeholder: "Tanggal Lahir",
                                                                                 sx: {
+                                                                                    bgcolor: '#EEEEF2',
                                                                                     borderRadius: '8px',
-                                                                                    height: '60px',
+                                                                                    height: '70px',
                                                                                     width: '100%',
                                                                                     '& .MuiOutlinedInput-root': {
                                                                                         borderRadius: '8px',
@@ -336,7 +342,7 @@ export default function RegisterPasienBaru() {
                                                     Jenis kelamin Pasien{" "}
                                                     <span style={{ color: "#d32f2f" }}>*</span>{" "}
                                                 </Typography>
-                                                <Box display={'flex'} flexDirection={'row'} padding={1} border={"1px solid #A8A8BD"} borderRadius={"12px"} pl={3}>
+                                                <Box bgcolor={'#EEEEF2'} border={'1px solid #A8A8BD'} display={'flex'} flexDirection={'row'} padding={1} borderRadius={"12px"} pl={3}>
                                                     <FormControl component="fieldset" error={touched.gender && Boolean(errors.gender)}>
                                                         <RadioGroup
                                                             aria-labelledby="gender-label"
@@ -346,9 +352,10 @@ export default function RegisterPasienBaru() {
                                                                 setFieldValue("gender", e.target.value);
                                                             }}
                                                             row
+
                                                         >
-                                                            <FormControlLabel value="WOMEN" control={<BpRadio />} label="Female" />
-                                                            <FormControlLabel value="MEN" control={<BpRadio />} label="Male" />
+                                                            <FormControlLabel disabled value="WOMEN" control={<BpRadio />} label="Female" />
+                                                            <FormControlLabel disabled value="MEN" control={<BpRadio />} label="Male" />
                                                         </RadioGroup>
                                                         {touched.gender && errors.gender && (
                                                             <FormHelperText error>{errors.gender}</FormHelperText>
@@ -370,21 +377,13 @@ export default function RegisterPasienBaru() {
                                                     size="medium"
                                                     sx={{
                                                         width: '100%',
-                                                        height: 'auto',
-                                                        marginTop: '10px',
-                                                        alignItems: 'flex-start',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: touched.address && errors.address ? "#ffcccc" : 'inherit',
-                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                borderColor: '#8F85F3',
-                                                            },
-                                                        },
-                                                        '& .MuiOutlinedInput-notchedOutline': {
-                                                            border: '1px solid #ccc',
+                                                            bgcolor: '#EEEEF2',
+                                                            border: '1px solid #A8A8BD',
                                                         },
                                                         '& .MuiOutlinedInput-input': {
-                                                            alignItems: 'flex-start',
+                                                            padding: '10px',
                                                             fontSize: '16px',
                                                         },
                                                     }}
@@ -396,22 +395,31 @@ export default function RegisterPasienBaru() {
                                                     minRows={2}
                                                     disabled
                                                 />
-                                                <FormControlLabel
-                                                    sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
-                                                    control={
-                                                        <Checkbox
-                                                            sx={{
-                                                                color: '#A8A8BD',
-                                                                borderRadius: '4px',
-                                                                '&.Mui-checked': {
-                                                                    color: '#7367F0',
-                                                                },
-                                                            }}
-                                                            onChange={(e) => setNeedAdmin(e.target.checked)}
-                                                        />
-                                                    }
-                                                    label="Data diri tidak sesuai"
-                                                />
+                                                <Box
+                                                    sx={{
+                                                        padding: '8px 24px 8px 24px',
+                                                        borderRadius: '12px',
+                                                        border: '1px solid #A8A8BD',
+                                                        mt: '3%'
+                                                    }}
+                                                >
+                                                    <FormControlLabel
+                                                        sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
+                                                        control={
+                                                            <Checkbox
+                                                                sx={{
+                                                                    color: '#A8A8BD',
+                                                                    borderRadius: '4px',
+                                                                    '&.Mui-checked': {
+                                                                        color: '#7367F0',
+                                                                    },
+                                                                }}
+                                                                onChange={(e) => setNeedAdmin(e.target.checked)}
+                                                            />
+                                                        }
+                                                        label="Data diri tidak sesuai"
+                                                    />
+                                                </Box>
 
                                             </Box>
                                         </Form>
