@@ -73,6 +73,25 @@ const CardAntrianCounter: FC<CardAntrianCounterProps> = ({ nomorAntrian, onClose
                     {nomorAntrian}
                 </Typography>
             </Box>
+            <Box width={'100%'} display={'flex'} justifyContent={'space-between'} gap={"24px"} right={"24px"} left={"24px"}>
+            <Box textAlign={'start'} mb={2}>
+                <Typography fontWeight={400} fontSize={'16px'} color="#747487">
+                    Tanggal reservasi
+                </Typography>
+                <Typography fontWeight={600} fontSize={'18px'} color="#0A0A0D">
+                29/Jul/2024, 10:30
+                </Typography>
+            </Box>
+            <Box textAlign={'start'} mb={2}>
+                <Typography fontWeight={400} fontSize={'16px'} color="#747487">
+                    Tipe
+                </Typography>
+                <Typography fontWeight={600} fontSize={'18px'} color="#0A0A0D">
+                Perubahan data diri
+                </Typography>
+            </Box>
+
+            </Box>
 
             {/* Footer */}
             <Typography

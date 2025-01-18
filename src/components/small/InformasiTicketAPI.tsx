@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
-import { Button, CardMedia, IconButton, Typography } from "@mui/material";
+import { Button, CardMedia, IconButton, Typography, CircularProgress } from "@mui/material";
 import { Box } from "@mui/system";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import my from "../../assets/img/String.png";
 import logo from "../../assets/img/St.carolus.png";
 import CloseIcon from '@mui/icons-material/Close';
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 type InformasiTicketProps = {
   nomorAntrian: any | undefined;
@@ -33,6 +34,10 @@ const InformasiTicketAPI = ({
   const [showButton, setShowButton] = useState(true);
 
   const ticketRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(false);
+  const [isCounting, setIsCounting] = useState(false);
+  const [secondsLeft, setSecondsLeft] = useState(60);
+  const [resendSuccess, setResendSuccess] = useState(false);
 
   const downloadTicketAsPDF = async () => {
     if (!ticketRef.current) return;
@@ -64,6 +69,30 @@ const InformasiTicketAPI = ({
       setShowButton(true);
     }
   };
+  const showTemporaryAlertSuccess = async () => {
+    setResendSuccess(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setResendSuccess(false);
+};
+
+  const handleResendClick = async () => {
+    setLoading(true);
+    try {
+        showTemporaryAlertSuccess();
+        setLoading(false);
+    } catch {
+        setLoading(false);
+        alert("Terjadi kesalahan saat mengirim ulang kode. Silakan coba lagi.");
+    }
+    setIsCounting(true);
+    setSecondsLeft(60);
+    setLoading(false);
+};
+const formatTime = () => {
+  const minutes = Math.floor(secondsLeft / 60);
+  const seconds = secondsLeft % 60;
+  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+};
 
   return (
     <Box
@@ -118,6 +147,24 @@ const InformasiTicketAPI = ({
           Jl. Salemba Raya No.41, RT.3/RW.5, Paseban, Kec. Senen, Kota Jakarta
           Pusat, Daerah Khusus Ibukota Jakarta 10440
         </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            border: "1px solid #c5a8ff",
+            borderRadius: "8px",
+            backgroundColor: "#f5f0ff",
+            padding: "8px 16px",
+            color: "#7b49c4",
+            fontSize: "14px",
+            fontWeight: 500,
+          }}
+        >
+          <InfoOutlinedIcon sx={{ marginRight: "8px" }} />
+          <Typography>
+            Harap datang 15 menit sebelum jadwal konsultasi
+          </Typography>
+        </Box>
         <Box display={"flex"} flexDirection={"column"}>
           <Typography fontSize={"16px"}>Nomor antrian</Typography>
           <Typography fontSize={"48px"} fontWeight={"600"}>
@@ -137,7 +184,7 @@ const InformasiTicketAPI = ({
           flexDirection={"row"}
           gap={"60px"}
           justifyContent={"space-between"}
-          maxWidth={"75%"}
+          maxWidth={"80%"}
         >
           <Box>
             <Typography>Dokter yang bertugas</Typography>
@@ -158,6 +205,7 @@ const InformasiTicketAPI = ({
             flexDirection={"row"}
             gap={"80px"}
             justifyContent={"space-between"}
+            maxWidth={"80%"}
           >
             <Box display={"flex"} flexDirection={"column"}>
               <Typography>Tanggal reservasi</Typography>
@@ -178,7 +226,7 @@ const InformasiTicketAPI = ({
             flexDirection={"row"}
             gap={"80px"}
             justifyContent={"space-between"}
-            width={"103%"}
+            width={"80%"}
           >
             <Box display={"flex"} flexDirection={"column"}>
               <Typography>Tanggal reservasi</Typography>
@@ -211,7 +259,53 @@ const InformasiTicketAPI = ({
           >
             Unduh tiket 2.0
           </Button>
+          
+
+          
+          
         )}
+        <Button variant="outlined" onClick={onClose}
+                    sx={{
+                        padding: "10px 20px",
+                        backgroundColor: "transparent",
+                        color: "#8F85F3",
+                        borderRadius: "8px",
+                        fontWeight: 600,
+                        width: "100%",
+                        border: '1px solid #8F85F3',
+                        ':hover': {
+                            bgcolor: '#8F85F3',
+                            color: 'white',
+                        }
+
+                    }}
+                >
+                    Kembali ke halaman utama
+                </Button>
+
+                <Box
+                display={"flex"}
+                flexDirection={"row"}
+                gap={"5px"}
+                justifyContent={"space-between"}
+                width={"95%"}
+                >
+                  <Typography color={"#A8A8BD"} fontSize={"16px"} fontWeight={400}>Tidak mendapatkan tiket booking?</Typography>
+                  <Typography
+                  onClick={!isCounting ? handleResendClick : undefined}
+                  sx={{
+                  cursor: isCounting ? 'default' : 'pointer',
+                  color: isCounting ? '#ccc' : '#8F85F3',
+                  textDecoration: isCounting ? 'none' : 'underline',
+                  fontSize: '16px',
+                  }}
+                  >
+                  {loading ? <CircularProgress size={18} sx={{ color: '#8F85F3' }} /> :
+                  (isCounting ? `${formatTime()}` : 'Kirim ulang')
+                  }
+                  </Typography>
+                  <Typography color={"#8F85F3"} fontSize={"16px"} fontWeight={400} alignItems="right">Ubah</Typography>
+                </Box>
       </Box>
     </Box>
   );
