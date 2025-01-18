@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom';
 import { createRoom } from '../../../services/Admin Tenant/ManageRoom/CreateRoomService';
 import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
+import { CreateImageService } from '../../../services/Admin Tenant/ManageImage/AddImageServices';
 
 type Building = {
     id: string;
@@ -71,16 +72,36 @@ export default function useTambahRuangan() {
                 name: values.namaKlinik,
                 masterBuildingId: values.masterBuildingId,
                 type: values.jenisRuangan,
-                additionalInfo: "add info,",
-                images: imagesData,
+                additionalInfo: "add info,"
             };
 
             const token = Cookies.get("accessToken");
             try {
-                await createRoom(data, token);
+                const response = await createRoom(data, token);
+                const roomId = response.data.id;
+
+                if (!roomId) {
+                    throw new Error('Room ID tidak ditemukan');
+                }
+
+                // Persiapkan data gambar
+                const imageRequest = {
+                    parentId: roomId,
+                    images: imagesData.map(({ imageName = "", imageType = "", imageData = "" }) => ({
+                        imageName,
+                        imageType,
+                        imageData
+                    }))
+                };
+
+                // Upload gambar jika ada
+                if (imagesData.length > 0) {
+                    await CreateImageService(imageRequest);
+                }
+
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/ruangan', { state: { successAdd: true, message: 'Ruangan berhasil ditambahkan!' } })
+                navigate('/ruangan', { state: { successAdd: true, message: 'Ruangan berhasil ditambahkan!' } });
             } catch (error) {
                 console.error('Error adding room:', error);
                 showTemporaryAlertError();

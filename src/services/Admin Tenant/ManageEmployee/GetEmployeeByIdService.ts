@@ -72,7 +72,7 @@ interface MenuPrivilege {
 export const GetEmployeeByIdServices = async (id: string | undefined): Promise<EmployeeData> => {
   try {
     const response = await axios.get<{ data:ApiResponse }>(
-      `https://hms.3dolphinsocial.com:8083/v1/manage/employee/${id}`
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/employee/${id}`
     )
 
     if (response.status === 200) {

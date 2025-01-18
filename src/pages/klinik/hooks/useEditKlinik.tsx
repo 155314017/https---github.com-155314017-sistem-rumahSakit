@@ -49,7 +49,7 @@ export default function useEditKlinik() {
     const fetchData = async () => {
       try {
         const response = await getClinic(id);
-        setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`);
+        setApiUrl(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/${id}`);
         setName(response.name);
         setDescription(response.description);
         const convertUnixToReadableTime = (timestamp: number) => {
@@ -401,8 +401,8 @@ export default function useEditKlinik() {
     schedules,
     handleDeleteSchedule,
     statusEdit,
-    handleEditSchedule
-
+    handleEditSchedule,
+    id
 
   }
 }

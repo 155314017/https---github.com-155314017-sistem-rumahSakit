@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BaseResponse } from '../../../types/api';
 
 // Define the interfaces for the request data structure
 export interface Schedule {
@@ -17,30 +18,32 @@ export interface CreateRoomRequest {
     masterBuildingId: string;
     type: string;
     additionalInfo: string;
-    images: { imageName: string; imageType: string; imageData: string }[];
 }
 
-export interface ApiResponse<T> {
-    responseCode: string;
-    statusCode: string;
-    message: string;
-    data: T;
+export interface RoomDataItem {
+    id: string;
+    name: string;
+    masterBuildingId: string;
+    type: string;
+    additionalInfo: string;
+    createdBy: string;
+    createdDateTime: number;
+    updatedBy: string | null;
+    updatedDateTime: number | null;
+    deletedBy: string | null;
+    deletedDateTime: number | null;
 }
 
-const BASE_URL = "https://hms.3dolphinsocial.com:8083/v1/manage/room/";
+const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/`;
 
-// Function to create a facility
+// Function to create a room
 export const createRoom = async (
     roomData: CreateRoomRequest,
     token: string | undefined
-): Promise<ApiResponse<null>> => {
-    
-    
-     // Assuming 'accessToken' is stored in cookies
-
+): Promise<BaseResponse<RoomDataItem>> => {
     try {
-        // Make the POST request to create the facility
-        const response = await axios.post<ApiResponse<null>>(BASE_URL, roomData, {
+        // Make the POST request to create the room
+        const response = await axios.post<BaseResponse<RoomDataItem>>(BASE_URL, roomData, {
             headers: {
                 'Content-Type': 'application/json',
                 'accessToken': `${token}`,

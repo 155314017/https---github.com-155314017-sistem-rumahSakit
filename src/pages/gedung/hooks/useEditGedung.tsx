@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { EditBuildingService } from "../../../services/Admin Tenant/ManageBuilding/EditBuildingService";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
+import { EditImageService } from "../../../services/Admin Tenant/ManageImage/EditImageServices";
 
 type ImageData = {
     imageName: string;
@@ -26,7 +27,6 @@ export default function useEditGedung() {
     const [loading, setLoading] = useState<boolean>(true);
     const [name, setName] = useState<string>('');
     const [address, setAddress] = useState<string>('');
-    const [apiUrl, setApiUrl] = useState('');
     const { id } = useParams();
 
     const navigate = useNavigate();
@@ -37,7 +37,6 @@ export default function useEditGedung() {
             try {
                 const token = Cookies.get("accessToken");
                 const response = await GetBuildingById(id,token);
-                setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`);
                 setName(response.name);
                 setAddress(response.address);
             } catch (error) {
@@ -88,20 +87,29 @@ export default function useEditGedung() {
                 buildingId: id,
                 name: values.namaGedung,
                 address: values.alamatGedung,
-                additionalInfo: "",
-                images: imagesData.map(image => ({
-                    imageName: image.imageName || "",
-                    imageType: image.imageType || "",
-                    imageData: image.imageData || "",
-                })),
+                additionalInfo: ""
             };
 
             try {
                 await EditBuildingService(data);
+
+                const imageRequest = {
+                    parentId: id || "",
+                    images: imagesData.map(({ imageName = "", imageType = "", imageData = "" }) => ({
+                        imageName,
+                        imageType, 
+                        imageData
+                    }))
+                };
+
+                if (imagesData.length > 0) {
+                    await EditImageService(imageRequest);
+                }
+
                 showTemporaryAlertSuccess();
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/gedung', { state: { successEdit: true, message: 'Gedung berhasil ditambahkan!' } })
+                navigate('/gedung', { state: { successEdit: true, message: 'Gedung berhasil diubah!' } })
             } catch (error) {
                 console.error('Error submitting form:', error);
                 if (axios.isAxiosError(error)) {
@@ -127,6 +135,6 @@ export default function useEditGedung() {
       loading,
       successAlert,
       errorAlert,
-      apiUrl
+      id
   }
 }

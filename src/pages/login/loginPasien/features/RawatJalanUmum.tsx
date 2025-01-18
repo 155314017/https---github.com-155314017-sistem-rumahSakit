@@ -129,7 +129,7 @@ export default function RawatJalanUmum() {
                                     console.log("DATA KIRIM: ", data)
                                     try {
                                         console.log("data kirim ke api: ", data);
-                                        const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/patient/create-appointment', data, {
+                                        const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/patient/create-appointment`, data, {
                                             headers: {
                                                 'Content-Type': 'application/json',
                                                 // 'accessToken': `${token}`

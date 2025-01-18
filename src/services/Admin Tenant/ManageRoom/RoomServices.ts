@@ -51,7 +51,7 @@ export interface ApiResponse {
   }
 }
 
-const API_URL = 'https://hms.3dolphinsocial.com:8083/v1/manage/room/'
+const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/`
 
 export const RoomServices = async (
   pageNumber: number = 0,

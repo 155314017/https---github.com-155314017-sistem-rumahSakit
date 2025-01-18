@@ -6,18 +6,11 @@ export interface Schedule {
     endDateTime: string;   // ISO 8601 format
 }
 
-export interface Image {
-    imageName: string;
-    imageType: string;
-    imageData: string; // Base64 encoded image
-}
-
 export interface EditRoomRequest {
     name: string;
     masterBuildingId: string;
     type: string;
     additionalInfo: string;
-    images: { imageName: string; imageType: string; imageData: string }[];
 }
 
 export interface ApiResponse<T> {
@@ -27,7 +20,7 @@ export interface ApiResponse<T> {
     data: T;
 }
 
-const BASE_URL = "https://hms.3dolphinsocial.com:8083/v1/manage/room/";
+const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/`;
 
 // Function to create a facility
 export const editRoom = async (

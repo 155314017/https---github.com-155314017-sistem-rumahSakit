@@ -4,6 +4,7 @@ import {  useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CreateBuildingService } from "../../../services/Admin Tenant/ManageBuilding/AddBuildingServices";
+import { CreateImageService } from "../../../services/Admin Tenant/ManageImage/AddImageServices";
 
 type ImageData = {
     imageName: string;
@@ -47,30 +48,49 @@ export default function useTambahGedung() {
                 name: values.namaGedung,
                 address: values.alamatGedung,
                 additionalInfo: "",
-                images: imagesData.map(image => ({
-                    imageName: image.imageName || "",
-                    imageType: image.imageType || "",
-                    imageData: image.imageData || "",
-                })),
+                
             };
 
+
             try {
-                await CreateBuildingService(data);
+                // Buat gedung baru
+                const { data: { id: buildingId } } = await CreateBuildingService(data);
+
+                if (!buildingId) {
+                    throw new Error('Building ID tidak ditemukan');
+                }
+                // Persiapkan data gambar
+                const imageRequest = {
+                    parentId: buildingId,
+                    images: imagesData.map(({ imageName = "", imageType = "", imageData = "" }) => ({
+                        imageName,
+                        imageType, 
+                        imageData
+                    }))
+                };
+                // Upload gambar jika ada
+                if (imagesData.length > 0) {
+                    await CreateImageService(imageRequest);
+                }
+                // Reset form dan redirect
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/gedung', { state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' } })
+                navigate('/gedung', { 
+                    state: { 
+                        successAdd: true, 
+                        message: 'Gedung berhasil ditambahkan!' 
+                    } 
+                });
+
             } catch (error) {
+                console.error('Gagal menambahkan gedung:', error);
+                
                 if (axios.isAxiosError(error)) {
-                    console.error('Response data:', error.response?.data);
-                    if (error.response) {
-                        console.error('Response data:', error.response.data);
-                    } else {
-                        console.error('Error message:', error.message);
-                    }
-                    showTemporaryAlertError();
-                } else {
-                    console.error('Unexpected error:', error);
+                    const responseData = error.response?.data;
+                    console.error('Detail error:', responseData || error.message);
                 }
+                
+                showTemporaryAlertError();
             }
         },
     });

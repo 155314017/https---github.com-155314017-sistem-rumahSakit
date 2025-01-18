@@ -42,7 +42,7 @@ useEffect(() => {
       const fetchFacilities = async () => {
         try {
           const responses = await Promise.all(
-            dataIdFacility.map((id) => axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/facility/${id}`))
+            dataIdFacility.map((id) => axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/${id}`))
           );
 
           const facilitiesData = responses.map((response) => response.data.data.name);

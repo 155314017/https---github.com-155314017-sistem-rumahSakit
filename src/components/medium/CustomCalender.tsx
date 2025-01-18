@@ -33,7 +33,7 @@ const CustomCalender = ({ doctorId, onChange }: CalenderProps) => {
     const fetchSchedules = async () => {
         try {
             const response = await axios.get(
-                `https://hms.3dolphinsocial.com:8083/v1/manage/doctor/schedules/${doctorId}`
+                `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/doctor/schedules/${doctorId}`
             );
             if (response.data && response.data.data) {
                 setSchedules(response.data.data);

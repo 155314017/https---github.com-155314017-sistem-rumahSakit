@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { GetCounterByIdServices } from "../../../services/Admin Tenant/ManageCounter/GetCounterById";
+import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 // Image data type
 type ImageData = {
   imageName: string;
@@ -127,28 +128,26 @@ export default function useDetailKonter() {
                 console.log(id);
                 const accessToken = Cookies.get("accessToken");
                 const counterResponse = await GetCounterByIdServices(id, accessToken); 
-                const data = counterResponse; // Access the data from the response
-        
-                // Ensure images are in the correct format
-                const imagesData: ImageData[] = (data.images || []).map((image) => ({
-                    imageName: image.imageName,
-                    imageType: image.imageType,
-                    imageData: `data:${image.imageType};base64,${image.imageData}`,
-                }));
-        
+                const data = counterResponse;
                 const operationalSchedule = convertSchedulesToReadableList(data?.schedules || []);
-                
-                // Set facility data with correctly typed images
                 setCounterData({ 
-                    ...data, 
-                    images: imagesData, // Ensure images are of type ImageData[]
+                    ...data,
                     operationalSchedule 
                 } as CounterDataItem);
-        
-                console.log("name", data.name);
                 setName(data.name);
-                setLargeImage(imagesData[0]?.imageData || "");
-                setSmallImages(imagesData.slice(1).map((img: ImageData) => img.imageData || ""));
+
+                if (data && data.id) {
+                    const imageResponse = await GetImageByParentId(data.id);
+                    if (imageResponse?.data?.length > 0) {
+                        setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
+                        setSmallImages(imageResponse.data.slice(1).map((img) => 
+                            `data:${img.imageType};base64,${img.imageData}`
+                        ));
+                    } else {
+                        setLargeImage("");
+                        setSmallImages([]);
+                    }
+                }
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
@@ -176,7 +175,7 @@ export default function useDetailKonter() {
                 try {
                     const token = Cookies.get("accessToken");
                     const response = await axios.get(
-                        `https://hms.3dolphinsocial.com:8083/v1/manage/building/${buildingId}`,
+                        `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${buildingId}`,
                         {
                             headers: {
                                 "Content-Type": "application/json",

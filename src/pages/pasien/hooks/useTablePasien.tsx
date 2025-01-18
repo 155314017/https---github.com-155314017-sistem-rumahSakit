@@ -32,7 +32,7 @@ export default function useTablePasien() {
     const fetchClinics = async () => {
       try {
         const responses = await Promise.all(
-          dataIdClinic.map((id) => axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/clinic/${id}`))
+          dataIdClinic.map((id) => axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/${id}`))
         );
 
         const CLinicData = responses.map((response) => {

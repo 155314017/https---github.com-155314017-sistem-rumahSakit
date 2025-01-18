@@ -32,7 +32,7 @@ export const getAmbulanceByIdService = async (id: string | undefined): Promise<A
     if (!token) throw new Error('Access token not found');
 
     const response = await axios.get<ApiResponse>(
-      `https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${id}`,
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/ambulance/${id}`,
       {
         headers: {
           'Content-Type': 'application/json',
