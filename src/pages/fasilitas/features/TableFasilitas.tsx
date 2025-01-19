@@ -387,7 +387,7 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({fetchDatas, onSuccessDele
                             align="center"
                           >
                             {data.operationalSchedule}
-                          </TableCell>
+                          </TableCell> 
                           <TableCell
                             align="center"
                             sx={[

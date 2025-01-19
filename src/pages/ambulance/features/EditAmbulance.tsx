@@ -31,7 +31,6 @@ export default function EditAmbulance() {
     endTime,
     setEndTime,
     breadcrumbItems,
-    apiUrl,
     initialOperationalCost,
     schedules,
     setImagesData,
@@ -40,6 +39,7 @@ export default function EditAmbulance() {
     selectedDay,
     handleSaveAndAddDay,
     statusEdit,
+    id
   } = useEditAmbulance();
 
   
