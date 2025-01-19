@@ -73,6 +73,7 @@ type dataTicket = {
 const validationSchema = Yup.object().shape({
     nik: Yup.string().required('NIK harus diisi'),
     email: Yup.string().email('Email tidak valid').required('Email harus diisi'),
+    
     // nik: Yup.string()
     //     .matches(/^[0-9]+$/, 'NIK harus berupa angka')
     //     .min(12, 'NIK minimal 12 digit')

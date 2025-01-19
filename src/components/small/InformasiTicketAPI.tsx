@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Button, CardMedia, IconButton, Typography, CircularProgress } from "@mui/material";
+import { Button, CardMedia, IconButton, Typography, CircularProgress, Snackbar, Alert } from "@mui/material";
 import { Box } from "@mui/system";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -7,7 +7,7 @@ import my from "../../assets/img/String.png";
 import logo from "../../assets/img/St.carolus.png";
 import CloseIcon from '@mui/icons-material/Close';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-
+import PrintIcon from "@mui/icons-material/Print";
 type InformasiTicketProps = {
   nomorAntrian: any | undefined;
   namaDokter: string | undefined;
@@ -32,6 +32,7 @@ const InformasiTicketAPI = ({
 
   // Untuk menyembunyikan/menampilkan tombol
   const [showButton, setShowButton] = useState(true);
+  const [showAlert, setShowAlert] = useState(false);
 
   const ticketRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
@@ -62,6 +63,9 @@ const InformasiTicketAPI = ({
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
 
       pdf.save(`ticket-${nomorAntrian || "antrian"}.pdf`);
+
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000);
     } catch (error) {
       console.error("Gagal mengunduh PDF: ", error);
     } finally {
@@ -96,12 +100,33 @@ const formatTime = () => {
 
   return (
     <Box width={"100%"}>
+      <Snackbar
+        open={showAlert}
+        anchorOrigin={{ vertical: "top", horizontal: "center"  }}
+        autoHideDuration={3000}
+        onClose={() => setShowAlert(false)}
+      >
+        <Alert
+          onClose={() => setShowAlert(false)}
+          severity="success"
+          sx={{
+            backgroundColor: "#DFF4DC",
+            color: "#4CAF50",
+            border: "1px solid #4CAF50",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+            borderRadius: "8px",
+            zIndex: 1500,
+          }}
+        >
+           Tiket antrian konter berhasil di cetak
+        </Alert>
+      </Snackbar>
     <Box 
                             bgcolor={'white'}
-                            maxWidth={506}
+                            maxWidth={626}
                             maxHeight={'fit-content'}
                             borderRadius={'32px'}
-                            padding={'24px'}
+                            padding={'22px'}
                             display={'flex'}
                             flexDirection={'column'}
                             justifyContent={'space-between'}
@@ -121,11 +146,11 @@ const formatTime = () => {
                             </Box>
     <Box
       ref={ticketRef}
-      width={"506px"}
+      width={"606px"}
       borderRadius={"32px"}
       bgcolor={bgcolor}
       position={"relative"}
-      padding={"25px"}
+      padding={"32px"}
       // Pastikan overflow tampak rapi
       sx={{ overflow: "hidden" }}
     >
@@ -280,8 +305,9 @@ const formatTime = () => {
               borderRadius: "8px",
             }}
             onClick={downloadTicketAsPDF}
+            startIcon={<PrintIcon />}
           >
-            Unduh tiket 2.0
+            Cetak tiket
           </Button>
           
 

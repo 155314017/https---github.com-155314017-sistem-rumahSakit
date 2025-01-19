@@ -116,7 +116,7 @@ export default function TambahPasienUmumOffline() {
                     top: 0,
                     left: 0,
                     // right: "auto",
-                    zIndex: 9999,
+                    zIndex: 1000,
                     padding: '16px',
                     width: {
                         xs: '90%', // Untuk layar kecil (mobile)
@@ -892,7 +892,7 @@ export default function TambahPasienUmumOffline() {
                         </Box>
                     )}
                     {needAdmin && !mainPages && (
-                        <Box marginLeft={"30%"} marginTop={"10%"}>
+                        <Box marginLeft={"20%"} marginTop={"10%"} zIndex={1500} >
                             <CardAntrianCounter
                                 nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
                                 onClose={() => setNeedAdmin(false)}
@@ -901,7 +901,7 @@ export default function TambahPasienUmumOffline() {
                     )}
 
                     {!mainPages && !needAdmin && (
-                        <Box marginLeft={"30%"} marginTop={"10%"}>
+                        <Box marginLeft={"20%"} marginTop={"10%"} zIndex={1500}>
                             
                             <InformasiTicketAPI
                                 clinic={dataTickets?.clinic || "Unknown Clinic"}
