@@ -95,6 +95,30 @@ const formatTime = () => {
 };
 
   return (
+    <Box width={"100%"}>
+    <Box 
+                            bgcolor={'white'}
+                            maxWidth={506}
+                            maxHeight={'fit-content'}
+                            borderRadius={'32px'}
+                            padding={'24px'}
+                            display={'flex'}
+                            flexDirection={'column'}
+                            justifyContent={'space-between'}
+                            alignItems={'start'}
+                            gap={2}
+                            position={'relative'}
+                            boxShadow={'0px 4px 10px rgba(0, 0, 0, 0.1)'}
+                            marginBottom={'24px'}
+                            
+                            >
+                                <Typography fontWeight={600} fontSize={24} color="#0A0A0D">
+                                Tiket antrian poli
+                                </Typography>
+                                <Typography fontWeight={400} fontSize={18} color="#747487">
+                                Berikut adalah tiket antrian poli Anda, Silahkan unduh tiket dengan mengklik tombol unduh dibawah.
+                                </Typography>
+                            </Box>
     <Box
       ref={ticketRef}
       width={"506px"}
@@ -307,6 +331,7 @@ const formatTime = () => {
                   <Typography color={"#8F85F3"} fontSize={"16px"} fontWeight={400} alignItems="right">Ubah</Typography>
                 </Box>
       </Box>
+    </Box>
     </Box>
   );
 };
