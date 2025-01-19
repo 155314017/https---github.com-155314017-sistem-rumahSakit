@@ -123,7 +123,6 @@ createRoot(document.getElementById('root')!).render(
 
         {/* no need auth */}
         {/* yang dipakai */}
-        {/* register pasien */}
         <Route path="/register/pasien" element={<LoginPasien />} /> {/*1*/}
         <Route path="/register/pasien/baru" element={<RegisterPasienBaru />} /> {/*2*/}
         <Route path="/kategori/pasien" element={<KategoriPasien />} /> {/*5*/}
