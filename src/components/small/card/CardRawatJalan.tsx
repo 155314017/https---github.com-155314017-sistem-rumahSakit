@@ -26,7 +26,7 @@ export default function CardRawatJalan({ title, text, onClick }: Props) {
                 position: "relative",
                 overflow: "hidden",
                 textDecoration: 'none',
-                cursor:'pointer'
+                cursor: 'pointer'
             }}
         >
             <Box
@@ -62,7 +62,7 @@ export default function CardRawatJalan({ title, text, onClick }: Props) {
                 {title}
             </Typography>
 
-            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", zIndex: 1 }}>
+            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", zIndex: 1, color: "#A8A8BD", fontWeight: 400, fontSize: '16px', lineHeight: '18px' }}>
                 <Typography>{text}</Typography>
                 <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
             </Box>
