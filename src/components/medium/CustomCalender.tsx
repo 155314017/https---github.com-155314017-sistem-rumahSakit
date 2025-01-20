@@ -67,7 +67,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
     useEffect(() => {
         const fetchSchedules = async () => {
             try {
-                const response = await axios.get(`https://hms.3dolphinsocial.com:8083/v1/manage/schedule-interval/${typeId}`);
+                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/doctor/schedules/${typeId}`);
                 if (response.data && response.data.schedules) {
                     processSchedules(response.data.schedules);
                 } else {
@@ -98,7 +98,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
             if (exclusionForDate) {
                 if (exclusionForDate.allday) {
                     times[formattedDate] = [];
-                    dates.add(formattedDate); 
+                    dates.add(formattedDate);
                 } else {
                     schedules.forEach((schedule: any) => {
                         if (schedule.typeId === exclusionForDate.scheduleIntervalId) {
@@ -110,7 +110,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                             times[formattedDate].push({
                                 timeRange,
                                 scheduleId: schedule.typeId,
-                                disabled: true, 
+                                disabled: true,
                             });
                             dates.add(formattedDate);
                         } else {
@@ -122,7 +122,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                             times[formattedDate].push({
                                 timeRange,
                                 scheduleId: schedule.typeId,
-                                disabled: false, 
+                                disabled: false,
                             });
                             dates.add(formattedDate);
                         }
@@ -130,7 +130,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                 }
             } else {
                 schedules.forEach((schedule: any) => {
-                    if (schedule[dayName]) { 
+                    if (schedule[dayName]) {
                         if (!times[formattedDate]) {
                             times[formattedDate] = [];
                         }
@@ -139,10 +139,10 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                         times[formattedDate].push({
                             timeRange,
                             scheduleId: schedule.typeId,
-                            disabled: false, 
+                            disabled: false,
                         });
 
-                        dates.add(formattedDate); 
+                        dates.add(formattedDate);
                     }
                 });
             }
