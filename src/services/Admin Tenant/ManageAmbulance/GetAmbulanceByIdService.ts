@@ -1,7 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-// Interface untuk response Ambulance
 export interface AmbulanceData {
   id: string;
   number: string;
