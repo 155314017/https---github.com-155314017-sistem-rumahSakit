@@ -1,105 +1,82 @@
-import axios from "axios";
-import dayjs from "dayjs";
+import axios from 'axios'
 
 export interface ClinicDataItem {
-  id: string;
-  name: string;
-  description: string;
-  additionalInfo: string;
-  createdBy: string;
-  createdDateTime: number;
-  updatedBy: string | null;
-  updatedDateTime: number | null;
-  deletedBy: string | null;
-  deletedDateTime: number | null;
-  images: string[];
-  schedules: { id: string; startDateTime: number; endDateTime: number }[];
-  operationalSchedule?: string;
+  id: string
+  name: string
+  description: string
+  additionalInfo: string
+  createdBy: string
+  createdDateTime: number
+  updatedBy: string | null
+  updatedDateTime: number | null
+  deletedBy: string | null
+  deletedDateTime: number | null
+  images: string[]
+  schedules: { id: string; startDateTime: number; endDateTime: number }[]
+  operationalSchedule?: string
+  code: string
 }
 
 export interface Pageable {
-  pageNumber: number;
-  pageSize: number;
+  pageNumber: number
+  pageSize: number
   sort: {
-    sorted: boolean;
-    empty: boolean;
-    unsorted: boolean;
-  };
-  offset: number;
-  paged: boolean;
-  unpaged: boolean;
+    sorted: boolean
+    empty: boolean
+    unsorted: boolean
+  }
+  offset: number
+  paged: boolean
+  unpaged: boolean
 }
 
 export interface ApiResponse {
-  responseCode: string;
-  statusCode: string;
-  message: string;
+  responseCode: string
+  statusCode: string
+  message: string
   data: {
-    content: ClinicDataItem[];
-    pageable: Pageable;
-    totalPages: number;
-    totalElements: number;
-    last: boolean;
-    size: number;
-    number: number;
+    content: ClinicDataItem[]
+    pageable: Pageable
+    totalPages: number
+    totalElements: number
+    last: boolean
+    size: number
+    number: number
     sort: {
-      sorted: boolean;
-      empty: boolean;
-      unsorted: boolean;
-    };
-    numberOfElements: number;
-    first: boolean;
-    empty: boolean;
-  };
+      sorted: boolean
+      empty: boolean
+      unsorted: boolean
+    }
+    numberOfElements: number
+    first: boolean
+    empty: boolean
+  }
 }
 
-const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`;
+const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/`
 
-export const Clinic = async (): Promise<ClinicDataItem[]> => {
+export const Clinic = async (
+  pageNumber: number = 0,
+  pageSize: number = 100,
+  orderBy: string = 'createdDateTime=asc'
+): Promise<ClinicDataItem[]> => {
   try {
-    const response = await axios.get<ApiResponse>(API_URL);
+    const response = await axios.get<ApiResponse>(API_URL, {
+      params: {
+        pageNumber,
+        pageSize,
+        orderBy
+      }
+    })
 
-    if (response.status === 200) {
-
-     const convertUnixToReadableTime = (timestamp: number) => {
-                           const date = dayjs(timestamp); // Use dayjs to parse Unix timestamp
-                   
-                           const dayOfWeek = date.format('dddd'); // Get the day of the week
-                           const time = date.format('HH:mm'); // Get the formatted time (HH:mm)
-                   
-                           return { day: dayOfWeek, time };
-                         };
-           
-                 response.data.data.content.forEach((item) => {
-                   if (item.schedules.length > 0) {
-                     const operationalSchedules: string[] = item.schedules.map((schedule) => {
-                       const startDate = convertUnixToReadableTime(schedule.startDateTime);
-                       const endDate = convertUnixToReadableTime(schedule.endDateTime);
-           
-           
-                       const startDay = startDate.day;
-                       const start = `${startDate.time}`;
-                       const end = ` ${endDate.time}`;
-           
-                       
-           
-                       return `${startDay}, ${start} - ${end}`;
-                     });
-          
-
-          item.operationalSchedule = operationalSchedules.join(" | "); // Combine all schedules with a separator
-
-        } 
-
-        
-      });
-
-      return response.data.data.content;
+    if (response.data.responseCode === '200') {
+      console.log('ilham gantng')
+      return response.data.data.content
     } else {
-      throw new Error(`API responded with status: ${response.status}`);
+      throw new Error(`API responded with status: ${response.status}`)
     }
   } catch (error) {
-    console.error("Error fetching ambulance services:", error);
-    throw error; // Re-throw the error for handling by the caller
+    console.error('Error fetching ambulance services:', error)
+    throw error 
   }
-};
+}

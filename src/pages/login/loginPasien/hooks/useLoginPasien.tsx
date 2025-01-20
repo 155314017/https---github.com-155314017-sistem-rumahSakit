@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import "react-phone-input-2/lib/style.css";
 import { useNavigate } from "react-router-dom";
-import GetPatientByNIKServices from "../../../../services/Patient Tenant/GetPatientByNIKServices";
+import GetPatientByNIKServices from "../../../../services/Patient Tenant/GetPatientByUserIdServices";
 
 const validationSchema = Yup.object({
   nik: Yup.string()

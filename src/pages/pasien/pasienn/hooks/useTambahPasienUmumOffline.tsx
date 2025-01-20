@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from 'axios';
-import GetPatientByNIKServices from '../../../../services/Patient Tenant/GetPatientByNIKServices';
+import GetPatientByNIKServices from '../../../../services/Patient Tenant/GetPatientByUserIdServices';
 import 'react-phone-input-2/lib/style.css';
 import { styled } from '@mui/material/styles';
 import { Radio } from '@mui/material';

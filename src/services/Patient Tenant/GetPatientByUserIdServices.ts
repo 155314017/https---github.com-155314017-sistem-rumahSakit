@@ -18,10 +18,10 @@ interface PatientResponse {
   data: PatientData
 }
 
-const GetPatientByNIKServices = async (nik: string): Promise<PatientResponse | null> => {
+const GetPatientByUserIdServices = async (userId: string): Promise<PatientResponse | null> => {
   try {
     const response = await axios.get<PatientResponse>(
-      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/user/by-identity-number/${nik}`
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/patient/by-user-id/${userId}`
     )
     if (response.status === 200) {
       return response.data
@@ -34,4 +34,4 @@ const GetPatientByNIKServices = async (nik: string): Promise<PatientResponse | n
   }
 }
 
-export default GetPatientByNIKServices
+export default GetPatientByUserIdServices

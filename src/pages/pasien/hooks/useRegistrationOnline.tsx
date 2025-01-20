@@ -8,7 +8,8 @@ import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
-import GetPatientByNIKServices from "../../../services/Patient Tenant/GetPatientByNIKServices";
+import GetPatientByUserIdServices from "../../../services/Patient Tenant/GetPatientByUserIdServices";
+import GetUserByNIK from "../../../services/Admin Tenant/ManageUser/GetUserByNIK";
 
 type PatientData =
     {
@@ -75,7 +76,6 @@ function BpRadio(props: RadioProps) {
 export default function useRegistrationOnline() {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
-    const [showNeedAdminPage, setShowNeedAdminPage] = useState(false);
     const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
     const [calendarKey, setCalendarKey] = useState<number>(0);
@@ -159,7 +159,7 @@ export default function useRegistrationOnline() {
                 justifyContent: "center",
                 alignItems: "center",
             };
-        } else if (page < currentPage ) {
+        } else if (page < currentPage) {
             return {
                 display: "flex",
                 border: "1px solid #8F85F3",
@@ -212,19 +212,19 @@ export default function useRegistrationOnline() {
     const getValidationSchema = (page: number) => {
         switch (page) {
             case 1:
+                return Yup.object().shape({});
+            case 2:
                 return Yup.object().shape({
                     nik: Yup.string()
                         .required("NIK wajib diisi")
                         .matches(/^[0-9]+$/, "NIK harus berupa angka")
                         .length(16, 'NIK harus 16 digit'),
                 });
-            case 2:
+            case 3:
                 return Yup.object().shape({
                     phone: Yup.string().required("No. Handphone wajib diisi"),
                     email: Yup.string().email("Format email tidak valid"),
                 });
-            case 3:
-                return Yup.object().shape({});
             case 4:
                 return Yup.object().shape({
                     phoneStep4: Yup.string().required("No. Handphone wajib diisi"),
@@ -243,6 +243,7 @@ export default function useRegistrationOnline() {
     };
 
     const registrationPatient = async (data: any) => {
+        setCurrentPage(5);
         const response = await axios.post(
             `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/patient/check-in`,
             { data: data },
@@ -257,13 +258,16 @@ export default function useRegistrationOnline() {
 
     const checkIdentityNumber = async (nik: string) => {
         try {
-            const response = await GetPatientByNIKServices(nik);
-            console.log('response cari: ', response)
-            if (response?.data != null) {
+            console.log('masuk 1')
+            const responseUser = await GetUserByNIK(nik);
+            console.log('response cari: ', responseUser)
+            setIdPatient(responseUser?.data.id ?? null);
+            if (responseUser?.data != null) {
+                const response = await GetPatientByUserIdServices(idPatient || '');
                 const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
                 const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
                 const dataGet = {
-                    id: response.data.id,
+                    id: idPatient,
                     nik: response?.data.identityNumber,
                     email: response?.data.email,
                     phone: response?.data.phoneNumber,
@@ -274,14 +278,13 @@ export default function useRegistrationOnline() {
                     birthPlace: birthPlaceProcess
                 }
                 console.log('dataGet: ', dataGet)
-                setPatientData(dataGet);
-                setCurrentPage(2);
-            } else if (response?.data === null) {
+                // setPatientData(dataGet);
+                setCurrentPage(3);
+            } else if (responseUser?.data === null) {
                 console.log('takde')
                 setIdPatient(null);
                 setNeedAdmin(true);
-                setShowNeedAdminPage(true);
-                // setCurrentPage(3);
+                setCurrentPage(4);
             }
         } catch (err: any) {
             if (err.response.status === 404) {
@@ -300,8 +303,6 @@ export default function useRegistrationOnline() {
     return {
         navigate,
         BpRadio,
-        setShowNeedAdminPage,
-        showNeedAdminPage,
         clinicOptions,
         doctorOptions,
         calendarKey,
@@ -324,6 +325,7 @@ export default function useRegistrationOnline() {
         setCurrentPage,
         currentPage,
         patientData,
-        registrationPatient
+        registrationPatient,
+        idPatient
     }
 }
