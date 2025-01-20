@@ -92,6 +92,23 @@ const validationSchema = Yup.object().shape({
 
 });
 
+const validationSchema1 = Yup.object().shape({
+    phone: Yup.string()
+        .required('No Handphone pasien is required')
+        .matches(/^[0-9]+$/, 'No Handphone pasien must be a number')
+        .min(10, 'No Handphone pasien must be at least 10 digits')
+        .max(15, 'No Handphone pasien must be at most 15 digits'),
+    email: Yup.string()
+        .email('Email is invalid')
+        .required('Email is required'),
+    jenisKunjungan: Yup.string()
+        .required('Jenis Kunjungan is required'),
+    complaint: Yup.string()
+        .required('Keluhan Pasien is required'),
+    doctor: Yup.string()
+        .required('Dokter yang bertugas is required'),
+});
+
 
 
 export default function useTambahPasienUmumOffline() {
@@ -378,7 +395,6 @@ export default function useTambahPasienUmumOffline() {
     const findPatientByNik = async (nik: string) => {
         try {
             // Menyembunyikan halaman penuh untuk loading
-            setPatientFullsPage(false);
     
             // Simulasi response dari API
             const response = dummyData;
@@ -692,7 +708,8 @@ export default function useTambahPasienUmumOffline() {
         handleFileChange,
         NIK,
         birth,
-        setPatientData
+        setPatientData,
+        validationSchema1
         
     }
 }
