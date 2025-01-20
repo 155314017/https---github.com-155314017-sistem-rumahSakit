@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Button, CardMedia, IconButton, Typography, CircularProgress, Snackbar, Alert } from "@mui/material";
 import { Box } from "@mui/system";
 import html2canvas from "html2canvas";
@@ -8,6 +8,7 @@ import logo from "../../assets/img/St.carolus.png";
 import CloseIcon from '@mui/icons-material/Close';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PrintIcon from "@mui/icons-material/Print";
+import ModalUbahNoHp from "./modal/ModalUbahNoHp";
 type InformasiTicketProps = {
   namaDokter: string | undefined;
   clinic: string | undefined;
@@ -36,6 +37,7 @@ const InformasiTicketAPI = ({
   const [isCounting, setIsCounting] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [resendSuccess, setResendSuccess] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const downloadTicketAsPDF = async () => {
     if (!ticketRef.current) return;
@@ -87,6 +89,24 @@ const InformasiTicketAPI = ({
     const seconds = secondsLeft % 60;
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
+
+  useEffect(() => {
+    if (isCounting && secondsLeft > 0) {
+      const timer = setInterval(() => {
+        setSecondsLeft((prev) => prev - 1);
+      }, 1000);
+
+      return () => clearInterval(timer); // Membersihkan interval saat komponen unmount atau state berubah
+    }
+
+    if (secondsLeft === 0) {
+      setIsCounting(false); // Hentikan countdown jika mencapai 0
+    }
+  }, [isCounting, secondsLeft]);
+
+  const handleEditClick = () => {
+    setShowModal(true);
+  }
 
   return (
     <Box width={"100%"} >
@@ -143,6 +163,9 @@ const InformasiTicketAPI = ({
         padding={"25px"}
         sx={{ overflow: "hidden", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", }}
       >
+        {showModal && (
+          <ModalUbahNoHp open={showModal} onClose={() => setShowModal(false)} />
+        )}
         {onClose && (
           <IconButton
             onClick={onClose}
@@ -339,7 +362,7 @@ const InformasiTicketAPI = ({
                 (isCounting ? `${formatTime()}` : 'Kirim ulang')
               }
             </Typography>
-            <Typography color={"#8F85F3"} fontSize={"16px"} fontWeight={400} alignItems="right">Ubah</Typography>
+            <Typography color={"#8F85F3"} fontSize={"16px"} fontWeight={400} alignItems="right" onClick={handleEditClick}>Ubah</Typography>
           </Box>
         </Box>
       </Box>

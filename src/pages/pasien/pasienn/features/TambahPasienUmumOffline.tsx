@@ -928,7 +928,7 @@ export default function TambahPasienUmumOffline() {
 
                     {
                         !mainPages && !needAdmin && (
-                            <Box marginLeft={"20%"} marginTop={"10%"} zIndex={1500}>
+                            <Box marginLeft={"23%"} marginTop={"10%"} zIndex={1500}>
 
                                 <InformasiTicketAPI
                                     clinic={dataTickets?.clinic || "Unknown Clinic"}
