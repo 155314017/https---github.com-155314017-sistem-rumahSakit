@@ -30,7 +30,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TestKalender from "../../../components/medium/TestKalender";
 import { useRef } from "react";
 
-// Import interface KalenderData dari TestKalender atau definisikan ulang jika diperlukan
 interface PraktekData {
     id: string;
     startTime: string;
@@ -84,16 +83,13 @@ export default function TambahPegawai() {
     const isSelectAllActionsDisabled = checkedItems.slice(1).every(item => !item);
     const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
 
-    // Handler untuk tombol 'Simpan'
     const handleSimpan = () => {
         if (kalenderRef.current) {
             const data = kalenderRef.current.getData();
             console.log('Praktek:', data.praktek);
             console.log('Exclusion:', data.exclusion);
-            // Jika ingin menampilkan dalam format yang lebih rapi
             console.log('Praktek:', JSON.stringify(data.praktek, null, 2));
             console.log('Exclusion:', JSON.stringify(data.exclusion, null, 2));
-            // Anda bisa melakukan tindakan lain dengan data ini, seperti mengirim ke API
         } else {
             console.log('Ref belum terhubung ke TestKalender');
         }
