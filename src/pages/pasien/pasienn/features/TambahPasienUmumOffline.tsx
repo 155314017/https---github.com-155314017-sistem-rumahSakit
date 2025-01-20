@@ -79,7 +79,8 @@ export default function TambahPasienUmumOffline() {
         NIK,
         birth,
        setPatientData,
-       validationSchema1
+       validationSchema1,
+       navigate
 
 
     } = useTambahPasienUmumOffline();
@@ -87,6 +88,7 @@ export default function TambahPasienUmumOffline() {
     useEffect(() => {
         console.log(currentPage)
     }, [currentPage]);
+    
 
 
     return (
@@ -920,7 +922,7 @@ export default function TambahPasienUmumOffline() {
                             <Box marginLeft={"20%"} marginTop={"10%"} zIndex={1500} >
                                 <CardAntrianCounter
                                     nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
-                                    onClose={() => setNeedAdmin(false)}
+                                    onClose={() => navigate("/offline/tambahPasien")}
                                 />
                             </Box>
                         )
@@ -937,6 +939,7 @@ export default function TambahPasienUmumOffline() {
                                     // nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
                                     tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
                                     bookingCode=""
+                                    onClose={() => navigate("/offline/tambahPasien")}
                                 />
                             </Box>
                         )
