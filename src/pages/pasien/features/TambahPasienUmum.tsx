@@ -695,7 +695,7 @@ export default function TambahPasienUmum() {
                                         <Button
                                             // type="button"
                                             // onClick={() => setCurrentPage(3)}
-                                            onClick={putGuard}
+                                            // onClick={putGuard}
                                             // onClick={() => console.log(formik.values.nikGuardian)}
                                             variant="contained"
                                             color="inherit"

@@ -51,7 +51,6 @@ import PrivateRoute from './services/Admin Tenant/Auth/PrivateRoute';
 import PilihKategoriPasien from './pages/pasien/pasienn/features/PilihKategoriPasien';
 import TambahPasienUmumOffline from './pages/pasien/pasienn/features/TambahPasienUmumOffline';
 import DetailFasilitas from './pages/fasilitas/features/DetailFasilitas';
-import TestKalender from './components/medium/TestKalender';
 import DetailDokter from './pages/dokter/features/DetailDokter';
 import RegistrationOnline from './pages/pasien/features/RegistrationOnline';
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
@@ -145,9 +144,6 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
 
         {/* end no need auth */}
-
-
-        <Route path="/kalender" element={<TestKalender />} />
 
       </Routes>
     </Router>

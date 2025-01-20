@@ -42,16 +42,16 @@ type dataPasien = {
     phone: string;
 }
 
-type GuardianData = {
-    guardianType: string
-    guardianName: string
-    guardianRelation: string
-    guardianIdentityNumber: string
-    guardianPhone: string
-    guardianEmail: string
-    guardianAddress: string
-    guardianGender: string
-}
+// type GuardianData = {
+//     guardianType: string
+//     guardianName: string
+//     guardianRelation: string
+//     guardianIdentityNumber: string
+//     guardianPhone: string
+//     guardianEmail: string
+//     guardianAddress: string
+//     guardianGender: string
+// }
 
 type Clinic = {
     id: string;
@@ -211,7 +211,7 @@ export default function useTambahPasienUmumOffline() {
         ],
     };
 
-    const handleFileChange = (event) => {
+    const handleFileChange = (event: any) => {
         const file = event.target.files[0];
         if (file) {
             setFileName(file.name);

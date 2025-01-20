@@ -34,7 +34,8 @@ export default function RegistrationOnline() {
         calendarKey,
         idDoctor,
         idClinic,
-        
+        clinicName,
+        docterName,
         selectedScheduleId,
         selectedSchedule,
         setNeedAdmin,

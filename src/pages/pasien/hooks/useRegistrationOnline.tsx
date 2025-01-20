@@ -262,7 +262,6 @@ export default function useRegistrationOnline() {
             console.log('response cari: ', responseUser);
 
             if (responseUser?.data != null) {
-<<<<<<< HEAD
                 const response = await GetPatientByUserIdServices(idPatient || '');
                 const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
                 const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
@@ -282,29 +281,6 @@ export default function useRegistrationOnline() {
                 setCurrentPage(3);
             } else if (responseUser?.data === null) {
                 console.log('takde')
-=======
-                const response = await GetPatientByUserIdServices(responseUser?.data.id || '');
-                if (response?.data && response?.data.birthDateAndPlace) {
-                    const [birthPlaceProcess, birthDateProcess] = response.data.birthDateAndPlace.split(',').map((item) => item.trim());
-                    const dataGet = {
-                        id: responseUser?.data.id,
-                        nik: response?.data.identityNumber,
-                        email: response?.data.email,
-                        phone: response?.data.phoneNumber,
-                        fullname: response?.data.fullName,
-                        address: response?.data.address,
-                        gender: response?.data.gender,
-                        birthDate: birthDateProcess,
-                        birthPlace: birthPlaceProcess,
-                    };
-                    console.log('dataGet: ', dataGet);
-                    setCurrentPage(3);
-                } else {
-                    console.error('Invalid patient data:', response?.data);
-                }
-            } else {
-                console.log('takde');
->>>>>>> c232e195e398a2fb7959fd09919816d63463a581
                 setIdPatient(null);
                 setNeedAdmin(true);
                 setCurrentPage(4);
