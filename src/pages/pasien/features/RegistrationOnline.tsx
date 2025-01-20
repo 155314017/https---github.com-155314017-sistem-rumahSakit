@@ -764,7 +764,7 @@ export default function RegistrationOnline() {
                                                         <Typography>Tanggal & Jam Operasional</Typography>
                                                         <CustomCalendar
                                                             key={calendarKey}
-                                                            typeId={values.doctor}
+                                                            typeId={idDoctor}
                                                             onChange={(scheduleId, schedule) => {
                                                                 setFieldValue("schedule", scheduleId);
                                                                 handleScheduleChange(scheduleId, schedule);
