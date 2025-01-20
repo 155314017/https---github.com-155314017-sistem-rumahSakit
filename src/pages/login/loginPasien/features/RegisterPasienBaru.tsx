@@ -1,31 +1,25 @@
-import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, FormControl, RadioGroup, FormHelperText, CircularProgress, } from "@mui/material";
+import { Box, CardMedia, FormLabel, TextField, Typography, Button, FormControlLabel, FormControl, RadioGroup, FormHelperText, CircularProgress, Checkbox, } from "@mui/material";
 import patientImage from "../../../../assets/img/registrationImg.jpg";
 import { Formik, Form, Field } from 'formik';
-import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
 import OtpInput from 'react-otp-input';
 import 'react-phone-input-2/lib/style.css';
 import PhoneInput from "react-phone-input-2";
-import RegisterPatient from "../../../../services/Patient Tenant/RegisterPatient";
 import VerifyOTPPatient from "../../../../services/Patient Tenant/VerifyOTPPatient";
-
-
 //hooks
 import useRegistrasiPasienBaru from "../hooks/useRegistrasiPasienBaru";
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { useState } from "react";
+import dayjs from "dayjs";
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 export default function RegisterPasienBaru() {
     const {
         otpFormShown,
-        showOtp,
-        // showTemporaryAlertError,
         handleResendClick,
         formatTime,
         data1,
         showLogin,
-        notFound,
         buttonDis,
         showEmailChanged,
         emailError,
@@ -36,34 +30,15 @@ export default function RegisterPasienBaru() {
         BpRadio,
         emailOTP,
         otp,
-        patientId, setPatientId,
-        setButtonDis,
-        setEmailOTP,
-        setData,
+        patientId,
         navigate,
         data,
         setOtp,
-        loading
+        loading,
+        setNeedAdmin,
+        handleClickSent
     } = useRegistrasiPasienBaru();
 
-    const [showAlertError, setShowAlertError] = useState(false);
-    const [showAlertError1, setShowAlertError1] = useState(false);
-
-
-
-    const showTemporaryAlertErrorr = async () => {
-        console.log("ALERT ERROR ! ! !")
-        setShowAlertError(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setShowAlertError(false);
-    };
-
-    const showTemporaryAlertErrorr1 = async () => {
-        console.log("ALERT ERROR ! ! !")
-        setShowAlertError1(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setShowAlertError1(false);
-    };
     return (
         <>   <style>
             {`
@@ -130,9 +105,6 @@ export default function RegisterPasienBaru() {
                 )}
                 {showLogin && (
                     <>
-
-                        {showAlertError1 && <AlertWarning teks="Maaf Registrasi Gagal, silahkan coba lagi." />}
-
                         <Box
                             sx={{
                                 display: "flex",
@@ -156,50 +128,33 @@ export default function RegisterPasienBaru() {
                                 </Typography>
 
                                 <Formik
-                                    initialValues={{ nik: data1?.nik || '', email: data1?.email || '', phone: '', fullname: '', gender: '', address: '', tempatLahir: '', tanggalLahir: '', }}
+                                    initialValues={{ nik: data1?.nik || '', email: data1?.email || '', phone: data1?.phone || '', fullname: data1?.fullname || '', gender: data1?.gender || '', address: data1?.address || '', tempatLahir: data1?.birthPlace || '', tanggalLahir: data1?.birthDate || '', }}
                                     enableReinitialize
                                     validationSchema={validationSchema}
-                                    onSubmit={async (values) => {
-                                        const dataRegis = {
-                                            identityNumber: values.nik,
-                                            name: values.fullname,
-                                            phone: values.phone,
-                                            email: values.email,
-                                            gender: values.gender,
-                                            address: values.address,
-                                            birthDate: values.tanggalLahir,
-                                            birthPlace: values.tempatLahir,
-                                        }
-                                        setEmailOTP(values.email)
-                                        console.log("data dikirm ke API: ", dataRegis)
-                                        try {
-                                            setButtonDis(true);
-
-                                            const response = await RegisterPatient(dataRegis);
-                                            console.log("response: ", response.responseCode);
-
-                                            if (response.responseCode === "200") {
-                                                showOtp();
-                                                setData(dataRegis);
-                                                setPatientId(response.data.id);
-                                            } else {
-                                                showTemporaryAlertErrorr1();
-                                            }
-                                        } catch (error) {
-                                            console.log('error', error);
-                                            showTemporaryAlertErrorr1();
-                                        } finally {
-                                            setButtonDis(false);
-                                        }
-
-                                    }}
+                                    onSubmit={(value) => console.log(value)}
                                 >
-                                    {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
+                                    {({ errors, touched, handleChange, handleBlur, values, setFieldValue }) => (
                                         <Form>
                                             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                                 <Typography fontSize={'20px'} fontWeight={600} mb={'1%'}>
-                                                    Isi data diri pasien
+                                                    Konfirmasi data diri pasien
                                                 </Typography>
+                                                <Box
+                                                    bgcolor={'#F1F0FE'}
+                                                    border={'2px solid #8F85F3'}
+                                                    borderRadius={'8px'}
+                                                    padding={'8px 16px 8px 16px'}
+                                                    display={'flex'}
+                                                    flexDirection={'row'}
+                                                    gap={'6px'}
+                                                    justifyContent={'center'}
+                                                    alignItems={'center'}
+                                                >
+                                                    <ErrorOutlineOutlinedIcon sx={{ color: '#7367F0', width: '20px', height: '20px' }} />
+                                                    <Typography color="#7367F0" fontWeight={400} fontSize={'16px'} lineHeight={'18px'} >
+                                                        Harap periksa kembali data diri Anda, jika ada data yang tidak sesuai anda dapat merubahnya di Admin dengan mengklik tombol ubah data.
+                                                    </Typography>
+                                                </Box>
                                                 <FormLabel sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>NIK (Nomor induk kependudukan) Pasien</FormLabel>
                                                 <Field
                                                     name="nik"
@@ -212,10 +167,8 @@ export default function RegisterPasienBaru() {
                                                         height: '48px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: emailError ? '#ffcccc' : 'inherit',
-                                                        },
-                                                        '& .MuiOutlinedInput-notchedOutline': {
-                                                            border: '1px solid #ccc',
+                                                            bgcolor: '#EEEEF2',
+                                                            border: '1px solid #A8A8BD',
                                                         },
                                                         '& .MuiOutlinedInput-input': {
                                                             padding: '10px',
@@ -226,7 +179,6 @@ export default function RegisterPasienBaru() {
                                                     onBlur={handleBlur}
                                                     value={values.nik}
                                                     error={touched.nik && Boolean(errors.nik)}
-                                                    // helperText={touched.nik && errors.nik}
                                                     disabled
                                                 />
 
@@ -242,10 +194,8 @@ export default function RegisterPasienBaru() {
                                                         height: '48px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: 'inherit',
-                                                        },
-                                                        '& .MuiOutlinedInput-notchedOutline': {
-                                                            border: '1px solid #ccc',
+                                                            bgcolor: '#EEEEF2',
+                                                            border: '1px solid #A8A8BD',
                                                         },
                                                         '& .MuiOutlinedInput-input': {
                                                             padding: '10px',
@@ -256,7 +206,6 @@ export default function RegisterPasienBaru() {
                                                     onBlur={handleBlur}
                                                     value={values.email}
                                                     error={touched.email && Boolean(errors.email)}
-                                                    // helperText={touched.email && errors.email}
                                                     disabled
                                                 />
 
@@ -266,14 +215,17 @@ export default function RegisterPasienBaru() {
                                                 </Typography>
                                                 <PhoneInput
                                                     country={"id"}
+                                                    countryCodeEditable={false}
+                                                    disabled
                                                     value={values.phone}
                                                     onChange={(phone) => setFieldValue("phone", phone)}
                                                     inputStyle={{
                                                         height: "48px",
+                                                        cursor: 'default',
                                                         borderRadius: "8px",
                                                         border: touched.phone && errors.phone ? "1px solid #f44336" : "1px solid #ccc",
                                                         padding: "10px 40px 10px 60px",
-                                                        backgroundColor: touched.phone && errors.phone ? "#ffcccc" : 'inherit',
+                                                        backgroundColor: '#EEEEF2',
                                                         fontSize: "16px",
                                                         width: "100%",
                                                         marginTop: "10px",
@@ -294,7 +246,7 @@ export default function RegisterPasienBaru() {
                                                 <Field
                                                     name="fullname"
                                                     as={TextField}
-                                                    placeholder="Masukkan Nama lengkap penanggung jawab"
+                                                    placeholder="Masukkan Nama lengkap penanggung pasien"
                                                     variant="outlined"
                                                     fullWidth
                                                     sx={{
@@ -302,13 +254,8 @@ export default function RegisterPasienBaru() {
                                                         height: '48px',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: touched.fullname && errors.fullname ? "#ffcccc" : 'inherit',
-                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                borderColor: '#8F85F3',
-                                                            },
-                                                        },
-                                                        '& .MuiOutlinedInput-notchedOutline': {
-                                                            border: '1px solid #ccc',
+                                                            bgcolor: '#EEEEF2',
+                                                            border: '1px solid #A8A8BD',
                                                         },
                                                         '& .MuiOutlinedInput-input': {
                                                             padding: '10px',
@@ -319,7 +266,7 @@ export default function RegisterPasienBaru() {
                                                     onBlur={handleBlur}
                                                     value={values.fullname}
                                                     error={touched.fullname && Boolean(errors.fullname)}
-                                                // helperText={touched.fullname && errors.fullname}
+                                                    disabled
                                                 />
 
                                                 <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '75px', mt: '10px' }}>
@@ -332,17 +279,12 @@ export default function RegisterPasienBaru() {
                                                             variant="outlined"
                                                             fullWidth
                                                             sx={{
-                                                                borderRadius: '8px',
-                                                                height: '44px',
+                                                                width: '100%',
+                                                                height: '48px',
                                                                 '& .MuiOutlinedInput-root': {
                                                                     borderRadius: '8px',
-                                                                    backgroundColor: touched.tempatLahir && errors.tempatLahir ? "#ffcccc" : 'inherit',
-                                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                        borderColor: '#8F85F3',
-                                                                    },
-                                                                },
-                                                                '& .MuiOutlinedInput-notchedOutline': {
-                                                                    border: '1px solid #ccc',
+                                                                    bgcolor: '#EEEEF2',
+                                                                    border: '1px solid #A8A8BD',
                                                                 },
                                                                 '& .MuiOutlinedInput-input': {
                                                                     padding: '10px',
@@ -353,7 +295,7 @@ export default function RegisterPasienBaru() {
                                                             onBlur={handleBlur}
                                                             value={values.tempatLahir}
                                                             error={touched.tempatLahir && Boolean(errors.tempatLahir)}
-                                                        // helperText={touched.fullname && errors.fullname}
+                                                            disabled
                                                         />
 
                                                     </FormControl>
@@ -364,6 +306,7 @@ export default function RegisterPasienBaru() {
                                                             <Box sx={{ overflow: 'hidden' }}>
                                                                 <DemoContainer components={['DatePicker']}>
                                                                     <DatePicker
+                                                                        value={dayjs(values.tanggalLahir)}
                                                                         onChange={(newValue) => {
                                                                             if (newValue) {
                                                                                 const formattedDate = newValue.format("YYYY-MM-DD");
@@ -371,12 +314,14 @@ export default function RegisterPasienBaru() {
                                                                                 console.log("tanggalLahir", formattedDate);
                                                                             }
                                                                         }}
+
                                                                         slotProps={{
                                                                             textField: {
                                                                                 placeholder: "Tanggal Lahir",
                                                                                 sx: {
+                                                                                    bgcolor: '#EEEEF2',
                                                                                     borderRadius: '8px',
-                                                                                    height: '60px',
+                                                                                    height: '70px',
                                                                                     width: '100%',
                                                                                     '& .MuiOutlinedInput-root': {
                                                                                         borderRadius: '8px',
@@ -385,6 +330,7 @@ export default function RegisterPasienBaru() {
                                                                                 },
                                                                             },
                                                                         }}
+                                                                        disabled
                                                                     />
                                                                 </DemoContainer>
                                                             </Box>
@@ -396,22 +342,26 @@ export default function RegisterPasienBaru() {
                                                     Jenis kelamin Pasien{" "}
                                                     <span style={{ color: "#d32f2f" }}>*</span>{" "}
                                                 </Typography>
-                                                <Box display={'flex'} flexDirection={'row'} padding={1} border={"1px solid #A8A8BD"} borderRadius={"12px"} pl={3}>
+                                                <Box bgcolor={'#EEEEF2'} border={'1px solid #A8A8BD'} display={'flex'} flexDirection={'row'} padding={1} borderRadius={"12px"} pl={3}>
                                                     <FormControl component="fieldset" error={touched.gender && Boolean(errors.gender)}>
                                                         <RadioGroup
                                                             aria-labelledby="gender-label"
                                                             name="gender"
                                                             value={values.gender}
-                                                            onChange={(e) => setFieldValue("gender", e.target.value)}
+                                                            onChange={(e) => {
+                                                                setFieldValue("gender", e.target.value);
+                                                            }}
                                                             row
+
                                                         >
-                                                            <FormControlLabel value="WOMEN" control={<BpRadio />} label="Female" />
-                                                            <FormControlLabel value="MEN" control={<BpRadio />} label="Male" />
+                                                            <FormControlLabel disabled value="WOMEN" control={<BpRadio />} label="Female" />
+                                                            <FormControlLabel disabled value="MEN" control={<BpRadio />} label="Male" />
                                                         </RadioGroup>
                                                         {touched.gender && errors.gender && (
                                                             <FormHelperText error>{errors.gender}</FormHelperText>
                                                         )}
                                                     </FormControl>
+
                                                 </Box>
 
                                                 <Typography sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>
@@ -427,23 +377,13 @@ export default function RegisterPasienBaru() {
                                                     size="medium"
                                                     sx={{
                                                         width: '100%',
-                                                        height: 'auto',
-                                                        marginTop: '10px',
-                                                        marginBottom: '50px',
-                                                        alignItems: 'flex-start',
                                                         '& .MuiOutlinedInput-root': {
                                                             borderRadius: '8px',
-                                                            backgroundColor: touched.address && errors.address ? "#ffcccc" : 'inherit',
-                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                borderColor: '#8F85F3',
-                                                            },
-                                                        },
-                                                        '& .MuiOutlinedInput-notchedOutline': {
-                                                            border: '1px solid #ccc',
+                                                            bgcolor: '#EEEEF2',
+                                                            border: '1px solid #A8A8BD',
                                                         },
                                                         '& .MuiOutlinedInput-input': {
-                                                            // padding: '10px',
-                                                            alignItems: 'flex-start',
+                                                            padding: '10px',
                                                             fontSize: '16px',
                                                         },
                                                     }}
@@ -451,105 +391,82 @@ export default function RegisterPasienBaru() {
                                                     onBlur={handleBlur}
                                                     value={values.address}
                                                     error={touched.address && Boolean(errors.address)}
-                                                    // helperText={touched.address && errors.address}
                                                     multiline
                                                     minRows={2}
+                                                    disabled
                                                 />
-
-                                                {buttonDis ? (
-                                                    <Button
-                                                        type="submit"
-                                                        variant="contained"
-                                                        color="primary"
-                                                        fullWidth
-                                                        sx={{
-                                                            width: '100%',
-                                                            height: '48px',
-                                                            marginTop: '20px',
-                                                            backgroundColor: '#8F85F3',
-                                                            '&.Mui-disabled': {
-                                                                backgroundColor: '#8F85F3',
-                                                            },
-                                                        }}
-                                                        disabled={true}
-                                                    >
-                                                        <CircularProgress size={20} sx={{ color: 'white' }} />
-                                                    </Button>
-                                                ) : (
-                                                    <Button
-                                                        type="submit"
-                                                        variant="contained"
-                                                        color="primary"
-                                                        fullWidth
-                                                        sx={{
-                                                            width: '100%',
-                                                            height: '48px',
-                                                            marginTop: '20px',
-                                                            backgroundColor: '#8F85F3',
-                                                            ":hover": { backgroundColor: '#D5D1FB' },
-                                                        }}
-                                                        disabled={!isValid || !dirty}
-                                                    >
-                                                        Lanjutkan
-                                                    </Button>
-                                                )}
-
-                                                <Button
-                                                    // onClick={() => navigate('/register/penanggungJawab') }
+                                                <Box
                                                     sx={{
-                                                        width: '100%',
-                                                        height: '48px',
-                                                        marginTop: '20px',
-                                                        backgroundColor: '#ffff',
-                                                        border: '1px solid #8F85F3',
-                                                        color: '#8F85F3',
-                                                        ":hover": { backgroundColor: '#8F85F3', color: '#ffff' },
-                                                        marginBottom: '20px'
+                                                        padding: '8px 24px 8px 24px',
+                                                        borderRadius: '12px',
+                                                        border: '1px solid #A8A8BD',
+                                                        mt: '3%'
                                                     }}
                                                 >
-                                                    Pasien Tanpa Identitas
-                                                </Button>
-
-                                                {/* <CustomButton onClick={() => console.log("hai ")} label="Daftar pasien baru" /> */}
+                                                    <FormControlLabel
+                                                        sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
+                                                        control={
+                                                            <Checkbox
+                                                                sx={{
+                                                                    color: '#A8A8BD',
+                                                                    borderRadius: '4px',
+                                                                    '&.Mui-checked': {
+                                                                        color: '#7367F0',
+                                                                    },
+                                                                }}
+                                                                onChange={(e) => setNeedAdmin(e.target.checked)}
+                                                            />
+                                                        }
+                                                        label="Data diri tidak sesuai"
+                                                    />
+                                                </Box>
 
                                             </Box>
                                         </Form>
                                     )}
                                 </Formik>
+                                {buttonDis ? (
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        fullWidth
+                                        sx={{
+                                            width: '100%',
+                                            height: '48px',
+                                            marginTop: '20px',
+                                            backgroundColor: '#8F85F3',
+                                            '&.Mui-disabled': {
+                                                backgroundColor: '#8F85F3',
+                                            },
+                                        }}
+                                        disabled={true}
+                                    >
+                                        <CircularProgress size={20} sx={{ color: 'white' }} />
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        onClick={handleClickSent}
+                                        variant="contained"
+                                        color="primary"
+                                        fullWidth
+                                        sx={{
+                                            width: '100%',
+                                            height: '48px',
+                                            marginTop: '20px',
+                                            backgroundColor: '#8F85F3',
+                                            ":hover": { backgroundColor: '#D5D1FB' },
+                                        }}
+                                    >
+                                        Lanjutkan
+                                    </Button>
+                                )}
                             </Box>
                         </Box>
                     </>
                 )}
-
-                {
-                    notFound && (
-                        <Box
-                            sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                                p: 5,
-                                position: "absolute",
-                                right: "0",
-                                top: "0",
-                                width: "45%",
-                                flexDirection: 'column',
-                                // mr: "10%",
-                                mt: "15%",
-                            }}
-                        >
-                            <Box sx={{ ml: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                                <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
-                                    Data Not Found  !
-                                </Typography>
-
-                            </Box>
-                        </Box>
-                    )}
                 {showEmailChanged && (
                     <>
-                        {showAlertError && (
-                            <AlertWarning teks="Kode OTP tidak valid !" />
-                        )}
                         <Box
                             sx={{
                                 display: "flex",
@@ -591,14 +508,9 @@ export default function RegisterPasienBaru() {
                                                         idPatient: patientId
                                                     }
                                                 });
-                                            } 
-                                              else {
-                                                showTemporaryAlertErrorr();
-                                                
                                             }
                                         } catch (error) {
                                             console.log('error', error);
-                                            showTemporaryAlertErrorr();
                                         }
 
 

@@ -1,21 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import "react-phone-input-2/lib/style.css";
 import { useNavigate } from "react-router-dom";
+import GetPatientByNIKServices from "../../../../services/Patient Tenant/GetPatientByNIKServices";
 
 const validationSchema = Yup.object({
   nik: Yup.string()
     .matches(/^[0-9]+$/, "NIK harus berupa angka")
-    .min(14, "NIK minimal 14 digit")
+    .min(10, "NIK minimal 14 digit")
     .max(16, "NIK maksimal 16 digit")
     .required("NIK wajib diisi"),
-  email: Yup.string().required("Email wajib diisi")
-    .email("Format Email Tidak Sesuai")
 });
 
 interface FormValues {
   nik: string
-  email: string
 }
 
 const otpValidationSchema = Yup.object({
@@ -26,29 +25,19 @@ const otpValidationSchema = Yup.object({
     .required('OTP wajib diisi')
 })
 
-
 export default function useLoginPasien() {
-    //   const [showPassword, setShowPassword] = useState(false);
   const [showLogin, setShowLogin] = useState(true)
   const [showEmailChanged, setShowEmailChanged] = useState(true)
   const [emailError, setEmailError] = useState(false)
   const [, setNikError] = useState(false)
   const [, setPasswordError] = useState(false)
-
   const [showAlert, setShowAlert] = useState(false)
   const [isCounting, setIsCounting] = useState(false)
   const [secondsLeft, setSecondsLeft] = useState(60)
   const [resendSuccess, setResendSuccess] = useState(false)
   const [loginSuccess, setLoginSuccess] = useState(false)
   const [otp, setOtp] = useState('')
-
   const navigate = useNavigate()
-
-  // const otpFormShown = () => {
-  //   // setShowEmailChanged(false);
-
-  //   setOtp("");
-  // };
 
   const handleClick = () => {
     setShowLogin(true)
@@ -74,9 +63,40 @@ export default function useLoginPasien() {
   }
 
   const validationCheck = async (values: FormValues) => {
+    console.log(values)
+    // navigate("/register/pasien/baru", { state: { succesSendData1: true, data: values } });
+    try {
+      const response = await GetPatientByNIKServices(values.nik);
+      // if there's data of patient by identity number inputed
+      if (response?.responseCode === "200") {
+        const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
+        const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
+        const dataGet = {
+          id: response.data.id,
+          nik: response?.data.identityNumber,
+          email: response?.data.email,
+          phone: response?.data.phoneNumber,
+          fullname: response?.data.fullName,
+          address: response?.data.address,
+          gender: response?.data.gender,
+          birthDate: birthDateProcess,
+          birthPlace: birthPlaceProcess
+        }
+        // next to check all of patient data, carrying dataGet 
+        navigate('/register/pasien/baru', { state: { patientData: true, data: dataGet } })
+      }
+    } catch (err: any) {
+      // if there's no data of patient by identity number inputed
+      if (err.response.status === 404) {
+        const data = {
+          id: null,
+          needAdmin: true,
+        }
+        //next to patient category with carrying data with idPatient null, needAdmin true (default new patient)
+        navigate('/kategori/pasien', { state: { dataPatient: data, newPatient: true } })
 
-    // showOtp();
-    navigate("/register/pasien/baru", { state: { succesSendData1: true, data: values } });
+      }
+    }
     return true;
   };
 
@@ -111,7 +131,7 @@ export default function useLoginPasien() {
     const seconds = secondsLeft % 60
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
   }
-  return{
+  return {
     showLogin,
     setShowLogin,
     showEmailChanged,

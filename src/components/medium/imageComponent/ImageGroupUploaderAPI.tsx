@@ -28,7 +28,7 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, pa
             console.log("parentId: ", parentId);
             try {
                 const imageResponse = await GetImageByParentId(parentId);
-            
+
                 if (imageResponse?.data?.length > 0) {
                     const mappedImages = imageResponse.data.map((image: any) => ({
                         imageName: image.imageName,

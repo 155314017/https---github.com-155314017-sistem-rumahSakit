@@ -1,9 +1,6 @@
 import { Box } from "@mui/system";
-// import regisImg from "../../../img/registerPasienImage.png";
 import regisImg from "../../../../assets/img/registerImg.jpg";
-// import logo from "../../../img/St.carolus.png";
 import { Button, CardMedia, Typography } from "@mui/material";
-
 import CardRawatJalan from "../../../../components/small/card/CardRawatJalan";
 
 //hooks
@@ -14,9 +11,7 @@ export default function KategoriPasien() {
     pasienBaru,
     setPasienBaru,
     navigate,
-    patientId,
-    notFound,
-    show
+    patient
   } = useKategoriPasien();
 
   return (
@@ -80,9 +75,8 @@ export default function KategoriPasien() {
             bgcolor: "#fff",
           }}
         >
-        {show && (
-          
-        
+
+
           <Box sx={{ display: "flex", flexDirection: "column", gap: "14px", width: '80%' }}>
             <Typography
               sx={{ fontSize: "32px", fontWeight: "600", lineHeight: "34px" }}
@@ -99,32 +93,20 @@ export default function KategoriPasien() {
                 <Box
                   sx={{ display: "flex", flexDirection: "column", gap: "24px" }}
                 >
-                  {/* <Link
-                    to="/rawatjalan/bpjs"
-                    style={{ textDecoration: "none" }}
-                  > */}
                   <CardRawatJalan
                     onClick={() => navigate("/rawatjalan/bpjs")}
                     title="Pasien BPJS"
                     text="dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu dan berhak mendapatkan pelayanan kesehatan"
                   />
-                  {/* </Link> */}
-
-                  {/* <Link
-                    to="/rawatjalan/umum"
-                    style={{ textDecoration: "none" }}
-                  > */}
                   <CardRawatJalan
-                    onClick={() => navigate("/rawatjalan/umum", { state: { succesSendData: true, data: patientId } })}
+                    onClick={() => navigate("/rawatjalan/umum", { state: { succesSendData: true, data: patient } })}
                     title="Pasien umum"
                     text="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
                   />
-                  {/* </Link> */}
                 </Box>
 
                 <Button
-                  // onClick={() => setPasienBaru(false)}
-                  onClick={() => navigate('/register/penanggungJawab')}
+                  onClick={() => navigate('/register/pasien')}
                   fullWidth
                   sx={{
                     width: "100%",
@@ -147,29 +129,16 @@ export default function KategoriPasien() {
                 <Box
                   sx={{ display: "flex", flexDirection: "column", gap: "24px" }}
                 >
-                  {/* <Link
-                    to="/rawatjalan/bpjs"
-                    style={{ textDecoration: "none" }}
-                  > */}
                   <CardRawatJalan
                     onClick={() => navigate("/rawatjalan/bpjs")}
                     title="Pasien BPJS"
                     text="dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu dan berhak mendapatkan pelayanan kesehatan"
                   />
-                  {/* </Link> */}
-
-                  {/* <Link
-                    to="/rawatjalan/umum"
-                    state={{ succesSendData: true, data: patientId }}
-                    style={{ textDecoration: "none" }}
-                  > */}
                   <CardRawatJalan
-                    onClick={() => navigate("/rawatjalan/umum", { state: { succesSendData: true, data: patientId } })}
+                    onClick={() => navigate("/rawatjalan/umum", { state: { succesSendData: true, data: patient } })}
                     title="Pasien umum"
                     text="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
                   />
-                  {/* </Link> */}
-
                 </Box>
 
                 <Button
@@ -190,36 +159,11 @@ export default function KategoriPasien() {
                 </Button>
               </>
             )}
-            
+
 
           </Box>
-          )}
-          {notFound && (
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        p: 5,
-                        position: "absolute",
-                        width: "60%",
-                        flexDirection: 'column',
-                    }}
-                >
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                        <Typography sx={{ fontSize: '32px', fontWeight: '600', maxWidth: '410px' }}>
-                            Data Not Found  !
-                        </Typography>
-                        {/* <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                            Are you sure you filled the field ?? Look sus !
-                        </Typography>
-                        <Typography sx={{ color: '#A8A8BD', fontSize: '18px', marginBottom: '30px', maxWidth: '410px', fontWeight: '400' }}>
-                            Keep playing kiddos !
-                        </Typography> */}
-                    </Box>
-                </Box>
-            )}
         </Box>
-        
+
 
 
       </Box>

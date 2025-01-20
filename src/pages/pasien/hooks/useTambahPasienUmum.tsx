@@ -63,7 +63,7 @@ export default function useTambahPasienUmum() {
     const [selectedMethod, setSelectedMethod] = useState('');
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
     const [dataTickets, setDataTickets] = useState<dataTicket>();
-    const [ setButtonDis] = useState(false);
+    const [setButtonDis] = useState(false);
     // const [patientData, setPatientData] = useState<ResponsePatient | undefined>();
     const [patientData, setPatientData] = useState<ResponsePatient>({
         id: '',

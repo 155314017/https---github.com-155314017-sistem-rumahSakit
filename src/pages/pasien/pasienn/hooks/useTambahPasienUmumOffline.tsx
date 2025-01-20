@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import { useFormik } from "formik";
@@ -21,25 +22,27 @@ type Doctor = {
 };
 
 type ResponsePatient = {
-    id: string;
-    identityNumber: string,
-    fullName: string,
-    gender: string,
-    email: string,
-    birthDateAndPlace: string,
-    phoneNumber: string,
-    address: string,
+    id?: string;
+    additionalInfo?: string | null;
+    address: string;
+    birthDate: number[] | string; // [year, month, day]
+    gender: string;
+    masterUserId?: string;
+    name: string;
+    phone: string;
+    birthPlace: string;
+    email?: string;
 }
 
 type dataPasien = {
-    nik: string;
-    email: string;
-    phone: string;
-    gender: string;
-    fullname: string;
+    id: string;
+    additionalInfo: string | null;
     address: string;
-    birthDate: string;
-    birthPlace: string;
+    birthDate: string; // [year, month, day]
+    gender: string;
+    masterUserId: string;
+    name: string;
+    phone: string;
 }
 
 type GuardianData = {
@@ -68,6 +71,47 @@ type dataTicket = {
 }
 
 
+const validationSchema = Yup.object().shape({
+    nik: Yup.string().required('NIK harus diisi'),
+    email: Yup.string().email('Email tidak valid').required('Email harus diisi'),
+
+    // nik: Yup.string()
+    //     .matches(/^[0-9]+$/, 'NIK harus berupa angka')
+    //     .min(12, 'NIK minimal 12 digit')
+    //     .max(16, 'NIK maksimal 14 digit')
+    //     .required('NIK wajib diisi'),
+    //     email: Yup.string().required('Email wajib diisi'),
+    //       phone: Yup.string()
+    //         .required('Isi nomor telepon')
+    //         .matches(/^[0-9]{10,15}$/, 'Nomor telepon tidak valid')
+    //         .min(10, 'Nomor telepon minimal 10 digit')
+    //         .max(14, 'Nomor telepon maksimal 14 digit'),
+    //       fullname: Yup.string().required('Nama lengkap wajib diisi'),
+    //       gender: Yup.string().required('JenisK kelamin harus dipilih'),
+    //       birthPlace: Yup.string().required('Tempat lahir harus diisi'),
+    //       address: Yup.string().required('Tempat lahir harus diisi')
+
+});
+
+const validationSchema1 = Yup.object().shape({
+    phone: Yup.string()
+        .required('No Handphone pasien is required')
+        .matches(/^[0-9]+$/, 'No Handphone pasien must be a number')
+        .min(10, 'No Handphone pasien must be at least 10 digits')
+        .max(15, 'No Handphone pasien must be at most 15 digits'),
+    email: Yup.string()
+        .email('Email is invalid')
+        .required('Email is required'),
+    jenisKunjungan: Yup.string()
+        .required('Jenis Kunjungan is required'),
+    complaint: Yup.string()
+        .required('Keluhan Pasien is required'),
+    doctor: Yup.string()
+        .required('Dokter yang bertugas is required'),
+});
+
+
+
 export default function useTambahPasienUmumOffline() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [guardFullPage, setGuardFullPage] = useState(true);
@@ -80,6 +124,8 @@ export default function useTambahPasienUmumOffline() {
     const [dataTickets, setDataTickets] = useState<dataTicket>();
     const [dataGuards, setDataGuards] = useState<GuardianData>();
     const [calendarKey, setCalendarKey] = useState<number>(0);
+    const [needAdmin, setNeedAdmin] = useState(false);
+    const [NIK, setNIK] = useState('');
     // const [patientData, setPatientData] = useState<ResponsePatient | undefined>();
     const [patientData, setPatientData] = useState<ResponsePatient>({
         id: '',
@@ -105,6 +151,75 @@ export default function useTambahPasienUmumOffline() {
     const [showAlert, setShowAlert] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const [birth, setBirth] = useState('');
+
+    const [fileName, setFileName] = useState("");
+
+
+    const dummyData = {
+        responseCode: "200",
+        message: "Success",
+        data: [
+            {
+                id: "1",
+                additionalInfo: "Penyakit bawaan: Asma",
+                address: "Jl. Sudirman No. 45, Jakarta",
+                birthDate: [1990, 5, 15], // 15 Mei 1990
+                createdBy: "admin123",
+                createdDateTime: 1672545600000, // 1 Januari 2023, dalam epoch timestamp
+                deletedBy: null,
+                deletedDateTime: null,
+                gender: "MEN",
+                masterUserId: "M123",
+                name: "John Doe",
+                phone: "081234567890",
+                updatedBy: "admin456",
+                updatedDateTime: 1695148800000, // 20 September 2023
+                birthPlace: "Bandung",
+            },
+            {
+                id: "2",
+                additionalInfo: null,
+                address: "Jl. Malioboro No. 10, Yogyakarta",
+                birthDate: [1985, 12, 25], // 25 Desember 1985
+                createdBy: "admin123",
+                createdDateTime: 1656662400000, // 1 Juli 2022
+                deletedBy: "admin789",
+                deletedDateTime: 1696454400000, // 4 Oktober 2023
+                gender: "Female",
+                masterUserId: "M124",
+                name: "Jane Smith",
+                phone: "085678123456",
+                updatedBy: null,
+                updatedDateTime: null,
+                birthPlace: "Surabaya",
+            },
+            {
+                id: "3",
+                additionalInfo: "Penyakit bawaan: Diabetes",
+                address: "Jl. Gajah Mada No. 77, Semarang",
+                birthDate: [1995, 7, 20], // 20 Juli 1995
+                createdBy: "admin234",
+                createdDateTime: 1664582400000, // 1 Oktober 2022
+                deletedBy: null,
+                deletedDateTime: null,
+                gender: "Male",
+                masterUserId: "M125",
+                name: "Michael Johnson",
+                phone: "089876543210",
+                updatedBy: "admin123",
+                updatedDateTime: 1689475200000, // 15 Juli 2023
+                birthPlace: "Medan",
+            },
+        ],
+    };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setFileName(file.name);
+        }
+    };
 
 
     const breadcrumbItems = [
@@ -118,24 +233,22 @@ export default function useTambahPasienUmumOffline() {
             namaKlinik: '',
             address: patientData?.address,
             nikCari: '',
-            nik: patientData?.identityNumber,
-            email: patientData?.email,
-            phone: patientData?.phoneNumber,
+            phone: patientData?.phone,
             gender: patientData?.gender,
-            fullname: patientData?.fullName,
+            fullname: patientData?.name,
             birthDatePatient: birthDate,
             birthPlacePatient: birthPlace,
             // phonePasien: '',
-            nikGuardian: switchValue ? dataPasien?.nik : '',
-            typeGuardian: switchValue ? 'SENDIRI' : '',
-            caraDatang: '',
-            fullnameGuardian: switchValue ? dataPasien?.fullname : '',
-            emailGuardian: switchValue ? dataPasien?.email : '',
-            genderGuardian: switchValue ? dataPasien?.gender : '',
-            addressGuardian: switchValue ? dataPasien?.address : '',
-            phoneGuardian: switchValue ? dataPasien?.phone : '62',
-            birthPlaceGuardian: switchValue ? dataPasien?.birthPlace : '',
-            birthDateGuardian: switchValue ? dataPasien?.birthDate : '',
+            // nikGuardian: switchValue ? dataPasien?.nik : '',
+            // typeGuardian: switchValue ? 'SENDIRI' : '',
+            // caraDatang: '',
+            // fullnameGuardian: switchValue ? dataPasien?.fullname : '',
+            // emailGuardian: switchValue ? dataPasien?.email : '',
+            // genderGuardian: switchValue ? dataPasien?.gender : '',
+            // addressGuardian: switchValue ? dataPasien?.address : '',
+            // phoneGuardian: switchValue ? dataPasien?.phone : '62',
+            // birthPlaceGuardian: switchValue ? dataPasien?.birthPlace : '',
+            // birthDateGuardian: switchValue ? dataPasien?.birthDate : '',
             docs: '',
             asuranceDocs: '',
             // create appointment
@@ -226,7 +339,13 @@ export default function useTambahPasienUmumOffline() {
     });
 
     const changePage2 = async () => {
-        setCurrentPage(2);
+        console.log("change page 2");
+        if (needAdmin === true) {
+            setMainPages(false);
+        } else {
+            setCurrentPage(2);
+        }
+
     }
 
     const handleDropdownPoli = (value: string, label: string) => {
@@ -276,59 +395,100 @@ export default function useTambahPasienUmumOffline() {
 
     const findPatientByNik = async (nik: string) => {
         try {
-            const response = await GetPatientByNIKServices(nik);
-            if (response?.responseCode === "200") {
-                const dataGuard = await getGuardianData(response.data.id)
-                setDataGuards(dataGuard);
-                setPatientData(response?.data as ResponsePatient);
-                const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
-                const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
-                setBirthDate(birthDateProcess ? birthDateProcess : "Data tidak ada")
-                setBirthPlace(birthPlaceProcess ? birthPlaceProcess : "Data tidak ada")
-                const dataGet = {
-                    nik: response?.data.identityNumber,
-                    email: response?.data.email,
-                    phone: response?.data.phoneNumber,
-                    fullname: response?.data.fullName,
-                    address: response?.data.address,
-                    gender: response?.data.gender,
-                    birthDate: birthDate,
-                    birthPlace: birthPlace
+            // Menyembunyikan halaman penuh untuk loading
+
+            // Simulasi response dari API
+            const response = dummyData;
+            setNIK(nik);
+
+            // Validasi response
+            if (response?.responseCode === "200" && response?.data?.length) {
+                // Mencari pasien berdasarkan NIK di data dummy
+                const patientData = response.data.find((patient) => patient.masterUserId === nik);
+
+
+
+                if (patientData) {
+                    const {
+                        id,
+                        additionalInfo,
+                        address,
+                        birthDate,
+                        gender,
+                        masterUserId,
+                        name,
+                        phone,
+                        birthPlace,
+                    } = patientData;
+
+                    // Format tanggal lahir
+                    const birthDateFormatted =
+                        Array.isArray(birthDate) && birthDate.length === 3
+                            ? `${String(birthDate[1]).padStart(2, "0")}-${String(birthDate[2]).padStart(2, "0")}-${birthDate[0]}` // Format: year-month-day
+                            : "Data tidak ada";
+
+                    // Buat objek data yang terformat
+                    const dataGet = {
+                        id: id ?? "Data tidak ada",
+                        additionalInfo: additionalInfo ?? "Data tidak ada",
+                        address: address ?? "Data tidak ada",
+                        birthDate: birthDateFormatted,
+                        gender: gender ?? "Data tidak ada",
+                        masterUserId: masterUserId ?? "Data tidak ada",
+                        name: name ?? "Data tidak ada",
+                        phone: phone ?? "Data tidak ada",
+                        birthPlace: birthPlace ?? "Data tidak ada",
+                    };
+
+                    // Set state dengan data yang terproses
+                    setDataPasien(dataGet);
+                    setPatientData(dataGet);
+                    setBirth(birthDateFormatted);
+                    console.log(birth);
+                    setPatientFullsPage(false);
+                } else {
+                    // Jika pasien dengan NIK tidak ditemukan
+                    console.error("Pasien dengan NIK tersebut tidak ditemukan.");
+                    showTemporaryAlert(); // Tampilkan alert untuk user
                 }
-
-                setDataPasien(dataGet)
-                setPatientFullsPage(false);
+            } else {
+                console.error("Response tidak valid atau data kosong.");
+                showTemporaryAlert(); // Tampilkan alert untuk user
             }
-
         } catch (err: any) {
-            // setPatientFullsPage(false);
-            if (err.response.status === 404) {
-                showTemporaryAlert();
+            // Error handling
+            if (err.response?.status === 404) {
+                console.error("Pasien tidak ditemukan (404).");
+            } else {
+                console.error("Terjadi kesalahan saat memproses data:", err.message);
             }
+            showTemporaryAlert(); // Tampilkan alert untuk user
         }
-    }
+    };
 
-    const putGuard = async () => {
-        try {
-            const tes = {
-                patientId: patientData.id,
-                guardianIdentityNumber: formik.values.nikGuardian,
-                guardianName: formik.values.fullnameGuardian,
-                guardianPhone: formik.values.phoneGuardian,
-                guardianEmail: formik.values.emailGuardian,
-                guardianGender: formik.values.genderGuardian,
-                guardianAddress: formik.values.addressGuardian,
-                guardianType: formik.values.typeGuardian,
-                guardianRelation: formik.values.typeGuardian,
-                guardianBirthPlace: formik.values.birthPlaceGuardian,
-                guardianBirthDate: formik.values.birthDateGuardian,
-            }
 
-            setCurrentPage(3)
-        } catch (error) {
-            console.error(error)
-        }
-    }
+
+    // const putGuard = async () => {
+    //     try {
+    //         const tes = {
+    //             patientId: patientData.id,
+    //             guardianIdentityNumber: formik.values.nikGuardian,
+    //             guardianName: formik.values.fullnameGuardian,
+    //             guardianPhone: formik.values.phoneGuardian,
+    //             guardianEmail: formik.values.emailGuardian,
+    //             guardianGender: formik.values.genderGuardian,
+    //             guardianAddress: formik.values.addressGuardian,
+    //             guardianType: formik.values.typeGuardian,
+    //             guardianRelation: formik.values.typeGuardian,
+    //             guardianBirthPlace: formik.values.birthPlaceGuardian,
+    //             guardianBirthDate: formik.values.birthDateGuardian,
+    //         }
+
+    //         setCurrentPage(3)
+    //     } catch (error) {
+    //         console.error(error)
+    //     }
+    // }
 
 
     const handleDropdownDocter = (value: string, label: string) => {
@@ -340,7 +500,7 @@ export default function useTambahPasienUmumOffline() {
     const handleScheduleChange = (scheduleId: string, schedule: string) => {
         setSelectedScheduleId(scheduleId);
         setSelectedSchedule(schedule);
-        
+
     };
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -455,11 +615,11 @@ export default function useTambahPasienUmumOffline() {
         if (currentPage === 1) {
             return formik.values.nikCari;
         } else if (currentPage === 2) {
-            if (guardFullPage == true) {
-                return formik.values.nikGuardian
-            } else if (guardFullPage == false) {
-                return formik.values.nikGuardian && formik.values.emailGuardian && formik.values.phoneGuardian && formik.values.fullnameGuardian && formik.values.typeGuardian && formik.values.genderGuardian && formik.values.addressGuardian;
-            }
+            // if (guardFullPage == true) {
+            //     return formik.values.nikGuardian
+            // } else if (guardFullPage == false) {
+            //     return formik.values.nikGuardian && formik.values.emailGuardian && formik.values.phoneGuardian && formik.values.fullnameGuardian && formik.values.typeGuardian && formik.values.genderGuardian && formik.values.addressGuardian;
+            // }
         } else if (currentPage === 3) {
             return formik.values.jenisKunjungan;
         }
@@ -500,7 +660,7 @@ export default function useTambahPasienUmumOffline() {
     }
 
     return {
-        formik,
+        validationSchema,
         breadcrumbItems,
         currentPage,
         setCurrentPage,
@@ -528,7 +688,7 @@ export default function useTambahPasienUmumOffline() {
         findPatientByNik,
         patientData,
         BpRadio,
-        putGuard,
+        // putGuard,
         changePage2,
         dataPasien,
         clinicOptions,
@@ -542,5 +702,16 @@ export default function useTambahPasienUmumOffline() {
         calendarKey,
         isLoading,
         handleGoBack,
+        formik,
+        setNeedAdmin,
+        needAdmin,
+        fileName,
+        handleFileChange,
+        NIK,
+        birth,
+        setPatientData,
+        validationSchema1,
+        navigate
+
     }
 }

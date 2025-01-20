@@ -242,7 +242,8 @@ export default function PilihKategoriPasien() {
                 {openModalPilihPembayaran && (
                     <Box
                         sx={{
-                            width: '68%'
+                            width: 'fit-content',
+                            height: 'fit-content',
                         }}
                     >
                         <CardMedia
@@ -309,6 +310,7 @@ export default function PilihKategoriPasien() {
                                 cursor: "pointer",
                                 fontWeight: 600,
                                 mt: '2%',
+                                mb: '2%',
                                 boxShadow: 2,
                                 width: "100%",
                                 border: '1px solid #8F85F3',

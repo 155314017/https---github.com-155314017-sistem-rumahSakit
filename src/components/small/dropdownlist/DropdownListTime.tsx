@@ -4,12 +4,12 @@ import {
   Select,
   MenuItem,
   CircularProgress,
-  SelectChangeEvent,
+  type SelectChangeEvent,
 } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 export interface Option {
-  value: number;
+  value: number | string;
   label: string;
 }
 
@@ -30,7 +30,7 @@ export default function DropdownListTime({
   defaultValue = "",
   loading,
   value,
-  error = false, // Destructure error with default value
+  error = false,
 }: DropdownListProps) {
   const [selectedOption, setSelectedOption] = useState<string>(value || defaultValue);
 
@@ -58,7 +58,6 @@ export default function DropdownListTime({
         value={selectedOption}
         onChange={handleChange}
         displayEmpty
-        // Combine the clock icon and spinner in startAdornment
         startAdornment={
           <Box sx={{ display: "flex", alignItems: "center", ml: 0, mr: 1 }}>
             {loading && <CircularProgress size={20} sx={{ mr: 1 }} />}
@@ -68,7 +67,7 @@ export default function DropdownListTime({
         sx={{
           width: "100%",
           color: "#555",
-          bgcolor: error ? "#FFCCCC" : "#FFF", // Change background color on error
+          bgcolor: error ? "#FFCCCC" : "#FFF",
           border: "1px solid #A8A8BD",
           borderRadius: "8px",
           height: "40px",
@@ -87,12 +86,11 @@ export default function DropdownListTime({
           },
         }}
         inputProps={{ "aria-label": "select dropdown" }}
-        // Adding animation and scroll
         MenuProps={{
           PaperProps: {
             sx: {
-              maxHeight: 240, // Dropdown menu height limit (px)
-              overflowY: "auto", // Show scrollbar when content exceeds maxHeight
+              maxHeight: 240,
+              overflowY: "auto",
               animation: "fadeInAndScale 0.3s ease-in-out",
               "@keyframes fadeInAndScale": {
                 "0%": {
@@ -104,7 +102,6 @@ export default function DropdownListTime({
                   transform: "scale(1)",
                 },
               },
-              // Optional: Smooth scrollbar styling
               "&::-webkit-scrollbar": {
                 width: "6px",
               },
@@ -122,6 +119,7 @@ export default function DropdownListTime({
 
         {options.map((option, index) => (
           <MenuItem
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             key={index}
             value={option.label}
             sx={{

@@ -40,8 +40,15 @@ interface DataKirim {
 }
 
 interface DataAwal {
-    nik: '';
-    email: '';
+    id: string,
+    nik: string;
+    fullname: string;
+    phone: string;
+    email: string;
+    gender: string;
+    address: string;
+    birthDate: string;
+    birthPlace: string;
 }
 
 const otpValidationSchema = Yup.object({
@@ -126,17 +133,16 @@ export default function useRegistrasiPasienBaru() {
     const [otp, setOtp] = useState('');
     const [data1, setData1] = useState<DataAwal | null>(null);
     const [patientId, setPatientId] = useState<string>('');
-    const [notFound, setNotFound] = useState(false);
     const [buttonDis, setButtonDis] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const [needAdmin, setNeedAdmin] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
     const otpFormShown = () => {
         // setShowEmailChanged(false);
-
         setOtp('');
     }
 
@@ -165,7 +171,14 @@ export default function useRegistrasiPasienBaru() {
         setShowEmailChanged(true);
     };
 
-    
+    const handleClickSent = () => {
+        const data = {
+            patientId: data1?.id,
+            needAdmin: needAdmin,
+        }
+        // next to category patient after checking patient data and ask if they need change their data and carrying data 
+        navigate('/kategori/pasien', { state: { dataPatient: data, categoryPatient: true } })
+    }
 
     useEffect(() => {
         let timer: ReturnType<typeof setInterval>;
@@ -208,32 +221,34 @@ export default function useRegistrasiPasienBaru() {
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const [value, setValue] = React.useState('WOMEN');
+    const [value, setValue] = React.useState('');
     const handleChangeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue((event.target as HTMLInputElement).value);
     };
 
+    // get data passed from page before 
     useEffect(() => {
-        if (location.state && location.state.succesSendData1) {
+        if (location.state && location.state.patientData) {
             setData1(location.state.data);
-
+            console.log('tes', location.state.data)
         }
     }, [location.state]);
 
-    useEffect(() => {
-        if (data1 != null) {
-            if (data1.email === '') {
-                setShowLogin(false);
-                setNotFound(true);
-            } else {
-                setShowLogin(true);
-                setNotFound(false);
-            }
-        } else {
-            setShowLogin(false);
-            setNotFound(true);
-        }
-    }, [data1]);
+    // useEffect(() => {
+    //     if (data1 != null) {
+    //         if (data1.email === '') {
+    //             setShowLogin(false);
+    //             setNotFound(true);
+    //         } else {
+    //             setShowLogin(true);
+    //             setNotFound(false);
+    //         }
+    //     } else {
+    //         setShowLogin(false);
+    //         setNotFound(true);
+    //     }
+    // }, [data1]);
+
 
 
     const showTemporaryAlertError = async () => {
@@ -255,7 +270,6 @@ export default function useRegistrasiPasienBaru() {
         handleChangeGender,
         data1,
         showLogin,
-        notFound,
         buttonDis,
         errorAlert,
         showEmailChanged,
@@ -279,5 +293,8 @@ export default function useRegistrasiPasienBaru() {
         data,
         setOtp,
         loading,
+        setNeedAdmin,
+        needAdmin,
+        handleClickSent
     }
 }
