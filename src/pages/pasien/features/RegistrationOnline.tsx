@@ -684,11 +684,11 @@ export default function RegistrationOnline() {
                                                         value={values.phoneCp}
                                                         onChange={(val) => setFieldValue("phoneCp", val)}
                                                     />
-                                                    {touched.phoneCp && errors.phoneCp && (
+                                                    {/* {touched.phoneCp && errors.phoneCp && (
                                                         <Typography variant="caption" color="error">
                                                             {errors.phoneCp}
                                                         </Typography>
-                                                    )}
+                                                    )} */}
                                                 </FormControl>
                                                 <FormControl>
                                                     <Typography>Email</Typography>
@@ -850,6 +850,7 @@ export default function RegistrationOnline() {
                                                 backgroundColor: "#8F85F3",
                                                 ":hover": { backgroundColor: "#D5D1FB" },
                                             }}
+                                            disabled={!isValid}
                                         >
                                             Selesai
                                         </Button>

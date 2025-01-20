@@ -137,7 +137,7 @@ export default function useRegistrationOnline() {
 
     const handleDropdownPoli = (value: string, label: string) => {
         setIdClinic(value)
-        setClinicName(label);
+        setClinicName(label)
     };
 
 
@@ -202,8 +202,8 @@ export default function useRegistrationOnline() {
         phoneCp: "",
         emailCp: "",
         typeOfVisit: "",
-        clinic: "",
-        doctor: "",
+        // clinic: "",
+        // doctor: "",
         schedule: "",
         symptoms: "",
     };
@@ -230,11 +230,11 @@ export default function useRegistrationOnline() {
                     emailCp: Yup.string()
                         .email("Format email tidak valid")
                         .required("Email wajib diisi"),
-                    // complaintType: Yup.string().required("Jenis kunjungan wajib diisi"),
-                    // // clinic: Yup.string().required("Poli yang dituju wajib diisi"),
-                    // // doctor: Yup.string().required("Dokter wajib dipilih"),
-                    // schedule: Yup.string().required("Pilih jadwal terlebih dahulu"),
-                    // symptoms: Yup.string().required("Keluhan pasien wajib diisi"),
+                    typeOfVisit: Yup.string().required("Jenis kunjungan wajib diisi"),
+                    // clinic: Yup.string().required("Poli yang dituju wajib diisi"),
+                    // doctor: Yup.string().required("Dokter wajib dipilih"),
+                    schedule: Yup.string().required("Pilih jadwal terlebih dahulu"),
+                    symptoms: Yup.string().required("Keluhan pasien wajib diisi"),
                 });
             default:
                 return Yup.object().shape({});
@@ -329,3 +329,4 @@ export default function useRegistrationOnline() {
         idPatient
     }
 }
+
