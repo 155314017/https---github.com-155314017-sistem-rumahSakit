@@ -71,7 +71,12 @@ export default function TambahPasienUmumOffline() {
         birth,
         setPatientData,
         validationSchema1,
-        navigate
+        navigate,
+        idClinic,
+        registrationPatient,
+        selectedScheduleId,
+        selectedSchedule
+
 
 
     } = useTambahPasienUmumOffline();
@@ -246,12 +251,12 @@ export default function TambahPasienUmumOffline() {
                                             initialValues={{
                                                 nik: NIK,
                                                 email: "",
-                                                phone: patientData.phone,
-                                                fullname: patientData.name,
-                                                gender: patientData.gender,
-                                                address: patientData.address,
-                                                birthPlace: patientData.birthPlace,
-                                                birthDate: patientData.birthDate,
+                                                phone: patientData?.phone,
+                                                fullname: patientData?.fullname,
+                                                gender: patientData?.gender,
+                                                address: patientData?.address,
+                                                birthPlace: patientData?.birthPlace,
+                                                birthDate: patientData?.birthDate,
                                             }}
                                             enableReinitialize
                                             validationSchema={validationSchema}
@@ -259,12 +264,13 @@ export default function TambahPasienUmumOffline() {
                                                 console.log(values);
 
                                                 const dataRegis = {
+                                                    id: patientData?.id,
                                                     address: patientData?.address,
-                                                    nik: values.nik,
-                                                    email: values.email,
+                                                    nik: values?.nik,
+                                                    email: values?.email,
                                                     phone: patientData?.phone,
                                                     gender: patientData?.gender,
-                                                    name: patientData?.name,
+                                                    fullname: patientData?.fullname,
                                                     birthDate: birth,
                                                     birthPlace: patientData?.birthPlace,
                                                 };
@@ -567,41 +573,47 @@ export default function TambahPasienUmumOffline() {
                                             <Box>
                                                 <Formik
                                                     initialValues={{
-                                                        phone: patientData.phone,
-                                                        fullname: patientData.name,
-                                                        gender: patientData.gender,
-                                                        address: patientData.address,
-                                                        birthPlace: patientData.birthPlace,
+                                                        phone: patientData?.phone,
+                                                        fullname: patientData?.fullname,
+                                                        gender: patientData?.gender,
+                                                        address: patientData?.address,
+                                                        birthPlace: patientData?.birthPlace,
                                                         jenisKunjungan: '',
                                                         doctor: '',
                                                         complaint: '',
-                                                        email: patientData.email, // Add email to initial values
+                                                        email: patientData?.email, // Add email to initial values
                                                         nik: NIK,
                                                     }}
                                                     enableReinitialize
                                                     validationSchema={validationSchema1}
                                                     onSubmit={async (values) => {
                                                         const dataRegis = {
-                                                            namaKlinik: '',
-                                                            address: patientData?.address,
-                                                            nik: patientData.id,
-                                                            email: patientData?.email,
-                                                            phone: patientData?.phone,
-                                                            gender: patientData?.gender,
-                                                            fullname: patientData?.name,
-                                                            birthDatePatient: patientData?.birthDate,
-                                                            birthPlacePatient: patientData?.birthPlace,
-                                                            docs: '',
-                                                            asuranceDocs: '',
-                                                            jenisKunjungan: values.jenisKunjungan,
-                                                            poli: '',
-                                                            doctor: values.doctor,
-                                                            keluhan: values.complaint,
-                                                            riwayatPenyakit: '',
-                                                            alergi: '',
+                                                            // namaKlinik: '',
+                                                            // address: patientData?.address,
+                                                            // nik: patientData?.nik,
+                                                            // email: patientData?.email,
+                                                            // phone: patientData?.phone,
+                                                            // gender: patientData?.gender,
+                                                            // fullname: patientData?.fullname,
+                                                            // birthDatePatient: patientData?.birthDate,
+                                                            // birthPlacePatient: patientData?.birthPlace,
+                                                            // docs: '',
+                                                            // asuranceDocs: '',
+                                                            patientId: patientData?.id,
+                                                            typeOfVisit: values.jenisKunjungan,
+                                                            clinicId: idClinic,
+                                                            doctorId: idDoctor,
+                                                            scheduleIntervalId: selectedScheduleId,
+                                                            scheduleDate: dayjs(selectedSchedule?.split(",")[0]).format("L"),
+                                                            symptoms: values.complaint,
+                                                            needAdmin: needAdmin,
+                                                            // riwayatPenyakit: '',
+                                                            // alergi: '',
+                                                            offline: true
                                                         }
                                                         // handle form submission with dataRegis
                                                         console.log('Form submitted:', dataRegis);
+                                                        registrationPatient(dataRegis);
                                                     }}
                                                 >
                                                     {({ errors, touched, handleChange, handleBlur, values,
@@ -874,9 +886,8 @@ export default function TambahPasienUmumOffline() {
 
                                                                 <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
                                                                     <Button
-                                                                        variant="contained"
+                                                                        type="submit"
                                                                         color="inherit"
-                                                                        onClick={createTicket}
                                                                         sx={{
                                                                             backgroundColor: "#8F85F3",
                                                                             color: "white",
