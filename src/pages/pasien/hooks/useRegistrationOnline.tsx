@@ -10,16 +10,19 @@ import * as Yup from "yup";
 import axios from "axios";
 import GetPatientByNIKServices from "../../../services/Patient Tenant/GetPatientByNIKServices";
 
-type PatientData = {
-    id: string;
-    identityNumber: string;
-    fullName: string;
-    birthDateAndPlace: string;
-    phoneNumber: string;
-    email: string;
-    gender: string;
-    address: string;
-};
+type PatientData =
+    {
+        id: string;
+        nik: string;
+        email: string;
+        phone: string;
+        fullname: string;
+        address: string;
+        gender: string;
+        birthDate: string;
+        birthPlace: string;
+    };
+
 
 type Clinic = {
     id: string;
@@ -84,6 +87,7 @@ export default function useRegistrationOnline() {
     const [selectedSchedule, setSelectedSchedule] = useState("");
     const [needAdmin, setNeedAdmin] = useState(false);
     const [patientData, setPatientData] = useState<PatientData>();
+    const [idPatient, setIdPatient] = useState<string | null>('');
 
     useEffect(() => {
         const fetchClinicData = async () => {
@@ -155,7 +159,7 @@ export default function useRegistrationOnline() {
                 justifyContent: "center",
                 alignItems: "center",
             };
-        } else if (page < currentPage) {
+        } else if (page < currentPage ) {
             return {
                 display: "flex",
                 border: "1px solid #8F85F3",
@@ -170,13 +174,14 @@ export default function useRegistrationOnline() {
         } else {
             return {
                 display: "flex",
-                border: "1px solid #8F85F3",
+                border: "none",
                 width: "38px",
                 height: "38px",
                 borderRadius: "8px",
                 justifyContent: "center",
                 alignItems: "center",
-                color: "#8F85F3",
+                color: "#A8A8BD",
+                bgcolor: '#EEEEF2 !important',
             };
         }
     };
@@ -237,11 +242,24 @@ export default function useRegistrationOnline() {
         }
     };
 
+    const registrationPatient = async (data: any) => {
+        const response = await axios.post(
+            `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/patient/check-in`,
+            { data: data },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        console.log(response);
+    }
+
     const checkIdentityNumber = async (nik: string) => {
         try {
             const response = await GetPatientByNIKServices(nik);
             console.log('response cari: ', response)
-            if (response?.responseCode === '200') {
+            if (response?.data != null) {
                 const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
                 const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
                 const dataGet = {
@@ -258,6 +276,12 @@ export default function useRegistrationOnline() {
                 console.log('dataGet: ', dataGet)
                 setPatientData(dataGet);
                 setCurrentPage(2);
+            } else if (response?.data === null) {
+                console.log('takde')
+                setIdPatient(null);
+                setNeedAdmin(true);
+                setShowNeedAdminPage(true);
+                // setCurrentPage(3);
             }
         } catch (err: any) {
             if (err.response.status === 404) {
@@ -298,6 +322,8 @@ export default function useRegistrationOnline() {
         getValidationSchema,
         checkIdentityNumber,
         setCurrentPage,
-        currentPage
+        currentPage,
+        patientData,
+        registrationPatient
     }
 }

@@ -39,7 +39,7 @@ export default function EditAmbulance() {
     handleDeleteSchedule,
     selectedDay,
     handleSaveAndAddDay,
-    statusEdit,,
+    statusEdit,
     id
   } = useEditAmbulance();
 

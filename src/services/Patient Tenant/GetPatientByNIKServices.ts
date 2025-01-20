@@ -18,11 +18,11 @@ interface PatientResponse {
   data: PatientData
 }
 
-const baseUrl = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}`
-
 const GetPatientByNIKServices = async (nik: string): Promise<PatientResponse | null> => {
   try {
-    const response = await axios.get<PatientResponse>(`${baseUrl}/v1/manage/patient/get/${nik}`)
+    const response = await axios.get<PatientResponse>(
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/user/by-identity-number/${nik}`
+    )
     if (response.status === 200) {
       return response.data
     } else {

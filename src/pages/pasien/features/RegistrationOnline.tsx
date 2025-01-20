@@ -53,6 +53,8 @@ export default function RegistrationOnline() {
         checkIdentityNumber,
         setCurrentPage,
         currentPage,
+        patientData,
+        registrationPatient
     } = useRegistrationOnline();
     return (
         <>
@@ -116,12 +118,10 @@ export default function RegistrationOnline() {
 
                 <Box
                     sx={{
-                        ml: "auto",
-                        minWidth: "45%",
-                        maxWidth: "45%",
+                        ml: "50%",
                         display: "flex",
                         flexDirection: "column",
-                        position: "relative",
+                        position: "absolute",
                         minHeight: "91vh",
                         p: 4,
                         justifyContent: "center",
@@ -145,7 +145,7 @@ export default function RegistrationOnline() {
                             onSubmit={(values) => {
                                 switch (currentPage) {
                                     case 1:
-                                        // checkIdentityNumber(values.nik)
+                                        checkIdentityNumber(values.nik)
                                         return setCurrentPage(2);
                                     case 2:
                                         if (needAdmin) {
@@ -155,7 +155,7 @@ export default function RegistrationOnline() {
                                         };
                                     case 4: {
                                         const data = {
-                                            patientId: patientData?.patientId || null,
+                                            patientId: patientData?.id || null,
                                             typeOfVisit: values.typeOfVisit,
                                             clinicId: idClinic,
                                             doctorId: idDoctor,
@@ -168,7 +168,8 @@ export default function RegistrationOnline() {
                                             offline: false,
                                         };
                                         console.log(data);
-                                        setCurrentPage(5);
+                                        registrationPatient(data);
+                                        // setCurrentPage(5);
                                         return;
                                     }
 
@@ -266,8 +267,8 @@ export default function RegistrationOnline() {
                                                 <Box display="flex" flexDirection="row" width="400px">
                                                     <Button
                                                         type="button"
-                                                        onClick={() => setCurrentPage(2)}
-                                                        disabled={currentPage < 2}
+                                                        onClick={() => setCurrentPage(4)}
+                                                        disabled={currentPage < 3}
                                                         sx={{
                                                             ...getPageStyle(2),
                                                             display: "flex",
@@ -508,16 +509,19 @@ export default function RegistrationOnline() {
                                                         aria-labelledby="gender-label"
                                                         name="gender"
                                                         value={values.gender}
-                                                        onChange={(e) => setFieldValue("gender", e.target.value)}
+                                                        onChange={(e) => {
+                                                            setFieldValue("gender", e.target.value);
+                                                            console.log(e.target.value)
+                                                        }}
                                                         row
                                                     >
                                                         <FormControlLabel
-                                                            value="WOMEN"
+                                                            value="FEMALE"
                                                             control={<BpRadio />}
                                                             label="Female"
                                                         />
                                                         <FormControlLabel
-                                                            value="MEN"
+                                                            value="MALE"
                                                             control={<BpRadio />}
                                                             label="Male"
                                                         />
