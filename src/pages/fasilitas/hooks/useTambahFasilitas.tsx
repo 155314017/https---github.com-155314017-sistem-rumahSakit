@@ -20,9 +20,9 @@ type ImageData = {
 };
 
 type Schedule = {
-  day: string
-  startTime: dayjs.Dayjs
-  endTime: dayjs.Dayjs
+    day: string
+    startTime: dayjs.Dayjs
+    endTime: dayjs.Dayjs
 }
 export default function useTambahFasilitas() {
     const [successAlert, setSuccessAlert] = useState(false);
@@ -60,34 +60,34 @@ export default function useTambahFasilitas() {
         setImagesData(images);
     };
 
-    const dayMapping: { [key: string]: number } = {
-        "Senin": 1,
-        "Selasa": 2,
-        "Rabu": 3,
-        "Kamis": 4,
-        "Jumat": 5,
-        "Sabtu": 6,
-        "Minggu": 0,
-    };
+    // const dayMapping: { [key: string]: number } = {
+    //     "Senin": 1,
+    //     "Selasa": 2,
+    //     "Rabu": 3,
+    //     "Kamis": 4,
+    //     "Jumat": 5,
+    //     "Sabtu": 6,
+    //     "Minggu": 0,
+    // };
 
 
     const handleTambahHari = () => {
         if (selectedDay && startTime && endTime) {
             const newSchedule: Schedule = {
-              day: selectedDay,
-              startTime: startTime,
-              endTime: endTime
+                day: selectedDay,
+                startTime: startTime,
+                endTime: endTime
             }
             setSchedules([...schedules, newSchedule])
             setSelectedDay('')
             setStartTime(null)
             setEndTime(null)
-          }
+        }
     };
 
     const handleDeleteSchedule = (index: number) => {
         setSchedules(schedules.filter((_, i) => i !== index))
-      }
+    }
 
     const showTemporaryAlertSuccess = async () => {
         setSuccessAlert(true);
@@ -111,7 +111,7 @@ export default function useTambahFasilitas() {
         initialValues: {
             deskripsiKlinik: '',
             masterBuildingId: '',
-            namaFasilitas:'',
+            namaFasilitas: '',
         },
         validationSchema: Yup.object({
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
@@ -120,13 +120,13 @@ export default function useTambahFasilitas() {
         }),
         onSubmit: async (values) => {
 
-            const formattedSchedules = schedules.map(schedule => {
-                const selectedDayOfWeek = dayMapping[schedule.day]
-                return {
-                  startDateTime: schedule.startTime.day(selectedDayOfWeek).unix(),
-                  endDateTime: schedule.endTime.day(selectedDayOfWeek).unix()
-                }
-              })
+            // const formattedSchedules = schedules.map(schedule => {
+            //     const selectedDayOfWeek = dayMapping[schedule.day]
+            //     return {
+            //       startDateTime: schedule.startTime.day(selectedDayOfWeek).unix(),
+            //       endDateTime: schedule.endTime.day(selectedDayOfWeek).unix()
+            //     }
+            //   })
 
             const data = {
                 name: values.namaFasilitas,
@@ -134,12 +134,12 @@ export default function useTambahFasilitas() {
                 description: values.deskripsiKlinik,
                 cost: operationalCost ? parseInt(operationalCost.replace(/\D/g, '')) : 0,
                 additionalInfo: "hai",
-                schedules: formattedSchedules,
-                images: imagesData.map(image => ({
-                    imageName: image.imageName || "",
-                    imageType: image.imageType || "",
-                    imageData: image.imageData || "",
-                })),
+                // schedules: formattedSchedules,
+                // images: imagesData.map(image => ({
+                //     imageName: image.imageName || "",
+                //     imageType: image.imageType || "",
+                //     imageData: image.imageData || "",
+                // })),
             };
             const token = Cookies.get("accessToken");
             try {
@@ -158,27 +158,27 @@ export default function useTambahFasilitas() {
             }
         },
     });
-  return {
-    breadcrumbItems,
-    formik,
-    // operationalTime,
-    selectedDay,
-    setSelectedDay,
-    startTime,
-    setStartTime,
-    endTime,
-    setEndTime,
-    imagesData,
-    setImagesData,
-    operationalCost,
-    setOperationalCost,
-    handleTambahHari,
-    gedungOptions,
-    handleImageChange,
-    errorAlert,
-    successAlert,
-    showTemporaryAlertSuccess,
-    handleDeleteSchedule,
-    schedules
-  }
+    return {
+        breadcrumbItems,
+        formik,
+        // operationalTime,
+        selectedDay,
+        setSelectedDay,
+        startTime,
+        setStartTime,
+        endTime,
+        setEndTime,
+        imagesData,
+        setImagesData,
+        operationalCost,
+        setOperationalCost,
+        handleTambahHari,
+        gedungOptions,
+        handleImageChange,
+        errorAlert,
+        successAlert,
+        showTemporaryAlertSuccess,
+        handleDeleteSchedule,
+        schedules
+    }
 }
