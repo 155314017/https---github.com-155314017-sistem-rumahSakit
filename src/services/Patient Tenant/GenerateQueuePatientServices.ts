@@ -12,7 +12,7 @@ type QueueResponse = {
 const GenerateQueuePatientServices = async (clinicId: string): Promise<number | string> => {
   try {
     const response = await axios.get<QueueResponse>(
-      `https://hms.3dolphinsocial.com:8083/v1/manage/counter/${clinicId}/generate-queue`
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/counter/${clinicId}/generate-queue`
     )
     return response.data.data.queueNumber
   } catch (error) {

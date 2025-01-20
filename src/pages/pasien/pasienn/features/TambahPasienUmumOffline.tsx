@@ -78,9 +78,9 @@ export default function TambahPasienUmumOffline() {
         setMainPages,
         NIK,
         birth,
-       setPatientData,
-       validationSchema1,
-       navigate
+        setPatientData,
+        validationSchema1,
+        navigate
 
 
     } = useTambahPasienUmumOffline();
@@ -88,7 +88,7 @@ export default function TambahPasienUmumOffline() {
     useEffect(() => {
         console.log(currentPage)
     }, [currentPage]);
-    
+
 
 
     return (

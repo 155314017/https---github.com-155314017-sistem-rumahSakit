@@ -369,7 +369,7 @@ export default function useTambahPasienUmumOffline() {
     useEffect(() => {
         const fetchDoctorData = async () => {
             try {
-                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/doctor/?pageNumber=0&pageSize=10&orderBy=id=asc', {
+                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/doctor/?pageNumber=0&pageSize=10&orderBy=id=asc`, {
                     timeout: 10000
                 });
                 setDoctorOptions(response.data.data.content.map((item: Doctor) => ({
@@ -396,7 +396,7 @@ export default function useTambahPasienUmumOffline() {
     const findPatientByNik = async (nik: string) => {
         try {
             // Menyembunyikan halaman penuh untuk loading
-    
+
             // Simulasi response dari API
             const response = dummyData;
             setNIK(nik);
@@ -712,6 +712,6 @@ export default function useTambahPasienUmumOffline() {
         setPatientData,
         validationSchema1,
         navigate
-        
+
     }
 }

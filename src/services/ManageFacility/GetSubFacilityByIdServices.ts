@@ -41,7 +41,7 @@ export const GetSubFacilityById = async (
 
     try {
         // Make the POST request to create the facility
-        const response = await axios.get<ApiResponse>(`https://hms.3dolphinsocial.com:8083/v1/manage/subfacility/${id}`, {
+        const response = await axios.get<ApiResponse>(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/subfacility/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'accessToken': `${token}`

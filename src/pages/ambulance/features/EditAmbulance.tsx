@@ -31,6 +31,7 @@ export default function EditAmbulance() {
     endTime,
     setEndTime,
     breadcrumbItems,
+    apiUrl,
     initialOperationalCost,
     schedules,
     setImagesData,
@@ -38,7 +39,7 @@ export default function EditAmbulance() {
     handleDeleteSchedule,
     selectedDay,
     handleSaveAndAddDay,
-    statusEdit,
+    statusEdit,,
     id
   } = useEditAmbulance();
 
@@ -62,7 +63,7 @@ export default function EditAmbulance() {
             <img src={bgImage} alt="bg-image" />
           </Box>
 
-          <ImageUploaderGroupAPI onChange={(images) => setImagesData(images)} apiUrl={apiUrl} />
+          <ImageUploaderGroupAPI onChange={(images) => setImagesData(images)} parentId={id || ''} />
 
           <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
             <Typography sx={{ fontSize: '16px' }}>

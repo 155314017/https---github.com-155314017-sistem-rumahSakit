@@ -88,7 +88,7 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
         const responses = await Promise.all(
           dataIdBuilding.map((id) =>
             axios
-              .get(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`)
+              .get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${id}`)
               .catch(() => ({ data: { data: { name: "Data Facility Tidak Ditemukan" } } }))
           )
         );

@@ -29,7 +29,7 @@ export const GetBuildingById = async (
   token : string | undefined 
 ): Promise<BuildingDataItem> => {
   try {
-    const response = await axios.get<ApiResponse>(`https://hms.3dolphinsocial.com:8083/v1/manage/building/${id}`, {
+    const response = await axios.get<ApiResponse>(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${id}`, {
         headers: {
             'Content-Type': 'application/json',
             'accessToken': `${token}`

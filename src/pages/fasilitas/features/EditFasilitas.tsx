@@ -33,6 +33,7 @@ export default function EditFasilitas() {
     handleDeleteSchedule,
     statusEdit,
     selectedDay,
+    id
     
     }= useEditFasilitas()
   return (
@@ -48,7 +49,7 @@ export default function EditFasilitas() {
                 <img src={bgImage} alt="bg-image" />
             </Box>
 
-            <ImageUploaderGroupAPI onChange={handleImageChange} apiUrl={apiUrl} />
+            <ImageUploaderGroupAPI onChange={handleImageChange} parentId={id || ''}/>
 
             <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                 <Typography sx={{ fontSize: "16px" }}>Nama Fasilitas<span style={{ color: "red" }}>*</span></Typography>
@@ -72,7 +73,7 @@ export default function EditFasilitas() {
                 <DropdownListAPI
                     options={gedungOptions.map(({ id, name }) => ({ value: id, label: name }))}
                     placeholder="Pilih gedung"
-                    // defaultValue={formik.values.masterBuildingId}
+                    defaultValue={formik.values.masterBuildingId}
                     onChange={(selectedOptionValue) => {
                         formik.setFieldValue('masterBuildingId', selectedOptionValue);
                     }}

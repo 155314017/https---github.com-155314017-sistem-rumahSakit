@@ -28,7 +28,7 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-const BASE_URL = "https://hms.3dolphinsocial.com:8083/v1/manage/counter/";
+const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/counter/`;
 
 export const editCounter = async (
   counterData: EditCounterRequest,

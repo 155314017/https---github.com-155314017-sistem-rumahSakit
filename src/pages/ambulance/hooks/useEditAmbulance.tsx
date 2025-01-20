@@ -86,7 +86,7 @@ export default function useEditAmbulance() {
         const response = await getAmbulanceByIdService(id);
         const data = response;
   
-        setApiUrl(`https://hms.3dolphinsocial.com:8083/v1/manage/ambulance/${id}`);
+        setApiUrl(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/ambulance/${id}`);
         setInitialOperationalCost(data?.cost || 0);
   
         const convertUnixToReadableTime = (timestamp: number) => {
@@ -262,7 +262,7 @@ export default function useEditAmbulance() {
  
   
   
- 
+  
   
   const handleSaveAndAddDay = () => {
     // Ensure all fields are filled out before saving
@@ -415,6 +415,7 @@ export default function useEditAmbulance() {
     handleAddSchedule,
     setImagesData,
     handleSaveAndAddDay,
-    statusEdit
+    statusEdit,
+    id
   }
 }

@@ -26,7 +26,7 @@ export interface ApiResponse {
   data: CreateClinicRequest
 }
 
-const BASE_URL = 'https://hms.3dolphinsocial.com:8083/v1/manage/clinic/'
+const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/`
 
 export const createClinic = async (
   clinicData: CreateClinicRequest,
