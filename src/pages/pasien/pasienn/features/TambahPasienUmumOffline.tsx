@@ -78,7 +78,8 @@ export default function TambahPasienUmumOffline() {
         setMainPages,
         NIK,
         birth,
-        setPatientData
+       setPatientData,
+       validationSchema1
 
 
     } = useTambahPasienUmumOffline();
@@ -119,12 +120,13 @@ export default function TambahPasienUmumOffline() {
                     zIndex: 1000,
                     padding: '16px',
                     width: {
-                        xs: '90%', 
-                        sm: '84%',  
-                        md: '90%',  
+                        xs: '90%',
+                        sm: '84%',
+                        md: '90%',
                         lg: '100%',
                     },
                     // bgcolor: 'blue'
+
                 }}>
                     <BreadCrumbBasic
                         title="Pasien lama"
@@ -278,7 +280,7 @@ export default function TambahPasienUmumOffline() {
                                                 changePage2();
                                             }}
                                         >
-                                            {({ errors, touched, handleChange, handleBlur, values, isValid, dirty }) => (
+                                            {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
                                                 <Form>
                                                     <Box>
                                                         <Box
@@ -584,18 +586,18 @@ export default function TambahPasienUmumOffline() {
                                                         nik: NIK,
                                                     }}
                                                     enableReinitialize
-                                                    validationSchema={validationSchema}
+                                                    validationSchema={validationSchema1}
                                                     onSubmit={async (values) => {
                                                         const dataRegis = {
                                                             namaKlinik: '',
                                                             address: patientData?.address,
-                                                            nik: values.nik,
+                                                            nik: patientData.id,
                                                             email: patientData?.email,
                                                             phone: patientData?.phone,
                                                             gender: patientData?.gender,
                                                             fullname: patientData?.name,
-                                                            birthDatePatient: birthDate,
-                                                            birthPlacePatient: birthPlace,
+                                                            birthDatePatient: patientData?.birthDate,
+                                                            birthPlacePatient: patientData?.birthPlace,
                                                             docs: '',
                                                             asuranceDocs: '',
                                                             jenisKunjungan: values.jenisKunjungan,
@@ -609,7 +611,7 @@ export default function TambahPasienUmumOffline() {
                                                     }}
                                                 >
                                                     {({ errors, touched, handleChange, handleBlur, values,
-                                                        // isValid, 
+                                                        isValid,
                                                         dirty, setFieldValue }) => (
                                                         <Form>
                                                             <Box sx={{ paddingBottom: '16px', gap: "24px", justifyContent: "center", display: 'flex', flexDirection: 'column' }}>
@@ -633,62 +635,75 @@ export default function TambahPasienUmumOffline() {
                                                                                 Kontak Info
                                                                             </Typography>
                                                                             <Typography>No Handphone pasien <span style={{ color: "red" }}>*</span></Typography>
-                                                                            <PhoneInput
-                                                                                country={"id"}
-                                                                                value={patientData?.phone}
-                                                                                onChange={(values) => formik.setFieldValue("phone", values)}
-                                                                                // disabled={switchValue}
-                                                                                // onChange={(value) => console.log("nomor: ", value)}
-                                                                                inputStyle={{
-                                                                                    height: "48px",
-                                                                                    borderRadius: "8px",
-                                                                                    border: "1px solid #ccc",
-                                                                                    padding: "10px 40px 10px 60px",
-                                                                                    fontSize: "16px",
-                                                                                    width: "100%",
-                                                                                    backgroundColor: 'white',
-
-                                                                                }}
-                                                                                buttonStyle={{
-                                                                                    borderRadius: "8px 0 0 8px",
-                                                                                    border: "1px solid #ccc",
-                                                                                }}
-                                                                                containerStyle={{
-                                                                                    marginBottom: "10px",
-                                                                                    width: "100%",
-                                                                                }}
-
-                                                                            />
-                                                                            <Typography>Email</Typography>
-                                                                            <OutlinedInput
-                                                                                sx={{
-                                                                                    width: '100%',
-                                                                                    height: 'auto',
-                                                                                    marginTop: '10px',
-                                                                                    '& .MuiOutlinedInput-root': {
+                                                                            <FormControl>
+                                                                                <PhoneInput
+                                                                                    country={"id"}
+                                                                                    value={values.phone}
+                                                                                    onChange={(value) => setFieldValue("phone", value)}
+                                                                                    onBlur={handleBlur}
+                                                                                    inputStyle={{
+                                                                                        height: "48px",
+                                                                                        borderRadius: "8px",
+                                                                                        border: touched.phone && errors.phone ? '1px solid #ffcccc' : '1px solid #ccc',
+                                                                                        padding: "10px 40px 10px 60px",
+                                                                                        fontSize: "16px",
+                                                                                        width: "100%",
+                                                                                        backgroundColor: 'white',
+                                                                                        outline: touched.phone && errors.phone ? 'none' : 'inherit',
+                                                                                    }}
+                                                                                    buttonStyle={{
+                                                                                        borderRadius: "8px 0 0 8px",
+                                                                                        border: '1px solid #ccc',
+                                                                                    }}
+                                                                                    containerStyle={{
+                                                                                        marginBottom: "10px",
+                                                                                        width: "100%",
+                                                                                        display: 'flex',
+                                                                                        alignItems: 'center',
                                                                                         borderRadius: '8px',
-                                                                                        backgroundColor: touched.email && errors.email ? '#ffcccc' : 'inherit',
-                                                                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                        border: touched.phone && errors.phone ? '1px solid #ffcccc' : '1px solid #ccc',
+                                                                                        transition: 'border-color 0.3s',
+                                                                                        '&:focus-within': {
                                                                                             borderColor: '#8F85F3',
                                                                                         },
-                                                                                    },
-                                                                                    '& .MuiOutlinedInput-notchedOutline': {
-                                                                                        border: '1px solid #ccc',
-                                                                                    },
-                                                                                    '& .MuiOutlinedInput-input': {
-                                                                                        padding: '10px',
-                                                                                        fontSize: '16px',
-                                                                                    },
-                                                                                }}
-                                                                                name="email"
-                                                                                value={patientData?.email}
-                                                                                error={touched.email && Boolean(errors.email)}
-                                                                                onChange={handleChange}
-                                                                                onBlur={handleBlur}
-                                                                            />
-                                                                            {touched.email && errors.email && (
-                                                                                <FormHelperText error>{errors.email}</FormHelperText>
-                                                                            )}
+                                                                                    }}
+                                                                                />
+                                                                                {touched.phone && errors.phone && (
+                                                                                    <FormHelperText error>{errors.phone}</FormHelperText>
+                                                                                )}
+                                                                            </FormControl>
+                                                                            <Typography>Email</Typography>
+                                                                            <FormControl>
+                                                                                <OutlinedInput
+                                                                                    sx={{
+                                                                                        width: '100%',
+                                                                                        height: 'auto',
+                                                                                        marginTop: '10px',
+                                                                                        '& .MuiOutlinedInput-root': {
+                                                                                            borderRadius: '8px',
+                                                                                            backgroundColor: touched.email && errors.email ? '#ffcccc' : 'inherit',
+                                                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                                borderColor: '#8F85F3',
+                                                                                            },
+                                                                                        },
+                                                                                        '& .MuiOutlinedInput-notchedOutline': {
+                                                                                            border: '1px solid #ccc',
+                                                                                        },
+                                                                                        '& .MuiOutlinedInput-input': {
+                                                                                            padding: '10px',
+                                                                                            fontSize: '16px',
+                                                                                        },
+                                                                                    }}
+                                                                                    name="email"
+                                                                                    value={values.email}
+                                                                                    error={touched.email && Boolean(errors.email)}
+                                                                                    onChange={handleChange}
+                                                                                    onBlur={handleBlur}
+                                                                                />
+                                                                                {touched.email && errors.email && (
+                                                                                    <FormHelperText error>{errors.email}</FormHelperText>
+                                                                                )}
+                                                                            </FormControl>
                                                                         </Box>
 
                                                                         {/* Patient Complaint Section */}
@@ -708,33 +723,37 @@ export default function TambahPasienUmumOffline() {
                                                                                     Keluhan Pasien
                                                                                 </Typography>
                                                                                 <Typography>Jenis Kunjungan</Typography>
-                                                                                <TextField
-                                                                                    variant="outlined"
-                                                                                    sx={{
-                                                                                        width: "100%",
-                                                                                        borderRadius: "8px",
-                                                                                        mb: 2,
-                                                                                        padding: "0",
-                                                                                        "& .MuiOutlinedInput-root": {
-                                                                                            height: "44px",
-                                                                                            padding: "0 12px",
-                                                                                            border: "none",
-                                                                                            "& input": {
-                                                                                                height: "44px",
-                                                                                                padding: "0",
+                                                                                <FormControl sx={{ marginBottom: '10px' }}>
+                                                                                    <TextField
+                                                                                        variant="outlined"
+                                                                                        sx={{
+                                                                                            width: '100%',
+                                                                                            height: 'auto',
+                                                                                            marginTop: '10px',
+                                                                                            '& .MuiOutlinedInput-root': {
+                                                                                                borderRadius: '8px',
+                                                                                                backgroundColor: touched.jenisKunjungan && errors.jenisKunjungan ? '#ffcccc' : 'inherit',
+                                                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                                    borderColor: '#8F85F3',
+                                                                                                },
                                                                                             },
-                                                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                                                borderColor: '#8F85F3',
+                                                                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                                                                border: '1px solid #ccc',
                                                                                             },
-                                                                                        },
-                                                                                    }}
-                                                                                    name="jenisKunjungan"
-                                                                                    value={values.jenisKunjungan}
-                                                                                    onChange={handleChange}
-                                                                                />
-                                                                                <Typography color="error">
-                                                                                    {touched.jenisKunjungan && errors.jenisKunjungan}
-                                                                                </Typography>
+                                                                                            '& .MuiOutlinedInput-input': {
+                                                                                                padding: '10px',
+                                                                                                fontSize: '16px',
+                                                                                            },
+                                                                                        }}
+                                                                                        name="jenisKunjungan"
+                                                                                        value={values.jenisKunjungan}
+                                                                                        onChange={handleChange}
+                                                                                        onBlur={handleBlur}
+                                                                                    />
+                                                                                    {touched.jenisKunjungan && errors.jenisKunjungan && (
+                                                                                        <FormHelperText error>{errors.jenisKunjungan}</FormHelperText>
+                                                                                    )}
+                                                                                </FormControl>
 
 
                                                                                 <Typography>Poli yang dituju</Typography>
@@ -753,6 +772,7 @@ export default function TambahPasienUmumOffline() {
                                                                                             options={doctorOptions.map(({ id, name }) => ({ value: id, label: name }))}
                                                                                             onChange={handleDropdownDocter}
                                                                                             loading={false}
+
                                                                                         />
                                                                                         <Typography color="error">
                                                                                             {touched.doctor && errors.doctor}
@@ -765,18 +785,43 @@ export default function TambahPasienUmumOffline() {
 
                                                                                 </Box>
                                                                                 <Typography>Keluhan Pasien</Typography>
-                                                                                <TextField
+                                                                                <FormControl sx={{ marginBottom: '10px' }}>
+                                                                                    <TextField
 
-                                                                                    value={values.complaint}
-                                                                                    onChange={handleChange}
-                                                                                    name="complaint"
-                                                                                    placeholder="Masukkan keluhan pasien"
-                                                                                    fullWidth
-                                                                                    required
-                                                                                    multiline
-                                                                                    rows={3}
-                                                                                    sx={{ marginBottom: 2, borderRadius: "6px" }}
-                                                                                />
+                                                                                        value={values.complaint}
+                                                                                        onChange={handleChange}
+                                                                                        onBlur={handleBlur}
+                                                                                        name="complaint"
+                                                                                        placeholder="Masukkan keluhan pasien"
+                                                                                        fullWidth
+                                                                                        required
+                                                                                        multiline
+                                                                                        rows={3}
+                                                                                        variant="outlined"
+                                                                                        sx={{
+                                                                                            width: '100%',
+                                                                                            height: 'auto',
+                                                                                            marginTop: '10px',
+                                                                                            '& .MuiOutlinedInput-root': {
+                                                                                                borderRadius: '8px',
+                                                                                                backgroundColor: touched.complaint && errors.complaint ? '#ffcccc' : 'inherit',
+                                                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                                    borderColor: '#8F85F3',
+                                                                                                },
+                                                                                            },
+                                                                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                                                                border: '1px solid #ccc',
+                                                                                            },
+                                                                                            '& .MuiOutlinedInput-input': {
+                                                                                                padding: '10px',
+                                                                                                fontSize: '16px',
+                                                                                            },
+                                                                                        }}
+                                                                                    />
+                                                                                    {touched.complaint && errors.complaint && (
+                                                                                        <FormHelperText error>{errors.complaint}</FormHelperText>
+                                                                                    )}
+                                                                                </FormControl>
                                                                                 <Typography>Unggah surat rujukan</Typography>
                                                                                 <Box display="flex" alignItems="center" border="1px solid #ccc" borderRadius="6px" overflow="hidden" height={50}>
                                                                                     {/* Tombol Unggah */}
