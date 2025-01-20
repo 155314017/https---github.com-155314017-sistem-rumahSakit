@@ -13,15 +13,15 @@ import GetUserByNIK from "../../../services/Admin Tenant/ManageUser/GetUserByNIK
 
 type PatientData =
     {
-        id: string;
-        nik: string;
-        email: string;
-        phone: string;
-        fullname: string;
-        address: string;
-        gender: string;
-        birthDate: string;
-        birthPlace: string;
+        id: string | undefined;
+        nik: string | undefined;
+        email: string | undefined;
+        phone: string | undefined;
+        fullname: string | undefined;
+        address: string | undefined;
+        gender: string | undefined;
+        birthDate: string | undefined;
+        birthPlace: string | undefined;
     };
 
 type Clinic = {
@@ -262,6 +262,27 @@ export default function useRegistrationOnline() {
             console.log('response cari: ', responseUser);
 
             if (responseUser?.data != null) {
+<<<<<<< HEAD
+                const response = await GetPatientByUserIdServices(idPatient || '');
+                const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
+                const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
+                const dataGet = {
+                    id: idPatient || '',
+                    nik: response?.data.identityNumber,
+                    email: response?.data.email,
+                    phone: response?.data.phoneNumber,
+                    fullname: response?.data.fullName,
+                    address: response?.data.address,
+                    gender: response?.data.gender,
+                    birthDate: birthDateProcess,
+                    birthPlace: birthPlaceProcess
+                }
+                console.log('dataGet: ', dataGet)
+                setPatientData(dataGet);
+                setCurrentPage(3);
+            } else if (responseUser?.data === null) {
+                console.log('takde')
+=======
                 const response = await GetPatientByUserIdServices(responseUser?.data.id || '');
                 if (response?.data && response?.data.birthDateAndPlace) {
                     const [birthPlaceProcess, birthDateProcess] = response.data.birthDateAndPlace.split(',').map((item) => item.trim());
@@ -283,6 +304,7 @@ export default function useRegistrationOnline() {
                 }
             } else {
                 console.log('takde');
+>>>>>>> c232e195e398a2fb7959fd09919816d63463a581
                 setIdPatient(null);
                 setNeedAdmin(true);
                 setCurrentPage(4);

@@ -22,7 +22,6 @@ export default function RegisterPasienBaru() {
         showLogin,
         buttonDis,
         showEmailChanged,
-        emailError,
         resendSuccess,
         isCounting,
         validationSchema,

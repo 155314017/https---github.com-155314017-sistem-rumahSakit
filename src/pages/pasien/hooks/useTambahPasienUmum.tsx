@@ -8,7 +8,6 @@ import { styled } from '@mui/material/styles';
 import { Radio } from '@mui/material';
 import { RadioProps } from '@mui/material/Radio';
 import CreateAppointment from '../../../services/Patient Tenant/CreateAppointment';
-import UpdatePatientGuards from '../../../services/Patient Tenant/UpdatePatientGuard';
 import dayjs from 'dayjs';
 
 type Doctor = {
@@ -63,7 +62,7 @@ export default function useTambahPasienUmum() {
     const [selectedMethod, setSelectedMethod] = useState('');
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
     const [dataTickets, setDataTickets] = useState<dataTicket>();
-    const [setButtonDis] = useState(false);
+    // const [setButtonDis] = useState(false);
     // const [patientData, setPatientData] = useState<ResponsePatient | undefined>();
     const [patientData, setPatientData] = useState<ResponsePatient>({
         id: '',
@@ -269,27 +268,27 @@ export default function useTambahPasienUmum() {
         }
     }
 
-    const putGuard = async () => {
-        try {
-            const tes = {
-                patientId: patientData.id,
-                guardianIdentityNumber: formik.values.nikGuardian,
-                guardianName: formik.values.fullnameGuardian,
-                guardianPhone: formik.values.phoneGuardian,
-                guardianEmail: formik.values.emailGuardian,
-                guardianGender: formik.values.genderGuardian,
-                guardianAddress: formik.values.addressGuardian,
-                guardianType: 'guardianType',
-                guardianRelation: formik.values.typeGuardian,
-                guardianBirthPlace: formik.values.birthPlaceGuardian,
-                guardianBirthDate: formik.values.birthDateGuardian,
-            }
+    // const putGuard = async () => {
+    //     try {
+    //         const tes = {
+    //             patientId: patientData.id,
+    //             guardianIdentityNumber: formik.values.nikGuardian,
+    //             guardianName: formik.values.fullnameGuardian,
+    //             guardianPhone: formik.values.phoneGuardian,
+    //             guardianEmail: formik.values.emailGuardian,
+    //             guardianGender: formik.values.genderGuardian,
+    //             guardianAddress: formik.values.addressGuardian,
+    //             guardianType: 'guardianType',
+    //             guardianRelation: formik.values.typeGuardian,
+    //             guardianBirthPlace: formik.values.birthPlaceGuardian,
+    //             guardianBirthDate: formik.values.birthDateGuardian,
+    //         }
 
-            setCurrentPage(3)
-        } catch (error) {
-            console.error(error)
-        }
-    }
+    //         setCurrentPage(3)
+    //     } catch (error) {
+    //         console.error(error)
+    //     }
+    // }
 
 
     const handleDropdownDocter = (value: string, label: string) => {
@@ -364,7 +363,6 @@ export default function useTambahPasienUmum() {
             referenceDoc: formik.values.docs,
         }
         try {
-            setButtonDis(true);
             const response = await CreateAppointment(data)
             const createdDateTimeFormatted = dayjs.unix(response.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
             const dataSent = {
@@ -377,7 +375,6 @@ export default function useTambahPasienUmum() {
             }
             setDataTickets(dataSent)
             setMainPages(false)
-            setButtonDis(false)
         } catch (err) {
             console.error(err)
         }
@@ -448,7 +445,6 @@ export default function useTambahPasienUmum() {
         findPatientByNik,
         patientData,
         BpRadio,
-        putGuard,
         changePage2,
         dataPasien,
         clinicOptions,

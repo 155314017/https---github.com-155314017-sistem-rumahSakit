@@ -31,7 +31,6 @@ export default function EditAmbulance() {
     endTime,
     setEndTime,
     breadcrumbItems,
-    apiUrl,
     initialOperationalCost,
     schedules,
     setImagesData,
