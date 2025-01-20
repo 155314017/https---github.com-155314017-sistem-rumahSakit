@@ -710,7 +710,8 @@ export default function useTambahPasienUmumOffline() {
         NIK,
         birth,
         setPatientData,
-        validationSchema1
+        validationSchema1,
+        navigate
         
     }
 }
