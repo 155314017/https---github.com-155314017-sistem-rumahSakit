@@ -10,6 +10,17 @@ import * as Yup from "yup";
 import axios from "axios";
 import GetPatientByNIKServices from "../../../services/Patient Tenant/GetPatientByNIKServices";
 
+type PatientData = {
+    id: string;
+    identityNumber: string;
+    fullName: string;
+    birthDateAndPlace: string;
+    phoneNumber: string;
+    email: string;
+    gender: string;
+    address: string;
+};
+
 type Clinic = {
     id: string;
     name: string;
@@ -72,6 +83,7 @@ export default function useRegistrationOnline() {
     const [selectedScheduleId, setSelectedScheduleId] = useState("");
     const [selectedSchedule, setSelectedSchedule] = useState("");
     const [needAdmin, setNeedAdmin] = useState(false);
+    const [patientData, setPatientData] = useState<PatientData>();
 
     useEffect(() => {
         const fetchClinicData = async () => {
@@ -183,13 +195,13 @@ export default function useRegistrationOnline() {
         birthPlace: "",
         birthDate: null as Date | null,
         gender: "",
-        phoneStep4: "",
-        emailStep4: "",
-        complaintType: "",
+        phoneCp: "",
+        emailCp: "",
+        typeOfVisit: "",
         clinic: "",
         doctor: "",
         schedule: "",
-        complaint: "",
+        symptoms: "",
     };
 
     const getValidationSchema = (page: number) => {
@@ -230,6 +242,21 @@ export default function useRegistrationOnline() {
             const response = await GetPatientByNIKServices(nik);
             console.log('response cari: ', response)
             if (response?.responseCode === '200') {
+                const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
+                const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
+                const dataGet = {
+                    id: response.data.id,
+                    nik: response?.data.identityNumber,
+                    email: response?.data.email,
+                    phone: response?.data.phoneNumber,
+                    fullname: response?.data.fullName,
+                    address: response?.data.address,
+                    gender: response?.data.gender,
+                    birthDate: birthDateProcess,
+                    birthPlace: birthPlaceProcess
+                }
+                console.log('dataGet: ', dataGet)
+                setPatientData(dataGet);
                 setCurrentPage(2);
             }
         } catch (err: any) {

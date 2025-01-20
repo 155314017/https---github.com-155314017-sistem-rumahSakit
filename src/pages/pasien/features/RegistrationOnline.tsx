@@ -153,8 +153,26 @@ export default function RegistrationOnline() {
                                         } else {
                                             return setCurrentPage(3);
                                         };
-                                    case 4:
-                                        return setCurrentPage(5);
+                                    case 4: {
+                                        const data = {
+                                            patientId: patientData?.patientId || null,
+                                            typeOfVisit: values.typeOfVisit,
+                                            clinicId: idClinic,
+                                            doctorId: idDoctor,
+                                            scheduleIntervalId: selectedScheduleId,
+                                            scheduleDate: dayjs(selectedSchedule?.split(",")[0]).format("L"),
+                                            symptoms: values.symptoms,
+                                            phoneNumber: values.phoneCp,
+                                            email: values.emailCp,
+                                            needAdmin: needAdmin,
+                                            offline: false,
+                                        };
+                                        console.log(data);
+                                        setCurrentPage(5);
+                                        return;
+                                    }
+
+
                                 }
                             }
                             }
@@ -646,12 +664,12 @@ export default function RegistrationOnline() {
                                                                 marginBottom: "10px",
                                                                 width: "100%",
                                                             }}
-                                                            value={values.phoneStep4}
+                                                            value={values.phoneCp}
                                                             onChange={(val) => setFieldValue("phoneStep4", val)}
                                                         />
-                                                        {touched.phoneStep4 && errors.phoneStep4 && (
+                                                        {touched.phoneCp && errors.phoneCp && (
                                                             <Typography variant="caption" color="error">
-                                                                {errors.phoneStep4}
+                                                                {errors.phoneCp}
                                                             </Typography>
                                                         )}
                                                     </FormControl>
@@ -659,7 +677,7 @@ export default function RegistrationOnline() {
                                                         <Typography>Email</Typography>
                                                         <Field
                                                             as={TextField}
-                                                            name="emailStep4"
+                                                            name="emailCp"
                                                             placeholder="Masukkan email"
                                                             variant="outlined"
                                                             sx={{
@@ -675,8 +693,8 @@ export default function RegistrationOnline() {
                                                                     },
                                                                 },
                                                             }}
-                                                            error={touched.emailStep4 && Boolean(errors.emailStep4)}
-                                                            helperText={touched.emailStep4 && errors.emailStep4}
+                                                            error={touched.emailCp && Boolean(errors.emailCp)}
+                                                            helperText={touched.emailCp && errors.emailCp}
                                                         />
                                                     </FormControl>
                                                 </Box>
@@ -696,7 +714,7 @@ export default function RegistrationOnline() {
                                                         <Typography>Jenis Kunjungan</Typography>
                                                         <Field
                                                             as={TextField}
-                                                            name="complaintType"
+                                                            name="typeOfVisit"
                                                             placeholder="Masukkan jenis kunjungan"
                                                             variant="outlined"
                                                             sx={{
@@ -711,8 +729,8 @@ export default function RegistrationOnline() {
                                                                     },
                                                                 },
                                                             }}
-                                                            error={touched.complaintType && Boolean(errors.complaintType)}
-                                                            helperText={touched.complaintType && errors.complaintType}
+                                                            error={touched.typeOfVisit && Boolean(errors.typeOfVisit)}
+                                                            helperText={touched.typeOfVisit && errors.typeOfVisit}
                                                         />
                                                     </FormControl>
                                                     <Typography>Poli yang dituju</Typography>
@@ -771,7 +789,7 @@ export default function RegistrationOnline() {
                                                         <Typography>Keluhan Pasien</Typography>
                                                         <Field
                                                             as={TextField}
-                                                            name="complaint"
+                                                            name="symptoms"
                                                             multiline
                                                             rows={4}
                                                             variant="outlined"
@@ -785,8 +803,8 @@ export default function RegistrationOnline() {
                                                                     },
                                                                 },
                                                             }}
-                                                            error={touched.complaint && Boolean(errors.complaint)}
-                                                            helperText={touched.complaint && errors.complaint}
+                                                            error={touched.symptoms && Boolean(errors.symptoms)}
+                                                            helperText={touched.symptoms && errors.symptoms}
                                                         />
                                                     </FormControl>
                                                 </Box>
