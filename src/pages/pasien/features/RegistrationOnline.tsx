@@ -115,14 +115,17 @@ export default function RegistrationOnline() {
 
                 <Box
                     sx={{
-                        ml: "50%",
+                        ml: "53%",
                         display: "flex",
                         flexDirection: "column",
                         position: "absolute",
                         minHeight: "91vh",
-                        p: 4,
+                        mt: 'auto',
+                        // p: 4,
                         justifyContent: "center",
                         alignItems: "center",
+                        // bgcolor: 'blue',
+                        maxWidth: '50%'
                     }}
                 >
                     <Formik
@@ -208,7 +211,7 @@ export default function RegistrationOnline() {
                                             </Box>
                                         )}
 
-                                        <Box display="flex" flexDirection="row">
+                                        <Box display="flex" flexDirection="row" mt={5} >
                                             <Box display="flex" flexDirection="row" width="290px">
                                                 <Button
                                                     type="button"
@@ -254,7 +257,7 @@ export default function RegistrationOnline() {
                                             </Box>
                                         </Box>
                                         {currentPage === 1 && (
-                                            <Box mb={2} ml="6%">
+                                            <Box mb={2} mt={'5%'} ml={'5%'} >
                                                 <Typography
                                                     fontWeight={600}
                                                     fontSize="20px"
@@ -285,7 +288,7 @@ export default function RegistrationOnline() {
                                             flexDirection: "column",
                                             gap: "24px",
                                             maxWidth: "600px",
-                                            ml: '5%'
+                                            ml: '3%'
                                         }}
                                     >
                                         <CardRawatJalan
@@ -410,7 +413,7 @@ export default function RegistrationOnline() {
                                                 },
                                             }}
                                             error={touched.nik && Boolean(errors.nik)}
-                                            helperText={touched.nik && errors.nik}
+                                        // helperText={touched.nik && errors.nik}
                                         />
                                         <FormLabel>Email</FormLabel>
                                         <Field
@@ -428,7 +431,7 @@ export default function RegistrationOnline() {
                                                 },
                                             }}
                                             error={touched.email && Boolean(errors.email)}
-                                            helperText={touched.email && errors.email}
+                                        // helperText={touched.email && errors.email}
                                         />
                                         <Typography>
                                             No. Handphone Pasien <span style={{ color: "#d32f2f" }}>*</span>
@@ -696,19 +699,25 @@ export default function RegistrationOnline() {
                                                         variant="outlined"
                                                         sx={{
                                                             width: "100%",
-                                                            borderRadius: "8px",
-                                                            mt: 1,
+                                                            height: "48px",
+                                                            marginTop: "10px",
                                                             "& .MuiOutlinedInput-root": {
-                                                                height: "44px",
-                                                                padding: "0 12px",
-                                                                border: "1px solid #A8A8BD",
-                                                                "&.Mui-focused fieldset": {
-                                                                    borderColor: "#6B63D1",
+                                                                borderRadius: "8px",
+                                                                backgroundColor: touched.emailCp && errors.emailCp ? "#ffcccc" : "inherit",
+                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                    borderColor: '#8F85F3',
                                                                 },
+                                                            },
+                                                            "& .MuiOutlinedInput-notchedOutline": {
+                                                                border: "1px solid #ccc",
+                                                            },
+                                                            "& .MuiOutlinedInput-input": {
+                                                                padding: "10px",
+                                                                fontSize: "16px",
                                                             },
                                                         }}
                                                         error={touched.emailCp && Boolean(errors.emailCp)}
-                                                        helperText={touched.emailCp && errors.emailCp}
+                                                    // helperText={touched.emailCp && errors.emailCp}
                                                     />
                                                 </FormControl>
                                             </Box>
@@ -733,18 +742,25 @@ export default function RegistrationOnline() {
                                                         variant="outlined"
                                                         sx={{
                                                             width: "100%",
-                                                            borderRadius: "8px",
-                                                            mt: 1,
+                                                            height: "48px",
+                                                            marginTop: "10px",
                                                             "& .MuiOutlinedInput-root": {
-                                                                height: "44px",
-                                                                border: "1px solid #A8A8BD",
-                                                                "&.Mui-focused fieldset": {
-                                                                    borderColor: "#6B63D1",
+                                                                borderRadius: "8px",
+                                                                backgroundColor: touched.typeOfVisit && errors.typeOfVisit ? "#ffcccc" : "inherit",
+                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                    borderColor: '#8F85F3',
                                                                 },
+                                                            },
+                                                            "& .MuiOutlinedInput-notchedOutline": {
+                                                                border: "1px solid #ccc",
+                                                            },
+                                                            "& .MuiOutlinedInput-input": {
+                                                                padding: "10px",
+                                                                fontSize: "16px",
                                                             },
                                                         }}
                                                         error={touched.typeOfVisit && Boolean(errors.typeOfVisit)}
-                                                        helperText={touched.typeOfVisit && errors.typeOfVisit}
+                                                    // helperText={touched.typeOfVisit && errors.typeOfVisit}
                                                     />
                                                 </FormControl>
                                                 <Typography>Poli yang dituju</Typography>
@@ -818,7 +834,7 @@ export default function RegistrationOnline() {
                                                             },
                                                         }}
                                                         error={touched.symptoms && Boolean(errors.symptoms)}
-                                                        helperText={touched.symptoms && errors.symptoms}
+                                                    // helperText={touched.symptoms && errors.symptoms}
                                                     />
                                                 </FormControl>
                                             </Box>

@@ -153,7 +153,7 @@ const InformasiTicketAPI = ({
           Tiket antrian konter berhasil di cetak
         </Alert>
       </Snackbar>
-      
+
       <Box
         bgcolor={'white'}
         maxWidth={626}
@@ -377,7 +377,7 @@ const InformasiTicketAPI = ({
               sx={{
                 cursor: isCounting ? 'default' : 'pointer',
                 color: isCounting ? '#ccc' : '#8F85F3',
-                textDecoration: isCounting ? 'none' : 'underline',
+                textDecoration: 'none',
                 fontSize: '16px',
               }}
             >
@@ -385,7 +385,7 @@ const InformasiTicketAPI = ({
                 (isCounting ? `${formatTime()}` : 'Kirim ulang')
               }
             </Typography>
-            <Typography color={"#8F85F3"} fontSize={"16px"} fontWeight={400} alignItems="right" onClick={handleEditClick}>Ubah</Typography>
+            <Typography sx={{ cursor: 'pointer' }} color={"#8F85F3"} fontSize={"16px"} fontWeight={400} alignItems="right" onClick={handleEditClick}>Ubah</Typography>
           </Box>
         </Box>
       </Box>
