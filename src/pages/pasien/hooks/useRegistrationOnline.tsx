@@ -256,7 +256,7 @@ export default function useRegistrationOnline() {
                     birthPlace: birthPlaceProcess
                 }
                 console.log('dataGet: ', dataGet)
-                setPatientData(dataGet);
+                // setPatientData(dataGet);
                 setCurrentPage(2);
             }
         } catch (err: any) {
