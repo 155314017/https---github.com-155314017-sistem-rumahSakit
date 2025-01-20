@@ -140,6 +140,7 @@ export default function RegistrationOnline() {
                                     setCurrentPage(4)
                                     return;
                                 case 4: {
+                                    console.log('tes')
                                     const data = {
                                         patientId: patientData?.id || null,
                                         typeOfVisit: values.typeOfVisit,
@@ -153,9 +154,9 @@ export default function RegistrationOnline() {
                                         needAdmin: needAdmin,
                                         offline: false,
                                     };
-                                    console.log(data);
+                                    console.log('dataaa:', data);
                                     registrationPatient(data);
-                                    setCurrentPage(5);
+                                    // setCurrentPage(5);
                                     return;
                                 }
 
@@ -177,7 +178,7 @@ export default function RegistrationOnline() {
                             isValid,
                         }) => (
                             <Form onSubmit={handleSubmit}>
-                                {(currentPage === 1 || currentPage === 2 || currentPage === 3) && (
+                                {(currentPage === 1 || currentPage === 2 || currentPage === 3 || currentPage === 4) && (
                                     <Box
                                         sx={{
                                             display: "flex",
@@ -289,12 +290,12 @@ export default function RegistrationOnline() {
                                         <CardRawatJalan
                                             onClick={() => setCurrentPage(2)}
                                             title="Pasien Umum"
-                                            text="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya."
+                                            text="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
                                         />
                                         <CardRawatJalan
                                             onClick={() => navigate("/rawatjalan/bpjs")}
                                             title="Pasien Asuransi"
-                                            text="Terdaftar di program BPJS, berhak mendapatkan pelayanan kesehatan."
+                                            text="Pasien yang berobat di rumah sakit dengan biaya yang di cover oleh pihak asuransi."
                                         />
                                     </Box>
                                 )}
@@ -317,13 +318,26 @@ export default function RegistrationOnline() {
                                                 placeholder="Masukkan NIK"
                                                 variant="outlined"
                                                 sx={{
-                                                    mb: 1,
+                                                    width: "100%",
+                                                    height: "48px",
+                                                    marginTop: "10px",
                                                     "& .MuiOutlinedInput-root": {
                                                         borderRadius: "8px",
+                                                        backgroundColor: touched.nik && errors.nik ? "#ffcccc" : "inherit",
+                                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                            borderColor: '#8F85F3',
+                                                        },
+                                                    },
+                                                    "& .MuiOutlinedInput-notchedOutline": {
+                                                        border: "1px solid #ccc",
+                                                    },
+                                                    "& .MuiOutlinedInput-input": {
+                                                        padding: "10px",
+                                                        fontSize: "16px",
                                                     },
                                                 }}
                                                 error={touched.nik && Boolean(errors.nik)}
-                                                helperText={touched.nik && errors.nik}
+                                            // helperText={touched.nik && errors.nik}
                                             />
                                         </FormControl>
                                         <Button
@@ -333,13 +347,20 @@ export default function RegistrationOnline() {
                                             sx={{
                                                 mt: 2,
                                                 width: "100%",
-                                                backgroundColor: "#8F85F3",
-                                                ":hover": { backgroundColor: "#D5D1FB" },
+                                                backgroundColor: !isValid ? "#A8A8BD" : "#8F85F3",
+                                                color: "white",
+                                                ":hover": {
+                                                    backgroundColor: !isValid ? "red" : "#D5D1FB",
+                                                },
+                                                "&.Mui-disabled": {
+                                                    backgroundColor: "#A8A8BD",
+                                                    color: "white",
+                                                },
                                             }}
                                         >
-
                                             Lanjutkan
                                         </Button>
+
                                     </Box>
                                 )}
 
@@ -657,7 +678,7 @@ export default function RegistrationOnline() {
                                                             width: "100%",
                                                         }}
                                                         value={values.phoneCp}
-                                                        onChange={(val) => setFieldValue("phoneStep4", val)}
+                                                        onChange={(val) => setFieldValue("phoneCp", val)}
                                                     />
                                                     {touched.phoneCp && errors.phoneCp && (
                                                         <Typography variant="caption" color="error">
@@ -822,9 +843,9 @@ export default function RegistrationOnline() {
                                     <Box zIndex={1500}>
 
                                         <InformasiTicketAPI
-                                            clinic="clinic"
+                                            clinic={clinicName}
                                             jadwalKonsul={'senin, 04 januari 2025'}
-                                            namaDokter="udin"
+                                            namaDokter={docterName}
                                             tanggalReservasi="senin, 04 januari 2025"
                                             bookingCode=""
                                             onClose={() => setCurrentPage(1)}

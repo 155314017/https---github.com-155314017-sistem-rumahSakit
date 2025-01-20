@@ -24,7 +24,6 @@ type PatientData =
         birthPlace: string;
     };
 
-
 type Clinic = {
     id: string;
     name: string;
@@ -227,15 +226,15 @@ export default function useRegistrationOnline() {
                 });
             case 4:
                 return Yup.object().shape({
-                    phoneStep4: Yup.string().required("No. Handphone wajib diisi"),
-                    emailStep4: Yup.string()
+                    phoneCp: Yup.string().required("No. Handphone wajib diissi"),
+                    emailCp: Yup.string()
                         .email("Format email tidak valid")
                         .required("Email wajib diisi"),
-                    complaintType: Yup.string().required("Jenis kunjungan wajib diisi"),
-                    // clinic: Yup.string().required("Poli yang dituju wajib diisi"),
-                    // doctor: Yup.string().required("Dokter wajib dipilih"),
-                    schedule: Yup.string().required("Pilih jadwal terlebih dahulu"),
-                    complaint: Yup.string().required("Keluhan pasien wajib diisi"),
+                    // complaintType: Yup.string().required("Jenis kunjungan wajib diisi"),
+                    // // clinic: Yup.string().required("Poli yang dituju wajib diisi"),
+                    // // doctor: Yup.string().required("Dokter wajib dipilih"),
+                    // schedule: Yup.string().required("Pilih jadwal terlebih dahulu"),
+                    // symptoms: Yup.string().required("Keluhan pasien wajib diisi"),
                 });
             default:
                 return Yup.object().shape({});
@@ -258,47 +257,50 @@ export default function useRegistrationOnline() {
 
     const checkIdentityNumber = async (nik: string) => {
         try {
-            console.log('masuk 1')
+            console.log('masuk 1');
             const responseUser = await GetUserByNIK(nik);
-            console.log('response cari: ', responseUser)
-            setIdPatient(responseUser?.data.id ?? null);
+            console.log('response cari: ', responseUser);
+
             if (responseUser?.data != null) {
-                const response = await GetPatientByUserIdServices(idPatient || '');
-                const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
-                const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
-                const dataGet = {
-                    id: idPatient,
-                    nik: response?.data.identityNumber,
-                    email: response?.data.email,
-                    phone: response?.data.phoneNumber,
-                    fullname: response?.data.fullName,
-                    address: response?.data.address,
-                    gender: response?.data.gender,
-                    birthDate: birthDateProcess,
-                    birthPlace: birthPlaceProcess
+                const response = await GetPatientByUserIdServices(responseUser?.data.id || '');
+                if (response?.data && response?.data.birthDateAndPlace) {
+                    const [birthPlaceProcess, birthDateProcess] = response.data.birthDateAndPlace.split(',').map((item) => item.trim());
+                    const dataGet = {
+                        id: responseUser?.data.id,
+                        nik: response?.data.identityNumber,
+                        email: response?.data.email,
+                        phone: response?.data.phoneNumber,
+                        fullname: response?.data.fullName,
+                        address: response?.data.address,
+                        gender: response?.data.gender,
+                        birthDate: birthDateProcess,
+                        birthPlace: birthPlaceProcess,
+                    };
+                    console.log('dataGet: ', dataGet);
+                    setCurrentPage(3);
+                } else {
+                    console.error('Invalid patient data:', response?.data);
                 }
-                console.log('dataGet: ', dataGet)
-                // setPatientData(dataGet);
-                setCurrentPage(3);
-            } else if (responseUser?.data === null) {
-                console.log('takde')
+            } else {
+                console.log('takde');
                 setIdPatient(null);
                 setNeedAdmin(true);
                 setCurrentPage(4);
             }
         } catch (err: any) {
-            if (err.response.status === 404) {
+            if (err.response?.status === 404) {
                 const data = {
                     id: null,
                     needAdmin: true,
-                }
-                console.log('data data: ', data)
-                // navigate('/kategori/pasien', { state: { dataPatient: data, newPatient: true } })
+                };
+                console.log('data data: ', data);
                 setCurrentPage(3);
-
+            } else {
+                console.error('Unexpected error:', err);
             }
         }
-    }
+    };
+
 
     return {
         navigate,
