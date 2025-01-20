@@ -14,7 +14,7 @@ interface DetailCardProps {
     };
 }
 
-const CardJamPraktek: React.FC<DetailCardProps> = ({ title, data }) => {
+const CardJamPraktek: React.FC<DetailCardProps> = ({  data }) => {
     return (
         <div>
         <Box

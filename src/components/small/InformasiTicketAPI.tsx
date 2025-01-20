@@ -131,6 +131,29 @@ const InformasiTicketAPI = ({
           Tiket antrian konter berhasil di cetak
         </Alert>
       </Snackbar>
+
+      <Snackbar
+        open={resendSuccess}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={3000}
+        onClose={() => setResendSuccess(false)}
+      >
+        <Alert
+          onClose={() => setResendSuccess(false)}
+          severity="success"
+          sx={{
+            backgroundColor: "#DFF4DC",
+            color: "#4CAF50",
+            border: "1px solid #4CAF50",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+            borderRadius: "8px",
+            zIndex: 1500,
+          }}
+        >
+          Tiket antrian konter berhasil di cetak
+        </Alert>
+      </Snackbar>
+      
       <Box
         bgcolor={'white'}
         maxWidth={626}

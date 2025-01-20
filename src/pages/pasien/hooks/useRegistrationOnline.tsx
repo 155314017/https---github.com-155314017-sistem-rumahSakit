@@ -13,15 +13,15 @@ import GetUserByNIK from "../../../services/Admin Tenant/ManageUser/GetUserByNIK
 
 type PatientData =
     {
-        id: string;
-        nik: string;
-        email: string;
-        phone: string;
-        fullname: string;
-        address: string;
-        gender: string;
-        birthDate: string;
-        birthPlace: string;
+        id: string | undefined;
+        nik: string | undefined;
+        email: string | undefined;
+        phone: string | undefined;
+        fullname: string | undefined;
+        address: string | undefined;
+        gender: string | undefined;
+        birthDate: string | undefined;
+        birthPlace: string | undefined;
     };
 
 
@@ -267,7 +267,7 @@ export default function useRegistrationOnline() {
                 const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
                 const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
                 const dataGet = {
-                    id: idPatient,
+                    id: idPatient || '',
                     nik: response?.data.identityNumber,
                     email: response?.data.email,
                     phone: response?.data.phoneNumber,
@@ -278,7 +278,7 @@ export default function useRegistrationOnline() {
                     birthPlace: birthPlaceProcess
                 }
                 console.log('dataGet: ', dataGet)
-                // setPatientData(dataGet);
+                setPatientData(dataGet);
                 setCurrentPage(3);
             } else if (responseUser?.data === null) {
                 console.log('takde')

@@ -10,6 +10,15 @@ import PatientCheckIn from "../../../services/Patient Tenant/PatientCheckIn";
 const formatDate = (timestamp: number) => dayjs.unix(timestamp).locale('id').format('DD MMMM YYYY');
 const formatTime = (timestamp: number) => dayjs.unix(timestamp).format('HH:mm');
 
+type bookingCodeData = {
+    nomorAntrian: number; 
+    namaDokter: string;   
+    namaKlinik: string;   
+    tanggalReserve: string; 
+    jadwalKonsul: string;  
+};
+
+
 export default function useLihatTiket() {
     const [openModalKodeBooking, setOpenModalKodeBooking] = useState(false);
     const [openModalPilihPembayaran, setOpenModalPilihPembayaran] = useState(false);
@@ -17,7 +26,7 @@ export default function useLihatTiket() {
     const [inputCodePages, setInputCodePages] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [infoTicket, setInfoTicket] = useState(false);
-    const [nomorAntrian, setNomorAntrian] = useState<string | number>(0);
+    const [nomorAntrian] = useState<string | number>(0);
     const [dataKodeBooking, setDataKodeBooking] = useState<bookingCodeData>()
     
 
@@ -67,6 +76,8 @@ export default function useLihatTiket() {
     infoTicket,
     setInfoTicket,
     nomorAntrian,
+    onSubmitKodeBooking,
+    dataKodeBooking
   }
     
   

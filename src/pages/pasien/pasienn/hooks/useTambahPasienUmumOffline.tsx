@@ -4,15 +4,12 @@ import { useEffect, useState } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from 'axios';
-import GetPatientByNIKServices from '../../../../services/Patient Tenant/GetPatientByUserIdServices';
 import 'react-phone-input-2/lib/style.css';
 import { styled } from '@mui/material/styles';
 import { Radio } from '@mui/material';
 import { RadioProps } from '@mui/material/Radio';
 import dayjs from 'dayjs';
 import CreateAppointmentOffline from '../../../../services/ManagePatient/CreateAppoinmentOffline';
-import UpdatePatientGuards from '../../../../services/Patient Tenant/UpdatePatientGuard';
-import { getGuardianData } from '../../../../services/ManagePatient/getGuardianByPatientId';
 import { useNavigate } from 'react-router-dom';
 // import RegisterPatient from '../../../../services/Patient Tenant/RegisterPatient';
 
@@ -122,19 +119,19 @@ export default function useTambahPasienUmumOffline() {
     const [selectedMethod, setSelectedMethod] = useState('');
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
     const [dataTickets, setDataTickets] = useState<dataTicket>();
-    const [dataGuards, setDataGuards] = useState<GuardianData>();
+    // const [dataGuards, setDataGuards] = useState<GuardianData>();
     const [calendarKey, setCalendarKey] = useState<number>(0);
     const [needAdmin, setNeedAdmin] = useState(false);
     const [NIK, setNIK] = useState('');
     // const [patientData, setPatientData] = useState<ResponsePatient | undefined>();
     const [patientData, setPatientData] = useState<ResponsePatient>({
         id: '',
-        identityNumber: '',
-        fullName: '',
+        name: '',
         gender: '',
         email: '',
-        birthDateAndPlace: '',
-        phoneNumber: '',
+        birthDate: '',
+        birthPlace: '',
+        phone: '',
         address: '',
     });
 
@@ -711,7 +708,9 @@ export default function useTambahPasienUmumOffline() {
         birth,
         setPatientData,
         validationSchema1,
-        navigate
+        navigate,
+        setBirthDate,
+        setBirthPlace
 
     }
 }

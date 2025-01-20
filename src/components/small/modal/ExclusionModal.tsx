@@ -281,7 +281,7 @@ const ExclusionModal: React.FC<ExclusionModalProps> = ({ open, onClose, onSave }
                         options={typeExclusion}
                         placeholder="Type Exclusion"
                         onChange={(value) => setSelectedType(value)}
-                        value={selectedType}
+                        defaultValue={selectedType}
                     />
                     {errors.type && (
                         <Typography variant="caption" color="error">

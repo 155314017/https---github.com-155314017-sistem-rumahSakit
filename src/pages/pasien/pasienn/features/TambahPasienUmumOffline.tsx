@@ -24,7 +24,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import useTambahPasienUmumOffline from "../hooks/useTambahPasienUmumOffline";
-import SwitchCustom from "../../../../components/small/Switch/SwitchCustom";
 import DropdownListAPI from "../../../../components/small/dropdownlist/DropdownListAPI";
 import CustomCalender from "../../../../components/medium/CustomCalender";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
@@ -32,7 +31,6 @@ import bgImg from "../../../../assets/img/Bg-desktop.svg"
 import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
 import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import { useEffect } from "react";
-import dataPasien from "../../../../dummyData/dataPasien";
 import { Field, Form, Formik } from "formik";
 import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
 
@@ -45,11 +43,7 @@ export default function TambahPasienUmumOffline() {
         getPageStyle,
         getBorderStyle,
         isCurrentPageValid,
-        handleSwitchChange,
-        switchValue,
         mainPages,
-        guardFullPage,
-        setGuardFullPage,
         patientFullPage,
         handleScheduleChange,
         doctorOptions,
@@ -64,8 +58,6 @@ export default function TambahPasienUmumOffline() {
         handleDropdownPoli,
         createTicket,
         dataTickets,
-        birthDate,
-        birthPlace,
         showAlert,
         calendarKey,
         isLoading,
@@ -75,7 +67,6 @@ export default function TambahPasienUmumOffline() {
         fileName,
         handleFileChange,
         needAdmin,
-        setMainPages,
         NIK,
         birth,
         setPatientData,
@@ -610,11 +601,13 @@ export default function TambahPasienUmumOffline() {
                                                             alergi: '',
                                                         }
                                                         // handle form submission with dataRegis
+                                                        console.log('Form submitted:', dataRegis);
                                                     }}
                                                 >
                                                     {({ errors, touched, handleChange, handleBlur, values,
-                                                        isValid,
-                                                        dirty, setFieldValue }) => (
+                                                        // isValid,
+                                                        // dirty, 
+                                                        setFieldValue }) => (
                                                         <Form>
                                                             <Box sx={{ paddingBottom: '16px', gap: "24px", justifyContent: "center", display: 'flex', flexDirection: 'column' }}>
                                                                 <Box sx={{ display: "flex", flexDirection: "column", }}>
@@ -665,9 +658,9 @@ export default function TambahPasienUmumOffline() {
                                                                                         borderRadius: '8px',
                                                                                         border: touched.phone && errors.phone ? '1px solid #ffcccc' : '1px solid #ccc',
                                                                                         transition: 'border-color 0.3s',
-                                                                                        '&:focus-within': {
-                                                                                            borderColor: '#8F85F3',
-                                                                                        },
+                                                                                        // '&:focus-within': {
+                                                                                        //     borderColor: '#8F85F3',
+                                                                                        // },
                                                                                     }}
                                                                                 />
                                                                                 {touched.phone && errors.phone && (
@@ -782,7 +775,7 @@ export default function TambahPasienUmumOffline() {
                                                                                     </FormControl>
                                                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                                                         <Typography>Tanggal dan Jam Operasional</Typography>
-                                                                                        <CustomCalender key={calendarKey} doctorId={idDoctor} onChange={handleScheduleChange} />
+                                                                                        <CustomCalender key={calendarKey} typeId={idDoctor} onChange={handleScheduleChange} />
                                                                                     </Box>
 
                                                                                 </Box>

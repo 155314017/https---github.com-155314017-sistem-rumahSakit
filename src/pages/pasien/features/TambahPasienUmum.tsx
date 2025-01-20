@@ -51,7 +51,6 @@ export default function TambahPasienUmum() {
         findPatientByNik,
         patientData,
         BpRadio,
-        putGuard,
         changePage2,
         clinicOptions,
         handleDropdownPoli,
@@ -774,7 +773,7 @@ export default function TambahPasienUmum() {
                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                         <Typography>Tanggal dan Jam Operasional</Typography>
                                                         {/* <CalenderPopover title="Pilih tanggal" /> */}
-                                                        <CustomCalender doctorId={idDoctor} onChange={handleScheduleChange} />
+                                                        <CustomCalender typeId={idDoctor} onChange={handleScheduleChange} />
                                                     </Box>
                                                 </Box>
 
@@ -871,7 +870,6 @@ export default function TambahPasienUmum() {
                             clinic={dataTickets?.clinic || "Unknown Clinic"}
                             jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
                             namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
-                            nomorAntrian={dataTickets?.nomorAntrian}
                             tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
                             bookingCode={dataTickets?.bookingCode || "Unknown" }
                         />
