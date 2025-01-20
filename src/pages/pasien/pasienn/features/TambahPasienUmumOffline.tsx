@@ -119,9 +119,9 @@ export default function TambahPasienUmumOffline() {
                     zIndex: 1000,
                     padding: '16px',
                     width: {
-                        xs: '90%', // Untuk layar kecil (mobile)
-                        sm: '84%',  // Untuk layar sedang
-                        md: '90%',  // Untuk layar besar
+                        xs: '90%', 
+                        sm: '84%',  
+                        md: '90%',  
                         lg: '100%',
                     },
                     // bgcolor: 'blue'
@@ -195,28 +195,6 @@ export default function TambahPasienUmumOffline() {
                                     </Button>
                                 </Box>
 
-                                {/* Step 3 */}
-                                {/* <Box display={"flex"} flexDirection={"row"} width={"350px"}>
-                                    <Button
-                                        onClick={() => setCurrentPage(3)}
-                                        disabled={currentPage < 3} // Nonaktifkan jika bukan langkah terakhir
-                                        sx={{
-                                            ...getPageStyle(3),
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            mx: 2,
-                                            "&:hover": {
-                                                backgroundColor: "inherit",
-                                            },
-                                        }}
-                                    >
-                                        <Box sx={getBorderStyle(3)}>3</Box>
-                                        <Typography sx={{ ml: 1, textTransform: 'none' }}>
-                                            Jenis Kunjungan dan Keluhan
-                                        </Typography>
-                                    </Button>
-                                </Box> */}
                             </Box>
 
 

@@ -89,7 +89,7 @@ const InformasiTicketAPI = ({
   };
 
   return (
-    <Box width={"100%"}>
+    <Box width={"100%"} >
       <Snackbar
         open={showAlert}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
@@ -141,7 +141,7 @@ const InformasiTicketAPI = ({
         bgcolor={bgcolor}
         position={"relative"}
         padding={"25px"}
-        sx={{ overflow: "hidden" }}
+        sx={{ overflow: "hidden", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", }}
       >
         {onClose && (
           <IconButton
@@ -170,7 +170,7 @@ const InformasiTicketAPI = ({
           image={my}
           alt="Example Image"
         />
-        <Box display={"flex"} flexDirection={"column"} gap={"17px"} marginLeft={"4%"}>
+        <Box display={"flex"} flexDirection={"column"} gap={"17px"} marginLeft={"4%"}  >
           <CardMedia
             component="img"
             height="52"
