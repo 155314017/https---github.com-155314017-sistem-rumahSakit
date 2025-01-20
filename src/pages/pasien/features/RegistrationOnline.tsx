@@ -187,7 +187,7 @@ export default function RegistrationOnline() {
                                         }}
                                         mb={3}
                                     >
-                                        {(currentPage === 1 || currentPage === 2) && (
+                                        {(currentPage === 2 || currentPage === 3) && (
                                             <Box mb={2} ml={5}>
                                                 <Typography
                                                     fontSize="32px"
@@ -207,28 +207,7 @@ export default function RegistrationOnline() {
                                                 </Typography>
                                             </Box>
                                         )}
-                                        {currentPage === 3 && (
-                                            <Box mb={2} ml="6%">
-                                                <Typography
-                                                    fontWeight={600}
-                                                    fontSize="20px"
-                                                    lineHeight="22px"
-                                                >
-                                                    Pilih kategori pasien
-                                                </Typography>
-                                                <Typography
-                                                    maxWidth="90%"
-                                                    fontWeight={400}
-                                                    fontSize="16px"
-                                                    lineHeight="18px"
-                                                    color="#747487"
-                                                >
-                                                    Membantu tenaga medis dalam memberikan perawatan yang
-                                                    lebih terorganisir, sesuai dengan tingkat kebutuhan
-                                                    pasien.
-                                                </Typography>
-                                            </Box>
-                                        )}
+
                                         <Box display="flex" flexDirection="row">
                                             <Box display="flex" flexDirection="row" width="290px">
                                                 <Button
@@ -274,6 +253,28 @@ export default function RegistrationOnline() {
                                                 </Button>
                                             </Box>
                                         </Box>
+                                        {currentPage === 1 && (
+                                            <Box mb={2} ml="6%">
+                                                <Typography
+                                                    fontWeight={600}
+                                                    fontSize="20px"
+                                                    lineHeight="22px"
+                                                >
+                                                    Pilih kategori pasien
+                                                </Typography>
+                                                <Typography
+                                                    maxWidth="90%"
+                                                    fontWeight={400}
+                                                    fontSize="16px"
+                                                    lineHeight="18px"
+                                                    color="#747487"
+                                                >
+                                                    Membantu tenaga medis dalam memberikan perawatan yang
+                                                    lebih terorganisir, sesuai dengan tingkat kebutuhan
+                                                    pasien.
+                                                </Typography>
+                                            </Box>
+                                        )}
                                     </Box>
                                 )}
 
