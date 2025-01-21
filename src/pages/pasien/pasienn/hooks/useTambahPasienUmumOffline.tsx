@@ -67,6 +67,16 @@ type dataTicket = {
     tanggalReservasi: string;
     jadwalKonsul: string | null;
     bookingCode: string
+
+    // patientId?: string | undefined;
+    // typeOfVisit: string;
+    // clinicId: string;
+    // doctorId: string;
+    // scheduleIntervalId: string | null;
+    // scheduleDate: string;
+    // symptoms: string;
+    // needAdmin: boolean;
+    // offline: boolean;
 }
 
 

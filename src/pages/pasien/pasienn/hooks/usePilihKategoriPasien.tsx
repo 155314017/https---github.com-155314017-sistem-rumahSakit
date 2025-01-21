@@ -75,7 +75,8 @@ export default function usePilihKategoriPasien() {
         setIsLoading(true);
         const bookingCode = { bookingCode: values.bookingCode };
         try {
-            const response = await PatientCheckIn(bookingCode)
+            const response = await PatientCheckIn(bookingCode);
+            pasienBaru();
             const dateTime = formatDate(response.registrationDatum.scheduleDatum.startDateTime);
             const startTime = formatTime(response.registrationDatum.scheduleDatum.startDateTime);
             const endTime = formatTime(response.registrationDatum.scheduleDatum.endDateTime);
@@ -98,8 +99,11 @@ export default function usePilihKategoriPasien() {
         } catch (err: any) {
             setIsLoading(false);
             showTemporaryAlert();
+            
             console.log(err)
         }
+
+        
 
     }
 
