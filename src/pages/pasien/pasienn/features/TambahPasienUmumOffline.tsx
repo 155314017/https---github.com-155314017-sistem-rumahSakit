@@ -626,6 +626,7 @@ export default function TambahPasienUmumOffline() {
                                                         
                                                         // createTicket(dataTiket);
                                                         registrationPatient(dataRegis);
+                                                        
                                                     }}
                                                 >
                                                     {({ errors, touched, handleChange, handleBlur, values,

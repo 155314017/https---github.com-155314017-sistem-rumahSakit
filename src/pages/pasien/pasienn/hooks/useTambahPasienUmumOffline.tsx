@@ -690,10 +690,14 @@ export default function useTambahPasienUmumOffline() {
             //     tanggalReservasi: createdDateTimeFormatted,
             //     jadwalKonsul: selectedSchedule,
             //     bookingCode: response.data.bookingCode
+
             // }
+            console.log("Registration Id : ",response.data.data.id);
+            console.log("Clinic Id : ",response.data.data.masterClinicId);
+            console.log("Need Admin : ",response.data.data.needAdmin);
             setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
             setRegistrationCode(response.data.data.id);
-            console.log("Registration : ",dataTickets)
+            console.log("Registration : ",dataTickets);
             setMainPages(false)
             // setCurrentPage(3);
         } catch (err: any) {
