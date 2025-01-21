@@ -799,11 +799,11 @@ export default function RegistrationOnline() {
                                                                 handleScheduleChange(scheduleId, schedule);
                                                             }}
                                                         />
-                                                        {touched.schedule && errors.schedule && (
+                                                        {/* {touched.schedule && errors.schedule && (
                                                             <Typography variant="caption" color="error">
                                                                 {errors.schedule as string}
                                                             </Typography>
-                                                        )}
+                                                        )} */}
                                                     </Box>
                                                 </Box>
                                                 <FormControl sx={{ mt: 2 }}>
@@ -870,6 +870,7 @@ export default function RegistrationOnline() {
                                             tanggalReservasi="senin, 04 januari 2025"
                                             bookingCode=""
                                             onClose={() => setCurrentPage(1)}
+                                            // nomorAntrian={'1'}
                                         // clinic={dataTickets?.clinic || "Unknown Clinic"}
                                         // jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
                                         // namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
