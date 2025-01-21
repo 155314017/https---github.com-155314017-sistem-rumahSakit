@@ -33,16 +33,16 @@ type PatientData =
         birthPlace: string | undefined;
     };
 
-type dataPasien = {
-    id: string;
-    additionalInfo: string | null;
-    address: string;
-    birthDate: string; // [year, month, day]
-    gender: string;
-    masterUserId: string;
-    name: string;
-    phone: string;
-}
+// type dataPasien = {
+//     id: string;
+//     additionalInfo: string | null;
+//     address: string;
+//     birthDate: string; // [year, month, day]
+//     gender: string;
+//     masterUserId: string;
+//     name: string;
+//     phone: string;
+// }
 
 // type GuardianData = {
 //     guardianType: string
@@ -151,69 +151,69 @@ export default function useTambahPasienUmumOffline() {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const [birth, setBirth] = useState('');
-    const [idPatient, setIdPatient] = useState('');
+    const [idPatient, setIdPatient] = useState<string | undefined>('');
     const [patientData, setPatientData] = useState<PatientData>();
 
     const [fileName, setFileName] = useState("");
 
 
-    const dummyData = {
-        responseCode: "200",
-        message: "Success",
-        data: [
-            {
-                id: "1",
-                additionalInfo: "Penyakit bawaan: Asma",
-                address: "Jl. Sudirman No. 45, Jakarta",
-                birthDate: [1990, 5, 15], // 15 Mei 1990
-                createdBy: "admin123",
-                createdDateTime: 1672545600000, // 1 Januari 2023, dalam epoch timestamp
-                deletedBy: null,
-                deletedDateTime: null,
-                gender: "MEN",
-                masterUserId: "M123",
-                name: "John Doe",
-                phone: "081234567890",
-                updatedBy: "admin456",
-                updatedDateTime: 1695148800000, // 20 September 2023
-                birthPlace: "Bandung",
-            },
-            {
-                id: "2",
-                additionalInfo: null,
-                address: "Jl. Malioboro No. 10, Yogyakarta",
-                birthDate: [1985, 12, 25], // 25 Desember 1985
-                createdBy: "admin123",
-                createdDateTime: 1656662400000, // 1 Juli 2022
-                deletedBy: "admin789",
-                deletedDateTime: 1696454400000, // 4 Oktober 2023
-                gender: "Female",
-                masterUserId: "M124",
-                name: "Jane Smith",
-                phone: "085678123456",
-                updatedBy: null,
-                updatedDateTime: null,
-                birthPlace: "Surabaya",
-            },
-            {
-                id: "3",
-                additionalInfo: "Penyakit bawaan: Diabetes",
-                address: "Jl. Gajah Mada No. 77, Semarang",
-                birthDate: [1995, 7, 20], // 20 Juli 1995
-                createdBy: "admin234",
-                createdDateTime: 1664582400000, // 1 Oktober 2022
-                deletedBy: null,
-                deletedDateTime: null,
-                gender: "Male",
-                masterUserId: "M125",
-                name: "Michael Johnson",
-                phone: "089876543210",
-                updatedBy: "admin123",
-                updatedDateTime: 1689475200000, // 15 Juli 2023
-                birthPlace: "Medan",
-            },
-        ],
-    };
+    // const dummyData = {
+    //     responseCode: "200",
+    //     message: "Success",
+    //     data: [
+    //         {
+    //             id: "1",
+    //             additionalInfo: "Penyakit bawaan: Asma",
+    //             address: "Jl. Sudirman No. 45, Jakarta",
+    //             birthDate: [1990, 5, 15], // 15 Mei 1990
+    //             createdBy: "admin123",
+    //             createdDateTime: 1672545600000, // 1 Januari 2023, dalam epoch timestamp
+    //             deletedBy: null,
+    //             deletedDateTime: null,
+    //             gender: "MEN",
+    //             masterUserId: "M123",
+    //             name: "John Doe",
+    //             phone: "081234567890",
+    //             updatedBy: "admin456",
+    //             updatedDateTime: 1695148800000, // 20 September 2023
+    //             birthPlace: "Bandung",
+    //         },
+    //         {
+    //             id: "2",
+    //             additionalInfo: null,
+    //             address: "Jl. Malioboro No. 10, Yogyakarta",
+    //             birthDate: [1985, 12, 25], // 25 Desember 1985
+    //             createdBy: "admin123",
+    //             createdDateTime: 1656662400000, // 1 Juli 2022
+    //             deletedBy: "admin789",
+    //             deletedDateTime: 1696454400000, // 4 Oktober 2023
+    //             gender: "Female",
+    //             masterUserId: "M124",
+    //             name: "Jane Smith",
+    //             phone: "085678123456",
+    //             updatedBy: null,
+    //             updatedDateTime: null,
+    //             birthPlace: "Surabaya",
+    //         },
+    //         {
+    //             id: "3",
+    //             additionalInfo: "Penyakit bawaan: Diabetes",
+    //             address: "Jl. Gajah Mada No. 77, Semarang",
+    //             birthDate: [1995, 7, 20], // 20 Juli 1995
+    //             createdBy: "admin234",
+    //             createdDateTime: 1664582400000, // 1 Oktober 2022
+    //             deletedBy: null,
+    //             deletedDateTime: null,
+    //             gender: "Male",
+    //             masterUserId: "M125",
+    //             name: "Michael Johnson",
+    //             phone: "089876543210",
+    //             updatedBy: "admin123",
+    //             updatedDateTime: 1689475200000, // 15 Juli 2023
+    //             birthPlace: "Medan",
+    //         },
+    //     ],
+    // };
 
     const handleFileChange = (event: any) => {
         const file = event.target.files[0];
@@ -349,7 +349,7 @@ export default function useTambahPasienUmumOffline() {
 
     }
 
-    
+
 
 
     function BpRadio(props: RadioProps) {
@@ -393,14 +393,12 @@ export default function useTambahPasienUmumOffline() {
 
     const findPatientByNik = async (nik: string) => {
         try {
-            // Menyembunyikan halaman penuh untuk loading
-
-            // Simulasi response dari API
             const response = await GetUserByNIK(nik);
             setNIK(nik);
+            setIdPatient(response?.data.id);
 
             // Validasi response
-            if (response?.responseCode === "200" ) {
+            if (response?.responseCode === "200") {
                 // Mencari pasien berdasarkan NIK di data dummy
                 const response = await GetPatientByUserIdServices(idPatient || '');
                 const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
@@ -417,18 +415,18 @@ export default function useTambahPasienUmumOffline() {
                     birthPlace: birthPlaceProcess
                 }
 
-                    // Set state dengan data yang terproses
-                    setDataPasien(dataGet);
-                    setBirth(dataGet?.birthDate || '');
-                    setPatientData(dataGet);
-                    console.log(birth);
-                    setPatientFullsPage(false);
-                } else {
-                    // Jika pasien dengan NIK tidak ditemukan
-                    console.error("Pasien dengan NIK tersebut tidak ditemukan.");
-                    showTemporaryAlert(); // Tampilkan alert untuk user
-                }
-            
+                // Set state dengan data yang terproses
+                setDataPasien(dataGet);
+                setBirth(dataGet?.birthDate || '');
+                setPatientData(dataGet);
+                console.log(birth);
+                setPatientFullsPage(false);
+            } else {
+                // Jika pasien dengan NIK tidak ditemukan
+                console.error("Pasien dengan NIK tersebut tidak ditemukan.");
+                showTemporaryAlert(); // Tampilkan alert untuk user
+            }
+
         } catch (err: any) {
             // Error handling
             if (err.response?.status === 404) {
@@ -524,7 +522,7 @@ export default function useTambahPasienUmumOffline() {
     // }
 
 
-    
+
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedMethod(event.target.value);

@@ -56,7 +56,7 @@ export default function TambahPasienUmumOffline() {
         changePage2,
         clinicOptions,
         handleDropdownPoli,
-        createTicket,
+        // createTicket,
         dataTickets,
         showAlert,
         calendarKey,
@@ -362,7 +362,7 @@ export default function TambahPasienUmumOffline() {
                                                                             },
                                                                         }}
                                                                         name="fullname"
-                                                                        value={patientData.name}
+                                                                        value={patientData?.fullname || ""}
                                                                         disabled
                                                                     />
                                                                 </FormControl>
@@ -466,7 +466,7 @@ export default function TambahPasienUmumOffline() {
                                                                         <RadioGroup
                                                                             aria-labelledby="gender-label"
                                                                             name="gender"
-                                                                            value={patientData.gender}
+                                                                            value={patientData?.gender}
                                                                             onChange={(e) => setFieldValue("gender", e.target.value)}
                                                                             row
                                                                         >
@@ -499,7 +499,7 @@ export default function TambahPasienUmumOffline() {
                                                                                 },
                                                                             },
                                                                         }}
-                                                                        value={patientData.address}
+                                                                        value={patientData?.address}
                                                                         multiline
                                                                         minRows={2}
                                                                         disabled
