@@ -33,7 +33,6 @@ import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
-import { create } from "@mui/material/styles/createTransitions";
 
 
 export default function TambahPasienUmumOffline() {
@@ -282,7 +281,7 @@ export default function TambahPasienUmumOffline() {
                                                 changePage2();
                                             }}
                                         >
-                                            {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
+                                            {({ errors, touched, handleChange, handleBlur, values, setFieldValue }) => (
                                                 <Form>
                                                     <Box>
                                                         <Box

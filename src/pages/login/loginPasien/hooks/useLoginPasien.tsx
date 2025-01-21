@@ -69,8 +69,8 @@ export default function useLoginPasien() {
       const response = await GetPatientByNIKServices(values.nik);
       // if there's data of patient by identity number inputed
       if (response?.responseCode === "200") {
-        const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
-        const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
+        // const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
+        // const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
         const dataGet = {
           id: response.data.id,
           nik: response?.data.identityNumber,
@@ -79,8 +79,8 @@ export default function useLoginPasien() {
           fullname: response?.data.fullName,
           address: response?.data.address,
           gender: response?.data.gender,
-          birthDate: birthDateProcess,
-          birthPlace: birthPlaceProcess
+          // birthDate: birthDateProcess,
+          // birthPlace: birthPlaceProcess
         }
         // next to check all of patient data, carrying dataGet 
         navigate('/register/pasien/baru', { state: { patientData: true, data: dataGet } })

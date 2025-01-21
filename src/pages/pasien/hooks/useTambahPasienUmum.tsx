@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from 'axios';
-import GetPatientByNIKServices from '../../../services/Patient Tenant/GetPatientByUserIdServices';
 import 'react-phone-input-2/lib/style.css';
 import { styled } from '@mui/material/styles';
 import { Radio } from '@mui/material';
@@ -64,7 +63,7 @@ export default function useTambahPasienUmum() {
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
     const [dataTickets, setDataTickets] = useState<dataTicket>();
     // const [patientData, setPatientData] = useState<ResponsePatient | undefined>();
-    const [patientData, setPatientData] = useState<ResponsePatient>({
+    const [patientData] = useState<ResponsePatient>({
         id: '',
         identityNumber: '',
         fullName: '',
@@ -79,8 +78,8 @@ export default function useTambahPasienUmum() {
     const [idClinic, setIdClinic] = useState('');
     const [idDoctor, setIdDoctor] = useState('');
     const [docterName, setDocterName] = useState('');
-    const [birthPlace, setBirthPlace] = useState('');
-    const [birthDate, setBirthDate] = useState('');
+    const [birthPlace] = useState('');
+    const [birthDate] = useState('');
     const [mainPages, setMainPages] = useState(true);
     const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
     const [clinicName, setClinicName] = useState('');
@@ -252,21 +251,21 @@ export default function useTambahPasienUmum() {
         fetchDoctorData();
     }, []);
 
-    const findPatientByNik = async (nik: string) => {
-        try {
-            const response = await GetPatientByNIKServices(nik);
+    // const findPatientByNik = async (nik: string) => {
+    //     try {
+    //         // const response = await GetPatientByNIKServices(nik);
 
 
-            setPatientData(response?.data as ResponsePatient);
-            const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
-            const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
-            setBirthDate(birthDateProcess ? birthDateProcess : "Data tidak ada")
-            setBirthPlace(birthPlaceProcess ? birthPlaceProcess : "Data tidak ada")
-            setPatientFullsPage(false);
-        } catch (error) {
-            console.error("Error fetching", error);
-        }
-    }
+    //         // setPatientData(response?.data as ResponsePatient);
+    //         // // const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
+    //         // // const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
+    //         // setBirthDate(birthDateProcess ? birthDateProcess : "Data tidak ada")
+    //         // setBirthPlace(birthPlaceProcess ? birthPlaceProcess : "Data tidak ada")
+    //         // setPatientFullsPage(false);
+    //     } catch (error) {
+    //         console.error("Error fetching", error);
+    //     }
+    // }
 
     const putGuard = async () => {
         try {
@@ -428,7 +427,7 @@ export default function useTambahPasienUmum() {
         doctorOptions,
         setIdDoctor,
         idDoctor,
-        findPatientByNik,
+        // findPatientByNik,
         patientData,
         BpRadio,
         putGuard,

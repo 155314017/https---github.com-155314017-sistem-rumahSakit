@@ -590,13 +590,13 @@ export default function useTambahPasienUmumOffline() {
         }
     };
 
-    const createTicket = async (data: dataTicket) => {
+    const createTicket = async (dataPatient: dataTicket) => {
         setIsLoading(true)
 
-        
+       
 
         try {
-            const response = await CreateAppointmentOffline(data)
+            const response = await CreateAppointmentOffline(dataPatient)
             const createdDateTimeFormatted = dayjs.unix(response.scheduleDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
             const dataSent = {
                 nomorAntrian: response.queueDatum.queueNumber,

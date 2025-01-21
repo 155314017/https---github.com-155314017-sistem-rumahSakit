@@ -48,7 +48,6 @@ export default function TambahPasienUmum() {
         doctorOptions,
         idDoctor,
         handleDropdownDocter,
-        findPatientByNik,
         patientData,
         BpRadio,
         changePage2,
@@ -182,7 +181,7 @@ export default function TambahPasienUmum() {
                                         <Button
                                             type="button"
                                             // onClick={() => patientPage ? setPatientPage(true) : setCurrentPage(2)}
-                                            onClick={() => findPatientByNik(formik.values.nikCari)}
+                                            // onClick={() => findPatientByNik(formik.values.nikCari)}
                                             variant="contained"
                                             color="inherit"
                                             sx={{

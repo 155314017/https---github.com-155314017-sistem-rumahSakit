@@ -1,13 +1,12 @@
 import axios from 'axios'
 
 interface Data {
-  patientId: string | undefined
-  typeOfVisit: string
-  clinicId: string
-  doctorId: string
-  scheduleId: string
-  symptoms: string
-  referenceDoc: string
+  nomorAntrian: any | undefined;
+  namaDokter: string;
+  clinic: string;
+  tanggalReservasi: string;
+  jadwalKonsul: string | null;
+  bookingCode: string
 }
 const CreateAppointmentOffline = async (data: Data) => {
   try {
