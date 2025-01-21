@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import * as Yup from "yup";
 import GenerateQueuePatientServices from "../../../../services/Patient Tenant/GenerateQueuePatientServices";
@@ -97,6 +98,7 @@ export default function usePilihKategoriPasien() {
         } catch (err: any) {
             setIsLoading(false);
             showTemporaryAlert();
+            console.log(err)
         }
 
     }
