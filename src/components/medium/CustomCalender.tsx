@@ -58,7 +58,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
     useEffect(() => {
         const fetchSchedules = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/schedule-interval/${typeId}`);
+                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/schedule-interval/by-type-id/${typeId}`);
                 console.log('response calendar: ', response.data.data);
                 if (Array.isArray(response.data.data) && response.data.data.length > 0) {
                     const schedules = response.data.data.map((item: any) => ({

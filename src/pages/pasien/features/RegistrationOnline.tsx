@@ -52,7 +52,9 @@ export default function RegistrationOnline() {
         setCurrentPage,
         currentPage,
         patientData,
-        registrationPatient
+        registrationPatient,
+        tanggalReserve,
+        bookingCode
     } = useRegistrationOnline();
     return (
         <>
@@ -116,17 +118,16 @@ export default function RegistrationOnline() {
 
                 <Box
                     sx={{
-                        ml: "53%",
+                        ml: "50%",
                         display: "flex",
                         flexDirection: "column",
-                        position: "absolute",
-                        minHeight: "91vh",
-                        mt: 'auto',
-                        // p: 4,
+                        position: "relative",
+                        minHeight: "100vh",
                         justifyContent: "center",
                         alignItems: "center",
                         // bgcolor: 'blue',
-                        maxWidth: '50%'
+                        minWidth: 'auto',
+                        overflow: "auto",
                     }}
                 >
                     <Formik
@@ -158,7 +159,6 @@ export default function RegistrationOnline() {
                                         email: values.emailCp,
                                         needAdmin: needAdmin,
                                     };
-                                    console.log('dataaa:', data);
                                     registrationPatient(data);
                                     // setCurrentPage(5);
                                     return;
@@ -875,17 +875,11 @@ export default function RegistrationOnline() {
 
                                         <InformasiTicketAPI
                                             clinic={clinicName}
-                                            jadwalKonsul={'senin, 04 januari 2025'}
+                                            tanggalReservasi={tanggalReserve}
                                             namaDokter={docterName}
-                                            tanggalReservasi="senin, 04 januari 2025"
-                                            bookingCode=""
+                                            jadwalKonsul={dayjs(selectedSchedule?.split(",")[0]).format("YYYY-MM-DD")}
+                                            bookingCode={bookingCode}
                                             onClose={() => setCurrentPage(1)}
-                                        // nomorAntrian={'1'}
-                                        // clinic={dataTickets?.clinic || "Unknown Clinic"}
-                                        // jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
-                                        // namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
-                                        // // nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
-                                        // tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
                                         />
                                     </Box>
                                 )}

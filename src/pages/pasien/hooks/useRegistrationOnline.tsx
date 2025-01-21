@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import GetPatientByUserIdServices from "../../../services/Patient Tenant/GetPatientByUserIdServices";
 import GetUserByNIK from "../../../services/Admin Tenant/ManageUser/GetUserByNIK";
+import dayjs from "dayjs";
 
 type PatientData =
     {
@@ -88,6 +89,8 @@ export default function useRegistrationOnline() {
     const [needAdmin, setNeedAdmin] = useState(false);
     const [patientData, setPatientData] = useState<PatientData>();
     const [idPatient, setIdPatient] = useState<string | null>('');
+    const [tanggalReserve, setTanggalReserve] = useState('');
+    const [bookingCode, setBookingCode] = useState('');
 
     useEffect(() => {
         const fetchClinicData = async () => {
@@ -234,8 +237,6 @@ export default function useRegistrationOnline() {
                         .email("Format email tidak valid")
                         .required("Email wajib diisi"),
                     typeOfVisit: Yup.string().required("Jenis kunjungan wajib diisi"),
-                    // clinic: Yup.string().required("Poli yang dituju wajib diisi"),
-                    // doctor: Yup.string().required("Dokter wajib dipilih"),
                     schedule: Yup.string().required("Pilih jadwal terlebih dahulu"),
                     symptoms: Yup.string().required("Keluhan pasien wajib diisi"),
                 });
@@ -245,17 +246,22 @@ export default function useRegistrationOnline() {
     };
 
     const registrationPatient = async (data: any) => {
-        const response = await axios.post(
-            `https://hms.3dolphinsocial.com:8083/v1/manage/registration/`,
-            { data: data },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-        console.log('hasil akhir: ', response);
-        setCurrentPage(5);
+        try {
+            const response = await axios.post(
+                "https://hms.3dolphinsocial.com:8083/v1/manage/registration/",
+                data,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
+            setBookingCode(response.data.data.bookingCode);
+            setCurrentPage(5);
+        } catch (err: any) {
+            console.log(err);
+        }
     }
 
     const checkIdentityNumber = async (nik: string) => {
@@ -327,7 +333,9 @@ export default function useRegistrationOnline() {
         currentPage,
         patientData,
         registrationPatient,
-        idPatient
+        idPatient,
+        tanggalReserve,
+        bookingCode
     }
 }
 
