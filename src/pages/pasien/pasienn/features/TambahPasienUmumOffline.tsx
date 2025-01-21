@@ -601,19 +601,26 @@ export default function TambahPasienUmumOffline() {
                                                             // docs: '',
                                                             // asuranceDocs: '',
                                                             patientId: patientData?.id,
-                                                            typeOfVisit: values.jenisKunjungan,
                                                             clinicId: idClinic,
                                                             doctorId: idDoctor,
+                                                            typeOfVisit: values.jenisKunjungan,
+                                                            scheduleDate: dayjs(selectedSchedule?.split(",")[0]).format("YYYY-MM-DD"),
                                                             scheduleIntervalId: selectedScheduleId,
-                                                            scheduleDate: dayjs(selectedSchedule?.split(",")[0]).format("L"),
                                                             symptoms: values.complaint,
+                                                            referenceDoc: "",
                                                             needAdmin: needAdmin,
-                                                            // riwayatPenyakit: '',
-                                                            // alergi: '',
                                                             offline: true
                                                         }
-                                                        // handle form submission with dataRegis
-                                                        setDataTickets(dataRegis);
+
+                                                        const dataTiket = {
+                                                            nomorAntrian: '1',
+                                                            namaDokter: 'udin',
+                                                            clinic: 'klinik a',
+                                                            tanggalReservasi: '21 januari 2025',
+                                                            jadwalKonsul: '22 januari 2025',
+                                                            bookingCode: '12ads',
+                                                        }
+                                                        setDataTickets(dataTiket);
                                                         console.log('Form submitted:', dataRegis);
                                                         registrationPatient(dataRegis);
                                                     }}
