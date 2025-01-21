@@ -33,6 +33,7 @@ import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
+import { create } from "@mui/material/styles/createTransitions";
 
 
 export default function TambahPasienUmumOffline() {
@@ -76,7 +77,8 @@ export default function TambahPasienUmumOffline() {
         registrationPatient,
         selectedScheduleId,
         selectedSchedule,
-        setDataTickets
+        setDataTickets,
+        createTicket
 
 
 
@@ -250,14 +252,14 @@ export default function TambahPasienUmumOffline() {
                                     {!patientFullPage && (<>
                                         <Formik
                                             initialValues={{
-                                                nik: NIK,
-                                                email: "",
-                                                phone: patientData?.phone,
-                                                fullname: patientData?.fullname,
-                                                gender: patientData?.gender,
-                                                address: patientData?.address,
-                                                birthPlace: patientData?.birthPlace,
-                                                birthDate: patientData?.birthDate,
+                                                nik: NIK || '',
+                                                email: patientData?.email || '',
+                                                phone: patientData?.phone || '',
+                                                fullname: patientData?.fullname || '',
+                                                gender: patientData?.gender || '',
+                                                address: patientData?.address || '',
+                                                birthPlace: patientData?.birthPlace || '',
+                                                birthDate: patientData?.birthDate || '',
                                             }}
                                             enableReinitialize
                                             validationSchema={validationSchema}
@@ -268,7 +270,7 @@ export default function TambahPasienUmumOffline() {
                                                     id: patientData?.id,
                                                     address: patientData?.address,
                                                     nik: values?.nik,
-                                                    email: values?.email,
+                                                    email: patientData?.email,
                                                     phone: patientData?.phone,
                                                     gender: patientData?.gender,
                                                     fullname: patientData?.fullname,
@@ -471,8 +473,8 @@ export default function TambahPasienUmumOffline() {
                                                                             onChange={(e) => setFieldValue("gender", e.target.value)}
                                                                             row
                                                                         >
-                                                                            <FormControlLabel value="MEN" control={<BpRadio />} label="Pria" />
-                                                                            <FormControlLabel value="WOMEN" control={<BpRadio />} label="Wanita" />
+                                                                            <FormControlLabel value="MALE" control={<BpRadio />} label="Pria" />
+                                                                            <FormControlLabel value="FEMALE" control={<BpRadio />} label="Wanita" />
                                                                         </RadioGroup>
                                                                     </FormControl>
                                                                 </Box>
@@ -547,7 +549,7 @@ export default function TambahPasienUmumOffline() {
                                                                         borderRadius: "8px",
                                                                         ":hover": { bgcolor: "#a098f5" },
                                                                     }}
-                                                                    disabled={!(isValid && dirty)}
+                                                                    // disabled={!(isValid && dirty)}
                                                                 >
                                                                     Selanjutnya
                                                                 </Button>
@@ -622,6 +624,7 @@ export default function TambahPasienUmumOffline() {
                                                         }
                                                         setDataTickets(dataTiket);
                                                         console.log('Form submitted:', dataRegis);
+                                                        createTicket(dataTiket);
                                                         registrationPatient(dataRegis);
                                                     }}
                                                 >
@@ -780,7 +783,7 @@ export default function TambahPasienUmumOffline() {
                                                                                     loading={false}
                                                                                 />
 
-                                                                                <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} sx={{ width: "100%" }}>
+                                                                                <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} sx={{ width: "100%", height:"auto" }}>
                                                                                     <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
                                                                                         <Typography>Dokter yang bertugas</Typography>
                                                                                         <DropdownListAPI
@@ -788,6 +791,7 @@ export default function TambahPasienUmumOffline() {
                                                                                             options={doctorOptions.map(({ id, name }) => ({ value: id, label: name }))}
                                                                                             onChange={handleDropdownDocter}
                                                                                             loading={false}
+                                                                                            valueField="value"
 
                                                                                         />
                                                                                         <Typography color="error">

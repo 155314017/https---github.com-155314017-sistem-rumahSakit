@@ -81,8 +81,8 @@ type dataTicket = {
 
 
 const validationSchema = Yup.object().shape({
-    nik: Yup.string().required('NIK harus diisi'),
-    email: Yup.string().email('Email tidak valid').required('Email harus diisi'),
+    // nik: Yup.string().required('NIK harus diisi'),
+    // email: Yup.string().email('Email tidak valid').required('Email harus diisi'),
 
     // nik: Yup.string()
     //     .matches(/^[0-9]+$/, 'NIK harus berupa angka')
@@ -115,8 +115,7 @@ const validationSchema1 = Yup.object().shape({
         .required('Jenis Kunjungan is required'),
     complaint: Yup.string()
         .required('Keluhan Pasien is required'),
-    doctor: Yup.string()
-        .required('Dokter yang bertugas is required'),
+    
 });
 
 
@@ -403,26 +402,32 @@ export default function useTambahPasienUmumOffline() {
 
     const findPatientByNik = async (nik: string) => {
         try {
-            const response = await GetUserByNIK(nik);
+            const responsePatient = await GetUserByNIK(nik);
             setNIK(nik);
-            setIdPatient(response?.data.id);
+            setIdPatient(responsePatient?.data.id);
+            
 
             // Validasi response
-            if (response?.responseCode === "200") {
+            if (responsePatient?.responseCode === "200") {
+
                 // Mencari pasien berdasarkan NIK di data dummy
-                const response = await GetPatientByUserIdServices(idPatient || '');
-                const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
-                const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
+                const response = await GetPatientByUserIdServices(responsePatient.data.id || '');
+                // const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
+                // const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
+                const birthDateArray = response?.data.birthDate || [];
+                const formattedBirthDate = birthDateArray.length === 3 
+                    ? `${String(birthDateArray[1]).padStart(2, '0')}/${String(birthDateArray[2]).padStart(2, '0')}/${birthDateArray[0]}`
+                    : '';
                 const dataGet = {
                     id: idPatient || '',
                     nik: response?.data.identityNumber,
-                    email: response?.data.email,
-                    phone: response?.data.phoneNumber,
-                    fullname: response?.data.fullName,
+                    email: responsePatient.data.email,
+                    phone: responsePatient.data.phone,
+                    fullname: responsePatient?.data.firstName + ' ' + responsePatient?.data.lastName,
                     address: response?.data.address,
                     gender: response?.data.gender,
-                    birthDate: birthDateProcess,
-                    birthPlace: birthPlaceProcess
+                    birthDate: formattedBirthDate,
+                    birthPlace: response?.data.birthPlace
                 }
 
                 // Set state dengan data yang terproses
@@ -585,19 +590,10 @@ export default function useTambahPasienUmumOffline() {
         }
     };
 
-    const createTicket = async () => {
+    const createTicket = async (data: dataTicket) => {
         setIsLoading(true)
 
-        const data = {
-            patientId: patientData?.id,
-            // patientId: "a9461920-b918-4e39-8cae-33f4f76e39cf", //nanti diganti
-            typeOfVisit: formik.values.jenisKunjungan,
-            clinicId: idClinic,
-            doctorId: idDoctor,
-            scheduleId: selectedScheduleId ? selectedScheduleId : '',
-            symptoms: formik.values.keluhan,
-            referenceDoc: formik.values.docs,
-        };
+        
 
         try {
             const response = await CreateAppointmentOffline(data)

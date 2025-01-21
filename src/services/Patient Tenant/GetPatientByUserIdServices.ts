@@ -1,10 +1,12 @@
 import axios from 'axios'
 
+
 interface PatientData {
   id: string
   identityNumber: string
   fullName: string
-  birthDateAndPlace: string
+  birthDate: number | any
+  birthPlace: string
   phoneNumber: string
   email: string
   gender: string
@@ -17,6 +19,7 @@ interface PatientResponse {
   message: string
   data: PatientData
 }
+
 
 const GetPatientByUserIdServices = async (userId: string): Promise<PatientResponse | null> => {
   try {
