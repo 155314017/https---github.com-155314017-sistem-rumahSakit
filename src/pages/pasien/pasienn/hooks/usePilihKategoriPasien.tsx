@@ -76,26 +76,29 @@ export default function usePilihKategoriPasien() {
         const bookingCode = { bookingCode: values.bookingCode };
         try {
             const response = await PatientCheckIn(bookingCode);
-            pasienBaru();
-            const dateTime = formatDate(response.registrationDatum.scheduleDatum.startDateTime);
-            const startTime = formatTime(response.registrationDatum.scheduleDatum.startDateTime);
-            const endTime = formatTime(response.registrationDatum.scheduleDatum.endDateTime);
-            const consultationSchedule = dateTime + ' ' + startTime + ' - ' + endTime
-            const namaDokter = await GetDoctorServices(response.registrationDatum.doctorDataId)
-            const namaKlinik = await getClinic(response.registrationDatum.masterClinicId)
-            const dateReserve = dayjs(response.createdDateTime * 1000).format('YYYY-MM-DD HH:mm');
-            const dataBooking = {
-                nomorAntrian: response.queueNumber,
-                namaDokter: namaDokter.name,
-                namaKlinik: namaKlinik.name,
-                tanggalReserve: dateReserve,
-                jadwalKonsul: consultationSchedule,
+            if(response.responseCode === "200"){
+                pasienBaru();
+                const dateTime = formatDate(response.registrationDatum.scheduleDatum.startDateTime);
+                const startTime = formatTime(response.registrationDatum.scheduleDatum.startDateTime);
+                const endTime = formatTime(response.registrationDatum.scheduleDatum.endDateTime);
+                const consultationSchedule = dateTime + ' ' + startTime + ' - ' + endTime
+                const namaDokter = await GetDoctorServices(response.registrationDatum.doctorDataId)
+                const namaKlinik = await getClinic(response.registrationDatum.masterClinicId)
+                const dateReserve = dayjs(response.createdDateTime * 1000).format('YYYY-MM-DD HH:mm');
+                const dataBooking = {
+                    nomorAntrian: response.queueNumber,
+                    namaDokter: namaDokter.name,
+                    namaKlinik: namaKlinik.name,
+                    tanggalReserve: dateReserve,
+                    jadwalKonsul: consultationSchedule,
+                }
+                setDataKodeBooking(dataBooking)
+                setOpenModalKodeBooking(false);
+                setInfoTicket(true);
+                setIsLoading(false);
+                setInputCodePages(false);
             }
-            setDataKodeBooking(dataBooking)
-            setOpenModalKodeBooking(false);
-            setInfoTicket(true);
-            setIsLoading(false);
-            setInputCodePages(false);
+           
         } catch (err: any) {
             setIsLoading(false);
             showTemporaryAlert();
