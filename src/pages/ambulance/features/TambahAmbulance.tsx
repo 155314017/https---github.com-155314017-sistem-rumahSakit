@@ -1,39 +1,57 @@
-import { Container, Box } from '@mui/system'
-import { Typography, Button, IconButton } from '@mui/material'
-import { Delete as DeleteIcon } from '@mui/icons-material'
+import { Button, Typography } from '@mui/material'
+import { Box, Container } from '@mui/system'
 
 // components
+import bgImage from "../../../assets/img/String.png"
+import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr'
 import BreadCrumbs from '../../../components/medium/BreadCrumbs'
 import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageUploaderGroup'
-import CustomTimePicker from '../../../components/small/CustomTimePicker'
-import DropdownList from '../../../components/small/dropdownlist/DropdownList'
-import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr'
 
 // hooks
 import useTambahAmbulance from '../hooks/useTambahAmbulance'
 
 import 'dayjs/locale/id'
+import { useRef } from 'react'
 import TestKalender from '../../../components/medium/TestKalender'
+
+interface PraktekData {
+  id: string;
+  startTime: string;
+  endTime: string;
+  selectedDay: string[];
+  notes: string;
+  type: string;
+}
+
+interface ExclusionData {
+  id: string;
+  start: string;
+  end?: string;
+  title: string;
+  type: string;
+  notes: string;
+  allDay?: boolean;
+}
+
+interface KalenderData {
+  praktek: PraktekData[];
+  exclusion: ExclusionData[];
+}
 
 export default function TambahAmbulance() {
   const {
-    handleTambahHari,
     handleImageChange,
-    handleDeleteSchedule,
     breadcrumbItems,
     formik,
-    setSelectedDay,
-    setStartTime,
-    setEndTime,
-    startTime,
-    endTime,
-    schedules,
     setCurrentPage,
     getPageStyle,
     getBorderStyle,
-    currentPage
+    currentPage,
+    handleSaveAmbulance,
+    kalenderRef
   } = useTambahAmbulance()
 
+  
   return (
     <>
       <Container sx={{ py: 2, minWidth: '1500px' }}>
@@ -138,6 +156,11 @@ export default function TambahAmbulance() {
               </Box>
 
             </Box>
+
+            <Box position="absolute" sx={{ top: 0, right: 0 }}>
+              <img src={bgImage} alt="bg-image" />
+            </Box>
+
             {currentPage === 1 && (
               <>
                 <Typography fontSize="20px" fontWeight="700" mb="32px" mt="54px">
@@ -175,6 +198,7 @@ export default function TambahAmbulance() {
                       ":hover": { bgcolor: "#a098f5" },
                     }}
                     disabled={!formik.isValid || !formik.dirty} // Opsional
+                    onClick={() => setCurrentPage(2)}
                   >
                     Selanjutnya
                   </Button>
@@ -183,22 +207,12 @@ export default function TambahAmbulance() {
             )}
             {currentPage === 2 && (
               <>
-                <TestKalender />
+                <TestKalender ref={kalenderRef} />
                 <Button
-                  type="submit"
                   variant="contained"
-                  color="inherit"
-                  sx={{
-                    mt: 3,
-                    width: '100%',
-                    bgcolor: '#8F85F3',
-                    color: '#fff',
-                    textTransform: 'none',
-                    borderRadius: '8px',
-                    boxShadow: 'none',
-                    ':hover': { bgcolor: '#a098f5', boxShadow: 'none' }
-                  }}
-                  disabled={!formik.isValid || !formik.dirty}
+                  color="primary"
+                  onClick={handleSaveAmbulance}
+                  sx={{ marginTop: '20px', width: '100%', bgcolor: '#8F85F3' }}
                 >
                   Simpan
                 </Button>

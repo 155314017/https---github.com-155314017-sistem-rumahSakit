@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
 import { useFormik } from 'formik'
@@ -18,6 +18,30 @@ type Schedule = {
   endTime: dayjs.Dayjs
 }
 
+interface PraktekData {
+  id: string;
+  startTime: string;
+  endTime: string;
+  selectedDay: string[];
+  notes: string;
+  type: string;
+}
+
+interface ExclusionData {
+  id: string;
+  start: string;
+  end?: string;
+  title: string;
+  type: string;
+  notes: string;
+  allDay?: boolean;
+}
+
+interface KalenderData {
+  praktek: PraktekData[];
+  exclusion: ExclusionData[];
+}
+
 export default function useTambahAmbulance() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [imagesData, setImagesData] = useState<ImageData[]>([])
@@ -26,6 +50,8 @@ export default function useTambahAmbulance() {
   const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null)
   const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null)
   const [schedules, setSchedules] = useState<Schedule[]>([])
+  const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
+
   dayjs.locale('id')
 
   const navigate = useNavigate()
@@ -88,39 +114,12 @@ export default function useTambahAmbulance() {
         .positive('Must be a positive number')
     }),
     onSubmit: async values => {
-      const formattedSchedules = schedules.map(schedule => {
-              const normalizedDay = schedule.day.trim().charAt(0).toUpperCase() + schedule.day.slice(1).toLowerCase();
-              const selectedDayOfWeek = dayMapping[normalizedDay];
-          
-              const parsedStartTime = dayjs(schedule.startTime, 'HH:mm', true);
-              const parsedEndTime = dayjs(schedule.endTime, 'HH:mm', true);
-          
-              const referenceDate = dayjs().startOf('week');
-          
-              const startDateTime = referenceDate
-                .day(selectedDayOfWeek)
-                .set('hour', parsedStartTime.hour())
-                .set('minute', parsedStartTime.minute())
-                .set('second', 0)
-          
-              const endDateTime = referenceDate
-                .day(selectedDayOfWeek)
-                .set('hour', parsedEndTime.hour())
-                .set('minute', parsedEndTime.minute())
-                .set('second', 0)
-          
-              return {
-                startDateTime: startDateTime.valueOf(),
-                endDateTime: endDateTime.valueOf()
-              };
-            }).filter(schedule => schedule !== null);
-
+    
       const data = {
         number: '12345',
         status: 'ACTIVE',
         additionalInfo: 'hi',
         cost: values.operationalCost || 0,
-        schedules: formattedSchedules,
         images: imagesData.map(image => ({
           imageName: image.imageName || '',
           imageType: image.imageType || '',
@@ -128,9 +127,11 @@ export default function useTambahAmbulance() {
         }))
       }
 
+      console.log("data: ")
+      console.log(data)
 
       try {
-        await CreateAmbulanceServices(data);
+        // await CreateAmbulanceServices(data);
        
         navigate('/ambulance', {
           state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' }
@@ -189,6 +190,12 @@ const getBorderStyle = (page: number) => {
     }
 };
 
+const handleSaveAmbulance = async () => {
+  console.log(formik.values)
+  console.log(imagesData)
+  console.log("kalenderRef: ")
+  console.log(kalenderRef.current)
+}
   return {
     errorAlert,
     handleTambahHari,
@@ -205,7 +212,9 @@ const getBorderStyle = (page: number) => {
     currentPage,
     setCurrentPage,
     getPageStyle,
-    getBorderStyle
+    getBorderStyle,
+    handleSaveAmbulance,
+    kalenderRef
   }
 
 }
