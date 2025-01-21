@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios'
 
 interface PatientData {
   id: string
   identityNumber: string
   fullName: string
-  birthDateAndPlace: string
+  birthDate: number | any
+  birthPlace: string
   phoneNumber: string
   email: string
   gender: string

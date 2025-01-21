@@ -3,9 +3,10 @@ import axios from 'axios'
 interface UserData {
   id: string
   identityNumber: string
-  fullName: string
+  firstName: string
+  lastName: string
   birthDateAndPlace: string
-  phoneNumber: string
+  phone: string
   email: string
   gender: string
   address: string

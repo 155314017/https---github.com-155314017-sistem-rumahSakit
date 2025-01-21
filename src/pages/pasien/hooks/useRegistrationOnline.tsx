@@ -24,6 +24,7 @@ type PatientData =
         birthPlace: string | undefined;
     };
 
+
 type Clinic = {
     id: string;
     name: string;
@@ -192,15 +193,16 @@ export default function useRegistrationOnline() {
     };
 
     const initialValues = {
-        nik: "",
-        email: "",
-        phone: "",
-        address: "",
-        birthPlace: "",
-        birthDate: null as Date | null,
-        gender: "",
-        phoneCp: "",
-        emailCp: "",
+        nik: patientData?.nik || "",
+        fullname: patientData?.fullname || "",
+        email: patientData?.email || "",
+        phone: patientData?.phone || "",
+        address: patientData?.address || "",
+        birthPlace: patientData?.birthPlace || "",
+        birthDate: patientData?.birthDate || "",
+        gender: patientData?.gender || "",
+        phoneCp: patientData?.phone || "",
+        emailCp: patientData?.email || "",
         typeOfVisit: "",
         referenceDoc: "",
         // clinic: "",
@@ -218,7 +220,7 @@ export default function useRegistrationOnline() {
                     nik: Yup.string()
                         .required("NIK wajib diisi")
                         .matches(/^[0-9]+$/, "NIK harus berupa angka")
-                        .length(16, 'NIK harus 16 digit'),
+                    // .length(16, 'NIK harus 16 digit'),
                 });
             case 3:
                 return Yup.object().shape({
@@ -258,27 +260,25 @@ export default function useRegistrationOnline() {
 
     const checkIdentityNumber = async (nik: string) => {
         try {
-            console.log('masuk 1');
             const responseUser = await GetUserByNIK(nik);
-            console.log('response cari: ', responseUser);
-
+            console.log(responseUser);
             if (responseUser?.data != null) {
-                const response = await GetPatientByUserIdServices(idPatient || '');
-                const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
-                const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
+                const fullname = responseUser?.data.firstName + ' ' + responseUser?.data.lastName;
+                const response = await GetPatientByUserIdServices(responseUser?.data.id || '');
+                const birthDateProcess = response?.data.birthDate[0] + '-' + response?.data.birthDate[1] + '-' + response?.data.birthDate[2];
                 const dataGet = {
-                    id: idPatient || '',
-                    nik: response?.data.identityNumber,
-                    email: response?.data.email,
-                    phone: response?.data.phoneNumber,
-                    fullname: response?.data.fullName,
+                    id: responseUser?.data.id || '',
+                    nik: nik,
+                    email: responseUser?.data.email,
+                    phone: responseUser?.data.phone,
+                    fullname: fullname,
                     address: response?.data.address,
                     gender: response?.data.gender,
                     birthDate: birthDateProcess,
-                    birthPlace: birthPlaceProcess
+                    birthPlace: response?.data.birthPlace
                 }
-                console.log('dataGet: ', dataGet)
                 setPatientData(dataGet);
+
                 setCurrentPage(3);
             } else if (responseUser?.data === null) {
                 console.log('takde')

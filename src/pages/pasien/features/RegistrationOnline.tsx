@@ -131,6 +131,7 @@ export default function RegistrationOnline() {
                 >
                     <Formik
                         initialValues={initialValues}
+                        enableReinitialize
                         validationSchema={getValidationSchema(currentPage)}
                         onSubmit={(values) => {
                             switch (currentPage) {
@@ -140,11 +141,9 @@ export default function RegistrationOnline() {
                                     checkIdentityNumber(values.nik)
                                     return setCurrentPage(3);
                                 case 3:
-                                    console.log('tt')
                                     setCurrentPage(4)
                                     return;
                                 case 4: {
-                                    console.log('tes')
                                     const data = {
                                         patientId: patientData?.id || null,
                                         clinicId: idClinic,
@@ -239,7 +238,7 @@ export default function RegistrationOnline() {
                                                 <Button
                                                     type="button"
                                                     onClick={() => setCurrentPage(4)}
-                                                    disabled={currentPage < 3}
+                                                    disabled={currentPage < 4}
                                                     sx={{
                                                         ...getPageStyle(2),
                                                         display: "flex",
@@ -394,9 +393,7 @@ export default function RegistrationOnline() {
                                                 sx={{ color: "#7367F0", width: 20, height: 20 }}
                                             />
                                             <Typography color="#7367F0" fontWeight={400} fontSize="16px">
-                                                Harap periksa kembali data diri Anda, jika ada data yang
-                                                tidak sesuai dapat dirubah di Admin dengan klik “ubah
-                                                data”.
+                                                Harap periksa kembali data diri Anda, jika ada data yang tidak sesuai anda dapat merubahnya di Admin dengan mengklik tombol ubah data.
                                             </Typography>
                                         </Box>
                                         <FormLabel>NIK (Nomor induk kependudukan) Pasien</FormLabel>
@@ -406,6 +403,7 @@ export default function RegistrationOnline() {
                                             placeholder="Masukkan NIK"
                                             variant="outlined"
                                             fullWidth
+                                            disabled
                                             sx={{
                                                 mb: 2,
                                                 "& .MuiOutlinedInput-root": {
@@ -423,6 +421,7 @@ export default function RegistrationOnline() {
                                             name="email"
                                             placeholder="Masukkan Email"
                                             variant="outlined"
+                                            disabled
                                             fullWidth
                                             sx={{
                                                 mb: 2,
@@ -441,6 +440,7 @@ export default function RegistrationOnline() {
                                         <PhoneInput
                                             country="id"
                                             countryCodeEditable={false}
+                                            disabled
                                             inputStyle={{
                                                 height: "48px",
                                                 borderRadius: "8px",
@@ -469,15 +469,18 @@ export default function RegistrationOnline() {
                                                 return setFieldValue("phone", phone);
                                             }}
                                         />
-                                        {touched.phone && errors.phone && (
+                                        {/* {touched.phone && errors.phone && (
                                             <Typography variant="caption" color="error">
                                                 {errors.phone}
                                             </Typography>
-                                        )}
+                                        )} */}
                                         <FormLabel>Nama lengkap Pasien</FormLabel>
-                                        <TextField
+                                        <Field
+                                            as={TextField}
+                                            name="fullname"
                                             placeholder="Masukkan nama lengkap"
                                             variant="outlined"
+                                            disabled
                                             fullWidth
                                             sx={{
                                                 mb: 2,
@@ -487,6 +490,8 @@ export default function RegistrationOnline() {
                                                     border: "1px solid #A8A8BD",
                                                 },
                                             }}
+                                            error={touched.email && Boolean(errors.email)}
+                                        // helperText={touched.email && errors.email}
                                         />
                                         <Box display="flex" justifyContent="space-between" gap={2}>
                                             <FormControl sx={{ width: "50%" }}>
@@ -494,6 +499,7 @@ export default function RegistrationOnline() {
                                                 <Field
                                                     as={TextField}
                                                     name="birthPlace"
+                                                    disabled
                                                     placeholder="Tempat Lahir"
                                                     variant="outlined"
                                                     sx={{
@@ -509,6 +515,7 @@ export default function RegistrationOnline() {
                                                 <FormLabel>Tanggal Lahir</FormLabel>
                                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                     <DatePicker
+                                                        disabled
                                                         value={values.birthDate ? dayjs(values.birthDate) : null}
                                                         onChange={(date) => setFieldValue("birthDate", date)}
                                                         slotProps={{
@@ -555,11 +562,13 @@ export default function RegistrationOnline() {
                                                         value="FEMALE"
                                                         control={<BpRadio />}
                                                         label="Female"
+                                                        disabled
                                                     />
                                                     <FormControlLabel
                                                         value="MALE"
                                                         control={<BpRadio />}
                                                         label="Male"
+                                                        disabled
                                                     />
                                                 </RadioGroup>
                                             </FormControl>
@@ -572,6 +581,7 @@ export default function RegistrationOnline() {
                                             variant="outlined"
                                             fullWidth
                                             multiline
+                                            disabled
                                             rows={2}
                                             sx={{
                                                 "& .MuiOutlinedInput-root": {
@@ -870,7 +880,7 @@ export default function RegistrationOnline() {
                                             tanggalReservasi="senin, 04 januari 2025"
                                             bookingCode=""
                                             onClose={() => setCurrentPage(1)}
-                                            // nomorAntrian={'1'}
+                                        // nomorAntrian={'1'}
                                         // clinic={dataTickets?.clinic || "Unknown Clinic"}
                                         // jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
                                         // namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
