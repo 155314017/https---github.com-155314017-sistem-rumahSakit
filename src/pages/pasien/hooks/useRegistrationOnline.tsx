@@ -202,6 +202,7 @@ export default function useRegistrationOnline() {
         phoneCp: "",
         emailCp: "",
         typeOfVisit: "",
+        referenceDoc: "",
         // clinic: "",
         // doctor: "",
         schedule: "",
@@ -242,9 +243,8 @@ export default function useRegistrationOnline() {
     };
 
     const registrationPatient = async (data: any) => {
-        setCurrentPage(5);
         const response = await axios.post(
-            `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/patient/check-in`,
+            `https://hms.3dolphinsocial.com:8083/v1/manage/registration/`,
             { data: data },
             {
                 headers: {
@@ -252,7 +252,8 @@ export default function useRegistrationOnline() {
                 },
             }
         );
-        console.log(response);
+        console.log('hasil akhir: ', response);
+        setCurrentPage(5);
     }
 
     const checkIdentityNumber = async (nik: string) => {

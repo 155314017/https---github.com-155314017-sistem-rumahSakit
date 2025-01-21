@@ -23,6 +23,7 @@ import CustomCalendar from "../../../components/medium/CustomCalender";
 import DropdownListAPI from "../../../components/small/dropdownlist/DropdownListAPI";
 import InformasiTicketAPI from "../../../components/small/InformasiTicketAPI";
 import useRegistrationOnline from "../hooks/useRegistrationOnline";
+import FileUploader from "../../../components/medium/FileUploader";
 
 
 export default function RegistrationOnline() {
@@ -146,16 +147,17 @@ export default function RegistrationOnline() {
                                     console.log('tes')
                                     const data = {
                                         patientId: patientData?.id || null,
-                                        typeOfVisit: values.typeOfVisit,
                                         clinicId: idClinic,
                                         doctorId: idDoctor,
+                                        typeOfVisit: values.typeOfVisit,
+                                        scheduleDate: dayjs(selectedSchedule?.split(",")[0]).format("YYYY-MM-DD"),
                                         scheduleIntervalId: selectedScheduleId,
-                                        scheduleDate: dayjs(selectedSchedule?.split(",")[0]).format("L"),
                                         symptoms: values.symptoms,
+                                        referenceDoc: "",
+                                        offline: false,
                                         phoneNumber: values.phoneCp,
                                         email: values.emailCp,
                                         needAdmin: needAdmin,
-                                        offline: false,
                                     };
                                     console.log('dataaa:', data);
                                     registrationPatient(data);
@@ -771,12 +773,6 @@ export default function RegistrationOnline() {
                                                     onChange={handleDropdownPoli}
                                                     loading={false}
                                                 />
-
-                                                {touched.clinic && errors.clinic && (
-                                                    <Typography variant="caption" color="error">
-                                                        {errors.clinic as string}
-                                                    </Typography>
-                                                )}
                                                 <Box
                                                     display="flex"
                                                     flexDirection="row"
@@ -792,11 +788,6 @@ export default function RegistrationOnline() {
                                                             onChange={handleDropdownDocter}
                                                             loading={false}
                                                         />
-                                                        {touched.doctor && errors.doctor && (
-                                                            <Typography variant="caption" color="error">
-                                                                {errors.doctor as string}
-                                                            </Typography>
-                                                        )}
                                                     </FormControl>
                                                     <Box sx={{ ml: 2, width: "50%" }}>
                                                         <Typography>Tanggal & Jam Operasional</Typography>
@@ -837,6 +828,18 @@ export default function RegistrationOnline() {
                                                     // helperText={touched.symptoms && errors.symptoms}
                                                     />
                                                 </FormControl>
+                                                <Box mt={1}>
+                                                    <Box mt={2}>
+                                                        <Typography>Unggah surat rujukan</Typography>
+                                                        <FileUploader
+                                                            onBase64Change={(base64String) => setFieldValue('referenceDoc', base64String)}
+                                                        />
+                                                        <Typography fontSize={"14px"} color="#A8A8BD">
+                                                            Ukuran maksimal 1mb
+                                                        </Typography>
+                                                    </Box>
+
+                                                </Box>
                                             </Box>
                                         </Box>
                                         <Button
