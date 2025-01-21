@@ -9,7 +9,6 @@ import { styled } from '@mui/material/styles';
 import { Radio } from '@mui/material';
 import { RadioProps } from '@mui/material/Radio';
 import dayjs from 'dayjs';
-import CreateAppointmentOffline from '../../../../services/ManagePatient/CreateAppoinmentOffline';
 import { useNavigate } from 'react-router-dom';
 import GetUserByNIK from '../../../../services/Admin Tenant/ManageUser/GetUserByNIK';
 import GetPatientByUserIdServices from '../../../../services/Patient Tenant/GetPatientByUserIdServices';
@@ -164,6 +163,9 @@ export default function useTambahPasienUmumOffline() {
     const [patientData, setPatientData] = useState<PatientData>();
 
     const [fileName, setFileName] = useState("");
+    const [tanggalReserve, setTanggalReserve] = useState('');
+    const [registrationCode, setRegistrationCode] = useState('');
+
 
 
     // const dummyData = {
@@ -596,15 +598,23 @@ export default function useTambahPasienUmumOffline() {
        
 
         try {
-            const response = await CreateAppointmentOffline(dataPatient)
-            const createdDateTimeFormatted = dayjs.unix(response.scheduleDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
+            const response = await axios.post(
+                "https://hms.3dolphinsocial.com:8083/v1/manage/registration/",
+                dataPatient,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            const createdDateTimeFormatted = dayjs.unix(response.data.scheduleDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
             const dataSent = {
-                nomorAntrian: response.queueDatum.queueNumber,
+                nomorAntrian: response.data.queueDatum.queueNumber,
                 namaDokter: docterName,
                 clinic: clinicName,
                 tanggalReservasi: createdDateTimeFormatted,
                 jadwalKonsul: selectedSchedule,
-                bookingCode: response.bookingCode
+                bookingCode: response.data.bookingCode
             }
             setDataTickets(dataSent)
             setMainPages(false)
@@ -658,18 +668,45 @@ export default function useTambahPasienUmumOffline() {
     };
 
     const registrationPatient = async (data: any) => {
-        setCurrentPage(5);
-        const response = await axios.post(
-            `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/patient/check-in`,
-            { data: data },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-        console.log(response);
+        setIsLoading(true)
+
+       
+
+        try {
+            const response = await axios.post(
+                "https://hms.3dolphinsocial.com:8083/v1/manage/registration/",
+                data,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            // const createdDateTimeFormatted = dayjs.unix(response.data.scheduleDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
+            // const dataSent = {
+            //     nomorAntrian: response.data.queueDatum.queueNumber,
+            //     namaDokter: docterName,
+            //     clinic: clinicName,
+            //     tanggalReservasi: createdDateTimeFormatted,
+            //     jadwalKonsul: selectedSchedule,
+            //     bookingCode: response.data.bookingCode
+            // }
+            setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
+            setRegistrationCode(response.data.data.id);
+            console.log("Registration : ",dataTickets)
+            setMainPages(false)
+            // setCurrentPage(3);
+        } catch (err: any) {
+            setMainPages(false)
+            setCurrentPage(3);
+        } finally {
+            setIsLoading(false);
+        }
     }
+
+    useEffect(() => {
+        console.log("data tickets : ", dataTickets)
+    },[dataTickets])
 
     const handleGoBack = () => {
         if (currentPage === 1) {
@@ -758,6 +795,10 @@ export default function useTambahPasienUmumOffline() {
         registrationPatient,
         selectedScheduleId,
         selectedSchedule,
+        clinicName,
+        docterName,
+        tanggalReserve,
+        registrationCode
 
 
     }

@@ -76,8 +76,10 @@ export default function TambahPasienUmumOffline() {
         registrationPatient,
         selectedScheduleId,
         selectedSchedule,
-        setDataTickets,
-        createTicket
+        clinicName,
+        docterName,
+        tanggalReserve,
+        
 
 
 
@@ -613,17 +615,16 @@ export default function TambahPasienUmumOffline() {
                                                             offline: true
                                                         }
 
-                                                        const dataTiket = {
-                                                            nomorAntrian: '1',
-                                                            namaDokter: 'udin',
-                                                            clinic: 'klinik a',
-                                                            tanggalReservasi: '21 januari 2025',
-                                                            jadwalKonsul: '22 januari 2025',
-                                                            bookingCode: '12ads',
-                                                        }
-                                                        setDataTickets(dataTiket);
-                                                        console.log('Form submitted:', dataRegis);
-                                                        createTicket(dataTiket);
+                                                        // const dataTiket = {
+                                                        //     nomorAntrian: '1',
+                                                        //     namaDokter: 'udin',
+                                                        //     clinic: 'klinik a',
+                                                        //     tanggalReservasi: '21 januari 2025',
+                                                        //     jadwalKonsul: '22 januari 2025',
+                                                        //     bookingCode: '12ads',
+                                                        // }
+                                                        
+                                                        // createTicket(dataTiket);
                                                         registrationPatient(dataRegis);
                                                     }}
                                                 >
@@ -949,12 +950,12 @@ export default function TambahPasienUmumOffline() {
                             <Box marginLeft={"23%"} marginTop={"10%"} zIndex={1500}>
 
                                 <InformasiTicketAPI
-                                    clinic={dataTickets?.clinic || "Unknown Clinic"}
-                                    jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
-                                    namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
-                                    // nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
-                                    tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
-                                    bookingCode=""
+                                    clinic= {clinicName}
+                                    jadwalKonsul={dayjs(selectedSchedule?.split(', ')[0]).format("YYYY-MM-DD")}
+                                    namaDokter={docterName}
+                                    nomorAntrian={dataTickets?.nomorAntrian || ""}
+                                    tanggalReservasi={tanggalReserve}
+                                    
                                     onClose={() => navigate("/offline/tambahPasien")}
                                 />
                             </Box>

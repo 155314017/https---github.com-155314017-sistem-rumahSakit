@@ -10,16 +10,18 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PrintIcon from "@mui/icons-material/Print";
 import ModalUbahNoHp from "./modal/ModalUbahNoHp";
 type InformasiTicketProps = {
+  nomorAntrian?: string | undefined;
   namaDokter: string | undefined;
   clinic: string | undefined;
   tanggalReservasi: string | undefined;
   jadwalKonsul: string | null | undefined;
-  bookingCode: string;
+  bookingCode?: string;
   bgcolor?: string;
   onClose?: () => void;
 };
 
 const InformasiTicketAPI = ({
+  nomorAntrian,
   namaDokter,
   clinic,
   tanggalReservasi,
@@ -252,9 +254,9 @@ const InformasiTicketAPI = ({
           <Box display={"flex"} flexDirection={"column"}>
             {bookingCode !== "" && (
               <>
-                <Typography fontSize={"16px"}>Booking Code</Typography>
+                <Typography fontSize={"16px"}>{nomorAntrian? "Nomor antrian" : "Booking Code"}</Typography>
                 <Typography fontSize={"48px"} fontWeight={"600"}>
-                  {bookingCode}
+                  {nomorAntrian? nomorAntrian : bookingCode}
                 </Typography>
               </>
             )}

@@ -264,6 +264,8 @@ export default function useRegistrationOnline() {
         }
     }
 
+/*************  ✨ Codeium Command ⭐  *************/
+/******  801173f9-18ba-4107-bdc0-429777944eb6  *******/
     const checkIdentityNumber = async (nik: string) => {
         try {
             const responseUser = await GetUserByNIK(nik);
