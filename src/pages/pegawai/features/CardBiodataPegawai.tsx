@@ -106,7 +106,7 @@ export default function CardBiodataPegawai({
                 >
                     Biodata Pegawai
                 </Typography>
-                <Box display={'flex'} flexDirection={'row'} gap={2}  >
+                <Box display={'flex'} flexDirection={'row'} gap={1}  >
                     <Typography fontSize={'16px'} color={'#8F85F3'} onClick={onUbahData} >Ubah data</Typography>
                     <Typography fontSize={'16px'} color={'#8F85F3'} onClick={onHapusData} >Hapus data</Typography>
                 </Box>
