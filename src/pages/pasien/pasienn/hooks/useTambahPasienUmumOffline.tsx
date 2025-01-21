@@ -11,6 +11,8 @@ import { RadioProps } from '@mui/material/Radio';
 import dayjs from 'dayjs';
 import CreateAppointmentOffline from '../../../../services/ManagePatient/CreateAppoinmentOffline';
 import { useNavigate } from 'react-router-dom';
+import GetUserByNIK from '../../../../services/Admin Tenant/ManageUser/GetUserByNIK';
+import GetPatientByUserIdServices from '../../../../services/Patient Tenant/GetPatientByUserIdServices';
 // import RegisterPatient from '../../../../services/Patient Tenant/RegisterPatient';
 
 type Doctor = {
@@ -18,18 +20,18 @@ type Doctor = {
     name: string;
 };
 
-type ResponsePatient = {
-    id?: string;
-    additionalInfo?: string | null;
-    address: string;
-    birthDate: number[] | string; // [year, month, day]
-    gender: string;
-    masterUserId?: string;
-    name: string;
-    phone: string;
-    birthPlace: string;
-    email?: string;
-}
+type PatientData =
+    {
+        id: string | undefined;
+        nik: string | undefined;
+        email: string | undefined;
+        phone: string | undefined;
+        fullname: string | undefined;
+        address: string | undefined;
+        gender: string | undefined;
+        birthDate: string | undefined;
+        birthPlace: string | undefined;
+    };
 
 type dataPasien = {
     id: string;
@@ -124,19 +126,19 @@ export default function useTambahPasienUmumOffline() {
     const [needAdmin, setNeedAdmin] = useState(false);
     const [NIK, setNIK] = useState('');
     // const [patientData, setPatientData] = useState<ResponsePatient | undefined>();
-    const [patientData, setPatientData] = useState<ResponsePatient>({
-        id: '',
-        name: '',
-        gender: '',
-        email: '',
-        birthDate: '',
-        birthPlace: '',
-        phone: '',
-        address: '',
-    });
+    // const [patientData, setPatientData] = useState<ResponsePatient>({
+    //     id: '',
+    //     name: '',
+    //     gender: '',
+    //     email: '',
+    //     birthDate: '',
+    //     birthPlace: '',
+    //     phone: '',
+    //     address: '',
+    // });
 
 
-    const [dataPasien, setDataPasien] = useState<dataPasien>();
+    const [dataPasien, setDataPasien] = useState<PatientData>();
     const [idClinic, setIdClinic] = useState('');
     const [idDoctor, setIdDoctor] = useState('');
     const [docterName, setDocterName] = useState('');
@@ -149,6 +151,8 @@ export default function useTambahPasienUmumOffline() {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const [birth, setBirth] = useState('');
+    const [idPatient, setIdPatient] = useState('');
+    const [patientData, setPatientData] = useState<PatientData>();
 
     const [fileName, setFileName] = useState("");
 
@@ -232,10 +236,10 @@ export default function useTambahPasienUmumOffline() {
             nikCari: '',
             phone: patientData?.phone,
             gender: patientData?.gender,
-            fullname: patientData?.name,
+            fullname: patientData?.fullname,
             birthDatePatient: birthDate,
             birthPlacePatient: birthPlace,
-            // phonePasien: '',
+            phonePasien: '',
             // nikGuardian: switchValue ? dataPasien?.nik : '',
             // typeGuardian: switchValue ? 'SENDIRI' : '',
             // caraDatang: '',
@@ -345,10 +349,7 @@ export default function useTambahPasienUmumOffline() {
 
     }
 
-    const handleDropdownPoli = (value: string, label: string) => {
-        setIdClinic(value)
-        setClinicName(label);
-    };
+    
 
 
     function BpRadio(props: RadioProps) {
@@ -395,52 +396,31 @@ export default function useTambahPasienUmumOffline() {
             // Menyembunyikan halaman penuh untuk loading
 
             // Simulasi response dari API
-            const response = dummyData;
+            const response = await GetUserByNIK(nik);
             setNIK(nik);
 
             // Validasi response
-            if (response?.responseCode === "200" && response?.data?.length) {
+            if (response?.responseCode === "200" ) {
                 // Mencari pasien berdasarkan NIK di data dummy
-                const patientData = response.data.find((patient) => patient.masterUserId === nik);
-
-
-
-                if (patientData) {
-                    const {
-                        id,
-                        additionalInfo,
-                        address,
-                        birthDate,
-                        gender,
-                        masterUserId,
-                        name,
-                        phone,
-                        birthPlace,
-                    } = patientData;
-
-                    // Format tanggal lahir
-                    const birthDateFormatted =
-                        Array.isArray(birthDate) && birthDate.length === 3
-                            ? `${String(birthDate[1]).padStart(2, "0")}-${String(birthDate[2]).padStart(2, "0")}-${birthDate[0]}` // Format: year-month-day
-                            : "Data tidak ada";
-
-                    // Buat objek data yang terformat
-                    const dataGet = {
-                        id: id ?? "Data tidak ada",
-                        additionalInfo: additionalInfo ?? "Data tidak ada",
-                        address: address ?? "Data tidak ada",
-                        birthDate: birthDateFormatted,
-                        gender: gender ?? "Data tidak ada",
-                        masterUserId: masterUserId ?? "Data tidak ada",
-                        name: name ?? "Data tidak ada",
-                        phone: phone ?? "Data tidak ada",
-                        birthPlace: birthPlace ?? "Data tidak ada",
-                    };
+                const response = await GetPatientByUserIdServices(idPatient || '');
+                const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
+                const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
+                const dataGet = {
+                    id: idPatient || '',
+                    nik: response?.data.identityNumber,
+                    email: response?.data.email,
+                    phone: response?.data.phoneNumber,
+                    fullname: response?.data.fullName,
+                    address: response?.data.address,
+                    gender: response?.data.gender,
+                    birthDate: birthDateProcess,
+                    birthPlace: birthPlaceProcess
+                }
 
                     // Set state dengan data yang terproses
                     setDataPasien(dataGet);
+                    setBirth(dataGet?.birthDate || '');
                     setPatientData(dataGet);
-                    setBirth(birthDateFormatted);
                     console.log(birth);
                     setPatientFullsPage(false);
                 } else {
@@ -448,10 +428,7 @@ export default function useTambahPasienUmumOffline() {
                     console.error("Pasien dengan NIK tersebut tidak ditemukan.");
                     showTemporaryAlert(); // Tampilkan alert untuk user
                 }
-            } else {
-                console.error("Response tidak valid atau data kosong.");
-                showTemporaryAlert(); // Tampilkan alert untuk user
-            }
+            
         } catch (err: any) {
             // Error handling
             if (err.response?.status === 404) {
@@ -461,6 +438,65 @@ export default function useTambahPasienUmumOffline() {
             }
             showTemporaryAlert(); // Tampilkan alert untuk user
         }
+    };
+
+    useEffect(() => {
+        const fetchClinicData = async () => {
+            try {
+                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
+                    timeout: 10000
+                });
+                setClinicOptions(response.data.data.content.map((item: Clinic) => ({
+                    id: item.id,
+                    name: item.name,
+                })));
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    console.error("Axios error:", error.message);
+                } else {
+                    console.error("Unexpected error:", error);
+                }
+            }
+        };
+        fetchClinicData();
+    }, []);
+
+    useEffect(() => {
+        const fetchDoctorData = async () => {
+            try {
+                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/doctor/?pageNumber=0&pageSize=10&orderBy=id=asc', {
+                    timeout: 10000
+                });
+                setDoctorOptions(response.data.data.content.map((item: Doctor) => ({
+                    id: item.id,
+                    name: item.name,
+                })));
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    console.error("Axios error:", error.message);
+                } else {
+                    console.error("Unexpected error:", error);
+                }
+            }
+        };
+        fetchDoctorData();
+    }, []);
+
+    const handleScheduleChange = (scheduleId: string, schedule: string) => {
+        setSelectedScheduleId(scheduleId);
+        setSelectedSchedule(schedule);
+    };
+
+    const handleDropdownPoli = (value: string, label: string) => {
+        setIdClinic(value)
+        setClinicName(label);
+    };
+
+
+    const handleDropdownDocter = (value: string, label: string) => {
+        setIdDoctor(value)
+        setDocterName(label);
+        setCalendarKey((prevKey) => prevKey + 1);
     };
 
 
@@ -488,17 +524,7 @@ export default function useTambahPasienUmumOffline() {
     // }
 
 
-    const handleDropdownDocter = (value: string, label: string) => {
-        setIdDoctor(value);
-        setDocterName(label);
-        setCalendarKey((prevKey) => prevKey + 1);
-    };
-
-    const handleScheduleChange = (scheduleId: string, schedule: string) => {
-        setSelectedScheduleId(scheduleId);
-        setSelectedSchedule(schedule);
-
-    };
+    
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedMethod(event.target.value);
@@ -627,6 +653,20 @@ export default function useTambahPasienUmumOffline() {
         setSwitchValue(value);
     };
 
+    const registrationPatient = async (data: any) => {
+        setCurrentPage(5);
+        const response = await axios.post(
+            `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/patient/check-in`,
+            { data: data },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        console.log(response);
+    }
+
     const handleGoBack = () => {
         if (currentPage === 1) {
             // Logika untuk currentPage 1
@@ -710,7 +750,10 @@ export default function useTambahPasienUmumOffline() {
         validationSchema1,
         navigate,
         setBirthDate,
-        setBirthPlace
+        setBirthPlace,
+        registrationPatient,
+        selectedScheduleId,
+        selectedSchedule
 
     }
 }
