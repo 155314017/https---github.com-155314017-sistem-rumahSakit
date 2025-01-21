@@ -75,7 +75,8 @@ export default function TambahPasienUmumOffline() {
         idClinic,
         registrationPatient,
         selectedScheduleId,
-        selectedSchedule
+        selectedSchedule,
+        setDataTickets
 
 
 
@@ -612,6 +613,7 @@ export default function TambahPasienUmumOffline() {
                                                             offline: true
                                                         }
                                                         // handle form submission with dataRegis
+                                                        setDataTickets(dataRegis);
                                                         console.log('Form submitted:', dataRegis);
                                                         registrationPatient(dataRegis);
                                                     }}

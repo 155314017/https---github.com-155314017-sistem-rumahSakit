@@ -753,7 +753,8 @@ export default function useTambahPasienUmumOffline() {
         setBirthPlace,
         registrationPatient,
         selectedScheduleId,
-        selectedSchedule
+        selectedSchedule,
+        
 
     }
 }
