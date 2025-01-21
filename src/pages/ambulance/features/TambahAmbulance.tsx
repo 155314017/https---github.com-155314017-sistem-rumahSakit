@@ -11,32 +11,8 @@ import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageU
 import useTambahAmbulance from '../hooks/useTambahAmbulance'
 
 import 'dayjs/locale/id'
-import { useRef } from 'react'
 import TestKalender from '../../../components/medium/TestKalender'
 
-interface PraktekData {
-  id: string;
-  startTime: string;
-  endTime: string;
-  selectedDay: string[];
-  notes: string;
-  type: string;
-}
-
-interface ExclusionData {
-  id: string;
-  start: string;
-  end?: string;
-  title: string;
-  type: string;
-  notes: string;
-  allDay?: boolean;
-}
-
-interface KalenderData {
-  praktek: PraktekData[];
-  exclusion: ExclusionData[];
-}
 
 export default function TambahAmbulance() {
   const {

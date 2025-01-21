@@ -1,10 +1,13 @@
+import axios from 'axios'
+import dayjs from 'dayjs'
+import 'dayjs/locale/id'
+import { useFormik } from 'formik'
 import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import dayjs from 'dayjs'
-import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import 'dayjs/locale/id'
-import { CreateAmbulanceServices } from '../../../services/Admin Tenant/ManageAmbulance/CreateAmbulanceService'
+import { CreateAmbulanceService } from '../../../services/Admin Tenant/ManageAmbulance/CreateAmbulanceService'
+import { uploadImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils'
+import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils'
 
 type ImageData = {
   imageName: string
@@ -12,80 +15,17 @@ type ImageData = {
   imageData: string
 }
 
-type Schedule = {
-  day: string
-  startTime: dayjs.Dayjs
-  endTime: dayjs.Dayjs
-}
-
-interface PraktekData {
-  id: string;
-  startTime: string;
-  endTime: string;
-  selectedDay: string[];
-  notes: string;
-  type: string;
-}
-
-interface ExclusionData {
-  id: string;
-  start: string;
-  end?: string;
-  title: string;
-  type: string;
-  notes: string;
-  allDay?: boolean;
-}
-
-interface KalenderData {
-  praktek: PraktekData[];
-  exclusion: ExclusionData[];
-}
-
 export default function useTambahAmbulance() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [imagesData, setImagesData] = useState<ImageData[]>([])
   const [errorAlert, setErrorAlert] = useState(false)
-  const [selectedDay, setSelectedDay] = useState<string | null>(null)
-  const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null)
-  const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null)
-  const [schedules, setSchedules] = useState<Schedule[]>([])
   const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
-
-  dayjs.locale('id')
 
   const navigate = useNavigate()
 
-  const dayMapping: { [key: string]: number } = {
-    Senin: 1,
-    Selasa: 2,
-    Rabu: 3,
-    Kamis: 4,
-    Jumat: 5,
-    Sabtu: 6,
-    Minggu: 0
-  }
 
   interface FormValues {
     operationalCost: number
-  }
-
-  const handleTambahHari = () => {
-    if (selectedDay && startTime && endTime) {
-      const newSchedule: Schedule = {
-        day: selectedDay,
-        startTime: startTime,
-        endTime: endTime
-      }
-      setSchedules([...schedules, newSchedule])
-      setSelectedDay('')
-      setStartTime(null)
-      setEndTime(null)
-    }
-  }
-
-  const handleDeleteSchedule = (index: number) => {
-    setSchedules(schedules.filter((_, i) => i !== index))
   }
 
   const showTemporaryAlertError = async () => {
@@ -114,101 +54,109 @@ export default function useTambahAmbulance() {
         .positive('Must be a positive number')
     }),
     onSubmit: async values => {
-    
-      const data = {
-        number: '12345',
-        status: 'ACTIVE',
-        additionalInfo: 'hi',
-        cost: values.operationalCost || 0,
-        images: imagesData.map(image => ({
-          imageName: image.imageName || '',
-          imageType: image.imageType || '',
-          imageData: image.imageData || ''
-        }))
-      }
-
-      console.log("data: ")
-      console.log(data)
-
-      try {
-        // await CreateAmbulanceServices(data);
-       
-        navigate('/ambulance', {
-          state: { successAdd: true, message: 'Gedung berhasil ditambahkan!' }
-        })
-      } catch (error) {
-        console.error('Error submitting form:', error)
-        showTemporaryAlertError()
-      }
+      console.log(values);
     }
   })
 
   const getPageStyle = (page: number) => {
     if (page === currentPage) {
-        return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
+      return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
     } else if (page < currentPage) {
-        return { color: "#8F85F3", cursor: "pointer" };
+      return { color: "#8F85F3", cursor: "pointer" };
     } else {
-        return { color: "black", cursor: "pointer" };
+      return { color: "black", cursor: "pointer" };
     }
-};
+  };
 
-const getBorderStyle = (page: number) => {
+  const getBorderStyle = (page: number) => {
     if (page === currentPage) {
-        return {
-            display: "flex",
-            border: "1px solid #8F85F3",
-            width: "38px",
-            height: "38px",
-            borderRadius: "8px",
-            justifyContent: "center",
-            alignItems: "center",
-        };
+      return {
+        display: "flex",
+        border: "1px solid #8F85F3",
+        width: "38px",
+        height: "38px",
+        borderRadius: "8px",
+        justifyContent: "center",
+        alignItems: "center",
+      };
     } else if (page < currentPage) {
-        return {
-            display: "flex",
-            border: "1px solid #8F85F3",
-            width: "38px",
-            height: "38px",
-            borderRadius: "8px",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "#8F85F3",
-            color: "white",
-        };
+      return {
+        display: "flex",
+        border: "1px solid #8F85F3",
+        width: "38px",
+        height: "38px",
+        borderRadius: "8px",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#8F85F3",
+        color: "white",
+      };
     } else {
-        return {
-            display: "flex",
-            border: "1px solid #8F85F3",
-            width: "38px",
-            height: "38px",
-            borderRadius: "8px",
-            justifyContent: "center",
-            alignItems: "center",
-            color: "#8F85F3",
-        };
+      return {
+        display: "flex",
+        border: "1px solid #8F85F3",
+        width: "38px",
+        height: "38px",
+        borderRadius: "8px",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "#8F85F3",
+      };
     }
-};
+  };
 
-const handleSaveAmbulance = async () => {
-  console.log(formik.values)
-  console.log(imagesData)
-  console.log("kalenderRef: ")
-  console.log(kalenderRef.current)
-}
+  const handleSaveAmbulance = async () => {
+    try {
+      const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
+
+      // Validasi input schedule
+      validateInput(kalenderData);
+
+      // Data untuk CreateAmbulanceService
+      const ambulanceData = {
+        number: '12345', // Sebaiknya ini dari form atau auto-generate
+        status: 'ACTIVE',
+        additionalInfo: '',
+        cost: formik.values.operationalCost
+      };
+
+      // Buat ambulance baru
+      const { data: { id: ambulanceId } } = await CreateAmbulanceService(ambulanceData);
+      if (!ambulanceId) throw new Error('Ambulance ID tidak ditemukan');
+
+      // Proses secara parallel untuk optimasi
+      await Promise.all([
+        createSchedules(ambulanceId, kalenderData.praktek),
+        createExclusions(ambulanceId, kalenderData.exclusion),
+        uploadImages(ambulanceId, imagesData)
+      ]);
+
+      // Reset state dan redirect
+      formik.resetForm();
+      setImagesData([]);
+      
+      navigate('/ambulance', {
+        state: {
+          successAdd: true,
+          message: 'Ambulance berhasil ditambahkan!'
+        }
+      });
+    } catch (error) {
+      console.error('[DEBUG] Error saat menyimpan ambulance:', error);
+      if (axios.isAxiosError(error)) {
+        const responseData = error.response?.data;
+        console.error('[DEBUG] Detail error dari server:', responseData || error.message);
+      }
+      showTemporaryAlertError();
+    }
+  };
+
+
   return {
     errorAlert,
-    handleTambahHari,
-    handleDeleteSchedule,
     handleImageChange,
     breadcrumbItems,
     formik,
-    startTime,
-    endTime,
-    setSelectedDay,
-    setStartTime,
-    setEndTime,
-    schedules,
     currentPage,
     setCurrentPage,
     getPageStyle,
