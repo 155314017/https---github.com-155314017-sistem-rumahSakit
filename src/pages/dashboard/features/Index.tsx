@@ -76,7 +76,7 @@ export default function Index() {
           title={'Ruangan tersedia'}
           subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataRoom.length.toString() || '0'}
         />
-        <MediumCard icon={PeopleIcon} title={'Total pegawai'} subtitle={'10'} />
+        <MediumCard icon={PeopleIcon} title={'Total pegawai'} subtitle={'2'} />
         <MediumCard
           icon={LocalHospitalIcon}
           title="Total poliklinik"
