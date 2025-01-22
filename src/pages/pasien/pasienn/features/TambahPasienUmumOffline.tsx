@@ -14,7 +14,6 @@ import {
     FormHelperText
 } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
 
 import bgImage from "../../../../assets/img/String.png";
 import PhoneInput from 'react-phone-input-2';
@@ -33,6 +32,7 @@ import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
+import FileUploader from "../../../../components/medium/FileUploader";
 
 
 export default function TambahPasienUmumOffline() {
@@ -64,8 +64,8 @@ export default function TambahPasienUmumOffline() {
         handleGoBack,
         formik,
         setNeedAdmin,
-        fileName,
-        handleFileChange,
+        // fileName,
+        // handleFileChange,
         needAdmin,
         NIK,
         birth,
@@ -843,10 +843,10 @@ export default function TambahPasienUmumOffline() {
                                                                                         <FormHelperText error>{errors.complaint}</FormHelperText>
                                                                                     )}
                                                                                 </FormControl>
-                                                                                <Typography>Unggah surat rujukan</Typography>
-                                                                                <Box display="flex" alignItems="center" border="1px solid #ccc" borderRadius="6px" overflow="hidden" height={50}>
+                                                                                {/* <Typography>Unggah surat rujukan</Typography> */}
+                                                                                {/* <Box display="flex" alignItems="center" border="1px solid #ccc" borderRadius="6px" overflow="hidden" height={50}> */}
                                                                                     {/* Tombol Unggah */}
-                                                                                    <Button
+                                                                                    {/* <Button
                                                                                         variant="contained"
                                                                                         component="label"
                                                                                         sx={{
@@ -867,10 +867,10 @@ export default function TambahPasienUmumOffline() {
                                                                                             type="file"
                                                                                             onChange={handleFileChange}
                                                                                         />
-                                                                                    </Button>
+                                                                                    </Button> */}
 
-                                                                                    {/* Kolom Input */}
-                                                                                    <TextField
+                                                                                  
+                                                                                    {/* <TextField
                                                                                         value={fileName}
                                                                                         placeholder="Pilih berkas"
                                                                                         variant="outlined"
@@ -889,8 +889,22 @@ export default function TambahPasienUmumOffline() {
                                                                                                 "& fieldset": { border: "none" },
                                                                                             },
                                                                                         }}
-                                                                                    />
-                                                                                </Box>
+                                                                                    /> */}
+
+                                                                                    <Box mt={1}>
+                                                                                        <Box mt={2}>
+                                                                                            <Typography>Unggah surat rujukan</Typography>
+
+                                                                                            <FileUploader
+                                                                                                onBase64Change={(base64String) => setFieldValue('referenceDoc', base64String)}
+                                                                                            />
+                                                                                            <Typography fontSize={"14px"} color="#A8A8BD">
+                                                                                                Ukuran maksimal 1mb
+                                                                                            </Typography>
+                                                                                        </Box>
+
+                                                                                    </Box>
+                                                                                {/* </Box> */}
                                                                             </Box>
                                                                         </Box>
                                                                     </FormControl >
