@@ -264,9 +264,9 @@ const InformasiTicketAPI = ({
           <Box
             display={"flex"}
             flexDirection={"row"}
-            gap={"60px"}
+            gap={"80px"}
             justifyContent={"space-between"}
-            maxWidth={"80%"}
+            maxWidth={"87%"}
           >
             <Box>
               <Typography>Dokter yang bertugas</Typography>
@@ -287,7 +287,7 @@ const InformasiTicketAPI = ({
               flexDirection={"row"}
               gap={"80px"}
               justifyContent={"space-between"}
-              maxWidth={"80%"}
+              maxWidth={"90%"}
             >
               <Box display={"flex"} flexDirection={"column"}>
                 <Typography>Tanggal reservasi</Typography>
