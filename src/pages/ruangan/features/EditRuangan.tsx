@@ -18,7 +18,6 @@ export default function EditRuangan() {
         successAlert,
         errorAlert,
         loading,
-        apiUrl,
         gedungOptions,
         jenisRuangan,
         id

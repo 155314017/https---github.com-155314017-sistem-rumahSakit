@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
-import dayjs from 'dayjs';
 import React, { useEffect } from 'react'
 import { useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';

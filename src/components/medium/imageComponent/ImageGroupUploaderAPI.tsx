@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
 import { Alert, Box, CircularProgress, Typography } from "@mui/material";
 import { Grid } from "@mui/system";

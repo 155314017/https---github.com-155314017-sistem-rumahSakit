@@ -8,7 +8,7 @@ import React, {
     forwardRef,
     useImperativeHandle
 } from 'react';
-import FullCalendar, { EventContentArg } from '@fullcalendar/react';
+import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -236,7 +236,10 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     },
 }));
 
-const TestKalender: React.FC<any, TestKalenderRef> = forwardRef((props, ref) => {
+const TestKalender = forwardRef<TestKalenderRef>((_, ref) => {
+    useImperativeHandle(ref, () => ({
+        getData: () => getKalenderData(),
+    }));
     // State management
     const [events, setEvents] = useState<Event[]>([]);
     const [sessions, setSessions] = useState<Session[]>([]);
@@ -414,7 +417,7 @@ const TestKalender: React.FC<any, TestKalenderRef> = forwardRef((props, ref) => 
         console.log('Available Dates:', Array.from(availableDates));
     }, [availableDates]);
 
-    const renderEventContent = (eventInfo: EventContentArg) => {
+    const renderEventContent = (eventInfo: any) => {
         const start = dayjs(eventInfo.event.start).format('hh:mm a');
         const end = dayjs(eventInfo.event.end).format('hh:mm a');
 

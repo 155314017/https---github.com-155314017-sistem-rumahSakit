@@ -27,7 +27,6 @@ export default function EditKlinik() {
     showTemporaryAlertSuccess,
     errorAlert,
     successAlert,
-    apiUrl,
     handleImageChange,
     handleDeleteSchedule,
     handleEditSchedule,

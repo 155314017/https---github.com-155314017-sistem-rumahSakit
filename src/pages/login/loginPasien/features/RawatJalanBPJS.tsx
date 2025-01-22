@@ -236,7 +236,7 @@ export default function RawatJalanBPJS() {
 
                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                         {/* <CalenderPopover title="Pilih tanggal" /> */}
-                                                        <CustomCalender doctorId={'1'} onChange={() => console.log("tes")} />
+                                                        <CustomCalender typeId="1" onChange={() => console.log("tes")} />
                                                     </Box>
                                                 </Box>
 

@@ -7,14 +7,14 @@ import CardJamPraktek from "./CardJamPraktek";
 import useDetailPegawai from "../hooks/useDetailPegawai";
 
 export default function DetailPegawai() {
-   const {
-    breadcrumbItems,
-    // name,
-    // deletedItems,
-    employeeData,
-    handleDeleteSuccess,
-    // confirmationDelete,
-   } = useDetailPegawai();
+    const {
+        breadcrumbItems,
+        // name,
+        // deletedItems,
+        employeeData,
+        handleDeleteSuccess,
+        // confirmationDelete,
+    } = useDetailPegawai();
 
 
     return (
@@ -47,29 +47,38 @@ export default function DetailPegawai() {
                         )}
                     /> */}
                     <CardBiodataPegawai
-                    tanggalDitambahkan= {employeeData?.createdDateTime || "Data Tidak Ditemukan"}
-                    namaPegawai= {employeeData?.name || "Data Tidak Ditemukan"}
-                    jenisKelamin= {employeeData?.gender || "Data Tidak Ditemukan"}
-                    alamat= {employeeData?.address || "Data Tidak Ditemukan"}
-                    nomorIndukPegawai= {employeeData?.employeeNumber || "Data Tidak Ditemukan"}
-                    rolePegawai= {employeeData?.role || "Data Tidak Ditemukan"}
-                    noHandphone= {employeeData?.phone || "Data Tidak Ditemukan"}
-                    dokumen= {employeeData?.additionalInfo || "Data Tidak Ditemukan"}
-                    avatarUrl= {""}
-                    onUbahData={() => {}}
-                    onHapusData={() => handleDeleteSuccess()}
+                        tanggalDitambahkan={employeeData?.createdDateTime || "Data Tidak Ditemukan"}
+                        namaPegawai={employeeData?.name || "Data Tidak Ditemukan"}
+                        jenisKelamin={employeeData?.gender || "Data Tidak Ditemukan"}
+                        alamat={employeeData?.address || "Data Tidak Ditemukan"}
+                        nomorIndukPegawai={employeeData?.employeeNumber || "Data Tidak Ditemukan"}
+                        rolePegawai={employeeData?.role || "Data Tidak Ditemukan"}
+                        noHandphone={employeeData?.phone || "Data Tidak Ditemukan"}
+                        dokumen={employeeData?.additionalInfo || "Data Tidak Ditemukan"}
+                        avatarUrl={""}
+                        onUbahData={() => { }}
+                        onHapusData={() => handleDeleteSuccess()}
                     />
-                    <CardJamPraktek 
-                     title="Jam Operasional"
-                     data={employeeData?.operationalSchedule || {
-                         senin: "-",
-                         selasa: "-",
-                         rabu: "-",
-                         kamis: "-",
-                         jumat: "-",
-                         sabtu: "-",
-                         minggu: "-",
-                     }}/>
+                    <CardJamPraktek
+                        title="Jam Operasional"
+                        //  data={employeeData?.operationalSchedule || {
+                        //      senin: "-",
+                        //      selasa: "-",
+                        //      rabu: "-",
+                        //      kamis: "-",
+                        //      jumat: "-",
+                        //      sabtu: "-",
+                        //      minggu: "-",
+                        //  }}/>
+                        data={{
+                            senin: "-",
+                            selasa: "-",
+                            rabu: "-",
+                            kamis: "-",
+                            jumat: "-",
+                            sabtu: "-",
+                            minggu: "-",
+                        }} />
                 </Box>
                 <Box mt={3} >
                     <CardIzinAkses />

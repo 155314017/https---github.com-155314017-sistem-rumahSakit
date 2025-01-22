@@ -13,7 +13,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import useEditFasilitas from "../hooks/useEditFasilitas";
 export default function EditFasilitas() {
     const{
-    apiUrl,
     breadcrumbItems,
     formik,
     gedungOptions,

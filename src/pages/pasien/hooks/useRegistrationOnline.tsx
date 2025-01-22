@@ -8,18 +8,23 @@ import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
-import GetPatientByNIKServices from "../../../services/Patient Tenant/GetPatientByNIKServices";
+import GetPatientByUserIdServices from "../../../services/Patient Tenant/GetPatientByUserIdServices";
+import GetUserByNIK from "../../../services/Admin Tenant/ManageUser/GetUserByNIK";
+import dayjs from "dayjs";
 
-type PatientData = {
-    id: string;
-    identityNumber: string;
-    fullName: string;
-    birthDateAndPlace: string;
-    phoneNumber: string;
-    email: string;
-    gender: string;
-    address: string;
-};
+type PatientData =
+    {
+        id: string | undefined;
+        nik: string | undefined;
+        email: string | undefined;
+        phone: string | undefined;
+        fullname: string | undefined;
+        address: string | undefined;
+        gender: string | undefined;
+        birthDate: string | undefined;
+        birthPlace: string | undefined;
+    };
+
 
 type Clinic = {
     id: string;
@@ -72,7 +77,6 @@ function BpRadio(props: RadioProps) {
 export default function useRegistrationOnline() {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
-    const [showNeedAdminPage, setShowNeedAdminPage] = useState(false);
     const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
     const [calendarKey, setCalendarKey] = useState<number>(0);
@@ -84,6 +88,9 @@ export default function useRegistrationOnline() {
     const [selectedSchedule, setSelectedSchedule] = useState("");
     const [needAdmin, setNeedAdmin] = useState(false);
     const [patientData, setPatientData] = useState<PatientData>();
+    const [idPatient, setIdPatient] = useState<string | null>('');
+    const [tanggalReserve, setTanggalReserve] = useState('');
+    const [bookingCode, setBookingCode] = useState('');
 
     useEffect(() => {
         const fetchClinicData = async () => {
@@ -134,7 +141,7 @@ export default function useRegistrationOnline() {
 
     const handleDropdownPoli = (value: string, label: string) => {
         setIdClinic(value)
-        setClinicName(label);
+        setClinicName(label)
     };
 
 
@@ -170,13 +177,14 @@ export default function useRegistrationOnline() {
         } else {
             return {
                 display: "flex",
-                border: "1px solid #8F85F3",
+                border: "none",
                 width: "38px",
                 height: "38px",
                 borderRadius: "8px",
                 justifyContent: "center",
                 alignItems: "center",
-                color: "#8F85F3",
+                color: "#A8A8BD",
+                bgcolor: '#EEEEF2 !important',
             };
         }
     };
@@ -188,18 +196,20 @@ export default function useRegistrationOnline() {
     };
 
     const initialValues = {
-        nik: "",
-        email: "",
-        phone: "",
-        address: "",
-        birthPlace: "",
-        birthDate: null as Date | null,
-        gender: "",
-        phoneCp: "",
-        emailCp: "",
+        nik: patientData?.nik || "",
+        fullname: patientData?.fullname || "",
+        email: patientData?.email || "",
+        phone: patientData?.phone || "",
+        address: patientData?.address || "",
+        birthPlace: patientData?.birthPlace || "",
+        birthDate: patientData?.birthDate || "",
+        gender: patientData?.gender || "",
+        phoneCp: patientData?.phone || "",
+        emailCp: patientData?.email || "",
         typeOfVisit: "",
-        clinic: "",
-        doctor: "",
+        referenceDoc: "",
+        // clinic: "",
+        // doctor: "",
         schedule: "",
         symptoms: "",
     };
@@ -207,77 +217,99 @@ export default function useRegistrationOnline() {
     const getValidationSchema = (page: number) => {
         switch (page) {
             case 1:
+                return Yup.object().shape({});
+            case 2:
                 return Yup.object().shape({
                     nik: Yup.string()
                         .required("NIK wajib diisi")
                         .matches(/^[0-9]+$/, "NIK harus berupa angka")
-                        .length(16, 'NIK harus 16 digit'),
+                    // .length(16, 'NIK harus 16 digit'),
                 });
-            case 2:
+            case 3:
                 return Yup.object().shape({
                     phone: Yup.string().required("No. Handphone wajib diisi"),
                     email: Yup.string().email("Format email tidak valid"),
                 });
-            case 3:
-                return Yup.object().shape({});
             case 4:
                 return Yup.object().shape({
-                    phoneStep4: Yup.string().required("No. Handphone wajib diisi"),
-                    emailStep4: Yup.string()
+                    phoneCp: Yup.string().required("No. Handphone wajib diissi"),
+                    emailCp: Yup.string()
                         .email("Format email tidak valid")
                         .required("Email wajib diisi"),
-                    complaintType: Yup.string().required("Jenis kunjungan wajib diisi"),
-                    // clinic: Yup.string().required("Poli yang dituju wajib diisi"),
-                    // doctor: Yup.string().required("Dokter wajib dipilih"),
+                    typeOfVisit: Yup.string().required("Jenis kunjungan wajib diisi"),
                     schedule: Yup.string().required("Pilih jadwal terlebih dahulu"),
-                    complaint: Yup.string().required("Keluhan pasien wajib diisi"),
+                    symptoms: Yup.string().required("Keluhan pasien wajib diisi"),
                 });
             default:
                 return Yup.object().shape({});
         }
     };
 
+    const registrationPatient = async (data: any) => {
+        try {
+            const response = await axios.post(
+                "https://hms.3dolphinsocial.com:8083/v1/manage/registration/",
+                data,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
+            setBookingCode(response.data.data.bookingCode);
+            setCurrentPage(5);
+        } catch (err: any) {
+            console.log(err);
+        }
+    }
+
     const checkIdentityNumber = async (nik: string) => {
         try {
-            const response = await GetPatientByNIKServices(nik);
-            console.log('response cari: ', response)
-            if (response?.responseCode === '200') {
-                const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
-                const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
+            const responseUser = await GetUserByNIK(nik);
+            console.log(responseUser);
+            if (responseUser?.data != null) {
+                const fullname = responseUser?.data.firstName + ' ' + responseUser?.data.lastName;
+                const response = await GetPatientByUserIdServices(responseUser?.data.id || '');
+                const birthDateProcess = response?.data.birthDate[0] + '-' + response?.data.birthDate[1] + '-' + response?.data.birthDate[2];
                 const dataGet = {
-                    id: response.data.id,
-                    nik: response?.data.identityNumber,
-                    email: response?.data.email,
-                    phone: response?.data.phoneNumber,
-                    fullname: response?.data.fullName,
+                    id: responseUser?.data.id || '',
+                    nik: nik,
+                    email: responseUser?.data.email,
+                    phone: responseUser?.data.phone,
+                    fullname: fullname,
                     address: response?.data.address,
                     gender: response?.data.gender,
                     birthDate: birthDateProcess,
-                    birthPlace: birthPlaceProcess
+                    birthPlace: response?.data.birthPlace
                 }
-                console.log('dataGet: ', dataGet)
-                // setPatientData(dataGet);
-                setCurrentPage(2);
+                setPatientData(dataGet);
+
+                setCurrentPage(3);
+            } else if (responseUser?.data === null) {
+                console.log('takde')
+                setIdPatient(null);
+                setNeedAdmin(true);
+                setCurrentPage(4);
             }
         } catch (err: any) {
-            if (err.response.status === 404) {
+            if (err.response?.status === 404) {
                 const data = {
                     id: null,
                     needAdmin: true,
-                }
-                console.log('data data: ', data)
-                // navigate('/kategori/pasien', { state: { dataPatient: data, newPatient: true } })
+                };
+                console.log('data data: ', data);
                 setCurrentPage(3);
-
+            } else {
+                console.error('Unexpected error:', err);
             }
         }
-    }
+    };
+
 
     return {
         navigate,
         BpRadio,
-        setShowNeedAdminPage,
-        showNeedAdminPage,
         clinicOptions,
         doctorOptions,
         calendarKey,
@@ -298,6 +330,12 @@ export default function useRegistrationOnline() {
         getValidationSchema,
         checkIdentityNumber,
         setCurrentPage,
-        currentPage
+        currentPage,
+        patientData,
+        registrationPatient,
+        idPatient,
+        tanggalReserve,
+        bookingCode
     }
 }
+

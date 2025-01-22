@@ -10,16 +10,18 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PrintIcon from "@mui/icons-material/Print";
 import ModalUbahNoHp from "./modal/ModalUbahNoHp";
 type InformasiTicketProps = {
+  nomorAntrian?: string | undefined;
   namaDokter: string | undefined;
   clinic: string | undefined;
   tanggalReservasi: string | undefined;
   jadwalKonsul: string | null | undefined;
-  bookingCode: string;
+  bookingCode?: string;
   bgcolor?: string;
   onClose?: () => void;
 };
 
 const InformasiTicketAPI = ({
+  nomorAntrian,
   namaDokter,
   clinic,
   tanggalReservasi,
@@ -131,6 +133,29 @@ const InformasiTicketAPI = ({
           Tiket antrian konter berhasil di cetak
         </Alert>
       </Snackbar>
+
+      <Snackbar
+        open={resendSuccess}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={3000}
+        onClose={() => setResendSuccess(false)}
+      >
+        <Alert
+          onClose={() => setResendSuccess(false)}
+          severity="success"
+          sx={{
+            backgroundColor: "#DFF4DC",
+            color: "#4CAF50",
+            border: "1px solid #4CAF50",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+            borderRadius: "8px",
+            zIndex: 1500,
+          }}
+        >
+          Tiket antrian konter berhasil di cetak
+        </Alert>
+      </Snackbar>
+
       <Box
         bgcolor={'white'}
         maxWidth={626}
@@ -229,9 +254,9 @@ const InformasiTicketAPI = ({
           <Box display={"flex"} flexDirection={"column"}>
             {bookingCode !== "" && (
               <>
-                <Typography fontSize={"16px"}>Booking Code</Typography>
+                <Typography fontSize={"16px"}>{nomorAntrian? "Nomor antrian" : "Booking Code"}</Typography>
                 <Typography fontSize={"48px"} fontWeight={"600"}>
-                  {bookingCode}
+                  {nomorAntrian? nomorAntrian : bookingCode}
                 </Typography>
               </>
             )}
@@ -239,9 +264,9 @@ const InformasiTicketAPI = ({
           <Box
             display={"flex"}
             flexDirection={"row"}
-            gap={"60px"}
+            gap={"80px"}
             justifyContent={"space-between"}
-            maxWidth={"80%"}
+            maxWidth={"87%"}
           >
             <Box>
               <Typography>Dokter yang bertugas</Typography>
@@ -262,7 +287,7 @@ const InformasiTicketAPI = ({
               flexDirection={"row"}
               gap={"80px"}
               justifyContent={"space-between"}
-              maxWidth={"80%"}
+              maxWidth={"90%"}
             >
               <Box display={"flex"} flexDirection={"column"}>
                 <Typography>Tanggal reservasi</Typography>
@@ -354,7 +379,7 @@ const InformasiTicketAPI = ({
               sx={{
                 cursor: isCounting ? 'default' : 'pointer',
                 color: isCounting ? '#ccc' : '#8F85F3',
-                textDecoration: isCounting ? 'none' : 'underline',
+                textDecoration: 'none',
                 fontSize: '16px',
               }}
             >
@@ -362,7 +387,7 @@ const InformasiTicketAPI = ({
                 (isCounting ? `${formatTime()}` : 'Kirim ulang')
               }
             </Typography>
-            <Typography color={"#8F85F3"} fontSize={"16px"} fontWeight={400} alignItems="right" onClick={handleEditClick}>Ubah</Typography>
+            <Typography sx={{ cursor: 'pointer' }} color={"#8F85F3"} fontSize={"16px"} fontWeight={400} alignItems="right" onClick={handleEditClick}>Ubah</Typography>
           </Box>
         </Box>
       </Box>

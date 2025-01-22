@@ -32,27 +32,27 @@ import AlertSuccess from '../../../components/small/alert/AlertSuccess'
 //hooks
 import useIndex from "../hooks/useIndex";
 export default function Index() {
-    const{dataClinic,
-        dataRoom,
-        dataFacility,
-        dataDoctor,
-        fetchData,
-        successLogin,
-        successDeleteBuilding,
-        successDeleteRoom,
-        successDeleteFacility,
-        successDeleteAmbulance,
-        successDeleteClinic,
-        successDeleteCounter,
-        isLoading,
-        showTemporarySuccessDeleteRoom,
-        showTemporarySuccessDeleteBuilding,
-        showTemporarySuccessDeleteFacility,
-        showTemporarySuccessDeleteAmbulance,
-        showTemporarySuccessDeleteClinic,
-        showTemporarySuccessDeleteCounter
+  const { dataClinic,
+    dataRoom,
+    dataFacility,
+    dataDoctor,
+    fetchData,
+    successLogin,
+    successDeleteBuilding,
+    successDeleteRoom,
+    successDeleteFacility,
+    successDeleteAmbulance,
+    successDeleteClinic,
+    successDeleteCounter,
+    isLoading,
+    showTemporarySuccessDeleteRoom,
+    showTemporarySuccessDeleteBuilding,
+    showTemporarySuccessDeleteFacility,
+    showTemporarySuccessDeleteAmbulance,
+    showTemporarySuccessDeleteClinic,
+    showTemporarySuccessDeleteCounter
 
-    }=useIndex()
+  } = useIndex()
   return (
     <Box>
       <Box sx={{ py: 5 }}>
@@ -69,28 +69,28 @@ export default function Index() {
         <MediumCard
           icon={MeetingRoomIcon}
           title="Total Ruangan"
-          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataRoom.length.toString()}
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataRoom.length.toString() || '0'}
         />
         <MediumCard
           icon={BedIcon}
           title={'Ruangan tersedia'}
-          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataRoom.length.toString()}
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataRoom.length.toString() || '0'}
         />
-        <MediumCard icon={PeopleIcon} title={'Total pegawai'} subtitle={'10'} />
+        <MediumCard icon={PeopleIcon} title={'Total pegawai'} subtitle={'2'} />
         <MediumCard
           icon={LocalHospitalIcon}
           title="Total poliklinik"
-          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataClinic.length.toString()}
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataClinic.length.toString() || '0'}
         />
         <MediumCard
           icon={MedicalServicesIcon}
           title="Total dokter"
-          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataDoctor.length.toString()}
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataDoctor.length.toString() || '0'}
         />
         <MediumCard
           icon={MonitorHeartIcon}
           title="Total fasilitas"
-          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataFacility.length.toString()}
+          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataFacility.length.toString() || '0'}
         />
         <CardAdd icon={RoomPreferencesIcon} title="Tambah ruangan" link="/tambahRuangan" />
         <CardAdd icon={PersonAddIcon} title="Tambah pegawai" link="/tambahPegawai" />
@@ -114,6 +114,6 @@ export default function Index() {
         <TablePasien />
       </Stack>
     </Box>
-   
+
   )
 }

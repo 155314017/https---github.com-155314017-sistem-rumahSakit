@@ -24,7 +24,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import useTambahPasienUmumOffline from "../hooks/useTambahPasienUmumOffline";
-import SwitchCustom from "../../../../components/small/Switch/SwitchCustom";
 import DropdownListAPI from "../../../../components/small/dropdownlist/DropdownListAPI";
 import CustomCalender from "../../../../components/medium/CustomCalender";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
@@ -32,7 +31,6 @@ import bgImg from "../../../../assets/img/Bg-desktop.svg"
 import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
 import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import { useEffect } from "react";
-import dataPasien from "../../../../dummyData/dataPasien";
 import { Field, Form, Formik } from "formik";
 import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
 
@@ -45,11 +43,7 @@ export default function TambahPasienUmumOffline() {
         getPageStyle,
         getBorderStyle,
         isCurrentPageValid,
-        handleSwitchChange,
-        switchValue,
         mainPages,
-        guardFullPage,
-        setGuardFullPage,
         patientFullPage,
         handleScheduleChange,
         doctorOptions,
@@ -62,10 +56,8 @@ export default function TambahPasienUmumOffline() {
         changePage2,
         clinicOptions,
         handleDropdownPoli,
-        createTicket,
+        // createTicket,
         dataTickets,
-        birthDate,
-        birthPlace,
         showAlert,
         calendarKey,
         isLoading,
@@ -75,12 +67,20 @@ export default function TambahPasienUmumOffline() {
         fileName,
         handleFileChange,
         needAdmin,
-        setMainPages,
         NIK,
         birth,
         setPatientData,
         validationSchema1,
-        navigate
+        navigate,
+        idClinic,
+        registrationPatient,
+        selectedScheduleId,
+        selectedSchedule,
+        clinicName,
+        docterName,
+        tanggalReserve,
+        
+
 
 
     } = useTambahPasienUmumOffline();
@@ -253,14 +253,14 @@ export default function TambahPasienUmumOffline() {
                                     {!patientFullPage && (<>
                                         <Formik
                                             initialValues={{
-                                                nik: NIK,
-                                                email: "",
-                                                phone: patientData.phone,
-                                                fullname: patientData.name,
-                                                gender: patientData.gender,
-                                                address: patientData.address,
-                                                birthPlace: patientData.birthPlace,
-                                                birthDate: patientData.birthDate,
+                                                nik: NIK || '',
+                                                email: patientData?.email || '',
+                                                phone: patientData?.phone || '',
+                                                fullname: patientData?.fullname || '',
+                                                gender: patientData?.gender || '',
+                                                address: patientData?.address || '',
+                                                birthPlace: patientData?.birthPlace || '',
+                                                birthDate: patientData?.birthDate || '',
                                             }}
                                             enableReinitialize
                                             validationSchema={validationSchema}
@@ -268,12 +268,13 @@ export default function TambahPasienUmumOffline() {
                                                 console.log(values);
 
                                                 const dataRegis = {
+                                                    id: patientData?.id,
                                                     address: patientData?.address,
-                                                    nik: values.nik,
-                                                    email: values.email,
+                                                    nik: values?.nik,
+                                                    email: patientData?.email,
                                                     phone: patientData?.phone,
                                                     gender: patientData?.gender,
-                                                    name: patientData?.name,
+                                                    fullname: patientData?.fullname,
                                                     birthDate: birth,
                                                     birthPlace: patientData?.birthPlace,
                                                 };
@@ -282,7 +283,7 @@ export default function TambahPasienUmumOffline() {
                                                 changePage2();
                                             }}
                                         >
-                                            {({ errors, touched, handleChange, handleBlur, values, isValid, dirty, setFieldValue }) => (
+                                            {({ errors, touched, handleChange, handleBlur, values, setFieldValue }) => (
                                                 <Form>
                                                     <Box>
                                                         <Box
@@ -365,7 +366,7 @@ export default function TambahPasienUmumOffline() {
                                                                             },
                                                                         }}
                                                                         name="fullname"
-                                                                        value={patientData.name}
+                                                                        value={patientData?.fullname || ""}
                                                                         disabled
                                                                     />
                                                                 </FormControl>
@@ -469,12 +470,12 @@ export default function TambahPasienUmumOffline() {
                                                                         <RadioGroup
                                                                             aria-labelledby="gender-label"
                                                                             name="gender"
-                                                                            value={patientData.gender}
+                                                                            value={patientData?.gender}
                                                                             onChange={(e) => setFieldValue("gender", e.target.value)}
                                                                             row
                                                                         >
-                                                                            <FormControlLabel value="MEN" control={<BpRadio />} label="Pria" />
-                                                                            <FormControlLabel value="WOMEN" control={<BpRadio />} label="Wanita" />
+                                                                            <FormControlLabel value="MALE" control={<BpRadio />} label="Pria" />
+                                                                            <FormControlLabel value="FEMALE" control={<BpRadio />} label="Wanita" />
                                                                         </RadioGroup>
                                                                     </FormControl>
                                                                 </Box>
@@ -502,7 +503,7 @@ export default function TambahPasienUmumOffline() {
                                                                                 },
                                                                             },
                                                                         }}
-                                                                        value={patientData.address}
+                                                                        value={patientData?.address}
                                                                         multiline
                                                                         minRows={2}
                                                                         disabled
@@ -549,7 +550,7 @@ export default function TambahPasienUmumOffline() {
                                                                         borderRadius: "8px",
                                                                         ":hover": { bgcolor: "#a098f5" },
                                                                     }}
-                                                                    disabled={!(isValid && dirty)}
+                                                                    // disabled={!(isValid && dirty)}
                                                                 >
                                                                     Selanjutnya
                                                                 </Button>
@@ -576,45 +577,62 @@ export default function TambahPasienUmumOffline() {
                                             <Box>
                                                 <Formik
                                                     initialValues={{
-                                                        phone: patientData.phone,
-                                                        fullname: patientData.name,
-                                                        gender: patientData.gender,
-                                                        address: patientData.address,
-                                                        birthPlace: patientData.birthPlace,
+                                                        phone: patientData?.phone,
+                                                        fullname: patientData?.fullname,
+                                                        gender: patientData?.gender,
+                                                        address: patientData?.address,
+                                                        birthPlace: patientData?.birthPlace,
                                                         jenisKunjungan: '',
                                                         doctor: '',
                                                         complaint: '',
-                                                        email: patientData.email, // Add email to initial values
+                                                        email: patientData?.email, // Add email to initial values
                                                         nik: NIK,
                                                     }}
                                                     enableReinitialize
                                                     validationSchema={validationSchema1}
                                                     onSubmit={async (values) => {
                                                         const dataRegis = {
-                                                            namaKlinik: '',
-                                                            address: patientData?.address,
-                                                            nik: patientData.id,
-                                                            email: patientData?.email,
-                                                            phone: patientData?.phone,
-                                                            gender: patientData?.gender,
-                                                            fullname: patientData?.name,
-                                                            birthDatePatient: patientData?.birthDate,
-                                                            birthPlacePatient: patientData?.birthPlace,
-                                                            docs: '',
-                                                            asuranceDocs: '',
-                                                            jenisKunjungan: values.jenisKunjungan,
-                                                            poli: '',
-                                                            doctor: values.doctor,
-                                                            keluhan: values.complaint,
-                                                            riwayatPenyakit: '',
-                                                            alergi: '',
+                                                            // namaKlinik: '',
+                                                            // address: patientData?.address,
+                                                            // nik: patientData?.nik,
+                                                            // email: patientData?.email,
+                                                            // phone: patientData?.phone,
+                                                            // gender: patientData?.gender,
+                                                            // fullname: patientData?.fullname,
+                                                            // birthDatePatient: patientData?.birthDate,
+                                                            // birthPlacePatient: patientData?.birthPlace,
+                                                            // docs: '',
+                                                            // asuranceDocs: '',
+                                                            patientId: patientData?.id,
+                                                            clinicId: idClinic,
+                                                            doctorId: idDoctor,
+                                                            typeOfVisit: values.jenisKunjungan,
+                                                            scheduleDate: dayjs(selectedSchedule?.split(",")[0]).format("YYYY-MM-DD"),
+                                                            scheduleIntervalId: selectedScheduleId,
+                                                            symptoms: values.complaint,
+                                                            referenceDoc: "",
+                                                            needAdmin: needAdmin,
+                                                            offline: true
                                                         }
-                                                        // handle form submission with dataRegis
+
+                                                        // const dataTiket = {
+                                                        //     nomorAntrian: '1',
+                                                        //     namaDokter: 'udin',
+                                                        //     clinic: 'klinik a',
+                                                        //     tanggalReservasi: '21 januari 2025',
+                                                        //     jadwalKonsul: '22 januari 2025',
+                                                        //     bookingCode: '12ads',
+                                                        // }
+                                                        
+                                                        // createTicket(dataTiket);
+                                                        registrationPatient(dataRegis);
+                                                        
                                                     }}
                                                 >
                                                     {({ errors, touched, handleChange, handleBlur, values,
-                                                        isValid,
-                                                        dirty, setFieldValue }) => (
+                                                        // isValid,
+                                                        // dirty, 
+                                                        setFieldValue }) => (
                                                         <Form>
                                                             <Box sx={{ paddingBottom: '16px', gap: "24px", justifyContent: "center", display: 'flex', flexDirection: 'column' }}>
                                                                 <Box sx={{ display: "flex", flexDirection: "column", }}>
@@ -665,9 +683,9 @@ export default function TambahPasienUmumOffline() {
                                                                                         borderRadius: '8px',
                                                                                         border: touched.phone && errors.phone ? '1px solid #ffcccc' : '1px solid #ccc',
                                                                                         transition: 'border-color 0.3s',
-                                                                                        '&:focus-within': {
-                                                                                            borderColor: '#8F85F3',
-                                                                                        },
+                                                                                        // '&:focus-within': {
+                                                                                        //     borderColor: '#8F85F3',
+                                                                                        // },
                                                                                     }}
                                                                                 />
                                                                                 {touched.phone && errors.phone && (
@@ -766,7 +784,7 @@ export default function TambahPasienUmumOffline() {
                                                                                     loading={false}
                                                                                 />
 
-                                                                                <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} sx={{ width: "100%" }}>
+                                                                                <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} sx={{ width: "100%", height:"auto" }}>
                                                                                     <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
                                                                                         <Typography>Dokter yang bertugas</Typography>
                                                                                         <DropdownListAPI
@@ -774,6 +792,7 @@ export default function TambahPasienUmumOffline() {
                                                                                             options={doctorOptions.map(({ id, name }) => ({ value: id, label: name }))}
                                                                                             onChange={handleDropdownDocter}
                                                                                             loading={false}
+                                                                                            valueField="value"
 
                                                                                         />
                                                                                         <Typography color="error">
@@ -782,7 +801,7 @@ export default function TambahPasienUmumOffline() {
                                                                                     </FormControl>
                                                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                                                         <Typography>Tanggal dan Jam Operasional</Typography>
-                                                                                        <CustomCalender key={calendarKey} doctorId={idDoctor} onChange={handleScheduleChange} />
+                                                                                        <CustomCalender key={calendarKey} typeId={idDoctor} onChange={handleScheduleChange} />
                                                                                     </Box>
 
                                                                                 </Box>
@@ -881,9 +900,8 @@ export default function TambahPasienUmumOffline() {
 
                                                                 <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
                                                                     <Button
-                                                                        variant="contained"
+                                                                        type="submit"
                                                                         color="inherit"
-                                                                        onClick={createTicket}
                                                                         sx={{
                                                                             backgroundColor: "#8F85F3",
                                                                             color: "white",
@@ -933,12 +951,12 @@ export default function TambahPasienUmumOffline() {
                             <Box marginLeft={"23%"} marginTop={"10%"} zIndex={1500}>
 
                                 <InformasiTicketAPI
-                                    clinic={dataTickets?.clinic || "Unknown Clinic"}
-                                    jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
-                                    namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
-                                    // nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
-                                    tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
-                                    bookingCode=""
+                                    clinic= {clinicName}
+                                    jadwalKonsul={dayjs(selectedSchedule?.split(', ')[0]).format("YYYY-MM-DD")}
+                                    namaDokter={docterName}
+                                    nomorAntrian={dataTickets?.nomorAntrian || ""}
+                                    tanggalReservasi={tanggalReserve}
+                                    
                                     onClose={() => navigate("/offline/tambahPasien")}
                                 />
                             </Box>

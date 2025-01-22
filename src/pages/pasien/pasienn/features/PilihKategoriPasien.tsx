@@ -329,7 +329,6 @@ export default function PilihKategoriPasien() {
                         clinic={dataKodeBooking?.namaKlinik}
                         jadwalKonsul={dataKodeBooking?.jadwalKonsul}
                         namaDokter={dataKodeBooking?.namaDokter}
-                        nomorAntrian={dataKodeBooking?.nomorAntrian}
                         tanggalReservasi={dataKodeBooking?.tanggalReserve}
                         bookingCode=""
                         onClose={() => {

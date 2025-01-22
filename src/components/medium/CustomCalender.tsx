@@ -20,44 +20,35 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
 
     const dummySchedules = [
         {
-            startTime: "13:30",
-            endTime: "16:30",
+            id: "1",
+            title: "Morning Shift",
+            startTime: [8, 0],
+            endTime: [12, 0],
             typeId: "1",
-            maxCapacity: 6,
+            maxCapacity: 10,
             monday: true,
             tuesday: true,
             wednesday: true,
             thursday: true,
             friday: true,
-            saturday: true,
-            sunday: true,
+            saturday: false,
+            sunday: false,
         },
         {
-            startTime: "10:35",
-            endTime: "12:35",
+            id: "2",
+            title: "Afternoon Shift",
+            startTime: [13, 30],
+            endTime: [16, 30],
             typeId: "2",
-            maxCapacity: 6,
+            maxCapacity: 8,
             monday: true,
             tuesday: true,
             wednesday: true,
             thursday: true,
             friday: true,
             saturday: true,
-            sunday: true,
+            sunday: false,
         },
-        {
-            startTime: "11:35",
-            endTime: "12:35",
-            typeId: "3",
-            maxCapacity: 6,
-            monday: true,
-            tuesday: true,
-            wednesday: true,
-            thursday: true,
-            friday: true,
-            saturday: true,
-            sunday: true,
-        }
     ];
 
     const exclusionInterval = [
@@ -67,10 +58,28 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
     useEffect(() => {
         const fetchSchedules = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/doctor/schedules/${typeId}`);
-                if (response.data && response.data.schedules) {
-                    processSchedules(response.data.schedules);
+                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/schedule-interval/by-type-id?typeId=${typeId}`);
+                console.log('response calendar: ', response.data.data);
+                if (Array.isArray(response.data.data) && response.data.data.length > 0) {
+                    const schedules = response.data.data.map((item: any) => ({
+                        id: item.id,
+                        title: item.title || '',
+                        starTime: item.startTime,
+                        endTime: item.endTime,
+                        typeId: item.typeId,
+                        monday: item.monday,
+                        tuesday: item.tuesday,
+                        wednesday: item.wednesday,
+                        thursday: item.thursday,
+                        friday: item.friday,
+                        saturday: item.saturday,
+                        sunday: item.sunday,
+                    }));
+
+                    console.log('proses: ', schedules);
+                    processSchedules(schedules);
                 } else {
+                    console.warn('No schedules found. Using dummy schedules.');
                     processSchedules(dummySchedules);
                 }
             } catch (error) {
@@ -79,20 +88,29 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
             }
         };
 
+
+
         fetchSchedules();
     }, [typeId]);
 
     const processSchedules = (schedules: any[]): void => {
+        if (!Array.isArray(schedules) || schedules.length === 0) {
+            console.warn('Schedules are empty or invalid.');
+            setAvailableDates(new Set());
+            setAvailableTimes({});
+            return;
+        }
+
         const times: { [date: string]: { timeRange: string; scheduleId: string; disabled: boolean }[] } = {};
         const dates = new Set<string>();
         const now = dayjs();
 
-        const startDate = now.startOf('day');
-        const endDate = startDate.add(1, 'year');
+        const startDate = now.startOf("day");
+        const endDate = startDate.add(1, "year");
 
-        for (let date = startDate; date.isBefore(endDate, 'day'); date = date.add(1, 'day')) {
-            const formattedDate = date.format('YYYY-MM-DD');
-            const dayName = date.locale('en').format('dddd').toLowerCase();
+        for (let date = startDate; date.isBefore(endDate, "day"); date = date.add(1, "day")) {
+            const formattedDate = date.format("YYYY-MM-DD");
+            const dayName = date.locale("en").format("dddd").toLowerCase();
             const exclusionForDate = exclusionInterval.find((exclusion) => exclusion.date === formattedDate);
 
             if (exclusionForDate) {
@@ -101,28 +119,20 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                     dates.add(formattedDate);
                 } else {
                     schedules.forEach((schedule: any) => {
-                        if (schedule.typeId === exclusionForDate.scheduleIntervalId) {
+                        if (schedule.id === exclusionForDate.scheduleIntervalId) {
                             if (!times[formattedDate]) {
                                 times[formattedDate] = [];
                             }
 
-                            const timeRange = `${schedule.startTime} - ${schedule.endTime}`;
+                            const timeRange = `${schedule.starTime[0].toString().padStart(2, "0")}:${schedule.starTime[1]
+                                .toString()
+                                .padStart(2, "0")} - ${schedule.endTime[0].toString().padStart(2, "0")}:${schedule.endTime[1]
+                                    .toString()
+                                    .padStart(2, "0")}`;
                             times[formattedDate].push({
                                 timeRange,
-                                scheduleId: schedule.typeId,
+                                scheduleId: schedule.id,
                                 disabled: true,
-                            });
-                            dates.add(formattedDate);
-                        } else {
-                            if (!times[formattedDate]) {
-                                times[formattedDate] = [];
-                            }
-
-                            const timeRange = `${schedule.startTime} - ${schedule.endTime}`;
-                            times[formattedDate].push({
-                                timeRange,
-                                scheduleId: schedule.typeId,
-                                disabled: false,
                             });
                             dates.add(formattedDate);
                         }
@@ -135,10 +145,14 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                             times[formattedDate] = [];
                         }
 
-                        const timeRange = `${schedule.startTime} - ${schedule.endTime}`;
+                        const timeRange = `${schedule.starTime[0].toString().padStart(2, "0")}:${schedule.starTime[1]
+                            .toString()
+                            .padStart(2, "0")} - ${schedule.endTime[0].toString().padStart(2, "0")}:${schedule.endTime[1]
+                                .toString()
+                                .padStart(2, "0")}`;
                         times[formattedDate].push({
                             timeRange,
-                            scheduleId: schedule.typeId,
+                            scheduleId: schedule.id,
                             disabled: false,
                         });
 
@@ -151,6 +165,8 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
         setAvailableDates(dates);
         setAvailableTimes(times);
     };
+
+
 
 
 
