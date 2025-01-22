@@ -30,17 +30,19 @@ const changePhoneSchema = Yup.object().shape({
 });
 
 
-const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void; patienDataSent?: any }> = ({ open, onClose, patienDataSent }) => {
+
+const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void; patienDataSent?: any; registrationId?: string; hitFunction?: () => void }> = ({ open, onClose, patienDataSent, registrationId, hitFunction }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [patientData, setPatientData] = useState<any>({});
 
     useEffect(() => {
         if (patienDataSent) {
             setPatientData(patienDataSent);
-            console.log('data: ', patienDataSent);
+            console.log('data before changed: ', patienDataSent);
         }
-    }, [patientData]);
+    }, [patienDataSent]);
     return (
+
         <Modal
             open={open}
             onClose={onClose}
@@ -51,6 +53,7 @@ const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void; patienDataSe
             }}
         >
             <Box sx={style}>
+
                 <IconButton
                     onClick={onClose}
                     sx={{
@@ -76,18 +79,17 @@ const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void; patienDataSe
                     onSubmit={async (values) => {
                         setIsLoading(true);
                         const dataPhoneChanged = {
-                            patientId: patienDataSent.id === undefined ? null : patienDataSent.id,
+                            registrationId: registrationId,
+                            patientId: patienDataSent.patientId === undefined ? null : patienDataSent.patientId,
+                            typeOfVisit: patienDataSent.typeOfVisit,
                             clinicId: patienDataSent.clinicId,
                             doctorId: patienDataSent.doctorId,
-                            typeOfVisit: patienDataSent.typeOfVisit,
                             scheduleDate: patienDataSent.scheduleDate,
                             scheduleIntervalId: patienDataSent.scheduleIntervalId,
                             symptoms: patienDataSent.symptoms,
                             referenceDoc: patienDataSent.referenceDoc,
-                            offline: patienDataSent.offline,
                             phoneNumber: values.newPhone,
                             email: patienDataSent.email,
-                            needAdmin: patienDataSent.needAdmin,
                         };
                         try {
                             const response = await axios.put(
@@ -100,6 +102,7 @@ const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void; patienDataSe
                                 }
                             );
                             console.log(response);
+                            hitFunction?.();
                         } catch (error) {
                             console.error(error);
                         } finally {
@@ -110,7 +113,7 @@ const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void; patienDataSe
                 >
                     {({ errors, touched, setFieldValue, values, isValid, dirty }) => (
                         <Form>
-                            <Field name="bookingCode">
+                            <Field name="newPhone">
                                 {() => (
                                     <PhoneInput
                                         country={"id"}

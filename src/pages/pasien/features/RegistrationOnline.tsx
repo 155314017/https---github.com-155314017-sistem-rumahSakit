@@ -56,7 +56,8 @@ export default function RegistrationOnline() {
         tanggalReserve,
         bookingCode,
         setDataPatient,
-        dataPatient
+        dataPatient,
+        registrationId
     } = useRegistrationOnline();
     return (
         <>
@@ -153,6 +154,7 @@ export default function RegistrationOnline() {
                                         needAdmin: needAdmin,
                                     };
                                     registrationPatient(data);
+                                    console.log('data1: ', data);
                                     // setCurrentPage(5);
                                     setDataPatient(data);
                                     return;
@@ -877,6 +879,7 @@ export default function RegistrationOnline() {
                                             bookingCode={bookingCode}
                                             onClose={() => setCurrentPage(1)}
                                             patienDataSent={dataPatient}
+                                            registrationId={registrationId}
                                         />
                                     </Box>
                                 )}

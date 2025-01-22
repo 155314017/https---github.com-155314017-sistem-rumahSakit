@@ -92,6 +92,7 @@ export default function useRegistrationOnline() {
     const [tanggalReserve, setTanggalReserve] = useState('');
     const [bookingCode, setBookingCode] = useState('');
     const [dataPatient, setDataPatient] = useState<any>({});
+    const [registrationId, setRegistrationId] = useState('');
 
     useEffect(() => {
         const fetchClinicData = async () => {
@@ -224,7 +225,6 @@ export default function useRegistrationOnline() {
                     nik: Yup.string()
                         .required("NIK wajib diisi")
                         .matches(/^[0-9]+$/, "NIK harus berupa angka")
-                    // .length(16, 'NIK harus 16 digit'),
                 });
             case 3:
                 return Yup.object().shape({
@@ -259,6 +259,7 @@ export default function useRegistrationOnline() {
             );
             setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
             setBookingCode(response.data.data.bookingCode);
+            setRegistrationId(response.data.data.id);
             setCurrentPage(5);
         } catch (err: any) {
             console.log(err);
@@ -338,7 +339,8 @@ export default function useRegistrationOnline() {
         tanggalReserve,
         bookingCode,
         setDataPatient,
-        dataPatient
+        dataPatient,
+        registrationId
     }
 }
 

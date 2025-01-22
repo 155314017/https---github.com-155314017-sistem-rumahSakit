@@ -20,6 +20,7 @@ type InformasiTicketProps = {
   bookingCode?: string;
   bgcolor?: string;
   patienDataSent?: any;
+  registrationId?: string;
   onClose?: () => void;
 };
 
@@ -32,7 +33,8 @@ const InformasiTicketAPI = ({
   bookingCode,
   bgcolor = "#ffffff",
   onClose,
-  patienDataSent
+  patienDataSent,
+  registrationId
 }: InformasiTicketProps) => {
 
   const [showButton, setShowButton] = useState(true);
@@ -45,6 +47,14 @@ const InformasiTicketAPI = ({
   const [resendSuccess, setResendSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [patientData, setPatientData] = useState<any>({});
+  const [successChangePhone, setSuccessChangePhone] = useState(false);
+
+
+  const showTemporaryAlertSuccessChangePhone = async () => {
+    setSuccessChangePhone(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setSuccessChangePhone(false)
+  }
 
   useEffect(() => {
     if (patienDataSent) {
@@ -132,6 +142,7 @@ const InformasiTicketAPI = ({
   return (
     <Box width={"100%"} >
       {alertDownloaded && <AlertSuccess label="Tiket antrian berhasil di unduh" />}
+      {successChangePhone && <AlertSuccess label="No handphone dan tiket berhasil dikirim dan di ganti." />}
       <Snackbar
         open={showAlert}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
@@ -209,7 +220,7 @@ const InformasiTicketAPI = ({
         sx={{ overflow: "hidden", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", }}
       >
         {showModal && (
-          <ModalUbahNoHp open={showModal} onClose={() => setShowModal(false)} patienDataSent={patientData} />
+          <ModalUbahNoHp hitFunction={showTemporaryAlertSuccessChangePhone} open={showModal} onClose={() => setShowModal(false)} patienDataSent={patientData} registrationId={registrationId} />
         )}
         {onClose && (
           <IconButton
