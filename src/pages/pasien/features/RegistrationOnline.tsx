@@ -73,6 +73,8 @@ export default function RegistrationOnline() {
                             component="img"
                             sx={{
                                 width: "50%",
+                                minWidth: '50%',
+                                maxWidth: '50%',
                                 height: "100vh",
                                 objectFit: "cover",
                                 position: "fixed",
@@ -117,18 +119,7 @@ export default function RegistrationOnline() {
                 </Box>
 
                 <Box
-                    sx={{
-                        ml: "50%",
-                        display: "flex",
-                        flexDirection: "column",
-                        position: "relative",
-                        minHeight: "100vh",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        // bgcolor: 'blue',
-                        minWidth: 'auto',
-                        overflow: "auto",
-                    }}
+                    position="absolute" ml={'50%'} minWidth="50%" maxWidth="50%" minHeight={'100vh'}
                 >
                     <Formik
                         initialValues={initialValues}
@@ -192,7 +183,7 @@ export default function RegistrationOnline() {
                                         mb={3}
                                     >
                                         {(currentPage === 2 || currentPage === 3) && (
-                                            <Box mb={2} ml={5}>
+                                            <Box mb={2} ml={5} width={'fit-content'} mt={'25%'}>
                                                 <Typography
                                                     fontSize="32px"
                                                     fontWeight={600}
@@ -212,7 +203,7 @@ export default function RegistrationOnline() {
                                             </Box>
                                         )}
 
-                                        <Box display="flex" flexDirection="row" mt={5} >
+                                        <Box display="flex" flexDirection="row" mt={currentPage === 4 || currentPage === 2 ? '5%' : '15%'} >
                                             <Box display="flex" flexDirection="row" width="290px">
                                                 <Button
                                                     type="button"
@@ -258,7 +249,7 @@ export default function RegistrationOnline() {
                                             </Box>
                                         </Box>
                                         {currentPage === 1 && (
-                                            <Box mb={2} mt={'5%'} ml={'5%'} >
+                                            <Box mb={2} mt={'5%'} ml={'7%'} >
                                                 <Typography
                                                     fontWeight={600}
                                                     fontSize="20px"
@@ -289,7 +280,7 @@ export default function RegistrationOnline() {
                                             flexDirection: "column",
                                             gap: "24px",
                                             maxWidth: "600px",
-                                            ml: '3%'
+                                            ml: '7%'
                                         }}
                                     >
                                         <CardRawatJalan
@@ -638,7 +629,7 @@ export default function RegistrationOnline() {
 
 
                                 {currentPage === 4 && (
-                                    <Box sx={{ width: "95%", mb: 5, maxWidth: "95%", ml: 2 }}>
+                                    <Box sx={{ minWidth: "90%", mb: 5, maxWidth: "90%", ml: 5 }}>
                                         <Typography
                                             sx={{
                                                 fontSize: "20px",
