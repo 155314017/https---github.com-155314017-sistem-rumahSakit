@@ -121,25 +121,25 @@ const CardOperasionalKlinik: React.FC<DetailCardProps> = ({ title, data }) => {
                                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                             >
                                 <TableCell sx={{ fontWeight: "700" }}>
-                                    {data.senin}
+                                    <div dangerouslySetInnerHTML={{ __html: data.senin }} />
                                 </TableCell>
                                 <TableCell sx={{ fontWeight: "700" }}>
-                                    {data.selasa}
+                                    <div dangerouslySetInnerHTML={{ __html: data.selasa }} />
                                 </TableCell>
                                 <TableCell sx={{ fontWeight: "700" }}>
-                                    {data.rabu}
+                                    <div dangerouslySetInnerHTML={{ __html: data.rabu }} />
                                 </TableCell>
                                 <TableCell sx={{ fontWeight: "700" }}>
-                                    {data.kamis}
+                                    <div dangerouslySetInnerHTML={{ __html: data.kamis }} />
                                 </TableCell>
                                 <TableCell sx={{ fontWeight: "700" }}>
-                                    {data.jumat}
+                                    <div dangerouslySetInnerHTML={{ __html: data.jumat }} />
                                 </TableCell>
                                 <TableCell sx={{ fontWeight: "700" }}>
-                                    {data.sabtu}
+                                    <div dangerouslySetInnerHTML={{ __html: data.sabtu }} />
                                 </TableCell>
                                 <TableCell sx={{ fontWeight: "700" }}>
-                                    {data.minggu}
+                                    <div dangerouslySetInnerHTML={{ __html: data.minggu }} />
                                 </TableCell>
                             </TableRow>
                         </TableBody>

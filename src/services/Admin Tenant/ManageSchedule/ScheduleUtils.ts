@@ -65,12 +65,34 @@ export interface WeeklySchedule {
 }
 
 /**
+ * Interface untuk jadwal operasional harian
+ */
+export interface OperationalSchedule {
+  senin: string;
+  selasa: string;
+  rabu: string;
+  kamis: string;
+  jumat: string;
+  sabtu: string;
+  minggu: string;
+}
+
+/**
  * Mengkonversi waktu dari format 24 jam ke format 12 jam
  * @param time - Waktu dalam format 'HH:mm:ss'
  * @returns Waktu dalam format 'hh:mm a'
  */
 const convertTo12HourFormat = (time: string): string => {
   return dayjs(time, 'HH:mm:ss').format('hh:mm a');
+};
+
+/**
+ * Mengkonversi array waktu ke format string HH:mm
+ * @param timeArray - Array waktu [jam, menit]
+ * @returns String waktu dalam format HH:mm
+ */
+const convertArrayTimeToString = (timeArray: number[]): string => {
+  return `${String(timeArray[0]).padStart(2, '0')}:${String(timeArray[1]).padStart(2, '0')}`;
 };
 
 /**
@@ -90,8 +112,8 @@ const transformScheduleData = (scheduleItem: ScheduleDataItem): PraktekData => {
 
   return {
     id: scheduleItem.id,
-    startTime: convertTo12HourFormat(scheduleItem.startTime),
-    endTime: convertTo12HourFormat(scheduleItem.endTime),
+    startTime: convertArrayTimeToString(scheduleItem.startTime),
+    endTime: convertArrayTimeToString(scheduleItem.endTime),
     selectedDay,
     notes: scheduleItem.additionalInfo,
     type: 'regular'
@@ -134,13 +156,13 @@ export const createSchedules = async (typeId: string, praktek: PraktekData[]) =>
       typeId: typeId,
       additionalInfo: jadwal.notes || '',
       maxCapacity: 1,
-      monday: jadwal.selectedDay.includes('Senin'),
-      tuesday: jadwal.selectedDay.includes('Selasa'),
-      wednesday: jadwal.selectedDay.includes('Rabu'),
-      thursday: jadwal.selectedDay.includes('Kamis'),
-      friday: jadwal.selectedDay.includes('Jumat'),
-      saturday: jadwal.selectedDay.includes('Sabtu'),
-      sunday: jadwal.selectedDay.includes('Minggu'),
+      monday: jadwal.selectedDay.includes('senin'),
+      tuesday: jadwal.selectedDay.includes('selasa'),
+      wednesday: jadwal.selectedDay.includes('rabu'),
+      thursday: jadwal.selectedDay.includes('kamis'),
+      friday: jadwal.selectedDay.includes('jumat'),
+      saturday: jadwal.selectedDay.includes('sabtu'),
+      sunday: jadwal.selectedDay.includes('minggu'),
       title: 'Jadwal Ambulance',
       description: jadwal.notes || ''
     };
@@ -197,7 +219,7 @@ export const transformToWeeklySchedule = (schedules: ScheduleDataItem[]): Weekly
   };
 
   schedules.forEach(schedule => {
-    const timeRange = `${dayjs(schedule.startTime, 'HH:mm:ss').format('HH:mm')}- ${dayjs(schedule.endTime, 'HH:mm:ss').format('HH:mm')}`;
+    const timeRange = `${convertArrayTimeToString(schedule.startTime)}- ${convertArrayTimeToString(schedule.endTime)}`;
     
     if (schedule.monday) weeklySchedule.senin.push(timeRange);
     if (schedule.tuesday) weeklySchedule.selasa.push(timeRange);
@@ -211,9 +233,9 @@ export const transformToWeeklySchedule = (schedules: ScheduleDataItem[]): Weekly
   // Sort time ranges for each day
   Object.keys(weeklySchedule).forEach(day => {
     weeklySchedule[day as keyof WeeklySchedule].sort((a, b) => {
-      const timeA = dayjs(a.split('-')[0], 'HH:mm');
-      const timeB = dayjs(b.split('-')[0], 'HH:mm');
-      return timeA.isBefore(timeB) ? -1 : 1;
+      const timeA = a.split('-')[0].trim();
+      const timeB = b.split('-')[0].trim();
+      return timeA < timeB ? -1 : 1;
     });
   });
 
@@ -229,4 +251,63 @@ export const transformToWeeklySchedule = (schedules: ScheduleDataItem[]): Weekly
 export const getWeeklySchedule = async (typeId: string): Promise<WeeklySchedule> => {
   const schedules = await GetScheduleByTypeId(typeId);
   return transformToWeeklySchedule(schedules);
+};
+
+/**
+ * Mengkonversi data jadwal ke format jadwal operasional
+ * @param schedules - Array data jadwal dari API
+ * @returns Data jadwal dalam format OperationalSchedule
+ */
+export const convertToOperationalSchedule = (schedules: ScheduleDataItem[]): OperationalSchedule => {
+  const defaultSchedule: OperationalSchedule = {
+    senin: "-",
+    selasa: "-",
+    rabu: "-",
+    kamis: "-",
+    jumat: "-",
+    sabtu: "-",
+    minggu: "-",
+  };
+
+  // Temporary object untuk menyimpan array jadwal per hari
+  const tempSchedules: { [key: string]: string[] } = {
+    senin: [],
+    selasa: [],
+    rabu: [],
+    kamis: [],
+    jumat: [],
+    sabtu: [],
+    minggu: [],
+  };
+
+  schedules.forEach((schedule) => {
+    // Format waktu dari array ke string
+    const startTime = convertArrayTimeToString(schedule.startTime);
+    const endTime = convertArrayTimeToString(schedule.endTime);
+    const timeRange = `${startTime} - ${endTime}`;
+
+    // Tambahkan jadwal ke array temporary
+    if (schedule.monday) tempSchedules.senin.push(timeRange);
+    if (schedule.tuesday) tempSchedules.selasa.push(timeRange);
+    if (schedule.wednesday) tempSchedules.rabu.push(timeRange);
+    if (schedule.thursday) tempSchedules.kamis.push(timeRange);
+    if (schedule.friday) tempSchedules.jumat.push(timeRange);
+    if (schedule.saturday) tempSchedules.sabtu.push(timeRange);
+    if (schedule.sunday) tempSchedules.minggu.push(timeRange);
+  });
+
+  // Sort jadwal berdasarkan waktu dan gabungkan dengan newline
+  Object.keys(tempSchedules).forEach((day) => {
+    const sortedSchedules = tempSchedules[day].sort((a, b) => {
+      const timeA = a.split(" - ")[0];
+      const timeB = b.split(" - ")[0];
+      return timeA.localeCompare(timeB);
+    });
+    
+    if (sortedSchedules.length > 0) {
+      defaultSchedule[day as keyof OperationalSchedule] = sortedSchedules.join("<br/>");
+    }
+  });
+
+  return defaultSchedule;
 };
