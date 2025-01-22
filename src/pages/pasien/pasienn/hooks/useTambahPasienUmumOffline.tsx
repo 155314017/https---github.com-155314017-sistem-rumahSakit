@@ -114,7 +114,7 @@ const validationSchema1 = Yup.object().shape({
         .required('Jenis Kunjungan is required'),
     complaint: Yup.string()
         .required('Keluhan Pasien is required'),
-    
+
 });
 
 
@@ -407,7 +407,7 @@ export default function useTambahPasienUmumOffline() {
             const responsePatient = await GetUserByNIK(nik);
             setNIK(nik);
             setIdPatient(responsePatient?.data.id);
-            
+
 
             // Validasi response
             if (responsePatient?.responseCode === "200") {
@@ -417,7 +417,7 @@ export default function useTambahPasienUmumOffline() {
                 // const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
                 // const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
                 const birthDateArray = response?.data.birthDate || [];
-                const formattedBirthDate = birthDateArray.length === 3 
+                const formattedBirthDate = birthDateArray.length === 3
                     ? `${String(birthDateArray[1]).padStart(2, '0')}/${String(birthDateArray[2]).padStart(2, '0')}/${birthDateArray[0]}`
                     : '';
                 const dataGet = {
@@ -458,7 +458,7 @@ export default function useTambahPasienUmumOffline() {
     useEffect(() => {
         const fetchClinicData = async () => {
             try {
-                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
+                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`, {
                     timeout: 10000
                 });
                 setClinicOptions(response.data.data.content.map((item: Clinic) => ({
@@ -479,7 +479,7 @@ export default function useTambahPasienUmumOffline() {
     useEffect(() => {
         const fetchDoctorData = async () => {
             try {
-                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/doctor/?pageNumber=0&pageSize=10&orderBy=id=asc', {
+                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/doctor/?pageNumber=0&pageSize=10&orderBy=id=asc`, {
                     timeout: 10000
                 });
                 setDoctorOptions(response.data.data.content.map((item: Doctor) => ({
@@ -595,11 +595,11 @@ export default function useTambahPasienUmumOffline() {
     const createTicket = async (dataPatient: dataTicket) => {
         setIsLoading(true)
 
-       
+
 
         try {
             const response = await axios.post(
-                "https://hms.3dolphinsocial.com:8083/v1/manage/registration/",
+                `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/registration/`,
                 dataPatient,
                 {
                     headers: {
@@ -630,7 +630,7 @@ export default function useTambahPasienUmumOffline() {
     useEffect(() => {
         const fetchClinicData = async () => {
             try {
-                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
+                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`, {
                     timeout: 10000
                 });
                 setClinicOptions(response.data.data.content.map((item: Clinic) => ({
@@ -670,11 +670,11 @@ export default function useTambahPasienUmumOffline() {
     const registrationPatient = async (data: any) => {
         setIsLoading(true)
 
-       
+
 
         try {
             const response = await axios.post(
-                "https://hms.3dolphinsocial.com:8083/v1/manage/registration/",
+                `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/registration/`,
                 data,
                 {
                     headers: {
@@ -692,9 +692,9 @@ export default function useTambahPasienUmumOffline() {
             //     bookingCode: response.data.bookingCode
 
             // }
-            console.log("Registration Id : ",response.data.data.id);
-            console.log("Clinic Id : ",response.data.data.masterClinicId);
-            console.log("Need Admin : ",response.data.data.needAdmin);
+            console.log("Registration Id : ", response.data.data.id);
+            console.log("Clinic Id : ", response.data.data.masterClinicId);
+            console.log("Need Admin : ", response.data.data.needAdmin);
             // const queueData = {
             //     registrationId : response.data.data.id,
             //     clinicId: response.data.data.masterClinicId,
@@ -711,7 +711,7 @@ export default function useTambahPasienUmumOffline() {
             // );
             setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
             setRegistrationCode(response.data.data.id);
-            console.log("Registration : ",dataTickets);
+            console.log("Registration : ", dataTickets);
             setMainPages(false)
             // setCurrentPage(3);
         } catch (err: any) {
@@ -724,7 +724,7 @@ export default function useTambahPasienUmumOffline() {
 
     useEffect(() => {
         console.log("data tickets : ", dataTickets)
-    },[dataTickets])
+    }, [dataTickets])
 
     const handleGoBack = () => {
         if (currentPage === 1) {

@@ -201,7 +201,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box>
+            <Box >
                 <InputBase
                     value={inputValue}
                     onClick={handleOpen}
@@ -219,6 +219,9 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                         position: 'relative',
                         '&:focus': {
                             borderColor: '#1976d2',
+                        },
+                        '& .css-yimnyd-MuiInputBase-input': {
+                            cursor: 'pointer'
                         },
                     }}
                     endAdornment={
@@ -247,10 +250,12 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                         vertical: 'top',
                         horizontal: 'left',
                     }}
+                // sx={{ cursor: 'pointer' }}
                 >
-                    <Box sx={{ display: 'flex', padding: 2, width: '800px' }}>
+                    <Box sx={{ display: 'flex', padding: 2, width: '800px', cursor: 'pointer' }}>
                         <Box sx={{ width: '50%' }}>
                             <DateCalendar
+
                                 value={selectedDate}
                                 onChange={(newValue) => {
                                     setSelectedDate(newValue);

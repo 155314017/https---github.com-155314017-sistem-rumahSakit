@@ -88,7 +88,8 @@ export default function useRawatJalanUmum() {
   // create ticket appointment
   const createTicket = async (data: any) => {
     try {
-      const response = await axios.post('https://hms.3dolphinsocial.com:8083/v1/manage/registration/', data, {
+      const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/registration/`, data, {
+
         headers: {
           'Content-Type': 'application/json',
           // 'accessToken': `${token}`
@@ -96,7 +97,7 @@ export default function useRawatJalanUmum() {
       });
       console.log("sukses: ", response.data.data)
       // const createdDateTimeFormatted = dayjs.unix(response.data.data.queueDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
-      
+
       // object to send to Ticket Appoint
       const dataSent = {
         // nomorAntrian: response.data.data.queueDatum.queueNumber,
@@ -125,7 +126,7 @@ export default function useRawatJalanUmum() {
   useEffect(() => {
     const fetchClinicData = async () => {
       try {
-        const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
+        const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`, {
           timeout: 10000
         });
         setClinicOptions(response.data.data.content.map((item: Clinic) => ({
@@ -146,7 +147,7 @@ export default function useRawatJalanUmum() {
   useEffect(() => {
     const fetchDoctorData = async () => {
       try {
-        const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/doctor/?pageNumber=0&pageSize=10&orderBy=id=asc', {
+        const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/doctor/?pageNumber=0&pageSize=10&orderBy=id=asc`, {
           timeout: 10000
         });
         setDoctorOptions(response.data.data.content.map((item: Doctor) => ({
