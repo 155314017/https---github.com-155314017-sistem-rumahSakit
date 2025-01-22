@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { getAmbulanceByIdService } from "../../../services/Admin Tenant/ManageAmbulance/GetAmbulanceByIdService";
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
+import { getScheduleByTypeId } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 
 // Image data type
 type ImageData = {
@@ -120,8 +121,9 @@ export default function useDetailAmbulance() {
             console.log(id);
             const ambulanceResponse = await getAmbulanceByIdService(id); 
             const data = ambulanceResponse; 
-            const operationalSchedule = convertSchedulesToReadableList(data?.schedules || []);
-            setAmbulanceData({ ...data, operationalSchedule} as AmbulanceDataItem);
+            const scheduleResponse = await getScheduleByTypeId(id || "");
+            console.log(scheduleResponse);
+            setAmbulanceData(data);
 
             if (data && data.id) {
                 const imageResponse = await GetImageByParentId(data.id);
@@ -168,6 +170,6 @@ export default function useDetailAmbulance() {
           open,
           loading,
           deletedItems,
-          ambulanceData
+          ambulanceData,
         };
 }

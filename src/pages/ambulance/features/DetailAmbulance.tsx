@@ -33,9 +33,8 @@ import CardOperasionalKlinik from "../../../components/small/card/CardOperasiona
           title={ambulanceData?.number}
           columns={[
             { id: "biaya", label: "Biaya" },
-            { id: "waktuPelayanan", label: "Waktu Pelayanan" },
           ]}
-          data={[{ biaya: ambulanceData?.cost, waktuPelayanan: ambulanceData?.additionalInfo }]}
+          data={[{ biaya: ambulanceData?.cost}]}
           actions={() => (
             <>
               <Link underline="hover" sx={{ color: "#8F85F3" }} href="/hapus">
