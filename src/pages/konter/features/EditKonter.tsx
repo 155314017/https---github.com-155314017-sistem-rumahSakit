@@ -25,7 +25,6 @@ export default function EditKonter() {
     successAlert,
     errorAlert,
     jenisKonter,
-    apiUrl,
     handleDeleteSchedule,
     handleEditSchedule,
     handleSaveAndAddDay,

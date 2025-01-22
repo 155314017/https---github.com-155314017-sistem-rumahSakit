@@ -5,18 +5,18 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import dayjs from 'dayjs';
 
-interface Event {
-    id: string;
-    title: string;
-    start: string;
-    end?: string;
-    allDay?: boolean;
-    type?: string;
-    notes?: string;
-    color?: string;
-    textColor?: string;
-    borderColor?: string;
-}
+// interface Event {
+//     id: string;
+//     title: string;
+//     start: string;
+//     end?: string;
+//     allDay?: boolean;
+//     type?: string;
+//     notes?: string;
+//     color?: string;
+//     textColor?: string;
+//     borderColor?: string;
+// }
 
 interface Session {
     id: string;

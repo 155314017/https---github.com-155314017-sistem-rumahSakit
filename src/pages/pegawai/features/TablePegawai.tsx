@@ -287,7 +287,7 @@ export default function TablePegawai() {
                               sx={[{ color: "#292B2C", fontSize: "14px" }]}
                               align="center"
                             >
-                              {data.masterUser.identityNumber}
+                              {data?.masterUser?.identityNumber || "-"}  
                             </TableCell>
                             <TableCell
                               sx={[

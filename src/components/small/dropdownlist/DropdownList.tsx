@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 
 interface Option {
-  value: number;
+  value: number | string;
   label: string;
 }
 
@@ -56,7 +56,7 @@ export default function DropdownList({
         startAdornment={loading ? <CircularProgress size={20} /> : null}
         sx={{
           width: "100%",
-          color: "#555", 
+          color: "#555",
           bgcolor: "#FFF",
           border: "1px solid #A8A8BD",
           borderRadius: "8px",

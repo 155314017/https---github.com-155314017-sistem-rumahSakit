@@ -5,11 +5,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { GetRoomByIdServices } from "../../../services/Admin Tenant/ManageRoom/GetRoomByIdServices";
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 
-type ImageData = {
-    imageName: string;
-    imageType: string;
-    imageData: string;
-};
+// type ImageData = {
+//     imageName: string;
+//     imageType: string;
+//     imageData: string;
+// };
 
 export default function useDetailRuangan() {
     const [name, setName] = useState<string>("");

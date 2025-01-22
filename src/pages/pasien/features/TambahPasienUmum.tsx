@@ -48,10 +48,8 @@ export default function TambahPasienUmum() {
         doctorOptions,
         idDoctor,
         handleDropdownDocter,
-        findPatientByNik,
         patientData,
         BpRadio,
-        putGuard,
         changePage2,
         clinicOptions,
         handleDropdownPoli,
@@ -183,7 +181,7 @@ export default function TambahPasienUmum() {
                                         <Button
                                             type="button"
                                             // onClick={() => patientPage ? setPatientPage(true) : setCurrentPage(2)}
-                                            onClick={() => findPatientByNik(formik.values.nikCari)}
+                                            // onClick={() => findPatientByNik(formik.values.nikCari)}
                                             variant="contained"
                                             color="inherit"
                                             sx={{
@@ -696,7 +694,7 @@ export default function TambahPasienUmum() {
                                         <Button
                                             // type="button"
                                             // onClick={() => setCurrentPage(3)}
-                                            onClick={putGuard}
+                                            // onClick={putGuard}
                                             // onClick={() => console.log(formik.values.nikGuardian)}
                                             variant="contained"
                                             color="inherit"
@@ -774,7 +772,7 @@ export default function TambahPasienUmum() {
                                                     <Box sx={{ ml: 2, width: "100%" }}>
                                                         <Typography>Tanggal dan Jam Operasional</Typography>
                                                         {/* <CalenderPopover title="Pilih tanggal" /> */}
-                                                        <CustomCalender doctorId={idDoctor} onChange={handleScheduleChange} />
+                                                        <CustomCalender typeId={idDoctor} onChange={handleScheduleChange} />
                                                     </Box>
                                                 </Box>
 
@@ -871,7 +869,6 @@ export default function TambahPasienUmum() {
                             clinic={dataTickets?.clinic || "Unknown Clinic"}
                             jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
                             namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
-                            nomorAntrian={dataTickets?.nomorAntrian}
                             tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
                             bookingCode={dataTickets?.bookingCode || "Unknown" }
                         />

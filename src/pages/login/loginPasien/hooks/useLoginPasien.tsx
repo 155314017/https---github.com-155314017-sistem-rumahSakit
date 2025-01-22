@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import "react-phone-input-2/lib/style.css";
 import { useNavigate } from "react-router-dom";
-import GetPatientByNIKServices from "../../../../services/Patient Tenant/GetPatientByNIKServices";
+import GetPatientByNIKServices from "../../../../services/Patient Tenant/GetPatientByUserIdServices";
 
 const validationSchema = Yup.object({
   nik: Yup.string()
@@ -69,8 +69,8 @@ export default function useLoginPasien() {
       const response = await GetPatientByNIKServices(values.nik);
       // if there's data of patient by identity number inputed
       if (response?.responseCode === "200") {
-        const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
-        const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
+        // const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
+        // const birthPlaceProcess = response?.data.birthDateAndPlace.split(',')[0];
         const dataGet = {
           id: response.data.id,
           nik: response?.data.identityNumber,
@@ -79,8 +79,8 @@ export default function useLoginPasien() {
           fullname: response?.data.fullName,
           address: response?.data.address,
           gender: response?.data.gender,
-          birthDate: birthDateProcess,
-          birthPlace: birthPlaceProcess
+          // birthDate: birthDateProcess,
+          // birthPlace: birthPlaceProcess
         }
         // next to check all of patient data, carrying dataGet 
         navigate('/register/pasien/baru', { state: { patientData: true, data: dataGet } })

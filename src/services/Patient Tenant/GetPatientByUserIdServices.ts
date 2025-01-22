@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios'
+
 
 interface PatientData {
   id: string
   identityNumber: string
   fullName: string
-  birthDateAndPlace: string
+  birthDate: number | any
+  birthPlace: string
   phoneNumber: string
   email: string
   gender: string
@@ -18,11 +21,12 @@ interface PatientResponse {
   data: PatientData
 }
 
-const baseUrl = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}`
 
-const GetPatientByNIKServices = async (nik: string): Promise<PatientResponse | null> => {
+const GetPatientByUserIdServices = async (userId: string): Promise<PatientResponse | null> => {
   try {
-    const response = await axios.get<PatientResponse>(`${baseUrl}/v1/manage/patient/get/${nik}`)
+    const response = await axios.get<PatientResponse>(
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/patient/by-user-id/${userId}`
+    )
     if (response.status === 200) {
       return response.data
     } else {
@@ -34,4 +38,4 @@ const GetPatientByNIKServices = async (nik: string): Promise<PatientResponse | n
   }
 }
 
-export default GetPatientByNIKServices
+export default GetPatientByUserIdServices

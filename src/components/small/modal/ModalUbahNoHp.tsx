@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type React from "react";
-import { useState } from "react";
-import { Button, CircularProgress, IconButton, Modal, Typography, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Button, CircularProgress, IconButton, Modal, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
@@ -21,15 +22,24 @@ const style = {
     borderRadius: "16px",
 };
 
-const bookingCodeSchema = Yup.object().shape({
-    bookingCode: Yup.string()
-        .required("Kode booking wajib diisi")
-        .length(6, "Kode booking harus 6 karakter"),
+const changePhoneSchema = Yup.object().shape({
+    newPhone: Yup.string()
+        .required("Nomor Hp wajib diisi")
+        .min(10, "Nomor HP minimal 10 digit")
+        .max(13, "Nomor HP maksimal 13 digit")
 });
 
-const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
-    const [isLoading, setIsLoading] = useState(false);
 
+const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void; patienDataSent?: any }> = ({ open, onClose, patienDataSent }) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [patientData, setPatientData] = useState<any>({});
+
+    useEffect(() => {
+        if (patienDataSent) {
+            setPatientData(patienDataSent);
+            console.log('data: ', patienDataSent);
+        }
+    }, [patientData]);
     return (
         <Modal
             open={open}
@@ -60,16 +70,29 @@ const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void }> = ({ open,
                 </Typography>
 
                 <Formik
-                    initialValues={{ bookingCode: "" }}
-                    validationSchema={bookingCodeSchema}
+                    initialValues={{ newPhone: "" }}
+                    validationSchema={changePhoneSchema}
                     enableReinitialize
                     onSubmit={async (values) => {
-                        console.log("Kode booking:", values.bookingCode);
                         setIsLoading(true);
+                        const dataPhoneChanged = {
+                            patientId: patienDataSent.id === undefined ? null : patienDataSent.id,
+                            clinicId: patienDataSent.clinicId,
+                            doctorId: patienDataSent.doctorId,
+                            typeOfVisit: patienDataSent.typeOfVisit,
+                            scheduleDate: patienDataSent.scheduleDate,
+                            scheduleIntervalId: patienDataSent.scheduleIntervalId,
+                            symptoms: patienDataSent.symptoms,
+                            referenceDoc: patienDataSent.referenceDoc,
+                            offline: patienDataSent.offline,
+                            phoneNumber: values.newPhone,
+                            email: patienDataSent.email,
+                            needAdmin: patienDataSent.needAdmin,
+                        };
                         try {
-                            const response = await axios.post(
-                                "https://hms.3dolphinsocial.com:8083/v1/patient/check-in",
-                                { bookingCode: values.bookingCode },
+                            const response = await axios.put(
+                                `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/registration/`,
+                                dataPhoneChanged,
                                 {
                                     headers: {
                                         "Content-Type": "application/json",
@@ -89,39 +112,17 @@ const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void }> = ({ open,
                         <Form>
                             <Field name="bookingCode">
                                 {() => (
-                                    // <TextField
-                                    //     variant="outlined"
-                                    //     fullWidth
-                                    //     placeholder="Masukkan kode booking"
-                                    //     value={values.bookingCode}
-                                    //     onChange={(e) => setFieldValue("bookingCode", e.target.value)}
-                                    //     error={Boolean(errors.bookingCode && touched.bookingCode)}
-                                    //     helperText={errors.bookingCode && touched.bookingCode ? errors.bookingCode : ""}
-                                    //     sx={{
-                                    //         borderRadius: "8px",
-                                    //         fontSize: "16px",
-                                    //         marginBottom: "16px",
-                                    //     }}
-                                    //     inputProps={{
-                                    //         style: {
-                                    //             padding: "10px",
-                                    //             textAlign: "center",
-                                    //         },
-                                    //     }}
-                                    // />
-
                                     <PhoneInput
-                                        // disabled={switchValue}
                                         country={"id"}
-                                        countryCodeEditable={false }
-                                        value={values.bookingCode}
-                                        onChange={(phone) => setFieldValue("phone", phone)}
+                                        countryCodeEditable={false}
+                                        value={values.newPhone}
+                                        onChange={(phone) => setFieldValue("newPhone", phone)}
                                         inputStyle={{
                                             height: "48px",
                                             borderRadius: "8px",
-                                            border: touched.bookingCode && errors.bookingCode ? "1px solid #f44336" : "1px solid #ccc",
+                                            border: touched.newPhone && errors.newPhone ? "1px solid #f44336" : "1px solid #ccc",
                                             padding: "10px 40px 10px 60px",
-                                            backgroundColor: touched.bookingCode && errors.bookingCode ? "#ffcccc" : 'inherit',
+                                            backgroundColor: touched.newPhone && errors.newPhone ? "#ffcccc" : 'inherit',
                                             fontSize: "16px",
                                             width: "100%",
                                             marginTop: "10px",
@@ -134,11 +135,15 @@ const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void }> = ({ open,
                                             marginBottom: "10px",
                                             width: "100%",
                                         }}
-                                    // onBlur={handleBlur("bookingCode")}
 
                                     />
                                 )}
                             </Field>
+                            <Button
+                                onClick={() => {
+                                    console.log('data: ', patientData)
+                                }}
+                            />
 
                             <Box sx={{ mt: 3, textAlign: "right" }}>
                                 <Button
