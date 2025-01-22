@@ -91,6 +91,7 @@ export default function useRegistrationOnline() {
     const [idPatient, setIdPatient] = useState<string | null>('');
     const [tanggalReserve, setTanggalReserve] = useState('');
     const [bookingCode, setBookingCode] = useState('');
+    const [dataPatient, setDataPatient] = useState<any>({});
 
     useEffect(() => {
         const fetchClinicData = async () => {
@@ -335,7 +336,9 @@ export default function useRegistrationOnline() {
         registrationPatient,
         idPatient,
         tanggalReserve,
-        bookingCode
+        bookingCode,
+        setDataPatient,
+        dataPatient
     }
 }
 

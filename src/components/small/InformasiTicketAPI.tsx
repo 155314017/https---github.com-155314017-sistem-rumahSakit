@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRef, useState, useEffect } from "react";
 import { Button, CardMedia, IconButton, Typography, CircularProgress, Snackbar, Alert } from "@mui/material";
 import { Box } from "@mui/system";
@@ -18,6 +19,7 @@ type InformasiTicketProps = {
   jadwalKonsul: string | null | undefined;
   bookingCode?: string;
   bgcolor?: string;
+  patienDataSent?: any;
   onClose?: () => void;
 };
 
@@ -30,6 +32,7 @@ const InformasiTicketAPI = ({
   bookingCode,
   bgcolor = "#ffffff",
   onClose,
+  patienDataSent
 }: InformasiTicketProps) => {
 
   const [showButton, setShowButton] = useState(true);
@@ -41,6 +44,14 @@ const InformasiTicketAPI = ({
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [resendSuccess, setResendSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [patientData, setPatientData] = useState<any>({});
+
+  useEffect(() => {
+    if (patienDataSent) {
+      setPatientData(patienDataSent);
+      console.log('data: ', patienDataSent);
+    }
+  }, [patientData]);
 
   const downloadTicketAsPDF = async () => {
     if (!ticketRef.current) return;
@@ -198,7 +209,7 @@ const InformasiTicketAPI = ({
         sx={{ overflow: "hidden", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", }}
       >
         {showModal && (
-          <ModalUbahNoHp open={showModal} onClose={() => setShowModal(false)} />
+          <ModalUbahNoHp open={showModal} onClose={() => setShowModal(false)} patienDataSent={patientData} />
         )}
         {onClose && (
           <IconButton
