@@ -733,29 +733,24 @@ export default function useTambahPasienUmumOffline() {
 
     const handleGoBack = () => {
         if (currentPage === 1) {
-            // Logika untuk currentPage 1
             if (patientFullPage == true) {
                 navigate(-1)
             } else if (patientFullPage == false) {
                 setPatientFullsPage(true);
             }
         } else if (currentPage === 2) {
-            // Logika untuk currentPage 2
-            // setCurrentPage(currentPage - 1); // Contoh aksi
             if (guardFullPage == true) {
                 setCurrentPage(currentPage - 1);
             } else if (guardFullPage == false) {
                 setGuardFullPage(true);
             }
         } else if (currentPage === 3) {
-            // Logika untuk currentPage 3
             if (mainPages == false) {
                 setCurrentPage(1);
             } else if (mainPages == true) {
-                setCurrentPage(currentPage - 1); // Contoh aksi
+                setCurrentPage(currentPage - 1); 
             }
         } else {
-            // Jika tidak ada kondisi yang cocok, kembali ke halaman sebelumnya
             // window.history.back();
         }
     }
