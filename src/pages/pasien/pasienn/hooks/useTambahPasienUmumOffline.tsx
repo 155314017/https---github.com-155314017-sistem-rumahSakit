@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import GetUserByNIK from '../../../../services/Admin Tenant/ManageUser/GetUserByNIK';
 import GetPatientByUserIdServices from '../../../../services/Patient Tenant/GetPatientByUserIdServices';
 // import RegisterPatient from '../../../../services/Patient Tenant/RegisterPatient';
-
+import Cookies from 'js-cookie';
 type Doctor = {
     id: string;
     name: string;
@@ -674,7 +674,7 @@ export default function useTambahPasienUmumOffline() {
 
         try {
             const response = await axios.post(
-                "https://hms.3dolphinsocial.com:8083/v1/manage/registration/",
+                `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/registration/`,
                 data,
                 {
                     headers: {
@@ -700,12 +700,16 @@ export default function useTambahPasienUmumOffline() {
                 clinicId: response.data.data.masterClinicId,
                 needAdmin: response.data.data.needAdmin
             }
+
+            console.log("Queue Data : ",queueData);
+            const token = Cookies.get('accessToken');
             const queue = await axios.post(
-                "https://hms.3dolphinsocial.com:8083/v1/counter/generate",
-                data,
+                `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/queue/generated`,
+                queueData,
                 {
                     headers: {
                         "Content-Type": "application/json",
+                        "accessToken": `${token}`
                     },
                 }
             );
