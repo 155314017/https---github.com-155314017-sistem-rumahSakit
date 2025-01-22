@@ -1,7 +1,7 @@
 import { Box, CardMedia, IconButton, Button, CircularProgress, Typography, TextField } from "@mui/material";
 import register from "../../../../assets/img/registerImg.jpg";
 import bgImg from "../../../../assets/img/Bg-desktop.svg"
-import ModalKodeBooking from "../../../../components/small/modal/ModalKodeBooking";
+// import ModalKodeBooking from "../../../../components/small/modal/ModalKodeBooking";
 import CloseIcon from '@mui/icons-material/Close';
 import { Formik, Form, Field } from "formik";
 import { Stack } from "@mui/system";
@@ -17,10 +17,10 @@ import AlertWarning from "../../../../components/small/alert/AlertWarning";
 
 export default function PilihKategoriPasien() {
     const {
-        setOpenModalKodeBooking,
-        openModalKodeBooking,
-        openModalPilihPembayaran,
-        setOpenModalPilihPembayaran,
+        // setOpenModalKodeBooking,
+        // openModalKodeBooking,
+        // openModalPilihPembayaran,
+        // setOpenModalPilihPembayaran,
         mainPages,
         setMainPages,
         inputCodePages,
@@ -35,8 +35,8 @@ export default function PilihKategoriPasien() {
         noDataBooking,
         setNoDataBooking,
         dataKodeBooking,
-        handleBack,
-        pasienBaru,
+        // handleBack,
+        // pasienBaru,
         bookingCodeSchema,
         style,
         onSubmitKodeBooking
@@ -68,7 +68,7 @@ export default function PilihKategoriPasien() {
             >
                 {noDataBooking && <AlertWarning teks="Kode booking tidak terdaftar" />}
                 {/* Halaman Utama */}
-                {mainPages && (
+                {/* {mainPages && (
                     <Box >
                         <CardMedia
                             component="img"
@@ -146,7 +146,7 @@ export default function PilihKategoriPasien() {
                         </Box>
                         <ModalKodeBooking open={openModalKodeBooking} onClose={() => setOpenModalKodeBooking(false)} />
                     </Box>
-                )}
+                )} */}
 
                 {/* Halaman Input Kode Booking */}
                 {inputCodePages && (
@@ -239,7 +239,7 @@ export default function PilihKategoriPasien() {
                         </Formik>
                     </Box>
                 )}
-                {openModalPilihPembayaran && (
+                {mainPages && (
                     <Box
                         sx={{
                             width: 'fit-content',
@@ -274,12 +274,18 @@ export default function PilihKategoriPasien() {
 
                             }}
                         >
-                            <Typography id="modal-modal-title" fontWeight={600} fontSize={'24px'} lineHeight={'26px'}>
+                            {/* <Typography id="modal-modal-title" fontWeight={600} fontSize={'24px'} lineHeight={'26px'}>
                                 Pilih metode pembayaran
                             </Typography>
                             <Typography color="#747487" fontWeight={400} fontSize={'18px'}>
                                 Cara yang digunakan untuk menyelesaikan transaksi.
-                            </Typography>
+                            </Typography> */}
+                             <Typography id="modal-modal-description" fontWeight={600} fontSize={'24px'} lineHeight={'26px'}>
+                                    Pilih Kategori Pasien
+                                </Typography>
+                                <Typography color="#747487" fontWeight={400} fontSize={'18px'} maxWidth={'85%'}>
+                                    Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
+                                </Typography>
                         </Box>
 
                         <Stack direction="column" width={'100%'} spacing={0}>
@@ -300,8 +306,22 @@ export default function PilihKategoriPasien() {
                                 description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
                                 bgColor="#D5D1FB"
                             />
+
+                            {/* Kode Booking */}
+                            <PasienCard
+                                    avatarSrc={qrcodeImg}
+                                    description=" Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian."
+                                    title="Masukkan Kode Booking"
+                                    bgColor="#D5D1FB"
+                                    onClick={
+                                        () => {
+                                            setInputCodePages(true);
+                                            setMainPages(false);
+                                        }
+                                    }
+                                />
                         </Stack>
-                        <Button
+                        {/* <Button
                             sx={{
                                 padding: "10px 20px",
                                 backgroundColor: "#8F85F3",
@@ -319,7 +339,7 @@ export default function PilihKategoriPasien() {
                             onClick={handleBack}
                         >
                             Kembali ke pilihan sebelumnya
-                        </Button>
+                        </Button> */}
                     </Box>
                 )}
 

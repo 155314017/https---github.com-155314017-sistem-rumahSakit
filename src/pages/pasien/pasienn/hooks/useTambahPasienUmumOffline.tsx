@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import GetUserByNIK from '../../../../services/Admin Tenant/ManageUser/GetUserByNIK';
 import GetPatientByUserIdServices from '../../../../services/Patient Tenant/GetPatientByUserIdServices';
 // import RegisterPatient from '../../../../services/Patient Tenant/RegisterPatient';
-
+import Cookies from 'js-cookie';
 type Doctor = {
     id: string;
     name: string;
@@ -692,23 +692,27 @@ export default function useTambahPasienUmumOffline() {
             //     bookingCode: response.data.bookingCode
 
             // }
-            console.log("Registration Id : ", response.data.data.id);
-            console.log("Clinic Id : ", response.data.data.masterClinicId);
-            console.log("Need Admin : ", response.data.data.needAdmin);
-            // const queueData = {
-            //     registrationId : response.data.data.id,
-            //     clinicId: response.data.data.masterClinicId,
-            //     needAdmin: response.data.data.needAdmin
-            // }
-            // const queue = await axios.post(
-            //     "https://hms.3dolphinsocial.com:8083/v1/counter/generate",
-            //     data,
-            //     {
-            //         headers: {
-            //             "Content-Type": "application/json",
-            //         },
-            //     }
-            // );
+            console.log("Registration Id : ",response.data.data.id);
+            console.log("Clinic Id : ",response.data.data.masterClinicId);
+            console.log("Need Admin : ",response.data.data.needAdmin);
+            const queueData = {
+                registrationId : response.data.data.id,
+                clinicId: response.data.data.masterClinicId,
+                needAdmin: response.data.data.needAdmin
+            }
+
+            console.log("Queue Data : ",queueData);
+            const token = Cookies.get('accessToken');
+            const queue = await axios.post(
+                `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/queue/generated`,
+                queueData,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "accessToken": `${token}`
+                    },
+                }
+            );
             setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
             setRegistrationCode(response.data.data.id);
             console.log("Registration : ", dataTickets);
