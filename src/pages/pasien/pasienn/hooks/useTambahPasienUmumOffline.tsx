@@ -695,6 +695,20 @@ export default function useTambahPasienUmumOffline() {
             console.log("Registration Id : ",response.data.data.id);
             console.log("Clinic Id : ",response.data.data.masterClinicId);
             console.log("Need Admin : ",response.data.data.needAdmin);
+            const queueData = {
+                registrationId : response.data.data.id,
+                clinicId: response.data.data.masterClinicId,
+                needAdmin: response.data.data.needAdmin
+            }
+            const queue = await axios.post(
+                "https://hms.3dolphinsocial.com:8083/v1/counter/generate",
+                data,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
             setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
             setRegistrationCode(response.data.data.id);
             console.log("Registration : ",dataTickets);
