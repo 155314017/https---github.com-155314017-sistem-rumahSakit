@@ -2,33 +2,34 @@ import axios from 'axios'
 import Cookies from "js-cookie";
 
 export interface ScheduleDataItem {
-  id: string
-  startTime: string
-  endTime: string
-  typeId: string
-  additionalInfo: string
-  maxCapacity: number
-  monday: boolean
-  tuesday: boolean
-  wednesday: boolean
-  thursday: boolean
-  friday: boolean
-  saturday: boolean
-  sunday: boolean
-  title: string
-  description: string
-  createdBy: string
-  createdDateTime: number
-  updatedBy: string | null
-  updatedDateTime: number | null
-  deletedBy: string | null
-  deletedDateTime: number | null
+  id: string;
+  startTime: number[];
+  endTime: number[];
+  typeId: string;
+  additionalInfo: string;
+  maxCapacity: number;
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
+  sunday: boolean;
+  title: string;
+  description: string;
+  createdBy: string;
+  createdDateTime: number;
+  updatedBy: string | null;
+  updatedDateTime: number | null;
+  deletedBy: string | null;
+  deletedDateTime: number | null;
 }
 
 export interface ApiResponse {
-  status: number
-  message: string
-  data: ScheduleDataItem[]
+  responseCode: string;
+  statusCode: string;
+  message: string;
+  data: ScheduleDataItem[];
 }
 
 export const GetScheduleByTypeId = async (

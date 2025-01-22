@@ -1,5 +1,4 @@
 import axios from "axios";
-import dayjs from 'dayjs'
 
 export interface AmbulanceDataItem {
   id: string;
