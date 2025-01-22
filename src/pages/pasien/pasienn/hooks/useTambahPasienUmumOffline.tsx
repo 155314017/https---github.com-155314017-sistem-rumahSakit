@@ -692,16 +692,16 @@ export default function useTambahPasienUmumOffline() {
             //     bookingCode: response.data.bookingCode
 
             // }
-            console.log("Registration Id : ",response.data.data.id);
-            console.log("Clinic Id : ",response.data.data.masterClinicId);
-            console.log("Need Admin : ",response.data.data.needAdmin);
+            console.log("Registration Id : ", response.data.data.id);
+            console.log("Clinic Id : ", response.data.data.masterClinicId);
+            console.log("Need Admin : ", response.data.data.needAdmin);
             const queueData = {
-                registrationId : response.data.data.id,
+                registrationId: response.data.data.id,
                 clinicId: response.data.data.masterClinicId,
                 needAdmin: response.data.data.needAdmin
             }
 
-            console.log("Queue Data : ",queueData);
+            console.log("Queue Data : ", queueData);
             const token = Cookies.get('accessToken');
             const queue = await axios.post(
                 `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/queue/generated`,
@@ -713,6 +713,7 @@ export default function useTambahPasienUmumOffline() {
                     },
                 }
             );
+            console.log(queue)
             setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
             setRegistrationCode(response.data.data.id);
             console.log("Registration : ", dataTickets);
