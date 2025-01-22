@@ -9,7 +9,7 @@ const AlertSuccess: React.FC<Props> = ({ label }) => {
         <Alert
             severity="success"
             sx={{
-                width: '295px',
+                width: 'fit-content',
                 height: '36px',
                 borderRadius: '8px',
                 border: '2px solid',
