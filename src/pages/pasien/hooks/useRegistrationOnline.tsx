@@ -91,11 +91,13 @@ export default function useRegistrationOnline() {
     const [idPatient, setIdPatient] = useState<string | null>('');
     const [tanggalReserve, setTanggalReserve] = useState('');
     const [bookingCode, setBookingCode] = useState('');
+    const [dataPatient, setDataPatient] = useState<any>({});
+    const [registrationId, setRegistrationId] = useState('');
 
     useEffect(() => {
         const fetchClinicData = async () => {
             try {
-                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/clinic/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc', {
+                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`, {
                     timeout: 10000
                 });
                 setClinicOptions(response.data.data.content.map((item: Clinic) => ({
@@ -116,7 +118,7 @@ export default function useRegistrationOnline() {
     useEffect(() => {
         const fetchDoctorData = async () => {
             try {
-                const response = await axios.get('https://hms.3dolphinsocial.com:8083/v1/manage/doctor/?pageNumber=0&pageSize=10&orderBy=id=asc', {
+                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/doctor/?pageNumber=0&pageSize=10&orderBy=id=asc`, {
                     timeout: 10000
                 });
                 setDoctorOptions(response.data.data.content.map((item: Doctor) => ({
@@ -223,7 +225,6 @@ export default function useRegistrationOnline() {
                     nik: Yup.string()
                         .required("NIK wajib diisi")
                         .matches(/^[0-9]+$/, "NIK harus berupa angka")
-                    // .length(16, 'NIK harus 16 digit'),
                 });
             case 3:
                 return Yup.object().shape({
@@ -248,7 +249,7 @@ export default function useRegistrationOnline() {
     const registrationPatient = async (data: any) => {
         try {
             const response = await axios.post(
-                "https://hms.3dolphinsocial.com:8083/v1/manage/registration/",
+                `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/registration/`,
                 data,
                 {
                     headers: {
@@ -258,6 +259,7 @@ export default function useRegistrationOnline() {
             );
             setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
             setBookingCode(response.data.data.bookingCode);
+            setRegistrationId(response.data.data.id);
             setCurrentPage(5);
         } catch (err: any) {
             console.log(err);
@@ -335,7 +337,10 @@ export default function useRegistrationOnline() {
         registrationPatient,
         idPatient,
         tanggalReserve,
-        bookingCode
+        bookingCode,
+        setDataPatient,
+        dataPatient,
+        registrationId
     }
 }
 

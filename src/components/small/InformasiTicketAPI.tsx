@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRef, useState, useEffect } from "react";
 import { Button, CardMedia, IconButton, Typography, CircularProgress, Snackbar, Alert } from "@mui/material";
 import { Box } from "@mui/system";
@@ -9,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PrintIcon from "@mui/icons-material/Print";
 import ModalUbahNoHp from "./modal/ModalUbahNoHp";
+import AlertSuccess from "./alert/AlertSuccess";
 type InformasiTicketProps = {
   nomorAntrian?: string | undefined;
   namaDokter: string | undefined;
@@ -17,6 +19,8 @@ type InformasiTicketProps = {
   jadwalKonsul: string | null | undefined;
   bookingCode?: string;
   bgcolor?: string;
+  patienDataSent?: any;
+  registrationId?: string;
   onClose?: () => void;
 };
 
@@ -29,17 +33,35 @@ const InformasiTicketAPI = ({
   bookingCode,
   bgcolor = "#ffffff",
   onClose,
+  patienDataSent,
+  registrationId
 }: InformasiTicketProps) => {
 
   const [showButton, setShowButton] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
-
+  const [alertDownloaded, setAlertDownloaded] = useState(false);
   const ticketRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
   const [isCounting, setIsCounting] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [resendSuccess, setResendSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [patientData, setPatientData] = useState<any>({});
+  const [successChangePhone, setSuccessChangePhone] = useState(false);
+
+
+  const showTemporaryAlertSuccessChangePhone = async () => {
+    setSuccessChangePhone(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setSuccessChangePhone(false)
+  }
+
+  useEffect(() => {
+    if (patienDataSent) {
+      setPatientData(patienDataSent);
+      console.log('data: ', patienDataSent);
+    }
+  }, [patientData]);
 
   const downloadTicketAsPDF = async () => {
     if (!ticketRef.current) return;
@@ -65,6 +87,7 @@ const InformasiTicketAPI = ({
       console.error("Gagal mengunduh PDF: ", error);
     } finally {
       setShowButton(true);
+      showTemporaryAlertSuccessDownload();
     }
   };
   const showTemporaryAlertSuccess = async () => {
@@ -98,11 +121,11 @@ const InformasiTicketAPI = ({
         setSecondsLeft((prev) => prev - 1);
       }, 1000);
 
-      return () => clearInterval(timer); // Membersihkan interval saat komponen unmount atau state berubah
+      return () => clearInterval(timer);
     }
 
     if (secondsLeft === 0) {
-      setIsCounting(false); // Hentikan countdown jika mencapai 0
+      setIsCounting(false);
     }
   }, [isCounting, secondsLeft]);
 
@@ -110,8 +133,16 @@ const InformasiTicketAPI = ({
     setShowModal(true);
   }
 
+  const showTemporaryAlertSuccessDownload = async () => {
+    setAlertDownloaded(true)
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    setAlertDownloaded(false)
+  }
+
   return (
     <Box width={"100%"} >
+      {alertDownloaded && <AlertSuccess label="Tiket antrian berhasil di unduh" />}
+      {successChangePhone && <AlertSuccess label="No handphone dan tiket berhasil dikirim dan di ganti." />}
       <Snackbar
         open={showAlert}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
@@ -189,7 +220,7 @@ const InformasiTicketAPI = ({
         sx={{ overflow: "hidden", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", }}
       >
         {showModal && (
-          <ModalUbahNoHp open={showModal} onClose={() => setShowModal(false)} />
+          <ModalUbahNoHp hitFunction={showTemporaryAlertSuccessChangePhone} open={showModal} onClose={() => setShowModal(false)} patienDataSent={patientData} registrationId={registrationId} />
         )}
         {onClose && (
           <IconButton
@@ -254,9 +285,9 @@ const InformasiTicketAPI = ({
           <Box display={"flex"} flexDirection={"column"}>
             {bookingCode !== "" && (
               <>
-                <Typography fontSize={"16px"}>{nomorAntrian? "Nomor antrian" : "Booking Code"}</Typography>
+                <Typography fontSize={"16px"}>{nomorAntrian ? "Nomor antrian" : "Booking Code"}</Typography>
                 <Typography fontSize={"48px"} fontWeight={"600"}>
-                  {nomorAntrian? nomorAntrian : bookingCode}
+                  {nomorAntrian ? nomorAntrian : bookingCode}
                 </Typography>
               </>
             )}
@@ -267,8 +298,9 @@ const InformasiTicketAPI = ({
             gap={"80px"}
             justifyContent={"space-between"}
             maxWidth={"87%"}
+          // bgcolor={'red'}
           >
-            <Box>
+            <Box  >
               <Typography>Dokter yang bertugas</Typography>
               <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
                 {namaDokter}
@@ -285,19 +317,19 @@ const InformasiTicketAPI = ({
             <Box
               display={"flex"}
               flexDirection={"row"}
-              gap={"80px"}
               justifyContent={"space-between"}
-              maxWidth={"90%"}
+              maxWidth={"100%"}
+            // bgcolor={'red'}
             >
               <Box display={"flex"} flexDirection={"column"}>
                 <Typography>Tanggal reservasi</Typography>
-                <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                <Typography maxWidth={"90%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
                   {tanggalReservasi}
                 </Typography>
               </Box>
               <Box display={"flex"} flexDirection={"column"}>
                 <Typography>Jadwal konsultasi</Typography>
-                <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                <Typography maxWidth={"60%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
                   {jadwalKonsul}
                 </Typography>
               </Box>
@@ -306,19 +338,19 @@ const InformasiTicketAPI = ({
             <Box
               display={"flex"}
               flexDirection={"row"}
-              gap={"80px"}
               justifyContent={"space-between"}
-              width={"80%"}
+              maxWidth={"100%"}
+            // bgcolor={'red'}
             >
               <Box display={"flex"} flexDirection={"column"}>
                 <Typography>Tanggal reservasi</Typography>
-                <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                <Typography maxWidth={"90%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
                   {tanggalReservasi}
                 </Typography>
               </Box>
               <Box display={"flex"} flexDirection={"column"}>
                 <Typography>Jadwal konsultasi</Typography>
-                <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                <Typography maxWidth={"60%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
                   {jadwalKonsul}
                 </Typography>
               </Box>

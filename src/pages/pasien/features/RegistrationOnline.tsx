@@ -54,7 +54,10 @@ export default function RegistrationOnline() {
         patientData,
         registrationPatient,
         tanggalReserve,
-        bookingCode
+        bookingCode,
+        setDataPatient,
+        dataPatient,
+        registrationId
     } = useRegistrationOnline();
     return (
         <>
@@ -151,7 +154,9 @@ export default function RegistrationOnline() {
                                         needAdmin: needAdmin,
                                     };
                                     registrationPatient(data);
+                                    console.log('data1: ', data);
                                     // setCurrentPage(5);
+                                    setDataPatient(data);
                                     return;
                                 }
 
@@ -183,7 +188,7 @@ export default function RegistrationOnline() {
                                         mb={3}
                                     >
                                         {(currentPage === 2 || currentPage === 3) && (
-                                            <Box mb={2} ml={5} width={'fit-content'} mt={'25%'}>
+                                            <Box mb={2} ml={currentPage === 3 ? '5%' : '15%'} width={'fit-content'} mt={currentPage === 3 ? '5%' : '25%'}>
                                                 <Typography
                                                     fontSize="32px"
                                                     fontWeight={600}
@@ -203,7 +208,7 @@ export default function RegistrationOnline() {
                                             </Box>
                                         )}
 
-                                        <Box display="flex" flexDirection="row" mt={currentPage === 4 || currentPage === 2 ? '5%' : '15%'} >
+                                        <Box display="flex" justifyContent={'space-between'} flexDirection="row" ml={currentPage === 4 || currentPage === 3 ? 0 : '10%'} mt={currentPage === 4 || currentPage === 2 || currentPage === 3 ? '5%' : '20%'} >
                                             <Box display="flex" flexDirection="row" width="290px">
                                                 <Button
                                                     type="button"
@@ -249,7 +254,7 @@ export default function RegistrationOnline() {
                                             </Box>
                                         </Box>
                                         {currentPage === 1 && (
-                                            <Box mb={2} mt={'5%'} ml={'7%'} >
+                                            <Box mb={2} mt={'5%'} ml={'15%'} >
                                                 <Typography
                                                     fontWeight={600}
                                                     fontSize="20px"
@@ -258,11 +263,12 @@ export default function RegistrationOnline() {
                                                     Pilih kategori pasien
                                                 </Typography>
                                                 <Typography
-                                                    maxWidth="90%"
+                                                    maxWidth="77%"
                                                     fontWeight={400}
                                                     fontSize="16px"
                                                     lineHeight="18px"
                                                     color="#747487"
+                                                // bgcolor={'red'}
                                                 >
                                                     Membantu tenaga medis dalam memberikan perawatan yang
                                                     lebih terorganisir, sesuai dengan tingkat kebutuhan
@@ -280,7 +286,9 @@ export default function RegistrationOnline() {
                                             flexDirection: "column",
                                             gap: "24px",
                                             maxWidth: "600px",
-                                            ml: '7%'
+                                            ml: '15%',
+                                            // bgcolor: 'red',
+                                            width: "100%",
                                         }}
                                     >
                                         <CardRawatJalan
@@ -297,7 +305,7 @@ export default function RegistrationOnline() {
                                 )}
 
                                 {currentPage === 2 && (
-                                    <Box sx={{ textAlign: "left", width: "100%", maxWidth: "600px", ml: '5%' }} >
+                                    <Box sx={{ textAlign: "left", width: "100%", maxWidth: "600px", ml: '15%' }} >
                                         <Typography
                                             mb={2}
                                             fontSize="20px"
@@ -862,15 +870,16 @@ export default function RegistrationOnline() {
                                 )}
 
                                 {currentPage === 5 && (
-                                    <Box zIndex={1500}>
-
+                                    <Box zIndex={1500} ml={'10%'} >
                                         <InformasiTicketAPI
                                             clinic={clinicName}
                                             tanggalReservasi={tanggalReserve}
                                             namaDokter={docterName}
-                                            jadwalKonsul={dayjs(selectedSchedule?.split(",")[0]).format("YYYY-MM-DD")}
+                                            jadwalKonsul={selectedSchedule}
                                             bookingCode={bookingCode}
                                             onClose={() => setCurrentPage(1)}
+                                            patienDataSent={dataPatient}
+                                            registrationId={registrationId}
                                         />
                                     </Box>
                                 )}
