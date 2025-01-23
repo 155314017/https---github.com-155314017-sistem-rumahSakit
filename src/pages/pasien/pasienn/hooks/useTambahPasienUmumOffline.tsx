@@ -165,6 +165,7 @@ export default function useTambahPasienUmumOffline() {
     const [fileName, setFileName] = useState("");
     const [tanggalReserve, setTanggalReserve] = useState('');
     const [registrationCode, setRegistrationCode] = useState('');
+    const [bookingCode, setBookingCode] = useState('');
 
 
 
@@ -405,13 +406,19 @@ export default function useTambahPasienUmumOffline() {
     const findPatientByNik = async (nik: string) => {
         try {
             const responsePatient = await GetUserByNIK(nik);
-            setNIK(nik);
-            setIdPatient(responsePatient?.data.id);
+            
 
 
             // Validasi response
             if (responsePatient?.responseCode === "200") {
-
+                if(responsePatient?.data === null) {
+                    console.log("pasien dengan NIK tersebut tidak ditemukan.");
+                    setNeedAdmin(true);
+                    setMainPages(false);
+                }else{
+                console.log("pasien dengan NIK tersebut ditemukan.");
+                setNIK(nik);
+                setIdPatient(responsePatient?.data.id);
                 // Mencari pasien berdasarkan NIK di data dummy
                 const response = await GetPatientByUserIdServices(responsePatient.data.id || '');
                 // const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
@@ -421,7 +428,7 @@ export default function useTambahPasienUmumOffline() {
                     ? `${String(birthDateArray[1]).padStart(2, '0')}/${String(birthDateArray[2]).padStart(2, '0')}/${birthDateArray[0]}`
                     : '';
                 const dataGet = {
-                    id: idPatient || '',
+                    id: responsePatient.data.id,
                     nik: response?.data.identityNumber,
                     email: responsePatient.data.email,
                     phone: responsePatient.data.phone,
@@ -438,6 +445,7 @@ export default function useTambahPasienUmumOffline() {
                 setPatientData(dataGet);
                 console.log(birth);
                 setPatientFullsPage(false);
+            }
             } else {
                 // Jika pasien dengan NIK tidak ditemukan
                 console.error("Pasien dengan NIK tersebut tidak ditemukan.");
@@ -682,6 +690,8 @@ export default function useTambahPasienUmumOffline() {
                     },
                 }
             );
+            console.log("response Booking code : ", response.data.data.bookingCode);
+            setBookingCode(response.data.data.bookingCode);
             // const createdDateTimeFormatted = dayjs.unix(response.data.scheduleDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
             // const dataSent = {
             //     nomorAntrian: response.data.queueDatum.queueNumber,
@@ -692,13 +702,18 @@ export default function useTambahPasienUmumOffline() {
             //     bookingCode: response.data.bookingCode
 
             // }
+            setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
+            setRegistrationCode(response.data.data.id);
+            console.log("Registration : ", dataTickets);
+            console.log("Tanggal Reserve : ", tanggalReserve);
             console.log("Registration Id : ", response.data.data.id);
             console.log("Clinic Id : ", response.data.data.masterClinicId);
             console.log("Need Admin : ", response.data.data.needAdmin);
             const queueData = {
                 registrationId: response.data.data.id,
-                clinicId: response.data.data.masterClinicId,
-                needAdmin: response.data.data.needAdmin
+                needAdmin: response.data.data.needAdmin,
+                clinicId: response.data.data.masterClinicId
+                
             }
 
             console.log("Queue Data : ", queueData);
@@ -714,9 +729,7 @@ export default function useTambahPasienUmumOffline() {
                 }
             );
             console.log(queue)
-            setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
-            setRegistrationCode(response.data.data.id);
-            console.log("Registration : ", dataTickets);
+            
             setMainPages(false)
             // setCurrentPage(3);
         } catch (err: any) {
@@ -821,7 +834,8 @@ export default function useTambahPasienUmumOffline() {
         clinicName,
         docterName,
         tanggalReserve,
-        registrationCode
+        registrationCode,
+        bookingCode
 
 
     }

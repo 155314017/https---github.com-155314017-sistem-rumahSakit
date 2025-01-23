@@ -179,7 +179,9 @@ export default function PilihKategoriPasien() {
                             initialValues={{ bookingCode: "" }}
                             validationSchema={bookingCodeSchema}
                             enableReinitialize
-                            onSubmit={onSubmitKodeBooking}
+                            onSubmit={async (values) => {
+                                await onSubmitKodeBooking(values.bookingCode);
+                            }}
                         >
                             {({ errors, touched, setFieldValue, values, isValid, dirty }) => (
                                 <Form>

@@ -79,6 +79,8 @@ export default function TambahPasienUmumOffline() {
         clinicName,
         docterName,
         tanggalReserve,
+        registrationCode,
+        bookingCode,
         
 
 
@@ -315,6 +317,7 @@ export default function TambahPasienUmumOffline() {
                                                                         placeholder="Masukkan NIK (Nomor induk kependudukan)"
                                                                         sx={{
                                                                             marginTop: '10px',
+                                                                            bgcolor: '#E8E8E8',
                                                                             '& .MuiOutlinedInput-root': {
                                                                                 borderRadius: '8px',
                                                                                 backgroundColor: touched.nik && errors.nik ? '#ffcccc' : 'inherit',
@@ -326,6 +329,7 @@ export default function TambahPasienUmumOffline() {
                                                                         onChange={handleChange}
                                                                         onBlur={handleBlur}
                                                                         value={values.nik}
+                                                                        disabled
                                                                     />
                                                                     {touched.nik && errors.nik && (
                                                                         <FormHelperText>{errors.nik}</FormHelperText>
@@ -339,8 +343,10 @@ export default function TambahPasienUmumOffline() {
                                                                         value={values.email}
                                                                         onChange={handleChange}
                                                                         onBlur={handleBlur}
+                                                                        disabled
                                                                         sx={{
                                                                             marginTop: '10px',
+                                                                            bgcolor: '#E8E8E8',
                                                                             '& .MuiOutlinedInput-root': {
                                                                                 borderRadius: '8px',
                                                                                 backgroundColor: touched.email && errors.email ? '#ffcccc' : 'inherit',
@@ -591,6 +597,7 @@ export default function TambahPasienUmumOffline() {
                                                     enableReinitialize
                                                     validationSchema={validationSchema1}
                                                     onSubmit={async (values) => {
+                                                        console.log('Form submitted:', patientData?.id);
                                                         const dataRegis = {
                                                             // namaKlinik: '',
                                                             // address: patientData?.address,
@@ -970,6 +977,10 @@ export default function TambahPasienUmumOffline() {
                                     namaDokter={docterName}
                                     nomorAntrian={dataTickets?.nomorAntrian || ""}
                                     tanggalReservasi={tanggalReserve}
+                                    registrationId={registrationCode}
+                                    patienDataSent={dataTickets}
+                                    bookingCode={bookingCode}
+                                    offline={true}
                                     
                                     onClose={() => navigate("/offline/tambahPasien")}
                                 />

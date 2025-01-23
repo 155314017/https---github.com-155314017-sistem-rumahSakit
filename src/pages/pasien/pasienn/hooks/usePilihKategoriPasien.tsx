@@ -7,6 +7,8 @@ import { getClinic } from "../../../../services/Admin Tenant/ManageClinic/GetCli
 import dayjs from "dayjs";
 import 'dayjs/locale/id';
 import PatientCheckIn from "../../../../services/Patient Tenant/PatientCheckIn";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const formatDate = (timestamp: number) => dayjs.unix(timestamp).locale('id').format('DD MMMM YYYY');
 const formatTime = (timestamp: number) => dayjs.unix(timestamp).format('HH:mm');
@@ -73,8 +75,10 @@ export default function usePilihKategoriPasien() {
 
     const onSubmitKodeBooking = async (values: any) => {
         setIsLoading(true);
-        const bookingCode = { bookingCode: values.bookingCode };
+        console.log('Form submitted:', values);
+        const bookingCode = { bookingCode: values };
         try {
+            console.log(bookingCode);
             const response = await PatientCheckIn(bookingCode);
             if(response.responseCode === "200"){
                 pasienBaru();
@@ -92,6 +96,26 @@ export default function usePilihKategoriPasien() {
                     tanggalReserve: dateReserve,
                     jadwalKonsul: consultationSchedule,
                 }
+
+                const queueData = {
+                    registrationId: response.data.data.id,
+                    needAdmin: response.data.data.needAdmin,
+                    clinicId: response.data.data.masterClinicId
+                    
+                }
+                Cookies.set('accessToken', response.data.data.accessToken);
+                const queue = await axios.post(
+                    `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/queue/generated`,
+                    queueData,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "accessToken": `${token}`
+                        },
+                    }
+                );
+
+                console.log(queue);
                 setDataKodeBooking(dataBooking)
                 setOpenModalKodeBooking(false);
                 setInfoTicket(true);

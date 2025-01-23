@@ -21,6 +21,7 @@ type InformasiTicketProps = {
   bgcolor?: string;
   patienDataSent?: any;
   registrationId?: string;
+  offline?: boolean
   onClose?: () => void;
 };
 
@@ -34,7 +35,8 @@ const InformasiTicketAPI = ({
   bgcolor = "#ffffff",
   onClose,
   patienDataSent,
-  registrationId
+  registrationId,
+  offline
 }: InformasiTicketProps) => {
 
   const [showButton, setShowButton] = useState(true);
@@ -397,13 +399,14 @@ const InformasiTicketAPI = ({
           >
             Kembali ke halaman utama
           </Button>
-
-          <Box
+          {!offline && (
+            <Box
             display={"flex"}
             flexDirection={"row"}
             gap={"5px"}
             justifyContent={"space-between"}
             width={"95%"}
+            
           >
             <Typography color={"#A8A8BD"} fontSize={"16px"} fontWeight={400}>Tidak mendapatkan tiket booking?</Typography>
             <Typography
@@ -421,6 +424,9 @@ const InformasiTicketAPI = ({
             </Typography>
             <Typography sx={{ cursor: 'pointer' }} color={"#8F85F3"} fontSize={"16px"} fontWeight={400} alignItems="right" onClick={handleEditClick}>Ubah</Typography>
           </Box>
+            
+          )}
+          
         </Box>
       </Box>
     </Box>
