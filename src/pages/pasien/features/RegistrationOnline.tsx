@@ -437,16 +437,15 @@ export default function RegistrationOnline() {
                                                 fullWidth
                                                 sx={{
                                                     mb: 2,
-                                                    border: 'none',
                                                     "& .MuiOutlinedInput-root": {
-                                                        borderRadius: "8px",
-                                                        bgcolor: "#EEEEF2",
-                                                        border: "1px solid #A8A8BD",
+                                                        borderRadius: "8px",  
+                                                        bgcolor: "#EEEEF2",  
+                                                        border: "1px solid #A8A8BD", 
                                                     },
                                                 }}
                                                 error={touched.email && Boolean(errors.email)}
-                                            // helperText={touched.email && errors.email}
                                             />
+
                                             <Typography>
                                                 No. Handphone Pasien <span style={{ color: "#d32f2f" }}>*</span>
                                             </Typography>
