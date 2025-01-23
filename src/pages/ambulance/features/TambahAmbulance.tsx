@@ -97,16 +97,16 @@ export default function TambahAmbulance() {
             </Typography>
 
             <Box
-              sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, gap: 24 }}
+              sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, justifyContent: 'space-between', ml: 2 }}
             >
-              <Box display={"flex"} flexDirection={"row"} width={"500px"}>
+              <Box display={"flex"} flexDirection={"row"} width={"400px"}>
                 <Box
                   display={"flex"}
                   flexDirection={"row"}
                   alignItems="center"
                   onClick={() => setCurrentPage(1)}
                   sx={getPageStyle(1)}
-                  mx={0}
+                  mx={2}
                 >
                   <Box sx={getBorderStyle(1)}>1</Box>
                   <Typography sx={{ ml: 1 }}>
@@ -115,14 +115,14 @@ export default function TambahAmbulance() {
                 </Box>
               </Box>
 
-              <Box display={"flex"} flexDirection={"row"} width={"500px"}>
+              <Box display={"flex"} flexDirection={"row"} width={"800px"}>
                 <Box
                   display={"flex"}
                   flexDirection={"row"}
                   alignItems="center"
                   onClick={() => setCurrentPage(2)}
                   sx={getPageStyle(2)}
-                  mx={0}
+                  mx={2}
                 >
                   <Box sx={getBorderStyle(2)}>2</Box>
                   <Typography sx={{ ml: 1 }}>
