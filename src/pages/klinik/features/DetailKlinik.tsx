@@ -12,12 +12,10 @@ import useDetailKlinik from "../hooks/useDetailKlinik";
 
 export default function DetailKlinik() {
     const {
-    name,
     breadcrumbItems,
     largeImage,
     smallImage,
     loading,
-    
     clinicData
     } = useDetailKlinik();
 
@@ -35,8 +33,9 @@ export default function DetailKlinik() {
                 <CardDetailKlinik
                     title="Daftar Klinik"
                     data={{
-                        biaya: name,
-                        waktuPelayanan: clinicData?.description || "",
+                        nama: clinicData?.name || "",
+                        kodeKlinik: clinicData?.code || "",
+                        deskripsi: clinicData?.description || "",
                         aksi: {
                             hapusLink: "#",
                             ubahLink: "#",

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getClinic } from "../../../services/Admin Tenant/ManageClinic/GetClinic";
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
-import dayjs from "dayjs";
+import { GetScheduleByTypeId, ScheduleDataItem } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
+import { OperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
+import { convertToOperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 
 // Image data type
 type ImageData = {
@@ -11,12 +13,6 @@ type ImageData = {
   imageData: string;
 };
 
-
-type ScheduleData = {
-  id: string;
-  startDateTime: number;
-  endDateTime: number;
-};
 // Clinic data type
 type ClinicDataItem = {
   id: string;
@@ -30,26 +26,14 @@ type ClinicDataItem = {
   deletedBy: string | null;
   deletedDateTime: number | null;
   images: ImageData[];
-  schedules: ScheduleData[];
+  schedules: ScheduleDataItem[];
   operationalSchedule?: OperationalSchedule;
-};
-
-type OperationalSchedule = {
-  senin: string;
-  selasa: string;
-  rabu: string;
-  kamis: string;
-  jumat: string;
-  sabtu: string;
-  minggu: string;
+  code: string;
 };
 
 export default function useDetailKlinik() {
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
   const [deletedItems, setDeletedItems] = useState<string>("");
   const [open, setOpen] = useState(false);
-  const [ids, setIds] = useState<string>("");
   const { id } = useParams();
   const navigate = useNavigate();
   const [largeImage, setLargeImage] = useState<string>("");
@@ -71,68 +55,31 @@ export default function useDetailKlinik() {
       href: "/detailKlinik",
     },
   ];
-
-  const convertSchedulesToReadableList = (schedules: ScheduleData[]) => {
-    const defaultSchedule: OperationalSchedule = {
-      senin: "",
-      selasa: "",
-      rabu: "",
-      kamis: "",
-      jumat: "",
-      sabtu: "",
-      minggu: "",
-    };
-  
-    const daysMap: { [key: string]: keyof OperationalSchedule } = {
-      Senin: "senin",
-      Selasa: "selasa",
-      Rabu: "rabu",
-      Kamis: "kamis",
-      Jumat: "jumat",
-      Sabtu: "sabtu",
-      Minggu: "minggu",
-    };
-
-  
-    schedules.forEach((schedule) => {
-      const startDay = dayjs(schedule.startDateTime).format("dddd"); // Day in English
-      const startTime = dayjs(schedule.startDateTime).format("HH:mm");
-      const endTime = dayjs(schedule.endDateTime).format("HH:mm");
-
-  
-      const mappedDay = daysMap[startDay] || ""; // Map to localized day name
-  
-      // Only update if mappedDay is valid
-      if (mappedDay) {
-        defaultSchedule[mappedDay] = `${startTime} - ${endTime}`;
-      }
-    });
-
-  
-    return defaultSchedule;
-  };
-
   const fetchData = async () => {
     setLoading(true);
     try {
-      const clinicResponse = await getClinic(id); 
-      const data = clinicResponse;
-      setIds(data.id);
-      setName(data.name);
-      setDescription(data.description || ""); 
-      const operationalSchedule = convertSchedulesToReadableList(data.schedules);
-      setClinicData({ ...data, operationalSchedule});
+      const clinicResponse = await getClinic(id);
+      const scheduleResponse = await GetScheduleByTypeId(id || "");
 
-      if (data && data.id) {
-        const imageResponse = await GetImageByParentId(data.id);
+      if (clinicResponse) {
+        const clinicData: ClinicDataItem = {
+          ...clinicResponse,
+          schedules: scheduleResponse,
+          operationalSchedule: convertToOperationalSchedule(scheduleResponse)
+        };
+
+        setClinicData(clinicData);
+
+        const imageResponse = await GetImageByParentId(clinicResponse.id);
+        console.log("Image Response from API:", imageResponse);
         if (imageResponse?.data?.length > 0) {
-            setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
-            setSmallImages(imageResponse.data.slice(1).map((img) => 
-                `data:${img.imageType};base64,${img.imageData}`
-            ));
+          setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
+          setSmallImages(imageResponse.data.slice(1).map((img) =>
+            `data:${img.imageType};base64,${img.imageData}`
+          ));
         } else {
-            setLargeImage("");
-            setSmallImages([]);
+          setLargeImage("");
+          setSmallImages([]);
         }
       }
     } catch (error) {
@@ -160,20 +107,16 @@ export default function useDetailKlinik() {
 
 
   return {
-    name,
     breadcrumbItems,
     largeImage,
     smallImage,
     handleDeleteSuccess,
     confirmationDelete,
     loading,
-    description,
     deletedItems,
     setOpen,
     navigate,
     open,
-    ids,
     clinicData,
-    
   };
 }

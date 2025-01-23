@@ -9,22 +9,22 @@ import CardDetail from "../../../components/small/card/CardDetail";
 // hooks
 import useDetailAmbulance from "../hooks/useDetailAmbulance";
 import CardOperasionalKlinik from "../../../components/small/card/CardOperasional";
- export default function DetailAmbulance() {
-    const {
-          
-          breadcrumbItems,
-          largeImage,
-          smallImage,
-          ambulanceData
-    } = useDetailAmbulance()
-   return (
+export default function DetailAmbulance() {
+  const {
+
+    breadcrumbItems,
+    largeImage,
+    smallImage,
+    ambulanceData
+  } = useDetailAmbulance()
+  return (
     <Container sx={{ py: 2 }}>
       <BreadCrumbs
         breadcrumbItems={breadcrumbItems}
         onBackClick={() => window.history.back()}
       />
       <Box mt={3}>
-        
+
         <ImageGrid largeImage={largeImage} smallImages={smallImage} loading={false} />
       </Box>
 
@@ -34,7 +34,7 @@ import CardOperasionalKlinik from "../../../components/small/card/CardOperasiona
           columns={[
             { id: "biaya", label: "Biaya" },
           ]}
-          data={[{ biaya: ambulanceData?.cost}]}
+          data={[{ biaya: ambulanceData?.cost }]}
           actions={() => (
             <>
               <Link underline="hover" sx={{ color: "#8F85F3" }} href="/hapus">
@@ -48,21 +48,20 @@ import CardOperasionalKlinik from "../../../components/small/card/CardOperasiona
         />
       </Box>
       <Box mt={3}>
-                <CardOperasionalKlinik
-                    title="Jam Operasional"
-                    data={ambulanceData?.operationalSchedule || {
-                        senin: "-",
-                        selasa: "-",
-                        rabu: "-",
-                        kamis: "-",
-                        jumat: "-",
-                        sabtu: "-",
-                        minggu: "-",
-                    }}
-                />
-            </Box>
+        <CardOperasionalKlinik
+          title="Jam Operasional"
+          data={ambulanceData?.operationalSchedule || {
+            senin: "-",
+            selasa: "-",
+            rabu: "-",
+            kamis: "-",
+            jumat: "-",
+            sabtu: "-",
+            minggu: "-",
+          }}
+        />
+      </Box>
     </Container>
-     
-   )
- }
- 
+
+  )
+}
