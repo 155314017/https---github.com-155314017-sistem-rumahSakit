@@ -221,7 +221,7 @@ export default function RegistrationOnline() {
                                                 </Box>
                                             )}
 
-                                            <Box display="flex" justifyContent={'space-between'} flexDirection="row" ml={currentPage === 4 || currentPage === 3 ? 0 : '5%'} mt={currentPage === 4 || currentPage === 2 || currentPage === 3 ? '5%' : '15%'} >
+                                            <Box display="flex" maxWidth={'89%'} justifyContent={'space-between'} flexDirection="row" ml={currentPage === 4 || currentPage === 3 ? 0 : '5%'} mt={currentPage === 4 || currentPage === 2 ? '5%' : (currentPage === 3 ? 0 : '15%')} >
                                                 <Box display="flex" flexDirection="row" width="290px">
                                                     <Button
                                                         type="button"
@@ -545,7 +545,7 @@ export default function RegistrationOnline() {
                                                                     sx: {
                                                                         bgcolor: "#EEEEF2",
                                                                         borderRadius: "8px",
-                                                                        border: "1px solid #A8A8BD",
+                                                                        // border: "1px solid #A8A8BD",
                                                                     },
                                                                 },
                                                             }}
@@ -636,6 +636,9 @@ export default function RegistrationOnline() {
                                                                 "&.Mui-checked": {
                                                                     color: "#7367F0",
                                                                 },
+                                                                ":hover": {
+                                                                    bgcolor: 'inherit'
+                                                                }
                                                             }}
                                                             onChange={(e) => setNeedAdmin(e.target.checked)}
                                                         />
@@ -651,6 +654,7 @@ export default function RegistrationOnline() {
                                                     height: "48px",
                                                     marginTop: "20px",
                                                     backgroundColor: "#8F85F3",
+                                                    marginBottom: "20px",
                                                     ":hover": { backgroundColor: "#D5D1FB" },
                                                 }}
                                             >
@@ -895,7 +899,7 @@ export default function RegistrationOnline() {
                                     )}
 
                                     {currentPage === 5 && (
-                                        <Box zIndex={1500} ml={'10%'} >
+                                        <Box zIndex={1500} ml={'5%'} >
                                             <InformasiTicketAPI
                                                 clinic={clinicName}
                                                 tanggalReservasi={tanggalReserve}
