@@ -201,7 +201,7 @@ export default function RegistrationOnline() {
                                             mb={3}
                                         >
                                             {(currentPage === 2 || currentPage === 3) && (
-                                                <Box mb={2} ml={currentPage === 3 ? '5%' : '15%'} width={'fit-content'} mt={currentPage === 3 ? '5%' : '25%'}>
+                                                <Box mb={2} ml={currentPage === 3 ? '5%' : '15%'} width={'fit-content'} mt={currentPage === 3 ? '5%' : '20%'}>
                                                     <Typography
                                                         fontSize="32px"
                                                         fontWeight={600}
@@ -318,7 +318,7 @@ export default function RegistrationOnline() {
                                     )}
 
                                     {currentPage === 2 && (
-                                        <Box sx={{ textAlign: "left", width: "100%", maxWidth: "600px", ml: '15%' }} >
+                                        <Box sx={{ textAlign: "left", width: "100%", maxWidth: "600px", ml: '10%' }} >
                                             <Typography
                                                 mb={2}
                                                 fontSize="20px"
