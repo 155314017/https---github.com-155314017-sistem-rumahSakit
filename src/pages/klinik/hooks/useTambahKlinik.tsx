@@ -1,23 +1,16 @@
-import { useRef, useState } from 'react';
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import dayjs from 'dayjs';
 import axios from "axios";
-import Cookies from "js-cookie";
+import { useFormik } from "formik";
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as Yup from "yup";
 import { createClinic } from '../../../services/Admin Tenant/ManageClinic/CreateClinic';
-import { KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
-import { createExclusions } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 import { ImageData, uploadImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
-import { createSchedules } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
+import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 
 
 export default function useTambahKlinik() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [successAlert, setSuccessAlert] = useState(false);
-  const [selectedDay, setSelectedDay] = useState<string | null>(null);
-  const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
-  const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
   const [imagesData, setImagesData] = useState<ImageData[]>([]);
   const [errorAlert, setErrorAlert] = useState(false);
   const [operationalTime] = useState<string | null>(null);
@@ -116,7 +109,7 @@ export default function useTambahKlinik() {
       // Validasi input schedule
       validateInput(kalenderData);
 
-      // Data untuk CreateAmbulanceService
+      // Data untuk CreateClinic
       const klinikData = {
         name: formik.values.namaKlinik , // Sebaiknya ini dari form atau auto-generate
         description: formik.values.deskripsiKlinik,
@@ -124,7 +117,7 @@ export default function useTambahKlinik() {
         code: formik.values.code
       };
 
-      // Buat ambulance baru
+      // Buat klinik baru
       const { data: { id: klinikId } } = await createClinic(klinikData);
       if (!klinikId) throw new Error('Klinik ID tidak ditemukan');
 
