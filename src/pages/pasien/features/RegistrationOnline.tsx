@@ -423,6 +423,9 @@ export default function RegistrationOnline() {
                                                         bgcolor: "#EEEEF2",
                                                         border: "1px solid #A8A8BD",
                                                     },
+                                                    "& .MuiOutlinedInput-notchedOutline": {
+                                                        border: "none",
+                                                    }
                                                 }}
                                                 error={touched.nik && Boolean(errors.nik)}
                                             // helperText={touched.nik && errors.nik}
@@ -478,10 +481,6 @@ export default function RegistrationOnline() {
                                                 }}
                                                 value={values.phone}
                                                 onChange={(phone) => {
-                                                    // PhoneInput onChange: string => setState
-                                                    // Jalankan setFieldValue agar formik simpan nilainya
-                                                    // Sebab 'phone' field di initialValues
-                                                    // pastikan name="phone" agar match
                                                     return setFieldValue("phone", phone);
                                                 }}
                                             />
@@ -505,6 +504,9 @@ export default function RegistrationOnline() {
                                                         bgcolor: "#EEEEF2",
                                                         border: "1px solid #A8A8BD",
                                                     },
+                                                    "& .MuiOutlinedInput-notchedOutline": {
+                                                        border: "none",
+                                                    }
                                                 }}
                                                 error={touched.email && Boolean(errors.email)}
                                             // helperText={touched.email && errors.email}
@@ -524,6 +526,9 @@ export default function RegistrationOnline() {
                                                                 bgcolor: "#EEEEF2",
                                                                 border: "1px solid #A8A8BD",
                                                             },
+                                                            "& .MuiOutlinedInput-notchedOutline": {
+                                                                border: "none",
+                                                            }
                                                         }}
                                                     />
                                                 </FormControl>
@@ -605,6 +610,9 @@ export default function RegistrationOnline() {
                                                         bgcolor: "#EEEEF2",
                                                         border: "1px solid #A8A8BD",
                                                     },
+                                                    "& .MuiOutlinedInput-notchedOutline": {
+                                                        border: "none",
+                                                    }
                                                 }}
                                                 value={values.address}
                                                 onChange={handleChange}
