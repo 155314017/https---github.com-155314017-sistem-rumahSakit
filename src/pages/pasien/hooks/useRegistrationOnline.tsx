@@ -93,6 +93,7 @@ export default function useRegistrationOnline() {
     const [bookingCode, setBookingCode] = useState('');
     const [dataPatient, setDataPatient] = useState<any>({});
     const [registrationId, setRegistrationId] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchClinicData = async () => {
@@ -267,32 +268,34 @@ export default function useRegistrationOnline() {
     }
 
     const checkIdentityNumber = async (nik: string) => {
+        setIsLoading(true);
         try {
             const responseUser = await GetUserByNIK(nik);
             console.log(responseUser);
-            if (responseUser?.data != null) {
-                const fullname = responseUser?.data.firstName + ' ' + responseUser?.data.lastName;
-                const response = await GetPatientByUserIdServices(responseUser?.data.id || '');
-                const birthDateProcess = response?.data.birthDate[0] + '-' + response?.data.birthDate[1] + '-' + response?.data.birthDate[2];
-                const dataGet = {
-                    id: responseUser?.data.id || '',
-                    nik: nik,
-                    email: responseUser?.data.email,
-                    phone: responseUser?.data.phone,
-                    fullname: fullname,
-                    address: response?.data.address,
-                    gender: response?.data.gender,
-                    birthDate: birthDateProcess,
-                    birthPlace: response?.data.birthPlace
+            if (responseUser?.responseCode === '200') {
+                if (responseUser?.data != null) {
+                    const fullname = responseUser?.data.firstName + ' ' + responseUser?.data.lastName;
+                    const response = await GetPatientByUserIdServices(responseUser?.data.id || '');
+                    const birthDateProcess = response?.data.birthDate[0] + '-' + response?.data.birthDate[1] + '-' + response?.data.birthDate[2];
+                    const dataGet = {
+                        id: responseUser?.data.id || '',
+                        nik: nik,
+                        email: responseUser?.data.email,
+                        phone: responseUser?.data.phone,
+                        fullname: fullname,
+                        address: response?.data.address,
+                        gender: response?.data.gender,
+                        birthDate: birthDateProcess,
+                        birthPlace: response?.data.birthPlace
+                    }
+                    setPatientData(dataGet);
+                    // setIsLoading(false);
+                    setCurrentPage(3);
+                } else if (responseUser?.data === null) {
+                    setIdPatient(null);
+                    setNeedAdmin(true);
+                    setCurrentPage(4);
                 }
-                setPatientData(dataGet);
-
-                setCurrentPage(3);
-            } else if (responseUser?.data === null) {
-                console.log('takde')
-                setIdPatient(null);
-                setNeedAdmin(true);
-                setCurrentPage(4);
             }
         } catch (err: any) {
             if (err.response?.status === 404) {
@@ -305,6 +308,8 @@ export default function useRegistrationOnline() {
             } else {
                 console.error('Unexpected error:', err);
             }
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -340,7 +345,8 @@ export default function useRegistrationOnline() {
         bookingCode,
         setDataPatient,
         dataPatient,
-        registrationId
+        registrationId,
+        isLoading
     }
 }
 
