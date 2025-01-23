@@ -37,7 +37,6 @@ const InformasiTicketAPI = ({
   registrationId
 }: InformasiTicketProps) => {
 
-  const [showButton, setShowButton] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
   const [alertDownloaded, setAlertDownloaded] = useState(false);
   const ticketRef = useRef<HTMLDivElement>(null);
@@ -48,6 +47,7 @@ const InformasiTicketAPI = ({
   const [showModal, setShowModal] = useState(false);
   const [patientData, setPatientData] = useState<any>({});
   const [successChangePhone, setSuccessChangePhone] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const showTemporaryAlertSuccessChangePhone = async () => {
@@ -65,9 +65,8 @@ const InformasiTicketAPI = ({
 
   const downloadTicketAsPDF = async () => {
     if (!ticketRef.current) return;
-
+    setIsLoading(true);
     try {
-      setShowButton(false);
 
       const canvas = await html2canvas(ticketRef.current, {
         scale: 2,
@@ -86,7 +85,7 @@ const InformasiTicketAPI = ({
     } catch (error) {
       console.error("Gagal mengunduh PDF: ", error);
     } finally {
-      setShowButton(true);
+      setIsLoading(false);
       showTemporaryAlertSuccessDownload();
     }
   };
@@ -356,7 +355,24 @@ const InformasiTicketAPI = ({
               </Box>
             </Box>
           )}
-          {showButton && (
+          {isLoading ? (
+            <Button
+              fullWidth
+              sx={{
+                width: "100%",
+                height: "48px",
+                marginTop: "20px",
+                backgroundColor: "#8F85F3",
+                color: "white",
+                border: "1px solid",
+                borderColor: "#8F85F3",
+                borderRadius: "8px",
+              }}
+              disabled
+            >
+              <CircularProgress sx={{ color: 'white' }} />
+            </Button>
+          ) : (
             <Button
               fullWidth
               sx={{
@@ -374,9 +390,6 @@ const InformasiTicketAPI = ({
             >
               Cetak tiket
             </Button>
-
-
-
 
           )}
           <Button variant="outlined" onClick={onClose}
