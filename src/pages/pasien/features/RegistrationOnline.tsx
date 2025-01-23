@@ -221,7 +221,7 @@ export default function RegistrationOnline() {
                                                 </Box>
                                             )}
 
-                                            <Box display="flex" justifyContent={'space-between'} flexDirection="row" ml={currentPage === 4 || currentPage === 3 ? 0 : '10%'} mt={currentPage === 4 || currentPage === 2 || currentPage === 3 ? '5%' : '20%'} >
+                                            <Box display="flex" justifyContent={'space-between'} flexDirection="row" ml={currentPage === 4 || currentPage === 3 ? 0 : '5%'} mt={currentPage === 4 || currentPage === 2 || currentPage === 3 ? '5%' : '15%'} >
                                                 <Box display="flex" flexDirection="row" width="290px">
                                                     <Button
                                                         type="button"
@@ -267,7 +267,7 @@ export default function RegistrationOnline() {
                                                 </Box>
                                             </Box>
                                             {currentPage === 1 && (
-                                                <Box mb={2} mt={'5%'} ml={'15%'} >
+                                                <Box mb={2} mt={'5%'} ml={'10%'} >
                                                     <Typography
                                                         fontWeight={600}
                                                         fontSize="20px"
@@ -299,7 +299,7 @@ export default function RegistrationOnline() {
                                                 flexDirection: "column",
                                                 gap: "24px",
                                                 maxWidth: "600px",
-                                                ml: '15%',
+                                                ml: '10%',
                                                 // bgcolor: 'red',
                                                 width: "100%",
                                             }}
