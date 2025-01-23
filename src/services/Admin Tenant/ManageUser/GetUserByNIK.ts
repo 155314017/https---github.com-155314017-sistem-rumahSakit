@@ -23,7 +23,7 @@ interface UserResponse {
 const GetUserByNIK = async (nik: string): Promise<UserResponse | null> => {
   try {
     const response = await axios.get<UserResponse>(
-      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/user/by-identity-number/${nik}`
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/user/by-identity-number?identityNumber=${nik}`
     )
     if (response.status === 200) {
       return response.data

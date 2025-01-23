@@ -33,6 +33,7 @@ import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
 import FileUploader from "../../../../components/medium/FileUploader";
+import { Email } from "@mui/icons-material";
 
 
 export default function TambahPasienUmumOffline() {
@@ -81,6 +82,8 @@ export default function TambahPasienUmumOffline() {
         tanggalReserve,
         registrationCode,
         bookingCode,
+        queueNumber,
+        queueData
         
 
 
@@ -89,6 +92,7 @@ export default function TambahPasienUmumOffline() {
 
     useEffect(() => {
         console.log(currentPage)
+        
     }, [currentPage]);
 
 
@@ -576,7 +580,7 @@ export default function TambahPasienUmumOffline() {
 
 
                             {/* Start */}
-                            {currentPage === 2 && needAdmin === false && (
+                            {currentPage === 2 && (
                                 <Box mt={3}>
                                     <Box sx={{ display: "flex" }}>
                                         <Box sx={{ width: '100%', justifyContent: "ce" }}>
@@ -591,7 +595,7 @@ export default function TambahPasienUmumOffline() {
                                                         jenisKunjungan: '',
                                                         doctor: '',
                                                         complaint: '',
-                                                        email: patientData?.email, // Add email to initial values
+                                                        email: patientData?.email || '', // Add email to initial values
                                                         nik: NIK,
                                                     }}
                                                     enableReinitialize
@@ -618,8 +622,11 @@ export default function TambahPasienUmumOffline() {
                                                             scheduleIntervalId: selectedScheduleId,
                                                             symptoms: values.complaint,
                                                             referenceDoc: "",
+                                                            offline: true,
+                                                            phoneNumber: values.phone,
+                                                            email: values.email,
                                                             needAdmin: needAdmin,
-                                                            offline: true
+                                                            
                                                         }
 
                                                         // const dataTiket = {
@@ -799,7 +806,6 @@ export default function TambahPasienUmumOffline() {
                                                                                             options={doctorOptions.map(({ id, name }) => ({ value: id, label: name }))}
                                                                                             onChange={handleDropdownDocter}
                                                                                             loading={false}
-                                                                                            valueField="value"
 
                                                                                         />
                                                                                         <Typography color="error">
@@ -960,7 +966,8 @@ export default function TambahPasienUmumOffline() {
                         needAdmin && !mainPages && (
                             <Box marginLeft={"20%"} marginTop={"10%"} zIndex={1500} >
                                 <CardAntrianCounter
-                                    nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
+                                    nomorAntrian={queueData?.queueNumber||queueNumber}
+                                    tanggalReservasi={tanggalReserve}
                                     onClose={() => navigate("/offline/tambahPasien")}
                                 />
                             </Box>
@@ -975,11 +982,10 @@ export default function TambahPasienUmumOffline() {
                                     clinic= {clinicName}
                                     jadwalKonsul={dayjs(selectedSchedule?.split(', ')[0]).format("YYYY-MM-DD")}
                                     namaDokter={docterName}
-                                    nomorAntrian={dataTickets?.nomorAntrian || ""}
+                                    nomorAntrian={queueNumber}
                                     tanggalReservasi={tanggalReserve}
                                     registrationId={registrationCode}
                                     patienDataSent={dataTickets}
-                                    bookingCode={bookingCode}
                                     offline={true}
                                     
                                     onClose={() => navigate("/offline/tambahPasien")}

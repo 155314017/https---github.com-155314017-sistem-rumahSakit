@@ -39,7 +39,10 @@ export default function PilihKategoriPasien() {
         // pasienBaru,
         bookingCodeSchema,
         style,
-        onSubmitKodeBooking
+        onSubmitKodeBooking,
+        needAdmin,
+        queueData,
+        tanggalReservasi
     } = usePilihKategoriPasien();
 
     return (
@@ -291,24 +294,6 @@ export default function PilihKategoriPasien() {
                         </Box>
 
                         <Stack direction="column" width={'100%'} spacing={0}>
-                            {/* Pasien BPJS */}
-
-                            <PasienCard
-                                href="/tambahPasien/umum/offline"
-                                avatarSrc={fillingImg}
-                                title="Pasien Umum/Asuransi"
-                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
-                                bgColor="#D5D1FB"
-                            />
-
-                            {/* Pasien Umum */}
-                            <PasienCard
-                                avatarSrc={medicineImg}
-                                title="Pasien non BPJS kesehatan"
-                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
-                                bgColor="#D5D1FB"
-                            />
-
                             {/* Kode Booking */}
                             <PasienCard
                                     avatarSrc={qrcodeImg}
@@ -322,6 +307,35 @@ export default function PilihKategoriPasien() {
                                         }
                                     }
                                 />
+
+                            
+                            {/* Pasien Umum */}
+                            <PasienCard
+                                href="/tambahPasien/umum/offline"
+                                avatarSrc={fillingImg}
+                                title="Pasien Umum"
+                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
+                                bgColor="#D5D1FB"
+                            />
+
+                            {/* Pasien Umum */}
+                            <PasienCard
+                                href="/tambahPasien/umum/offline"
+                                avatarSrc={fillingImg}
+                                title="Pasien Asuransi"
+                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
+                                bgColor="#D5D1FB"
+                            />
+
+                            {/* Pasien BPJS */}
+                            <PasienCard
+                                avatarSrc={medicineImg}
+                                title="Pasien non BPJS kesehatan"
+                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
+                                bgColor="#D5D1FB"
+                            />
+
+                            
                         </Stack>
                         {/* <Button
                             sx={{
@@ -365,7 +379,8 @@ export default function PilihKategoriPasien() {
 
                 {tiketAntrianKonter && (
                     <CardAntrianCounter
-                        nomorAntrian={nomorAntrian}
+                        nomorAntrian={queueData?.queueNumber || 0}
+                        tanggalReservasi={tanggalReservasi || ""}
                         onClose={() => {
                             setInputCodePages(false);
                             setMainPages(true);

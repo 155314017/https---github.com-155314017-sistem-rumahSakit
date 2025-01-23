@@ -32,6 +32,20 @@ type PatientData =
         birthPlace: string | undefined;
     };
 
+type queueData = {
+    id: string;
+    registrationDataId: string;
+    createdBy: string;
+    createdDateTime: number;
+    updatedBy: string | null;
+    updatedDateTime: number | null;
+    deletedBy: string | null;
+    deletedDateTime: number | null;
+    queueNumber: number;
+    clinicId: string;
+    status: string | null;
+}
+
 // type dataPasien = {
 //     id: string;
 //     additionalInfo: string | null;
@@ -166,6 +180,8 @@ export default function useTambahPasienUmumOffline() {
     const [tanggalReserve, setTanggalReserve] = useState('');
     const [registrationCode, setRegistrationCode] = useState('');
     const [bookingCode, setBookingCode] = useState('');
+    const [queueNumber, setQueueNumber] = useState('');
+    const [queueData, setQueueData] = useState<queueData>();
 
 
 
@@ -274,7 +290,10 @@ export default function useTambahPasienUmumOffline() {
         },
         enableReinitialize: true,
         validationSchema: Yup.object({
-            nik: Yup.string().required('NIK is required'),
+            nik: Yup.string().matches(/^[0-9]+$/, 'NIK harus berupa angka')
+            .min(16, 'NIK minimal 16 digit')
+            .max(16, 'NIK maksimal 16 digit')
+            .required('NIK wajib diisi'),
             address: Yup.string().required('tes'),
             nikCari: Yup.string()
                 .matches(/^[0-9]+$/, 'NIK harus berupa angka')
@@ -412,9 +431,9 @@ export default function useTambahPasienUmumOffline() {
             // Validasi response
             if (responsePatient?.responseCode === "200") {
                 if(responsePatient?.data === null) {
-                    console.log("pasien dengan NIK tersebut tidak ditemukan.");
+                    
+                    setCurrentPage(2);
                     setNeedAdmin(true);
-                    setMainPages(false);
                 }else{
                 console.log("pasien dengan NIK tersebut ditemukan.");
                 setNIK(nik);
@@ -448,18 +467,24 @@ export default function useTambahPasienUmumOffline() {
             }
             } else {
                 // Jika pasien dengan NIK tidak ditemukan
+                console.log("pasien dengan NIK tersebut tidak ditemukan.");
+                setNeedAdmin(false);
+                setCurrentPage(2);
                 console.error("Pasien dengan NIK tersebut tidak ditemukan.");
                 showTemporaryAlert(); // Tampilkan alert untuk user
             }
 
         } catch (err: any) {
+            
+            
             // Error handling
             if (err.response?.status === 404) {
+                
                 console.error("Pasien tidak ditemukan (404).");
             } else {
                 console.error("Terjadi kesalahan saat memproses data:", err.message);
             }
-            showTemporaryAlert(); // Tampilkan alert untuk user
+            // showTemporaryAlert(); // Tampilkan alert untuk user
         }
     };
 
@@ -728,7 +753,12 @@ export default function useTambahPasienUmumOffline() {
                     },
                 }
             );
-            console.log(queue)
+
+            const queueNumber = queue.data.data.queueNumber
+            setQueueData(queue.data.data)
+            console.log("Queue Data : ", queueData);
+            console.log(queue.data.data.queueNumber);
+            console.log("Queue Number : ", queueNumber);
             
             setMainPages(false)
             // setCurrentPage(3);
@@ -773,6 +803,10 @@ export default function useTambahPasienUmumOffline() {
         }
     }
 
+    useEffect(() => {
+        console.log("data nomor antrian : ", queueNumber)
+        console.log("Queue Data : ", queueData);
+    },[queueNumber, setQueueNumber])
     return {
         validationSchema,
         breadcrumbItems,
@@ -835,7 +869,9 @@ export default function useTambahPasienUmumOffline() {
         docterName,
         tanggalReserve,
         registrationCode,
-        bookingCode
+        bookingCode,
+        queueNumber,
+        queueData
 
 
     }

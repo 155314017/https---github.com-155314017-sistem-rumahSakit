@@ -61,6 +61,7 @@ const InformasiTicketAPI = ({
   useEffect(() => {
     if (patienDataSent) {
       setPatientData(patienDataSent);
+      console.log(nomorAntrian)
       console.log('data: ', patienDataSent);
     }
   }, [patientData]);

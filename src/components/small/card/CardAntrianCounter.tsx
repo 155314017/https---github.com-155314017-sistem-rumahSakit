@@ -7,10 +7,11 @@ import PrintIcon from "@mui/icons-material/Print";
 
 interface CardAntrianCounterProps {
   nomorAntrian: string | number;
+  tanggalReservasi: string;
   onClose: () => void;
 }
 
-const CardAntrianCounter: FC<CardAntrianCounterProps> = ({ nomorAntrian, onClose }) => {
+const CardAntrianCounter: FC<CardAntrianCounterProps> = ({ nomorAntrian,tanggalReservasi, onClose }) => {
   const [showAlert, setShowAlert] = useState(false);
 
   const handleDownload = async () => {
@@ -142,7 +143,7 @@ const CardAntrianCounter: FC<CardAntrianCounterProps> = ({ nomorAntrian, onClose
               Tanggal reservasi
             </Typography>
             <Typography fontWeight={600} fontSize={"18px"} color="#0A0A0D">
-              29/Jul/2024, 10:30
+              {tanggalReservasi}
             </Typography>
           </Box>
           <Box textAlign={"start"} mb={2}>
