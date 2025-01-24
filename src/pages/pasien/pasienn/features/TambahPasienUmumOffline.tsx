@@ -9,7 +9,6 @@ import {
     TextField,
     OutlinedInput,
     FormLabel,
-    CircularProgress,
     Checkbox,
     FormHelperText
 } from "@mui/material";
@@ -43,7 +42,6 @@ export default function TambahPasienUmumOffline() {
         setCurrentPage,
         getPageStyle,
         getBorderStyle,
-        // isCurrentPageValid,
         mainPages,
         patientFullPage,
         handleScheduleChange,
@@ -53,20 +51,15 @@ export default function TambahPasienUmumOffline() {
         findPatientByNik,
         patientData,
         BpRadio,
-        // putGuard,
         changePage2,
         clinicOptions,
         handleDropdownPoli,
-        // createTicket,
         dataTickets,
         showAlert,
         calendarKey,
-        isLoading,
         handleGoBack,
         formik,
         setNeedAdmin,
-        // fileName,
-        // handleFileChange,
         needAdmin,
         NIK,
         birth,
@@ -81,10 +74,9 @@ export default function TambahPasienUmumOffline() {
         docterName,
         tanggalReserve,
         registrationCode,
-        // bookingCode,
         queueNumber,
         queueData
-        
+
 
 
 
@@ -92,7 +84,7 @@ export default function TambahPasienUmumOffline() {
 
     useEffect(() => {
         console.log(currentPage)
-        
+
     }, [currentPage]);
 
 
@@ -186,7 +178,7 @@ export default function TambahPasienUmumOffline() {
                                 <Box display={"flex"} flexDirection={"row"} width={"400px"}>
                                     <Button
                                         onClick={() => setCurrentPage(2)}
-                                        disabled={currentPage < 2} // Nonaktifkan jika di langkah pertama atau langkah berikutnya
+                                        disabled={currentPage < 2}
                                         sx={{
                                             ...getPageStyle(2),
                                             display: "flex",
@@ -234,9 +226,9 @@ export default function TambahPasienUmumOffline() {
                                                 name="nikCari"
                                                 onBlur={formik.handleBlur}
                                             />
-                                            {formik.touched.nikCari && formik.errors.nikCari && (
+                                            {/* {formik.touched.nikCari && formik.errors.nikCari && (
                                                 <FormHelperText>{formik.errors.nikCari}</FormHelperText>
-                                            )}
+                                            )} */}
                                             <Button
                                                 type="button"
                                                 // onClick={() => patientPage ? setPatientPage(true) : setCurrentPage(2)}
@@ -563,7 +555,7 @@ export default function TambahPasienUmumOffline() {
                                                                         borderRadius: "8px",
                                                                         ":hover": { bgcolor: "#a098f5" },
                                                                     }}
-                                                                    // disabled={!(isValid && dirty)}
+                                                                // disabled={!(isValid && dirty)}
                                                                 >
                                                                     Selanjutnya
                                                                 </Button>
@@ -603,20 +595,11 @@ export default function TambahPasienUmumOffline() {
                                                     }}
                                                     enableReinitialize
                                                     validationSchema={validationSchema1}
+                                                    validateOnChange={true}
+                                                    validateOnBlur={true}
                                                     onSubmit={async (values) => {
                                                         console.log('Form submitted:', patientData?.id);
                                                         const dataRegis = {
-                                                            // namaKlinik: '',
-                                                            // address: patientData?.address,
-                                                            // nik: patientData?.nik,
-                                                            // email: patientData?.email,
-                                                            // phone: patientData?.phone,
-                                                            // gender: patientData?.gender,
-                                                            // fullname: patientData?.fullname,
-                                                            // birthDatePatient: patientData?.birthDate,
-                                                            // birthPlacePatient: patientData?.birthPlace,
-                                                            // docs: '',
-                                                            // asuranceDocs: '',
                                                             patientId: patientData?.id,
                                                             clinicId: idClinic,
                                                             doctorId: idDoctor,
@@ -629,32 +612,27 @@ export default function TambahPasienUmumOffline() {
                                                             phoneNumber: values.phone,
                                                             email: values.email,
                                                             needAdmin: needAdmin,
-                                                            
                                                         }
-
-                                                        // const dataTiket = {
-                                                        //     nomorAntrian: '1',
-                                                        //     namaDokter: 'udin',
-                                                        //     clinic: 'klinik a',
-                                                        //     tanggalReservasi: '21 januari 2025',
-                                                        //     jadwalKonsul: '22 januari 2025',
-                                                        //     bookingCode: '12ads',
-                                                        // }
-                                                        
-                                                        // createTicket(dataTiket);
                                                         registrationPatient(dataRegis);
-                                                        
+
                                                     }}
                                                 >
-                                                    {({ errors, touched, handleChange, handleBlur, values,
-                                                        // isValid,
-                                                        // dirty, 
-                                                        setFieldValue }) => (
+                                                    {(
+                                                        {
+                                                            errors,
+                                                            touched,
+                                                            handleChange,
+                                                            handleBlur,
+                                                            values,
+                                                            isValid,
+                                                            // dirty, 
+                                                            setFieldValue
+                                                        }
+                                                    ) => (
                                                         <Form>
                                                             <Box sx={{ paddingBottom: '16px', gap: "24px", justifyContent: "center", display: 'flex', flexDirection: 'column' }}>
                                                                 <Box sx={{ display: "flex", flexDirection: "column", }}>
                                                                     <FormControl>
-                                                                        {/* Contact Info Section */}
                                                                         <Box
                                                                             sx={{
                                                                                 display: "flex",
@@ -700,14 +678,11 @@ export default function TambahPasienUmumOffline() {
                                                                                         borderRadius: '8px',
                                                                                         border: touched.phone && errors.phone ? '1px solid #ffcccc' : '1px solid #ccc',
                                                                                         transition: 'border-color 0.3s',
-                                                                                        // '&:focus-within': {
-                                                                                        //     borderColor: '#8F85F3',
-                                                                                        // },
                                                                                     }}
                                                                                 />
-                                                                                {touched.phone && errors.phone && (
+                                                                                {/* {touched.phone && errors.phone && (
                                                                                     <FormHelperText error>{errors.phone}</FormHelperText>
-                                                                                )}
+                                                                                )} */}
                                                                             </FormControl>
                                                                             <Typography>Email</Typography>
                                                                             <FormControl>
@@ -743,7 +718,6 @@ export default function TambahPasienUmumOffline() {
                                                                             </FormControl>
                                                                         </Box>
 
-                                                                        {/* Patient Complaint Section */}
                                                                         <Box>
                                                                             <Box sx={{
                                                                                 display: "flex",
@@ -762,6 +736,7 @@ export default function TambahPasienUmumOffline() {
                                                                                 <Typography>Jenis Kunjungan</Typography>
                                                                                 <FormControl sx={{ marginBottom: '10px' }}>
                                                                                     <TextField
+                                                                                        placeholder="Masukkan jenis kunjungan"
                                                                                         variant="outlined"
                                                                                         sx={{
                                                                                             width: '100%',
@@ -787,9 +762,9 @@ export default function TambahPasienUmumOffline() {
                                                                                         onChange={handleChange}
                                                                                         onBlur={handleBlur}
                                                                                     />
-                                                                                    {touched.jenisKunjungan && errors.jenisKunjungan && (
+                                                                                    {/* {touched.jenisKunjungan && errors.jenisKunjungan && (
                                                                                         <FormHelperText error>{errors.jenisKunjungan}</FormHelperText>
-                                                                                    )}
+                                                                                    )} */}
                                                                                 </FormControl>
 
 
@@ -801,7 +776,7 @@ export default function TambahPasienUmumOffline() {
                                                                                     loading={false}
                                                                                 />
 
-                                                                                <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} sx={{ width: "100%", height:"auto" }}>
+                                                                                <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} sx={{ width: "100%", height: "auto" }}>
                                                                                     <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
                                                                                         <Typography>Dokter yang bertugas</Typography>
                                                                                         <DropdownListAPI
@@ -859,68 +834,20 @@ export default function TambahPasienUmumOffline() {
                                                                                         <FormHelperText error>{errors.complaint}</FormHelperText>
                                                                                     )}
                                                                                 </FormControl>
-                                                                                {/* <Typography>Unggah surat rujukan</Typography> */}
-                                                                                {/* <Box display="flex" alignItems="center" border="1px solid #ccc" borderRadius="6px" overflow="hidden" height={50}> */}
-                                                                                    {/* Tombol Unggah */}
-                                                                                    {/* <Button
-                                                                                        variant="contained"
-                                                                                        component="label"
-                                                                                        sx={{
-                                                                                            backgroundColor: "#8F85F3",
-                                                                                            color: "white",
-                                                                                            borderRadius: 0,
-                                                                                            padding: "40px",
-                                                                                            textTransform: "none",
-                                                                                            fontSize: "14px",
-                                                                                            fontWeight: 500,
-                                                                                            "&:hover": { backgroundColor: "#836FD1" },
-                                                                                        }}
-                                                                                        startIcon={<UploadFileIcon />}
-                                                                                    >
-                                                                                        Unggah Berkas
-                                                                                        <input
-                                                                                            hidden
-                                                                                            type="file"
-                                                                                            onChange={handleFileChange}
+
+                                                                                <Box mt={1}>
+                                                                                    <Box mt={2}>
+                                                                                        <Typography>Unggah surat rujukan</Typography>
+
+                                                                                        <FileUploader
+                                                                                            onBase64Change={(base64String) => setFieldValue('referenceDoc', base64String)}
                                                                                         />
-                                                                                    </Button> */}
-
-                                                                                  
-                                                                                    {/* <TextField
-                                                                                        value={fileName}
-                                                                                        placeholder="Pilih berkas"
-                                                                                        variant="outlined"
-                                                                                        InputProps={{
-                                                                                            readOnly: true,
-                                                                                            style: {
-                                                                                                borderRadius: 0,
-                                                                                                fontSize: "14px",
-                                                                                                padding: "10px",
-                                                                                            },
-                                                                                        }}
-                                                                                        sx={{
-                                                                                            flex: 1,
-                                                                                            "& .MuiOutlinedInput-root": {
-                                                                                                border: "none",
-                                                                                                "& fieldset": { border: "none" },
-                                                                                            },
-                                                                                        }}
-                                                                                    /> */}
-
-                                                                                    <Box mt={1}>
-                                                                                        <Box mt={2}>
-                                                                                            <Typography>Unggah surat rujukan</Typography>
-
-                                                                                            <FileUploader
-                                                                                                onBase64Change={(base64String) => setFieldValue('referenceDoc', base64String)}
-                                                                                            />
-                                                                                            <Typography fontSize={"14px"} color="#A8A8BD">
-                                                                                                Ukuran maksimal 1mb
-                                                                                            </Typography>
-                                                                                        </Box>
-
+                                                                                        <Typography fontSize={"14px"} color="#A8A8BD">
+                                                                                            Ukuran maksimal 1mb
+                                                                                        </Typography>
                                                                                     </Box>
-                                                                                {/* </Box> */}
+
+                                                                                </Box>
                                                                             </Box>
                                                                         </Box>
                                                                     </FormControl >
@@ -931,25 +858,17 @@ export default function TambahPasienUmumOffline() {
                                                                 <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
                                                                     <Button
                                                                         type="submit"
-                                                                        color="inherit"
+                                                                        variant="contained"
                                                                         sx={{
-                                                                            backgroundColor: "#8F85F3",
-                                                                            color: "white",
-                                                                            textTransform: "none",
                                                                             width: "100%",
-                                                                            padding: "10px 24px",
-                                                                            borderRadius: "8px",
-                                                                            "&:hover": {
-                                                                                backgroundColor: "#7C75E2",
-                                                                            },
+                                                                            height: "48px",
+                                                                            marginTop: "20px",
+                                                                            backgroundColor: "#8F85F3",
+                                                                            ":hover": { backgroundColor: "#D5D1FB" },
                                                                         }}
-                                                                    // disabled={!isValid || !dirty}
+                                                                        disabled={!isValid}
                                                                     >
-                                                                        {isLoading ? (
-                                                                            <CircularProgress sx={{ color: 'white' }} size={20} />
-                                                                        ) : (
-                                                                            "Simpan"
-                                                                        )}
+                                                                        Selesai
                                                                     </Button>
                                                                 </Box>
                                                             </Box >
@@ -969,7 +888,7 @@ export default function TambahPasienUmumOffline() {
                         needAdmin && !mainPages && (
                             <Box marginLeft={"20%"} marginTop={"10%"} zIndex={1500} >
                                 <CardAntrianCounter
-                                    nomorAntrian={queueData?.queueNumber||queueNumber}
+                                    nomorAntrian={queueData?.queueNumber || queueNumber}
                                     tanggalReservasi={tanggalReserve}
                                     onClose={() => navigate("/offline/tambahPasien")}
                                 />
@@ -982,15 +901,15 @@ export default function TambahPasienUmumOffline() {
                             <Box marginLeft={"23%"} marginTop={"10%"} zIndex={1500}>
 
                                 <InformasiTicketAPI
-                                    clinic= {clinicName}
+                                    clinic={clinicName}
                                     jadwalKonsul={dayjs(selectedSchedule?.split(', ')[0]).format("YYYY-MM-DD")}
                                     namaDokter={docterName}
-                                    nomorAntrian={queueData?.queueNumber||queueNumber}
+                                    nomorAntrian={queueData?.queueNumber || queueNumber}
                                     tanggalReservasi={tanggalReserve}
                                     registrationId={registrationCode}
                                     patienDataSent={dataTickets}
                                     offline={true}
-                                    
+
                                     onClose={() => navigate("/offline/tambahPasien")}
                                 />
                             </Box>

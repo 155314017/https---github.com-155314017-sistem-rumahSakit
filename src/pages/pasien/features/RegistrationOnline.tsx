@@ -937,7 +937,6 @@ export default function RegistrationOnline() {
                                             </Box>
                                             <Button
                                                 type="submit"
-                                                // onClick={() => console.log('clicked')}
                                                 variant="contained"
                                                 sx={{
                                                     width: "100%",
