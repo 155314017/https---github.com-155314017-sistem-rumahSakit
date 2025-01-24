@@ -49,7 +49,7 @@ const PasienCard: React.FC<PasienCardProps> = ({
                     src={avatarSrc}
                     sx={{ width: "88px", height: "88px" }}
                 />
-                <Box sx={{ marginLeft: "16px", mt: '-20px' }}>
+                <Box sx={{ marginLeft: "16px", mt: '-20px', minWidth: '90%', maxWidth: '90%' }}>
                     <Typography
                         sx={{
                             color: "#7367F0",
@@ -58,19 +58,20 @@ const PasienCard: React.FC<PasienCardProps> = ({
                         }}
                     >
                         {title}
-                    </Typography>   
+                    </Typography>
                     <Box
                         sx={{
                             display: "flex",
                             flexDirection: "row",
                             alignItems: "center",
                             justifyContent: "space-between",
+                            width: '100%'
                         }}
                     >
                         <Typography
                             sx={{
                                 textDecoration: "none",
-                                maxWidth: "80%",
+                                maxWidth: "60%",
                             }}
                         >
                             {description}
