@@ -345,25 +345,28 @@ export default function RegistrationOnline() {
                                                 flexDirection: "column",
                                                 gap: "24px",
                                                 ml: '5%',
-                                                width: "90%",
+                                                maxWidth: "90%",
                                             }}
                                         >
                                             <PasienCard
                                                 onClick={() => setCurrentPage(2)}
                                                 avatarSrc={imgUmum}
                                                 title="Pasien Umum"
+                                                widthContent="85%"
                                                 description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
                                             />
                                             <PasienCard
                                                 onClick={() => setCurrentPage(2)}
                                                 avatarSrc={imgInsurance}
                                                 title="Pasien Asuransi"
+                                                widthContent="85%"
                                                 description="Pasien yang berobat di rumah sakit dengan biaya yang di cover oleh pihak asuransi."
                                             />
                                             <PasienCard
                                                 onClick={() => setCurrentPage(2)}
                                                 avatarSrc={imgBPBJS}
                                                 title="Pasien BPBJS"
+                                                widthContent="85%"
                                                 description="Pasien yang berobat di rumah sakit dengan biaya yang di cover oleh pemerintah."
                                             />
                                         </Box>

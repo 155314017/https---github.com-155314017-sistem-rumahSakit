@@ -9,7 +9,7 @@ interface PasienCardProps {
     onClick?: () => void;
     avatarSrc: string;
     bgColor?: string;
-    href?: string;
+    widthContent?: string;
 }
 
 const PasienCard: React.FC<PasienCardProps> = ({
@@ -18,11 +18,11 @@ const PasienCard: React.FC<PasienCardProps> = ({
     onClick,
     avatarSrc,
     bgColor = "#F1F0FE",
-    href = "#",
+    widthContent = '90%'
 }) => {
     return (
         <Link
-            to={href}
+            to={''}
             style={{ textDecoration: "none" }}
             onClick={onClick}
         >
@@ -49,7 +49,7 @@ const PasienCard: React.FC<PasienCardProps> = ({
                     src={avatarSrc}
                     sx={{ width: "88px", height: "88px" }}
                 />
-                <Box sx={{ marginLeft: "16px", mt: '-20px', minWidth: '90%', maxWidth: '90%' }}>
+                <Box sx={{ marginLeft: "16px", mt: '-20px', minWidth: widthContent == '85%' ? '85%' : '90%', maxWidth: { widthContent } }}>
                     <Typography
                         sx={{
                             color: "#7367F0",
@@ -80,7 +80,7 @@ const PasienCard: React.FC<PasienCardProps> = ({
                     </Box>
                 </Box>
             </Card>
-        </Link>
+        </Link >
     );
 };
 
