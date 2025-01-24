@@ -29,7 +29,7 @@ export default function PilihKategoriPasien() {
         setIsLoading,
         infoTicket,
         setInfoTicket,
-        nomorAntrian,
+        // nomorAntrian,
         tiketAntrianKonter,
         setTiketAntrianKonter,
         noDataBooking,
@@ -40,7 +40,7 @@ export default function PilihKategoriPasien() {
         bookingCodeSchema,
         style,
         onSubmitKodeBooking,
-        needAdmin,
+        // needAdmin,
         queueData,
         tanggalReservasi
     } = usePilihKategoriPasien();
@@ -359,23 +359,26 @@ export default function PilihKategoriPasien() {
                     </Box>
                 )}
 
-
+                <Box>
                 {infoTicket && (
                     <InformasiTicketAPI
                         clinic={dataKodeBooking?.namaKlinik}
                         jadwalKonsul={dataKodeBooking?.jadwalKonsul}
                         namaDokter={dataKodeBooking?.namaDokter}
                         tanggalReservasi={dataKodeBooking?.tanggalReserve}
-                        bookingCode=""
+                        nomorAntrian={queueData?.queueNumber || 0}
+                        offline={true}
                         onClose={() => {
                             console.log("Tombol close ditekan");
                             setInfoTicket(false);
                             setMainPages(true);
                         }}
                     />
+                    
 
 
                 )}
+                </Box>
 
                 {tiketAntrianKonter && (
                     <CardAntrianCounter

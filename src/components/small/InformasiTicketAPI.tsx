@@ -12,7 +12,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import ModalUbahNoHp from "./modal/ModalUbahNoHp";
 import AlertSuccess from "./alert/AlertSuccess";
 type InformasiTicketProps = {
-  nomorAntrian?: string | undefined;
+  nomorAntrian?: number | undefined;
   namaDokter: string | undefined;
   clinic: string | undefined;
   tanggalReservasi: string | undefined;
