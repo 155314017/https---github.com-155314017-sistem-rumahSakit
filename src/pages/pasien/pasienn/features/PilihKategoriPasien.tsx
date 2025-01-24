@@ -7,6 +7,7 @@ import { Formik, Form, Field } from "formik";
 import { Stack } from "@mui/system";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 import 'dayjs/locale/id';
+import injuryImg from "../../../../assets/img/injury-pana 1.png"
 import medicineImg from "../../../../assets/img/meidicine.png"
 import qrcodeImg from "../../../../assets/img/qrcode.png"
 import fillingImg from "../../../../assets/img/filling.png"
@@ -299,7 +300,7 @@ export default function PilihKategoriPasien() {
                                     avatarSrc={qrcodeImg}
                                     description=" Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian."
                                     title="Masukkan Kode Booking"
-                                    bgColor="#D5D1FB"
+                                    bgColor="#F1F0FE"
                                     onClick={
                                         () => {
                                             setInputCodePages(true);
@@ -315,16 +316,16 @@ export default function PilihKategoriPasien() {
                                 avatarSrc={fillingImg}
                                 title="Pasien Umum"
                                 description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
-                                bgColor="#D5D1FB"
+                                bgColor="#F1F0FE"
                             />
 
                             {/* Pasien Umum */}
                             <PasienCard
                                 href="/tambahPasien/umum/offline"
-                                avatarSrc={fillingImg}
+                                avatarSrc={injuryImg}
                                 title="Pasien Asuransi"
                                 description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
-                                bgColor="#D5D1FB"
+                                bgColor="#F1F0FE"
                             />
 
                             {/* Pasien BPJS */}
@@ -332,7 +333,7 @@ export default function PilihKategoriPasien() {
                                 avatarSrc={medicineImg}
                                 title="Pasien non BPJS kesehatan"
                                 description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
-                                bgColor="#D5D1FB"
+                                bgColor="#F1F0FE"
                             />
 
                             

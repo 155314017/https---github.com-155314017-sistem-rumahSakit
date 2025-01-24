@@ -17,7 +17,7 @@ const PasienCard: React.FC<PasienCardProps> = ({
     description,
     onClick,
     avatarSrc,
-    bgColor = "#D5D1FB",
+    bgColor = "#F1F0FE",
     href = "#",
 }) => {
     return (
@@ -36,9 +36,11 @@ const PasienCard: React.FC<PasienCardProps> = ({
                     boxShadow: 2,
                     marginBottom: "16px",
                     bgcolor: bgColor,
-                    '&:hover': {
-                        transform: 'scale(1.001)',
-                        boxShadow: '0 5px 10px rgba(0, 0, 0, 0.3)',
+                    transition: "background-color 0.3s ease, transform 0.3s ease",
+                    "&:hover": {
+                        bgcolor: "#D5D1FB",
+                        transform: "scale(1.02)",
+                        boxShadow: "0 5px 15px rgba(0, 0, 0, 0.2)",
                     },
                 }}
             >

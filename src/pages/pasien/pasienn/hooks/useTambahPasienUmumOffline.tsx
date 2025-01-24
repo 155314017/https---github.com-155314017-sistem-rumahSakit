@@ -259,15 +259,13 @@ export default function useTambahPasienUmumOffline() {
 
     const formik = useFormik({
         initialValues: {
-            namaKlinik: '',
-            address: patientData?.address,
             nikCari: '',
-            phone: patientData?.phone,
-            gender: patientData?.gender,
-            fullname: patientData?.fullname,
-            birthDatePatient: birthDate,
-            birthPlacePatient: birthPlace,
-            phonePasien: '',
+            // phone: patientData?.phone,
+            // gender: patientData?.gender,
+            // fullname: patientData?.fullname,
+            // birthDatePatient: birthDate,
+            // birthPlacePatient: birthPlace,
+            // phonePasien: '',
             // nikGuardian: switchValue ? dataPasien?.nik : '',
             // typeGuardian: switchValue ? 'SENDIRI' : '',
             // caraDatang: '',
@@ -278,15 +276,15 @@ export default function useTambahPasienUmumOffline() {
             // phoneGuardian: switchValue ? dataPasien?.phone : '62',
             // birthPlaceGuardian: switchValue ? dataPasien?.birthPlace : '',
             // birthDateGuardian: switchValue ? dataPasien?.birthDate : '',
-            docs: '',
-            asuranceDocs: '',
-            // create appointment
-            jenisKunjungan: '',
-            poli: '',
-            doctor: '',
-            keluhan: '',
-            riwayatPenyakit: '',
-            alergi: '',
+            // docs: '',
+            // asuranceDocs: '',
+            // // create appointment
+            // jenisKunjungan: '',
+            // poli: '',
+            // doctor: '',
+            // keluhan: '',
+            // riwayatPenyakit: '',
+            // alergi: '',
         },
         enableReinitialize: true,
         validationSchema: Yup.object({
@@ -294,30 +292,30 @@ export default function useTambahPasienUmumOffline() {
             .min(16, 'NIK minimal 16 digit')
             .max(16, 'NIK maksimal 16 digit')
             .required('NIK wajib diisi'),
-            address: Yup.string().required('tes'),
+            // address: Yup.string().required('tes'),
             nikCari: Yup.string()
                 .matches(/^[0-9]+$/, 'NIK harus berupa angka')
                 .min(16, 'NIK minimal 16 digit')
                 .max(16, 'NIK maksimal 16 digit')
                 .required('NIK wajib diisi'),
             // phonePasien: Yup.string().required('No. Handphone Pasien is required'),
-            caraDatang: Yup.string().required('Cara datang is required'),
-            jenisKunjungan: Yup.string().required('Jenis Kunjungan is required'),
-            poli: Yup.string().required('Poli yang dituju is required'),
-            doctor: Yup.string().required('Pilih Dokter is required'),
-            keluhan: Yup.string().required('Keluhan pasien is required'),
-            riwayatPenyakit: Yup.string().required('Riwayat penyakit is required'),
-            alergi: Yup.string().required('Alergi is required'),
-            nikGuardian: Yup.string()
-                .matches(/^[0-9]+$/, 'NIK harus berupa angka')
-                .min(16, 'NIK minimal 16 digit')
-                .max(16, 'NIK maksimal 16 digit')
-                .required('NIK wajib diisi'),
-            emailGuardian: Yup.string().required('EmailGuardian is required'),
-            fullnameGuardian: Yup.string().required('EmailGuardian is required'),
-            genderGuardian: Yup.string().required('EmailGuardian is required'),
-            addressGuardian: Yup.string().required('EmailGuardian is required'),
-            phoneGuardian: Yup.string().required('EmailGuardian is required'),
+            // caraDatang: Yup.string().required('Cara datang is required'),
+            // jenisKunjungan: Yup.string().required('Jenis Kunjungan is required'),
+            // poli: Yup.string().required('Poli yang dituju is required'),
+            // doctor: Yup.string().required('Pilih Dokter is required'),
+            // keluhan: Yup.string().required('Keluhan pasien is required'),
+            // riwayatPenyakit: Yup.string().required('Riwayat penyakit is required'),
+            // alergi: Yup.string().required('Alergi is required'),
+            // nikGuardian: Yup.string()
+            //     .matches(/^[0-9]+$/, 'NIK harus berupa angka')
+            //     .min(16, 'NIK minimal 16 digit')
+            //     .max(16, 'NIK maksimal 16 digit')
+            //     .required('NIK wajib diisi'),
+            // emailGuardian: Yup.string().required('EmailGuardian is required'),
+            // fullnameGuardian: Yup.string().required('EmailGuardian is required'),
+            // genderGuardian: Yup.string().required('EmailGuardian is required'),
+            // addressGuardian: Yup.string().required('EmailGuardian is required'),
+            // phoneGuardian: Yup.string().required('EmailGuardian is required'),
         }),
         onSubmit: (values) => {
             console.log('Form submitted:', values);
@@ -691,7 +689,7 @@ export default function useTambahPasienUmumOffline() {
             //     return formik.values.nikGuardian && formik.values.emailGuardian && formik.values.phoneGuardian && formik.values.fullnameGuardian && formik.values.typeGuardian && formik.values.genderGuardian && formik.values.addressGuardian;
             // }
         } else if (currentPage === 3) {
-            return formik.values.jenisKunjungan;
+            // return formik.values.jenisKunjungan;
         }
         return false;
     };

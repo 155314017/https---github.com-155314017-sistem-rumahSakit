@@ -33,7 +33,7 @@ import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
 import FileUploader from "../../../../components/medium/FileUploader";
-import { Email } from "@mui/icons-material";
+// import { Email } from "@mui/icons-material";
 
 
 export default function TambahPasienUmumOffline() {
@@ -43,7 +43,7 @@ export default function TambahPasienUmumOffline() {
         setCurrentPage,
         getPageStyle,
         getBorderStyle,
-        isCurrentPageValid,
+        // isCurrentPageValid,
         mainPages,
         patientFullPage,
         handleScheduleChange,
@@ -81,7 +81,7 @@ export default function TambahPasienUmumOffline() {
         docterName,
         tanggalReserve,
         registrationCode,
-        bookingCode,
+        // bookingCode,
         queueNumber,
         queueData
         
@@ -142,7 +142,7 @@ export default function TambahPasienUmumOffline() {
                         onBackClick={handleGoBack}
                     />
 
-                    {showAlert && <AlertWarning teks="NIK Tidak Ditemukan. Silahkan coba lagi." />}
+                    {showAlert && <AlertWarning teks="Terjadi kesalahan. Silahkan coba lagi." />}
                 </Box>
 
                 <Box mt={5}>
@@ -234,6 +234,9 @@ export default function TambahPasienUmumOffline() {
                                                 name="nikCari"
                                                 onBlur={formik.handleBlur}
                                             />
+                                            {formik.touched.nikCari && formik.errors.nikCari && (
+                                                <FormHelperText>{formik.errors.nikCari}</FormHelperText>
+                                            )}
                                             <Button
                                                 type="button"
                                                 // onClick={() => patientPage ? setPatientPage(true) : setCurrentPage(2)}
@@ -249,7 +252,7 @@ export default function TambahPasienUmumOffline() {
                                                     borderRadius: "8px",
                                                     ":hover": { bgcolor: "#a098f5" },
                                                 }}
-                                                disabled={!isCurrentPageValid()}
+                                                disabled={!formik.values.nikCari}
                                             >
                                                 Selanjutnya
                                             </Button>
@@ -982,7 +985,7 @@ export default function TambahPasienUmumOffline() {
                                     clinic= {clinicName}
                                     jadwalKonsul={dayjs(selectedSchedule?.split(', ')[0]).format("YYYY-MM-DD")}
                                     namaDokter={docterName}
-                                    nomorAntrian={queueNumber}
+                                    nomorAntrian={queueData?.queueNumber||queueNumber}
                                     tanggalReservasi={tanggalReserve}
                                     registrationId={registrationCode}
                                     patienDataSent={dataTickets}
