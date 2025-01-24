@@ -14,7 +14,6 @@ import {
     FormHelperText
 } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
 
 import bgImage from "../../../../assets/img/String.png";
 import PhoneInput from 'react-phone-input-2';
@@ -33,6 +32,8 @@ import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
+import FileUploader from "../../../../components/medium/FileUploader";
+// import { Email } from "@mui/icons-material";
 
 
 export default function TambahPasienUmumOffline() {
@@ -42,7 +43,7 @@ export default function TambahPasienUmumOffline() {
         setCurrentPage,
         getPageStyle,
         getBorderStyle,
-        isCurrentPageValid,
+        // isCurrentPageValid,
         mainPages,
         patientFullPage,
         handleScheduleChange,
@@ -64,8 +65,8 @@ export default function TambahPasienUmumOffline() {
         handleGoBack,
         formik,
         setNeedAdmin,
-        fileName,
-        handleFileChange,
+        // fileName,
+        // handleFileChange,
         needAdmin,
         NIK,
         birth,
@@ -79,6 +80,10 @@ export default function TambahPasienUmumOffline() {
         clinicName,
         docterName,
         tanggalReserve,
+        registrationCode,
+        // bookingCode,
+        queueNumber,
+        queueData
         
 
 
@@ -87,6 +92,7 @@ export default function TambahPasienUmumOffline() {
 
     useEffect(() => {
         console.log(currentPage)
+        
     }, [currentPage]);
 
 
@@ -136,7 +142,7 @@ export default function TambahPasienUmumOffline() {
                         onBackClick={handleGoBack}
                     />
 
-                    {showAlert && <AlertWarning teks="NIK Tidak Ditemukan. Silahkan coba lagi." />}
+                    {showAlert && <AlertWarning teks="Terjadi kesalahan. Silahkan coba lagi." />}
                 </Box>
 
                 <Box mt={5}>
@@ -228,6 +234,9 @@ export default function TambahPasienUmumOffline() {
                                                 name="nikCari"
                                                 onBlur={formik.handleBlur}
                                             />
+                                            {formik.touched.nikCari && formik.errors.nikCari && (
+                                                <FormHelperText>{formik.errors.nikCari}</FormHelperText>
+                                            )}
                                             <Button
                                                 type="button"
                                                 // onClick={() => patientPage ? setPatientPage(true) : setCurrentPage(2)}
@@ -243,7 +252,7 @@ export default function TambahPasienUmumOffline() {
                                                     borderRadius: "8px",
                                                     ":hover": { bgcolor: "#a098f5" },
                                                 }}
-                                                disabled={!isCurrentPageValid()}
+                                                disabled={!formik.values.nikCari}
                                             >
                                                 Selanjutnya
                                             </Button>
@@ -315,6 +324,7 @@ export default function TambahPasienUmumOffline() {
                                                                         placeholder="Masukkan NIK (Nomor induk kependudukan)"
                                                                         sx={{
                                                                             marginTop: '10px',
+                                                                            bgcolor: '#E8E8E8',
                                                                             '& .MuiOutlinedInput-root': {
                                                                                 borderRadius: '8px',
                                                                                 backgroundColor: touched.nik && errors.nik ? '#ffcccc' : 'inherit',
@@ -326,6 +336,7 @@ export default function TambahPasienUmumOffline() {
                                                                         onChange={handleChange}
                                                                         onBlur={handleBlur}
                                                                         value={values.nik}
+                                                                        disabled
                                                                     />
                                                                     {touched.nik && errors.nik && (
                                                                         <FormHelperText>{errors.nik}</FormHelperText>
@@ -339,8 +350,10 @@ export default function TambahPasienUmumOffline() {
                                                                         value={values.email}
                                                                         onChange={handleChange}
                                                                         onBlur={handleBlur}
+                                                                        disabled
                                                                         sx={{
                                                                             marginTop: '10px',
+                                                                            bgcolor: '#E8E8E8',
                                                                             '& .MuiOutlinedInput-root': {
                                                                                 borderRadius: '8px',
                                                                                 backgroundColor: touched.email && errors.email ? '#ffcccc' : 'inherit',
@@ -570,7 +583,7 @@ export default function TambahPasienUmumOffline() {
 
 
                             {/* Start */}
-                            {currentPage === 2 && needAdmin === false && (
+                            {currentPage === 2 && (
                                 <Box mt={3}>
                                     <Box sx={{ display: "flex" }}>
                                         <Box sx={{ width: '100%', justifyContent: "ce" }}>
@@ -585,12 +598,13 @@ export default function TambahPasienUmumOffline() {
                                                         jenisKunjungan: '',
                                                         doctor: '',
                                                         complaint: '',
-                                                        email: patientData?.email, // Add email to initial values
+                                                        email: patientData?.email || '', // Add email to initial values
                                                         nik: NIK,
                                                     }}
                                                     enableReinitialize
                                                     validationSchema={validationSchema1}
                                                     onSubmit={async (values) => {
+                                                        console.log('Form submitted:', patientData?.id);
                                                         const dataRegis = {
                                                             // namaKlinik: '',
                                                             // address: patientData?.address,
@@ -611,8 +625,11 @@ export default function TambahPasienUmumOffline() {
                                                             scheduleIntervalId: selectedScheduleId,
                                                             symptoms: values.complaint,
                                                             referenceDoc: "",
+                                                            offline: true,
+                                                            phoneNumber: values.phone,
+                                                            email: values.email,
                                                             needAdmin: needAdmin,
-                                                            offline: true
+                                                            
                                                         }
 
                                                         // const dataTiket = {
@@ -792,7 +809,6 @@ export default function TambahPasienUmumOffline() {
                                                                                             options={doctorOptions.map(({ id, name }) => ({ value: id, label: name }))}
                                                                                             onChange={handleDropdownDocter}
                                                                                             loading={false}
-                                                                                            valueField="value"
 
                                                                                         />
                                                                                         <Typography color="error">
@@ -843,10 +859,10 @@ export default function TambahPasienUmumOffline() {
                                                                                         <FormHelperText error>{errors.complaint}</FormHelperText>
                                                                                     )}
                                                                                 </FormControl>
-                                                                                <Typography>Unggah surat rujukan</Typography>
-                                                                                <Box display="flex" alignItems="center" border="1px solid #ccc" borderRadius="6px" overflow="hidden" height={50}>
+                                                                                {/* <Typography>Unggah surat rujukan</Typography> */}
+                                                                                {/* <Box display="flex" alignItems="center" border="1px solid #ccc" borderRadius="6px" overflow="hidden" height={50}> */}
                                                                                     {/* Tombol Unggah */}
-                                                                                    <Button
+                                                                                    {/* <Button
                                                                                         variant="contained"
                                                                                         component="label"
                                                                                         sx={{
@@ -867,10 +883,10 @@ export default function TambahPasienUmumOffline() {
                                                                                             type="file"
                                                                                             onChange={handleFileChange}
                                                                                         />
-                                                                                    </Button>
+                                                                                    </Button> */}
 
-                                                                                    {/* Kolom Input */}
-                                                                                    <TextField
+                                                                                  
+                                                                                    {/* <TextField
                                                                                         value={fileName}
                                                                                         placeholder="Pilih berkas"
                                                                                         variant="outlined"
@@ -889,8 +905,22 @@ export default function TambahPasienUmumOffline() {
                                                                                                 "& fieldset": { border: "none" },
                                                                                             },
                                                                                         }}
-                                                                                    />
-                                                                                </Box>
+                                                                                    /> */}
+
+                                                                                    <Box mt={1}>
+                                                                                        <Box mt={2}>
+                                                                                            <Typography>Unggah surat rujukan</Typography>
+
+                                                                                            <FileUploader
+                                                                                                onBase64Change={(base64String) => setFieldValue('referenceDoc', base64String)}
+                                                                                            />
+                                                                                            <Typography fontSize={"14px"} color="#A8A8BD">
+                                                                                                Ukuran maksimal 1mb
+                                                                                            </Typography>
+                                                                                        </Box>
+
+                                                                                    </Box>
+                                                                                {/* </Box> */}
                                                                             </Box>
                                                                         </Box>
                                                                     </FormControl >
@@ -939,7 +969,8 @@ export default function TambahPasienUmumOffline() {
                         needAdmin && !mainPages && (
                             <Box marginLeft={"20%"} marginTop={"10%"} zIndex={1500} >
                                 <CardAntrianCounter
-                                    nomorAntrian={dataTickets?.nomorAntrian || "Unknown"}
+                                    nomorAntrian={queueData?.queueNumber||queueNumber}
+                                    tanggalReservasi={tanggalReserve}
                                     onClose={() => navigate("/offline/tambahPasien")}
                                 />
                             </Box>
@@ -954,8 +985,11 @@ export default function TambahPasienUmumOffline() {
                                     clinic= {clinicName}
                                     jadwalKonsul={dayjs(selectedSchedule?.split(', ')[0]).format("YYYY-MM-DD")}
                                     namaDokter={docterName}
-                                    nomorAntrian={dataTickets?.nomorAntrian || ""}
+                                    nomorAntrian={queueData?.queueNumber||queueNumber}
                                     tanggalReservasi={tanggalReserve}
+                                    registrationId={registrationCode}
+                                    patienDataSent={dataTickets}
+                                    offline={true}
                                     
                                     onClose={() => navigate("/offline/tambahPasien")}
                                 />

@@ -32,6 +32,20 @@ type PatientData =
         birthPlace: string | undefined;
     };
 
+type queueData = {
+    id: string;
+    registrationDataId: string;
+    createdBy: string;
+    createdDateTime: number;
+    updatedBy: string | null;
+    updatedDateTime: number | null;
+    deletedBy: string | null;
+    deletedDateTime: number | null;
+    queueNumber: number;
+    clinicId: string;
+    status: string | null;
+}
+
 // type dataPasien = {
 //     id: string;
 //     additionalInfo: string | null;
@@ -159,12 +173,15 @@ export default function useTambahPasienUmumOffline() {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const [birth, setBirth] = useState('');
-    const [idPatient, setIdPatient] = useState<string | undefined>('');
+    const [ idPatient,setIdPatient] = useState<string | undefined>('');
     const [patientData, setPatientData] = useState<PatientData>();
 
     const [fileName, setFileName] = useState("");
     const [tanggalReserve, setTanggalReserve] = useState('');
     const [registrationCode, setRegistrationCode] = useState('');
+    const [bookingCode, setBookingCode] = useState('');
+    const [queueNumber,] = useState('');
+    const [queueData, setQueueData] = useState<queueData>();
 
 
 
@@ -242,15 +259,13 @@ export default function useTambahPasienUmumOffline() {
 
     const formik = useFormik({
         initialValues: {
-            namaKlinik: '',
-            address: patientData?.address,
             nikCari: '',
-            phone: patientData?.phone,
-            gender: patientData?.gender,
-            fullname: patientData?.fullname,
-            birthDatePatient: birthDate,
-            birthPlacePatient: birthPlace,
-            phonePasien: '',
+            // phone: patientData?.phone,
+            // gender: patientData?.gender,
+            // fullname: patientData?.fullname,
+            // birthDatePatient: birthDate,
+            // birthPlacePatient: birthPlace,
+            // phonePasien: '',
             // nikGuardian: switchValue ? dataPasien?.nik : '',
             // typeGuardian: switchValue ? 'SENDIRI' : '',
             // caraDatang: '',
@@ -261,43 +276,46 @@ export default function useTambahPasienUmumOffline() {
             // phoneGuardian: switchValue ? dataPasien?.phone : '62',
             // birthPlaceGuardian: switchValue ? dataPasien?.birthPlace : '',
             // birthDateGuardian: switchValue ? dataPasien?.birthDate : '',
-            docs: '',
-            asuranceDocs: '',
-            // create appointment
-            jenisKunjungan: '',
-            poli: '',
-            doctor: '',
-            keluhan: '',
-            riwayatPenyakit: '',
-            alergi: '',
+            // docs: '',
+            // asuranceDocs: '',
+            // // create appointment
+            // jenisKunjungan: '',
+            // poli: '',
+            // doctor: '',
+            // keluhan: '',
+            // riwayatPenyakit: '',
+            // alergi: '',
         },
         enableReinitialize: true,
         validationSchema: Yup.object({
-            nik: Yup.string().required('NIK is required'),
-            address: Yup.string().required('tes'),
+            nik: Yup.string().matches(/^[0-9]+$/, 'NIK harus berupa angka')
+            .min(16, 'NIK minimal 16 digit')
+            .max(16, 'NIK maksimal 16 digit')
+            .required('NIK wajib diisi'),
+            // address: Yup.string().required('tes'),
             nikCari: Yup.string()
                 .matches(/^[0-9]+$/, 'NIK harus berupa angka')
                 .min(16, 'NIK minimal 16 digit')
                 .max(16, 'NIK maksimal 16 digit')
                 .required('NIK wajib diisi'),
             // phonePasien: Yup.string().required('No. Handphone Pasien is required'),
-            caraDatang: Yup.string().required('Cara datang is required'),
-            jenisKunjungan: Yup.string().required('Jenis Kunjungan is required'),
-            poli: Yup.string().required('Poli yang dituju is required'),
-            doctor: Yup.string().required('Pilih Dokter is required'),
-            keluhan: Yup.string().required('Keluhan pasien is required'),
-            riwayatPenyakit: Yup.string().required('Riwayat penyakit is required'),
-            alergi: Yup.string().required('Alergi is required'),
-            nikGuardian: Yup.string()
-                .matches(/^[0-9]+$/, 'NIK harus berupa angka')
-                .min(16, 'NIK minimal 16 digit')
-                .max(16, 'NIK maksimal 16 digit')
-                .required('NIK wajib diisi'),
-            emailGuardian: Yup.string().required('EmailGuardian is required'),
-            fullnameGuardian: Yup.string().required('EmailGuardian is required'),
-            genderGuardian: Yup.string().required('EmailGuardian is required'),
-            addressGuardian: Yup.string().required('EmailGuardian is required'),
-            phoneGuardian: Yup.string().required('EmailGuardian is required'),
+            // caraDatang: Yup.string().required('Cara datang is required'),
+            // jenisKunjungan: Yup.string().required('Jenis Kunjungan is required'),
+            // poli: Yup.string().required('Poli yang dituju is required'),
+            // doctor: Yup.string().required('Pilih Dokter is required'),
+            // keluhan: Yup.string().required('Keluhan pasien is required'),
+            // riwayatPenyakit: Yup.string().required('Riwayat penyakit is required'),
+            // alergi: Yup.string().required('Alergi is required'),
+            // nikGuardian: Yup.string()
+            //     .matches(/^[0-9]+$/, 'NIK harus berupa angka')
+            //     .min(16, 'NIK minimal 16 digit')
+            //     .max(16, 'NIK maksimal 16 digit')
+            //     .required('NIK wajib diisi'),
+            // emailGuardian: Yup.string().required('EmailGuardian is required'),
+            // fullnameGuardian: Yup.string().required('EmailGuardian is required'),
+            // genderGuardian: Yup.string().required('EmailGuardian is required'),
+            // addressGuardian: Yup.string().required('EmailGuardian is required'),
+            // phoneGuardian: Yup.string().required('EmailGuardian is required'),
         }),
         onSubmit: (values) => {
             console.log('Form submitted:', values);
@@ -405,13 +423,18 @@ export default function useTambahPasienUmumOffline() {
     const findPatientByNik = async (nik: string) => {
         try {
             const responsePatient = await GetUserByNIK(nik);
-            setNIK(nik);
-            setIdPatient(responsePatient?.data.id);
+            
 
 
             // Validasi response
             if (responsePatient?.responseCode === "200") {
-
+                if(responsePatient?.data === null) {
+                    
+                    setCurrentPage(2);
+                    setNeedAdmin(true);
+                }else{
+                setNIK(nik);
+                setIdPatient(responsePatient?.data.id);
                 // Mencari pasien berdasarkan NIK di data dummy
                 const response = await GetPatientByUserIdServices(responsePatient.data.id || '');
                 // const birthDateProcess = response?.data.birthDateAndPlace.split(',')[1].trim();
@@ -421,7 +444,7 @@ export default function useTambahPasienUmumOffline() {
                     ? `${String(birthDateArray[1]).padStart(2, '0')}/${String(birthDateArray[2]).padStart(2, '0')}/${birthDateArray[0]}`
                     : '';
                 const dataGet = {
-                    id: idPatient || '',
+                    id: responsePatient.data.id,
                     nik: response?.data.identityNumber,
                     email: responsePatient.data.email,
                     phone: responsePatient.data.phone,
@@ -438,20 +461,25 @@ export default function useTambahPasienUmumOffline() {
                 setPatientData(dataGet);
                 console.log(birth);
                 setPatientFullsPage(false);
+            }
             } else {
                 // Jika pasien dengan NIK tidak ditemukan
-                console.error("Pasien dengan NIK tersebut tidak ditemukan.");
+                // setNeedAdmin(false);
+                // setCurrentPage(2);
                 showTemporaryAlert(); // Tampilkan alert untuk user
             }
 
         } catch (err: any) {
+            
+            
             // Error handling
             if (err.response?.status === 404) {
+                
                 console.error("Pasien tidak ditemukan (404).");
             } else {
                 console.error("Terjadi kesalahan saat memproses data:", err.message);
             }
-            showTemporaryAlert(); // Tampilkan alert untuk user
+            // showTemporaryAlert(); // Tampilkan alert untuk user
         }
     };
 
@@ -658,7 +686,7 @@ export default function useTambahPasienUmumOffline() {
             //     return formik.values.nikGuardian && formik.values.emailGuardian && formik.values.phoneGuardian && formik.values.fullnameGuardian && formik.values.typeGuardian && formik.values.genderGuardian && formik.values.addressGuardian;
             // }
         } else if (currentPage === 3) {
-            return formik.values.jenisKunjungan;
+            // return formik.values.jenisKunjungan;
         }
         return false;
     };
@@ -682,6 +710,8 @@ export default function useTambahPasienUmumOffline() {
                     },
                 }
             );
+            console.log("response Booking code : ", response.data.data.bookingCode);
+            setBookingCode(response.data.data.bookingCode);
             // const createdDateTimeFormatted = dayjs.unix(response.data.scheduleDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
             // const dataSent = {
             //     nomorAntrian: response.data.queueDatum.queueNumber,
@@ -692,16 +722,20 @@ export default function useTambahPasienUmumOffline() {
             //     bookingCode: response.data.bookingCode
 
             // }
-            console.log("Registration Id : ", response.data.data.id);
-            console.log("Clinic Id : ", response.data.data.masterClinicId);
-            console.log("Need Admin : ", response.data.data.needAdmin);
+            setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
+            setRegistrationCode(response.data.data.id);
+            // console.log("Registration : ", dataTickets);
+            // console.log("Tanggal Reserve : ", tanggalReserve);
+            // console.log("Registration Id : ", response.data.data.id);
+            // console.log("Clinic Id : ", response.data.data.masterClinicId);
+            // console.log("Need Admin : ", response.data.data.needAdmin);
             const queueData = {
                 registrationId: response.data.data.id,
-                clinicId: response.data.data.masterClinicId,
-                needAdmin: response.data.data.needAdmin
+                needAdmin: response.data.data.needAdmin,
+                clinicId: response.data.data.masterClinicId
+                
             }
 
-            console.log("Queue Data : ", queueData);
             const token = Cookies.get('accessToken');
             const queue = await axios.post(
                 `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/queue/generated`,
@@ -713,14 +747,18 @@ export default function useTambahPasienUmumOffline() {
                     },
                 }
             );
-            console.log(queue)
-            setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
-            setRegistrationCode(response.data.data.id);
-            console.log("Registration : ", dataTickets);
+
+            
+            setQueueData(queue.data.data)
+            // console.log("Queue Data : ", queueData);
+            // console.log(queue.data.data.queueNumber);
+            // console.log("Queue Number : ", queueNumber);
+            
             setMainPages(false)
             // setCurrentPage(3);
         } catch (err: any) {
             setMainPages(false)
+            setShowAlert(true);
             setCurrentPage(3);
         } finally {
             setIsLoading(false);
@@ -755,6 +793,7 @@ export default function useTambahPasienUmumOffline() {
         }
     }
 
+    
     return {
         validationSchema,
         breadcrumbItems,
@@ -816,7 +855,11 @@ export default function useTambahPasienUmumOffline() {
         clinicName,
         docterName,
         tanggalReserve,
-        registrationCode
+        registrationCode,
+        bookingCode,
+        queueNumber,
+        queueData,
+        idPatient
 
 
     }

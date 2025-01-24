@@ -7,6 +7,7 @@ import { Formik, Form, Field } from "formik";
 import { Stack } from "@mui/system";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 import 'dayjs/locale/id';
+import injuryImg from "../../../../assets/img/injury-pana 1.png"
 import medicineImg from "../../../../assets/img/meidicine.png"
 import qrcodeImg from "../../../../assets/img/qrcode.png"
 import fillingImg from "../../../../assets/img/filling.png"
@@ -29,7 +30,7 @@ export default function PilihKategoriPasien() {
         setIsLoading,
         infoTicket,
         setInfoTicket,
-        nomorAntrian,
+        // nomorAntrian,
         tiketAntrianKonter,
         setTiketAntrianKonter,
         noDataBooking,
@@ -39,7 +40,10 @@ export default function PilihKategoriPasien() {
         // pasienBaru,
         bookingCodeSchema,
         style,
-        onSubmitKodeBooking
+        onSubmitKodeBooking,
+        // needAdmin,
+        queueData,
+        tanggalReservasi
     } = usePilihKategoriPasien();
 
     return (
@@ -179,7 +183,9 @@ export default function PilihKategoriPasien() {
                             initialValues={{ bookingCode: "" }}
                             validationSchema={bookingCodeSchema}
                             enableReinitialize
-                            onSubmit={onSubmitKodeBooking}
+                            onSubmit={async (values) => {
+                                await onSubmitKodeBooking(values.bookingCode);
+                            }}
                         >
                             {({ errors, touched, setFieldValue, values, isValid, dirty }) => (
                                 <Form>
@@ -289,30 +295,12 @@ export default function PilihKategoriPasien() {
                         </Box>
 
                         <Stack direction="column" width={'100%'} spacing={0}>
-                            {/* Pasien BPJS */}
-
-                            <PasienCard
-                                href="/tambahPasien/umum/offline"
-                                avatarSrc={fillingImg}
-                                title="Pasien Umum/Asuransi"
-                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
-                                bgColor="#D5D1FB"
-                            />
-
-                            {/* Pasien Umum */}
-                            <PasienCard
-                                avatarSrc={medicineImg}
-                                title="Pasien non BPJS kesehatan"
-                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
-                                bgColor="#D5D1FB"
-                            />
-
                             {/* Kode Booking */}
                             <PasienCard
                                     avatarSrc={qrcodeImg}
                                     description=" Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian."
                                     title="Masukkan Kode Booking"
-                                    bgColor="#D5D1FB"
+                                    bgColor="#F1F0FE"
                                     onClick={
                                         () => {
                                             setInputCodePages(true);
@@ -320,6 +308,35 @@ export default function PilihKategoriPasien() {
                                         }
                                     }
                                 />
+
+                            
+                            {/* Pasien Umum */}
+                            <PasienCard
+                                href="/tambahPasien/umum/offline"
+                                avatarSrc={fillingImg}
+                                title="Pasien Umum"
+                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
+                                bgColor="#F1F0FE"
+                            />
+
+                            {/* Pasien Umum */}
+                            <PasienCard
+                                href="/tambahPasien/umum/offline"
+                                avatarSrc={injuryImg}
+                                title="Pasien Asuransi"
+                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
+                                bgColor="#F1F0FE"
+                            />
+
+                            {/* Pasien BPJS */}
+                            <PasienCard
+                                avatarSrc={medicineImg}
+                                title="Pasien non BPJS kesehatan"
+                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
+                                bgColor="#F1F0FE"
+                            />
+
+                            
                         </Stack>
                         {/* <Button
                             sx={{
@@ -343,27 +360,31 @@ export default function PilihKategoriPasien() {
                     </Box>
                 )}
 
-
+                <Box>
                 {infoTicket && (
                     <InformasiTicketAPI
                         clinic={dataKodeBooking?.namaKlinik}
                         jadwalKonsul={dataKodeBooking?.jadwalKonsul}
                         namaDokter={dataKodeBooking?.namaDokter}
                         tanggalReservasi={dataKodeBooking?.tanggalReserve}
-                        bookingCode=""
+                        nomorAntrian={queueData?.queueNumber || 0}
+                        offline={true}
                         onClose={() => {
                             console.log("Tombol close ditekan");
                             setInfoTicket(false);
                             setMainPages(true);
                         }}
                     />
+                    
 
 
                 )}
+                </Box>
 
                 {tiketAntrianKonter && (
                     <CardAntrianCounter
-                        nomorAntrian={nomorAntrian}
+                        nomorAntrian={queueData?.queueNumber || 0}
+                        tanggalReservasi={tanggalReservasi || ""}
                         onClose={() => {
                             setInputCodePages(false);
                             setMainPages(true);

@@ -12,7 +12,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import ModalUbahNoHp from "./modal/ModalUbahNoHp";
 import AlertSuccess from "./alert/AlertSuccess";
 type InformasiTicketProps = {
-  nomorAntrian?: string | undefined;
+  nomorAntrian?: string | number;
   namaDokter: string | undefined;
   clinic: string | undefined;
   tanggalReservasi: string | undefined;
@@ -21,6 +21,7 @@ type InformasiTicketProps = {
   bgcolor?: string;
   patienDataSent?: any;
   registrationId?: string;
+  offline?: boolean
   onClose?: () => void;
 };
 
@@ -34,7 +35,8 @@ const InformasiTicketAPI = ({
   bgcolor = "#ffffff",
   onClose,
   patienDataSent,
-  registrationId
+  registrationId,
+  offline
 }: InformasiTicketProps) => {
 
   const [showAlert, setShowAlert] = useState(false);
@@ -59,6 +61,7 @@ const InformasiTicketAPI = ({
   useEffect(() => {
     if (patienDataSent) {
       setPatientData(patienDataSent);
+      console.log(nomorAntrian)
       console.log('data: ', patienDataSent);
     }
   }, [patientData]);
@@ -317,7 +320,7 @@ const InformasiTicketAPI = ({
               display={"flex"}
               flexDirection={"row"}
               justifyContent={"space-between"}
-              maxWidth={"100%"}
+              maxWidth={"90%"}
             // bgcolor={'red'}
             >
               <Box display={"flex"} flexDirection={"column"}>
@@ -328,7 +331,7 @@ const InformasiTicketAPI = ({
               </Box>
               <Box display={"flex"} flexDirection={"column"}>
                 <Typography>Jadwal konsultasi</Typography>
-                <Typography maxWidth={"60%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                <Typography maxWidth={"90%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
                   {jadwalKonsul}
                 </Typography>
               </Box>
@@ -410,13 +413,14 @@ const InformasiTicketAPI = ({
           >
             Kembali ke halaman utama
           </Button>
-
-          <Box
+          {!offline && (
+            <Box
             display={"flex"}
             flexDirection={"row"}
             gap={"5px"}
             justifyContent={"space-between"}
             width={"95%"}
+            
           >
             <Typography color={"#A8A8BD"} fontSize={"16px"} fontWeight={400}>Tidak mendapatkan tiket booking?</Typography>
             <Typography
@@ -434,6 +438,9 @@ const InformasiTicketAPI = ({
             </Typography>
             <Typography sx={{ cursor: 'pointer' }} color={"#8F85F3"} fontSize={"16px"} fontWeight={400} alignItems="right" onClick={handleEditClick}>Ubah</Typography>
           </Box>
+            
+          )}
+          
         </Box>
       </Box>
     </Box>

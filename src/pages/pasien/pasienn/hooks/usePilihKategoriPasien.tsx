@@ -1,15 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import * as Yup from "yup";
-import GenerateQueuePatientServices from "../../../../services/Patient Tenant/GenerateQueuePatientServices";
+// import GenerateQueuePatientServices from "../../../../services/Patient Tenant/GenerateQueuePatientServices";
 import { GetDoctorServices } from "../../../../services/Admin Tenant/ManageDoctor/GetDoctorService";
 import { getClinic } from "../../../../services/Admin Tenant/ManageClinic/GetClinic";
 import dayjs from "dayjs";
 import 'dayjs/locale/id';
 import PatientCheckIn from "../../../../services/Patient Tenant/PatientCheckIn";
+import axios from "axios";
+import Cookies from "js-cookie";
 
-const formatDate = (timestamp: number) => dayjs.unix(timestamp).locale('id').format('DD MMMM YYYY');
-const formatTime = (timestamp: number) => dayjs.unix(timestamp).format('HH:mm');
+type queueData = {
+    id: string;
+    registrationDataId: string;
+    createdBy: string;
+    createdDateTime: number;
+    updatedBy: string | null;
+    updatedDateTime: number | null;
+    deletedBy: string | null;
+    deletedDateTime: number | null;
+    queueNumber: number;
+    clinicId: string;
+    status: string | null;
+}
 
 type bookingCodeData = {
     nomorAntrian: string,
@@ -46,10 +59,13 @@ export default function usePilihKategoriPasien() {
     const [inputCodePages, setInputCodePages] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [infoTicket, setInfoTicket] = useState(false);
-    const [nomorAntrian, setNomorAntrian] = useState<string | number>(0);
+    const [nomorAntrian] = useState<string | number>(0);
     const [tiketAntrianKonter, setTiketAntrianKonter] = useState(false);
     const [noDataBooking, setNoDataBooking] = useState(false)
     const [dataKodeBooking, setDataKodeBooking] = useState<bookingCodeData>()
+    const [queueData, setQueueData] = useState<queueData>();
+    const [needAdmin, setNeedAdmin] = useState(false);
+    const [tanggalReservasi, setTanggalReservasi] = useState<string>();
 
 
     const handleBack = () => {
@@ -57,47 +73,90 @@ export default function usePilihKategoriPasien() {
         setMainPages(true);
     }
 
-    const pasienBaru = async () => {
-        const counterId = "f2ac5cf2-b023-4756-ac33-b7b493d065dd" //nanti diganti
-        setTiketAntrianKonter(true);
-        setMainPages(false);
-        try {
-            const response = await GenerateQueuePatientServices(counterId)
-            setNomorAntrian(response);
+    // const pasienBaru = async () => {
+    //     const counterId = "f2ac5cf2-b023-4756-ac33-b7b493d065dd" //nanti diganti
+    //     setTiketAntrianKonter(true);
+    //     setMainPages(false);
+    //     try {
+    //         const response = await GenerateQueuePatientServices(counterId)
+    //         setNomorAntrian(response);
 
-        } catch {
-            console.error('error')
-        }
+    //     } catch {
+    //         console.error('error')
+    //     }
 
-    }
+    // }
 
     const onSubmitKodeBooking = async (values: any) => {
         setIsLoading(true);
-        const bookingCode = { bookingCode: values.bookingCode };
+        console.log('Form submitted:', values);
+        const bookingCode = { bookingCode: values };
         try {
+            console.log(bookingCode);
             const response = await PatientCheckIn(bookingCode);
             if(response.responseCode === "200"){
-                pasienBaru();
-                const dateTime = formatDate(response.registrationDatum.scheduleDatum.startDateTime);
-                const startTime = formatTime(response.registrationDatum.scheduleDatum.startDateTime);
-                const endTime = formatTime(response.registrationDatum.scheduleDatum.endDateTime);
-                const consultationSchedule = dateTime + ' ' + startTime + ' - ' + endTime
-                const namaDokter = await GetDoctorServices(response.registrationDatum.doctorDataId)
-                const namaKlinik = await getClinic(response.registrationDatum.masterClinicId)
-                const dateReserve = dayjs(response.createdDateTime * 1000).format('YYYY-MM-DD HH:mm');
+                setNeedAdmin(response.data.needAdmin)
+                const namaDokter = await GetDoctorServices(response.data.doctorDataId);
+                const namaKlinik = await getClinic(response.data.masterClinicId);
+                
+                const dateReserve: string = dayjs(response.data.createdDateTime * 1000).isValid()
+                ? dayjs(response.data.createdDateTime * 1000).format('YYYY-MM-DD HH:mm')
+                : '';
+                setTanggalReservasi(dateReserve)
+                const schedules = {
+                    year: response.data.scheduleDate[0],
+                    month: response.data.scheduleDate[1],
+                    day: response.data.scheduleDate[2],
+                };
+                
+                
+
+                const queueData = {
+                    registrationId: response.data.id,
+                    needAdmin: response.data.needAdmin,
+                    clinicId: response.data.masterClinicId
+                    
+                }
+                const token = Cookies.get('accessToken');
+
+                const queue = await axios.post(
+                    `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/queue/generated`,
+                    queueData,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "accessToken": `${token}`
+                        },
+                    }
+                );
+                console.log(response.data.needAdmin);
+                if(response.data.needAdmin === true){
+
+
+                console.log(queue);
+                
+                setQueueData(queue.data.data)
+                setOpenModalKodeBooking(false);
+                setTiketAntrianKonter(true);
+            }else{
                 const dataBooking = {
-                    nomorAntrian: response.queueNumber,
+                    nomorAntrian: queue.data.data.queueNumber,
                     namaDokter: namaDokter.name,
                     namaKlinik: namaKlinik.name,
                     tanggalReserve: dateReserve,
-                    jadwalKonsul: consultationSchedule,
+                    jadwalKonsul: `${schedules.year}-${schedules.month}-${schedules.day}`,
+                    needAdmin: response.data.needAdmin
                 }
+                setQueueData(queue.data.data)
                 setDataKodeBooking(dataBooking)
                 setOpenModalKodeBooking(false);
                 setInfoTicket(true);
+            }
+
+            
                 setIsLoading(false);
                 setInputCodePages(false);
-            }
+        }
            
         } catch (err: any) {
             setIsLoading(false);
@@ -136,9 +195,11 @@ export default function usePilihKategoriPasien() {
         setNoDataBooking,
         dataKodeBooking,
         handleBack,
-        pasienBaru,
         bookingCodeSchema,
         style,
-        onSubmitKodeBooking
+        onSubmitKodeBooking,
+        queueData,
+        needAdmin,
+        tanggalReservasi
     }
 }
