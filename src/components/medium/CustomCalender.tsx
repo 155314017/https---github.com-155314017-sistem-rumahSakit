@@ -18,38 +18,38 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
     const [availableTimes, setAvailableTimes] = useState<{ [date: string]: { timeRange: string, scheduleId: string, disabled: boolean }[] }>({});
     const [availableDates, setAvailableDates] = useState<Set<string>>(new Set());
 
-    const dummySchedules = [
-        {
-            id: "1",
-            title: "Morning Shift",
-            startTime: [8, 0],
-            endTime: [12, 0],
-            typeId: "1",
-            maxCapacity: 10,
-            monday: true,
-            tuesday: true,
-            wednesday: true,
-            thursday: true,
-            friday: true,
-            saturday: false,
-            sunday: false,
-        },
-        {
-            id: "2",
-            title: "Afternoon Shift",
-            startTime: [13, 30],
-            endTime: [16, 30],
-            typeId: "2",
-            maxCapacity: 8,
-            monday: true,
-            tuesday: true,
-            wednesday: true,
-            thursday: true,
-            friday: true,
-            saturday: true,
-            sunday: false,
-        },
-    ];
+    // const dummySchedules = [
+    //     {
+    //         id: "1",
+    //         title: "Morning Shift",
+    //         startTime: [8, 0],
+    //         endTime: [12, 0],
+    //         typeId: "1",
+    //         maxCapacity: 10,
+    //         monday: true,
+    //         tuesday: true,
+    //         wednesday: true,
+    //         thursday: true,
+    //         friday: true,
+    //         saturday: false,
+    //         sunday: false,
+    //     },
+    //     {
+    //         id: "2",
+    //         title: "Afternoon Shift",
+    //         startTime: [13, 30],
+    //         endTime: [16, 30],
+    //         typeId: "2",
+    //         maxCapacity: 8,
+    //         monday: true,
+    //         tuesday: true,
+    //         wednesday: true,
+    //         thursday: true,
+    //         friday: true,
+    //         saturday: true,
+    //         sunday: false,
+    //     },
+    // ];
 
     const exclusionInterval = [
         { date: '2025-01-27', scheduleIntervalId: '1', allday: false },
@@ -80,11 +80,11 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                     processSchedules(schedules);
                 } else {
                     console.warn('No schedules found. Using dummy schedules.');
-                    processSchedules(dummySchedules);
+                    // processSchedules(dummySchedules);
                 }
             } catch (error) {
                 console.error('Error fetching schedules:', error);
-                processSchedules(dummySchedules);
+                // processSchedules(dummySchedules);
             }
         };
 
