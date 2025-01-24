@@ -173,14 +173,14 @@ export default function useTambahPasienUmumOffline() {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const [birth, setBirth] = useState('');
-    const [idPatient, setIdPatient] = useState<string | undefined>('');
+    const [ idPatient,setIdPatient] = useState<string | undefined>('');
     const [patientData, setPatientData] = useState<PatientData>();
 
     const [fileName, setFileName] = useState("");
     const [tanggalReserve, setTanggalReserve] = useState('');
     const [registrationCode, setRegistrationCode] = useState('');
     const [bookingCode, setBookingCode] = useState('');
-    const [queueNumber, setQueueNumber] = useState('');
+    const [queueNumber,] = useState('');
     const [queueData, setQueueData] = useState<queueData>();
 
 
@@ -433,7 +433,6 @@ export default function useTambahPasienUmumOffline() {
                     setCurrentPage(2);
                     setNeedAdmin(true);
                 }else{
-                console.log("pasien dengan NIK tersebut ditemukan.");
                 setNIK(nik);
                 setIdPatient(responsePatient?.data.id);
                 // Mencari pasien berdasarkan NIK di data dummy
@@ -465,10 +464,8 @@ export default function useTambahPasienUmumOffline() {
             }
             } else {
                 // Jika pasien dengan NIK tidak ditemukan
-                console.log("pasien dengan NIK tersebut tidak ditemukan.");
-                setNeedAdmin(false);
-                setCurrentPage(2);
-                console.error("Pasien dengan NIK tersebut tidak ditemukan.");
+                // setNeedAdmin(false);
+                // setCurrentPage(2);
                 showTemporaryAlert(); // Tampilkan alert untuk user
             }
 
@@ -727,11 +724,11 @@ export default function useTambahPasienUmumOffline() {
             // }
             setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
             setRegistrationCode(response.data.data.id);
-            console.log("Registration : ", dataTickets);
-            console.log("Tanggal Reserve : ", tanggalReserve);
-            console.log("Registration Id : ", response.data.data.id);
-            console.log("Clinic Id : ", response.data.data.masterClinicId);
-            console.log("Need Admin : ", response.data.data.needAdmin);
+            // console.log("Registration : ", dataTickets);
+            // console.log("Tanggal Reserve : ", tanggalReserve);
+            // console.log("Registration Id : ", response.data.data.id);
+            // console.log("Clinic Id : ", response.data.data.masterClinicId);
+            // console.log("Need Admin : ", response.data.data.needAdmin);
             const queueData = {
                 registrationId: response.data.data.id,
                 needAdmin: response.data.data.needAdmin,
@@ -739,7 +736,6 @@ export default function useTambahPasienUmumOffline() {
                 
             }
 
-            console.log("Queue Data : ", queueData);
             const token = Cookies.get('accessToken');
             const queue = await axios.post(
                 `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/queue/generated`,
@@ -752,16 +748,17 @@ export default function useTambahPasienUmumOffline() {
                 }
             );
 
-            const queueNumber = queue.data.data.queueNumber
+            
             setQueueData(queue.data.data)
-            console.log("Queue Data : ", queueData);
-            console.log(queue.data.data.queueNumber);
-            console.log("Queue Number : ", queueNumber);
+            // console.log("Queue Data : ", queueData);
+            // console.log(queue.data.data.queueNumber);
+            // console.log("Queue Number : ", queueNumber);
             
             setMainPages(false)
             // setCurrentPage(3);
         } catch (err: any) {
             setMainPages(false)
+            setShowAlert(true);
             setCurrentPage(3);
         } finally {
             setIsLoading(false);
@@ -801,10 +798,7 @@ export default function useTambahPasienUmumOffline() {
         }
     }
 
-    useEffect(() => {
-        console.log("data nomor antrian : ", queueNumber)
-        console.log("Queue Data : ", queueData);
-    },[queueNumber, setQueueNumber])
+    
     return {
         validationSchema,
         breadcrumbItems,
@@ -869,7 +863,8 @@ export default function useTambahPasienUmumOffline() {
         registrationCode,
         bookingCode,
         queueNumber,
-        queueData
+        queueData,
+        idPatient
 
 
     }
