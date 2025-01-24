@@ -19,17 +19,19 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { Formik, Form, Field } from "formik";
-import CardRawatJalan from "../../../components/small/card/CardRawatJalan";
 import CustomCalendar from "../../../components/medium/CustomCalender";
 import DropdownListAPI from "../../../components/small/dropdownlist/DropdownListAPI";
 import InformasiTicketAPI from "../../../components/small/InformasiTicketAPI";
 import useRegistrationOnline from "../hooks/useRegistrationOnline";
 import FileUploader from "../../../components/medium/FileUploader";
+import PasienCard from "../../../components/small/card/PasienCard";
+import imgUmum from "../../../assets/img/filling.png";
+import imgInsurance from "../../../assets/img/injury-pana 1.png";
+import imgBPBJS from "../../../assets/img/meidicine.png";
 
 
 export default function RegistrationOnline() {
     const {
-        navigate,
         BpRadio,
         clinicOptions,
         doctorOptions,
@@ -200,8 +202,29 @@ export default function RegistrationOnline() {
                                             }}
                                             mb={3}
                                         >
+                                            {(currentPage === 1) && (
+                                                <Box mb={2} ml={'5%'} width={'fit-content'} mt={"5%"}>
+                                                    <Typography
+                                                        fontSize="32px"
+                                                        fontWeight={600}
+                                                        lineHeight="34px"
+                                                    >
+                                                        Selamat datang
+                                                    </Typography>
+                                                    <Typography
+                                                        fontSize="18px"
+                                                        fontWeight={400}
+                                                        lineHeight="20px"
+                                                        color="#747487"
+                                                        maxWidth={'90%'}
+                                                        mt={2}
+                                                    >
+                                                        Silahkan pilih kategori pasien untuk melanjutkan ke tahap selanjutnya.
+                                                    </Typography>
+                                                </Box>
+                                            )}
                                             {(currentPage === 2 || currentPage === 3) && (
-                                                <Box mb={2} ml={currentPage === 3 ? '5%' : '10%'} width={'fit-content'} mt={currentPage === 3 ? '5%' : '20%'}>
+                                                <Box mb={2} ml={'5%'} width={'fit-content'} mt={currentPage === 3 ? '5%' : '30%'}>
                                                     <Typography
                                                         fontSize="32px"
                                                         fontWeight={600}
@@ -220,8 +243,9 @@ export default function RegistrationOnline() {
                                                     </Typography>
                                                 </Box>
                                             )}
+                                            {/* mt={currentPage === 4 || currentPage === 2 ? '5%' : (currentPage === 3 ? 0 : '15%')} */}
 
-                                            <Box display="flex" maxWidth={'89%'} justifyContent={'space-between'} flexDirection="row" ml={currentPage === 4 || currentPage === 3 ? 0 : '5%'} mt={currentPage === 4 || currentPage === 2 ? '5%' : (currentPage === 3 ? 0 : '15%')} >
+                                            <Box display="flex" justifyContent={'space-between'} flexDirection="row" ml={0}  >
                                                 <Box display="flex" flexDirection="row" width="290px">
                                                     <Button
                                                         type="button"
@@ -239,15 +263,15 @@ export default function RegistrationOnline() {
                                                     >
                                                         <Box sx={getBorderStyle(1)}>1</Box>
                                                         <Typography sx={{ ml: 1, textTransform: "none" }}>
-                                                            Data diri pasien
+                                                            Kategori pasien
                                                         </Typography>
                                                     </Button>
                                                 </Box>
-                                                <Box display="flex" flexDirection="row" width="400px">
+                                                <Box display="flex" flexDirection="row" width="290px">
                                                     <Button
                                                         type="button"
                                                         onClick={() => setCurrentPage(4)}
-                                                        disabled={currentPage < 4}
+                                                        disabled={currentPage < 2}
                                                         sx={{
                                                             ...getPageStyle(2),
                                                             display: "flex",
@@ -259,15 +283,37 @@ export default function RegistrationOnline() {
                                                             },
                                                         }}
                                                     >
-                                                        <Box sx={getBorderStyle(4)}>2</Box>
+                                                        <Box sx={getBorderStyle(2)}>2</Box>
                                                         <Typography sx={{ ml: 1, textTransform: "none" }}>
-                                                            Jenis Kunjungan dan Keluhan
+                                                            Isi data diri pasien
+                                                        </Typography>
+                                                    </Button>
+                                                </Box>
+                                                <Box display="flex" flexDirection="row" width="290px">
+                                                    <Button
+                                                        type="button"
+                                                        onClick={() => setCurrentPage(4)}
+                                                        disabled={currentPage < 4}
+                                                        sx={{
+                                                            ...getPageStyle(3),
+                                                            display: "flex",
+                                                            flexDirection: "row",
+                                                            alignItems: "center",
+                                                            mx: 2,
+                                                            "&:hover": {
+                                                                backgroundColor: "inherit",
+                                                            },
+                                                        }}
+                                                    >
+                                                        <Box sx={getBorderStyle(3)}>3</Box>
+                                                        <Typography sx={{ ml: 1, textTransform: "none" }}>
+                                                            Keluhan Pasien
                                                         </Typography>
                                                     </Button>
                                                 </Box>
                                             </Box>
                                             {currentPage === 1 && (
-                                                <Box mb={2} mt={'5%'} ml={'10%'} >
+                                                <Box mb={2} mt={'5%'} ml={'5%'} >
                                                     <Typography
                                                         fontWeight={600}
                                                         fontSize="20px"
@@ -298,36 +344,45 @@ export default function RegistrationOnline() {
                                                 display: "flex",
                                                 flexDirection: "column",
                                                 gap: "24px",
-                                                maxWidth: "600px",
-                                                ml: '10%',
-                                                // bgcolor: 'red',
-                                                width: "100%",
+                                                ml: '5%',
+                                                width: "90%",
                                             }}
                                         >
-                                            <CardRawatJalan
+                                            <PasienCard
                                                 onClick={() => setCurrentPage(2)}
+                                                avatarSrc={imgUmum}
                                                 title="Pasien Umum"
-                                                text="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
+                                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
                                             />
-                                            <CardRawatJalan
-                                                onClick={() => navigate("/rawatjalan/bpjs")}
+                                            <PasienCard
+                                                onClick={() => setCurrentPage(2)}
+                                                avatarSrc={imgInsurance}
                                                 title="Pasien Asuransi"
-                                                text="Pasien yang berobat di rumah sakit dengan biaya yang di cover oleh pihak asuransi."
+                                                description="Pasien yang berobat di rumah sakit dengan biaya yang di cover oleh pihak asuransi."
+                                            />
+                                            <PasienCard
+                                                onClick={() => setCurrentPage(2)}
+                                                avatarSrc={imgBPBJS}
+                                                title="Pasien BPBJS"
+                                                description="Pasien yang berobat di rumah sakit dengan biaya yang di cover oleh pemerintah."
                                             />
                                         </Box>
                                     )}
 
                                     {currentPage === 2 && (
-                                        <Box sx={{ textAlign: "left", width: "100%", maxWidth: "600px", ml: '10%' }} >
+                                        <Box sx={{ textAlign: "left", width: "85%", ml: '5%' }} >
                                             <Typography
-                                                mb={2}
+
                                                 fontSize="20px"
                                                 fontWeight={600}
                                                 lineHeight="22px"
                                             >
                                                 Isi data pasien
                                             </Typography>
-                                            <FormControl fullWidth>
+                                            <Typography mb={2} color="#747487" fontWeight={400} fontSize={'16px'} lineHeight={'18px'} >
+                                                Silakan masukkan nomor NIK (Nomor induk kependudukan) Pasien.
+                                            </Typography>
+                                            <FormControl sx={{ width: "100%" }}>
                                                 <Typography>NIK (Nomor induk kependudukan) Pasien</Typography>
                                                 <Field
                                                     as={TextField}

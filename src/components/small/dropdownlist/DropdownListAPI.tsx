@@ -72,8 +72,20 @@ export default function DropdownListAPI({
                     <em>{placeholder}</em>
                 </MenuItem>
                 {options.map((option) => (
-                    <MenuItem key={option[valueField]} value={option[valueField]} sx={{ color: "#8F85F3" }}>
-                        {option[labelField]} 
+                    <MenuItem key={option[valueField]} value={option[valueField]
+                    }
+                        sx={{
+                            borderRadius: "8px",
+                            paddingY: "8px",
+                            paddingX: "16px",
+                            marginY: "4px",
+                            color: "#8F85F3",
+                            ':hover': {
+                                backgroundColor: "#D5D1FB",
+                            },
+                        }}
+                    >
+                        {option[labelField]}
                     </MenuItem>
                 ))}
             </Select>

@@ -5,7 +5,6 @@ import {
     Radio,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
 import GetPatientByUserIdServices from "../../../services/Patient Tenant/GetPatientByUserIdServices";
@@ -75,7 +74,6 @@ function BpRadio(props: RadioProps) {
     );
 }
 export default function useRegistrationOnline() {
-    const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
@@ -315,7 +313,6 @@ export default function useRegistrationOnline() {
 
 
     return {
-        navigate,
         BpRadio,
         clinicOptions,
         doctorOptions,
