@@ -10,6 +10,7 @@ interface PasienCardProps {
     avatarSrc: string;
     bgColor?: string;
     widthContent?: string;
+    href?: string;
 }
 
 const PasienCard: React.FC<PasienCardProps> = ({
@@ -18,11 +19,12 @@ const PasienCard: React.FC<PasienCardProps> = ({
     onClick,
     avatarSrc,
     bgColor = "#F1F0FE",
-    widthContent = '90%'
+    widthContent = '90%',
+    href = '#',
 }) => {
     return (
         <Link
-            to={''}
+            to={href}
             style={{ textDecoration: "none" }}
             onClick={onClick}
         >
