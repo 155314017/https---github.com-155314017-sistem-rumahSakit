@@ -226,9 +226,9 @@ export default function TambahPasienUmumOffline() {
                                                 name="nikCari"
                                                 onBlur={formik.handleBlur}
                                             />
-                                            {/* {formik.touched.nikCari && formik.errors.nikCari && (
+                                            {formik.touched.nikCari && formik.errors.nikCari && (
                                                 <FormHelperText>{formik.errors.nikCari}</FormHelperText>
-                                            )} */}
+                                            )}
                                             <Button
                                                 type="button"
                                                 // onClick={() => patientPage ? setPatientPage(true) : setCurrentPage(2)}
@@ -244,7 +244,7 @@ export default function TambahPasienUmumOffline() {
                                                     borderRadius: "8px",
                                                     ":hover": { bgcolor: "#a098f5" },
                                                 }}
-                                                disabled={!formik.values.nikCari}
+                                                disabled={!!(!formik.touched.nikCari && formik.errors.nikCari) || !formik.values.nikCari}
                                             >
                                                 Selanjutnya
                                             </Button>
