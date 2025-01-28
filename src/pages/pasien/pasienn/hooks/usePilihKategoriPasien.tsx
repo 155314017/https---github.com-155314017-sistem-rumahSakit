@@ -8,7 +8,6 @@ import dayjs from "dayjs";
 import 'dayjs/locale/id';
 import PatientCheckIn from "../../../../services/Patient Tenant/PatientCheckIn";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 type queueData = {
     id: string;
@@ -117,15 +116,12 @@ export default function usePilihKategoriPasien() {
                     clinicId: response.data.masterClinicId
                     
                 }
-                const token = Cookies.get('accessToken');
-
                 const queue = await axios.post(
                     `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/queue/generated`,
                     queueData,
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            "accessToken": `${token}`
                         },
                     }
                 );

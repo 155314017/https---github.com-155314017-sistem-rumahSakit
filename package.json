@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
@@ -19,6 +19,7 @@
     "@fullcalendar/timegrid": "^6.1.15",
     "@fullcalendar/timeline": "^6.1.15",
     "@mui/icons-material": "^6.0.1",
+    "@mui/joy": "^5.0.0-beta.51",
     "@mui/material": "^6.1.8",
     "@mui/styled-engine": "^6.0.2",
     "@mui/system": "^6.0.2",

@@ -12,7 +12,6 @@ import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import GetUserByNIK from '../../../../services/Admin Tenant/ManageUser/GetUserByNIK';
 import GetPatientByUserIdServices from '../../../../services/Patient Tenant/GetPatientByUserIdServices';
-import Cookies from 'js-cookie';
 type Doctor = {
     id: string;
     name: string;
@@ -496,14 +495,12 @@ export default function useTambahPasienUmumOffline() {
 
             }
 
-            const token = Cookies.get('accessToken');
             const queue = await axios.post(
                 `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/queue/generated`,
                 queueData,
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        "accessToken": `${token}`
                     },
                 }
             );
