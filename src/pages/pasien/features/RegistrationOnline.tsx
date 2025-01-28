@@ -246,7 +246,7 @@ export default function RegistrationOnline() {
                                             {/* mt={currentPage === 4 || currentPage === 2 ? '5%' : (currentPage === 3 ? 0 : '15%')} */}
 
                                             <Box display="flex" justifyContent={'space-between'} flexDirection="row" ml={0}  >
-                                                <Box display="flex" flexDirection="row" width="290px">
+                                                <Box display="flex" flexDirection="row" width="270px">
                                                     <Button
                                                         type="button"
                                                         onClick={() => setCurrentPage(1)}
@@ -267,7 +267,7 @@ export default function RegistrationOnline() {
                                                         </Typography>
                                                     </Button>
                                                 </Box>
-                                                <Box display="flex" flexDirection="row" width="290px">
+                                                <Box display="flex" flexDirection="row" width="270px">
                                                     <Button
                                                         type="button"
                                                         onClick={() => setCurrentPage(4)}
@@ -289,7 +289,7 @@ export default function RegistrationOnline() {
                                                         </Typography>
                                                     </Button>
                                                 </Box>
-                                                <Box display="flex" flexDirection="row" width="290px">
+                                                <Box display="flex" flexDirection="row" width="270px">
                                                     <Button
                                                         type="button"
                                                         onClick={() => setCurrentPage(4)}
