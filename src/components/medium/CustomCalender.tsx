@@ -305,13 +305,17 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                                         sx={{
                                             width: '100%',
                                             padding: 1,
-                                            height: '40px',
-                                            borderRadius: '8px',
-                                            bgcolor: selectedTimeRange === timeRange ? '#8F85F3' : 'transparent',
-                                            color: selectedTimeRange === timeRange ? '#fff' : '#000',
-                                            border: selectedTimeRange === timeRange ? '1px solid #8F85F3' : '1px solid #ccc',
+                                            height: '60px',
+                                            borderRadius: '100px',
+                                            bgcolor: 'transparent',
+                                            color: '#0A0A0D',
+                                            fontWeight: 400,
+                                            fontSize: '14px',
+                                            lineHeight: '16px',
+                                            alignItems: 'center',
+                                            border: selectedTimeRange === timeRange ? '1px solid #7367F0' : 'none',
                                             '&:hover': {
-                                                border: '1px solid #8F85F3',
+                                                border: '1px solid #7367F0',
                                             },
                                         }}
                                     >
@@ -335,7 +339,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                                 },
                             }}
                         >
-                            Cancel
+                            Batal
                         </Button>
                         <Button
                             onClick={handleSave}

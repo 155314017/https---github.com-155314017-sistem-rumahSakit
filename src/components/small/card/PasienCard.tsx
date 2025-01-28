@@ -41,7 +41,7 @@ const PasienCard: React.FC<PasienCardProps> = ({
                     transition: "background-color 0.3s ease, transform 0.3s ease",
                     "&:hover": {
                         bgcolor: "#D5D1FB",
-                        transform: "scale(1.02)",
+                        transform: "scale(1.01)",
                         boxShadow: "0 5px 15px rgba(0, 0, 0, 0.2)",
                     },
                 }}
@@ -54,9 +54,10 @@ const PasienCard: React.FC<PasienCardProps> = ({
                 <Box sx={{ marginLeft: "16px", mt: '-20px', minWidth: widthContent == '85%' ? '85%' : '90%', maxWidth: { widthContent } }}>
                     <Typography
                         sx={{
-                            color: "#7367F0",
-                            fontSize: "18px",
-                            fontWeight: "600",
+                            color: "#0A0A0D",
+                            fontWeight: 600,
+                            fontSize: '18px',
+                            lineHeight: '20px'
                         }}
                     >
                         {title}
@@ -74,11 +75,15 @@ const PasienCard: React.FC<PasienCardProps> = ({
                             sx={{
                                 textDecoration: "none",
                                 maxWidth: "60%",
+                                color: '#747487',
+                                fontWeight: 400,
+                                fontSize: '16px',
+                                lineHeight: '18px'
                             }}
                         >
                             {description}
                         </Typography>
-                        <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+                        <ArrowForwardIosIcon sx={{ color: "#8F85F3" }} />
                     </Box>
                 </Box>
             </Card>

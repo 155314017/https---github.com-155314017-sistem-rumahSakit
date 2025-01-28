@@ -398,13 +398,14 @@ export default function useTambahPasienUmumOffline() {
         } else {
             return {
                 display: "flex",
-                border: "1px solid #8F85F3",
+                border: "1px solid #EEEEF2",
+                bgcolor: '#EEEEF2',
                 width: "38px",
                 height: "38px",
                 borderRadius: "8px",
                 justifyContent: "center",
                 alignItems: "center",
-                color: "#8F85F3",
+                color: "#A8A8BD",
             };
         }
     };

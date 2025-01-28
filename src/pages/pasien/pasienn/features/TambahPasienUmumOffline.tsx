@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-import bgImage from "../../../../assets/img/String.png";
+// import bgImage from "../../../../assets/img/String.png";
 import PhoneInput from 'react-phone-input-2';
 //hooks
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -129,8 +129,8 @@ export default function TambahPasienUmumOffline() {
 
                 }}>
                     <BreadCrumbBasic
-                        title="Pasien lama"
-                        description="Pasien yang pernah datang sebelumnya untuk keperluan berobat."
+                        title="Pasien umum"
+                        description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
                         onBackClick={handleGoBack}
                     />
 
@@ -142,22 +142,21 @@ export default function TambahPasienUmumOffline() {
 
                     {mainPages && (
                         <Box mt={currentPage == 2 ? '10%' : '10%'} position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content' }}>
-                            <Box marginBottom={3} padding={1.6}>
-                                <Typography fontWeight={600} fontSize={20}>
+                            <Box marginBottom={3} padding={'24px'}>
+                                <Typography fontWeight={600} fontSize={'20px'} lineHeight={'22px'}>
                                     Formulir pendaftaran pasien Umum
                                 </Typography>
-                                <Typography fontWeight={400} fontSize={16} color="#A8A8BD">
+                                <Typography fontWeight={400} fontSize={'16px'} lineHeight={'18px'} color="#A8A8BD" maxWidth={'60%'}>
                                     Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.
                                 </Typography>
                             </Box>
 
                             <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2, mb: 2, gap: 8 }}>
-                                {/* Step 1 */}
                                 <Box display={"flex"} flexDirection={"row"} width={"290px"}>
 
                                     <Button
                                         onClick={() => setCurrentPage(1)}
-                                        // disabled={currentPage > 1} // Nonaktifkan jika bukan langkah pertama
+                                        // disabled={currentPage > 1} 
                                         sx={{
                                             display: "flex",
                                             flexDirection: "row",
@@ -174,7 +173,6 @@ export default function TambahPasienUmumOffline() {
                                     </Button>
                                 </Box>
 
-                                {/* Step 2 */}
                                 <Box display={"flex"} flexDirection={"row"} width={"400px"}>
                                     <Button
                                         onClick={() => setCurrentPage(2)}
@@ -200,9 +198,9 @@ export default function TambahPasienUmumOffline() {
                             </Box>
 
 
-                            <Box position="absolute" sx={{ top: 0, right: 0 }}>
+                            {/* <Box position="absolute" sx={{ top: 0, right: 0 }}>
                                 <img src={bgImage} alt="bg-image" />
-                            </Box>
+                            </Box> */}
 
                             {currentPage === 1 && (
                                 <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -344,20 +342,16 @@ export default function TambahPasienUmumOffline() {
                                                                         onBlur={handleBlur}
                                                                         disabled
                                                                         sx={{
-                                                                            marginTop: '10px',
+                                                                            borderRadius: '8px',
                                                                             bgcolor: '#E8E8E8',
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                borderRadius: '8px',
-                                                                                backgroundColor: touched.email && errors.email ? '#ffcccc' : 'inherit',
-                                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                                    borderColor: '#8F85F3',
-                                                                                },
+                                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                borderColor: '#8F85F3',
                                                                             },
                                                                         }}
                                                                     />
-                                                                    {touched.email && errors.email && (
+                                                                    {/* {touched.email && errors.email && (
                                                                         <FormHelperText error>{errors.email}</FormHelperText>
-                                                                    )}
+                                                                    )} */}
                                                                 </FormControl>
 
                                                                 <Typography>Nama lengkap pasien <span style={{ color: "red" }}>*</span></Typography>
@@ -646,10 +640,10 @@ export default function TambahPasienUmumOffline() {
                                                                                 borderRadius: "16px",
                                                                                 backgroundColor: "#fff",
                                                                             }}>
-                                                                            <Typography variant="h6" sx={{ fontWeight: 600, marginBottom: 2 }}>
+                                                                            <Typography sx={{ fontWeight: 600, marginBottom: 2, fontSize: '16px', lineHeight: '18px' }}>
                                                                                 Kontak Info
                                                                             </Typography>
-                                                                            <Typography>No Handphone pasien <span style={{ color: "red" }}>*</span></Typography>
+                                                                            <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >No Handphone pasien <span style={{ color: "red" }}>*</span></Typography>
                                                                             <FormControl>
                                                                                 <PhoneInput
                                                                                     country={"id"}
@@ -684,9 +678,11 @@ export default function TambahPasienUmumOffline() {
                                                                                     <FormHelperText error>{errors.phone}</FormHelperText>
                                                                                 )} */}
                                                                             </FormControl>
-                                                                            <Typography>Email</Typography>
+                                                                            <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Email<span style={{ color: "red" }}>*</span></Typography>
                                                                             <FormControl>
-                                                                                <OutlinedInput
+                                                                                <TextField
+                                                                                    placeholder="Masukkan email"
+                                                                                    variant="outlined"
                                                                                     sx={{
                                                                                         width: '100%',
                                                                                         height: 'auto',
@@ -712,9 +708,9 @@ export default function TambahPasienUmumOffline() {
                                                                                     onChange={handleChange}
                                                                                     onBlur={handleBlur}
                                                                                 />
-                                                                                {touched.email && errors.email && (
+                                                                                {/* {touched.email && errors.email && (
                                                                                     <FormHelperText error>{errors.email}</FormHelperText>
-                                                                                )}
+                                                                                )} */}
                                                                             </FormControl>
                                                                         </Box>
 
@@ -730,10 +726,10 @@ export default function TambahPasienUmumOffline() {
                                                                                 borderRadius: "16px",
                                                                                 backgroundColor: "#fff",
                                                                             }}>
-                                                                                <Typography variant="h6" sx={{ fontWeight: 600, marginBottom: 2 }}>
+                                                                                <Typography sx={{ fontWeight: 600, marginBottom: 2, fontSize: '16px', lineHeight: '18px' }}>
                                                                                     Keluhan Pasien
                                                                                 </Typography>
-                                                                                <Typography>Jenis Kunjungan</Typography>
+                                                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Jenis Kunjungan<span style={{ color: "red" }}>*</span></Typography>
                                                                                 <FormControl sx={{ marginBottom: '10px' }}>
                                                                                     <TextField
                                                                                         placeholder="Masukkan jenis kunjungan"
@@ -768,7 +764,7 @@ export default function TambahPasienUmumOffline() {
                                                                                 </FormControl>
 
 
-                                                                                <Typography>Poli yang dituju</Typography>
+                                                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Poli yang dituju<span style={{ color: "red" }}>*</span></Typography>
                                                                                 <DropdownListAPI
                                                                                     options={clinicOptions.map(({ id, name }) => ({ value: id, label: name }))}
                                                                                     placeholder="Pilih Klinik yang dituju"
@@ -778,7 +774,7 @@ export default function TambahPasienUmumOffline() {
 
                                                                                 <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} sx={{ width: "100%", height: "auto" }}>
                                                                                     <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
-                                                                                        <Typography>Dokter yang bertugas</Typography>
+                                                                                        <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Dokter yang bertugas<span style={{ color: "red" }}>*</span></Typography>
                                                                                         <DropdownListAPI
                                                                                             placeholder="Pilih dokter"
                                                                                             options={doctorOptions.map(({ id, name }) => ({ value: id, label: name }))}
@@ -791,12 +787,12 @@ export default function TambahPasienUmumOffline() {
                                                                                         </Typography>
                                                                                     </FormControl>
                                                                                     <Box sx={{ ml: 2, width: "100%" }}>
-                                                                                        <Typography>Tanggal dan Jam Operasional</Typography>
+                                                                                        <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Tanggal dan Jam Operasional<span style={{ color: "red" }}>*</span></Typography>
                                                                                         <CustomCalender key={calendarKey} typeId={idDoctor} onChange={handleScheduleChange} />
                                                                                     </Box>
 
                                                                                 </Box>
-                                                                                <Typography>Keluhan Pasien</Typography>
+                                                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Keluhan Pasien<span style={{ color: "red" }}>*</span></Typography>
                                                                                 <FormControl sx={{ marginBottom: '10px' }}>
                                                                                     <TextField
 
@@ -830,14 +826,14 @@ export default function TambahPasienUmumOffline() {
                                                                                             },
                                                                                         }}
                                                                                     />
-                                                                                    {touched.complaint && errors.complaint && (
+                                                                                    {/* {touched.complaint && errors.complaint && (
                                                                                         <FormHelperText error>{errors.complaint}</FormHelperText>
-                                                                                    )}
+                                                                                    )} */}
                                                                                 </FormControl>
 
                                                                                 <Box mt={1}>
                                                                                     <Box mt={2}>
-                                                                                        <Typography>Unggah surat rujukan</Typography>
+                                                                                        <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Unggah surat rujukan</Typography>
 
                                                                                         <FileUploader
                                                                                             onBase64Change={(base64String) => setFieldValue('referenceDoc', base64String)}

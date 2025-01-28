@@ -110,16 +110,26 @@ export default function PilihKategoriPasien() {
                                                 error={Boolean(errors.bookingCode && touched.bookingCode)}
                                                 helperText={errors.bookingCode && touched.bookingCode ? errors.bookingCode : ""}
                                                 sx={{
-                                                    borderRadius: "8px",
-                                                    fontSize: "16px",
-                                                    marginBottom: "16px",
-                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                        borderColor: '#8F85F3',
+                                                    width: "100%",
+                                                    height: "48px",
+                                                    marginTop: "10px",
+                                                    "& .MuiOutlinedInput-root": {
+                                                        borderRadius: "8px",
+                                                        backgroundColor: touched.bookingCode && errors.bookingCode ? "#ffcccc" : "inherit",
+                                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                            borderColor: '#8F85F3',
+                                                        },
+                                                    },
+                                                    "& .MuiOutlinedInput-notchedOutline": {
+                                                        border: "1px solid #ccc",
+                                                    },
+                                                    "& .MuiOutlinedInput-input": {
+                                                        padding: "10px",
+                                                        fontSize: "16px",
                                                     },
                                                 }}
                                                 inputProps={{
                                                     style: {
-                                                        padding: "10px",
                                                         textAlign: "center",
                                                     },
                                                 }}
@@ -193,7 +203,7 @@ export default function PilihKategoriPasien() {
                             <Typography id="modal-modal-description" fontWeight={600} fontSize={'24px'} lineHeight={'26px'}>
                                 Pilih Kategori Pasien
                             </Typography>
-                            <Typography color="#747487" fontWeight={400} fontSize={'18px'} maxWidth={'85%'}>
+                            <Typography color="#747487" fontWeight={400} fontSize={'18px'} maxWidth={'85%'} lineHeight={'20px'}>
                                 Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
                             </Typography>
                         </Box>
