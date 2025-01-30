@@ -17,86 +17,58 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
     const [inputValue, setInputValue] = useState<string>('');
     const [availableTimes, setAvailableTimes] = useState<{ [date: string]: { timeRange: string, scheduleId: string, disabled: boolean }[] }>({});
     const [availableDates, setAvailableDates] = useState<Set<string>>(new Set());
+    const [exclusionTimes, setExclusionTimes] = useState<{ [date: string]: { timeRange: string, disabled: boolean }[] }>({});
 
-    // const dummySchedules = [
-    //     {
-    //         id: "1",
-    //         title: "Morning Shift",
-    //         startTime: [8, 0],
-    //         endTime: [12, 0],
-    //         typeId: "1",
-    //         maxCapacity: 10,
-    //         monday: true,
-    //         tuesday: true,
-    //         wednesday: true,
-    //         thursday: true,
-    //         friday: true,
-    //         saturday: false,
-    //         sunday: false,
-    //     },
-    //     {
-    //         id: "2",
-    //         title: "Afternoon Shift",
-    //         startTime: [13, 30],
-    //         endTime: [16, 30],
-    //         typeId: "2",
-    //         maxCapacity: 8,
-    //         monday: true,
-    //         tuesday: true,
-    //         wednesday: true,
-    //         thursday: true,
-    //         friday: true,
-    //         saturday: true,
-    //         sunday: false,
-    //     },
-    // ];
-
-    const exclusionInterval = [
-        { date: '2025-02-01', scheduleIntervalId: '1', allday: false },
-        //start time, end time, start date, end date, typeId; allday gk ada, schedule interval id gk ada
-    ];
-
-    useEffect(() => {
-        const fetchSchedules = async () => {
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/schedule-interval/by-type-id?typeId=${typeId}`);
-                console.log('response calendar: ', response.data.data);
-                if (Array.isArray(response.data.data) && response.data.data.length > 0) {
-                    const schedules = response.data.data.map((item: any) => ({
-                        id: item.id,
-                        title: item.title || '',
-                        starTime: item.startTime,
-                        endTime: item.endTime,
-                        typeId: item.typeId,
-                        monday: item.monday,
-                        tuesday: item.tuesday,
-                        wednesday: item.wednesday,
-                        thursday: item.thursday,
-                        friday: item.friday,
-                        saturday: item.saturday,
-                        sunday: item.sunday,
-                    }));
-
-                    console.log('proses: ', schedules);
-                    processSchedules(schedules);
-                } else {
-                    console.warn('No schedules found. Using dummy schedules.');
-                    // processSchedules(dummySchedules);
-                }
-            } catch (error) {
-                console.error('Error fetching schedules:', error);
-                // processSchedules(dummySchedules);
+    const fetchSchedules = async () => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/schedule-interval/by-type-id?typeId=${typeId}`);
+            console.log('response: ', response.data.data);
+            if (Array.isArray(response.data.data) && response.data.data.length > 0) {
+                const schedules = response.data.data.map((item: any) => ({
+                    id: item.id,
+                    title: item.title || '',
+                    startTime: item.startTime,
+                    endTime: item.endTime,
+                    typeId: item.typeId,
+                    monday: item.monday,
+                    tuesday: item.tuesday,
+                    wednesday: item.wednesday,
+                    thursday: item.thursday,
+                    friday: item.friday,
+                    saturday: item.saturday,
+                    sunday: item.sunday,
+                }));
+                processSchedules(schedules);
             }
-        };
+        } catch (error) {
+            console.error('Error fetching schedules:', error);
+        }
+    };
 
+    const fetchExclusion = async (date: Dayjs) => {
+        try {
+            const dateFormatted = date.format('YYYY-MM-DD');
+            const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/exclusion-interval/by-type-id/daily?`, {
+                params: {
+                    typeId,
+                    date: date.date(),
+                    month: date.month() + 1,
+                    year: date.year(),
+                },
+            });
 
-
-        fetchSchedules();
-    }, [typeId]);
+            console.log('Exclusion ', dateFormatted, ': ', response.data.data);
+            if (Array.isArray(response.data.data) && response.data.data.length > 0) {
+                const exclusions = processExclusionData(response.data.data);
+                setExclusionTimes(exclusions);
+            }
+        } catch (error) {
+            console.error('Error fetching exclusions for the date:', error);
+        }
+    };
 
     const processSchedules = (schedules: any[]): void => {
         if (!Array.isArray(schedules) || schedules.length === 0) {
-            console.warn('Schedules are empty or invalid.');
             setAvailableDates(new Set());
             setAvailableTimes({});
             return;
@@ -105,71 +77,78 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
         const times: { [date: string]: { timeRange: string; scheduleId: string; disabled: boolean }[] } = {};
         const dates = new Set<string>();
         const now = dayjs();
-
         const startDate = now.startOf("day");
         const endDate = startDate.add(1, "year");
 
         for (let date = startDate; date.isBefore(endDate, "day"); date = date.add(1, "day")) {
             const formattedDate = date.format("YYYY-MM-DD");
             const dayName = date.locale("en").format("dddd").toLowerCase();
-            const exclusionForDate = exclusionInterval.find((exclusion) => exclusion.date === formattedDate);
 
-            if (exclusionForDate) {
-                if (exclusionForDate.allday) {
-                    times[formattedDate] = [];
-                    dates.add(formattedDate);
-                } else {
-                    schedules.forEach((schedule: any) => {
-                        if (schedule.id === exclusionForDate.scheduleIntervalId) {
-                            if (!times[formattedDate]) {
-                                times[formattedDate] = [];
-                            }
-
-                            const timeRange = `${schedule.starTime[0].toString().padStart(2, "0")}:${schedule.starTime[1]
-                                .toString()
-                                .padStart(2, "0")} - ${schedule.endTime[0].toString().padStart(2, "0")}:${schedule.endTime[1]
-                                    .toString()
-                                    .padStart(2, "0")}`;
-                            times[formattedDate].push({
-                                timeRange,
-                                scheduleId: schedule.id,
-                                disabled: true,
-                            });
-                            dates.add(formattedDate);
-                        }
-                    });
-                }
-            } else {
-                schedules.forEach((schedule: any) => {
-                    if (schedule[dayName]) {
-                        if (!times[formattedDate]) {
-                            times[formattedDate] = [];
-                        }
-
-                        const timeRange = `${schedule.starTime[0].toString().padStart(2, "0")}:${schedule.starTime[1]
-                            .toString()
-                            .padStart(2, "0")} - ${schedule.endTime[0].toString().padStart(2, "0")}:${schedule.endTime[1]
-                                .toString()
-                                .padStart(2, "0")}`;
-                        times[formattedDate].push({
-                            timeRange,
-                            scheduleId: schedule.id,
-                            disabled: false,
-                        });
-
-                        dates.add(formattedDate);
+            schedules.forEach((schedule: any) => {
+                if (schedule[dayName]) {
+                    if (!times[formattedDate]) {
+                        times[formattedDate] = [];
                     }
-                });
-            }
+
+                    const timeRange = `${schedule.startTime[0].toString().padStart(2, "0")}:${schedule.startTime[1]
+                        .toString()
+                        .padStart(2, "0")} - ${schedule.endTime[0].toString().padStart(2, "0")}:${schedule.endTime[1]
+                            .toString()
+                            .padStart(2, "0")}`;
+                    times[formattedDate].push({
+                        timeRange,
+                        scheduleId: schedule.id,
+                        disabled: false,
+                    });
+
+                    dates.add(formattedDate);
+                }
+            });
         }
 
         setAvailableDates(dates);
         setAvailableTimes(times);
     };
 
+    const processExclusionData = (exclusionData: any[]) => {
+        const exclusionTimes: { [date: string]: { timeRange: string; disabled: boolean }[] } = {};
 
+        exclusionData.forEach((exclusion) => {
+            const startDate = dayjs(exclusion.startDate);
+            const endDate = dayjs(exclusion.endDate);
+            const startTime = dayjs().hour(exclusion.startTime[0]).minute(exclusion.startTime[1]);
+            const endTime = dayjs().hour(exclusion.endTime[0]).minute(exclusion.endTime[1]);
 
+            let currentDate = startDate;
+            while (currentDate.isBefore(endDate) || currentDate.isSame(endDate, 'day')) {
+                const formattedDate = currentDate.format('YYYY-MM-DD');
+                if (!exclusionTimes[formattedDate]) {
+                    exclusionTimes[formattedDate] = [];
+                }
 
+                const timeRange = `${startTime.format('HH:mm')} - ${endTime.format('HH:mm')}`;
+                exclusionTimes[formattedDate].push({
+                    timeRange,
+                    disabled: true,
+                });
+
+                currentDate = currentDate.add(1, 'day');
+            }
+        });
+
+        return exclusionTimes;
+    };
+
+    useEffect(() => {
+        fetchSchedules();
+    }, [typeId]);
+
+    const handleDateSelect = (newDate: Dayjs) => {
+        setSelectedDate(newDate);
+        fetchExclusion(newDate);
+        setSelectedTimeRange(null);
+        setInputValue('');
+    };
 
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -221,9 +200,6 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                         '&:focus': {
                             borderColor: '#1976d2',
                         },
-                        '& .css-yimnyd-MuiInputBase-input': {
-                            cursor: 'pointer'
-                        },
                     }}
                     endAdornment={
                         <IconButton
@@ -251,37 +227,25 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                         vertical: 'top',
                         horizontal: 'left',
                     }}
-                // sx={{ cursor: 'pointer' }}
                 >
-                    <Box sx={{ display: 'flex', padding: 2, width: '800px', cursor: 'pointer' }}>
+                    <Box sx={{ display: 'flex', padding: 2, width: '800px' }}>
                         <Box sx={{ width: '50%' }}>
                             <DateCalendar
-
                                 value={selectedDate}
-                                onChange={(newValue) => {
-                                    setSelectedDate(newValue);
-                                    setSelectedTimeRange(null);
-                                    setInputValue('');
-                                }}
+                                onChange={handleDateSelect}
                                 shouldDisableDate={(date) => {
-                                    const exclusionForDate = exclusionInterval.find((exclusion) => exclusion.date === date.format('YYYY-MM-DD'));
-                                    if (exclusionForDate && exclusionForDate.allday) {
-                                        return true; // Disable seluruh tanggal
-                                    }
-                                    return !availableDates.has(date.format('YYYY-MM-DD'));  // Menonaktifkan tanggal jika tidak ada jadwal
+                                    return !availableDates.has(date.format('YYYY-MM-DD'));
                                 }}
                                 slotProps={{
                                     day: {
                                         sx: {
                                             '&.Mui-selected': {
-                                                backgroundColor: '#8F85F3',
-                                                color: '#fff',
+                                                backgroundColor: 'transparent !important',
+                                                border: '1px solid #8F85F3 !important',
+                                                color: 'black',
                                                 '&:hover': {
-                                                    backgroundColor: '#6E6CB2',
+                                                    border: '1px solid #8F85F3 !important',
                                                 },
-                                            },
-                                            '&.Mui-selected:focus': {
-                                                backgroundColor: '#8F85F3',
                                             },
                                         },
                                     },
@@ -302,7 +266,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                                         key={timeRange}
                                         onClick={() => handleTimeSelect(timeRange, scheduleId)}
                                         variant="text"
-                                        disabled={disabled}
+                                        disabled={disabled || exclusionTimes[selectedDate.format('YYYY-MM-DD')]?.some(exclusion => exclusion.timeRange === timeRange && exclusion.disabled)}
                                         sx={{
                                             width: '100%',
                                             padding: 1,
@@ -312,7 +276,6 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                                             color: '#0A0A0D',
                                             fontWeight: 400,
                                             fontSize: '14px',
-                                            lineHeight: '16px',
                                             alignItems: 'center',
                                             border: selectedTimeRange === timeRange ? '1px solid #7367F0' : 'none',
                                             '&:hover': {
@@ -363,4 +326,3 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
 };
 
 export default CustomCalendar;
-
