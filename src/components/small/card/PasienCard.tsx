@@ -9,6 +9,7 @@ interface PasienCardProps {
     onClick?: () => void;
     avatarSrc: string;
     bgColor?: string;
+    widthContent?: string;
     href?: string;
 }
 
@@ -17,8 +18,9 @@ const PasienCard: React.FC<PasienCardProps> = ({
     description,
     onClick,
     avatarSrc,
-    bgColor = "#D5D1FB",
-    href = "#",
+    bgColor = "#F1F0FE",
+    widthContent = '90%',
+    href = '#',
 }) => {
     return (
         <Link
@@ -36,9 +38,11 @@ const PasienCard: React.FC<PasienCardProps> = ({
                     boxShadow: 2,
                     marginBottom: "16px",
                     bgcolor: bgColor,
-                    '&:hover': {
-                        transform: 'scale(1.001)',
-                        boxShadow: '0 5px 10px rgba(0, 0, 0, 0.3)',
+                    transition: "background-color 0.3s ease, transform 0.3s ease",
+                    "&:hover": {
+                        bgcolor: "#D5D1FB",
+                        transform: "scale(1.01)",
+                        boxShadow: "0 5px 15px rgba(0, 0, 0, 0.2)",
                     },
                 }}
             >
@@ -47,38 +51,43 @@ const PasienCard: React.FC<PasienCardProps> = ({
                     src={avatarSrc}
                     sx={{ width: "88px", height: "88px" }}
                 />
-                <Box sx={{ marginLeft: "16px", mt: '-20px' }}>
+                <Box sx={{ marginLeft: "16px", mt: '-20px', minWidth: widthContent == '85%' ? '85%' : '90%', maxWidth: { widthContent } }}>
                     <Typography
                         sx={{
-                            color: "#7367F0",
-                            fontSize: "18px",
-                            fontWeight: "600",
+                            color: "#0A0A0D",
+                            fontWeight: 600,
+                            fontSize: '18px',
+                            lineHeight: '20px'
                         }}
                     >
                         {title}
-                    </Typography>   
+                    </Typography>
                     <Box
                         sx={{
                             display: "flex",
                             flexDirection: "row",
                             alignItems: "center",
                             justifyContent: "space-between",
-                            width: '850px',
+                            width: '100%'
                         }}
                     >
                         <Typography
                             sx={{
                                 textDecoration: "none",
-                                maxWidth: "80%",
+                                maxWidth: "60%",
+                                color: '#747487',
+                                fontWeight: 400,
+                                fontSize: '16px',
+                                lineHeight: '18px'
                             }}
                         >
                             {description}
                         </Typography>
-                        <ArrowForwardIosIcon sx={{ color: "#7367F0" }} />
+                        <ArrowForwardIosIcon sx={{ color: "#8F85F3" }} />
                     </Box>
                 </Box>
             </Card>
-        </Link>
+        </Link >
     );
 };
 

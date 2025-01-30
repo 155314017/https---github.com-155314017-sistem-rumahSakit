@@ -12,7 +12,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import ModalUbahNoHp from "./modal/ModalUbahNoHp";
 import AlertSuccess from "./alert/AlertSuccess";
 type InformasiTicketProps = {
-  nomorAntrian?: string | undefined;
+  nomorAntrian?: string | number;
   namaDokter: string | undefined;
   clinic: string | undefined;
   tanggalReservasi: string | undefined;
@@ -21,6 +21,7 @@ type InformasiTicketProps = {
   bgcolor?: string;
   patienDataSent?: any;
   registrationId?: string;
+  offline?: boolean
   onClose?: () => void;
 };
 
@@ -34,10 +35,10 @@ const InformasiTicketAPI = ({
   bgcolor = "#ffffff",
   onClose,
   patienDataSent,
-  registrationId
+  registrationId,
+  offline
 }: InformasiTicketProps) => {
 
-  const [showButton, setShowButton] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
   const [alertDownloaded, setAlertDownloaded] = useState(false);
   const ticketRef = useRef<HTMLDivElement>(null);
@@ -48,6 +49,7 @@ const InformasiTicketAPI = ({
   const [showModal, setShowModal] = useState(false);
   const [patientData, setPatientData] = useState<any>({});
   const [successChangePhone, setSuccessChangePhone] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const showTemporaryAlertSuccessChangePhone = async () => {
@@ -59,15 +61,15 @@ const InformasiTicketAPI = ({
   useEffect(() => {
     if (patienDataSent) {
       setPatientData(patienDataSent);
+      console.log(nomorAntrian)
       console.log('data: ', patienDataSent);
     }
   }, [patientData]);
 
   const downloadTicketAsPDF = async () => {
     if (!ticketRef.current) return;
-
+    setIsLoading(true);
     try {
-      setShowButton(false);
 
       const canvas = await html2canvas(ticketRef.current, {
         scale: 2,
@@ -86,7 +88,7 @@ const InformasiTicketAPI = ({
     } catch (error) {
       console.error("Gagal mengunduh PDF: ", error);
     } finally {
-      setShowButton(true);
+      setIsLoading(false);
       showTemporaryAlertSuccessDownload();
     }
   };
@@ -318,7 +320,7 @@ const InformasiTicketAPI = ({
               display={"flex"}
               flexDirection={"row"}
               justifyContent={"space-between"}
-              maxWidth={"100%"}
+              maxWidth={"90%"}
             // bgcolor={'red'}
             >
               <Box display={"flex"} flexDirection={"column"}>
@@ -329,7 +331,7 @@ const InformasiTicketAPI = ({
               </Box>
               <Box display={"flex"} flexDirection={"column"}>
                 <Typography>Jadwal konsultasi</Typography>
-                <Typography maxWidth={"60%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                <Typography maxWidth={"90%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
                   {jadwalKonsul}
                 </Typography>
               </Box>
@@ -356,7 +358,24 @@ const InformasiTicketAPI = ({
               </Box>
             </Box>
           )}
-          {showButton && (
+          {isLoading ? (
+            <Button
+              fullWidth
+              sx={{
+                width: "100%",
+                height: "48px",
+                marginTop: "20px",
+                backgroundColor: "#8F85F3",
+                color: "white",
+                border: "1px solid",
+                borderColor: "#8F85F3",
+                borderRadius: "8px",
+              }}
+              disabled
+            >
+              <CircularProgress sx={{ color: 'white' }} />
+            </Button>
+          ) : (
             <Button
               fullWidth
               sx={{
@@ -374,9 +393,6 @@ const InformasiTicketAPI = ({
             >
               Cetak tiket
             </Button>
-
-
-
 
           )}
           <Button variant="outlined" onClick={onClose}
@@ -397,13 +413,14 @@ const InformasiTicketAPI = ({
           >
             Kembali ke halaman utama
           </Button>
-
-          <Box
+          {!offline && (
+            <Box
             display={"flex"}
             flexDirection={"row"}
             gap={"5px"}
             justifyContent={"space-between"}
             width={"95%"}
+            
           >
             <Typography color={"#A8A8BD"} fontSize={"16px"} fontWeight={400}>Tidak mendapatkan tiket booking?</Typography>
             <Typography
@@ -421,6 +438,9 @@ const InformasiTicketAPI = ({
             </Typography>
             <Typography sx={{ cursor: 'pointer' }} color={"#8F85F3"} fontSize={"16px"} fontWeight={400} alignItems="right" onClick={handleEditClick}>Ubah</Typography>
           </Box>
+            
+          )}
+          
         </Box>
       </Box>
     </Box>
