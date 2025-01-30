@@ -110,12 +110,20 @@ export default function TambahPasienUmumOffline() {
             <Container sx={{
                 pt: '80px',
                 // bgcolor: 'red',
-                marginTop: '-90px'
+                marginTop: '-90px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                height: '100%',
+                position: 'relative'
+
             }}>
                 <Box sx={{
                     position: 'relative',
                     top: 0,
-                    left: 0,
+                    left: 30,
                     // right: "auto",
                     zIndex: 1000,
                     padding: '16px',
@@ -125,34 +133,39 @@ export default function TambahPasienUmumOffline() {
                         md: '90%',
                         lg: '100%',
                     },
+                    maxWidth:'1024px',
+                    
                     // bgcolor: 'blue'
 
                 }}>
+                    {mainPages && (
                     <BreadCrumbBasic
                         title="Pasien umum"
                         description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
                         onBackClick={handleGoBack}
                     />
+                )}
 
                     {showAlert && <AlertWarning teks="Terjadi kesalahan. Silahkan coba lagi." />}
                 </Box>
+
 
                 <Box mt={5}>
 
 
                     {mainPages && (
-                        <Box mt={currentPage == 2 ? '10%' : '10%'} position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content' }}>
-                            <Box marginBottom={3} padding={'24px'}>
-                                <Typography fontWeight={600} fontSize={'20px'} lineHeight={'22px'}>
+                        <Box mt={currentPage == 2 ? '10%' : '10%'} position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content', maxWidth:'1024px', width: '100%' }}>
+                            <Box marginBottom={0} padding={'24px'} gap={"10px"} width={'100%'}>
+                                <Typography fontWeight={600} fontSize={'20px'} lineHeight={'22px'} fontFamily={'roboto'} marginBottom={1}>
                                     Formulir pendaftaran pasien Umum
                                 </Typography>
-                                <Typography fontWeight={400} fontSize={'16px'} lineHeight={'18px'} color="#A8A8BD" maxWidth={'60%'}>
+                                <Typography fontWeight={400} fontSize={'16px'} lineHeight={'18px'} color="#A8A8BD" maxWidth={'95%'} fontFamily={'roboto'}>
                                     Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.
                                 </Typography>
                             </Box>
 
-                            <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2, mb: 2, gap: 8 }}>
-                                <Box display={"flex"} flexDirection={"row"} width={"290px"}>
+                            <Box sx={{ display: "flex", justifyContent: "space-between", mt: 0, mb: 2, gap: 8 }} width={"100%"}>
+                                <Box display={"flex"} flexDirection={"row"} >
 
                                     <Button
                                         onClick={() => setCurrentPage(1)}
@@ -169,7 +182,7 @@ export default function TambahPasienUmumOffline() {
                                         }}
                                     >
                                         <Box sx={getBorderStyle(1)}>1</Box>
-                                        <Typography sx={{ ml: 1, textTransform: 'none' }}>Data diri pasien</Typography>
+                                        <Typography sx={{ ml: 1, textTransform: 'none', fontSize: '14px', fontWeight: 600, lineHeight: '16px', fontFamily: 'roboto'  } }>Data diri pasien</Typography>
                                     </Button>
                                 </Box>
 
@@ -189,7 +202,7 @@ export default function TambahPasienUmumOffline() {
                                         }}
                                     >
                                         <Box sx={getBorderStyle(2)}>2</Box>
-                                        <Typography sx={{ ml: 1, textTransform: 'none' }}>
+                                        <Typography sx={{ ml: 1, textTransform: 'none', fontSize: '14px', fontWeight: 600, lineHeight: '16px' }}>
                                             Jenis Kunjungan dan Keluhan
                                         </Typography>
                                     </Button>
@@ -203,20 +216,22 @@ export default function TambahPasienUmumOffline() {
                             </Box> */}
 
                             {currentPage === 1 && (
-                                <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                                <Box sx={{ display: "flex", flexDirection: "column", gap: "0", width: "100%" }}>
 
                                     {patientFullPage && (
                                         <>
-
-                                            <Typography>NIK (Nomor induk kependudukan) Pasien</Typography>
+                                            
+                                            <Typography sx={{ fontSize: '16px', fontWeight: 400, lineHeight: '18px', fontFamily: 'roboto', mb: 2 }}>NIK (Nomor induk kependudukan) Pasien <span style={{ color: 'red' }}>*</span></Typography>
                                             <OutlinedInput
                                                 sx={{
                                                     borderRadius: '8px',
                                                     height: '48px',
                                                     '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                        borderColor: '#8F85F3',
+                                                        borderColor: '#A8A8BD',
+                                                        border: '2px solid #8F85F3',
                                                     },
-                                                    backgroundColor: formik.touched.nikCari && formik.errors.nikCari ? '#ffcccc' : 'inherit',
+                                                    backgroundColor: formik.touched.nikCari && formik.errors.nikCari ? '#ffcccc' : '#fff',
+                                                    
                                                 }}
                                                 placeholder='Masukkan NIK ktp'
                                                 value={formik.values.nikCari}
@@ -225,7 +240,7 @@ export default function TambahPasienUmumOffline() {
                                                 onBlur={formik.handleBlur}
                                             />
                                             {formik.touched.nikCari && formik.errors.nikCari && (
-                                                <FormHelperText>{formik.errors.nikCari}</FormHelperText>
+                                                <FormHelperText sx={{ color: 'red', mt: '1px' }}>{formik.errors.nikCari}</FormHelperText>
                                             )}
                                             <Button
                                                 type="button"
@@ -285,6 +300,10 @@ export default function TambahPasienUmumOffline() {
                                             {({ errors, touched, handleChange, handleBlur, values, setFieldValue }) => (
                                                 <Form>
                                                     <Box>
+                                                            <Typography sx={{ fontSize: "20px", fontWeight: 600, lineHeight: "22px", fontFamily: "roboto", marginBottom: "16px" }}>
+                                                            Konfirmasi data diri pasien
+                                                            </Typography>
+
                                                         <Box
                                                             sx={{
                                                                 display: "flex",
@@ -300,21 +319,21 @@ export default function TambahPasienUmumOffline() {
                                                             }}
                                                         >
                                                             <InfoOutlinedIcon sx={{ marginRight: "8px" }} />
-                                                            <Typography>
+                                                            <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto" }}>
                                                                 Harap periksa kembali data diri Anda, jika ada data yang tidak sesuai anda dapat merubahnya di Admin.
                                                             </Typography>
                                                         </Box>
 
                                                         <Box height={"fit-content"} width={"100%"} borderRadius={"16px"} display="flex" flexDirection="column" justifyContent="center">
                                                             <Box display={"flex"} flexDirection="column" alignItems="flex-start" gap={"5px"} width={'99%'}>
-                                                                <Typography>NIK (Nomor induk kependudukan) Pasien</Typography>
+                                                                <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto", marginTop: "10px" }}>NIK (Nomor induk kependudukan) Pasien <span style={{ color: "red" }}>*</span></Typography>
                                                                 <FormControl fullWidth error={touched.nik && Boolean(errors.nik)}>
                                                                     <OutlinedInput
                                                                         name="nik"
                                                                         placeholder="Masukkan NIK (Nomor induk kependudukan)"
                                                                         sx={{
-                                                                            marginTop: '10px',
                                                                             bgcolor: '#E8E8E8',
+                                                                            borderRadius: '8px',
                                                                             '& .MuiOutlinedInput-root': {
                                                                                 borderRadius: '8px',
                                                                                 backgroundColor: touched.nik && errors.nik ? '#ffcccc' : 'inherit',
@@ -333,7 +352,7 @@ export default function TambahPasienUmumOffline() {
                                                                     )}
                                                                 </FormControl>
 
-                                                                <Typography>Email</Typography>
+                                                                <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto",  marginTop: "10px"}}>Email <span style={{ color: "red" }}>*</span></Typography>
                                                                 <FormControl fullWidth error={touched.email && Boolean(errors.email)}>
                                                                     <OutlinedInput
                                                                         name="email"
@@ -354,92 +373,14 @@ export default function TambahPasienUmumOffline() {
                                                                     )} */}
                                                                 </FormControl>
 
-                                                                <Typography>Nama lengkap pasien <span style={{ color: "red" }}>*</span></Typography>
-                                                                <FormControl fullWidth>
-                                                                    <OutlinedInput
-                                                                        sx={{
-                                                                            borderRadius: '8px',
-                                                                            bgcolor: '#E8E8E8',
-                                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                                borderColor: '#8F85F3',
-                                                                            },
-                                                                        }}
-                                                                        name="fullname"
-                                                                        value={patientData?.fullname || ""}
-                                                                        disabled
-                                                                    />
-                                                                </FormControl>
-
-                                                                <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '75px', width: '100%' }}>
-                                                                    <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%' }}>
-                                                                        <FormLabel>Tempat Lahir <span style={{ color: "red" }}>*</span></FormLabel>
-                                                                        <OutlinedInput
-                                                                            name="birthPlace"
-                                                                            placeholder="Tempat Lahir"
-                                                                            fullWidth
-                                                                            sx={{
-                                                                                borderRadius: '8px',
-                                                                                height: '44px',
-                                                                                bgcolor: '#E8E8E8',
-                                                                                '& .MuiOutlinedInput-root': {
-                                                                                    borderRadius: '8px',
-                                                                                    backgroundColor: touched.birthPlace && errors.birthPlace ? "#ffcccc" : 'inherit',
-                                                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                                        borderColor: '#8F85F3',
-                                                                                    },
-                                                                                },
-                                                                            }}
-                                                                            onChange={handleChange}
-                                                                            onBlur={handleBlur}
-                                                                            value={patientData?.birthPlace}
-                                                                            error={touched.birthPlace && Boolean(errors.birthPlace)}
-                                                                            disabled
-                                                                        />
-                                                                    </FormControl>
-
-                                                                    < FormControl sx={{ width: '49%', overflow: 'hidden', height: '100%' }}>
-                                                                        <FormLabel>Tanggal Lahir <span style={{ color: "red" }}>*</span></FormLabel>
-                                                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                                            <Box sx={{ overflow: 'hidden' }}>
-                                                                                <DemoContainer components={['DatePicker']}>
-                                                                                    <DatePicker
-                                                                                        value={dayjs(birth, "MM-DD-YYYY")}
-                                                                                        onChange={(newValue) => {
-                                                                                            if (newValue) {
-                                                                                                const formattedDate = newValue.format("MM-DD-YYYY");
-                                                                                                setFieldValue("birthDate", formattedDate);
-                                                                                            }
-                                                                                        }}
-                                                                                        slotProps={{
-                                                                                            textField: {
-                                                                                                placeholder: "Tanggal Lahir",
-                                                                                                sx: {
-                                                                                                    borderRadius: '8px',
-                                                                                                    height: '60px',
-                                                                                                    width: '100%',
-                                                                                                    bgcolor: '#E8E8E8',
-                                                                                                    '& .MuiOutlinedInput-root': {
-                                                                                                        borderRadius: '8px',
-                                                                                                        height: '44px',
-                                                                                                    },
-                                                                                                },
-                                                                                            },
-                                                                                        }}
-                                                                                        disabled
-                                                                                    />
-                                                                                </DemoContainer>
-                                                                            </Box>
-                                                                        </LocalizationProvider>
-                                                                    </FormControl>
-                                                                </Box>
-
-                                                                <Typography>No Handphone pasien <span style={{ color: "red" }}>*</span></Typography>
+                                                                <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto", marginTop: "10px" }}>No Handphone pasien <span style={{ color: "red" }}>*</span></Typography>
                                                                 <FormControl fullWidth>
                                                                     <PhoneInput
                                                                         country={"id"}
                                                                         value={patientData?.phone}
                                                                         onChange={(values) => setFieldValue("phone", values)}
                                                                         inputStyle={{
+                                                                        
                                                                             height: "48px",
                                                                             borderRadius: "8px",
                                                                             border: "1px solid #ccc",
@@ -460,7 +401,88 @@ export default function TambahPasienUmumOffline() {
                                                                     />
                                                                 </FormControl>
 
-                                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>
+                                                                <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto" }}>Nama lengkap pasien <span style={{ color: "red" }}>*</span></Typography>
+                                                                <FormControl fullWidth>
+                                                                    <OutlinedInput
+                                                                        sx={{
+                                                                            borderRadius: '8px',
+                                                                            bgcolor: '#E8E8E8',
+                                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                borderColor: '#8F85F3',
+                                                                            },
+                                                                        }}
+                                                                        name="fullname"
+                                                                        value={patientData?.fullname || ""}
+                                                                        disabled
+                                                                    />
+                                                                </FormControl>
+
+                                                                <Box display={'flex'} justifyContent={'space-between'} sx={{  height: '75px', width: '100%', marginTop: "10px" }}>
+                                                                    <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%', height: '100%' }}>
+                                                                        <FormLabel>Tempat Lahir <span style={{ color: "red" }}>*</span></FormLabel>
+                                                                        <OutlinedInput
+                                                                            name="birthPlace"
+                                                                            placeholder="Tempat Lahir"
+                                                                            fullWidth
+                                                                            sx={{
+                                                                                borderRadius: '8px',
+                                                                                height: '75px',
+                                                                                bgcolor: '#E8E8E8',
+                                                                                '& .MuiOutlinedInput-root': {
+                                                                                    borderRadius: '8px',
+                                                                                    backgroundColor: touched.birthPlace && errors.birthPlace ? "#ffcccc" : 'inherit',
+                                                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                        borderColor: '#8F85F3',
+                                                                                    },
+                                                                                },
+                                                                            }}
+                                                                            onChange={handleChange}
+                                                                            onBlur={handleBlur}
+                                                                            value={patientData?.birthPlace}
+                                                                            error={touched.birthPlace && Boolean(errors.birthPlace)}
+                                                                            disabled
+                                                                        />
+                                                                    </FormControl>
+
+                                                                    < FormControl sx={{ width: '49%',  height: '100%' }}>
+                                                                        <FormLabel >Tanggal Lahir <span style={{ color: "red" }}>*</span></FormLabel>
+                                                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                                            <Box sx={{ }}>
+                                                                                <DemoContainer components={['DatePicker']}>
+                                                                                    <DatePicker
+                                                                                        value={dayjs(birth, "MM-DD-YYYY")}
+                                                                                        onChange={(newValue) => {
+                                                                                            if (newValue) {
+                                                                                                const formattedDate = newValue.format("MM-DD-YYYY");
+                                                                                                setFieldValue("birthDate", formattedDate);
+                                                                                            }
+                                                                                        }}
+                                                                                        slotProps={{
+                                                                                            textField: {
+                                                                                                placeholder: "Tanggal Lahir",
+                                                                                                sx: {
+                                                                                                    borderRadius: '8px',
+                                                                                                    height: '53px',
+                                                                                                    width: '100%',
+                                                                                                    bgcolor: '#E8E8E8',
+                                                                                                    '& .MuiOutlinedInput-root': {
+                                                                                                        borderRadius: '8px',
+                                                                                                        height: '50px',
+                                                                                                    },
+                                                                                                },
+                                                                                            },
+                                                                                        }}
+                                                                                        disabled
+                                                                                    />
+                                                                                </DemoContainer>
+                                                                            </Box>
+                                                                        </LocalizationProvider>
+                                                                    </FormControl>
+                                                                </Box>
+
+                                                                
+
+                                                                <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto" , marginTop: "10px"}}>
                                                                     Jenis kelamin Pasien{" "}
                                                                     <span style={{ color: "#d32f2f" }}>*</span>{" "}
                                                                 </Typography>
@@ -479,7 +501,7 @@ export default function TambahPasienUmumOffline() {
                                                                     </FormControl>
                                                                 </Box>
 
-                                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', mt: '10px' }}>
+                                                                <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto", marginTop: "10px" }}>
                                                                     Alamat tempat tinggal Pasien<span style={{ color: "red" }}>*</span>
                                                                 </Typography>
                                                                 <FormControl fullWidth>
@@ -491,7 +513,7 @@ export default function TambahPasienUmumOffline() {
                                                                         fullWidth
                                                                         size="medium"
                                                                         sx={{
-                                                                            marginTop: '10px',
+                                                                            
                                                                             marginBottom: '8px',
                                                                             alignItems: 'flex-start',
                                                                             bgcolor: '#E8E8E8',
@@ -570,10 +592,8 @@ export default function TambahPasienUmumOffline() {
 
                             {/* Start */}
                             {currentPage === 2 && (
-                                <Box mt={3}>
-                                    <Box sx={{ display: "flex" }}>
-                                        <Box sx={{ width: '100%', justifyContent: "ce" }}>
-                                            <Box>
+                                <Box >
+                                    <Box sx={{ width:'100%', justifyContent: 'center', alignItems: 'center'}}>
                                                 <Formik
                                                     initialValues={{
                                                         phone: patientData?.phone,
@@ -624,15 +644,14 @@ export default function TambahPasienUmumOffline() {
                                                         }
                                                     ) => (
                                                         <Form>
-                                                            <Box sx={{ paddingBottom: '16px', gap: "24px", justifyContent: "center", display: 'flex', flexDirection: 'column' }}>
-                                                                <Box sx={{ display: "flex", flexDirection: "column", }}>
-                                                                    <FormControl>
+                                                            <Box sx={{ width:'93%' }}>
+                                                                    
                                                                         <Box
                                                                             sx={{
                                                                                 display: "flex",
                                                                                 flexDirection: "column",
-                                                                                width: { sm: "91%", md: "93%", lg: "100%" },
-                                                                                maxWidth: "1040px",
+                                                                                width: "100%",
+                                                                               
 
                                                                                 marginBottom: '24px',
                                                                                 padding: 4,
@@ -640,10 +659,10 @@ export default function TambahPasienUmumOffline() {
                                                                                 borderRadius: "16px",
                                                                                 backgroundColor: "#fff",
                                                                             }}>
-                                                                            <Typography sx={{ fontWeight: 600, marginBottom: 2, fontSize: '16px', lineHeight: '18px' }}>
+                                                                            <Typography sx={{ fontWeight: 600, marginBottom: 2, fontSize: '16px', lineHeight: '18px', fontFamily:'roboto' }}>
                                                                                 Kontak Info
                                                                             </Typography>
-                                                                            <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >No Handphone pasien <span style={{ color: "red" }}>*</span></Typography>
+                                                                            <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', fontFamily:'roboto',mb: 1 }} >No Handphone pasien <span style={{ color: "red" }}>*</span></Typography>
                                                                             <FormControl>
                                                                                 <PhoneInput
                                                                                     country={"id"}
@@ -678,7 +697,7 @@ export default function TambahPasienUmumOffline() {
                                                                                     <FormHelperText error>{errors.phone}</FormHelperText>
                                                                                 )} */}
                                                                             </FormControl>
-                                                                            <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Email<span style={{ color: "red" }}>*</span></Typography>
+                                                                            <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', fontFamily:'roboto' }} >Email<span style={{ color: "red" }}>*</span></Typography>
                                                                             <FormControl>
                                                                                 <TextField
                                                                                     placeholder="Masukkan email"
@@ -726,7 +745,7 @@ export default function TambahPasienUmumOffline() {
                                                                                 borderRadius: "16px",
                                                                                 backgroundColor: "#fff",
                                                                             }}>
-                                                                                <Typography sx={{ fontWeight: 600, marginBottom: 2, fontSize: '16px', lineHeight: '18px' }}>
+                                                                                <Typography sx={{ fontWeight: 600, marginBottom: 2, fontSize: '16px', lineHeight: '18px', fontFamily:'roboto' }}>
                                                                                     Keluhan Pasien
                                                                                 </Typography>
                                                                                 <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Jenis Kunjungan<span style={{ color: "red" }}>*</span></Typography>
@@ -764,7 +783,7 @@ export default function TambahPasienUmumOffline() {
                                                                                 </FormControl>
 
 
-                                                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Poli yang dituju<span style={{ color: "red" }}>*</span></Typography>
+                                                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', mt: 1, mb: 1, fontFamily:'roboto' }} >Poli yang dituju<span style={{ color: "red" }}>*</span></Typography>
                                                                                 <DropdownListAPI
                                                                                     options={clinicOptions.map(({ id, name }) => ({ value: id, label: name }))}
                                                                                     placeholder="Pilih Klinik yang dituju"
@@ -774,7 +793,7 @@ export default function TambahPasienUmumOffline() {
 
                                                                                 <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} sx={{ width: "100%", height: "auto" }}>
                                                                                     <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
-                                                                                        <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Dokter yang bertugas<span style={{ color: "red" }}>*</span></Typography>
+                                                                                        <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', mt: 1, mb: 1, fontFamily:'roboto' }} >Dokter yang bertugas<span style={{ color: "red" }}>*</span></Typography>
                                                                                         <DropdownListAPI
                                                                                             placeholder="Pilih dokter"
                                                                                             options={doctorOptions.map(({ id, name }) => ({ value: id, label: name }))}
@@ -787,12 +806,12 @@ export default function TambahPasienUmumOffline() {
                                                                                         </Typography>
                                                                                     </FormControl>
                                                                                     <Box sx={{ ml: 2, width: "100%" }}>
-                                                                                        <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Tanggal dan Jam Operasional<span style={{ color: "red" }}>*</span></Typography>
+                                                                                        <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', mt: 1, mb: 1, fontFamily:'roboto' }} >Tanggal dan Jam Operasional<span style={{ color: "red" }}>*</span></Typography>
                                                                                         <CustomCalender key={calendarKey} typeId={idDoctor} onChange={handleScheduleChange} />
                                                                                     </Box>
 
                                                                                 </Box>
-                                                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Keluhan Pasien<span style={{ color: "red" }}>*</span></Typography>
+                                                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', fontFamily:'roboto' }} >Keluhan Pasien<span style={{ color: "red" }}>*</span></Typography>
                                                                                 <FormControl sx={{ marginBottom: '10px' }}>
                                                                                     <TextField
 
@@ -846,18 +865,18 @@ export default function TambahPasienUmumOffline() {
                                                                                 </Box>
                                                                             </Box>
                                                                         </Box>
-                                                                    </FormControl >
+                                                                    
 
-                                                                </Box >
+                                                                
 
 
-                                                                <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
+                                                                <Box sx={{  mt: 4, justifyContent: "center", width: "100%" }}>
                                                                     <Button
                                                                         type="submit"
                                                                         variant="contained"
                                                                         sx={{
-                                                                            width: "100%",
-                                                                            height: "48px",
+                                                                            width: "107%",
+                                                                            height: "44px",
                                                                             marginTop: "20px",
                                                                             backgroundColor: "#8F85F3",
                                                                             ":hover": { backgroundColor: "#D5D1FB" },
@@ -873,8 +892,6 @@ export default function TambahPasienUmumOffline() {
                                                 </Formik >
                                             </Box >
                                         </Box >
-                                    </Box >
-                                </Box >
                             )}
 
                             {/* end */}
@@ -894,7 +911,7 @@ export default function TambahPasienUmumOffline() {
 
                     {
                         !mainPages && !needAdmin && (
-                            <Box marginLeft={"23%"} marginTop={"10%"} zIndex={1500}>
+                            <Box marginLeft={"10%"} marginTop={"10%"} zIndex={1500}>
 
                                 <InformasiTicketAPI
                                     clinic={clinicName}

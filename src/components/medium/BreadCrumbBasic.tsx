@@ -20,7 +20,7 @@ export default function BreadCrumbBasic({
                 borderRadius: "24px",
                 position: "relative",
                 overflow: "hidden",
-                padding: "16px",
+                padding: "24px",
             }}
         >
             <Box
