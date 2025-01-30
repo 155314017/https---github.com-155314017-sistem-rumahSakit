@@ -3,16 +3,13 @@ import Cookies from "js-cookie";
 import { BaseResponse } from "../../../types/api";
 
 export interface ExclusionScheduleDataItem {
-  id: string;
+  exclusionIntervalId: string;
   additionalInfo: string;
-  scheduleDate: string;
   typeId: string;
-  createdBy: string;
-  createdDateTime: number;
-  updatedBy: string | null;
-  updatedDateTime: number | null;
-  deletedBy: string | null;
-  deletedDateTime: number | null;
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
 }
 
 const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/exclusion-interval/`;
@@ -20,8 +17,11 @@ const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/exclusio
 // Function to create an exclusion schedule
 export const CreateExclusionScheduleService = async (data: {
   additionalInfo: string;
-  scheduleDate: string;
   typeId: string;
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
 }): Promise<BaseResponse<ExclusionScheduleDataItem>> => {
   const token = Cookies.get("accessToken");
 

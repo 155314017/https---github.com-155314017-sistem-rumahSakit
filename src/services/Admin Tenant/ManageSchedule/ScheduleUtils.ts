@@ -2,6 +2,7 @@ import { CreateScheduleService } from './CreateScheduleService';
 import { CreateExclusionScheduleService } from './ExclusionScheduleService';
 import { GetScheduleByTypeId, ScheduleDataItem } from './GetScheduleByTypeIdServices';
 import dayjs from 'dayjs';
+import { EditScheduleService } from './EditScheduleService';
 
 /**
  * Interface untuk data jadwal praktek
@@ -182,11 +183,19 @@ export const createExclusions = async (typeId: string, exclusions: ExclusionData
   if (!exclusions.length) return;
 
   return Promise.all(exclusions.map(async (exclusion) => {
+    // Memisahkan tanggal dan waktu dari string ISO
+    const startDateTime = dayjs(exclusion.start);
+    const endDateTime = exclusion.end ? dayjs(exclusion.end) : startDateTime;
+
     const exclusionData = {
       additionalInfo: exclusion.notes || '',
-      scheduleDate: exclusion.start,
-      typeId: typeId
+      typeId: typeId,
+      startDate: startDateTime.format('YYYY-MM-DD'),
+      endDate: endDateTime.format('YYYY-MM-DD'),
+      startTime: startDateTime.format('HH:mm:ss'),
+      endTime: endDateTime.format('HH:mm:ss')
     };
+    
     return CreateExclusionScheduleService(exclusionData);
   }));
 };
@@ -310,4 +319,36 @@ export const convertToOperationalSchedule = (schedules: ScheduleDataItem[]): Ope
   });
 
   return defaultSchedule;
+};
+
+/**
+ * Mengedit jadwal yang sudah ada
+ * @param scheduleId - ID jadwal yang akan diedit
+ * @param typeId - ID tipe (bisa berupa ID ambulance, dokter, ruangan, dll)
+ * @param jadwal - Data jadwal yang akan diperbarui
+ * @returns Promise yang mengembalikan hasil edit jadwal
+ */
+export const editSchedule = async (scheduleId: string, typeId: string, jadwal: PraktekData) => {
+  console.log('[DEBUG] Input edit praktek data:', jadwal);
+  
+  const scheduleData = {
+    scheduleIntervalId: scheduleId,
+    startTime: convertTo24HourFormat(jadwal.startTime),
+    endTime: convertTo24HourFormat(jadwal.endTime),
+    typeId: typeId,
+    additionalInfo: jadwal.notes || '',
+    maxCapacity: 1,
+    monday: jadwal.selectedDay.includes('Senin'),
+    tuesday: jadwal.selectedDay.includes('Selasa'),
+    wednesday: jadwal.selectedDay.includes('Rabu'),
+    thursday: jadwal.selectedDay.includes('Kamis'),
+    friday: jadwal.selectedDay.includes('Jumat'),
+    saturday: jadwal.selectedDay.includes('Sabtu'),
+    sunday: jadwal.selectedDay.includes('Minggu'),
+    title: 'Jadwal Ambulance',
+    description: jadwal.notes || ''
+  };
+  
+  console.log('[DEBUG] Converted edit schedule data:', scheduleData);
+  return EditScheduleService(scheduleData);
 };
