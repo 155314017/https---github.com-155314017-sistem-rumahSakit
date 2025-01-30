@@ -439,6 +439,28 @@ export default function TambahPasienUmumOffline() {
                                                                         country={"id"}
                                                                         value={patientData?.phone}
                                                                         onChange={(values) => setFieldValue("phone", values)}
+
+
+                                                                        // sx={{
+                                                                        //     width: '100%',
+                                                                        //     height: 'auto',
+                                                                        //     marginTop: '10px',
+                                                                        //     '& .MuiOutlinedInput-root': {
+                                                                        //         borderRadius: '8px',
+                                                                        //         backgroundColor: touched.phone && errors.phone ? '#ffcccc' : 'inherit',
+                                                                        //         '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                        //             borderColor: '#8F85F3',
+                                                                        //         },
+                                                                        //     },
+                                                                        //     '& .MuiOutlinedInput-notchedOutline': {
+                                                                        //         border: '1px solid #ccc',
+                                                                        //     },
+                                                                        //     '& .MuiOutlinedInput-input': {
+                                                                        //         padding: '10px',
+                                                                        //         fontSize: '16px',
+                                                                        //     },
+                                                                        // }}
+
                                                                         inputStyle={{
                                                                             height: "48px",
                                                                             borderRadius: "8px",
@@ -446,7 +468,7 @@ export default function TambahPasienUmumOffline() {
                                                                             padding: "10px 40px 10px 60px",
                                                                             fontSize: "16px",
                                                                             width: "100%",
-                                                                            backgroundColor: '#E8E8E8',
+                                                                            backgroundColor: touched.phone && errors.phone ? '#ffcccc' : 'inherit',
                                                                         }}
                                                                         buttonStyle={{
                                                                             borderRadius: "8px 0 0 8px",
@@ -584,7 +606,7 @@ export default function TambahPasienUmumOffline() {
                                                         jenisKunjungan: '',
                                                         doctor: '',
                                                         complaint: '',
-                                                        email: patientData?.email || '', // Add email to initial values
+                                                        email: patientData?.email || '',
                                                         nik: NIK,
                                                     }}
                                                     enableReinitialize
@@ -862,7 +884,7 @@ export default function TambahPasienUmumOffline() {
                                                                             backgroundColor: "#8F85F3",
                                                                             ":hover": { backgroundColor: "#D5D1FB" },
                                                                         }}
-                                                                        disabled={!isValid}
+                                                                        disabled={!isValid || !idClinic || !idDoctor || !selectedScheduleId}
                                                                     >
                                                                         Selesai
                                                                     </Button>

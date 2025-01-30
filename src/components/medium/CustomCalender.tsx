@@ -52,7 +52,8 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
     // ];
 
     const exclusionInterval = [
-        { date: '2025-01-27', scheduleIntervalId: '1', allday: false },
+        { date: '2025-02-01', scheduleIntervalId: '1', allday: false },
+        //start time, end time, start date, end date, typeId; allday gk ada, schedule interval id gk ada
     ];
 
     useEffect(() => {
