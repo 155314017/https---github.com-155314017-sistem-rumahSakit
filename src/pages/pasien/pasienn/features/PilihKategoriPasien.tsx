@@ -15,6 +15,7 @@ import CardAntrianCounter from "../../../../components/small/card/CardAntrianCou
 import PasienCard from "../../../../components/small/card/PasienCard";
 import usePilihKategoriPasien from "../hooks/usePilihKategoriPasien";
 import AlertWarning from "../../../../components/small/alert/AlertWarning";
+import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
 
 export default function PilihKategoriPasien() {
     const {
@@ -62,9 +63,41 @@ export default function PilihKategoriPasien() {
                     backgroundRepeat: "no-repeat"
                 }}
             >
+                
                 {noDataBooking && <AlertWarning teks="Kode booking tidak terdaftar" />}
                 {inputCodePages && (
+                    <Box>
+                        <Box sx={{
+                                                        position: 'relative',
+                                                        top: -300,
+                                                        left: 15,
+                                                        // right: "auto",
+                                                        zIndex: 1000,
+                                                        padding: '16px',
+                                                        width: {
+                                                            xs: '90%',
+                                                            sm: '84%',
+                                                            md: '90%',
+                                                            lg: '100%',
+                                                        },
+                                                        maxWidth: '760px',
+                                                        
+                                                        // bgcolor: 'blue'
+                                    
+                                                    }}>
+                                                       
+                                                        <BreadCrumbBasic
+                                                            title="Masukkan kode booking"
+                                                            description="Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian."
+                                                            onBackClick={() => window.history.back()}
+                                                        />
+                                                
+                                    
+                                                       
+                                                    </Box>
+                    
                     <Box sx={{ ...style }}>
+                        
 
                         <IconButton
                             onClick={() => {
@@ -99,6 +132,7 @@ export default function PilihKategoriPasien() {
                         >
                             {({ errors, touched, setFieldValue, values, isValid, dirty }) => (
                                 <Form>
+                                    
                                     <Field name="bookingCode">
                                         {() => (
                                             <TextField
@@ -164,6 +198,7 @@ export default function PilihKategoriPasien() {
                             )}
                         </Formik>
                     </Box>
+                    </Box>
                 )}
                 {mainPages && (
                     <Box
@@ -200,10 +235,10 @@ export default function PilihKategoriPasien() {
 
                             }}
                         >
-                            <Typography id="modal-modal-description" fontWeight={600} fontSize={'24px'} lineHeight={'26px'}>
+                            <Typography id="modal-modal-description" fontWeight={600} fontSize={'24px'} lineHeight={'26px'} fontFamily={'roboto'}>
                                 Pilih Kategori Pasien
                             </Typography>
-                            <Typography color="#747487" fontWeight={400} fontSize={'18px'} maxWidth={'85%'} lineHeight={'20px'}>
+                            <Typography color="#747487" fontWeight={400} fontSize={'18px'} maxWidth={'85%'} lineHeight={'20px'} fontFamily={'roboto'}>
                                 Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
                             </Typography>
                         </Box>

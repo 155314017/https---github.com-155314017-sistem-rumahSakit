@@ -51,13 +51,14 @@ const PasienCard: React.FC<PasienCardProps> = ({
                     src={avatarSrc}
                     sx={{ width: "88px", height: "88px" }}
                 />
-                <Box sx={{ marginLeft: "16px", mt: '-20px', minWidth: widthContent == '85%' ? '85%' : '90%', maxWidth: { widthContent } }}>
+                <Box sx={{ marginLeft: "16px", mt: '-15px', minWidth: widthContent == '85%' ? '85%' : '90%', maxWidth: { widthContent }, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                     <Typography
                         sx={{
                             color: "#0A0A0D",
                             fontWeight: 600,
                             fontSize: '18px',
-                            lineHeight: '20px'
+                            lineHeight: '20px',
+                            fontFamily:'roboto',
                         }}
                     >
                         {title}
@@ -78,7 +79,8 @@ const PasienCard: React.FC<PasienCardProps> = ({
                                 color: '#747487',
                                 fontWeight: 400,
                                 fontSize: '16px',
-                                lineHeight: '18px'
+                                lineHeight: '18px',
+                                fontFamily:'roboto',
                             }}
                         >
                             {description}
