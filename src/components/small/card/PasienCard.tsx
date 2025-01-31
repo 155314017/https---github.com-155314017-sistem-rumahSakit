@@ -69,13 +69,13 @@ const PasienCard: React.FC<PasienCardProps> = ({
                             flexDirection: "row",
                             alignItems: "center",
                             justifyContent: "space-between",
-                            width: '100%'
+                            width: '98%'
                         }}
                     >
                         <Typography
                             sx={{
                                 textDecoration: "none",
-                                maxWidth: "60%",
+                                maxWidth: "50%",
                                 color: '#747487',
                                 fontWeight: 400,
                                 fontSize: '16px',

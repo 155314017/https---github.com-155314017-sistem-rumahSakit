@@ -154,7 +154,7 @@ export default function TambahPasienUmumOffline() {
 
 
                     {mainPages && (
-                        <Box mt={currentPage == 2 ? '10%' : '10%'} position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content', maxWidth:'1024px', width: '100%' }}>
+                        <Box mt={currentPage == 2 ? '10%' : '10%'} position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content', maxWidth:'804px', width: '100%' }}>
                             <Box marginBottom={0} padding={'24px'} gap={"10px"} width={'100%'}>
                                 <Typography fontWeight={600} fontSize={'20px'} lineHeight={'22px'} fontFamily={'roboto'} marginBottom={1}>
                                     Formulir pendaftaran pasien Umum
@@ -921,7 +921,7 @@ export default function TambahPasienUmumOffline() {
                     )}
                     {
                         needAdmin && !mainPages && (
-                            <Box marginLeft={"20%"} marginTop={"10%"} zIndex={1500} >
+                            <Box marginLeft={"10%"} marginTop={"10%"} zIndex={1500} >
                                 <CardAntrianCounter
                                     nomorAntrian={queueData?.queueNumber || queueNumber}
                                     tanggalReservasi={tanggalReserve}
