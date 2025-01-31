@@ -204,6 +204,7 @@ export default function PilihKategoriPasien() {
                     <Box
                         sx={{
                             width: 'fit-content',
+                            maxWidth: '904px',
                             height: 'fit-content',
                         }}
                     >
