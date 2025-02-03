@@ -921,7 +921,7 @@ export default function TambahPasienUmumOffline() {
                     )}
                     {
                         needAdmin && !mainPages && (
-                            <Box marginLeft={"10%"} marginTop={"10%"} zIndex={1500} >
+                            <Box marginLeft={"3%"} marginTop={"10%"} zIndex={1500} >
                                 <CardAntrianCounter
                                     nomorAntrian={queueData?.queueNumber || queueNumber}
                                     tanggalReservasi={tanggalReserve}
@@ -933,7 +933,7 @@ export default function TambahPasienUmumOffline() {
 
                     {
                         !mainPages && !needAdmin && (
-                            <Box marginLeft={"10%"} marginTop={"10%"} zIndex={1500}>
+                            <Box marginLeft={"3%"} marginTop={"10%"} zIndex={1500}>
 
                                 <InformasiTicketAPI
                                     clinic={clinicName}

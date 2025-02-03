@@ -199,7 +199,8 @@ const InformasiTicketAPI = ({
 
       <Box
         bgcolor={'white'}
-        maxWidth={'80%'}
+        maxWidth={'100%'}
+        width={'620px'}
         maxHeight={'fit-content'}
         borderRadius={'32px'}
         padding={'22px'}

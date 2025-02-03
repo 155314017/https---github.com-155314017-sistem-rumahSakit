@@ -291,7 +291,7 @@ export default function PilihKategoriPasien() {
                     </Box>
                 )}
 
-                <Box>
+                <Box sx={{marginLeft:'0%'}}>
                     {infoTicket && (
                         <InformasiTicketAPI
                             clinic={dataKodeBooking?.namaKlinik}
