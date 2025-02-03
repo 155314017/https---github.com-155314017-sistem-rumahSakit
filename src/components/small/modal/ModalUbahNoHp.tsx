@@ -31,7 +31,7 @@ const changePhoneSchema = Yup.object().shape({
 
 
 
-const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void; patienDataSent?: any; registrationId?: string; hitFunction?: () => void }> = ({ open, onClose, patienDataSent, registrationId, hitFunction }) => {
+const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void; patienDataSent?: any; registrationId?: string; hitFunction?: () => void; onBookingCodeUpdate?: (newBookingCode: string) => void }> = ({ open, onClose, patienDataSent, registrationId, hitFunction, onBookingCodeUpdate }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [patientData, setPatientData] = useState<any>({});
 
@@ -41,6 +41,9 @@ const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void; patienDataSe
             console.log('data before changed: ', patienDataSent);
         }
     }, [patienDataSent]);
+
+    
+    
     return (
 
         <Modal
@@ -101,7 +104,11 @@ const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void; patienDataSe
                                     },
                                 }
                             );
-                            console.log(response);
+                            console.log(response.data.data);
+
+                            if (response.data.data.bookingCode){
+                                onBookingCodeUpdate?.(response.data.data.bookingCode);
+                            }
                             hitFunction?.();
                         } catch (error) {
                             console.error(error);

@@ -50,6 +50,9 @@ const InformasiTicketAPI = ({
   const [patientData, setPatientData] = useState<any>({});
   const [successChangePhone, setSuccessChangePhone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [localBookingCode, setLocalBookingCode] = useState(bookingCode);
+
+  
 
 
   const showTemporaryAlertSuccessChangePhone = async () => {
@@ -141,6 +144,11 @@ const InformasiTicketAPI = ({
     setAlertDownloaded(false)
   }
 
+  const handleBookingCodeUpdate = (newBookingCode: string) => {
+    setLocalBookingCode(newBookingCode); // Simpan booking code baru di state
+};
+
+
   return (
     <Box width={"100%"} >
       {alertDownloaded && <AlertSuccess label="Tiket antrian berhasil di unduh" />}
@@ -222,7 +230,7 @@ const InformasiTicketAPI = ({
         sx={{ overflow: "hidden", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", }}
       >
         {showModal && (
-          <ModalUbahNoHp hitFunction={showTemporaryAlertSuccessChangePhone} open={showModal} onClose={() => setShowModal(false)} patienDataSent={patientData} registrationId={registrationId} />
+          <ModalUbahNoHp hitFunction={showTemporaryAlertSuccessChangePhone} open={showModal} onClose={() => setShowModal(false)} patienDataSent={patientData} registrationId={registrationId} onBookingCodeUpdate={handleBookingCodeUpdate} />
         )}
         {onClose && (
           <IconButton
@@ -289,7 +297,7 @@ const InformasiTicketAPI = ({
               <>
                 <Typography fontSize={"16px"}>{nomorAntrian ? "Nomor antrian" : "Booking Code"}</Typography>
                 <Typography fontSize={"48px"} fontWeight={"600"}>
-                  {nomorAntrian ? nomorAntrian : bookingCode}
+                  {nomorAntrian ? nomorAntrian : localBookingCode}
                 </Typography>
               </>
             )}
