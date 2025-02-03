@@ -6,13 +6,12 @@ import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom';
 import { createRoom } from '../../../services/Admin Tenant/ManageRoom/CreateRoomService';
 import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
-import { CreateImageService } from '../../../services/Admin Tenant/ManageImage/AddImageServices';
+import { uploadImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
 
 type Building = {
     id: string;
     name: string;
 };
-
 
 type ImageData = {
     imageName: string;
@@ -36,14 +35,15 @@ export default function useTambahRuangan() {
                 })));
             } catch (error) {
                 if (axios.isAxiosError(error)) {
-                    console.error("Axios error:", error.message);
+                    console.error(error.message);
                 } else {
-                    console.error("Unexpected error:", error);
+                    console.error(error);
                 }
             }
         };
         fetchGedungData();
     }, []);
+
     const showTemporaryAlertError = async () => {
         setErrorAlert(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -84,26 +84,21 @@ export default function useTambahRuangan() {
                     throw new Error('Room ID tidak ditemukan');
                 }
 
-                // Persiapkan data gambar
-                const imageRequest = {
-                    parentId: roomId,
-                    images: imagesData.map(({ imageName = "", imageType = "", imageData = "" }) => ({
-                        imageName,
-                        imageType,
-                        imageData
-                    }))
-                };
-
-                // Upload gambar jika ada
-                if (imagesData.length > 0) {
-                    await CreateImageService(imageRequest);
-                }
+                await Promise.all([
+                    uploadImages(roomId, imagesData)
+                ]);
 
                 formik.resetForm();
                 setImagesData([]);
-                navigate('/ruangan', { state: { successAdd: true, message: 'Ruangan berhasil ditambahkan!' } });
+
+                navigate('/ruangan', { 
+                    state: { 
+                        successAdd: true, 
+                        message: 'Ruangan berhasil ditambahkan!' 
+                    } 
+                });
+
             } catch (error) {
-                console.error('Error adding room:', error);
                 showTemporaryAlertError();
             }
         },
@@ -118,6 +113,5 @@ export default function useTambahRuangan() {
         errorAlert,
         setErrorAlert,
         showTemporaryAlertError
-
     }
 }

@@ -53,6 +53,7 @@ import TambahPasienUmumOffline from './pages/pasien/pasienn/features/TambahPasie
 import DetailFasilitas from './pages/fasilitas/features/DetailFasilitas';
 import DetailDokter from './pages/dokter/features/DetailDokter';
 import RegistrationOnline from './pages/pasien/features/RegistrationOnline';
+import NotFoundPage from './pages/NotFoundPage';
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -144,7 +145,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
 
         {/* end no need auth */}
-
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   </StrictMode>

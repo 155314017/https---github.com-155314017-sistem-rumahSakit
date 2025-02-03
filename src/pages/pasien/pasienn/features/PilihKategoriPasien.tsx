@@ -18,10 +18,6 @@ import AlertWarning from "../../../../components/small/alert/AlertWarning";
 
 export default function PilihKategoriPasien() {
     const {
-        // setOpenModalKodeBooking,
-        // openModalKodeBooking,
-        // openModalPilihPembayaran,
-        // setOpenModalPilihPembayaran,
         mainPages,
         setMainPages,
         inputCodePages,
@@ -30,18 +26,14 @@ export default function PilihKategoriPasien() {
         setIsLoading,
         infoTicket,
         setInfoTicket,
-        // nomorAntrian,
         tiketAntrianKonter,
         setTiketAntrianKonter,
         noDataBooking,
         setNoDataBooking,
         dataKodeBooking,
-        // handleBack,
-        // pasienBaru,
         bookingCodeSchema,
         style,
         onSubmitKodeBooking,
-        // needAdmin,
         queueData,
         tanggalReservasi
     } = usePilihKategoriPasien();
@@ -71,88 +63,6 @@ export default function PilihKategoriPasien() {
                 }}
             >
                 {noDataBooking && <AlertWarning teks="Kode booking tidak terdaftar" />}
-                {/* Halaman Utama */}
-                {/* {mainPages && (
-                    <Box >
-                        <CardMedia
-                            component="img"
-                            sx={{
-                                width: "100%",
-                                height: "350px",
-                                borderRadius: "24px",
-                                position: "relative",
-                                marginTop: "20px",
-                                boxShadow: 2
-                            }}
-                            image={register}
-                            alt="Example Image"
-                        />
-                        <Box width={'100%'}>
-                            <Box
-                                sx={{
-                                    bgcolor: '#ffffff',
-                                    width: '96%',
-                                    height: 'fit-content',
-                                    borderRadius: '24px',
-                                    gap: '4px',
-                                    padding: '24px',
-                                    my: '2%',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    boxShadow: 2,
-                                }}
-                            >
-                                <Typography id="modal-modal-description" fontWeight={600} fontSize={'24px'} lineHeight={'26px'}>
-                                    Pilih Kategori Pasien
-                                </Typography>
-                                <Typography color="#747487" fontWeight={400} fontSize={'18px'} maxWidth={'85%'}>
-                                    Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
-                                </Typography>
-                            </Box>
-                            <Box
-                                sx={{ display: "flex", flexDirection: "column", gap: 0 }}
-                            >
-                                <PasienCard
-                                    avatarSrc={medicineImg}
-                                    description="Dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu, dan berhak mendapatkan pelayanan kesehatan."
-                                    title="Pasien Lama"
-                                    bgColor="#D5D1FB"
-                                    onClick={
-                                        () => {
-                                            setOpenModalPilihPembayaran(true);
-                                            setMainPages(false);
-                                        }
-                                    }
-                                />
-
-                                <PasienCard
-                                    avatarSrc={fillingImg}
-                                    description="Dimana sudah terdaftar dalam program BPJS, sudah memiliki kartu, dan berhak mendapatkan pelayanan kesehatan."
-                                    title="Pasien Baru"
-                                    bgColor="#D5D1FB"
-                                    onClick={
-                                        pasienBaru
-                                    }
-                                />
-                                <PasienCard
-                                    avatarSrc={qrcodeImg}
-                                    description=" Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian."
-                                    title="Masukkan Kode Booking"
-                                    bgColor="#D5D1FB"
-                                    onClick={
-                                        () => {
-                                            setInputCodePages(true);
-                                            setMainPages(false);
-                                        }
-                                    }
-                                />
-                            </Box>
-                        </Box>
-                        <ModalKodeBooking open={openModalKodeBooking} onClose={() => setOpenModalKodeBooking(false)} />
-                    </Box>
-                )} */}
-
-                {/* Halaman Input Kode Booking */}
                 {inputCodePages && (
                     <Box sx={{ ...style }}>
 
@@ -200,16 +110,26 @@ export default function PilihKategoriPasien() {
                                                 error={Boolean(errors.bookingCode && touched.bookingCode)}
                                                 helperText={errors.bookingCode && touched.bookingCode ? errors.bookingCode : ""}
                                                 sx={{
-                                                    borderRadius: "8px",
-                                                    fontSize: "16px",
-                                                    marginBottom: "16px",
-                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                        borderColor: '#8F85F3',
+                                                    width: "100%",
+                                                    height: "48px",
+                                                    marginTop: "10px",
+                                                    "& .MuiOutlinedInput-root": {
+                                                        borderRadius: "8px",
+                                                        backgroundColor: touched.bookingCode && errors.bookingCode ? "#ffcccc" : "inherit",
+                                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                            borderColor: '#8F85F3',
+                                                        },
+                                                    },
+                                                    "& .MuiOutlinedInput-notchedOutline": {
+                                                        border: "1px solid #ccc",
+                                                    },
+                                                    "& .MuiOutlinedInput-input": {
+                                                        padding: "10px",
+                                                        fontSize: "16px",
                                                     },
                                                 }}
                                                 inputProps={{
                                                     style: {
-                                                        padding: "10px",
                                                         textAlign: "center",
                                                     },
                                                 }}
@@ -280,36 +200,30 @@ export default function PilihKategoriPasien() {
 
                             }}
                         >
-                            {/* <Typography id="modal-modal-title" fontWeight={600} fontSize={'24px'} lineHeight={'26px'}>
-                                Pilih metode pembayaran
+                            <Typography id="modal-modal-description" fontWeight={600} fontSize={'24px'} lineHeight={'26px'}>
+                                Pilih Kategori Pasien
                             </Typography>
-                            <Typography color="#747487" fontWeight={400} fontSize={'18px'}>
-                                Cara yang digunakan untuk menyelesaikan transaksi.
-                            </Typography> */}
-                             <Typography id="modal-modal-description" fontWeight={600} fontSize={'24px'} lineHeight={'26px'}>
-                                    Pilih Kategori Pasien
-                                </Typography>
-                                <Typography color="#747487" fontWeight={400} fontSize={'18px'} maxWidth={'85%'}>
-                                    Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
-                                </Typography>
+                            <Typography color="#747487" fontWeight={400} fontSize={'18px'} maxWidth={'85%'} lineHeight={'20px'}>
+                                Membantu tenaga medis dalam memberikan perawatan yang lebih terorganisir, sesuai dengan tingkat kebutuhan pasien.
+                            </Typography>
                         </Box>
 
                         <Stack direction="column" width={'100%'} spacing={0}>
                             {/* Kode Booking */}
                             <PasienCard
-                                    avatarSrc={qrcodeImg}
-                                    description=" Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian."
-                                    title="Masukkan Kode Booking"
-                                    bgColor="#F1F0FE"
-                                    onClick={
-                                        () => {
-                                            setInputCodePages(true);
-                                            setMainPages(false);
-                                        }
+                                avatarSrc={qrcodeImg}
+                                description="Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian."
+                                title="Masukkan Kode Booking"
+                                bgColor="#F1F0FE"
+                                onClick={
+                                    () => {
+                                        setInputCodePages(true);
+                                        setMainPages(false);
                                     }
-                                />
+                                }
+                            />
 
-                            
+
                             {/* Pasien Umum */}
                             <PasienCard
                                 href="/tambahPasien/umum/offline"
@@ -324,7 +238,7 @@ export default function PilihKategoriPasien() {
                                 href="/tambahPasien/umum/offline"
                                 avatarSrc={injuryImg}
                                 title="Pasien Asuransi"
-                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
+                                description="Pasien yang berobat di rumah sakit dengan biaya yang di cover oleh pihak asuransi."
                                 bgColor="#F1F0FE"
                             />
 
@@ -332,53 +246,34 @@ export default function PilihKategoriPasien() {
                             <PasienCard
                                 avatarSrc={medicineImg}
                                 title="Pasien non BPJS kesehatan"
-                                description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
+                                description="Pasien yang berobat di rumah sakit dengan biaya yang di cover oleh pemerintah."
                                 bgColor="#F1F0FE"
                             />
 
-                            
+
                         </Stack>
-                        {/* <Button
-                            sx={{
-                                padding: "10px 20px",
-                                backgroundColor: "#8F85F3",
-                                color: "white",
-                                borderRadius: "8px",
-                                cursor: "pointer",
-                                fontWeight: 600,
-                                mt: '2%',
-                                mb: '2%',
-                                boxShadow: 2,
-                                width: "100%",
-                                border: '1px solid #8F85F3',
-                                ":hover": { backgroundColor: 'inherit', color: '#8F85F3' }
-                            }}
-                            onClick={handleBack}
-                        >
-                            Kembali ke pilihan sebelumnya
-                        </Button> */}
                     </Box>
                 )}
 
                 <Box>
-                {infoTicket && (
-                    <InformasiTicketAPI
-                        clinic={dataKodeBooking?.namaKlinik}
-                        jadwalKonsul={dataKodeBooking?.jadwalKonsul}
-                        namaDokter={dataKodeBooking?.namaDokter}
-                        tanggalReservasi={dataKodeBooking?.tanggalReserve}
-                        nomorAntrian={queueData?.queueNumber || 0}
-                        offline={true}
-                        onClose={() => {
-                            console.log("Tombol close ditekan");
-                            setInfoTicket(false);
-                            setMainPages(true);
-                        }}
-                    />
-                    
+                    {infoTicket && (
+                        <InformasiTicketAPI
+                            clinic={dataKodeBooking?.namaKlinik}
+                            jadwalKonsul={dataKodeBooking?.jadwalKonsul}
+                            namaDokter={dataKodeBooking?.namaDokter}
+                            tanggalReservasi={dataKodeBooking?.tanggalReserve}
+                            nomorAntrian={queueData?.queueNumber || 0}
+                            offline={true}
+                            onClose={() => {
+                                console.log("Tombol close ditekan");
+                                setInfoTicket(false);
+                                setMainPages(true);
+                            }}
+                        />
 
 
-                )}
+
+                    )}
                 </Box>
 
                 {tiketAntrianKonter && (

@@ -20,10 +20,17 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (file.size > 1 * 1024 * 1024) { 
+      // Validasi ukuran file
+      if (file.size > 1 * 1024 * 1024) {  // Maksimum 1MB
         setError("Ukuran file terlalu besar. Maksimum 1MB.");
         return;
       }
+
+      // Validasi jenis file 
+      // if (file.type !== 'application/pdf') {
+      //   setError("Jenis file tidak valid. Hanya file PDF yang diperbolehkan.");
+      //   return;
+      // }
 
       setError(null); // Reset error jika file valid
       setFileName(file.name);
@@ -33,6 +40,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
         const base64String = reader.result as string;
         onBase64Change?.(base64String); // Kirim Base64
       };
+
       reader.onerror = () => {
         alert("Gagal membaca file. Silakan coba lagi.");
         handleRemoveFile();
@@ -40,6 +48,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
       reader.readAsDataURL(file);
     }
   };
+
 
   return (
     <Box

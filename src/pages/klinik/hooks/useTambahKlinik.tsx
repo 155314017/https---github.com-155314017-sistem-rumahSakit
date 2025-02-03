@@ -1,170 +1,155 @@
-import { useState } from 'react';
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import dayjs from 'dayjs';
 import axios from "axios";
-import Cookies from "js-cookie";
+import { useFormik } from "formik";
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as Yup from "yup";
 import { createClinic } from '../../../services/Admin Tenant/ManageClinic/CreateClinic';
+import { ImageData, uploadImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
+import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 
-type ImageData = {
-    imageName: string;
-    imageType: string;
-    imageData: string;
-};
-
-type Schedule = {
-  day: string
-  startTime: dayjs.Dayjs
-  endTime: dayjs.Dayjs
-}
 
 export default function useTambahKlinik() {
-    const [successAlert, setSuccessAlert] = useState(false);
-    const [selectedDay, setSelectedDay] = useState<string | null>(null);
-    const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
-    const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
-    const [imagesData, setImagesData] = useState<ImageData[]>([]);
-    const [errorAlert, setErrorAlert] = useState(false);
-    const [operationalTime] = useState<string | null>(null);
-    const [schedules, setSchedules] = useState<Schedule[]>([])
-    const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [imagesData, setImagesData] = useState<ImageData[]>([]);
+  const [errorAlert, setErrorAlert] = useState(false);
+  const [operationalTime] = useState<string | null>(null);
+  const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
+  const navigate = useNavigate();
 
-    const showTemporaryAlertError = async () => {
-        setErrorAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setErrorAlert(false);
-    };
+  const showTemporaryAlertError = async () => {
+    setErrorAlert(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setErrorAlert(false);
+  };
 
+  const showTemporaryAlertSuccess = async () => {
+    setSuccessAlert(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setSuccessAlert(false);
+  };
 
-    const dayMapping: { [key: string]: number } = {
-        "Senin": 1,
-        "Selasa": 2,
-        "Rabu": 3,
-        "Kamis": 4,
-        "Jumat": 5,
-        "Sabtu": 6,
-        "Minggu": 0,
-    };
+  const breadcrumbItems = [
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "Klinik", href: "/klinik" },
+    { label: "Tambah Klinik", href: "/tambahKlinik" },
+  ];
 
+  const formik = useFormik({
+    initialValues: {
+      namaKlinik: '',
+      deskripsiKlinik: '',
+      code: '',
+    },
+    validationSchema: Yup.object({
+      namaKlinik: Yup.string().required('Nama Klinik is required'),
+      deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
+      code: Yup.string().required('Code Klinik is required'),
+    }),
+    onSubmit: async (values) => {      
+      console.log(values);
+    },
+  });
 
-    const handleTambahHari = () => {
-        if (selectedDay && startTime && endTime) {
-          const newSchedule: Schedule = {
-            day: selectedDay,
-            startTime: startTime,
-            endTime: endTime
-          }
-          setSchedules([...schedules, newSchedule])
-          setSelectedDay('')
-          setStartTime(null)
-          setEndTime(null)
+  const handleImageChange = (images: ImageData[]) => {
+    setImagesData(images);
+  };
+
+  const getPageStyle = (page: number) => {
+    if (page === currentPage) {
+      return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
+    } else if (page < currentPage) {
+      return { color: "#8F85F3", cursor: "pointer" };
+    } else {
+      return { color: "black", cursor: "pointer" };
+    }
+  };
+
+  const getBorderStyle = (page: number) => {
+    if (page === currentPage) {
+      return {
+        display: "flex",
+        border: "1px solid #8F85F3",
+        width: "38px",
+        height: "38px",
+        borderRadius: "8px",
+        justifyContent: "center",
+        alignItems: "center",
+      };
+    } else if (page < currentPage) {
+      return {
+        display: "flex",
+        border: "1px solid #8F85F3",
+        width: "38px",
+        height: "38px",
+        borderRadius: "8px",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#8F85F3",
+        color: "white",
+      };
+    } else {
+      return {
+        display: "flex",
+        border: "1px solid #8F85F3",
+        width: "38px",
+        height: "38px",
+        borderRadius: "8px",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "#8F85F3",
+      };
+    }
+  };
+
+  const handleSaveKlinik = async () => {
+    try {
+      const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
+
+      // Validasi input schedule
+      validateInput(kalenderData);
+
+      // Data untuk CreateClinic
+      const klinikData = {
+        name: formik.values.namaKlinik , // Sebaiknya ini dari form atau auto-generate
+        description: formik.values.deskripsiKlinik,
+        additionalInfo: '',
+        code: formik.values.code
+      };
+
+      // Buat klinik baru
+      const { data: { id: klinikId } } = await createClinic(klinikData);
+      if (!klinikId) throw new Error('Klinik ID tidak ditemukan');
+
+      // Proses secara parallel untuk optimasi
+      await Promise.all([
+        createSchedules(klinikId, kalenderData.praktek),
+        createExclusions(klinikId, kalenderData.exclusion),
+        uploadImages(klinikId, imagesData)
+      ]);
+
+      // Reset state dan redirect
+      formik.resetForm();
+      setImagesData([]);
+
+      navigate('/klinik', {
+        state: {
+          successAdd: true,
+          message: 'Klinik berhasil ditambahkan!'
         }
+      });
+    } catch (error) {
+      console.error('[DEBUG] Error saat menyimpan klinik:', error);
+      if (axios.isAxiosError(error)) {
+        const responseData = error.response?.data;
+        console.error('[DEBUG] Detail error dari server:', responseData || error.message);
       }
-
-      const handleDeleteSchedule = (index: number) => {
-        setSchedules(schedules.filter((_, i) => i !== index))
-      }
-
-    const showTemporaryAlertSuccess = async () => {
-        setSuccessAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessAlert(false);
-    };
-
-    const breadcrumbItems = [
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "Klinik", href: "/klinik" },
-        { label: "Tambah Klinik", href: "/tambahKlinik" },
-    ];
-
-    const formik = useFormik({
-        initialValues: {
-            namaKlinik: '',
-            deskripsiKlinik: '',
-        },
-        validationSchema: Yup.object({
-            namaKlinik: Yup.string().required('Nama Klinik is required'),
-            deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
-        }),
-        onSubmit: async (values) => {
-
-            const formattedSchedules = schedules.map(schedule => {
-                          const normalizedDay = schedule.day.trim().charAt(0).toUpperCase() + schedule.day.slice(1).toLowerCase();
-                          const selectedDayOfWeek = dayMapping[normalizedDay];
-                      
-                          const parsedStartTime = dayjs(schedule.startTime, 'HH:mm', true);
-                          const parsedEndTime = dayjs(schedule.endTime, 'HH:mm', true);
-                      
-                          const referenceDate = dayjs().startOf('week');
-                      
-                          const startDateTime = referenceDate
-                            .day(selectedDayOfWeek)
-                            .set('hour', parsedStartTime.hour())
-                            .set('minute', parsedStartTime.minute())
-                            .set('second', 0)
-                      
-                          const endDateTime = referenceDate
-                            .day(selectedDayOfWeek)
-                            .set('hour', parsedEndTime.hour())
-                            .set('minute', parsedEndTime.minute())
-                            .set('second', 0)
-                      
-                          return {
-                            startDateTime: startDateTime.valueOf(),
-                            endDateTime: endDateTime.valueOf()
-                          };
-                        }).filter(schedule => schedule !== null);
-
-            const data = {
-                name: values.namaKlinik,
-                description: values.deskripsiKlinik,
-                additionalInfo: "",
-                schedules: formattedSchedules,
-                images: imagesData.map(image => ({
-                    imageName: image.imageName || "",
-                    imageType: image.imageType || "",
-                    imageData: image.imageData || "",
-                })),
-            };
-            const token = Cookies.get("accessToken");
-
-            try {
-                await createClinic(data, token);
-                showTemporaryAlertSuccess();
-                formik.resetForm();
-                setImagesData([]);
-                navigate('/klinik', { state: { successAdd: true, message: 'Klinik berhasil ditambahkan!' } });
-            } catch (error) {
-                console.error('Error submitting form:', error);
-                if (axios.isAxiosError(error)) {
-                    console.error('Axios error message:', error.message);
-                    if (error.response) {
-                        console.error('Response status:', error.response.status);
-                    } else {
-                        console.error('Error message:', error.message);
-                    }
-                    showTemporaryAlertError();
-                } else {
-                    console.error('Unexpected error:', error);
-                }
-            }
-        },
-    });
-
-    const handleImageChange = (images: ImageData[]) => {
-        setImagesData(images);
-    };
+      showTemporaryAlertError();
+    }
+  };
   return {
     breadcrumbItems,
-    handleTambahHari,
     formik,
-    selectedDay,
-    setSelectedDay,
-    startTime,
-    setStartTime,
-    endTime,
-    setEndTime,
     imagesData,
     setImagesData,
     handleImageChange,
@@ -172,7 +157,11 @@ export default function useTambahKlinik() {
     errorAlert,
     operationalTime,
     showTemporaryAlertSuccess,
-    schedules,
-    handleDeleteSchedule
+    currentPage,
+    setCurrentPage,
+    getPageStyle,
+    getBorderStyle,
+    kalenderRef,
+    handleSaveKlinik
   }
 }

@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { EditBuildingService } from "../../../services/Admin Tenant/ManageBuilding/EditBuildingService";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
-import { EditImageService } from "../../../services/Admin Tenant/ManageImage/EditImageServices";
+import { editImages } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
 
 type ImageData = {
     imageName: string;
@@ -82,7 +82,6 @@ export default function useEditGedung() {
             alamatGedung: Yup.string().required('Alamat Gedung is required'),
         }),
         onSubmit: async (values) => {
-
             const data = {
                 buildingId: id,
                 name: values.namaGedung,
@@ -92,19 +91,7 @@ export default function useEditGedung() {
 
             try {
                 await EditBuildingService(data);
-
-                const imageRequest = {
-                    parentId: id || "",
-                    images: imagesData.map(({ imageName = "", imageType = "", imageData = "" }) => ({
-                        imageName,
-                        imageType, 
-                        imageData
-                    }))
-                };
-
-                if (imagesData.length > 0) {
-                    await EditImageService(imageRequest);
-                }
+                await editImages(id || "", imagesData);
 
                 showTemporaryAlertSuccess();
                 formik.resetForm();

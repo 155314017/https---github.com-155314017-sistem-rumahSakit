@@ -18,38 +18,38 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
     const [availableTimes, setAvailableTimes] = useState<{ [date: string]: { timeRange: string, scheduleId: string, disabled: boolean }[] }>({});
     const [availableDates, setAvailableDates] = useState<Set<string>>(new Set());
 
-    const dummySchedules = [
-        {
-            id: "1",
-            title: "Morning Shift",
-            startTime: [8, 0],
-            endTime: [12, 0],
-            typeId: "1",
-            maxCapacity: 10,
-            monday: true,
-            tuesday: true,
-            wednesday: true,
-            thursday: true,
-            friday: true,
-            saturday: false,
-            sunday: false,
-        },
-        {
-            id: "2",
-            title: "Afternoon Shift",
-            startTime: [13, 30],
-            endTime: [16, 30],
-            typeId: "2",
-            maxCapacity: 8,
-            monday: true,
-            tuesday: true,
-            wednesday: true,
-            thursday: true,
-            friday: true,
-            saturday: true,
-            sunday: false,
-        },
-    ];
+    // const dummySchedules = [
+    //     {
+    //         id: "1",
+    //         title: "Morning Shift",
+    //         startTime: [8, 0],
+    //         endTime: [12, 0],
+    //         typeId: "1",
+    //         maxCapacity: 10,
+    //         monday: true,
+    //         tuesday: true,
+    //         wednesday: true,
+    //         thursday: true,
+    //         friday: true,
+    //         saturday: false,
+    //         sunday: false,
+    //     },
+    //     {
+    //         id: "2",
+    //         title: "Afternoon Shift",
+    //         startTime: [13, 30],
+    //         endTime: [16, 30],
+    //         typeId: "2",
+    //         maxCapacity: 8,
+    //         monday: true,
+    //         tuesday: true,
+    //         wednesday: true,
+    //         thursday: true,
+    //         friday: true,
+    //         saturday: true,
+    //         sunday: false,
+    //     },
+    // ];
 
     const exclusionInterval = [
         { date: '2025-01-27', scheduleIntervalId: '1', allday: false },
@@ -80,11 +80,11 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                     processSchedules(schedules);
                 } else {
                     console.warn('No schedules found. Using dummy schedules.');
-                    processSchedules(dummySchedules);
+                    // processSchedules(dummySchedules);
                 }
             } catch (error) {
                 console.error('Error fetching schedules:', error);
-                processSchedules(dummySchedules);
+                // processSchedules(dummySchedules);
             }
         };
 
@@ -305,13 +305,17 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                                         sx={{
                                             width: '100%',
                                             padding: 1,
-                                            height: '40px',
-                                            borderRadius: '8px',
-                                            bgcolor: selectedTimeRange === timeRange ? '#8F85F3' : 'transparent',
-                                            color: selectedTimeRange === timeRange ? '#fff' : '#000',
-                                            border: selectedTimeRange === timeRange ? '1px solid #8F85F3' : '1px solid #ccc',
+                                            height: '60px',
+                                            borderRadius: '100px',
+                                            bgcolor: 'transparent',
+                                            color: '#0A0A0D',
+                                            fontWeight: 400,
+                                            fontSize: '14px',
+                                            lineHeight: '16px',
+                                            alignItems: 'center',
+                                            border: selectedTimeRange === timeRange ? '1px solid #7367F0' : 'none',
                                             '&:hover': {
-                                                border: '1px solid #8F85F3',
+                                                border: '1px solid #7367F0',
                                             },
                                         }}
                                     >
@@ -335,7 +339,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                                 },
                             }}
                         >
-                            Cancel
+                            Batal
                         </Button>
                         <Button
                             onClick={handleSave}

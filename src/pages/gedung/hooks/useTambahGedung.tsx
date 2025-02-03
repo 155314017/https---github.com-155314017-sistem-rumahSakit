@@ -4,7 +4,7 @@ import {  useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CreateBuildingService } from "../../../services/Admin Tenant/ManageBuilding/AddBuildingServices";
-import { CreateImageService } from "../../../services/Admin Tenant/ManageImage/AddImageServices";
+import { uploadImages } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
 
 type ImageData = {
     imageName: string;
@@ -48,33 +48,22 @@ export default function useTambahGedung() {
                 name: values.namaGedung,
                 address: values.alamatGedung,
                 additionalInfo: "",
-                
             };
 
-
             try {
-                // Buat gedung baru
                 const { data: { id: buildingId } } = await CreateBuildingService(data);
 
                 if (!buildingId) {
                     throw new Error('Building ID tidak ditemukan');
                 }
-                // Persiapkan data gambar
-                const imageRequest = {
-                    parentId: buildingId,
-                    images: imagesData.map(({ imageName = "", imageType = "", imageData = "" }) => ({
-                        imageName,
-                        imageType, 
-                        imageData
-                    }))
-                };
-                // Upload gambar jika ada
-                if (imagesData.length > 0) {
-                    await CreateImageService(imageRequest);
-                }
-                // Reset form dan redirect
+
+                await Promise.all([
+                    uploadImages(buildingId, imagesData)
+                ]);
+
                 formik.resetForm();
                 setImagesData([]);
+
                 navigate('/gedung', { 
                     state: { 
                         successAdd: true, 
@@ -83,21 +72,18 @@ export default function useTambahGedung() {
                 });
 
             } catch (error) {
-                console.error('Gagal menambahkan gedung:', error);
-                
                 if (axios.isAxiosError(error)) {
-                    const responseData = error.response?.data;
-                    console.error('Detail error:', responseData || error.message);
+                    return error.response?.data;
                 }
-                
                 showTemporaryAlertError();
             }
         },
     });
-  return {
-    formik,
-    handleImageChange,
-    breadcrumbItems,
-    errorAlert
-  }
+
+    return {
+        formik,
+        handleImageChange,
+        breadcrumbItems,
+        errorAlert
+    }
 }

@@ -1,6 +1,5 @@
 import { Button, Box, Typography } from "@mui/material";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
-import bgImage from "../../assets/img/String.png";
 
 interface MicroBreadcrumbProps {
     title: string;
@@ -49,18 +48,18 @@ export default function BreadCrumbBasic({
                 </Button>
 
                 <Box>
-                    <Typography variant="h6" sx={{ fontSize: "18px", fontWeight: 600 }}>
+                    <Typography sx={{ fontSize: "20px", fontWeight: 600, lineHeight: '22px', color: '#0A0A0D' }}>
                         {title}
                     </Typography>
-                    <Typography sx={{ fontSize: "14px", color: "#747487", mt: 1 }}>
+                    <Typography sx={{ fontSize: "18px", lineHeight: '20px', color: "#747487", mt: 1, fontWeight: 400 }}>
                         {description}
                     </Typography>
                 </Box>
             </Box>
 
-            <Box sx={{ position: "absolute", top: 0, right: 0 }}>
+            {/* <Box sx={{ position: "absolute", top: 0, right: 0 }}>
                 <img src={bgImage} alt="bgImage" style={{ width: "150px", height: "auto" }} />
-            </Box>
-        </Box>
+            </Box> */}
+        </Box >
     );
 }
