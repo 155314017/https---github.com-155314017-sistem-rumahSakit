@@ -42,6 +42,7 @@ import DropdownList from '../small/dropdownlist/DropdownList';
 import DropdownListTime from '../small/dropdownlist/DropdownListTime';
 import { CloseOutlined } from '@mui/icons-material';
 import ModalUbahNoHp from '../small/modal/ModalUbahNoHp';
+import { ScheduleDataItem } from '../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices';
 
 // Definisikan interface untuk Event dan Session
 interface Event {
@@ -92,6 +93,27 @@ interface ExclusionData {
 
 interface TestKalenderRef {
     getData: () => KalenderData;
+}
+
+interface APIScheduleData {
+    id: string;
+    startTime: number[];
+    endTime: number[];
+    typeId: string;
+    additionalInfo: string;
+    monday: boolean;
+    tuesday: boolean;
+    wednesday: boolean;
+    thursday: boolean;
+    friday: boolean;
+    saturday: boolean;
+    sunday: boolean;
+    title: string;
+    description: string;
+}
+
+interface TestKalenderProps {
+    initialData?: ScheduleDataItem[] | null;
 }
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
@@ -236,7 +258,33 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     },
 }));
 
-const TestKalender = forwardRef<TestKalenderRef>((_, ref) => {
+const convertTimeArrayToAMPM = (timeArray: number[]): string => {
+    const [hours, minutes] = timeArray;
+    const period = hours >= 12 ? 'pm' : 'am';
+    const hour12 = hours % 12 || 12;
+    return `${hour12.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${period}`;
+};
+
+const convertAPIDataToSession = (apiData: APIScheduleData): Session => {
+    const selectedDays: string[] = [];
+    if (apiData.monday) selectedDays.push('senin');
+    if (apiData.tuesday) selectedDays.push('selasa');
+    if (apiData.wednesday) selectedDays.push('rabu');
+    if (apiData.thursday) selectedDays.push('kamis');
+    if (apiData.friday) selectedDays.push('jumat');
+    if (apiData.saturday) selectedDays.push('sabtu');
+    if (apiData.sunday) selectedDays.push('minggu');
+
+    return {
+        id: apiData.id,
+        startTime: convertTimeArrayToAMPM(apiData.startTime),
+        endTime: convertTimeArrayToAMPM(apiData.endTime),
+        selectedDays,
+        notes: apiData.description || apiData.additionalInfo || '',
+    };
+};
+
+const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialData }, ref) => {
     useImperativeHandle(ref, () => ({
         getData: () => getKalenderData(),
     }));
@@ -629,6 +677,14 @@ const TestKalender = forwardRef<TestKalenderRef>((_, ref) => {
         }
         setCurrentView(view);
     };
+
+    // Tambahkan useEffect untuk menginisialisasi data dari API
+    useEffect(() => {
+        if (initialData) {
+            const convertedSessions = initialData.map(convertAPIDataToSession);
+            setSessions(convertedSessions);
+        }
+    }, [initialData]);
 
     return (
         <>

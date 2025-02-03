@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ScheduleData } from "../ManageSchedule/GetScheduleById";
 
 export interface AmbulanceDataItem {
   id: string;
@@ -13,7 +14,7 @@ export interface AmbulanceDataItem {
   deletedDateTime: number | null;
   cost: number;
   images: string[];
-  schedules: { id: string; startDateTime: number; endDateTime: number }[];
+  schedules: ScheduleData[];
   operationalSchedule?: string;
 }
 
