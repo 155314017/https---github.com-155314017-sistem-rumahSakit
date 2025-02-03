@@ -29,7 +29,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                     id: item.id,
                     title: item.title || '',
                     startTime: item.startTime,
-                    endTime: item.endTime,  
+                    endTime: item.endTime,
                     typeId: item.typeId,
                     monday: item.monday,
                     tuesday: item.tuesday,
@@ -160,8 +160,27 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
             }
         });
 
+        // Logika untuk memastikan jika masih ada sisa waktu operasional
+        for (const date in exclusionTimes) {
+            const exclusionSlots = exclusionTimes[date];
+            const availableSlots = availableTimes[date] || [];
+            //pemeriksaan logic
+            availableSlots.forEach((slot) => {
+                exclusionSlots.forEach((exclusion) => {
+                    const [exclusionStart, exclusionEnd] = exclusion.timeRange.split(' - ').map((time) => dayjs(time, 'HH:mm'));
+                    const [scheduleStart, scheduleEnd] = slot.timeRange.split(' - ').map((time) => dayjs(time, 'HH:mm'));
+
+                    // Jika exclusion tidak sepenuhnya menutupi schedule maka timeslot tetap nyala
+                    if (exclusionStart.isAfter(scheduleEnd) || exclusionEnd.isBefore(scheduleStart)) {
+                        exclusion.disabled = false;
+                    }
+                });
+            });
+        }
+
         return exclusionTimes;
     };
+
 
     const checkDisabledDates = () => {
         if (!availableDates.size || !availableTimes) {
@@ -185,7 +204,6 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
             }
         });
 
-        // Hanya setAvailableDates jika data baru berbeda
         if (newAvailableDates.size !== availableDates.size) {
             setAvailableDates(newAvailableDates);
         }
@@ -194,7 +212,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
 
     useEffect(() => {
         if (dataLoaded) {
-            checkDisabledDates();  // memanggil fungsi setelah data dimuat seluruhnya
+            checkDisabledDates(); 
         }
     }, [availableDates, availableTimes, exclusionTimes, dataLoaded]);
 
@@ -296,7 +314,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                                 value={selectedDate}
                                 onChange={handleDateSelect}
                                 shouldDisableDate={(date) => {
-                                    if (!dataLoaded) return false; // Do not disable any date if data is not loaded yet
+                                    if (!dataLoaded) return false;
                                     const formattedDate = date.format('YYYY-MM-DD');
                                     return !availableDates.has(formattedDate); // Tanggal yang tidak memiliki jadwal atau ter-disable
                                 }}
