@@ -123,7 +123,7 @@ export default function TambahPasienUmumOffline() {
                 <Box sx={{
                     position: 'relative',
                     top: 0,
-                    left: 30,
+                    left: 10,
                     // right: "auto",
                     zIndex: 1000,
                     padding: '16px',
@@ -131,7 +131,7 @@ export default function TambahPasienUmumOffline() {
                         xs: '90%',
                         sm: '84%',
                         md: '90%',
-                        lg: '100%',
+                        lg: '78%',
                     },
                     maxWidth:'1024px',
                     
