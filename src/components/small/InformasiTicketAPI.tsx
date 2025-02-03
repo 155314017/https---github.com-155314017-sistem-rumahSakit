@@ -306,20 +306,20 @@ const InformasiTicketAPI = ({
           <Box
             display={"flex"}
             flexDirection={"row"}
-            gap={"80px"}
+            
             justifyContent={"space-between"}
-            maxWidth={"87%"}
+            maxWidth={"80%"}
           // bgcolor={'red'}
           >
-            <Box  >
+            <Box >
               <Typography>Dokter yang bertugas</Typography>
-              <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+              <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"} maxWidth={"70%"}>
                 {namaDokter}
               </Typography>
             </Box>
             <Box>
               <Typography>Poli yang dituju</Typography>
-              <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+              <Typography fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"} maxWidth={"70%"}>
                 {clinic}
               </Typography>
             </Box>
@@ -329,18 +329,18 @@ const InformasiTicketAPI = ({
               display={"flex"}
               flexDirection={"row"}
               justifyContent={"space-between"}
-              maxWidth={"90%"}
+              maxWidth={"100%"}
             // bgcolor={'red'}
             >
               <Box display={"flex"} flexDirection={"column"}>
                 <Typography>Tanggal reservasi</Typography>
-                <Typography maxWidth={"90%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                <Typography maxWidth={"100%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
                   {tanggalReservasi}
                 </Typography>
               </Box>
               <Box display={"flex"} flexDirection={"column"}>
                 <Typography>Jadwal konsultasi</Typography>
-                <Typography maxWidth={"90%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                <Typography maxWidth={"100%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
                   {jadwalKonsul}
                 </Typography>
               </Box>
@@ -355,13 +355,13 @@ const InformasiTicketAPI = ({
             >
               <Box display={"flex"} flexDirection={"column"}>
                 <Typography>Tanggal reservasi</Typography>
-                <Typography maxWidth={"90%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                <Typography maxWidth={"100%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
                   {tanggalReservasi}
                 </Typography>
               </Box>
               <Box display={"flex"} flexDirection={"column"}>
                 <Typography>Jadwal konsultasi</Typography>
-                <Typography maxWidth={"60%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                <Typography maxWidth={"100%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
                   {jadwalKonsul}
                 </Typography>
               </Box>

@@ -89,7 +89,10 @@ export default function PilihKategoriPasien() {
                                                         <BreadCrumbBasic
                                                             title="Masukkan kode booking"
                                                             description="Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian."
-                                                            onBackClick={() => window.history.back()}
+                                                            onBackClick={ () => {
+                                                                setInputCodePages(false);
+                                                                setMainPages(true);
+                                                            }}
                                                         />
                                                 
                                     

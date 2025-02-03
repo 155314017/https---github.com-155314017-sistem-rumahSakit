@@ -226,9 +226,16 @@ export default function TambahPasienUmumOffline() {
                                                 sx={{
                                                     borderRadius: '8px',
                                                     height: '48px',
+                                                    '& .MuiInputBase-root': {
+                                                        height: '48px',
+                                                    },
+                                                    '& .MuiInputBase-input': {
+                                                        height: '18px',
+                                                    },
                                                     '&:focus-within .MuiOutlinedInput-notchedOutline': {
                                                         borderColor: '#A8A8BD',
-                                                        border: '2px solid #8F85F3',
+                                                        border: '3px solid #8F85F3',
+                                                    
                                                     },
                                                     backgroundColor: formik.touched.nikCari && formik.errors.nikCari ? '#ffcccc' : '#fff',
                                                     
@@ -402,14 +409,15 @@ export default function TambahPasienUmumOffline() {
                                                                         // }}
 
                                                                         inputStyle={{
-                                                                        
                                                                             height: "48px",
                                                                             borderRadius: "8px",
                                                                             border: "1px solid #ccc",
                                                                             padding: "10px 40px 10px 60px",
+                                                                            backgroundColor: "#EEEEF2",
                                                                             fontSize: "16px",
                                                                             width: "100%",
-                                                                            backgroundColor: touched.phone && errors.phone ? '#ffcccc' : 'inherit',
+                                                                            marginTop: "10px",
+                                                                            cursor: "default",
                                                                         }}
                                                                         buttonStyle={{
                                                                             borderRadius: "8px 0 0 8px",
@@ -466,10 +474,10 @@ export default function TambahPasienUmumOffline() {
                                                                         />
                                                                     </FormControl>
 
-                                                                    < FormControl sx={{ width: '49%',  height: '100%' }}>
+                                                                    < FormControl sx={{ width: '49%',  height: '75px' }}>
                                                                         <FormLabel >Tanggal Lahir <span style={{ color: "red" }}>*</span></FormLabel>
                                                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                                            <Box sx={{ }}>
+                                                                            <Box sx={{marginTop: "-9px" }}>
                                                                                 <DemoContainer components={['DatePicker']}>
                                                                                     <DatePicker
                                                                                         value={dayjs(birth, "MM-DD-YYYY")}
@@ -484,12 +492,12 @@ export default function TambahPasienUmumOffline() {
                                                                                                 placeholder: "Tanggal Lahir",
                                                                                                 sx: {
                                                                                                     borderRadius: '8px',
-                                                                                                    height: '53px',
+                                                                                                    height: '100%',
                                                                                                     width: '100%',
                                                                                                     bgcolor: '#E8E8E8',
                                                                                                     '& .MuiOutlinedInput-root': {
                                                                                                         borderRadius: '8px',
-                                                                                                        height: '50px',
+                                                                                                        height: '58px',
                                                                                                     },
                                                                                                 },
                                                                                             },
@@ -937,7 +945,7 @@ export default function TambahPasienUmumOffline() {
 
                                 <InformasiTicketAPI
                                     clinic={clinicName}
-                                    jadwalKonsul={dayjs(selectedSchedule?.split(', ')[0]).format("YYYY-MM-DD")}
+                                    jadwalKonsul={selectedSchedule}
                                     namaDokter={docterName}
                                     nomorAntrian={queueData?.queueNumber || queueNumber}
                                     tanggalReservasi={tanggalReserve}

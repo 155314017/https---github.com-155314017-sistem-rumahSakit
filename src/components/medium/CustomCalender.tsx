@@ -251,8 +251,8 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
 
     const handleSave = () => {
         if (!selectedScheduleId || !selectedTimeRange || !selectedDate) return;
-        const formattedDate = dayjs(selectedDate).format('YYYY-MM-DD');
-        const timeRange = selectedTimeRange.split(' - ').join(' to ');
+        const formattedDate = dayjs(selectedDate).format('DD/MMM/YYYY');
+        const timeRange = selectedTimeRange.split(' - ').join(' - ');
         const selectedSchedule = `${formattedDate}, ${timeRange}`;
 
         onChange(selectedScheduleId, selectedSchedule);

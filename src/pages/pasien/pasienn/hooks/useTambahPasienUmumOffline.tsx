@@ -487,7 +487,7 @@ export default function useTambahPasienUmumOffline() {
             );
             console.log("response Booking code : ", response.data.data.bookingCode);
             setBookingCode(response.data.data.bookingCode);
-            setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
+            setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format(' DD/MMM/YYYY, HH:mm'));
             setRegistrationCode(response.data.data.id);
             const queueData = {
                 registrationId: response.data.data.id,

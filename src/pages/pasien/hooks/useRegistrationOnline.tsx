@@ -257,7 +257,7 @@ export default function useRegistrationOnline() {
                 }
             );
             console.log('regis: ', response)
-            setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('dddd, D MMMM YYYY HH:mm:ss'));
+            setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('DD/MMM/YYYY, HH:mm'));
             setBookingCode(response.data.data.bookingCode);
             setRegistrationId(response.data.data.id);
             setCurrentPage(5);
