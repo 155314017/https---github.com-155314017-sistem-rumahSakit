@@ -230,7 +230,7 @@ export default function TambahPasienUmumOffline() {
                                                         height: '48px',
                                                     },
                                                     '& .MuiInputBase-input': {
-                                                        height: '18px',
+                                                        height: '15px',
                                                     },
                                                     '&:focus-within .MuiOutlinedInput-notchedOutline': {
                                                         borderColor: '#A8A8BD',
