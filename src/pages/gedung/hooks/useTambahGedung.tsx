@@ -73,7 +73,7 @@ export default function useTambahGedung() {
 
             } catch (error) {
                 if (axios.isAxiosError(error)) {
-                    const responseData = error.response?.data;
+                    return error.response?.data;
                 }
                 showTemporaryAlertError();
             }

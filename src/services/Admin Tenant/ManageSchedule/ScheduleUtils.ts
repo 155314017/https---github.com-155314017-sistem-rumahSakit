@@ -83,9 +83,9 @@ export interface OperationalSchedule {
  * @param time - Waktu dalam format 'HH:mm:ss'
  * @returns Waktu dalam format 'hh:mm a'
  */
-const convertTo12HourFormat = (time: string): string => {
-  return dayjs(time, 'HH:mm:ss').format('hh:mm a');
-};
+// const convertTo12HourFormat = (time: string): string => {
+//   return dayjs(time, 'HH:mm:ss').format('hh:mm a');
+// };
 
 /**
  * Mengkonversi array waktu ke format string HH:mm
