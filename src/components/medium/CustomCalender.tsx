@@ -67,10 +67,40 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
         }
     };
 
+    const fetchExclusionMonthly = async () => {
+        try {
+            const dateFormatted = dayjs().format('YYYY-MM-DD');
+            const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/exclusion-interval/by-type-id/monthly?`, {
+                params: {
+                    typeId,
+                    date: '01',
+                    month: dayjs().month() + 1,
+                    year: dayjs().year(),
+                },
+            });
+
+            console.log('Exclusion monthly:  ', dateFormatted, ': ', response.data.data);
+            // if (Array.isArray(response.data.data) && response.data.data.length > 0) {
+            //     const exclusions = processExclusionData(response.data.data);
+            //     setExclusionTimes(exclusions);
+            // }
+            for (let i = 0; i < response.data.data.length; i++) {
+                console.log('response data ', i, ' :', response.data.data[i].startDate);
+            }
+        } catch (error) {
+            console.error('Error fetching exclusions for the date:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchExclusionMonthly()
+    })
+
     const processSchedules = (schedules: any[]): void => {
         if (!Array.isArray(schedules) || schedules.length === 0) {
             setAvailableDates(new Set());
             setAvailableTimes({});
+
             return;
         }
 
@@ -105,7 +135,8 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                 }
             });
         }
-
+        console.log('tes date: ', dates)
+        console.log('tes time: ', times)
         setAvailableDates(dates);
         setAvailableTimes(times);
     };
@@ -266,7 +297,21 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                                         key={timeRange}
                                         onClick={() => handleTimeSelect(timeRange, scheduleId)}
                                         variant="text"
-                                        disabled={disabled || exclusionTimes[selectedDate.format('YYYY-MM-DD')]?.some(exclusion => exclusion.timeRange === timeRange && exclusion.disabled)}
+                                        disabled={disabled || exclusionTimes[selectedDate.format('YYYY-MM-DD')]?.some(exclusion => {
+                                            const [exclusionStartTime, exclusionEndTime] = exclusion.timeRange.split(' - ');
+                                            const [scheduleStartTime, scheduleEndTime] = timeRange.split(' - ');
+
+                                            const exclusionStartHour = parseInt(exclusionStartTime.split(':')[0]);
+                                            const exclusionEndHour = parseInt(exclusionEndTime.split(':')[0]);
+                                            const scheduleStartHour = parseInt(scheduleStartTime.split(':')[0]);
+                                            const scheduleEndHour = parseInt(scheduleEndTime.split(':')[0]);
+
+                                            //logic pengecekan exclusion time
+                                            const isActive = exclusionStartHour > scheduleStartHour || exclusionEndHour < scheduleEndHour;
+
+                                            return exclusion.disabled && !isActive;
+                                        })}
+
                                         sx={{
                                             width: '100%',
                                             padding: 1,
