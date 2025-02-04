@@ -849,13 +849,45 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
             await EditScheduleService(scheduleData);
             
             console.log('Jadwal berhasil diupdate');
-            handleCloseEventDetail();
+
+            // Update events state dengan data yang baru
+            setEvents(prevEvents => {
+                return prevEvents.map(event => {
+                    if (event.id.includes(scheduleId)) {
+                        // Buat event baru untuk setiap hari yang dipilih
+                        const updatedEvents = selectedDays.map(day => ({
+                            ...event,
+                            start: dayjs(editingEvent.start)
+                                .day(days.findIndex(d => d.value === day))
+                                .format('YYYY-MM-DDTHH:mm:ss'),
+                            end: dayjs(editingEvent.end)
+                                .day(days.findIndex(d => d.value === day))
+                                .format('YYYY-MM-DDTHH:mm:ss'),
+                            notes: editingEvent.notes
+                        }));
+                        return updatedEvents[0]; // Kembalikan event pertama untuk menggantikan yang lama
+                    }
+                    return event;
+                });
+            });
+
+            // Update sessions state
+            setSessions(prevSessions => {
+                return prevSessions.map(session => {
+                    if (session.id === scheduleId) {
+                        return {
+                            ...session,
+                            startTime: dayjs(editingEvent.start).format('hh:mm a'),
+                            endTime: dayjs(editingEvent.end).format('hh:mm a'),
+                            selectedDays: selectedDays,
+                            notes: editingEvent.notes || ''
+                        };
+                    }
+                    return session;
+                });
+            });
             
-            // Refresh data kalender jika perlu
-            if (initialData) {
-                const convertedSessions = initialData.map(convertAPIDataToSession);
-                setSessions(convertedSessions);
-            }
+            handleCloseEventDetail();
 
         } catch (error) {
             console.error('Error updating schedule:', error);
