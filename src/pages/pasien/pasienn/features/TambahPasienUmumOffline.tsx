@@ -838,7 +838,7 @@ export default function TambahPasienUmumOffline() {
                                                                         <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', mt: 1, mb: 1, fontFamily: 'roboto' }} >Tanggal dan Jam Operasional<span style={{ color: "red" }}>*</span></Typography>
                                                                         {/* <CustomCalender key={calendarKey} typeId={idDoctor} onChange={handleScheduleChange} /> */}
                                                                         <CustomTimePicker
-                                                                            
+
                                                                             typeId={idDoctor}
                                                                             onChange={(scheduleId, schedule) => {
                                                                                 const id = scheduleId;
@@ -955,14 +955,13 @@ export default function TambahPasienUmumOffline() {
 
                                 <InformasiTicketAPI
                                     clinic={clinicName}
-                                    jadwalKonsul={selectedSchedule}
+                                    jadwalKonsul={`${dayjs().date()}/${dayjs(dayjs().month() + 1).format('MMM')}/${dayjs().year()}, ${selectedSchedule}`}
                                     namaDokter={docterName}
                                     nomorAntrian={queueData?.queueNumber || queueNumber}
                                     tanggalReservasi={tanggalReserve}
                                     registrationId={registrationCode}
                                     patienDataSent={dataTickets}
                                     offline={true}
-
                                     onClose={() => navigate("/offline/tambahPasien")}
                                 />
                             </Box>

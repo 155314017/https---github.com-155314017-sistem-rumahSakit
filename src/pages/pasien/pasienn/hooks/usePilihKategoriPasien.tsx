@@ -91,30 +91,38 @@ export default function usePilihKategoriPasien() {
         console.log('Form submitted:', values);
         const bookingCode = { bookingCode: values };
         try {
-            console.log(bookingCode);
             const response = await PatientCheckIn(bookingCode);
-            if(response.responseCode === "200"){
+            if (response.responseCode === "200") {
+                console.log('response book: ', response.data.scheduleIntervalDataId);
+                const scheduleIntervalDataId = response.data.scheduleIntervalDataId;
+                const dataSchedule = await axios.get(
+                    `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/schedule-interval/${scheduleIntervalDataId}`
+                );
+                console.log('data jadwal: ', dataSchedule.data.data.endTime)
+                console.log('tes: ', dataSchedule.data.data.startTime[0], dataSchedule.data.data.startTime[1], " akhir:", dataSchedule.data.data.endTime[0], dataSchedule.data.data.endTime[1])
+                const jam = `${dayjs().hour(dataSchedule.data.data.startTime[0]).minute(dataSchedule.data.data.startTime[1]).format('HH:mm')} - 
+${dayjs().hour(dataSchedule.data.data.endTime[0]).minute(dataSchedule.data.data.endTime[1]).format('HH:mm')}`;
                 setNeedAdmin(response.data.needAdmin)
                 const namaDokter = await GetDoctorServices(response.data.doctorDataId);
                 const namaKlinik = await getClinic(response.data.masterClinicId);
-                
+
                 const dateReserve: string = dayjs(response.data.createdDateTime * 1000).isValid()
-                ? dayjs(response.data.createdDateTime * 1000).format('YYYY-MM-DD HH:mm')
-                : '';
+                    ? dayjs(response.data.createdDateTime * 1000).format('YYYY-MM-DD HH:mm')
+                    : '';
                 setTanggalReservasi(dateReserve)
                 const schedules = {
                     year: response.data.scheduleDate[0],
                     month: response.data.scheduleDate[1],
                     day: response.data.scheduleDate[2],
                 };
-                
-                
+
+
 
                 const queueData = {
                     registrationId: response.data.id,
                     needAdmin: response.data.needAdmin,
                     clinicId: response.data.masterClinicId
-                    
+
                 }
                 const queue = await axios.post(
                     `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/queue/generated`,
@@ -126,42 +134,42 @@ export default function usePilihKategoriPasien() {
                     }
                 );
                 console.log(response.data.needAdmin);
-                if(response.data.needAdmin === true){
+                if (response.data.needAdmin === true) {
 
 
-                console.log(queue);
-                
-                setQueueData(queue.data.data)
-                setOpenModalKodeBooking(false);
-                setTiketAntrianKonter(true);
-            }else{
-                const dataBooking = {
-                    nomorAntrian: queue.data.data.queueNumber,
-                    namaDokter: namaDokter.name,
-                    namaKlinik: namaKlinik.name,
-                    tanggalReserve: dateReserve,
-                    jadwalKonsul: `${schedules.year}-${schedules.month}-${schedules.day}`,
-                    needAdmin: response.data.needAdmin
+                    console.log(queue);
+
+                    setQueueData(queue.data.data)
+                    setOpenModalKodeBooking(false);
+                    setTiketAntrianKonter(true);
+                } else {
+                    const dataBooking = {
+                        nomorAntrian: queue.data.data.queueNumber,
+                        namaDokter: namaDokter.name,
+                        namaKlinik: namaKlinik.name,
+                        tanggalReserve: dateReserve,
+                        jadwalKonsul: `  ${schedules.day}/${dayjs(schedules.month).format("MMM")}/${schedules.year}, ${jam}`,
+                        needAdmin: response.data.needAdmin
+                    }
+                    setQueueData(queue.data.data)
+                    setDataKodeBooking(dataBooking)
+                    setOpenModalKodeBooking(false);
+                    setInfoTicket(true);
                 }
-                setQueueData(queue.data.data)
-                setDataKodeBooking(dataBooking)
-                setOpenModalKodeBooking(false);
-                setInfoTicket(true);
-            }
 
-            
+
                 setIsLoading(false);
                 setInputCodePages(false);
-        }
-           
+            }
+
         } catch (err: any) {
             setIsLoading(false);
             showTemporaryAlert();
-            
+
             console.log(err)
         }
 
-        
+
 
     }
 

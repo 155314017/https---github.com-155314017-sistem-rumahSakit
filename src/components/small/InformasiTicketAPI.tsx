@@ -329,7 +329,7 @@ const InformasiTicketAPI = ({
               display={"flex"}
               flexDirection={"row"}
               justifyContent={"space-between"}
-              maxWidth={offline ? "83%" : "100%"}
+              maxWidth={offline ? "97%" : "100%"}
             // bgcolor={'red'}
             >
               <Box display={"flex"} flexDirection={"column"}>

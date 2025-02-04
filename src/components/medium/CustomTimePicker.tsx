@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (scheduleId: string, schedule: string) => void; }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedDate] = useState<Dayjs | null>(dayjs());
-    const [inputValue, setInputValue] = useState<string>('');
+    // const [inputValue, setInputValue] = useState<string>('');
     const [availableTimes, setAvailableTimes] = useState<{ [date: string]: { timeRange: string, scheduleId: string, disabled: boolean }[] }>({});
     const [exclusionTimes, setExclusionTimes] = useState<{ [date: string]: { timeRange: string, disabled: boolean }[] }>({});
     const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null); // Untuk menyimpan scheduleId yang dipilih
@@ -99,9 +99,9 @@ const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (sch
     const open = Boolean(anchorEl);
 
     const handleTimeSelect = (timeRange: string, scheduleId: string) => {
-        const formattedDate = selectedDate?.locale('id').format('DD MMMM YYYY');
-        const selectedTime = `${formattedDate} ${timeRange}`;
-        setInputValue(selectedTime);
+        // const formattedDate = selectedDate?.locale('id').format('DD MMMM YYYY');
+        // const selectedTime = `${formattedDate} ${timeRange}`;
+        // setInputValue(selectedTime);
         setSelectedScheduleId(scheduleId); // Menyimpan scheduleId yang dipilih
         setSelectedTimeRange(timeRange); // Menyimpan timeRange yang dipilih
     };
@@ -121,7 +121,7 @@ const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (sch
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Box>
                 <InputBase
-                    value={inputValue}
+                    value={selectedTimeRange}
                     onClick={handleOpen}
                     placeholder="Pilih jadwal"
                     readOnly

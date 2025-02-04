@@ -63,144 +63,144 @@ export default function PilihKategoriPasien() {
                     backgroundRepeat: "no-repeat"
                 }}
             >
-                
+
                 {noDataBooking && <AlertWarning teks="Kode booking tidak terdaftar" />}
                 {inputCodePages && (
                     <Box>
                         <Box sx={{
-                                                        position: 'relative',
-                                                        top: -300,
-                                                        left: 15,
-                                                        // right: "auto",
-                                                        zIndex: 1000,
-                                                        padding: '16px',
-                                                        width: {
-                                                            xs: '90%',
-                                                            sm: '84%',
-                                                            md: '90%',
-                                                            lg: '100%',
+                            position: 'relative',
+                            top: -300,
+                            left: 15,
+                            // right: "auto",
+                            zIndex: 1000,
+                            padding: '16px',
+                            width: {
+                                xs: '90%',
+                                sm: '84%',
+                                md: '90%',
+                                lg: '100%',
+                            },
+                            maxWidth: '760px',
+
+                            // bgcolor: 'blue'
+
+                        }}>
+
+                            <BreadCrumbBasic
+                                title="Masukkan kode booking"
+                                description="Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian."
+                                onBackClick={() => {
+                                    setInputCodePages(false);
+                                    setMainPages(true);
+                                }}
+                            />
+
+
+
+                        </Box>
+
+                        <Box sx={{ ...style }}>
+
+
+                            <IconButton
+                                onClick={() => {
+                                    setInputCodePages(false);
+                                    setMainPages(true);
+                                    setNoDataBooking(false);
+                                    setIsLoading(false)
+                                }}
+                                sx={{
+                                    position: 'absolute',
+                                    top: 8,
+                                    right: 8,
+                                    color: '#A8A8BD',
+                                }}
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                            <Typography id="modal-modal-title" sx={{ mt: 2, fontSize: "18px", fontWeight: 600 }}>
+                                Masukkan kode booking
+                            </Typography>
+                            <Typography id="modal-modal-description" sx={{ mb: 3 }}>
+                                Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian.
+                            </Typography>
+
+                            <Formik
+                                initialValues={{ bookingCode: "" }}
+                                validationSchema={bookingCodeSchema}
+                                enableReinitialize
+                                onSubmit={async (values) => {
+                                    await onSubmitKodeBooking(values.bookingCode);
+                                }}
+                            >
+                                {({ errors, touched, setFieldValue, values, isValid, dirty }) => (
+                                    <Form>
+
+                                        <Field name="bookingCode">
+                                            {() => (
+                                                <TextField
+                                                    variant="outlined"
+                                                    fullWidth
+                                                    placeholder="Masukkan kode booking"
+                                                    value={values.bookingCode}
+                                                    onChange={(e) => setFieldValue("bookingCode", e.target.value)}
+                                                    error={Boolean(errors.bookingCode && touched.bookingCode)}
+                                                    helperText={errors.bookingCode && touched.bookingCode ? errors.bookingCode : ""}
+                                                    sx={{
+                                                        width: "100%",
+                                                        height: "48px",
+                                                        marginTop: "10px",
+                                                        "& .MuiOutlinedInput-root": {
+                                                            borderRadius: "8px",
+                                                            backgroundColor: touched.bookingCode && errors.bookingCode ? "#ffcccc" : "inherit",
+                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                borderColor: '#8F85F3',
+                                                            },
                                                         },
-                                                        maxWidth: '760px',
-                                                        
-                                                        // bgcolor: 'blue'
-                                    
-                                                    }}>
-                                                       
-                                                        <BreadCrumbBasic
-                                                            title="Masukkan kode booking"
-                                                            description="Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian."
-                                                            onBackClick={ () => {
-                                                                setInputCodePages(false);
-                                                                setMainPages(true);
-                                                            }}
-                                                        />
-                                                
-                                    
-                                                       
-                                                    </Box>
-                    
-                    <Box sx={{ ...style }}>
-                        
-
-                        <IconButton
-                            onClick={() => {
-                                setInputCodePages(false);
-                                setMainPages(true);
-                                setNoDataBooking(false);
-                                setIsLoading(false)
-                            }}
-                            sx={{
-                                position: 'absolute',
-                                top: 8,
-                                right: 8,
-                                color: '#A8A8BD',
-                            }}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography id="modal-modal-title" sx={{ mt: 2, fontSize: "18px", fontWeight: 600 }}>
-                            Masukkan kode booking
-                        </Typography>
-                        <Typography id="modal-modal-description" sx={{ mb: 3 }}>
-                            Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian.
-                        </Typography>
-
-                        <Formik
-                            initialValues={{ bookingCode: "" }}
-                            validationSchema={bookingCodeSchema}
-                            enableReinitialize
-                            onSubmit={async (values) => {
-                                await onSubmitKodeBooking(values.bookingCode);
-                            }}
-                        >
-                            {({ errors, touched, setFieldValue, values, isValid, dirty }) => (
-                                <Form>
-                                    
-                                    <Field name="bookingCode">
-                                        {() => (
-                                            <TextField
-                                                variant="outlined"
-                                                fullWidth
-                                                placeholder="Masukkan kode booking"
-                                                value={values.bookingCode}
-                                                onChange={(e) => setFieldValue("bookingCode", e.target.value)}
-                                                error={Boolean(errors.bookingCode && touched.bookingCode)}
-                                                helperText={errors.bookingCode && touched.bookingCode ? errors.bookingCode : ""}
-                                                sx={{
-                                                    width: "100%",
-                                                    height: "48px",
-                                                    marginTop: "10px",
-                                                    "& .MuiOutlinedInput-root": {
-                                                        borderRadius: "8px",
-                                                        backgroundColor: touched.bookingCode && errors.bookingCode ? "#ffcccc" : "inherit",
-                                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                            borderColor: '#8F85F3',
+                                                        "& .MuiOutlinedInput-notchedOutline": {
+                                                            border: "1px solid #ccc",
                                                         },
-                                                    },
-                                                    "& .MuiOutlinedInput-notchedOutline": {
-                                                        border: "1px solid #ccc",
-                                                    },
-                                                    "& .MuiOutlinedInput-input": {
-                                                        padding: "10px",
-                                                        fontSize: "16px",
-                                                    },
-                                                }}
-                                                inputProps={{
-                                                    style: {
-                                                        textAlign: "center",
-                                                    },
-                                                }}
-                                            />
-                                        )}
-                                    </Field>
-
-                                    <Box sx={{ mt: 3, textAlign: "right" }}>
-                                        <Button
-                                            type="submit"
-                                            style={{
-                                                padding: "10px 20px",
-                                                backgroundColor: isValid && dirty ? "#8F85F3" : "#A8A8A8",
-                                                color: "white",
-                                                border: "none",
-                                                borderRadius: "8px",
-                                                cursor: isValid && dirty ? "pointer" : "not-allowed",
-                                                fontWeight: 600,
-                                                width: "100%",
-                                            }}
-                                            disabled={!isValid || !dirty}
-                                        >
-                                            {isLoading ? (
-                                                <CircularProgress size={25} sx={{ color: "white" }} />
-                                            ) : (
-                                                "Submit"
+                                                        "& .MuiOutlinedInput-input": {
+                                                            padding: "10px",
+                                                            fontSize: "16px",
+                                                        },
+                                                    }}
+                                                    inputProps={{
+                                                        style: {
+                                                            textAlign: "center",
+                                                        },
+                                                    }}
+                                                />
                                             )}
+                                        </Field>
 
-                                        </Button>
-                                    </Box>
-                                </Form>
-                            )}
-                        </Formik>
-                    </Box>
+                                        <Box sx={{ mt: 3, textAlign: "right" }}>
+                                            <Button
+                                                type="submit"
+                                                style={{
+                                                    padding: "10px 20px",
+                                                    backgroundColor: isValid && dirty ? "#8F85F3" : "#A8A8A8",
+                                                    color: "white",
+                                                    border: "none",
+                                                    borderRadius: "8px",
+                                                    cursor: isValid && dirty ? "pointer" : "not-allowed",
+                                                    fontWeight: 600,
+                                                    width: "100%",
+                                                }}
+                                                disabled={!isValid || !dirty}
+                                            >
+                                                {isLoading ? (
+                                                    <CircularProgress size={25} sx={{ color: "white" }} />
+                                                ) : (
+                                                    "Submit"
+                                                )}
+
+                                            </Button>
+                                        </Box>
+                                    </Form>
+                                )}
+                            </Formik>
+                        </Box>
                     </Box>
                 )}
                 {mainPages && (
@@ -294,7 +294,7 @@ export default function PilihKategoriPasien() {
                     </Box>
                 )}
 
-                <Box sx={{marginLeft:'0%'}}>
+                <Box sx={{ marginLeft: '0%' }}>
                     {infoTicket && (
                         <InformasiTicketAPI
                             clinic={dataKodeBooking?.namaKlinik}

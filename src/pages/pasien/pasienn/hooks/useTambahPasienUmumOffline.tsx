@@ -466,9 +466,6 @@ export default function useTambahPasienUmumOffline() {
 
     const registrationPatient = async (data: any) => {
         setIsLoading(true)
-
-
-
         try {
             const response = await axios.post(
                 `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/registration/`,
