@@ -143,7 +143,6 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<LoginPegawai />} />
         <Route path="/login/pegawai" element={<LoginPegawai />} />
         <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
-
         {/* end no need auth */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

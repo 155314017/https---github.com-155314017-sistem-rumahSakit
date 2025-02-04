@@ -205,9 +205,6 @@ export default function useTambahPasienUmumOffline() {
 
     }
 
-
-
-
     function BpRadio(props: RadioProps) {
         return (
             <Radio
@@ -412,9 +409,6 @@ export default function useTambahPasienUmumOffline() {
 
     const createTicket = async (dataPatient: dataTicket) => {
         setIsLoading(true)
-
-
-
         try {
             const response = await axios.post(
                 `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/registration/`,
@@ -611,8 +605,6 @@ export default function useTambahPasienUmumOffline() {
         bookingCode,
         queueNumber,
         queueData,
-        idPatient
-
-
+        idPatient,
     }
 }
