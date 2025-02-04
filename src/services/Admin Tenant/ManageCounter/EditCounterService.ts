@@ -1,47 +1,42 @@
 import axios from "axios";
+import Cookies from "js-cookie";
+import { BaseResponse } from "../../../types/api";
 
-export interface Schedule {
-  startDateTime: string; // ISO 8601 format
-  endDateTime: string;   // ISO 8601 format
-}
-
-export interface Image {
-  imageName: string;
-  imageType: string;
-  imageData: string; // Base64 encoded image
-}
-
-export interface EditCounterRequest {
+export interface CounterDataItem {
+  id: string;
   name: string;
   location: string;
-  queueNumber: number;
   additionalInfo: string;
-  masterTypeId: string;
-  schedules: { startDateTime: number | undefined; endDateTime: number | undefined }[];
-  images: { imageName: string; imageType: string; imageData: string }[];
+  createdBy: string;
+  createdDateTime: number;
+  updatedBy: string | null;
+  updatedDateTime: number | null;
+  deletedBy: string | null;
+  deletedDateTime: number | null;
 }
 
-export interface ApiResponse<T> {
-  responseCode: string;
-  statusCode: string;
-  message: string;
-  data: T;
-}
+const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/counter/`;
 
-const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/counter/`;
+// Function to edit an ambulance service
+export const EditCounterServices = async (
+  data: {
+    counterId: string,
+    name: string,
+    location: string,
+    additionalInfo: string,
+  }): Promise<BaseResponse<CounterDataItem>> => {
+  const token = Cookies.get("accessToken");
 
-export const editCounter = async (
-  counterData: EditCounterRequest,
-  accessToken: string | undefined
-): Promise<ApiResponse<null>> => {
+  if (!token) {
+    throw new Error("No access token found.");
+  }
+
   try {
-    const response = await axios.put<ApiResponse<null>>(
-      BASE_URL,
-      counterData,
+    const response = await axios.put<BaseResponse<CounterDataItem>>(API_URL, data,
       {
         headers: {
-          accessToken: accessToken,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
+          accessToken: token,
         },
       }
     );
@@ -51,12 +46,8 @@ export const editCounter = async (
     } else {
       throw new Error(`API responded with status: ${response.status}`);
     }
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      console.error("Axios error:", error.message);
-    } else {
-      console.error("Unexpected error:", error);
-    }
-    throw error; // Re-throw the error for caller
+  } catch (error) {
+    console.error('Error editing counter:', error);
+    throw error;
   }
 };
