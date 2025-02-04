@@ -160,6 +160,7 @@ export default function useEditAmbulance() {
     try {
       const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
 
+      console.log("kalenderData: ", kalenderData);
       // Validasi input schedule
       validateInput(kalenderData);
 

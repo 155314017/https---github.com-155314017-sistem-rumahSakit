@@ -190,7 +190,7 @@ export default function EditAmbulance() {
             <>
               <TestKalender ref={kalenderRef} initialData={scheduleDataPraktek} initialDataPengecualian={scheduleDataPengecualian} />
               <Button
-                onClick={() => formik.handleSubmit()}
+                onClick={handleEditAmbulance}
                 variant="contained"
 
                 color="inherit"
