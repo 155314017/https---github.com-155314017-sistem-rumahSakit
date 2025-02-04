@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import Cookies from 'js-cookie';
 export interface BuildingDataItem {
   id: string
   name: string
@@ -26,8 +26,12 @@ export interface ApiResponse {
 
 export const GetBuildingById = async (
   id : string | undefined,
-  token : string | undefined 
 ): Promise<BuildingDataItem> => {
+  const token = Cookies.get("accessToken");
+
+  if (!token) {
+    throw new Error("No access token found.");
+  }
   try {
     const response = await axios.get<ApiResponse>(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${id}`, {
         headers: {

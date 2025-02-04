@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Cookies from "js-cookie";
 
-export interface ScheduleDataItem {
+export interface ExclusionDataItem {
   id: string;
   additionalInfo: string;
   createdBy: string;
@@ -17,31 +17,24 @@ export interface ScheduleDataItem {
   endTime: string;
   startDate: string;
   endDate: string;
-  monday: boolean;
-  tuesday: boolean;
-  wednesday: boolean;
-  thursday: boolean;
-  friday: boolean;
-  saturday: boolean;
-  sunday: boolean;
-  maxCapacity: number;
 }
 
 export interface ApiResponse {
   responseCode: string;
   statusCode: string;
   message: string;
-  data: ScheduleDataItem[];
+  data: ExclusionDataItem[];
 }
 
-export const GetScheduleByTypeId = async (
+export const GetExclusionByTypeId = async (
   typeId: string | undefined,
-): Promise<ScheduleDataItem[]> => {
+): Promise<ExclusionDataItem[]> => {
   try {
+
     const token = Cookies.get("accessToken");
 
     const response = await axios.get<ApiResponse>(
-      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/schedule-interval/by-type-id?typeId=${typeId}`,
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/exclusion-interval/by-type-id?typeId=${typeId}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -51,10 +44,13 @@ export const GetScheduleByTypeId = async (
     )
 
     if (response.status === 200) {
+      console.log("here exclusion: ")
+      console.log(response.data.data)
       return response.data.data
     } else {
       throw new Error(`API responded with status: ${response.status}`)
     }
+
   } catch (error) {
     console.error('Error fetching schedule data:', error)
     throw error

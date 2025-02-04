@@ -1,45 +1,30 @@
 import axios from "axios";
+import Cookies from "js-cookie";
+import { BaseResponse } from "../../../types/api";
+import { ClinicData } from "./GetClinicByIdService";
+const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/`;
 
-export interface Schedule {
-  startDateTime: string; // ISO 8601 format
-  endDateTime: string;   // ISO 8601 format
-}
+// Function to edit an clinic service
+export const EditClinicServices = async (
+  data: {
+    clinicId: string,
+    name: string,
+    description: string,
+    additionalInfo: string,
+    code: string
+  }): Promise<BaseResponse<ClinicData>> => {
+  const token = Cookies.get("accessToken");
 
-export interface Image {
-  imageName: string;
-  imageType: string;
-  imageData: string; // Base64 encoded image
-}
+  if (!token) {
+    throw new Error("No access token found.");
+  }
 
-export interface EditClinicRequest {
-  name: string;
-  description: string;
-  additionalInfo: string;
-  schedules: { startDateTime: number | undefined; endDateTime: number | undefined }[];
-  images: { imageName: string; imageType: string; imageData: string }[];
-}
-
-export interface ApiResponse<T> {
-  responseCode: string;
-  statusCode: string;
-  message: string;
-  data: T;
-}
-
-const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/`;
-
-export const editClinic = async (
-  clinicData: EditClinicRequest,
-  accessToken: string | undefined
-): Promise<ApiResponse<null>> => {
   try {
-    const response = await axios.put<ApiResponse<null>>(
-      BASE_URL,
-      clinicData,
+    const response = await axios.put<BaseResponse<ClinicData>>(API_URL, data,
       {
         headers: {
-          accessToken: accessToken,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
+          accessToken: token,
         },
       }
     );
@@ -49,12 +34,8 @@ export const editClinic = async (
     } else {
       throw new Error(`API responded with status: ${response.status}`);
     }
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      console.error("Axios error:", error.message);
-    } else {
-      console.error("Unexpected error:", error);
-    }
-    throw error; // Re-throw the error for caller
+  } catch (error) {
+    console.error('Error editing clinic:', error);
+    throw error;
   }
 };

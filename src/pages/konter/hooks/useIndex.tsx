@@ -14,6 +14,7 @@ export default function useIndex() {
         setIsLoading(true)
         try {
             const result = await CounterServices();
+            console.log(result);
             setData(result);
             setIsLoading(false)
         } catch (error) {

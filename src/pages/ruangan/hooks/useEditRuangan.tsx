@@ -77,7 +77,7 @@ export default function useEditRuangan() {
                 setRoomName(response.name);
                 setRoomType(response.type);
 
-                const buildingResponse = await GetBuildingById(response.masterBuildingId, token)
+                const buildingResponse = await GetBuildingById(response.masterBuildingId)
 
                 setBuildingName(buildingResponse.id);  // Store the building ID instead of name
             } catch (error) {

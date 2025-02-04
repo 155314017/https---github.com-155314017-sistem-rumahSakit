@@ -1,31 +1,43 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
+import { BaseResponse } from '../../types/api'
 
-export interface CreateFacilityRequest {
+export interface FacilityDataItem {
+  id: string
   name: string
-  masterBuildingId: string
   description: string
-  cost: number
   additionalInfo: string
+  masterBuildingId: string
+  cost: number
+  createdBy: string
+  createdDateTime: number
+  updatedBy: string | null
+  updatedDateTime: number | null
+  deletedBy: string | null
+  deletedDateTime: number | null
 }
 
-export interface ApiResponse<T> {
-  responseCode: string
-  statusCode: string
-  message: string
-  data: T
-}
+const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/`
 
-const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/`
+// Function to create a facility
+export const createFacility = async (data: {
+  name: string
+  description: string
+  additionalInfo: string
+  masterBuildingId: string
+  cost: number
+}): Promise<BaseResponse<FacilityDataItem>> => {
+  const token = Cookies.get('accessToken')
 
-export const createFacility = async (
-  facilityData: CreateFacilityRequest,
-  token: string | undefined
-): Promise<ApiResponse<null>> => {
+  if (!token) {
+    throw new Error('No access token found.')
+  }
+
   try {
-    const response = await axios.post<ApiResponse<null>>(BASE_URL, facilityData, {
+    const response = await axios.post<BaseResponse<FacilityDataItem>>(API_URL, data, {
       headers: {
         'Content-Type': 'application/json',
-        accessToken: `${token}`
+        accessToken: token
       }
     })
 
@@ -34,12 +46,8 @@ export const createFacility = async (
     } else {
       throw new Error(`API responded with status: ${response.status}`)
     }
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      console.error('Axios error:', error.message)
-    } else {
-      console.error('Unexpected error:', error)
-    }
+  } catch (error) {
+    console.error('Error creating facility:', error)
     throw error
   }
 }

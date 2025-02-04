@@ -5,14 +5,9 @@ import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { CreateAmbulanceService } from '../../../services/Admin Tenant/ManageAmbulance/CreateAmbulanceService'
-import { uploadImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils'
+import { ImageData, uploadImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils'
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils'
 
-type ImageData = {
-  imageName: string
-  imageType: string
-  imageData: string
-}
 
 export default function useTambahAmbulance() {
   const [currentPage, setCurrentPage] = useState<number>(1);

@@ -1,13 +1,13 @@
-
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
-import Cookies from "js-cookie";
-import dayjs from 'dayjs';
+import { useState, useEffect, useRef } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { createFacility } from '../../../services/ManageFacility/CreateFacilityService';
 import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
+import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
+import { uploadImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
+
 type Building = {
     id: string;
     name: string;
@@ -19,24 +19,17 @@ type ImageData = {
     imageData: string;
 };
 
-type Schedule = {
-    day: string
-    startTime: dayjs.Dayjs
-    endTime: dayjs.Dayjs
-}
+
+
 export default function useTambahFasilitas() {
-    const [successAlert, setSuccessAlert] = useState(false);
-    // const [operationalTime, setOperationalTime] = useState<string | null>(null);
-    const [selectedDay, setSelectedDay] = useState<string | null>(null);
-    const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
-    const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
-    const [imagesData, setImagesData] = useState<ImageData[]>([]);
-    const [operationalCost, setOperationalCost] = useState<string | null>(null);
-    const [errorAlert, setErrorAlert] = useState(false);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [imagesData, setImagesData] = useState<ImageData[]>([])
+    const [errorAlert, setErrorAlert] = useState(false)
+    const [successAlert, setSuccessAlert] = useState(false)
+    const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
     const [gedungOptions, setGedungOptions] = useState<Building[]>([]);
-    const [schedules, setSchedules] = useState<Schedule[]>([]);
+    const [operationalCost, setOperationalCost] = useState<number>(0);
     const navigate = useNavigate();
-    dayjs.locale('id');
 
     useEffect(() => {
         const fetchGedungData = async () => {
@@ -56,43 +49,9 @@ export default function useTambahFasilitas() {
         };
         fetchGedungData();
     }, []);
+
     const handleImageChange = (images: ImageData[]) => {
         setImagesData(images);
-    };
-
-    // const dayMapping: { [key: string]: number } = {
-    //     "Senin": 1,
-    //     "Selasa": 2,
-    //     "Rabu": 3,
-    //     "Kamis": 4,
-    //     "Jumat": 5,
-    //     "Sabtu": 6,
-    //     "Minggu": 0,
-    // };
-
-
-    const handleTambahHari = () => {
-        if (selectedDay && startTime && endTime) {
-            const newSchedule: Schedule = {
-                day: selectedDay,
-                startTime: startTime,
-                endTime: endTime
-            }
-            setSchedules([...schedules, newSchedule])
-            setSelectedDay('')
-            setStartTime(null)
-            setEndTime(null)
-        }
-    };
-
-    const handleDeleteSchedule = (index: number) => {
-        setSchedules(schedules.filter((_, i) => i !== index))
-    }
-
-    const showTemporaryAlertSuccess = async () => {
-        setSuccessAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessAlert(false);
     };
 
     const showTemporaryAlertError = async () => {
@@ -101,84 +60,147 @@ export default function useTambahFasilitas() {
         setErrorAlert(false);
     };
 
+    const showTemporaryAlertSuccess = async () => {
+        setSuccessAlert(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setSuccessAlert(false);
+    };
+
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
         { label: "Fasilitas", href: "/fasilitas" },
         { label: "Tambah Fasilitas", href: "/tambahFasilitas" },
     ];
 
+    const getPageStyle = (page: number) => {
+        if (page === currentPage) {
+            return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
+        } else if (page < currentPage) {
+            return { color: "#8F85F3", cursor: "pointer" };
+        } else {
+            return { color: "black", cursor: "pointer" };
+        }
+    };
+
+    const getBorderStyle = (page: number) => {
+        if (page === currentPage) {
+            return {
+                display: "flex",
+                border: "1px solid #8F85F3",
+                width: "38px",
+                height: "38px",
+                borderRadius: "8px",
+                justifyContent: "center",
+                alignItems: "center",
+            };
+        } else if (page < currentPage) {
+            return {
+                display: "flex",
+                border: "1px solid #8F85F3",
+                width: "38px",
+                height: "38px",
+                borderRadius: "8px",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#8F85F3",
+                color: "white",
+            };
+        } else {
+            return {
+                display: "flex",
+                border: "1px solid #8F85F3",
+                width: "38px",
+                height: "38px",
+                borderRadius: "8px",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "#8F85F3",
+            };
+        }
+    };
+
     const formik = useFormik({
         initialValues: {
             deskripsiKlinik: '',
             masterBuildingId: '',
             namaFasilitas: '',
+            operationalCost: 0
         },
         validationSchema: Yup.object({
             deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
             masterBuildingId: Yup.string().required('Gedung is required'),
             namaFasilitas: Yup.string().required('Facility Name is required'),
+            operationalCost: Yup.number().required('Operational Cost is required').min(0, 'Must be a positive number')
         }),
         onSubmit: async (values) => {
-
-            // const formattedSchedules = schedules.map(schedule => {
-            //     const selectedDayOfWeek = dayMapping[schedule.day]
-            //     return {
-            //       startDateTime: schedule.startTime.day(selectedDayOfWeek).unix(),
-            //       endDateTime: schedule.endTime.day(selectedDayOfWeek).unix()
-            //     }
-            //   })
-
-            const data = {
-                name: values.namaFasilitas,
-                masterBuildingId: values.masterBuildingId,
-                description: values.deskripsiKlinik,
-                cost: operationalCost ? parseInt(operationalCost.replace(/\D/g, '')) : 0,
-                additionalInfo: "hai",
-                // schedules: formattedSchedules,
-                // images: imagesData.map(image => ({
-                //     imageName: image.imageName || "",
-                //     imageType: image.imageType || "",
-                //     imageData: image.imageData || "",
-                // })),
-            };
-            const token = Cookies.get("accessToken");
-            try {
-                await createFacility(data, token);
-                showTemporaryAlertSuccess();
-                formik.resetForm();
-                setImagesData([]);
-                navigate('/fasilitas', { state: { successAdd: true, message: 'Fasilitas berhasil ditambahkan!' } })
-            } catch (error) {
-                console.error('Error submitting form:', error);
-                if (axios.isAxiosError(error)) {
-                    showTemporaryAlertError();
-                } else {
-                    console.error('Unexpected error:', error);
-                }
-            }
+            console.log(values)
         },
     });
+
+    const handleSaveFasilitas = async () => {
+        try {
+            const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
+
+            // Validasi input schedule
+            validateInput(kalenderData);
+
+            // Data untuk CreateFacilityService
+            const facilityData = {
+                name: formik.values.namaFasilitas,
+                description: formik.values.deskripsiKlinik,
+                additionalInfo: '',
+                masterBuildingId: formik.values.masterBuildingId,
+                cost: operationalCost
+            };
+
+            // Buat fasilitas baru
+            const { data: { id: facilityId } } = await createFacility(facilityData);
+            if (!facilityId) throw new Error('Facility ID tidak ditemukan');
+
+            // Proses secara parallel untuk optimasi
+            await Promise.all([
+                createSchedules(facilityId, kalenderData.praktek),
+                createExclusions(facilityId, kalenderData.exclusion),
+                uploadImages(facilityId, imagesData)
+            ]);
+
+            // Reset state dan redirect
+            formik.resetForm();
+            setImagesData([]);
+            showTemporaryAlertSuccess();
+
+            navigate('/fasilitas', {
+                state: {
+                    successAdd: true,
+                    message: 'Fasilitas berhasil ditambahkan!'
+                }
+            });
+        } catch (error) {
+            console.error('[DEBUG] Error saat menyimpan fasilitas:', error);
+            if (axios.isAxiosError(error)) {
+                const responseData = error.response?.data;
+                console.error('[DEBUG] Detail error dari server:', responseData || error.message);
+            }
+            showTemporaryAlertError();
+        }
+    };
+
     return {
         breadcrumbItems,
         formik,
-        // operationalTime,
-        selectedDay,
-        setSelectedDay,
-        startTime,
-        setStartTime,
-        endTime,
-        setEndTime,
         imagesData,
         setImagesData,
-        operationalCost,
-        setOperationalCost,
-        handleTambahHari,
         gedungOptions,
         handleImageChange,
         errorAlert,
         successAlert,
-        showTemporaryAlertSuccess,
-        handleDeleteSchedule,
-        schedules
+        kalenderRef,
+        currentPage,
+        setCurrentPage,
+        getPageStyle,
+        getBorderStyle,
+        handleSaveFasilitas,
+        operationalCost,
+        setOperationalCost
     }
 }
