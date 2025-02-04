@@ -344,9 +344,7 @@ export const editSchedule = async (scheduleId: string, typeId: string, jadwal: P
     thursday: jadwal.selectedDay.includes('Kamis'),
     friday: jadwal.selectedDay.includes('Jumat'),
     saturday: jadwal.selectedDay.includes('Sabtu'),
-    sunday: jadwal.selectedDay.includes('Minggu'),
-    title: 'Jadwal Ambulance',
-    description: jadwal.notes || ''
+    sunday: jadwal.selectedDay.includes('Minggu')
   };
   
   console.log('[DEBUG] Converted edit schedule data:', scheduleData);

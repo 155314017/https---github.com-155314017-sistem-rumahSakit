@@ -188,7 +188,12 @@ export default function EditAmbulance() {
 
           {currentPage === 2 && (
             <>
-              <TestKalender ref={kalenderRef} initialData={scheduleDataPraktek} initialDataPengecualian={scheduleDataPengecualian} />
+              <TestKalender 
+                ref={kalenderRef} 
+                initialData={scheduleDataPraktek} 
+                initialDataPengecualian={scheduleDataPengecualian}
+                typeId={id} 
+              />
               <Button
                 onClick={() => formik.handleSubmit()}
                 variant="contained"

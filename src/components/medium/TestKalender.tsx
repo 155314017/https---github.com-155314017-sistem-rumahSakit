@@ -44,6 +44,8 @@ import { CloseOutlined } from '@mui/icons-material';
 import ModalUbahNoHp from '../small/modal/ModalUbahNoHp';
 import { ScheduleDataItem } from '../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices';
 import { ExclusionDataItem } from '../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices';
+import { editSchedule } from '../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
+import { EditScheduleService } from '../../services/Admin Tenant/ManageSchedule/EditScheduleService';
 
 // Definisikan interface untuk Event dan Session
 interface Event {
@@ -57,6 +59,15 @@ interface Event {
     color?: string;
     textColor?: string;
     borderColor?: string;
+    startTime?: string;
+    endTime?: string;
+    senin?: boolean;
+    selasa?: boolean;
+    rabu?: boolean;
+    kamis?: boolean;
+    jumat?: boolean;
+    sabtu?: boolean;
+    minggu?: boolean;
 }
 
 interface Session {
@@ -99,6 +110,7 @@ interface TestKalenderRef {
 interface TestKalenderProps {
     initialData?: ScheduleDataItem[] | null;
     initialDataPengecualian?: ExclusionDataItem[] | null;
+    typeId?: string;
 }
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
@@ -283,7 +295,7 @@ const convertAPIDataToSession = (apiData: ScheduleDataItem): Session => {
     };
 };
 
-const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialData, initialDataPengecualian }, ref) => {
+const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialData, initialDataPengecualian, typeId }, ref) => {
     useImperativeHandle(ref, () => ({
         getData: () => getKalenderData(),
     }));
@@ -325,6 +337,8 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
     const [availableDates, setAvailableDates] = useState<Set<string>>(new Set());
     const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
     const [openEventDetail, setOpenEventDetail] = useState(false);
+    const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+    const [selectedDays, setSelectedDays] = useState<string[]>([]);
 
     const days = [
         { label: 'Min', value: 'minggu' },
@@ -470,6 +484,9 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
     const renderEventContent = (eventInfo: any) => {
         const start = dayjs(eventInfo.event.start).format('hh:mm a');
         const end = dayjs(eventInfo.event.end).format('hh:mm a');
+        
+        // Tambahkan log untuk ID event
+        console.log('Event ID:', eventInfo.event.id, 'Title:', eventInfo.event.title, 'Type:', eventInfo.event.extendedProps.type);
 
         return (
             <div style={{ textAlign: 'center' }}>
@@ -480,6 +497,15 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
             </div>
         );
     };
+
+    // Tambahkan useEffect untuk logging events setiap kali berubah
+    useEffect(() => {
+        console.log('All Events:', events.map(event => ({
+            id: event.id,
+            title: event.title,
+            type: event.type
+        })));
+    }, [events]);
 
     // Handlers for event and exclusion changes
     const handleEventChange = (field: keyof typeof newEvent, value: string | boolean) => {
@@ -725,13 +751,16 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
         }
     }, [initialData, initialDataPengecualian]);
 
-    // Tambahkan console.log untuk memeriksa events yang akan ditampilkan
-    useEffect(() => {
-        console.log('Current Events:', events);
-    }, [events]);
-
-    // Tambahkan handler untuk event click
+    // Modifikasi handleEventClick untuk menginisialisasi selectedDays dari data session
     const handleEventClick = (info: any) => {
+        console.log('Clicked Event:', {
+            id: info.event.id,
+            title: info.event.title,
+            type: info.event.extendedProps.type,
+            start: info.event.start,
+            end: info.event.end
+        });
+
         const event = {
             id: info.event.id,
             title: info.event.title,
@@ -741,12 +770,103 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
             notes: info.event.extendedProps.notes,
         };
         setSelectedEvent(event);
+        setEditingEvent(event);
+        
+        // Cari session yang sesuai dengan event yang diklik
+        const eventId = event.id.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)?.[0];
+        const session = sessions.find(s => s.id === eventId);
+        
+        // Set selectedDays dari session jika ditemukan, jika tidak gunakan hari dari event
+        if (session) {
+            setSelectedDays(session.selectedDays);
+        } else {
+            const currentDay = dayjs(event.start).format('dddd').toLowerCase();
+            setSelectedDays([currentDay]);
+        }
+        
         setOpenEventDetail(true);
     };
 
-    // Tambahkan handler untuk menutup modal detail
+    // Tambahkan kembali fungsi untuk handle perubahan data
+    const handleEventDetailChange = (field: keyof Event, value: any) => {
+        if (!editingEvent) return;
+        
+        setEditingEvent(prev => {
+            if (!prev) return prev;
+            return {
+                ...prev,
+                [field]: value
+            };
+        });
+    };
+
+    // Tambahkan fungsi untuk handle perubahan hari
+    const handleDayToggle = (dayValue: string) => {
+        setSelectedDays(prev => {
+            if (prev.includes(dayValue)) {
+                return prev.filter(day => day !== dayValue);
+            } else {
+                return [...prev, dayValue];
+            }
+        });
+    };
+
+    const handleEditEvent = async () => {
+        if (!editingEvent || !typeId) return;
+
+        try {
+            // Konversi format waktu dari event ke format yang dibutuhkan
+            const startTime = dayjs(editingEvent.start).format('HH:mm');
+            const endTime = dayjs(editingEvent.end).format('HH:mm');
+            
+            // Ekstrak UUID lengkap (36 karakter)
+            const scheduleId = editingEvent.id.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)?.[0];
+            
+            if (!scheduleId) {
+                throw new Error('Invalid schedule ID format');
+            }
+            
+            // Data untuk edit jadwal
+            const scheduleData = {
+                scheduleIntervalId: scheduleId,
+                startTime: startTime,
+                endTime: endTime,
+                typeId: typeId,
+                additionalInfo: editingEvent.notes || '',
+                maxCapacity: 1,
+                monday: selectedDays.includes('senin'),
+                tuesday: selectedDays.includes('selasa'),
+                wednesday: selectedDays.includes('rabu'),
+                thursday: selectedDays.includes('kamis'),
+                friday: selectedDays.includes('jumat'),
+                saturday: selectedDays.includes('sabtu'),
+                sunday: selectedDays.includes('minggu')
+            };
+
+            console.log('Sending data:', scheduleData);
+
+            // Panggil service editSchedule
+            await EditScheduleService(scheduleData);
+            
+            console.log('Jadwal berhasil diupdate');
+            handleCloseEventDetail();
+            
+            // Refresh data kalender jika perlu
+            if (initialData) {
+                const convertedSessions = initialData.map(convertAPIDataToSession);
+                setSessions(convertedSessions);
+            }
+
+        } catch (error) {
+            console.error('Error updating schedule:', error);
+        }
+    };
+
+    // Modifikasi handleCloseEventDetail
     const handleCloseEventDetail = () => {
         setSelectedEvent(null);
+        setEditingEvent(null);
+        setSelectedDays([]); // Reset selectedDays
         setOpenEventDetail(false);
     };
 
@@ -1310,26 +1430,27 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                             justifyContent={'space-between'}
                             maxWidth={'95%'}
                         >
-                            <DialogTitle>{selectedEvent?.title}</DialogTitle>
+                            <DialogTitle>{editingEvent?.title}</DialogTitle>
                             <CloseOutlined sx={{ cursor: 'pointer' }} onClick={handleCloseEventDetail} />
                         </Box>
                         <DialogContent>
-                            {selectedEvent && (
+                            {editingEvent && (
                                 <Box display="flex" flexDirection="column" gap={2}>
                                     <Typography>Tipe Jadwal</Typography>
                                     <DropdownList
-                                        defaultValue={selectedEvent.type || 'Praktek'}
-                                        onChange={() => {}} // readonly
+                                        defaultValue={editingEvent.type || 'Praktek'}
+                                        onChange={(value) => handleEventDetailChange('type', value)}
                                         loading={false}
                                         options={tipeJadwal}
                                         placeholder='Pilih tipe jadwal'
                                     />
                                     
-                                    {selectedEvent.type === 'Pengecualian' && (
+                                    {editingEvent.type === 'Pengecualian' && (
                                         <>
                                             <Typography>Judul jadwal</Typography>
                                             <TextField
-                                                value={selectedEvent.title}
+                                                value={editingEvent.title}
+                                                onChange={(e) => handleEventDetailChange('title', e.target.value)}
                                                 sx={{
                                                     '& .MuiInputBase-root': {
                                                         borderRadius: '8px',
@@ -1355,69 +1476,32 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                                                 placeholder='Jam mulai'
                                                 loading={false}
                                                 options={jamOperasional}
-                                                defaultValue={dayjs(selectedEvent.start).format('hh:mm a')}
+                                                defaultValue={dayjs(editingEvent.start).format('hh:mm a')}
+                                                onChange={(value) => {
+                                                    const newDate = dayjs(editingEvent.start)
+                                                        .set('hour', dayjs(value, 'hh:mm a').hour())
+                                                        .set('minute', dayjs(value, 'hh:mm a').minute());
+                                                    handleEventDetailChange('startTime', value);
+                                                    handleEventDetailChange('start', newDate.toISOString());
+                                                }}
                                             />
                                             <DropdownListTime
                                                 placeholder='Jam selesai'
                                                 loading={false}
                                                 options={jamOperasional}
-                                                defaultValue={dayjs(selectedEvent.end).format('hh:mm a')}
+                                                defaultValue={dayjs(editingEvent.end).format('hh:mm a')}
+                                                onChange={(value) => {
+                                                    const newDate = dayjs(editingEvent.end)
+                                                        .set('hour', dayjs(value, 'hh:mm a').hour())
+                                                        .set('minute', dayjs(value, 'hh:mm a').minute());
+                                                    handleEventDetailChange('endTime', value);
+                                                    handleEventDetailChange('end', newDate.toISOString());
+                                                }}
                                             />
                                         </Box>
                                     </Box>
 
-                                    {selectedEvent.type === 'Pengecualian' ? (
-                                        <Box
-                                            display="flex"
-                                            gap={2}
-                                            flexDirection={'column'}
-                                            border={'1px solid #C5C5D3'}
-                                            borderRadius={'16px'}
-                                            padding={2}
-                                        >
-                                            <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}>Tanggal</Typography>
-                                            <Box display={'flex'} flexDirection={'row'} gap={2}>
-                                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                    <Box>
-                                                        <Typography>Mulai</Typography>
-                                                        <DatePicker
-                                                            value={dayjs(selectedEvent.start)}
-                                                            slots={{
-                                                                textField: (params) => (
-                                                                    <TextField
-                                                                        {...params}
-                                                                        fullWidth
-                                                                        margin="normal"
-                                                                    />
-                                                                )
-                                                            }}
-                                                        />
-                                                    </Box>
-                                                    {selectedEvent.end && (
-                                                        <>
-                                                            <Typography>-</Typography>
-                                                            <Box>
-                                                                <Typography>Selesai</Typography>
-                                                                <DatePicker
-                                                                    value={dayjs(selectedEvent.end)}
-                                                                    disabled
-                                                                    slots={{
-                                                                        textField: (params) => (
-                                                                            <TextField
-                                                                                {...params}
-                                                                                fullWidth
-                                                                                margin="normal"
-                                                                            />
-                                                                        )
-                                                                    }}
-                                                                />
-                                                            </Box>
-                                                        </>
-                                                    )}
-                                                </LocalizationProvider>
-                                            </Box>
-                                        </Box>
-                                    ) : (
+                                    {editingEvent.type !== 'Pengecualian' && (
                                         <Box
                                             display="flex"
                                             gap={2}
@@ -1431,12 +1515,17 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                                                 {days.map((day) => (
                                                     <Button
                                                         key={day.value}
+                                                        onClick={() => handleDayToggle(day.value)}
                                                         sx={{
                                                             border: '1px solid #8F85F3',
-                                                            color: dayjs(selectedEvent.start).format('dddd').toLowerCase() === day.value ? '#fff' : '#8F85F3',
-                                                            backgroundColor: dayjs(selectedEvent.start).format('dddd').toLowerCase() === day.value ? '#8F85F3' : 'transparent',
+                                                            color: selectedDays.includes(day.value) ? '#fff' : '#8F85F3',
+                                                            backgroundColor: selectedDays.includes(day.value) ? '#8F85F3' : 'transparent',
                                                             borderRadius: '16px',
                                                             padding: 1,
+                                                            '&:hover': {
+                                                                backgroundColor: '#D5D1FB',
+                                                                color: '#8F85F3',
+                                                            },
                                                         }}
                                                     >
                                                         {day.label}
@@ -1447,7 +1536,8 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                                     )}
 
                                     <TextField
-                                        value={selectedEvent.notes || ''}
+                                        value={editingEvent.notes || ''}
+                                        onChange={(e) => handleEventDetailChange('notes', e.target.value)}
                                         placeholder="Catatan"
                                         multiline
                                         rows={4}
@@ -1463,7 +1553,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                         </DialogContent>
                         <DialogActions>
                             <Button
-                                onClick={handleCloseEventDetail}
+                                onClick={handleEditEvent}
                                 sx={{
                                     padding: 1,
                                     mb: '1%',
@@ -1473,7 +1563,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                                 }}
                                 fullWidth
                             >
-                                Tutup
+                                Simpan
                             </Button>
                         </DialogActions>
                     </StyledDialog>
