@@ -955,7 +955,7 @@ export default function TambahPasienUmumOffline() {
 
                                 <InformasiTicketAPI
                                     clinic={clinicName}
-                                    jadwalKonsul={`${dayjs().date()}/${dayjs().format('MMM')}/${dayjs().year()}, ${selectedSchedule}`}
+                                    jadwalKonsul={`${dayjs().format('DD')}/${dayjs().format('MMM')}/${dayjs().year()}, ${selectedSchedule}`}
                                     namaDokter={docterName}
                                     nomorAntrian={queueData?.queueNumber || queueNumber}
                                     tanggalReservasi={tanggalReserve}
