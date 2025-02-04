@@ -838,6 +838,7 @@ export default function TambahPasienUmumOffline() {
                                                                         <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', mt: 1, mb: 1, fontFamily: 'roboto' }} >Tanggal dan Jam Operasional<span style={{ color: "red" }}>*</span></Typography>
                                                                         {/* <CustomCalender key={calendarKey} typeId={idDoctor} onChange={handleScheduleChange} /> */}
                                                                         <CustomTimePicker
+                                                                            
                                                                             typeId={idDoctor}
                                                                             onChange={(scheduleId, schedule) => {
                                                                                 const id = scheduleId;

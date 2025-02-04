@@ -329,7 +329,7 @@ const InformasiTicketAPI = ({
               display={"flex"}
               flexDirection={"row"}
               justifyContent={"space-between"}
-              maxWidth={"100%"}
+              maxWidth={offline ? "83%" : "100%"}
             // bgcolor={'red'}
             >
               <Box display={"flex"} flexDirection={"column"}>
@@ -340,7 +340,7 @@ const InformasiTicketAPI = ({
               </Box>
               <Box display={"flex"} flexDirection={"column"}>
                 <Typography>Jadwal konsultasi</Typography>
-                <Typography maxWidth={"100%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
+                <Typography maxWidth={offline ? "100%" : "100%"} fontSize={"18px"} fontWeight={"600"} lineHeight={"20px"}>
                   {jadwalKonsul}
                 </Typography>
               </Box>
