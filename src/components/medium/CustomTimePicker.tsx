@@ -16,7 +16,8 @@ const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (sch
     const [exclusionTimes, setExclusionTimes] = useState<{ [date: string]: { timeRange: string, disabled: boolean }[] }>({});
     const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
     const [selectedTimeRange, setSelectedTimeRange] = useState<string | null>(null);
-    const [maxCapacities, setMaxCapacities] = useState<number[]>([]);
+    const [maxCapacities, setMaxCapacities] = useState<{ id: any, maxCapacity: number }[]>([]);
+    const [fullBook, setFullBook] = useState<boolean[]>([]);
 
     const fetchSchedules = async () => {
         try {
@@ -28,10 +29,15 @@ const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (sch
                     year: dayjs().year(),
                 },
             });
-            console.log('dataaa: ', response.data.data);
-            const maxCapacities = response.data.data.map((item: { maxCapacity: any; }) => item.maxCapacity);
-            console.log('maks: ', maxCapacities);
-            setMaxCapacities(maxCapacities);
+            console.log(response)
+            const capacities = response.data.data.map((item: { id: any; maxCapacity: any; }) => ({
+                id: item.id,
+                maxCapacity: item.maxCapacity
+            }));
+            setMaxCapacities(capacities);
+            const initialItems = new Array(capacities.length).fill(false);
+            setFullBook(initialItems);
+            console.log('KAPASITAS: ', capacities);
 
             if (Array.isArray(response.data.data)) {
                 const times = response.data.data.reduce((acc: { [date: string]: { timeRange: string, scheduleId: string, disabled: boolean }[] }, schedule: any) => {
@@ -70,7 +76,6 @@ const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (sch
                     const formattedDate = dayjs(exclusion.date).format('YYYY-MM-DD');
                     if (!acc[formattedDate]) acc[formattedDate] = [];
 
-                    // Format waktu menjadi HH:mm - HH:mm
                     const startTime = dayjs().hour(exclusion.startTime[0]).minute(exclusion.startTime[1]).format('HH:mm');
                     const endTime = dayjs().hour(exclusion.endTime[0]).minute(exclusion.endTime[1]).format('HH:mm');
 
@@ -87,10 +92,57 @@ const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (sch
         }
     };
 
+    const fetchCapacity = async (scheduleIntervalId: any, maxCapacity: number, index: number) => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/registration/by-schedule-interval-id/by-schedule-date?`, {
+                params: {
+                    scheduleIntervalId,
+                    date: dayjs().date(),
+                    month: dayjs().month() + 1,
+                    year: dayjs().year(),
+                },
+            });
+
+            console.log('compare: ', response.data.data);
+
+            const currentCapacity = response.data.data;
+            // for (let index = 0; index < maxCapacities.length; index++) {
+            // console.log('index: ', index)
+            if (currentCapacity >= maxCapacity) {
+                console.log(`Schedule ID ${scheduleIntervalId} sudah full book!`);
+                const newItems = [...fullBook];
+                newItems[index] = true;
+                setFullBook(newItems);
+            } else {
+                console.log(`Schedule ID ${scheduleIntervalId} masih sisa book!`);
+                const newItems = [...fullBook];
+                newItems[index] = false;
+                setFullBook(newItems);
+            }
+            // }
+            console.log('hasil: ', fullBook);
+            console.log('index: ', index);
+        } catch (error) {
+            console.error('Error fetching exclusions:', error);
+        }
+    };
+
     useEffect(() => {
         fetchSchedules();
         fetchExclusion();
     }, [typeId]);
+
+    useEffect(() => {
+        for (let index = 0; index < maxCapacities.length; index++) {
+            const { id, maxCapacity } = maxCapacities[index];
+            fetchCapacity(id, maxCapacity, index);
+        }
+    }, [maxCapacities]);
+
+
+    useEffect(() => {
+        console.log('yyyy: ', fullBook);
+    })
 
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -106,8 +158,8 @@ const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (sch
         // const formattedDate = selectedDate?.locale('id').format('DD MMMM YYYY');
         // const selectedTime = `${formattedDate} ${timeRange}`;
         // setInputValue(selectedTime);
-        setSelectedScheduleId(scheduleId); // Menyimpan scheduleId yang dipilih
-        setSelectedTimeRange(timeRange); // Menyimpan timeRange yang dipilih
+        setSelectedScheduleId(scheduleId);
+        setSelectedTimeRange(timeRange);
     };
 
     const handleSave = () => {
@@ -178,7 +230,7 @@ const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (sch
                                         key={item.scheduleId}
                                         onClick={() => handleTimeSelect(item.timeRange, item.scheduleId)}
                                         variant="text"
-                                        disabled={item.disabled || exclusionTimes[selectedDate.format('YYYY-MM-DD')]?.some(exclusion => exclusion.disabled) || maxCapacities[index] === 2}
+                                        disabled={item.disabled || exclusionTimes[selectedDate.format('YYYY-MM-DD')]?.some(exclusion => exclusion.disabled) || fullBook[index]}
                                         sx={{
                                             maxWidth: '200px',
                                             padding: 1,
@@ -195,7 +247,7 @@ const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (sch
                                             },
                                         }}
                                     >
-                                        {item.timeRange} (slot: {maxCapacities[index]}/6)
+                                        {item.timeRange}
                                     </Button>
                                 ))}
                             </Box>
