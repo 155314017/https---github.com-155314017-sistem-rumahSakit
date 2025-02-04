@@ -14,8 +14,9 @@ const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (sch
     // const [inputValue, setInputValue] = useState<string>('');
     const [availableTimes, setAvailableTimes] = useState<{ [date: string]: { timeRange: string, scheduleId: string, disabled: boolean }[] }>({});
     const [exclusionTimes, setExclusionTimes] = useState<{ [date: string]: { timeRange: string, disabled: boolean }[] }>({});
-    const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null); // Untuk menyimpan scheduleId yang dipilih
-    const [selectedTimeRange, setSelectedTimeRange] = useState<string | null>(null); // Untuk menyimpan timeRange yang dipilih
+    const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
+    const [selectedTimeRange, setSelectedTimeRange] = useState<string | null>(null);
+    const [maxCapacities, setMaxCapacities] = useState<number[]>([]);
 
     const fetchSchedules = async () => {
         try {
@@ -27,12 +28,15 @@ const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (sch
                     year: dayjs().year(),
                 },
             });
+            console.log('dataaa: ', response.data.data);
+            const maxCapacities = response.data.data.map((item: { maxCapacity: any; }) => item.maxCapacity);
+            console.log('maks: ', maxCapacities);
+            setMaxCapacities(maxCapacities);
+
             if (Array.isArray(response.data.data)) {
                 const times = response.data.data.reduce((acc: { [date: string]: { timeRange: string, scheduleId: string, disabled: boolean }[] }, schedule: any) => {
                     const formattedDate = dayjs(schedule.date).format('YYYY-MM-DD');
                     if (!acc[formattedDate]) acc[formattedDate] = [];
-
-                    // Format waktu menjadi HH:mm - HH:mm
                     const startTime = dayjs().hour(schedule.startTime[0]).minute(schedule.startTime[1]).format('HH:mm');
                     const endTime = dayjs().hour(schedule.endTime[0]).minute(schedule.endTime[1]).format('HH:mm');
 
@@ -169,12 +173,12 @@ const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (sch
                     <Box sx={{ display: 'flex', padding: 2, minWidth: '250px', maxWidth: 'fit-content' }}>
                         <Box sx={{ minWidth: '200px', overflowY: 'auto', maxHeight: '300px', padding: '0 10px' }}>
                             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                                {selectedDate && availableTimes[selectedDate.format('YYYY-MM-DD')]?.map(({ timeRange, scheduleId, disabled }) => (
+                                {selectedDate && availableTimes[selectedDate.format('YYYY-MM-DD')]?.map((item, index) => (
                                     <Button
-                                        key={scheduleId}
-                                        onClick={() => handleTimeSelect(timeRange, scheduleId)}
+                                        key={item.scheduleId}
+                                        onClick={() => handleTimeSelect(item.timeRange, item.scheduleId)}
                                         variant="text"
-                                        disabled={disabled || exclusionTimes[selectedDate.format('YYYY-MM-DD')]?.some(exclusion => exclusion.disabled)}
+                                        disabled={item.disabled || exclusionTimes[selectedDate.format('YYYY-MM-DD')]?.some(exclusion => exclusion.disabled) || maxCapacities[index] === 2}
                                         sx={{
                                             maxWidth: '200px',
                                             padding: 1,
@@ -185,16 +189,17 @@ const CustomTimePicker = ({ typeId, onChange }: { typeId: string; onChange: (sch
                                             fontWeight: 400,
                                             fontSize: '14px',
                                             alignItems: 'center',
-                                            border: selectedTimeRange === timeRange ? '1px solid #7367F0' : 'none',
+                                            border: selectedTimeRange === item.timeRange ? '1px solid #7367F0' : 'none',
                                             '&:hover': {
                                                 border: '1px solid #7367F0',
                                             },
                                         }}
                                     >
-                                        {timeRange}
+                                        {item.timeRange} (slot: {maxCapacities[index]}/6)
                                     </Button>
                                 ))}
                             </Box>
+
                         </Box>
                     </Box>
 
