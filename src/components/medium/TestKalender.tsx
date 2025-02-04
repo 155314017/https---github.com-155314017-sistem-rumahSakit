@@ -173,6 +173,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
         fontSize: '0.875rem',
         alignItems: 'center',
         justifyContent: 'center',
+        cursor: 'pointer',
     },
     '& .fc-timegrid-slot': {
         borderBottom: '1px solid #e0e0e0',
@@ -222,6 +223,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
         color: '#000000 !important',
         width: '100% !important',
         height: '100% !important',
+        cursor: 'pointer',
     },
     '& .fc-event-exclusion': {
         backgroundColor: '#B8E0C9 !important',
@@ -229,6 +231,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
         color: '#000000 !important',
         width: '100% !important',
         height: '100% !important',
+        cursor: 'pointer',
     },
     '& .fc-event-praktek:hover, & .fc-event-exclusion:hover': {
         opacity: 0.8,
@@ -320,6 +323,8 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
     const [errorPraktek, setErrorPraktek] = useState<string>('');
     const [errorExclusion, setErrorExclusion] = useState<string>('');
     const [availableDates, setAvailableDates] = useState<Set<string>>(new Set());
+    const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+    const [openEventDetail, setOpenEventDetail] = useState(false);
 
     const days = [
         { label: 'Min', value: 'minggu' },
@@ -688,14 +693,14 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
             const convertedExclusions = initialDataPengecualian.map((item) => {
                 const startTimeArray = typeof item.startTime === 'string' ? JSON.parse(item.startTime) : item.startTime;
                 const endTimeArray = typeof item.endTime === 'string' ? JSON.parse(item.endTime) : item.endTime;
-                
+
                 // Format tanggal dan waktu
                 const startDateTime = dayjs(item.startDate)
                     .hour(startTimeArray[0])
                     .minute(startTimeArray[1])
                     .second(0)
                     .format('YYYY-MM-DDTHH:mm:ss');
-                
+
                 const endDateTime = dayjs(item.endDate)
                     .hour(endTimeArray[0])
                     .minute(endTimeArray[1])
@@ -724,6 +729,26 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
     useEffect(() => {
         console.log('Current Events:', events);
     }, [events]);
+
+    // Tambahkan handler untuk event click
+    const handleEventClick = (info: any) => {
+        const event = {
+            id: info.event.id,
+            title: info.event.title,
+            start: info.event.start,
+            end: info.event.end,
+            type: info.event.extendedProps.type,
+            notes: info.event.extendedProps.notes,
+        };
+        setSelectedEvent(event);
+        setOpenEventDetail(true);
+    };
+
+    // Tambahkan handler untuk menutup modal detail
+    const handleCloseEventDetail = () => {
+        setSelectedEvent(null);
+        setOpenEventDetail(false);
+    };
 
     return (
         <>
@@ -1006,6 +1031,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                                     }
                                     return ['fc-event-praktek'];
                                 }}
+                                eventClick={handleEventClick}
                             />
                         </Box>
                     </Box>
@@ -1271,6 +1297,183 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                                 }}
                             >
                                 Tambah
+                            </Button>
+                        </DialogActions>
+                    </StyledDialog>
+
+                    {/* Modal Detail Event */}
+                    <StyledDialog open={openEventDetail} onClose={handleCloseEventDetail}>
+                        <Box
+                            display={'flex'}
+                            flexDirection={'row'}
+                            alignItems={'center'}
+                            justifyContent={'space-between'}
+                            maxWidth={'95%'}
+                        >
+                            <DialogTitle>{selectedEvent?.title}</DialogTitle>
+                            <CloseOutlined sx={{ cursor: 'pointer' }} onClick={handleCloseEventDetail} />
+                        </Box>
+                        <DialogContent>
+                            {selectedEvent && (
+                                <Box display="flex" flexDirection="column" gap={2}>
+                                    <Typography>Tipe Jadwal</Typography>
+                                    <DropdownList
+                                        defaultValue={selectedEvent.type || 'Praktek'}
+                                        onChange={() => {}} // readonly
+                                        loading={false}
+                                        options={tipeJadwal}
+                                        placeholder='Pilih tipe jadwal'
+                                    />
+                                    
+                                    {selectedEvent.type === 'Pengecualian' && (
+                                        <>
+                                            <Typography>Judul jadwal</Typography>
+                                            <TextField
+                                                value={selectedEvent.title}
+                                                sx={{
+                                                    '& .MuiInputBase-root': {
+                                                        borderRadius: '8px',
+                                                    },
+                                                }}
+                                            />
+                                        </>
+                                    )}
+
+                                    <Box
+                                        borderRadius={'16px'}
+                                        padding={2}
+                                        border={'1px solid #C5C5D3'}
+                                        display="flex"
+                                        gap={2}
+                                        flexDirection={'row'}
+                                        alignItems={'center'}
+                                        justifyContent={'space-between'}
+                                    >
+                                        <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}>Jam</Typography>
+                                        <Box display="flex" gap={2} flexDirection={'row'}>
+                                            <DropdownListTime
+                                                placeholder='Jam mulai'
+                                                loading={false}
+                                                options={jamOperasional}
+                                                defaultValue={dayjs(selectedEvent.start).format('hh:mm a')}
+                                            />
+                                            <DropdownListTime
+                                                placeholder='Jam selesai'
+                                                loading={false}
+                                                options={jamOperasional}
+                                                defaultValue={dayjs(selectedEvent.end).format('hh:mm a')}
+                                            />
+                                        </Box>
+                                    </Box>
+
+                                    {selectedEvent.type === 'Pengecualian' ? (
+                                        <Box
+                                            display="flex"
+                                            gap={2}
+                                            flexDirection={'column'}
+                                            border={'1px solid #C5C5D3'}
+                                            borderRadius={'16px'}
+                                            padding={2}
+                                        >
+                                            <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}>Tanggal</Typography>
+                                            <Box display={'flex'} flexDirection={'row'} gap={2}>
+                                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                    <Box>
+                                                        <Typography>Mulai</Typography>
+                                                        <DatePicker
+                                                            value={dayjs(selectedEvent.start)}
+                                                            slots={{
+                                                                textField: (params) => (
+                                                                    <TextField
+                                                                        {...params}
+                                                                        fullWidth
+                                                                        margin="normal"
+                                                                    />
+                                                                )
+                                                            }}
+                                                        />
+                                                    </Box>
+                                                    {selectedEvent.end && (
+                                                        <>
+                                                            <Typography>-</Typography>
+                                                            <Box>
+                                                                <Typography>Selesai</Typography>
+                                                                <DatePicker
+                                                                    value={dayjs(selectedEvent.end)}
+                                                                    disabled
+                                                                    slots={{
+                                                                        textField: (params) => (
+                                                                            <TextField
+                                                                                {...params}
+                                                                                fullWidth
+                                                                                margin="normal"
+                                                                            />
+                                                                        )
+                                                                    }}
+                                                                />
+                                                            </Box>
+                                                        </>
+                                                    )}
+                                                </LocalizationProvider>
+                                            </Box>
+                                        </Box>
+                                    ) : (
+                                        <Box
+                                            display="flex"
+                                            gap={2}
+                                            flexDirection={'column'}
+                                            border={'1px solid #C5C5D3'}
+                                            borderRadius={'16px'}
+                                            padding={2}
+                                        >
+                                            <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}>Hari</Typography>
+                                            <Box display={'flex'} flexDirection={'row'} gap={2}>
+                                                {days.map((day) => (
+                                                    <Button
+                                                        key={day.value}
+                                                        sx={{
+                                                            border: '1px solid #8F85F3',
+                                                            color: dayjs(selectedEvent.start).format('dddd').toLowerCase() === day.value ? '#fff' : '#8F85F3',
+                                                            backgroundColor: dayjs(selectedEvent.start).format('dddd').toLowerCase() === day.value ? '#8F85F3' : 'transparent',
+                                                            borderRadius: '16px',
+                                                            padding: 1,
+                                                        }}
+                                                    >
+                                                        {day.label}
+                                                    </Button>
+                                                ))}
+                                            </Box>
+                                        </Box>
+                                    )}
+
+                                    <TextField
+                                        value={selectedEvent.notes || ''}
+                                        placeholder="Catatan"
+                                        multiline
+                                        rows={4}
+                                        fullWidth
+                                        sx={{
+                                            '& .MuiInputBase-root': {
+                                                borderRadius: '16px',
+                                            },
+                                        }}
+                                    />
+                                </Box>
+                            )}
+                        </DialogContent>
+                        <DialogActions>
+                            <Button
+                                onClick={handleCloseEventDetail}
+                                sx={{
+                                    padding: 1,
+                                    mb: '1%',
+                                    bgcolor: '#8F85F3',
+                                    color: 'white',
+                                    borderRadius: '8px'
+                                }}
+                                fullWidth
+                            >
+                                Tutup
                             </Button>
                         </DialogActions>
                     </StyledDialog>
