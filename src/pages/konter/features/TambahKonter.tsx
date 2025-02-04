@@ -146,13 +146,7 @@ export default function TambahKonter() {
                                     )}
                                 </FormControl>
 
-                                <Typography sx={{ fontSize: "16px" }}>Pilih Konter<span style={{ color: "red" }}>*</span></Typography>
-                                <DropdownList
-                                    options={jenisKonter}
-                                    placeholder="Pilih konter"
-                                    // onChange={handleSelectionChange}
-                                    loading={false}
-                                />
+                             
 
                                 <Typography sx={{ fontSize: "16px", mt: 1 }}>Lokasi Konter<span style={{ color: "red" }}>*</span></Typography>
                                 <FormControl fullWidth sx={{ my: 1 }}>

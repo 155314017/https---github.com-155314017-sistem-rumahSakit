@@ -217,18 +217,6 @@ const TableKonter: React.FC<TableKonterProps> = ({fetchDatas, onSuccessDelete}) 
                                                 }}
                                                 align="left"
                                             >
-                                                Tipe Konter
-                                            </TableCell>
-                                            <TableCell
-                                                width={"15%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="left"
-                                            >
                                                 Nama Konter
                                             </TableCell>
                                             <TableCell
@@ -279,22 +267,7 @@ const TableKonter: React.FC<TableKonterProps> = ({fetchDatas, onSuccessDelete}) 
                                                     >
                                                         {index + 1}
                                                     </TableCell>
-                                                    <TableCell
-                                                        sx={[
-                                                            {
-                                                                color: "#292B2C",
-                                                                fontSize: "14px",
-                                                                overflow: "hidden",
-                                                                textOverflow: "ellipsis",
-                                                                whiteSpace: "nowrap",
-                                                                maxWidth: "150px",
-                                                                textTransform: "capitalize",
-                                                            },
-                                                        ]}
-                                                        align="left"
-                                                    >
-                                                        {data.name}
-                                                    </TableCell>
+                                                    
                                                     <TableCell
                                                         sx={[
                                                             {

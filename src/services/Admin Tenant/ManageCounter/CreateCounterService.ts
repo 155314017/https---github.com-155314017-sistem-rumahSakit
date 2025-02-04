@@ -5,9 +5,7 @@ import { BaseResponse } from '../../../types/api';
 export interface CreateCounterRequest {
   name: string;
   location: string;
-  queueNumber: number;
   additionalInfo: string;
-  masterTypeId: string;
  }
 
 export interface CounterDataItem {
