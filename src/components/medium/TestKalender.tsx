@@ -46,6 +46,7 @@ import { ScheduleDataItem } from '../../services/Admin Tenant/ManageSchedule/Get
 import { ExclusionDataItem } from '../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices';
 import { editSchedule } from '../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 import { EditScheduleService } from '../../services/Admin Tenant/ManageSchedule/EditScheduleService';
+import { EditExclusionService } from '../../services/Admin Tenant/ManageSchedule/EditExclusionService';
 
 // Definisikan interface untuk Event dan Session
 interface Event {
@@ -339,6 +340,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
     const [openEventDetail, setOpenEventDetail] = useState(false);
     const [editingEvent, setEditingEvent] = useState<Event | null>(null);
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
+    const [openExclusionDetail, setOpenExclusionDetail] = useState(false);
 
     const days = [
         { label: 'Min', value: 'minggu' },
@@ -751,16 +753,8 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
         }
     }, [initialData, initialDataPengecualian]);
 
-    // Modifikasi handleEventClick untuk menginisialisasi selectedDays dari data session
+    // Modifikasi handleEventClick untuk menangani kedua tipe event
     const handleEventClick = (info: any) => {
-        console.log('Clicked Event:', {
-            id: info.event.id,
-            title: info.event.title,
-            type: info.event.extendedProps.type,
-            start: info.event.start,
-            end: info.event.end
-        });
-
         const event = {
             id: info.event.id,
             title: info.event.title,
@@ -772,19 +766,22 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
         setSelectedEvent(event);
         setEditingEvent(event);
         
-        // Cari session yang sesuai dengan event yang diklik
-        const eventId = event.id.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)?.[0];
-        const session = sessions.find(s => s.id === eventId);
-        
-        // Set selectedDays dari session jika ditemukan, jika tidak gunakan hari dari event
-        if (session) {
-            setSelectedDays(session.selectedDays);
+        // Buka modal yang sesuai berdasarkan tipe event
+        if (event.type === 'Pengecualian') {
+            setOpenExclusionDetail(true);
         } else {
-            const currentDay = dayjs(event.start).format('dddd').toLowerCase();
-            setSelectedDays([currentDay]);
+            // Untuk jadwal praktek, tetap set selectedDays
+            const eventId = event.id.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)?.[0];
+            const session = sessions.find(s => s.id === eventId);
+            
+            if (session) {
+                setSelectedDays(session.selectedDays);
+            } else {
+                const currentDay = dayjs(event.start).format('dddd').toLowerCase();
+                setSelectedDays([currentDay]);
+            }
+            setOpenEventDetail(true);
         }
-        
-        setOpenEventDetail(true);
     };
 
     // Tambahkan kembali fungsi untuk handle perubahan data
@@ -900,6 +897,66 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
         setEditingEvent(null);
         setSelectedDays([]); // Reset selectedDays
         setOpenEventDetail(false);
+    };
+
+    // Tambahkan handler untuk menutup modal pengecualian
+    const handleCloseExclusionDetail = () => {
+        setSelectedEvent(null);
+        setEditingEvent(null);
+        setOpenExclusionDetail(false);
+    };
+
+    // Tambahkan handler untuk edit jadwal pengecualian
+    const handleEditExclusion = async () => {
+        if (!editingEvent || !typeId) return;
+
+        try {
+            // Ekstrak UUID lengkap (36 karakter)
+            const exclusionId = editingEvent.id.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)?.[0];
+            
+            if (!exclusionId) {
+                throw new Error('Invalid exclusion ID format');
+            }
+            
+            // Data untuk edit jadwal pengecualian sesuai interface EditExclusionRequest
+            const exclusionData = {
+                exclusionIntervalId: exclusionId,
+                startTime: dayjs(editingEvent.start).format('HH:mm'),
+                endTime: dayjs(editingEvent.end).format('HH:mm'),
+                typeId: typeId,
+                additionalInfo: editingEvent.notes || '',
+                startDate: dayjs(editingEvent.start).format('YYYY-MM-DD'),
+                endDate: dayjs(editingEvent.end).format('YYYY-MM-DD')
+            };
+
+            console.log('Sending exclusion data:', exclusionData);
+
+            // Panggil service edit pengecualian
+            await EditExclusionService(exclusionData);
+            
+            console.log('Jadwal pengecualian berhasil diupdate');
+
+            // Update exclusionEvents state
+            setExclusionEvents(prevEvents => {
+                return prevEvents.map(event => {
+                    if (event.id === editingEvent.id) {
+                        return {
+                            ...event,
+                            title: editingEvent.title,
+                            start: dayjs(editingEvent.start).format('YYYY-MM-DDTHH:mm:ss'),
+                            end: dayjs(editingEvent.end).format('YYYY-MM-DDTHH:mm:ss'),
+                            notes: editingEvent.notes
+                        };
+                    }
+                    return event;
+                });
+            });
+            
+            handleCloseExclusionDetail();
+
+        } catch (error) {
+            console.error('Error updating exclusion schedule:', error);
+        }
     };
 
     return (
@@ -1462,35 +1519,27 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                             justifyContent={'space-between'}
                             maxWidth={'95%'}
                         >
-                            <DialogTitle>{editingEvent?.title}</DialogTitle>
+                            <DialogTitle>Detail Jadwal Praktek</DialogTitle>
                             <CloseOutlined sx={{ cursor: 'pointer' }} onClick={handleCloseEventDetail} />
                         </Box>
                         <DialogContent>
-                            {editingEvent && (
+                            {editingEvent && editingEvent.type !== 'Pengecualian' && (
                                 <Box display="flex" flexDirection="column" gap={2}>
                                     <Typography>Tipe Jadwal</Typography>
-                                    <DropdownList
-                                        defaultValue={editingEvent.type || 'Praktek'}
-                                        onChange={(value) => handleEventDetailChange('type', value)}
-                                        loading={false}
-                                        options={tipeJadwal}
-                                        placeholder='Pilih tipe jadwal'
-                                    />
-                                    
-                                    {editingEvent.type === 'Pengecualian' && (
-                                        <>
-                                            <Typography>Judul jadwal</Typography>
-                                            <TextField
-                                                value={editingEvent.title}
-                                                onChange={(e) => handleEventDetailChange('title', e.target.value)}
-                                                sx={{
-                                                    '& .MuiInputBase-root': {
-                                                        borderRadius: '8px',
-                                                    },
-                                                }}
-                                            />
-                                        </>
-                                    )}
+                                    <Box sx={{ 
+                                        opacity: 0.7, 
+                                        pointerEvents: 'none',
+                                        backgroundColor: '#f5f5f5',
+                                        borderRadius: '8px'
+                                    }}>
+                                        <DropdownList
+                                            defaultValue={'Praktek'}
+                                            onChange={() => {}}
+                                            loading={false}
+                                            options={[{ value: 'Praktek', label: 'Praktek' }]}
+                                            placeholder='Pilih tipe jadwal'
+                                        />
+                                    </Box>
 
                                     <Box
                                         borderRadius={'16px'}
@@ -1533,39 +1582,37 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                                         </Box>
                                     </Box>
 
-                                    {editingEvent.type !== 'Pengecualian' && (
-                                        <Box
-                                            display="flex"
-                                            gap={2}
-                                            flexDirection={'column'}
-                                            border={'1px solid #C5C5D3'}
-                                            borderRadius={'16px'}
-                                            padding={2}
-                                        >
-                                            <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}>Hari</Typography>
-                                            <Box display={'flex'} flexDirection={'row'} gap={2}>
-                                                {days.map((day) => (
-                                                    <Button
-                                                        key={day.value}
-                                                        onClick={() => handleDayToggle(day.value)}
-                                                        sx={{
-                                                            border: '1px solid #8F85F3',
-                                                            color: selectedDays.includes(day.value) ? '#fff' : '#8F85F3',
-                                                            backgroundColor: selectedDays.includes(day.value) ? '#8F85F3' : 'transparent',
-                                                            borderRadius: '16px',
-                                                            padding: 1,
-                                                            '&:hover': {
-                                                                backgroundColor: '#D5D1FB',
-                                                                color: '#8F85F3',
-                                                            },
-                                                        }}
-                                                    >
-                                                        {day.label}
-                                                    </Button>
-                                                ))}
-                                            </Box>
+                                    <Box
+                                        display="flex"
+                                        gap={2}
+                                        flexDirection={'column'}
+                                        border={'1px solid #C5C5D3'}
+                                        borderRadius={'16px'}
+                                        padding={2}
+                                    >
+                                        <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}>Hari</Typography>
+                                        <Box display={'flex'} flexDirection={'row'} gap={2}>
+                                            {days.map((day) => (
+                                                <Button
+                                                    key={day.value}
+                                                    onClick={() => handleDayToggle(day.value)}
+                                                    sx={{
+                                                        border: '1px solid #8F85F3',
+                                                        color: selectedDays.includes(day.value) ? '#fff' : '#8F85F3',
+                                                        backgroundColor: selectedDays.includes(day.value) ? '#8F85F3' : 'transparent',
+                                                        borderRadius: '16px',
+                                                        padding: 1,
+                                                        '&:hover': {
+                                                            backgroundColor: '#D5D1FB',
+                                                            color: '#8F85F3',
+                                                        },
+                                                    }}
+                                                >
+                                                    {day.label}
+                                                </Button>
+                                            ))}
                                         </Box>
-                                    )}
+                                    </Box>
 
                                     <TextField
                                         value={editingEvent.notes || ''}
@@ -1586,6 +1633,166 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                         <DialogActions>
                             <Button
                                 onClick={handleEditEvent}
+                                sx={{
+                                    padding: 1,
+                                    mb: '1%',
+                                    bgcolor: '#8F85F3',
+                                    color: 'white',
+                                    borderRadius: '8px'
+                                }}
+                                fullWidth
+                            >
+                                Simpan
+                            </Button>
+                        </DialogActions>
+                    </StyledDialog>
+
+                    {/* Modal Detail Pengecualian */}
+                    <StyledDialog open={openExclusionDetail} onClose={handleCloseExclusionDetail}>
+                        <Box
+                            display={'flex'}
+                            flexDirection={'row'}
+                            alignItems={'center'}
+                            justifyContent={'space-between'}
+                            maxWidth={'95%'}
+                        >
+                            <DialogTitle>Detail Jadwal Pengecualian</DialogTitle>
+                            <CloseOutlined sx={{ cursor: 'pointer' }} onClick={handleCloseExclusionDetail} />
+                        </Box>
+                        <DialogContent>
+                            {editingEvent && editingEvent.type === 'Pengecualian' && (
+                                <Box display="flex" flexDirection="column" gap={2}>
+                                    <Typography>Tipe Jadwal</Typography>
+                                    <Box sx={{ 
+                                        opacity: 0.7, 
+                                        pointerEvents: 'none',
+                                        backgroundColor: '#f5f5f5',
+                                        borderRadius: '8px'
+                                    }}>
+                                        <DropdownList
+                                            defaultValue={'Pengecualian'}
+                                            onChange={() => {}}
+                                            loading={false}
+                                            options={[{ value: 'Pengecualian', label: 'Pengecualian' }]}
+                                            placeholder='Pilih tipe jadwal'
+                                        />
+                                    </Box>
+
+                                    <Typography>Judul jadwal</Typography>
+                                    <TextField
+                                        value={editingEvent.title}
+                                        onChange={(e) => handleEventDetailChange('title', e.target.value)}
+                                        sx={{
+                                            '& .MuiInputBase-root': {
+                                                borderRadius: '8px',
+                                            },
+                                        }}
+                                    />
+
+                                    <Box
+                                        borderRadius={'16px'}
+                                        padding={2}
+                                        border={'1px solid #C5C5D3'}
+                                        display="flex"
+                                        gap={2}
+                                        flexDirection={'row'}
+                                        alignItems={'center'}
+                                        justifyContent={'space-between'}
+                                    >
+                                        <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}>Jam</Typography>
+                                        <Box display="flex" gap={2} flexDirection={'row'}>
+                                            <DropdownListTime
+                                                placeholder='Jam mulai'
+                                                loading={false}
+                                                options={jamOperasional}
+                                                defaultValue={dayjs(editingEvent.start).format('hh:mm a')}
+                                                onChange={(value) => {
+                                                    const newDate = dayjs(editingEvent.start)
+                                                        .set('hour', dayjs(value, 'hh:mm a').hour())
+                                                        .set('minute', dayjs(value, 'hh:mm a').minute());
+                                                    handleEventDetailChange('startTime', value);
+                                                    handleEventDetailChange('start', newDate.toISOString());
+                                                }}
+                                            />
+                                            <DropdownListTime
+                                                placeholder='Jam selesai'
+                                                loading={false}
+                                                options={jamOperasional}
+                                                defaultValue={dayjs(editingEvent.end).format('hh:mm a')}
+                                                onChange={(value) => {
+                                                    const newDate = dayjs(editingEvent.end)
+                                                        .set('hour', dayjs(value, 'hh:mm a').hour())
+                                                        .set('minute', dayjs(value, 'hh:mm a').minute());
+                                                    handleEventDetailChange('endTime', value);
+                                                    handleEventDetailChange('end', newDate.toISOString());
+                                                }}
+                                            />
+                                        </Box>
+                                    </Box>
+
+                                    <Box
+                                        display="flex"
+                                        gap={2}
+                                        flexDirection={'column'}
+                                        border={'1px solid #C5C5D3'}
+                                        borderRadius={'16px'}
+                                        padding={2}
+                                    >
+                                        <Typography fontSize={'16px'} fontWeight={600} lineHeight={'18px'}>Tanggal</Typography>
+                                        <Box display={'flex'} flexDirection={'row'} gap={2}>
+                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <Box>
+                                                    <Typography>Mulai</Typography>
+                                                    <DatePicker
+                                                        value={dayjs(editingEvent.start)}
+                                                        onChange={(newValue) => {
+                                                            if (newValue) {
+                                                                const newDate = newValue
+                                                                    .hour(dayjs(editingEvent.start).hour())
+                                                                    .minute(dayjs(editingEvent.start).minute());
+                                                                handleEventDetailChange('start', newDate.toISOString());
+                                                            }
+                                                        }}
+                                                    />
+                                                </Box>
+                                                <Typography>-</Typography>
+                                                <Box>
+                                                    <Typography>Selesai</Typography>
+                                                    <DatePicker
+                                                        value={dayjs(editingEvent.end)}
+                                                        onChange={(newValue) => {
+                                                            if (newValue) {
+                                                                const newDate = newValue
+                                                                    .hour(dayjs(editingEvent.end).hour())
+                                                                    .minute(dayjs(editingEvent.end).minute());
+                                                                handleEventDetailChange('end', newDate.toISOString());
+                                                            }
+                                                        }}
+                                                    />
+                                                </Box>
+                                            </LocalizationProvider>
+                                        </Box>
+                                    </Box>
+
+                                    <TextField
+                                        value={editingEvent.notes || ''}
+                                        onChange={(e) => handleEventDetailChange('notes', e.target.value)}
+                                        placeholder="Catatan"
+                                        multiline
+                                        rows={4}
+                                        fullWidth
+                                        sx={{
+                                            '& .MuiInputBase-root': {
+                                                borderRadius: '16px',
+                                            },
+                                        }}
+                                    />
+                                </Box>
+                            )}
+                        </DialogContent>
+                        <DialogActions>
+                            <Button
+                                onClick={handleEditExclusion}
                                 sx={{
                                     padding: 1,
                                     mb: '1%',

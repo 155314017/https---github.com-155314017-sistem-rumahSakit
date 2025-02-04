@@ -7,9 +7,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import { getAmbulanceByIdService } from '../../../services/Admin Tenant/ManageAmbulance/GetAmbulanceByIdService'
 import { GetScheduleByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices'
-import { KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils'
+import { createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils'
+import { createExclusions } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils'
 import { ScheduleDataItem } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices'
 import { ExclusionDataItem, GetExclusionByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices'
+import { EditAmbulanceServices } from '../../../services/Admin Tenant/ManageAmbulance/EditAmbulanceServices'
+import { editImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils'
 
 
 type AmbulanceDataItem = {
@@ -91,7 +94,7 @@ export default function useEditAmbulance() {
 
   const formik = useFormik<FormValues>({
     initialValues: {
-      operationalCost:  0
+      operationalCost: ambulanceData?.cost || 0
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
@@ -159,32 +162,47 @@ export default function useEditAmbulance() {
   const handleEditAmbulance = async () => {
     try {
       const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
-
+      console.log("kalenderData: ", kalenderData);
       // Validasi input schedule
       validateInput(kalenderData);
 
-      // Data untuk CreateAmbulanceService
+      // Data untuk EditAmbulanceService
       const ambulanceData = {
-        number: '12345', // Sebaiknya ini dari form atau auto-generate
+        number: '12345',
         status: 'ACTIVE',
         additionalInfo: '',
         cost: formik.values.operationalCost,
         ambulanceId: id || ''
       };
 
-      // Buat ambulance baru
-      // const { data: { id: ambulanceId } } = await EditAmbulanceServices(ambulanceData);
-      // if (!ambulanceId) throw new Error('Ambulance ID tidak ditemukan');
+      // Edit ambulance
+      const { data: { id: ambulanceId } } = await EditAmbulanceServices(ambulanceData);
+      if (!ambulanceId) throw new Error('Ambulance ID tidak ditemukan');
 
-      // console.log("here exclusion: ");
-      // console.log(kalenderData.exclusion);
-      // // Proses secara parallel untuk optimasi
-      // await Promise.all([
-      //   editSchedule(ambulanceId, kalenderData.praktek),
-      //   editExclusion(ambulanceId, kalenderData.exclusion),
-      //   uploadImages(ambulanceId, imagesData)
-      // ]);
+      await editImages(ambulanceId, imagesData);
+      // Pisahkan data praktek yang baru (yang memiliki id dengan format 'session-')
+      const newPraktekData = kalenderData.praktek.filter(item => item.id.startsWith('session-'));
+      
+      // Pisahkan data exclusion yang baru (yang memiliki id dengan format 'exclusion-')
+      const newExclusionData = kalenderData.exclusion.filter(item => item.id.startsWith('exclusion-'));
 
+      // Proses data baru secara parallel jika ada
+      const promises = [];
+      
+      if (newPraktekData.length > 0) {
+        console.log('Creating new praktek schedules:', newPraktekData);
+        promises.push(createSchedules(ambulanceId, newPraktekData));
+      }
+
+      if (newExclusionData.length > 0) {
+        console.log('Creating new exclusion schedules:', newExclusionData);
+        promises.push(createExclusions(ambulanceId, newExclusionData));
+      }
+
+      // Tunggu semua proses selesai
+      if (promises.length > 0) {
+        await Promise.all(promises);
+      }
 
       // Reset state dan redirect
       formik.resetForm();
@@ -193,7 +211,7 @@ export default function useEditAmbulance() {
       navigate('/ambulance', {
         state: {
           successAdd: true,
-          message: 'Ambulance berhasil ditambahkan!'
+          message: 'Ambulance berhasil diperbarui!'
         }
       });
     } catch (error) {

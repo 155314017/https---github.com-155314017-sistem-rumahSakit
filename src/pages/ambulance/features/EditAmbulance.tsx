@@ -195,7 +195,7 @@ export default function EditAmbulance() {
                 typeId={id} 
               />
               <Button
-                onClick={() => formik.handleSubmit()}
+                onClick={handleEditAmbulance}
                 variant="contained"
 
                 color="inherit"
@@ -212,7 +212,6 @@ export default function EditAmbulance() {
                     boxShadow: 'none',
                   },
                 }}
-                disabled={!formik.isValid || !formik.dirty}
               >
                 Simpan
               </Button>
