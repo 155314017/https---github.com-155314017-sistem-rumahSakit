@@ -75,7 +75,7 @@ const PasienCard: React.FC<PasienCardProps> = ({
                         <Typography
                             sx={{
                                 textDecoration: "none",
-                                maxWidth: "50%",
+                                maxWidth: "100%",
                                 color: '#747487',
                                 fontWeight: 400,
                                 fontSize: '16px',
