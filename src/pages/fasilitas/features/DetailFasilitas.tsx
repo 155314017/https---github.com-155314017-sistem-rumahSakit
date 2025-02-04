@@ -25,7 +25,7 @@ export default function DetailFasilitas() {
     open,
     buildingName,
     facilityData,   
-    ids
+    id
   } = useDetailFasilitas();
 
     return (
@@ -59,7 +59,7 @@ export default function DetailFasilitas() {
                             />
                             <Link
                                 underline="hover"
-                                onClick={(event) => confirmationDelete(event, ids)}
+                                onClick={(event) => confirmationDelete(event, id || "")}
                                 sx={{ color: "#8F85F3" }}
                                 href="#">
                                 Hapus
@@ -68,7 +68,7 @@ export default function DetailFasilitas() {
                                 underline="hover"
                                 sx={{ color: "#8F85F3" }}
                                 href="#"
-                                onClick={() => navigate(`/editRuangan/${ids}`)}
+                                onClick={() => navigate(`/editRuangan/${id || ""}`)}
                             >
                                 Ubah
                             </Link>

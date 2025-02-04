@@ -1,15 +1,9 @@
 //component
 import { Container, Box } from "@mui/system";
-import { Typography, Button, FormControl, OutlinedInput, IconButton } from "@mui/material";
+import { Typography, Button, FormControl, OutlinedInput } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
-import AlertSuccess from "../../../components/small/alert/AlertSuccess";
-import CustomTimePicker from "../../../components/small/CustomTimePicker";
 import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/ImageGroupUploaderAPI';
-import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
-import "dayjs/locale/id";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import TestKalender from '../../../components/medium/TestKalender';
 
 //hooks
@@ -27,7 +21,6 @@ export default function EditKlinik() {
         handleEditClinic,
         kalenderRef,
         id,
-        clinicData,
         scheduleDataPraktek,
         scheduleDataPengecualian 
     } = useEditKlinik();

@@ -15,7 +15,6 @@ export default function DetailGedung() {
     address,
     deletedItems,
     open,
-    ids,
     breadcrumbItems,
     largeImage,
     smallImage,
@@ -23,7 +22,8 @@ export default function DetailGedung() {
     confirmationDelete,
     handleDeleteSuccess,
     navigate,
-    setOpen
+    setOpen,
+    id
     }=useDetailGedung();
   return (
     <Container sx={{ py: 2 }}>
@@ -64,7 +64,7 @@ export default function DetailGedung() {
                 underline="hover"
                 sx={{ color: "#8F85F3" }}
                 href="#"
-                onClick={(event) => confirmationDelete(event, ids)}
+                onClick={(event) => confirmationDelete(event, id || "")}
               >
                 Hapus
               </Link>
@@ -72,7 +72,7 @@ export default function DetailGedung() {
                 underline="hover"
                 sx={{ color: "#8F85F3" }}
                 href="#"
-                onClick={() => navigate(`/editGedung/${ids}`)}
+                onClick={() => navigate(`/editGedung/${id || ""}`)}
               >
                 Ubah
               </Link>

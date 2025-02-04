@@ -2,7 +2,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { EditBuildingService } from "../../../services/Admin Tenant/ManageBuilding/EditBuildingService";
@@ -35,8 +34,7 @@ export default function useEditGedung() {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const token = Cookies.get("accessToken");
-                const response = await GetBuildingById(id,token);
+                const response = await GetBuildingById(id);
                 setName(response.name);
                 setAddress(response.address);
             } catch (error) {

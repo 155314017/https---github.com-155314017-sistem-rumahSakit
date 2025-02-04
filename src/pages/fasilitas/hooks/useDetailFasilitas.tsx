@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
 import { getFacilityByIdService } from "../../../services/ManageFacility/GetFacilityByIdService";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -9,12 +8,6 @@ import { GetScheduleByTypeId, ScheduleDataItem } from "../../../services/Admin T
 import { convertToOperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 
 
-
-type ScheduleData = {
-  id: string;
-  startDateTime: number;
-  endDateTime: number;
-};
 // Clinic data type
 export interface FacilityDataItem {
     id: string;
@@ -57,8 +50,6 @@ export default function useDetailFasilitas() {
   const [facilityData, setFacilityData] = useState<FacilityDataItem | null>(null);
   const [buildingName, setBuildingName] = useState('');
   const [buildingId, setBuildingId] = useState('');
-  const [ids, setIds] = useState<string>("") || "";
-
 
   const breadcrumbItems = [
     {
@@ -163,6 +154,6 @@ export default function useDetailFasilitas() {
     setBuildingId,
     setFacilityData,
     setBuildingName,
-    ids
+    id
   };
 }

@@ -3,7 +3,6 @@ import bgImage from "../../../assets/img/String.png";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageUploaderGroup';
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
-import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 
 //hooks
 import TestKalender from "../../../components/medium/TestKalender";
@@ -15,7 +14,6 @@ export default function TambahKonter() {
         handleImageChange,
         successAlert,
         errorAlert,
-        jenisKonter,
         setCurrentPage,
         getPageStyle,
         getBorderStyle,

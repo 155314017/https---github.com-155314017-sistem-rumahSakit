@@ -44,7 +44,6 @@ import { CloseOutlined } from '@mui/icons-material';
 import ModalUbahNoHp from '../small/modal/ModalUbahNoHp';
 import { ScheduleDataItem } from '../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices';
 import { ExclusionDataItem } from '../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices';
-import { editSchedule } from '../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 import { EditScheduleService } from '../../services/Admin Tenant/ManageSchedule/EditScheduleService';
 import { EditExclusionService } from '../../services/Admin Tenant/ManageSchedule/EditExclusionService';
 
@@ -765,6 +764,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
         };
         setSelectedEvent(event);
         setEditingEvent(event);
+        console.log('event: ', selectedEvent);
         
         // Buka modal yang sesuai berdasarkan tipe event
         if (event.type === 'Pengecualian') {

@@ -1,5 +1,4 @@
 import axios from "axios";
-import dayjs from "dayjs";
 export interface CounterDataItem {
   id: string;
   masterTypeId: string;

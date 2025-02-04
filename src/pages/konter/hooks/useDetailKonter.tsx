@@ -6,12 +6,7 @@ import { OperationalSchedule } from "../../../services/Admin Tenant/ManageSchedu
 import { convertToOperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 import { GetCounterByIdServices } from "../../../services/Admin Tenant/ManageCounter/GetCounterById";
 
-// Image data type
-type ImageData = {
-  imageName: string;
-  imageType: string;
-  imageData: string;
-};
+
 
 // Clinic data type
 type CounterDataItem = {

@@ -1,8 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
-import Cookies from "js-cookie";
-import dayjs from 'dayjs';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { createFacility } from '../../../services/ManageFacility/CreateFacilityService';
@@ -21,11 +19,7 @@ type ImageData = {
     imageData: string;
 };
 
-type Schedule = {
-    day: string
-    startTime: dayjs.Dayjs
-    endTime: dayjs.Dayjs
-}
+
 
 export default function useTambahFasilitas() {
     const [currentPage, setCurrentPage] = useState<number>(1);
