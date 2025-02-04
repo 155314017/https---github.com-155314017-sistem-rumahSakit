@@ -43,6 +43,7 @@ import DropdownListTime from '../small/dropdownlist/DropdownListTime';
 import { CloseOutlined } from '@mui/icons-material';
 import ModalUbahNoHp from '../small/modal/ModalUbahNoHp';
 import { ScheduleDataItem } from '../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices';
+import { ExclusionDataItem } from '../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices';
 
 // Definisikan interface untuk Event dan Session
 interface Event {
@@ -95,25 +96,9 @@ interface TestKalenderRef {
     getData: () => KalenderData;
 }
 
-interface APIScheduleData {
-    id: string;
-    startTime: number[];
-    endTime: number[];
-    typeId: string;
-    additionalInfo: string;
-    monday: boolean;
-    tuesday: boolean;
-    wednesday: boolean;
-    thursday: boolean;
-    friday: boolean;
-    saturday: boolean;
-    sunday: boolean;
-    title: string;
-    description: string;
-}
-
 interface TestKalenderProps {
     initialData?: ScheduleDataItem[] | null;
+    initialDataPengecualian?: ExclusionDataItem[] | null;
 }
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
@@ -295,7 +280,7 @@ const convertAPIDataToSession = (apiData: ScheduleDataItem): Session => {
     };
 };
 
-const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialData }, ref) => {
+const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialData, initialDataPengecualian }, ref) => {
     useImperativeHandle(ref, () => ({
         getData: () => getKalenderData(),
     }));
@@ -442,6 +427,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
             });
         });
 
+        // Gabungkan events dari sessions dan exclusionEvents
         setEvents([...generatedEvents, ...exclusionEvents]);
 
         const updatedAvailableDates = new Set<string>();
@@ -696,7 +682,48 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
             const convertedSessions = initialData.map(convertAPIDataToSession);
             setSessions(convertedSessions);
         }
-    }, [initialData]);
+
+        if (initialDataPengecualian) {
+            console.log('initialDataPengecualian: ', initialDataPengecualian);
+            const convertedExclusions = initialDataPengecualian.map((item) => {
+                const startTimeArray = typeof item.startTime === 'string' ? JSON.parse(item.startTime) : item.startTime;
+                const endTimeArray = typeof item.endTime === 'string' ? JSON.parse(item.endTime) : item.endTime;
+                
+                // Format tanggal dan waktu
+                const startDateTime = dayjs(item.startDate)
+                    .hour(startTimeArray[0])
+                    .minute(startTimeArray[1])
+                    .second(0)
+                    .format('YYYY-MM-DDTHH:mm:ss');
+                
+                const endDateTime = dayjs(item.endDate)
+                    .hour(endTimeArray[0])
+                    .minute(endTimeArray[1])
+                    .second(0)
+                    .format('YYYY-MM-DDTHH:mm:ss');
+
+                return {
+                    id: item.id,
+                    title: item.title || 'Pengecualian',
+                    start: startDateTime,
+                    end: endDateTime,
+                    allDay: false,
+                    notes: item.description || '',
+                    type: 'Pengecualian',
+                    color: '#B8E0C9',
+                    textColor: '#000000',
+                    borderColor: '#388E3C',
+                };
+            });
+            console.log('Converted Exclusions:', convertedExclusions);
+            setExclusionEvents(convertedExclusions);
+        }
+    }, [initialData, initialDataPengecualian]);
+
+    // Tambahkan console.log untuk memeriksa events yang akan ditampilkan
+    useEffect(() => {
+        console.log('Current Events:', events);
+    }, [events]);
 
     return (
         <>

@@ -9,7 +9,7 @@ import { getAmbulanceByIdService } from '../../../services/Admin Tenant/ManageAm
 import { GetScheduleByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices'
 import { KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils'
 import { ScheduleDataItem } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices'
-import { GetExclusionByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices'
+import { ExclusionDataItem, GetExclusionByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices'
 
 
 type AmbulanceDataItem = {
@@ -40,7 +40,7 @@ export default function useEditAmbulance() {
   const { id } = useParams()
   const [ambulanceData, setAmbulanceData] = useState<AmbulanceDataItem | null>(null);
   const [scheduleDataPraktek, setScheduleDataPraktek] = useState<ScheduleDataItem[] | null>(null);
-  const [scheduleDataPengecualian, setScheduleDataPengecualian] = useState<ScheduleDataItem[] | null>(null);
+  const [scheduleDataPengecualian, setScheduleDataPengecualian] = useState<ExclusionDataItem[] | null>(null);
 
 
   const navigate = useNavigate()
