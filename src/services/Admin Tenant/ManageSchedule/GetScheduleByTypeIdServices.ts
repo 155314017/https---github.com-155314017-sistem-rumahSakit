@@ -17,6 +17,14 @@ export interface ScheduleDataItem {
   endTime: string;
   startDate: string;
   endDate: string;
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
+  sunday: boolean;
+  maxCapacity: number;
 }
 
 export interface ApiResponse {

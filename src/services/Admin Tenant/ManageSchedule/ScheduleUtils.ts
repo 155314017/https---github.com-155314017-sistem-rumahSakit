@@ -92,8 +92,11 @@ export interface OperationalSchedule {
  * @param timeArray - Array waktu [jam, menit]
  * @returns String waktu dalam format HH:mm
  */
-const convertArrayTimeToString = (timeArray: number[]): string => {
-  return `${String(timeArray[0]).padStart(2, '0')}:${String(timeArray[1]).padStart(2, '0')}`;
+const convertArrayTimeToString = (time: string | number[]): string => {
+  if (Array.isArray(time)) {
+    return `${String(time[0]).padStart(2, '0')}:${String(time[1]).padStart(2, '0')}`;
+  }
+  return time;
 };
 
 /**

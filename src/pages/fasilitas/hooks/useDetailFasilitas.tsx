@@ -75,46 +75,6 @@ export default function useDetailFasilitas() {
     },
   ];
 
-  const convertSchedulesToReadableList = (schedules: ScheduleData[]) => {
-    const defaultSchedule: OperationalSchedule = {
-      senin: "",
-      selasa: "",
-      rabu: "",
-      kamis: "",
-      jumat: "",
-      sabtu: "",
-      minggu: "",
-    };
-  
-    const daysMap: { [key: string]: keyof OperationalSchedule } = {
-      Senin: "senin",
-      Selasa: "selasa",
-      Rabu: "rabu",
-      Kamis: "kamis",
-      Jumat: "jumat",
-      Sabtu: "sabtu",
-      Minggu: "minggu",
-    };
-
-  
-    schedules.forEach((schedule) => {
-      const startDay = dayjs(schedule.startDateTime).format("dddd"); // Day in English
-      const startTime = dayjs(schedule.startDateTime).format("HH:mm");
-      const endTime = dayjs(schedule.endDateTime).format("HH:mm");
-  
-  
-      const mappedDay = daysMap[startDay] || ""; // Map to localized day name
-  
-      // Only update if mappedDay is valid
-      if (mappedDay) {
-        defaultSchedule[mappedDay] = `${startTime} - ${endTime}`;
-      }
-    });
-  
-  
-    return defaultSchedule;
-  };
-
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -124,7 +84,6 @@ export default function useDetailFasilitas() {
       if (facilityResponse) {
         const facilityDataWithSchedule: FacilityDataItem = {
           ...facilityResponse,
-
           schedules: scheduleResponse,
           operationalSchedule: convertToOperationalSchedule(scheduleResponse)
         };
