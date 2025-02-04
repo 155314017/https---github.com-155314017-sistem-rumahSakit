@@ -265,20 +265,31 @@ const convertTimeArrayToAMPM = (timeArray: number[]): string => {
     return `${hour12.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${period}`;
 };
 
-const convertAPIDataToSession = (apiData: APIScheduleData): Session => {
+const convertAPIDataToSession = (apiData: ScheduleDataItem): Session => {
     const selectedDays: string[] = [];
-    if (apiData.monday) selectedDays.push('senin');
-    if (apiData.tuesday) selectedDays.push('selasa');
-    if (apiData.wednesday) selectedDays.push('rabu');
-    if (apiData.thursday) selectedDays.push('kamis');
-    if (apiData.friday) selectedDays.push('jumat');
-    if (apiData.saturday) selectedDays.push('sabtu');
-    if (apiData.sunday) selectedDays.push('minggu');
+    const daysMap = {
+        monday: 'senin',
+        tuesday: 'selasa',
+        wednesday: 'rabu',
+        thursday: 'kamis',
+        friday: 'jumat',
+        saturday: 'sabtu',
+        sunday: 'minggu'
+    };
+
+    Object.entries(daysMap).forEach(([key, value]) => {
+        if (apiData[key as keyof ScheduleDataItem]) {
+            selectedDays.push(value);
+        }
+    });
+
+    const startTimeArray = typeof apiData.startTime === 'string' ? JSON.parse(apiData.startTime) : apiData.startTime;
+    const endTimeArray = typeof apiData.endTime === 'string' ? JSON.parse(apiData.endTime) : apiData.endTime;
 
     return {
         id: apiData.id,
-        startTime: convertTimeArrayToAMPM(apiData.startTime),
-        endTime: convertTimeArrayToAMPM(apiData.endTime),
+        startTime: convertTimeArrayToAMPM(startTimeArray),
+        endTime: convertTimeArrayToAMPM(endTimeArray),
         selectedDays,
         notes: apiData.description || apiData.additionalInfo || '',
     };
@@ -681,6 +692,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
     // Tambahkan useEffect untuk menginisialisasi data dari API
     useEffect(() => {
         if (initialData) {
+            console.log('initialData: ', initialData);
             const convertedSessions = initialData.map(convertAPIDataToSession);
             setSessions(convertedSessions);
         }
