@@ -245,16 +245,17 @@ export default function RegistrationOnline() {
                                             )}
                                             {/* mt={currentPage === 4 || currentPage === 2 ? '5%' : (currentPage === 3 ? 0 : '15%')} */}
 
-                                            <Box display="flex" gap={5} flexDirection="row" ml={0}  >
+                                            <Box display="flex" gap={0} flexDirection="row" ml={0} >
                                                 <Box display="flex" flexDirection="row" width="260px">
                                                     <Button
                                                         type="button"
                                                         onClick={() => setCurrentPage(1)}
                                                         sx={{
+                                                            minWidth: '180px',
                                                             display: "flex",
                                                             flexDirection: "row",
                                                             alignItems: "center",
-                                                            mx: 5,
+                                                            mx: 3,
                                                             ...getPageStyle(1),
                                                             "&:hover": {
                                                                 backgroundColor: "inherit",
@@ -274,10 +275,11 @@ export default function RegistrationOnline() {
                                                         disabled={currentPage < 2}
                                                         sx={{
                                                             ...getPageStyle(2),
+                                                            minWidth: '200px',
                                                             display: "flex",
                                                             flexDirection: "row",
                                                             alignItems: "center",
-                                                            mx: 2,
+                                                            mx: 1,
                                                             "&:hover": {
                                                                 backgroundColor: "inherit",
                                                             },
@@ -296,10 +298,11 @@ export default function RegistrationOnline() {
                                                         disabled={currentPage < 4}
                                                         sx={{
                                                             ...getPageStyle(3),
+                                                            minWidth: '175px',
                                                             display: "flex",
                                                             flexDirection: "row",
                                                             alignItems: "center",
-                                                            mx: 2,
+                                                            mx: 1,
                                                             "&:hover": {
                                                                 backgroundColor: "inherit",
                                                             },
