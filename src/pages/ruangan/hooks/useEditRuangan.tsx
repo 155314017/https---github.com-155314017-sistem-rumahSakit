@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { editRoom } from '../../../services/Admin Tenant/ManageRoom/EditRoomService';
 import { GetRoomByIdServices } from '../../../services/Admin Tenant/ManageRoom/GetRoomByIdServices';
 import { GetBuildingById } from '../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices';
-import { EditImageService } from '../../../services/Admin Tenant/ManageImage/EditImageServices';
+import { editImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
 
 interface FormValues {
     namaKlinik: string;
@@ -77,7 +77,7 @@ export default function useEditRuangan() {
                 setRoomName(response.name);
                 setRoomType(response.type);
 
-                const buildingResponse = await GetBuildingById(response.masterBuildingId, token)
+                const buildingResponse = await GetBuildingById(response.masterBuildingId)
 
                 setBuildingName(buildingResponse.id);  // Store the building ID instead of name
             } catch (error) {
@@ -113,19 +113,7 @@ export default function useEditRuangan() {
             const token = Cookies.get("accessToken");
             try {
                 await editRoom(data, token);
-
-                const imageRequest = {
-                    parentId: id || "",
-                    images: imagesData.map(({ imageName = "", imageType = "", imageData = "" }) => ({
-                        imageName,
-                        imageType,
-                        imageData
-                    }))
-                };
-
-                if (imagesData.length > 0) {
-                    await EditImageService(imageRequest);
-                }
+                await editImages(id || "", imagesData);
 
                 setSuccessAlert(true);
                 navigate('/ruangan', { state: { successEdit: true, message: 'Ruangan berhasil di edit!' } })

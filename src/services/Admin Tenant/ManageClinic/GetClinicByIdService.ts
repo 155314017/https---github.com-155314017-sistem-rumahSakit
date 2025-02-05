@@ -2,10 +2,10 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 // Interface untuk response Ambulance
-export interface CounterDataItem {
+export interface ClinicData {
   id: string;
   name: string;
-  location: string;
+  description: string;
   additionalInfo: string;
   createdBy: string;
   createdDateTime: number;
@@ -13,23 +13,24 @@ export interface CounterDataItem {
   updatedDateTime: number | null;
   deletedBy: string | null;
   deletedDateTime: number | null;
+  code: string;
 }
 
 export interface ApiResponse{
   responseCode:string;
   responseMessage:string;
   statusCode:string;
-  data:CounterDataItem
+  data:ClinicData
 }
 
 // Layanan untuk mendapatkan data Ambulance
-export const GetCounterByIdServices = async (id: string | undefined): Promise<CounterDataItem | null> => {
+export const getClinicByIdService = async (id: string | undefined): Promise<ClinicData | null> => {
   try {
     const token = Cookies.get('accessToken');
     if (!token) throw new Error('Access token not found');
 
     const response = await axios.get<ApiResponse>(
-        `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/counter/${id}`,
+      `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/${id}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +40,7 @@ export const GetCounterByIdServices = async (id: string | undefined): Promise<Co
 
     return response.data.data;
   } catch (error) {
-    console.error('Error fetching counter data:', error);
+    console.error('Error fetching ambulance data:', error);
     return null;
   }
 };

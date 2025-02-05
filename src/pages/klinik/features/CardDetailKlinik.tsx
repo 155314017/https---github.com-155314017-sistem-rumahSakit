@@ -15,8 +15,9 @@ import bgImage from "../../../assets/img/String.png";
 interface DetailCardProps {
     title: string;
     data: {
-        biaya: string;
-        waktuPelayanan: string;
+        nama: string;
+        kodeKlinik: string;
+        deskripsi: string;
         aksi: {
             hapusLink: string;
             ubahLink: string;
@@ -108,7 +109,8 @@ const CardDetailKlinik: React.FC<DetailCardProps> = ({ title, data }) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell align="left">No. Klinik</TableCell>
-                                <TableCell align="left">Deskripsis</TableCell>
+                                <TableCell align="left">Kode Klinik</TableCell>
+                                <TableCell align="left">Deskripsi</TableCell>
                                 <TableCell align="left">Aksi</TableCell>
                             </TableRow>
                         </TableHead>
@@ -117,10 +119,13 @@ const CardDetailKlinik: React.FC<DetailCardProps> = ({ title, data }) => {
                                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                             >
                                 <TableCell sx={{ fontWeight: "700" }}>
-                                    {data.biaya}
+                                    {data.nama}
                                 </TableCell>
                                 <TableCell sx={{ fontWeight: "700" }}>
-                                    {data.waktuPelayanan}
+                                    {data.kodeKlinik}
+                                </TableCell>
+                                <TableCell sx={{ fontWeight: "700" }}>
+                                    {data.deskripsi}
                                 </TableCell>
                                 <TableCell sx={{ display: "flex", gap: 3 }}>
                                     <Link

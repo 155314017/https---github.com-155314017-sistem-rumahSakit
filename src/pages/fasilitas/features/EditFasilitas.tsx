@@ -1,221 +1,257 @@
-import { Container, Box, Typography, Button, FormControl, OutlinedInput, IconButton } from "@mui/material";
+import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
-import CustomTimePicker from "../../../components/small/CustomTimePicker";
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr';
 import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
 import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/ImageGroupUploaderAPI';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 //hooks
 import useEditFasilitas from "../hooks/useEditFasilitas";
+import TestKalender from "../../../components/medium/TestKalender";
+
 export default function EditFasilitas() {
     const{
-    breadcrumbItems,
-    formik,
-    gedungOptions,
-    handleImageChange,
-    successAlert,
-    setSelectedDay,
-    setStartTime,
-    setEndTime,
-    showTemporaryAlertSuccess,
-    errorAlert,
-    startTime,
-    endTime,
-    initialOperationalCost,
-    handleSaveAndAddDay,
-    handleEditSchedule,
-    schedules,
-    handleDeleteSchedule,
-    statusEdit,
-    selectedDay,
-    id
-    
+        formik,
+        handleImageChange,
+        breadcrumbItems,
+        setCurrentPage,
+        getPageStyle,
+        getBorderStyle,
+        currentPage,
+        handleEditFasilitas,
+        id,
+        errorAlert,
+        gedungOptions,
+        kalenderRef,
+        scheduleDataPraktek,
+        scheduleDataPengecualian
     }= useEditFasilitas()
-  return (
-    <Container sx={{ py: 2 }}>
-    <BreadCrumbs
-        breadcrumbItems={breadcrumbItems}
-        onBackClick={() => window.history.back()}
-    />
-    <Box mt={3}>
-        <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}>
-            <Typography fontSize="20px" fontWeight="700">Edit Fasilitas</Typography>
-            <Box position="absolute" sx={{ top: 0, right: 0 }}>
-                <img src={bgImage} alt="bg-image" />
-            </Box>
 
-            <ImageUploaderGroupAPI onChange={handleImageChange} parentId={id || ''}/>
 
-            <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
-                <Typography sx={{ fontSize: "16px" }}>Nama Fasilitas<span style={{ color: "red" }}>*</span></Typography>
-                <FormControl fullWidth sx={{ my: 1 }}>
-                    <OutlinedInput
-                        id="namaFasilitas"
-                        name="namaFasilitas"
-                        size="small"
-                        placeholder="Masukkan nama fasilitas"
-                        value={formik.values.namaFasilitas}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.namaFasilitas && Boolean(formik.errors.namaFasilitas)}
-                    />
-                    {formik.touched.namaFasilitas && formik.errors.namaFasilitas && (
-                        <Typography color="error">{formik.errors.namaFasilitas}</Typography>
-                    )}
-                </FormControl>
+    return (
+        <Container sx={{ py: 2, minWidth: '1500px' }}>
+            <BreadCrumbs breadcrumbItems={breadcrumbItems} onBackClick={() => window.history.back()} />
 
-                <Typography sx={{ fontSize: "16px", mt: 2 }}>Pilih Gedung<span style={{ color: "red" }}>*</span></Typography>
-                <DropdownListAPI
-                    options={gedungOptions.map(({ id, name }) => ({ value: id, label: name }))}
-                    placeholder="Pilih gedung"
-                    defaultValue={formik.values.masterBuildingId}
-                    onChange={(selectedOptionValue) => {
-                        formik.setFieldValue('masterBuildingId', selectedOptionValue);
-                    }}
-                    loading={false}
-                />
-
-                <Typography sx={{ fontSize: "16px", mt: 2 }}>Deskripsi<span style={{ color: "red" }}>*</span></Typography>
-                <FormControl fullWidth sx={{ my: 1 }}>
-                    <OutlinedInput
-                        id="deskripsiKlinik"
-                        name="deskripsiKlinik"
-                        size="small"
-                        placeholder="Masukkan deskripsi"
-                        value={formik.values.deskripsiKlinik}
-                        onChange={formik.handleChange}
-                        onBlur={() => formik.setTouched({ ...formik.touched, deskripsiKlinik: true })}
-                        error={formik.touched.deskripsiKlinik && Boolean(formik.errors.deskripsiKlinik)}
-                        sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
-                    />
-                    {formik.touched.deskripsiKlinik && formik.errors.deskripsiKlinik && (
-                        <Typography color="error">{formik.errors.deskripsiKlinik}</Typography>
-                    )}
-                </FormControl>
-
-                <Box display={'flex'} flexDirection={'column'} border={'1px solid #A8A8BD'} borderRadius={'16px'} padding={'16px'} mt={2}>
-                    <Typography mb={'15px'} >Jam Operasional</Typography>
-                    <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} gap={'32px'} >
-                        {/* Hari */}
-                        <Box display={'flex'} flexDirection={'column'} width={'100%'} >
-                            <Typography>Hari</Typography>
-                            <DropdownListAPI
-                                defaultValue={selectedDay || ''}
-                                options={[
-                                    { value: "1", label: "Senin" },
-                                    { value: "2", label: "Selasa" },
-                                    { value: "3", label: "Rabu" },
-                                    { value: "4", label: "Kamis" },
-                                    { value: "5", label: "Jumat" },
-                                    { value: "6", label: "Sabtu" },
-                                    { value: "7", label: "Minggu" },
-                                ]}
-                                placeholder="Pilih hari"
-                                onChange={(value: string) => setSelectedDay(value)}
-                                loading={false}
-                                
+            <Box mt={3}>
+                <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#FAFAFA", overflow: "hidden" }}>
+                    {/* Bentuk lengkung atas */}
+                    <Box
+                        position={"absolute"}
+                        sx={{
+                            top: 0,
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            display: "flex",
+                        }}
+                    >
+                        {/* Lengkung kiri */}
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#FAFAFA",
+                                    borderRadius: "0px 15px 0px 0px ",
+                                }}
                             />
                         </Box>
 
-                        {/* Jam Mulai */}
-                        <Box display={'flex'} flexDirection={'column'} width={'100%'} >
-                            <Typography>Jam mulai</Typography>
-                            <CustomTimePicker
-                                value={startTime}
-                                onChange={(newValue) => setStartTime(newValue)}
-                            />
-                        </Box>
+                        {/* Kotak tengah */}
+                        <Box
+                            sx={{
+                                width: "600px",
+                                height: "50px",
+                                bgcolor: "#F1F0FE",
+                                borderRadius: "0px 0px 22px 22px",
+                            }}
+                        />
 
-                        {/* Jam Selesai */}
-                        <Box display={'flex'} flexDirection={'column'} width={'100%'} >
-                            <Typography>Jam selesai</Typography>
-                            <CustomTimePicker
-                                value={endTime}
-                                onChange={(newValue) => setEndTime(newValue)}
+                        {/* Lengkung kanan */}
+                        <Box
+                            sx={{
+                                width: "50px",
+                                height: "30px",
+                                bgcolor: "#F1F0FE",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: "50px",
+                                    height: "30px",
+                                    bgcolor: "#FAFAFA",
+                                    borderRadius: "15px 0px 0px 0px ",
+                                }}
                             />
                         </Box>
                     </Box>
-                    <Button
-                        fullWidth
-                        sx={{
-                            mt: 2,
-                            bgcolor: 'transparent',
-                            color: '#8F85F3',
-                            border: '1px solid #8F85F3',
-                            ":hover": { bgcolor: '#8F85F3', color: 'white' },
-                        }}
-                        onClick={handleSaveAndAddDay}
+
+                    <Typography fontSize="20px" fontWeight="700">
+                        Edit Fasilitas
+                    </Typography>
+
+                    <Box
+                        sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, justifyContent: 'space-between', ml: 2 }}
                     >
-                        {statusEdit? 'Simpan' : '+ Tambah hari'}
-                    </Button>
-                    {schedules.map((schedule, index) => (
-              <Box
-                key={index}
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                mt={2}
-                sx={{
-                  border: '1px solid black',
-                  padding: '4px',
-                  borderRadius: '6px',
-                }}
-              >
-                <Typography>
-                  {schedule.day},  {schedule.startTime ? schedule.startTime : 'N/A'} - {schedule.endTime ? schedule.endTime : 'N/A'}
-                </Typography>
-                <Box>
-                  <IconButton color="primary" onClick={() => handleEditSchedule(index)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton color="error" onClick={() => handleDeleteSchedule(index)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </Box>
-              </Box>
-            ))}
-                </Box>
+                        <Box display={"flex"} flexDirection={"row"} width={"400px"}>
+                            <Box
+                                display={"flex"}
+                                flexDirection={"row"}
+                                alignItems="center"
+                                onClick={() => setCurrentPage(1)}
+                                sx={getPageStyle(1)}
+                                mx={2}
+                            >
+                                <Box sx={getBorderStyle(1)}>1</Box>
+                                <Typography sx={{ ml: 1 }}>
+                                    Informasi Fasilitas
+                                </Typography>
+                            </Box>
+                        </Box>
 
-                <Typography sx={{ fontSize: "16px", mt: 3 }}>Biaya Penanganan<span style={{ color: "red" }}>*</span></Typography>
-                {/* <InputCurrencyIdr /> */}
-                <InputCurrencyIdr
-                    onChange={(value) => {
-                        formik.setFieldValue('operationalCost', value);
-                    }}
-                    defaultValue={initialOperationalCost}
-                />
+                        <Box display={"flex"} flexDirection={"row"} width={"800px"}>
+                            <Box
+                                display={"flex"}
+                                flexDirection={"row"}
+                                alignItems="center"
+                                onClick={() => setCurrentPage(2)}
+                                sx={getPageStyle(2)}
+                                mx={2}
+                            >
+                                <Box sx={getBorderStyle(2)}>2</Box>
+                                <Typography sx={{ ml: 1 }}>
+                                    Jam Operasional
+                                </Typography>
+                            </Box>
+                        </Box>
+                    </Box>
 
-                <Button
-                    type="submit"
-                    onClick={showTemporaryAlertSuccess}
-                    variant="contained"
-                    color="inherit"
-                    sx={{
-                        mt: 3,
-                        width: "100%",
-                        bgcolor: "#8F85F3",
-                        color: "#fff",
-                        textTransform: "none",
-                        borderRadius: "8px",
-                        ":hover": { bgcolor: "#a098f5" },
-                    }}
-                    disabled={!formik.isValid || !formik.dirty}
-                >
-                    Simpan
-                </Button>
+                    <Box position="absolute" sx={{ top: 0, right: 0 }}>
+                        <img src={bgImage} alt="bg-image" />
+                    </Box>
+
+                    {currentPage === 1 && (
+                        <>
+                            <Typography fontSize="20px" fontWeight="700" mb="32px" mt="54px">
+                                Informasi Fasilitas
+                            </Typography>
+                            <ImageUploaderGroupAPI onChange={handleImageChange} parentId={id || ''} />
+                            <Box component="form" noValidate autoComplete="off" mt={3}>
+                                <Typography sx={{ fontSize: "16px" }}>Nama Fasilitas<span style={{ color: "red" }}>*</span></Typography>
+                                <FormControl fullWidth sx={{ my: 1 }}>
+                                    <OutlinedInput
+                                        id="namaFasilitas"
+                                        name="namaFasilitas"
+                                        size="small"
+                                        placeholder="Masukkan nama fasilitas"
+                                        value={formik.values.namaFasilitas}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        error={formik.touched.namaFasilitas && Boolean(formik.errors.namaFasilitas)}
+                                    />
+                                    {formik.touched.namaFasilitas && formik.errors.namaFasilitas && (
+                                        <Typography color="error">{formik.errors.namaFasilitas}</Typography>
+                                    )}
+                                </FormControl>
+
+                                <Typography sx={{ fontSize: "16px", mt: 2 }}>Pilih Gedung<span style={{ color: "red" }}>*</span></Typography>
+                                <DropdownListAPI
+                                    options={gedungOptions?.map(({ id, name }) => ({ value: id, label: name })) || []}
+                                    placeholder="Pilih gedung"
+                                    defaultValue={formik.values.masterBuildingId}
+                                    onChange={(selectedOptionValue) => {
+                                        formik.setFieldValue('masterBuildingId', selectedOptionValue);
+                                    }}
+                                    loading={false}
+                                />
+
+                                <Typography sx={{ fontSize: "16px", mt: 2 }}>Deskripsi<span style={{ color: "red" }}>*</span></Typography>
+                                <FormControl fullWidth sx={{ my: 1 }}>
+                                    <OutlinedInput
+                                        id="deskripsiKlinik"
+                                        name="deskripsiKlinik"
+                                        size="small"
+                                        placeholder="Masukkan deskripsi"
+                                        value={formik.values.deskripsiKlinik}
+                                        onChange={formik.handleChange}
+                                        onBlur={() => formik.setTouched({ ...formik.touched, deskripsiKlinik: true })}
+                                        error={formik.touched.deskripsiKlinik && Boolean(formik.errors.deskripsiKlinik)}
+                                        sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
+                                    />
+                                    {formik.touched.deskripsiKlinik && formik.errors.deskripsiKlinik && (
+                                        <Typography color="error">{formik.errors.deskripsiKlinik}</Typography>
+                                    )}
+                                </FormControl>
+
+                                <Typography sx={{ fontSize: "16px", mt: 3 }}>Biaya Penanganan<span style={{ color: "red" }}>*</span></Typography>
+                                <InputCurrencyIdr
+                                    onChange={(value) => {
+                                        formik.setFieldValue('operationalCost', value);
+                                    }}
+                                    defaultValue={formik.values.operationalCost}
+                                />
+
+                                <Button
+                                    variant="contained"
+                                    color="inherit"
+                                    sx={{
+                                        mt: 8,
+                                        width: "100%",
+                                        bgcolor: "#8F85F3",
+                                        color: "#fff",
+                                        textTransform: "none",
+                                        borderRadius: "8px",
+                                        boxShadow: 'none',
+                                        ":hover": { bgcolor: "#a098f5", boxShadow: 'none' },
+                                    }}
+                                    onClick={() => setCurrentPage(2)}
+                                >
+                                    Selanjutnya
+                                </Button>
+                            </Box>
+                        </>
+                    )}
+
+                    {currentPage === 2 && (
+                        <>
+                             <TestKalender 
+                                ref={kalenderRef} 
+                                initialData={scheduleDataPraktek} 
+                                initialDataPengecualian={scheduleDataPengecualian}
+                                typeId={id} 
+                            />
+                            <Button
+                                type="submit"
+                                onClick={handleEditFasilitas}
+                                variant="contained"
+                                color="inherit"
+                                sx={{
+                                    mt: 3,
+                                    width: "100%",
+                                    bgcolor: "#8F85F3",
+                                    color: "#fff",
+                                    textTransform: "none",
+                                    borderRadius: "8px",
+                                    boxShadow: 'none',
+                                    ":hover": { bgcolor: "#a098f5", boxShadow: 'none' },
+                                }}
+                                disabled={!formik.isValid || !formik.dirty}
+                            >
+                                Simpan
+                            </Button>
+                        </>
+                    )}
+                </Box>
             </Box>
-        </Box>
-    </Box>
-    {successAlert && (
-        <AlertSuccess label="Success adding building" />
-    )}
-    {errorAlert && (
-        <AlertSuccess label="Error adding building" />
-    )}
-</Container>
-  )
+            {errorAlert && (
+                <AlertSuccess label="Error adding building" />
+            )}
+        </Container>
+    )
 }

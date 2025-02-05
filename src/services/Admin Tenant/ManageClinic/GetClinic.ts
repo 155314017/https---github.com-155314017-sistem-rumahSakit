@@ -13,7 +13,8 @@ export interface ClinicDataItem {
   deletedDateTime: number | null
   images: {imageName: string; imageType: string; imageData: string }[];
   schedules: { id: string; startDateTime: number; endDateTime: number }[]
-  operationalSchedule?: string
+  operationalSchedule?: string,
+  code: string
 }
 
 export interface ApiResponse<T> {

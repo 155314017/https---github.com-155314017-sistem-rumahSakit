@@ -12,8 +12,7 @@ import CardOperasionalKlinik from "../../../components/small/card/CardOperasiona
 
 export default function DetailFasilitas() {
   const {
-    
-    name,
+        
     breadcrumbItems,
     largeImage,
     smallImage,
@@ -24,10 +23,9 @@ export default function DetailFasilitas() {
     setOpen,
     navigate,
     open,
-    ids,
     buildingName,
-    
-    facilityData
+    facilityData,   
+    id
   } = useDetailFasilitas();
 
     return (
@@ -42,16 +40,15 @@ export default function DetailFasilitas() {
 
             <Box mt={3}>
                 <CardDetail
-                    title={name}
+                    title={facilityData?.name}
                     columns={[
-                        { id: "nomorRuangan", label: "No. Fasilitas" },
+                        { id: "namaFasilitas", label: "Nama Fasilitas" },
                         { id: "namaGedung", label: "Nama Gedung" },
                         { id: "deskripsi", label: "Deskripsi" },    
                         { id: "hargaFacilitas", label: "Biaya Penanganan" },
-                        { id: "jamOperational", label: "Jam Operasional" },
 
                     ]}
-                    data={[{ nomorRuangan: facilityData?.id,  namaGedung: buildingName, deskripsi: facilityData?.description, hargaFacilitas: facilityData?.cost, Harga: facilityData?.cost, jamOperational: facilityData?.operationalSchedules }]}
+                    data={[{ namaFasilitas: facilityData?.name,  namaGedung: buildingName, deskripsi: facilityData?.description, hargaFacilitas: facilityData?.cost, Harga: facilityData?.cost, jamOperational: facilityData?.operationalSchedule }]}
                     actions={() => (
                         <>
                             <ModalDeleteConfirmation
@@ -62,7 +59,7 @@ export default function DetailFasilitas() {
                             />
                             <Link
                                 underline="hover"
-                                onClick={(event) => confirmationDelete(event, ids)}
+                                onClick={(event) => confirmationDelete(event, id || "")}
                                 sx={{ color: "#8F85F3" }}
                                 href="#">
                                 Hapus
@@ -71,7 +68,7 @@ export default function DetailFasilitas() {
                                 underline="hover"
                                 sx={{ color: "#8F85F3" }}
                                 href="#"
-                                onClick={() => navigate(`/editRuangan/${ids}`)}
+                                onClick={() => navigate(`/editRuangan/${id || ""}`)}
                             >
                                 Ubah
                             </Link>

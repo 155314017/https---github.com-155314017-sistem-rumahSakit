@@ -1,5 +1,5 @@
 import axios from "axios";
-import dayjs from 'dayjs'
+import { ScheduleData } from "../ManageSchedule/GetScheduleById";
 
 export interface AmbulanceDataItem {
   id: string;
@@ -14,7 +14,7 @@ export interface AmbulanceDataItem {
   deletedDateTime: number | null;
   cost: number;
   images: string[];
-  schedules: { id: string; startDateTime: number; endDateTime: number }[];
+  schedules: ScheduleData[];
   operationalSchedule?: string;
 }
 
@@ -61,39 +61,6 @@ export const AmbulanceServices = async (): Promise<AmbulanceDataItem[]> => {
     const response = await axios.get<ApiResponse>(API_URL);
 
     if (response.status === 200) {
-      // Iterate over the ambulance data items
-      const convertUnixToReadableTime = (timestamp: number) => {
-                const date = dayjs(timestamp); // Use dayjs to parse Unix timestamp
-        
-                const dayOfWeek = date.format('dddd'); // Get the day of the week
-                const time = date.format('HH:mm'); // Get the formatted time (HH:mm)
-        
-                return { day: dayOfWeek, time };
-              };
-
-      response.data.data.content.forEach((item) => {
-        if (item.schedules.length > 0) {
-          const operationalSchedules: string[] = item.schedules.map((schedule) => {
-            const startDate = convertUnixToReadableTime(schedule.startDateTime);
-            const endDate = convertUnixToReadableTime(schedule.endDateTime);
-
-
-            const startDay = startDate.day;
-            const start = `${startDate.time}`;
-            const end = ` ${endDate.time}`;
-
-            
-
-            return `${startDay}, ${start} - ${end}`;
-          });
-
-          // Join all the schedules with " | "
-          item.operationalSchedule = operationalSchedules.join(" | ");
-        } else {
-          item.operationalSchedule = "No schedules available.";
-        }
-      });
-
       // Return the updated ambulance data items
       return response.data.data.content;
     } else {

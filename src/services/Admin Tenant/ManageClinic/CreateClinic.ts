@@ -1,42 +1,47 @@
 import axios from 'axios'
-
-export interface Schedule {
-  startDateTime: string // ISO 8601 format
-  endDateTime: string // ISO 8601 format
-}
-
-export interface Image {
-  imageName: string
-  imageType: string
-  imageData: string // Base64 encoded image
-}
+import Cookies from 'js-cookie'
+import { BaseResponse } from '../../../types/api'
 
 export interface CreateClinicRequest {
   name: string
   description: string
   additionalInfo: string
-  schedules: { startDateTime: number | undefined; endDateTime: number | undefined }[]
-  images: { imageName: string; imageType: string; imageData: string }[]
+  code: string
 }
 
-export interface ApiResponse {
-  responseCode: string
-  statusCode: string
-  message: string
-  data: CreateClinicRequest
+export interface ClinicDataItem {
+  id: string
+  name: string
+  description: string
+  additionalInfo: string
+  code: string
+  createdBy: string
+  createdDateTime: number
+  updatedBy: string | null
+  updatedDateTime: number | null
+  deletedBy: string | null
+  deletedDateTime: number | null
 }
 
-const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/`
+const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/`
 
-export const createClinic = async (
-  clinicData: CreateClinicRequest,
-  accessToken: string | undefined
-): Promise<ApiResponse> => {
+export const createClinic = async (data: {
+  name: string
+  description: string
+  additionalInfo: string
+  code: string
+}): Promise<BaseResponse<ClinicDataItem>> => {
+  const token = Cookies.get('accessToken')
+
+  if (!token) {
+    throw new Error('No access token found.')
+  }
+
   try {
-    const response = await axios.post<ApiResponse>(BASE_URL, clinicData, {
+    const response = await axios.post<BaseResponse<ClinicDataItem>>(API_URL, data, {
       headers: {
         'Content-Type': 'application/json',
-        accessToken: `${accessToken}`
+        accessToken: token
       }
     })
 
@@ -45,12 +50,8 @@ export const createClinic = async (
     } else {
       throw new Error(`API responded with status: ${response.status}`)
     }
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      console.error('Axios error:', error.message)
-    } else {
-      console.error('Unexpected error:', error)
-    }
-    throw error // Re-throw the error for caller
+  } catch (error) {
+    console.error('Error creating clinic:', error)
+    throw error
   }
 }

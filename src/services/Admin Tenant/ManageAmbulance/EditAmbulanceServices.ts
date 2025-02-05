@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { BaseResponse } from "../../../types/api";
 
 export interface AmbulanceDataItem {
   id: string;
@@ -13,44 +14,19 @@ export interface AmbulanceDataItem {
   deletedBy: string | null;
   deletedDateTime: number | null;
   cost: number;
-  images: string[];
-  schedules: { id: string; startDateTime: number | undefined; endDateTime: number | undefined }[];
-  operationalSchedule?: string;
-}
-
-export interface ApiResponse {
-  responseCode: string;
-  statusCode: string;
-  message: string;
-  data: {
-    content: AmbulanceDataItem[];
-    totalPages: number;
-    totalElements: number;
-    last: boolean;
-    size: number;
-    number: number;
-    sort: {
-      sorted: boolean;
-      empty: boolean;
-      unsorted: boolean;
-    };
-    numberOfElements: number;
-    first: boolean;
-    empty: boolean;
-  };
 }
 
 const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/ambulance/`;
 
-// Function to create an ambulance service
-export const EditAmbulanceServices = async (data: {
-  number: string;
-  status: string;
-  cost: number;
-  additionalInfo: string;
-  images: { imageName: string; imageType: string; imageData: string }[];
-  schedules: { startDateTime: number | undefined; endDateTime: number | undefined }[];
-}): Promise<AmbulanceDataItem[]> => {
+// Function to edit an ambulance service
+export const EditAmbulanceServices = async (
+  data: {
+    ambulanceId: string,
+    number: string,
+    status: string,
+    additionalInfo: string,
+    cost: number
+  }): Promise<BaseResponse<AmbulanceDataItem>> => {
   const token = Cookies.get("accessToken");
 
   if (!token) {
@@ -58,30 +34,22 @@ export const EditAmbulanceServices = async (data: {
   }
 
   try {
-    const response = await axios.put<ApiResponse>(API_URL, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        accessToken: token,
-      },
-    });
+    const response = await axios.put<BaseResponse<AmbulanceDataItem>>(API_URL, data,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          accessToken: token,
+        },
+      }
+    );
 
     if (response.status === 200) {
-      return response.data.data.content; // Returning the ambulance data content
+      return response.data;
     } else {
       throw new Error(`API responded with status: ${response.status}`);
     }
-  } catch (error: unknown) {
-    // Error handling
-    if (axios.isAxiosError(error)) {
-      console.error("Axios error:", error.message);
-      // Optionally log more details from the error response
-      if (error.response) {
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
-      }
-    } else {
-      console.error("Unexpected error:", error);
-    }
+  } catch (error) {
+    console.error('Error editing ambulance:', error);
     throw error;
   }
 };

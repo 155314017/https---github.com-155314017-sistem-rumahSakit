@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
@@ -10,7 +9,6 @@ export default function useDetailGedung() {
     const [address, setAddress] = useState<string>("");
     const [deletedItems, setDeletedItems] = useState("");
     const [open, setOpen] = useState(false);
-    const [ids, setIds] = useState("");
     const { id } = useParams();
     const navigate = useNavigate();
     const [largeImage, setLargeImage] = useState<string>("");
@@ -35,9 +33,7 @@ export default function useDetailGedung() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const token = Cookies.get("accessToken");
-        const buildingResponse = await GetBuildingById(id, token);
-        setIds(buildingResponse.id);
+        const buildingResponse = await GetBuildingById(id || "");
         setName(buildingResponse.name);
         setAddress(buildingResponse.address);
 
@@ -81,7 +77,6 @@ export default function useDetailGedung() {
     address,
     deletedItems,
     open,
-    ids,
     breadcrumbItems,
     largeImage,
     smallImage,
@@ -89,6 +84,7 @@ export default function useDetailGedung() {
     confirmationDelete,
     handleDeleteSuccess,
     navigate,
-    setOpen
+    setOpen,
+    id
   }
 }
