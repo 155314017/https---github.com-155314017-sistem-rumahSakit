@@ -943,7 +943,7 @@ export default function TambahPasienUmumOffline() {
                                 <CardAntrianCounter
                                     nomorAntrian={queueData?.queueNumber || queueNumber}
                                     tanggalReservasi={tanggalReserve}
-                                    onClose={() => navigate("/offline/tambahPasien")}
+                                    onClose={() => navigate("/registrasi/offline")}
                                 />
                             </Box>
                         )
@@ -962,7 +962,7 @@ export default function TambahPasienUmumOffline() {
                                     registrationId={registrationCode}
                                     patienDataSent={dataTickets}
                                     offline={true}
-                                    onClose={() => navigate("/offline/tambahPasien")}
+                                    onClose={() => navigate("/registrasi/offline")}
                                 />
                             </Box>
                         )

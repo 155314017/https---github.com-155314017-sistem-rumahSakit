@@ -129,8 +129,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/register/pasien/baru" element={<RegisterPasienBaru />} /> {/*2*/}
         <Route path="/kategori/pasien" element={<KategoriPasien />} /> {/*5*/}
         <Route path="/rawatjalan/umum" element={<RawatJalanUmum />} /> {/*Selected Umum*/}
-        <Route path="/tambahPasien/umum/offline" element={<TambahPasienUmumOffline />} />
         <Route path="/registrasi/offline" element={<PilihKategoriPasien />} />
+        <Route path="/tambahPasien/umum/offline" element={<TambahPasienUmumOffline />} />
         <Route path="/registrasi/online" element={<RegistrationOnline />} />
         {/* end yang dipakai  */}
 
