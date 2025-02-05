@@ -78,7 +78,8 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({fetchDatas, onSuccessDelete})
     displayedData,
     urutkan,
     toggleCollapse,
-    navigate
+    navigate,
+    dataSchedules
     }= useTableKlinik(fetchDatas, onSuccessDelete);
   return (
     <Box>
@@ -300,7 +301,7 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({fetchDatas, onSuccessDelete})
                               },
                             ]}
                           >
-                            {data.operationalSchedule}
+                            {dataSchedules[index].operationalSchedule}
                           </TableCell>
                           <TableCell
                             align="left"

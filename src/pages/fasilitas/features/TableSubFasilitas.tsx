@@ -137,6 +137,7 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({fetchDatas, onSucc
     handleDeleteSuccess,
     navigate,
     setOpen,
+    dataSchedules,
     rowsPerPage}=useTableSubFasilitas(fetchDatas, onSuccessDelete);
   return (
     <Box>
@@ -379,7 +380,7 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({fetchDatas, onSucc
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.operationalSchedule}
+                                                         {dataSchedules[index].operationalSchedule}
                                                     </TableCell>
                                                     <TableCell
                                                         align="center"

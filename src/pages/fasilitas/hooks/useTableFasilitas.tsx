@@ -3,6 +3,7 @@ import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 import { FacilityServices, FacilityDataItem } from "../../../services/ManageFacility/FacilityServices";
 import { Schedule } from "@mui/icons-material";
+import { GetScheduleByTypeId } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
 
 export interface BuildingDataItem {
   id: string;
@@ -62,13 +63,55 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
   const [deletedItems, setDeletedItems] = useState("");
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
   const [buildings, setBuildings] = useState<string[]>([]);
+  const [dataSchedules, setDataSchedules] = useState<any[]>([])
 
 //   const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
       const result = await FacilityServices();
-      setDatas(result);
+      
+      const allSchedules = []; // Array untuk menyimpan semua jadwal
+      const dataSchedules = []; // Array untuk menyimpan jadwal terpisah
+
+      for (let index = 0; index < result.length; index++) {
+              console.log('id ke-', index, ': ', result[index].id);
+              const hasil = await GetScheduleByTypeId(result[index].id);
+              console.log('data schedule: ', hasil);
+      
+              // Array untuk menyimpan jadwal startTime dan endTime per id
+              const schedules = [];
+              const formattedSchedules = []; // Array untuk menyimpan jadwal yang sudah diformat
+      
+              for (let scheduleIndex = 0; scheduleIndex < hasil.length; scheduleIndex++) {
+                const formatTime = (timeArray: string | any[]) => {
+                  const hours = String(timeArray[0]).padStart(2, '0');
+                  const minutes = String(timeArray[1]).padStart(2, '0');
+                  return `${hours}:${minutes}`;
+                };
+      
+                const startTimeFormatted = formatTime(hasil[scheduleIndex].startTime);
+                const endTimeFormatted = formatTime(hasil[scheduleIndex].endTime);
+                formattedSchedules.push(`${startTimeFormatted} - ${endTimeFormatted}`);
+                schedules.push({
+                  startTime: startTimeFormatted,
+                  endTime: endTimeFormatted,
+                });
+              }
+              allSchedules.push({
+                id: result[index].id,
+                schedules: schedules,
+              });
+      
+              dataSchedules.push({
+                id: result[index].id,
+                operationalSchedule: formattedSchedules.join(' / '),
+              });
+            }
+      
+            console.log('Formatted Schedules:', dataSchedules);
+            setDatas(result);
+            setDataSchedules(dataSchedules);
       
       const buildingIds = result.map((data) => data.masterBuildingId);
       setDataIdBuilding(buildingIds);
@@ -157,7 +200,8 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
     confirmationDelete,
     handleDeleteSuccess,
     setOpen,
-    Schedule
+    Schedule,
+    dataSchedules
     
   };
 }
