@@ -83,6 +83,7 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({fetchDatas, onSuccessDele
         confirmationDelete,
         handleDeleteSuccess,
         setOpen,
+        dataSchedules
       }=useTableFasilitas(fetchDatas, onSuccessDelete);
       
       
@@ -385,7 +386,7 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({fetchDatas, onSuccessDele
                             ]}
                             align="center"
                           >
-                            {data.operationalSchedule}
+                            {dataSchedules[index].operationalSchedule}
                           </TableCell>
                           <TableCell
                             align="center"

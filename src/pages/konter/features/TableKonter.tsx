@@ -72,6 +72,7 @@ const TableKonter: React.FC<TableKonterProps> = ({fetchDatas, onSuccessDelete}) 
         urutkan,
         toggleCollapse,
         confirmationDelete,
+        dataSchedules,
         handleDeleteSuccess}=useTableKonter(fetchDatas, onSuccessDelete);
   return (
     <Box>
@@ -298,7 +299,7 @@ const TableKonter: React.FC<TableKonterProps> = ({fetchDatas, onSuccessDelete}) 
                                                         ]}
                                                         align="left"
                                                     >
-                                                        {data.operationalSchedule}
+                                                        {dataSchedules[index].operationalSchedule}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[
