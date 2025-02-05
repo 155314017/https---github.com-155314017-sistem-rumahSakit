@@ -30,7 +30,7 @@ import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
-import FileUploader from "../../../../components/medium/FileUploader";
+// import FileUploader from "../../../../components/medium/FileUploader";
 import CustomTimePicker from "../../../../components/medium/CustomTimePicker";
 // import { Email } from "@mui/icons-material";
 
@@ -890,7 +890,7 @@ export default function TambahPasienUmumOffline() {
                                                                                     )} */}
                                                                 </FormControl>
 
-                                                                <Box mt={1}>
+                                                                {/* <Box mt={1}>
                                                                     <Box mt={2}>
                                                                         <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Unggah surat rujukan</Typography>
 
@@ -902,7 +902,7 @@ export default function TambahPasienUmumOffline() {
                                                                         </Typography>
                                                                     </Box>
 
-                                                                </Box>
+                                                                </Box> */}
                                                             </Box>
                                                         </Box>
 

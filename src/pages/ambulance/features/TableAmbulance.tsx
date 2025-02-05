@@ -76,7 +76,6 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
     handleDeleteSuccess,
     toggleCollapse,
     confirmationDelete,
-    dataSchedules,
   } = useTableAmbulance(fetchDatas, onSuccessDelete);
   return (
     <Box>
@@ -226,18 +225,6 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
                         }}
                         align="center"
                       >
-                        Jam Operasional
-                      </TableCell>
-                      <TableCell
-                        width={'15%'}
-                        sx={{
-                          fontSize: '14px',
-                          fontWeight: 700,
-                          color: '#292B2C',
-                          bgcolor: '#F1F0FE'
-                        }}
-                        align="center"
-                      >
                         Status
                       </TableCell>
                       <TableCell
@@ -276,23 +263,6 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
                             align="center"
                           >
                             {data.cost}
-                          </TableCell>
-                          <TableCell
-                            sx={[
-                              {
-                                color: '#292B2C',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                                maxWidth: '150px',
-                                fontSize: '14px',
-                                textTransform: 'capitalize'
-                              }
-                            ]}
-                            align="center"
-                          >
-                            {/* {data.operationalSchedule} */}
-                            {dataSchedules[index].operationalSchedule}
                           </TableCell>
                           <TableCell
                             sx={[

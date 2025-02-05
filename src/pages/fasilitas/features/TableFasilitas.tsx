@@ -26,16 +26,16 @@ import ModalDeleteConfirmation from "../../../components/small/modal/ModalDelete
 import { useNavigate } from "react-router-dom";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-  }));
-  
-  const StyledTableContainer = styled(TableContainer)`
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
+
+const StyledTableContainer = styled(TableContainer)`
     ::-webkit-scrollbar {
       width: 8px;
     }
@@ -55,8 +55,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
       cursor: pointer;
     }
   `;
-  
- 
+
+
 //hooks
 import useTableFasilitas from "../hooks/useTableFasilitas";
 import React from "react";
@@ -67,28 +67,27 @@ interface TableFacilityProps {
   fetchDatas: () => void;
   onSuccessDelete: () => void;
 }
-const TableFasilitas: React.FC<TableFacilityProps> = ({fetchDatas, onSuccessDelete}) => {
-    const {
-        page,
-        isCollapsed,
-        open,
-        datas,
-        deletedItems,
-        buildings,
-        toggleCollapse,
-        handleChangePage,
-        rowsPerPage,
-        displayedData,
-        urutkan,
-        confirmationDelete,
-        handleDeleteSuccess,
-        setOpen,
-        dataSchedules
-      }=useTableFasilitas(fetchDatas, onSuccessDelete);
-      
-      
-      const navigate = useNavigate();
-      
+const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDelete }) => {
+  const {
+    page,
+    isCollapsed,
+    open,
+    datas,
+    deletedItems,
+    buildings,
+    toggleCollapse,
+    handleChangePage,
+    rowsPerPage,
+    displayedData,
+    urutkan,
+    confirmationDelete,
+    handleDeleteSuccess,
+    setOpen,
+  } = useTableFasilitas(fetchDatas, onSuccessDelete);
+
+
+  const navigate = useNavigate();
+
   return (
     <Box>
       <Box
@@ -282,18 +281,6 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({fetchDatas, onSuccessDele
                         }}
                         align="center"
                       >
-                        Jam Operasional
-                      </TableCell>
-                      <TableCell
-                        width={"15%"}
-                        sx={{
-                          fontSize: "14px",
-                          fontWeight: 700,
-                          color: "#292B2C",
-                          bgcolor: "#F1F0FE",
-                        }}
-                        align="center"
-                      >
                         Aksi
                       </TableCell>
                     </TableRow>
@@ -373,22 +360,6 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({fetchDatas, onSuccessDele
                             {buildings[index]}
                           </TableCell>
                           <TableCell
-                            sx={[
-                              {
-                                color: "#292B2C",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                maxWidth: "150px",
-                                fontSize: "14px",
-                                textTransform: "capitalize",
-                              },
-                            ]}
-                            align="center"
-                          >
-                            {dataSchedules[index].operationalSchedule}
-                          </TableCell>
-                          <TableCell
                             align="center"
                             sx={[
                               {
@@ -407,15 +378,15 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({fetchDatas, onSuccessDele
                             >
                               Hapus
                             </Link>
-                            <ModalDeleteConfirmation 
-                              open={open} 
-                              onClose={() => setOpen(false)} 
-                              apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/${deletedItems}`} 
-                              onDeleteSuccess={handleDeleteSuccess} 
+                            <ModalDeleteConfirmation
+                              open={open}
+                              onClose={() => setOpen(false)}
+                              apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/${deletedItems}`}
+                              onDeleteSuccess={handleDeleteSuccess}
                             />
                             <Link
                               href="#"
-                              mr={2} 
+                              mr={2}
                               onClick={() => navigate(`/editFasilitas/${data.id}`)}
                               underline="hover"
                               sx={{
@@ -485,7 +456,7 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({fetchDatas, onSuccessDele
         </Collapse>
       </Box>
     </Box>
-    
+
   )
 }
 

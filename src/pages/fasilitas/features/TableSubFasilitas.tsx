@@ -137,7 +137,6 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({ fetchDatas, onSuc
         handleDeleteSuccess,
         navigate,
         setOpen,
-        dataSchedules,
         rowsPerPage } = useTableSubFasilitas(fetchDatas, onSuccessDelete);
     return (
         <Box>
@@ -308,18 +307,6 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({ fetchDatas, onSuc
                                                 }}
                                                 align="center"
                                             >
-                                                Jam Operasional
-                                            </TableCell>
-                                            <TableCell
-                                                width={"15%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="center"
-                                            >
                                                 Aksi
                                             </TableCell>
                                         </TableRow>
@@ -365,22 +352,6 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({ fetchDatas, onSuc
                                                         align="center"
                                                     >
                                                         {isLoadingFac ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : (facilities[index] ? facilities[index] : "Fasilitas Tidak Ditemukan")}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        sx={[
-                                                            {
-                                                                color: "#292B2C",
-                                                                overflow: "hidden",
-                                                                textOverflow: "ellipsis",
-                                                                whiteSpace: "nowrap",
-                                                                maxWidth: "150px",
-                                                                fontSize: "14px",
-                                                                textTransform: "capitalize",
-                                                            },
-                                                        ]}
-                                                        align="center"
-                                                    >
-                                                        {dataSchedules[index].operationalSchedule}
                                                     </TableCell>
                                                     <TableCell
                                                         align="center"

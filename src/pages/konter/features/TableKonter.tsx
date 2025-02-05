@@ -57,9 +57,9 @@ const StyledTableContainer = styled(TableContainer)`
 interface TableKonterProps {
     fetchDatas: () => void;
     onSuccessDelete: () => void;
-  }
-const TableKonter: React.FC<TableKonterProps> = ({fetchDatas, onSuccessDelete}) => {
-    const{ page,
+}
+const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }) => {
+    const { page,
         isCollapsed,
         open,
         setOpen,
@@ -72,10 +72,9 @@ const TableKonter: React.FC<TableKonterProps> = ({fetchDatas, onSuccessDelete}) 
         urutkan,
         toggleCollapse,
         confirmationDelete,
-        dataSchedules,
-        handleDeleteSuccess}=useTableKonter(fetchDatas, onSuccessDelete);
-  return (
-    <Box>
+        handleDeleteSuccess } = useTableKonter(fetchDatas, onSuccessDelete);
+    return (
+        <Box>
             <Box
                 position={"relative"}
                 p={3}
@@ -230,18 +229,6 @@ const TableKonter: React.FC<TableKonterProps> = ({fetchDatas, onSuccessDelete}) 
                                                 }}
                                                 align="left"
                                             >
-                                                Jam Operasional
-                                            </TableCell>
-                                            <TableCell
-                                                width={"15%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="left"
-                                            >
                                                 Lokasi Konter
                                             </TableCell>
                                             <TableCell
@@ -268,7 +255,7 @@ const TableKonter: React.FC<TableKonterProps> = ({fetchDatas, onSuccessDelete}) 
                                                     >
                                                         {index + 1}
                                                     </TableCell>
-                                                    
+
                                                     <TableCell
                                                         sx={[
                                                             {
@@ -284,22 +271,6 @@ const TableKonter: React.FC<TableKonterProps> = ({fetchDatas, onSuccessDelete}) 
                                                         align="left"
                                                     >
                                                         {data.name}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        sx={[
-                                                            {
-                                                                color: "#292B2C",
-                                                                overflow: "hidden",
-                                                                textOverflow: "ellipsis",
-                                                                whiteSpace: "nowrap",
-                                                                maxWidth: "150px",
-                                                                fontSize: "14px",
-                                                                textTransform: "capitalize",
-                                                            },
-                                                        ]}
-                                                        align="left"
-                                                    >
-                                                        {dataSchedules[index].operationalSchedule}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[
@@ -394,7 +365,7 @@ const TableKonter: React.FC<TableKonterProps> = ({fetchDatas, onSuccessDelete}) 
                 </Collapse>
             </Box>
         </Box>
-  )
+    )
 }
 
 

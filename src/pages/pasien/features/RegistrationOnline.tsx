@@ -23,7 +23,7 @@ import CustomCalendar from "../../../components/medium/CustomCalender";
 import DropdownListAPI from "../../../components/small/dropdownlist/DropdownListAPI";
 import InformasiTicketAPI from "../../../components/small/InformasiTicketAPI";
 import useRegistrationOnline from "../hooks/useRegistrationOnline";
-import FileUploader from "../../../components/medium/FileUploader";
+// import FileUploader from "../../../components/medium/FileUploader";
 import PasienCard from "../../../components/small/card/PasienCard";
 import imgUmum from "../../../assets/img/filling.png";
 import imgInsurance from "../../../assets/img/injury-pana 1.png";
@@ -927,7 +927,7 @@ export default function RegistrationOnline() {
                                                         // helperText={touched.symptoms && errors.symptoms}
                                                         />
                                                     </FormControl>
-                                                    <Box mt={1}>
+                                                    {/* <Box mt={1}>
                                                         <Box mt={2}>
                                                             <Typography>Unggah surat rujukan</Typography>
                                                             <FileUploader
@@ -938,7 +938,7 @@ export default function RegistrationOnline() {
                                                             </Typography>
                                                         </Box>
 
-                                                    </Box>
+                                                    </Box> */}
                                                 </Box>
                                             </Box>
                                             <Button
