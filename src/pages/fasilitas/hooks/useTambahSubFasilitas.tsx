@@ -1,32 +1,24 @@
-import { useEffect, useState } from 'react';
+import axios from "axios";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import dayjs from 'dayjs';
-import axios from 'axios';
-import Cookies from "js-cookie";
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createSubfacility } from '../../../services/ManageFacility/CreateSubfacilityService';
-
+import * as Yup from "yup";
+import { ImageData } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
+import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
+import { createSubFacilityServices } from "../../../services/ManageFacility/CreateSubfacilityService";
 type Facility = {
     id: string;
     name: string;
 };
 
-type Schedule = {
-  day: string
-  startTime: dayjs.Dayjs
-  endTime: dayjs.Dayjs
-}
-
 export default function useTambahSubFasilitas() {
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [successAlert, setSuccessAlert] = useState(false);
-    const [operationalTime, setOperationalTime] = useState<string | null>(null);
-    const [selectedDay, setSelectedDay] = useState<string | null>(null);
-    const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
-    const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
+    const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [errorAlert, setErrorAlert] = useState(false);
+    const [operationalTime] = useState<string | null>(null);
+    const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
     const [facilityOptions, setFacilityOptions] = useState<Facility[]>([]);
-    const [schedules, setSchedules] = useState<Schedule[]>([])
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -50,45 +42,16 @@ export default function useTambahSubFasilitas() {
         fetchFacilityData();
     }, []);
 
-    const dayMapping: { [key: string]: number } = {
-        "Senin": 1,
-        "Selasa": 2,
-        "Rabu": 3,
-        "Kamis": 4,
-        "Jumat": 5,
-        "Sabtu": 6,
-        "Minggu": 0,
+    const showTemporaryAlertError = async () => {
+        setErrorAlert(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setErrorAlert(false);
     };
-
-
-    const handleTambahHari = () => {
-        if (selectedDay && startTime && endTime) {
-          const newSchedule: Schedule = {
-            day: selectedDay,
-            startTime: startTime,
-            endTime: endTime
-          }
-          setSchedules([...schedules, newSchedule])
-          setSelectedDay('')
-          setStartTime(null)
-          setEndTime(null)
-        }
-      }
-
-      const handleDeleteSchedule = (index: number) => {
-        setSchedules(schedules.filter((_, i) => i !== index))
-      }
 
     const showTemporaryAlertSuccess = async () => {
         setSuccessAlert(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setSuccessAlert(false);
-    };
-
-    const showTemporaryAlertError = async () => {
-        setErrorAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setErrorAlert(false);
     };
 
     const breadcrumbItems = [
@@ -99,68 +62,127 @@ export default function useTambahSubFasilitas() {
 
     const formik = useFormik({
         initialValues: {
-            masterFacilityId: '',
-            namaSubFasilitas: '',
+            namaKlinik: '',
+            facilityId: '',
         },
         validationSchema: Yup.object({
-            masterFacilityId: Yup.string().required('Gedung is required'),
-            namaSubFasilitas: Yup.string().required('SubFacility Name is required'),
+            namaKlinik: Yup.string().required('Nama Klinik is required'),
+            facilityId: Yup.string().required('Deskripsi Klinik is required'),
         }),
         onSubmit: async (values) => {
-
-            
-                const formattedSchedules = schedules.map(schedule => {
-                  const selectedDayOfWeek = dayMapping[schedule.day]
-                  return {
-                    startDateTime: schedule.startTime.day(selectedDayOfWeek).unix(),
-                    endDateTime: schedule.endTime.day(selectedDayOfWeek).unix()
-                  }
-                })
-
-            const data = {
-                name: values.namaSubFasilitas,
-                facilityDataId: values.masterFacilityId,
-                additionalInfo: "hai",
-                schedules: formattedSchedules,
-            };
-            const token = Cookies.get("accessToken");
-
-            try {
-                await createSubfacility(data, token);
-                formik.resetForm();
-                navigate('/fasilitas', { state: { successAddSub: true, message: 'Fasilitas berhasil ditambahkan!' } })
-            } catch (error) {
-                console.error('Error submitting form:', error);
-                if (axios.isAxiosError(error)) {
-                    showTemporaryAlertError();
-                } else {
-                    console.error('Unexpected error:', error);
-                }
-            }
+            console.log(values);
         },
     });
 
-  return {
-    breadcrumbItems,
-    formik,
-    dayMapping,
-    selectedDay,
-    setSelectedDay,
-    startTime,
-    setStartTime,
-    endTime,
-    setEndTime,
-    operationalTime,
-    setOperationalTime,
-    handleTambahHari,
-    showTemporaryAlertSuccess,
-    showTemporaryAlertError,
-    facilityOptions,
-    successAlert,
-    errorAlert,
-    navigate,
-    handleDeleteSchedule,
-    schedules
-    
-  }
+    const handleImageChange = (images: ImageData[]) => {
+        setImagesData(images);
+    };
+
+    const getPageStyle = (page: number) => {
+        if (page === currentPage) {
+            return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
+        } else if (page < currentPage) {
+            return { color: "#8F85F3", cursor: "pointer" };
+        } else {
+            return { color: "black", cursor: "pointer" };
+        }
+    };
+
+    const getBorderStyle = (page: number) => {
+        if (page === currentPage) {
+            return {
+                display: "flex",
+                border: "1px solid #8F85F3",
+                width: "38px",
+                height: "38px",
+                borderRadius: "8px",
+                justifyContent: "center",
+                alignItems: "center",
+            };
+        } else if (page < currentPage) {
+            return {
+                display: "flex",
+                border: "1px solid #8F85F3",
+                width: "38px",
+                height: "38px",
+                borderRadius: "8px",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#8F85F3",
+                color: "white",
+            };
+        } else {
+            return {
+                display: "flex",
+                border: "1px solid #8F85F3",
+                width: "38px",
+                height: "38px",
+                borderRadius: "8px",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "#8F85F3",
+            };
+        }
+    };
+
+    const handleSaveKlinik = async () => {
+        try {
+            const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
+
+            // Validasi input schedule
+            validateInput(kalenderData);
+
+            // Data untuk CreateClinic
+            const klinikData = {
+                name: formik.values.namaKlinik,
+                facilityDataId: formik.values.facilityId,
+            };
+            // Buat klinik baru
+            const { data: { id: facilityDataId } } = await createSubFacilityServices(klinikData);
+            if (!facilityDataId) throw new Error('Klinik ID tidak ditemukan');
+
+            // Proses secara parallel untuk optimasi
+            await Promise.all([
+                createSchedules(facilityDataId, kalenderData.praktek),
+                createExclusions(facilityDataId, kalenderData.exclusion),
+                // uploadImages(facilityDataId, imagesData)
+            ]);
+
+            // Reset state dan redirect
+            formik.resetForm();
+            setImagesData([]);
+
+            navigate('/fasilitas', {
+                state: {
+                    successAdd: true,
+                    message: 'Fasilitas berhasil ditambahkan!'
+                }
+            });
+        } catch (error) {
+            console.error('[DEBUG] Error saat menyimpan klinik:', error);
+            if (axios.isAxiosError(error)) {
+                const responseData = error.response?.data;
+                console.error('[DEBUG] Detail error dari server:', responseData || error.message);
+            }
+            showTemporaryAlertError();
+        }
+    };
+    return {
+        breadcrumbItems,
+        formik,
+        imagesData,
+        setImagesData,
+        handleImageChange,
+        successAlert,
+        errorAlert,
+        operationalTime,
+        showTemporaryAlertSuccess,
+        currentPage,
+        setCurrentPage,
+        getPageStyle,
+        getBorderStyle,
+        kalenderRef,
+        handleSaveKlinik,
+        facilityOptions
+    }
 }

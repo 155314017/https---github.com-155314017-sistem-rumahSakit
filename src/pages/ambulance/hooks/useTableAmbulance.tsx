@@ -25,18 +25,14 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
   const fetchData = async () => {
     try {
       const result = await AmbulanceServices();
-      const allSchedules = []; // Array untuk menyimpan semua jadwal
-      const dataSchedules = []; // Array untuk menyimpan jadwal terpisah
+      const allSchedules = [];
+      const dataSchedules = [];
 
-      // Loop untuk setiap id dari hasil AmbulanceServices
       for (let index = 0; index < result.length; index++) {
-        console.log('id ke-', index, ': ', result[index].id);
         const hasil = await GetScheduleByTypeId(result[index].id);
-        console.log('data schedule: ', hasil);
 
-        // Array untuk menyimpan jadwal startTime dan endTime per id
         const schedules = [];
-        const formattedSchedules = []; // Array untuk menyimpan jadwal yang sudah diformat
+        const formattedSchedules = [];
 
         for (let scheduleIndex = 0; scheduleIndex < hasil.length; scheduleIndex++) {
           const formatTime = (timeArray: string | any[]) => {
@@ -63,9 +59,6 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
           operationalSchedule: formattedSchedules.join(' / '),
         });
       }
-
-      console.log('Formatted Schedules:', dataSchedules);
-
       setDatas(result);
       setDataSchedules(dataSchedules);
     } catch (error) {

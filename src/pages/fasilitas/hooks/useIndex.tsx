@@ -41,6 +41,7 @@ export default function useIndex() {
         try {
             const result1 = await SubFacilityServices();
             setData1(result1);
+            console.log('sub: ', result1)
         } catch (error) {
             console.error('Failed to fetch data from API' + error);
         }
@@ -83,7 +84,7 @@ export default function useIndex() {
         setSuccessEditBuilding(false);
     };
 
-    
+
 
     //Sub Fasilitas
 
@@ -118,23 +119,23 @@ export default function useIndex() {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setSuccessEditSub(false);
     };
-  return {
-    data,
-    data1,
-    fetchDataFacility,
-    fetchDataSubFacility,
-    successAddBuilding,
-    successDeleteBuilding,
-    successEditBuilding,
-    successAddSub,
-    successDeleteSub,
-    successEditSub,
-    isLoading,
-    showTemporaryAlertSuccess,
-    showTemporarySuccessDelete,
-    showTemporarySuccessEdit,
-    showTemporaryAlertSuccessSub,
-    showTemporarySuccessDeleteSub,
-    showTemporarySuccessEditSub
-  }
+    return {
+        data,
+        data1,
+        fetchDataFacility,
+        fetchDataSubFacility,
+        successAddBuilding,
+        successDeleteBuilding,
+        successEditBuilding,
+        successAddSub,
+        successDeleteSub,
+        successEditSub,
+        isLoading,
+        showTemporaryAlertSuccess,
+        showTemporarySuccessDelete,
+        showTemporarySuccessEdit,
+        showTemporaryAlertSuccessSub,
+        showTemporarySuccessDeleteSub,
+        showTemporarySuccessEditSub
+    }
 }

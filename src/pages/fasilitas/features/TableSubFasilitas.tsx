@@ -11,7 +11,7 @@ import {
     Link,
     IconButton,
     Pagination,
-    Collapse, 
+    Collapse,
     CircularProgress
 } from "@mui/material";
 import SearchBar from "../../../components/small/SearchBar";
@@ -118,28 +118,29 @@ const StyledTableContainer = styled(TableContainer)`
 interface TableSubFasilitasProps {
     fetchDatas: () => void;
     onSuccessDelete: () => void;
-  }
-const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({fetchDatas, onSuccessDelete}) => {
-    const{
+}
+const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({ fetchDatas, onSuccessDelete }) => {
+    const {
         page,
-    isCollapsed,
-    open,
-    datas,
-    deletedItems,
-    facilities,
-    isLoading,
-    isLoadingFac,
-    displayedData,
-    urutkan,
-    handleChangePage,
-    toggleCollapse,
-    confirmationDelete,
-    handleDeleteSuccess,
-    navigate,
-    setOpen,
-    rowsPerPage}=useTableSubFasilitas(fetchDatas, onSuccessDelete);
-  return (
-    <Box>
+        isCollapsed,
+        open,
+        datas,
+        deletedItems,
+        facilities,
+        isLoading,
+        isLoadingFac,
+        displayedData,
+        urutkan,
+        handleChangePage,
+        toggleCollapse,
+        confirmationDelete,
+        handleDeleteSuccess,
+        navigate,
+        setOpen,
+        dataSchedules,
+        rowsPerPage } = useTableSubFasilitas(fetchDatas, onSuccessDelete);
+    return (
+        <Box>
             <Box
                 position={"relative"}
                 p={3}
@@ -379,7 +380,7 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({fetchDatas, onSucc
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.operationalSchedule}
+                                                        {dataSchedules[index].operationalSchedule}
                                                     </TableCell>
                                                     <TableCell
                                                         align="center"
@@ -426,18 +427,18 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({fetchDatas, onSucc
                                                     </TableCell>
                                                 </StyledTableRow>
                                             ))
-                                        ) : isLoading ?  (
-                                        <StyledTableRow>
-                                            <TableCell colSpan={5} align="center">
-                                                Fetching . . . 
-                                            </TableCell>
-                                        </StyledTableRow>
+                                        ) : isLoading ? (
+                                            <StyledTableRow>
+                                                <TableCell colSpan={5} align="center">
+                                                    Fetching . . .
+                                                </TableCell>
+                                            </StyledTableRow>
                                         ) : (
-                                        <StyledTableRow>
-                                            <TableCell colSpan={5} align="center">
-                                                Tidak ada data
-                                            </TableCell>
-                                        </StyledTableRow>
+                                            <StyledTableRow>
+                                                <TableCell colSpan={5} align="center">
+                                                    Tidak ada data
+                                                </TableCell>
+                                            </StyledTableRow>
                                         )}
                                     </TableBody>
                                 </Table>
@@ -478,8 +479,8 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({fetchDatas, onSucc
                 </Collapse>
             </Box>
         </Box>
-       
-  )
+
+    )
 }
 
 

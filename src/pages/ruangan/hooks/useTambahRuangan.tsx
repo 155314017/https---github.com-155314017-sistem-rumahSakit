@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -91,11 +92,11 @@ export default function useTambahRuangan() {
                 formik.resetForm();
                 setImagesData([]);
 
-                navigate('/ruangan', { 
-                    state: { 
-                        successAdd: true, 
-                        message: 'Ruangan berhasil ditambahkan!' 
-                    } 
+                navigate('/ruangan', {
+                    state: {
+                        successAdd: true,
+                        message: 'Ruangan berhasil ditambahkan!'
+                    }
                 });
 
             } catch (error) {

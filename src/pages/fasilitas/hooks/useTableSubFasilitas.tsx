@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { SubFacilityServices,SubFacilityDataItem} from "../../../services/ManageSubFacility/SubFacility";
+import { SubFacilityServices, SubFacilityDataItem } from "../../../services/ManageSubFacility/SubFacility";
 import { useNavigate } from "react-router-dom";
+import { GetScheduleByTypeId } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
 // Define the interfaces
 
 
@@ -17,23 +19,59 @@ export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDe
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingFac, setIsLoadingFac] = useState(false);
   const [facilities, setFacilities] = useState<string[]>([]);
+  const [dataSchedules, setDataSchedules] = useState<any[]>([])
   const navigate = useNavigate();
   // Fetch data for the sub-facilities
   const fetchData = async () => {
     setIsLoading(true)
     try {
-        const result = await SubFacilityServices();
-        setDatas(result);
-        const facilityIds = result.map((data) => data.facilityDataId);
-        setDataIdFacility(facilityIds);
-        setIsLoading(false)
+      const result = await SubFacilityServices();
+      const allSchedules = [];
+      const dataSchedules = [];
+
+      for (let index = 0; index < result.length; index++) {
+        const hasil = await GetScheduleByTypeId(result[index].id);
+        console.log('hasil: ', hasil);
+        const schedules = [];
+        const formattedSchedules = [];
+
+        for (let scheduleIndex = 0; scheduleIndex < hasil.length; scheduleIndex++) {
+          const formatTime = (timeArray: string | any[]) => {
+            const hours = String(timeArray[0]).padStart(2, '0');
+            const minutes = String(timeArray[1]).padStart(2, '0');
+            return `${hours}:${minutes}`;
+          };
+
+          const startTimeFormatted = formatTime(hasil[scheduleIndex].startTime);
+          const endTimeFormatted = formatTime(hasil[scheduleIndex].endTime);
+          formattedSchedules.push(`${startTimeFormatted} - ${endTimeFormatted}`);
+          schedules.push({
+            startTime: startTimeFormatted,
+            endTime: endTimeFormatted,
+          });
+        }
+        allSchedules.push({
+          id: result[index].id,
+          schedules: schedules,
+        });
+
+        dataSchedules.push({
+          id: result[index].id,
+          operationalSchedule: formattedSchedules.join(' / '),
+        });
+      }
+      setDatas(result);
+      setDataSchedules(dataSchedules);
+      const facilityIds = result.map((data) => data.facilityDataId);
+      setDataIdFacility(facilityIds);
+      setIsLoading(false)
     } catch (error) {
-        console.error('Failed to fetch data from API: ', error);
+      console.error('Failed to fetch data from API: ', error);
     }
-};
-useEffect(() => {
+  };
+  useEffect(() => {
     fetchData();
-}, []);
+  }, []);
 
   // Fetch facilities for each sub-facility
   useEffect(() => {
@@ -107,7 +145,7 @@ useEffect(() => {
     handleDeleteSuccess,
     navigate,
     setOpen,
-    rowsPerPage
-
+    rowsPerPage,
+    dataSchedules
   };
 }

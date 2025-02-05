@@ -111,7 +111,7 @@ export default function useTambahKlinik() {
 
       // Data untuk CreateClinic
       const klinikData = {
-        name: formik.values.namaKlinik , // Sebaiknya ini dari form atau auto-generate
+        name: formik.values.namaKlinik ,
         description: formik.values.deskripsiKlinik,
         additionalInfo: '',
         code: formik.values.code
