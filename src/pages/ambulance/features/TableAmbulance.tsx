@@ -29,15 +29,15 @@ import useTableAmbulance from '../hooks/useTableAmbulance'
 import React from 'react'
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover
-    },
-    '&:last-child td, &:last-child th': {
-      border: 0
-    }
-  }))
-  
-  const StyledTableContainer = styled(TableContainer)`
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover
+  },
+  '&:last-child td, &:last-child th': {
+    border: 0
+  }
+}))
+
+const StyledTableContainer = styled(TableContainer)`
     ::-webkit-scrollbar {
       width: 8px;
     }
@@ -57,28 +57,29 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     //hooks
     import useTableAmbulance from '../hooks/useTableAmbulance';
   `
- 
-  interface TableAmbulanceProps {
-    fetchDatas: () => void;
-    onSuccessDelete: () => void;
-  }
-  const TableAmbulance: React.FC<TableAmbulanceProps> = ({fetchDatas, onSuccessDelete}) => {
-    const {page,
-        isCollapsed,
-        open,
-        setOpen,
-        datas,
-        deletedItems,
-        navigate,
-        handleChangePage,
-        rowsPerPage,
-        displayedData,
-        handleDeleteSuccess,
-        toggleCollapse,
-        confirmationDelete,
-      }= useTableAmbulance(fetchDatas, onSuccessDelete);
-    return (
-        <Box>
+
+interface TableAmbulanceProps {
+  fetchDatas: () => void;
+  onSuccessDelete: () => void;
+}
+const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDelete }) => {
+  const { page,
+    isCollapsed,
+    open,
+    setOpen,
+    datas,
+    deletedItems,
+    navigate,
+    handleChangePage,
+    rowsPerPage,
+    displayedData,
+    handleDeleteSuccess,
+    toggleCollapse,
+    confirmationDelete,
+    dataSchedules,
+  } = useTableAmbulance(fetchDatas, onSuccessDelete);
+  return (
+    <Box>
       <Box
         position={'relative'}
         p={3}
@@ -290,7 +291,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
                             ]}
                             align="center"
                           >
-                            {data.operationalSchedule}
+                            {/* {data.operationalSchedule} */}
+                            {dataSchedules[index].operationalSchedule}
                           </TableCell>
                           <TableCell
                             sx={[
@@ -312,8 +314,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
                                 data.status === 'ACTIVE'
                                   ? '#2EB872'
                                   : data.status === 'INACTIVE'
-                                  ? '#FA4659'
-                                  : ''
+                                    ? '#FA4659'
+                                    : ''
                               }
                             />
                           </TableCell>
@@ -416,9 +418,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         </Collapse>
       </Box>
     </Box>
-      
-    )
-  }
 
-  export default TableAmbulance
-  
+  )
+}
+
+export default TableAmbulance
