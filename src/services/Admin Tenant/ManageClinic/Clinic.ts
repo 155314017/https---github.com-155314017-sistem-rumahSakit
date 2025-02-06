@@ -70,7 +70,6 @@ export const Clinic = async (
     })
 
     if (response.data.responseCode === '200') {
-      console.log('ilham gantng')
       return response.data.data.content
     } else {
       throw new Error(`API responded with status: ${response.status}`)
