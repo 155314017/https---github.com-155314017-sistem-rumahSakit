@@ -1,13 +1,17 @@
 import { IconButton, Modal } from '@mui/material';
 import { Button, CardMedia, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import my from "../../img/String.png";
-import logo from "../../img/St.carolus.png";
 import CloseIcon from '@mui/icons-material/Close';
-
+import my from "../../../assets/img/String.png";
+import logo from "../../../assets/img/St.carolus.png";
 interface ModalInformasiTiketProps {
     open: boolean;
     onClose: () => void;
+    nomorAntrian: number;
+    namaDokter: string;
+    clinic: string;
+    tanggalReservasi: string;
+    jadwalKonsul: string;
 }
 
 const style = {
@@ -26,7 +30,9 @@ const style = {
     overflow: 'hidden',
 };
 
-const ModalInformasiTiket: React.FC<ModalInformasiTiketProps> = ({ open, onClose }) => {
+const ModalInformasiTiket: React.FC<ModalInformasiTiketProps> = ({
+    open, onClose, nomorAntrian, namaDokter, clinic, tanggalReservasi, jadwalKonsul
+}) => {
     return (
         <Modal
             open={open}
@@ -82,7 +88,7 @@ const ModalInformasiTiket: React.FC<ModalInformasiTiketProps> = ({ open, onClose
                     {/* Queue Info */}
                     <Box display={"flex"} flexDirection={"column"}>
                         <Typography fontSize={"16px"}>Nomor antrian</Typography>
-                        <Typography fontSize={"48px"} fontWeight={"600"}>10</Typography>
+                        <Typography fontSize={"48px"} fontWeight={"600"}>{nomorAntrian}</Typography>
                     </Box>
 
                     {/* Details */}
@@ -90,22 +96,22 @@ const ModalInformasiTiket: React.FC<ModalInformasiTiketProps> = ({ open, onClose
                         <Box display={"flex"} flexDirection={"column"} gap={2}>
                             <Box>
                                 <Typography sx={titleStyle}>Dokter yang bertugas</Typography>
-                                <Typography sx={dataTextStyle}>Nama Dokter</Typography>
+                                <Typography sx={dataTextStyle}>{namaDokter}</Typography>
                             </Box>
                             <Box>
                                 <Typography sx={titleStyle}>Tanggal reservasi</Typography>
-                                <Typography sx={dataTextStyle}>29/Jul, 10:30</Typography>
+                                <Typography sx={dataTextStyle}>{tanggalReservasi}</Typography>
                             </Box>
                         </Box>
 
                         <Box display={"flex"} flexDirection={"column"} gap={2}>
                             <Box display={"flex"} flexDirection={"column"}>
                                 <Typography sx={titleStyle}>Poli yang dituju</Typography>
-                                <Typography sx={dataTextStyle}>Poli Paru</Typography>
+                                <Typography sx={dataTextStyle}>{clinic}</Typography>
                             </Box>
                             <Box display={"flex"} flexDirection={"column"}>
                                 <Typography sx={titleStyle}>Jadwal konsultasi</Typography>
-                                <Typography sx={dataTextStyle}>29/Jul/2024, 13:00 - 14:00</Typography>
+                                <Typography sx={dataTextStyle}>{jadwalKonsul}</Typography>
                             </Box>
                         </Box>
                     </Box>

@@ -197,11 +197,9 @@ export default function useTambahPasienUmumOffline() {
 
     const changePage2 = async () => {
         console.log("change page 2");
-        if (needAdmin === true) {
-            setMainPages(false);
-        } else {
+        
             setCurrentPage(2);
-        }
+        
 
     }
 
