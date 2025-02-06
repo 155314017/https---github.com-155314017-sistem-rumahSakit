@@ -24,12 +24,12 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-  }));
-  
-  const StyledTableContainer = styled(TableContainer)`
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
+
+const StyledTableContainer = styled(TableContainer)`
     ::-webkit-scrollbar {
       width: 8px;
     }
@@ -55,22 +55,22 @@ interface TableGedungProps {
   fetchDatas: () => void;
   onSuccessDelete: () => void;
 }
-const TableGedung: React.FC<TableGedungProps> = ({fetchDatas, onSuccessDelete}) => {
-    const{page,
-        isCollapsed,
-        open,
-        datas,
-        deletedItems,
-        displayedData,
-        rowsPerPage,
-        handleChangePage,
-        confirmationDelete,
-        handleDeleteSuccess,
-        toggleCollapse,
-        urutkan,
-        setSort,
-        setOpen,
-        navigate}=useTableGedung(fetchDatas,onSuccessDelete);
+const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }) => {
+  const { page,
+    isCollapsed,
+    open,
+    datas,
+    deletedItems,
+    displayedData,
+    rowsPerPage,
+    handleChangePage,
+    confirmationDelete,
+    handleDeleteSuccess,
+    toggleCollapse,
+    urutkan,
+    setSort,
+    setOpen,
+    navigate } = useTableGedung(fetchDatas, onSuccessDelete);
 
   return (
     <Box>
@@ -317,6 +317,8 @@ const TableGedung: React.FC<TableGedungProps> = ({fetchDatas, onSuccessDelete}) 
                             sx={{
                               textTransform: "capitalize",
                               color: "#8F85F3",
+                              cursor: "pointer",
+                              textDecoration: 'none'
                             }}
                           >
                             Lihat Selengkapnya
@@ -352,7 +354,7 @@ const TableGedung: React.FC<TableGedungProps> = ({fetchDatas, onSuccessDelete}) 
         </Collapse>
       </Box>
     </Box>
-    
+
   )
 }
 

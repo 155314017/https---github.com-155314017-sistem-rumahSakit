@@ -1,79 +1,91 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import axios from 'axios'
+import 'dayjs/locale/id'
+import { useFormik } from 'formik'
+import { useEffect, useRef, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import * as Yup from 'yup'
+import { GetScheduleByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices'
+import { createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils'
+import { createExclusions } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils'
+import { ScheduleDataItem } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices'
+import { ExclusionDataItem, GetExclusionByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices'
+import { FacilityServices } from '../../../services/ManageFacility/FacilityServices'
+import { GetSubFacilityById } from '../../../services/ManageFacility/GetSubFacilityByIdServices'
+import { editSubfacility } from '../../../services/ManageFacility/EditSubfacilityService'
 
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import dayjs from 'dayjs';
-import axios from 'axios';
-import Cookies from "js-cookie";
-import { useParams, useNavigate } from 'react-router-dom';
-import { editSubfacility } from '../../../services/ManageFacility/EditSubfacilityService';
-import { FacilityServices } from '../../../services/ManageFacility/FacilityServices';
-import { GetSubFacilityById } from '../../../services/ManageFacility/GetSubFacilityByIdServices';
+
+// type SubFacilityDataItem = {
+//     id: string;
+//     name: string;
+//     additionalInfo: string;
+//     facilityDataId: string;
+//     createdBy: string;
+//     createdDateTime: number;
+//     updatedBy: string | null;
+//     updatedDateTime: number | null;
+//     deletedBy: string | null;
+//     deletedDateTime: number | null;
+// }
 
 type Facility = {
     id: string;
     name: string;
 };
 
+type ImageData = {
+    imageName: string;
+    imageType: string;
+    imageData: string;
+}
+
 export default function useEditSubFasilitas() {
-    const [successAlert, setSuccessAlert] = useState(false);
-    const [operationalTime, setOperationalTime] = useState<string | null>(null);
-    const [selectedDay, setSelectedDay] = useState<string | null>(null);
-    const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
-    const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
-    const [errorAlert, setErrorAlert] = useState(false);
-    const { id } = useParams();
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [imagesData, setImagesData] = useState<ImageData[]>([])
+    const [errorAlert, setErrorAlert] = useState(false)
+    const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
+    const { id } = useParams()
+    const [scheduleDataPraktek, setScheduleDataPraktek] = useState<ScheduleDataItem[] | null>(null);
+    const [scheduleDataPengecualian, setScheduleDataPengecualian] = useState<ExclusionDataItem[] | null>(null);
     const [facilityOptions, setFacilityOptions] = useState<Facility[]>([]);
-    const navigate = useNavigate();
     const [name, setName] = useState<string>('');
     const [facilityId, setFacilityId] = useState<string>('');
-    const [selectedDays, setSelectedDays] = useState<string>("1");
 
-    const dayMapping: { [key: string]: number } = {
-        "1": 1,
-        "2": 2,
-        "3": 3,
-        "4": 4,
-        "5": 5,
-        "6": 6,
-        "7": 0,
-    };
 
-    useEffect(() => {
-        if (startTime && endTime) {
-            const dayOfWeek = startTime.format("dddd");
-            const dayMapping: { [key: string]: string } = {
-                "Monday": "1",
-                "Tuesday": "2",
-                "Wednesday": "3",
-                "Thursday": "4",
-                "Friday": "5",
-                "Saturday": "6",
-                "Sunday": "7"
-            };
+    const navigate = useNavigate()
 
-            const dayValue = dayMapping[dayOfWeek] || "7";
-            setSelectedDays(dayValue);
-            setSelectedDay(dayValue);
-        }
-    }, [startTime, endTime]);
+    interface FormValues {
+        namaSubFasilitas: string,
+        masterFacilityId: string,
+    }
+
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // const ambulanceResponse = await GetSubFacilityById(id);
+                const scheduleResponse = await GetScheduleByTypeId(id || "");
+                const exclusionResponse = await GetExclusionByTypeId(id || "");
+                console.log("Schedule Response from API:", scheduleResponse);
+                console.log("Exclusion Response from API:", exclusionResponse);
 
-                const response = await GetSubFacilityById(id);
-                setName(response.name || " ");
-                setFacilityId(response.facilityDataId);
-                if (response.schedules && response.schedules.length > 0) {
-                    const schedule = response.schedules[0];
-                    setStartTime(dayjs.unix(schedule.startDateTime));
-                    setEndTime(dayjs.unix(schedule.endDateTime));
+                // if (ambulanceResponse) {
+                //     setAmbulanceData(ambulanceResponse);
+                // }
+
+                if (scheduleResponse) {
+                    // Transform API data ke format yang sesuai dengan getKalenderData  
+                    setScheduleDataPraktek(scheduleResponse);
+                }
+
+                if (exclusionResponse) {
+                    setScheduleDataPengecualian(exclusionResponse);
                 }
 
             } catch (error) {
                 console.error('Error:', error);
             }
+
         };
         fetchData();
     }, [id]);
@@ -93,90 +105,183 @@ export default function useEditSubFasilitas() {
         fetchGedungData();
     }, []);
 
-    const handleTambahHari = () => {
-        const dateTime = selectedDay + " " + startTime?.format("HH:mm") + " - " + endTime?.format("HH:mm");
-        setOperationalTime(dateTime);
-    };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
 
-    const showTemporaryAlertSuccess = async () => {
-        setSuccessAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessAlert(false);
-    };
+                const response = await GetSubFacilityById(id);
+                setName(response.name || " ");
+                setFacilityId(response.facilityDataId);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+        fetchData();
+    }, [id]);
 
     const showTemporaryAlertError = async () => {
-        setErrorAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setErrorAlert(false);
-    };
+        setErrorAlert(true)
+        await new Promise(resolve => setTimeout(resolve, 3000))
+        setErrorAlert(false)
+    }
 
-    const breadcrumbItems = [
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "fasilitas", href: "/fasilitas" },
-        { label: "Edit SubFasilitas", href: "/editSubFasilitas:id" },
-    ];
 
-    const formik = useFormik({
+    const formik = useFormik<FormValues>({
         initialValues: {
             masterFacilityId: facilityId,
             namaSubFasilitas: name,
         },
         enableReinitialize: true,
         validationSchema: Yup.object({
-            masterFacilityId: Yup.string().required('Facility is required'),
-            namaSubFasilitas: Yup.string().required('SubFacility Name is required'),
+            operationalCost: Yup.number()
+                .required('Operational Cost is required')
+                .positive('Must be a positive number')
         }),
         onSubmit: async (values) => {
+            console.log(values);
+        }
+    })
 
-            const selectedDayOfWeek = dayMapping[selectedDay || "5"];
-            const adjustedStartTime = startTime?.day(selectedDayOfWeek);
-            const adjustedEndTime = endTime?.day(selectedDayOfWeek);
-            const schedules = [
-                {
-                    startDateTime: adjustedStartTime?.unix(),
-                    endDateTime: adjustedEndTime?.unix(),
-                }
-            ];
 
+    const handleImageChange = (images: ImageData[]) => {
+        setImagesData(images)
+    }
+
+    const getPageStyle = (page: number) => {
+        if (page === currentPage) {
+            return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
+        } else if (page < currentPage) {
+            return { color: "#8F85F3", cursor: "pointer" };
+        } else {
+            return { color: "black", cursor: "pointer" };
+        }
+    };
+
+    const getBorderStyle = (page: number) => {
+        if (page === currentPage) {
+            return {
+                display: "flex",
+                border: "1px solid #8F85F3",
+                width: "38px",
+                height: "38px",
+                borderRadius: "8px",
+                justifyContent: "center",
+                alignItems: "center",
+            };
+        } else if (page < currentPage) {
+            return {
+                display: "flex",
+                border: "1px solid #8F85F3",
+                width: "38px",
+                height: "38px",
+                borderRadius: "8px",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#8F85F3",
+                color: "white",
+            };
+        } else {
+            return {
+                display: "flex",
+                border: "1px solid #8F85F3",
+                width: "38px",
+                height: "38px",
+                borderRadius: "8px",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "#8F85F3",
+            };
+        }
+    };
+
+    const handleEditSubFasilitas = async () => {
+        try {
+            const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
+            console.log("kalenderData: ", kalenderData);
+            // Validasi input schedule
+            validateInput(kalenderData);
+
+            // Data untuk EditSubFacilityceService
             const data = {
                 subfacilityId: id,
-                name: values.namaSubFasilitas,
-                facilityDataId: values.masterFacilityId,
+                name: formik.values.namaSubFasilitas,
+                facilityDataId: formik.values.masterFacilityId,
                 additionalInfo: "hai",
-                schedules: schedules,
             };
-            const token = Cookies.get("accessToken");
-            try {
-                await editSubfacility(data, token);
-                formik.resetForm();
-                navigate('/fasilitas', { state: { successEditSub: true, message: 'Fasilitas berhasil di edit!' } })
-            } catch (error) {
-                console.error('Error submitting form:', error);
-                if (axios.isAxiosError(error)) {
-                    showTemporaryAlertError();
-                } else {
-                    console.error('Unexpected error:', error);
-                }
+
+            // Edit subfasilitas
+            const { data: { id: subfacilityId } } = await editSubfacility(data);
+            if (!subfacilityId) throw new Error('SubFasilitas ID tidak ditemukan');
+
+            // Pisahkan data praktek yang baru (yang memiliki id dengan format 'session-')
+            const newPraktekData = kalenderData.praktek.filter(item => item.id.startsWith('session-'));
+
+            // Pisahkan data exclusion yang baru (yang memiliki id dengan format 'exclusion-')
+            const newExclusionData = kalenderData.exclusion.filter(item => item.id.startsWith('exclusion-'));
+
+            // Proses data baru secara parallel jika ada
+            const promises = [];
+
+            if (newPraktekData.length > 0) {
+                console.log('Creating new praktek schedules:', newPraktekData);
+                promises.push(createSchedules(subfacilityId, newPraktekData));
             }
-        },
-    });
+
+            if (newExclusionData.length > 0) {
+                console.log('Creating new exclusion schedules:', newExclusionData);
+                promises.push(createExclusions(subfacilityId, newExclusionData));
+            }
+
+            // Tunggu semua proses selesai
+            if (promises.length > 0) {
+                await Promise.all(promises);
+            }
+
+            // Reset state dan redirect
+            formik.resetForm();
+            setImagesData([]);
+
+            navigate('/fasilitas', {
+                state: {
+                    successAdd: true,
+                    message: 'Fasilitas berhasil diperbarui!'
+                }
+            });
+        } catch (error) {
+            console.error('[DEBUG] Error saat menyimpan SubFasilitas:', error);
+            if (axios.isAxiosError(error)) {
+                const responseData = error.response?.data;
+                console.error('[DEBUG] Detail error dari server:', responseData || error.message);
+            }
+            showTemporaryAlertError();
+        }
+    };
+
+
+    const breadcrumbItems = [
+        { label: 'Dashboard', href: '/dashboard' },
+        { label: 'Fasilitas', href: '/fasilitas' },
+        { label: 'Edit SubFasilitas', href: `/editFasilitas/${id}` }
+    ]
 
     return {
-        breadcrumbItems,
-        formData: formik,
-        successAlert,
+        formik,
+        handleImageChange,
+        imagesData,
         errorAlert,
-        operationalTime,
-        selectedDay,
-        startTime,
-        endTime,
-        handleTambahHari,
-        selectedDays,
-        showTemporaryAlertSuccess,
-        setSelectedDay,
-        facilityOptions,
-        setEndTime,
-        setStartTime
-
+        breadcrumbItems,
+        id,
+        currentPage,
+        setCurrentPage,
+        getPageStyle,
+        getBorderStyle,
+        handleEditSubFasilitas,
+        kalenderRef,
+        scheduleDataPraktek,
+        scheduleDataPengecualian,
+        facilityOptions
     }
 }
+
+
+
