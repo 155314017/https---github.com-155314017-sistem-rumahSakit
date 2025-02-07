@@ -76,8 +76,8 @@ export default function useEditGedung() {
         },
         enableReinitialize: true,
         validationSchema: Yup.object({
-            namaGedung: Yup.string().required('Nama Gedung is required'),
-            alamatGedung: Yup.string().required('Alamat Gedung is required'),
+            namaGedung: Yup.string().required('Nama Gedung Wajib Diisi'),
+            alamatGedung: Yup.string().required('Alamat Gedung Wajib Diisi'),
         }),
         onSubmit: async (values) => {
             const data = {

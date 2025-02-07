@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {  useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CreateBuildingService } from "../../../services/Admin Tenant/ManageBuilding/AddBuildingServices";
@@ -40,8 +40,8 @@ export default function useTambahGedung() {
             alamatGedung: '',
         },
         validationSchema: Yup.object({
-            namaGedung: Yup.string().required('Nama Gedung is required'),
-            alamatGedung: Yup.string().required('Alamat Gedung is required'),
+            namaGedung: Yup.string().required('Nama Gedung wajib diisi'),
+            alamatGedung: Yup.string().required('Alamat Gedung wajib diisi'),
         }),
         onSubmit: async (values) => {
             const data = {
@@ -64,11 +64,11 @@ export default function useTambahGedung() {
                 formik.resetForm();
                 setImagesData([]);
 
-                navigate('/gedung', { 
-                    state: { 
-                        successAdd: true, 
-                        message: 'Gedung berhasil ditambahkan!' 
-                    } 
+                navigate('/gedung', {
+                    state: {
+                        successAdd: true,
+                        message: 'Gedung berhasil ditambahkan!'
+                    }
                 });
 
             } catch (error) {

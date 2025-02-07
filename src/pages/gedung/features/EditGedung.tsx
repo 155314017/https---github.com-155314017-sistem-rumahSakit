@@ -1,5 +1,5 @@
 import { Container, Box } from "@mui/system";
-import { Typography, Button, FormControl, OutlinedInput, CircularProgress } from "@mui/material";
+import { Typography, Button, FormControl, CircularProgress, TextField } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
@@ -7,15 +7,15 @@ import ImageUploaderGroupAPI from "../../../components/medium/imageComponent/Ima
 import useEditGedung from "../hooks/useEditGedung";
 
 export default function EditGedung() {
-    const{breadcrumbItems,
+    const { breadcrumbItems,
         formik,
         handleImageChange,
         loading,
         successAlert,
         errorAlert,
-        id}=useEditGedung();
-  return (
-    <Container sx={{ py: 2 }}>
+        id } = useEditGedung();
+    return (
+        <Container sx={{ py: 2 }}>
             <BreadCrumbs breadcrumbItems={breadcrumbItems}
                 onBackClick={() => window.history.back()}
             />
@@ -89,54 +89,83 @@ export default function EditGedung() {
                             Nama Gedung<span style={{ color: "red" }}>*</span>
                         </Typography>
                         <FormControl fullWidth sx={{ my: 1 }}>
-                            <OutlinedInput
+                            <TextField
+                                variant="outlined"
                                 id="namaGedung"
                                 name="namaGedung"
                                 size="small"
-                                placeholder="Masukkan nama gedung"
+                                placeholder={(formik.touched.namaGedung && formik.errors.namaGedung) ? formik.errors.namaGedung : "Masukkan nama gedung"}
                                 value={formik.values.namaGedung}
                                 onChange={formik.handleChange}
                                 disabled={loading}
                                 onBlur={() => formik.setTouched({ ...formik.touched, namaGedung: true })}
                                 error={formik.touched.namaGedung && Boolean(formik.errors.namaGedung)}
-                                endAdornment={loading ? <CircularProgress size={20} /> : null}
+                                InputProps={{
+                                    endAdornment: loading ? <CircularProgress size={20} /> : null
+                                }}
+                                sx={{
+                                    width: "100%",
+                                    // height: "48px",
+                                    marginTop: "10px",
+                                    "& .MuiOutlinedInput-root": {
+                                        borderRadius: "8px",
+                                        backgroundColor: formik.touched.namaGedung && formik.errors.namaGedung ? "#ffcccc" : "inherit",
+                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: '#8F85F3',
+                                        },
+                                    },
+                                    "& .MuiOutlinedInput-notchedOutline": {
+                                        border: "1px solid #ccc",
+                                    },
+                                    "& .MuiOutlinedInput-input": {
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                    },
+                                }}
                             />
-                            {formik.touched.namaGedung && formik.errors.namaGedung && (
-                                <Typography color="error">{formik.errors.namaGedung}</Typography>
-                            )}
                         </FormControl>
 
                         <Typography sx={{ fontSize: "16px" }}>
                             Alamat Gedung<span style={{ color: "red" }}>*</span>
                         </Typography>
                         <FormControl fullWidth sx={{ my: 1 }}>
-                            <OutlinedInput
+                            <TextField
+                                variant="outlined"
                                 id="alamatGedung"
                                 name="alamatGedung"
                                 size="small"
-                                placeholder="Masukkan alamat tempat tinggal pegawai"
+                                placeholder={(formik.touched.alamatGedung && formik.errors.alamatGedung) ? formik.errors.alamatGedung : "Masukkan alamat gedung"}
                                 value={formik.values.alamatGedung}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.alamatGedung && Boolean(formik.errors.alamatGedung)}
-                                endAdornment={loading ? <CircularProgress size={20} /> : null}
+                                InputProps={{
+                                    endAdornment: loading ? <CircularProgress size={20} /> : null
+                                }}
                                 disabled={loading}
                                 sx={{
-                                    alignItems: 'flex-start',
-                                    paddingLeft: '8px',
-                                }}
-                                inputProps={{
-                                    sx: {
-                                        padding: '8px',
-                                    }
+                                    width: "100%",
+                                    // height: "48px",
+                                    marginTop: "10px",
+                                    "& .MuiOutlinedInput-root": {
+                                        borderRadius: "8px",
+                                        backgroundColor: formik.touched.alamatGedung && formik.errors.alamatGedung ? "#ffcccc" : "inherit",
+                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: '#8F85F3',
+                                        },
+                                    },
+                                    "& .MuiOutlinedInput-notchedOutline": {
+                                        border: "1px solid #ccc",
+                                    },
+                                    "& .MuiOutlinedInput-input": {
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                    },
                                 }}
                                 multiline
                                 minRows={3}
                                 maxRows={10}
                             />
-                            {formik.touched.alamatGedung && formik.errors.alamatGedung && (
-                                <Typography color="error">{formik.errors.alamatGedung}</Typography>
-                            )}
                         </FormControl>
 
                         {/* Button */}
@@ -172,5 +201,5 @@ export default function EditGedung() {
                 <AlertSuccess label="Error editing building" />
             )}
         </Container>
-  )
+    )
 }
