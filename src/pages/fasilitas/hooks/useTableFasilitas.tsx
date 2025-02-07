@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 // import { useNavigate } from "react-router-dom";
@@ -64,55 +65,75 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
   const [buildings, setBuildings] = useState<string[]>([]);
   const [dataSchedules, setDataSchedules] = useState<any[]>([])
+  const [sort, setSort] = useState('');
+  const [orderBy, setOrderBy] = useState("createdDateTime=asc");
+  const [pageNumber, setPageNumber] = useState(0);
+  const [pageSize, setPageSize] = useState(100);
 
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (sort == "Nama fasilitas A-Z") {
+      setOrderBy('name=asc');
+    } else if (sort == "Nama fasilitas Z-A") {
+      setOrderBy('name=desc');
+    } else if (sort == "Biaya penanganan terendah") {
+      setOrderBy('cost=asc');
+    } else if (sort == "Biaya penanganan tertinggi") {
+      setOrderBy('cost=desc');
+    }
+  }, [sort])
+
+  useEffect(() => {
+    fetchData();
+  }, [pageNumber, pageSize, orderBy]);
 
   const fetchData = async () => {
     try {
-      const result = await FacilityServices();
-      
-      const allSchedules = []; // Array untuk menyimpan semua jadwal
-      const dataSchedules = []; // Array untuk menyimpan jadwal terpisah
+      const result = await FacilityServices(pageNumber, pageSize, orderBy);
+
+      const allSchedules = [];
+      const dataSchedules = [];
 
       for (let index = 0; index < result.length; index++) {
-              console.log('id ke-', index, ': ', result[index].id);
-              const hasil = await GetScheduleByTypeId(result[index].id);
-              console.log('data schedule: ', hasil);
-      
-              // Array untuk menyimpan jadwal startTime dan endTime per id
-              const schedules = [];
-              const formattedSchedules = []; // Array untuk menyimpan jadwal yang sudah diformat
-      
-              for (let scheduleIndex = 0; scheduleIndex < hasil.length; scheduleIndex++) {
-                const formatTime = (timeArray: string | any[]) => {
-                  const hours = String(timeArray[0]).padStart(2, '0');
-                  const minutes = String(timeArray[1]).padStart(2, '0');
-                  return `${hours}:${minutes}`;
-                };
-      
-                const startTimeFormatted = formatTime(hasil[scheduleIndex].startTime);
-                const endTimeFormatted = formatTime(hasil[scheduleIndex].endTime);
-                formattedSchedules.push(`${startTimeFormatted} - ${endTimeFormatted}`);
-                schedules.push({
-                  startTime: startTimeFormatted,
-                  endTime: endTimeFormatted,
-                });
-              }
-              allSchedules.push({
-                id: result[index].id,
-                schedules: schedules,
-              });
-      
-              dataSchedules.push({
-                id: result[index].id,
-                operationalSchedule: formattedSchedules.join(' / '),
-              });
-            }
-      
-            console.log('Formatted Schedules:', dataSchedules);
-            setDatas(result);
-            setDataSchedules(dataSchedules);
-      
+        console.log('id ke-', index, ': ', result[index].id);
+        const hasil = await GetScheduleByTypeId(result[index].id);
+        console.log('data schedule: ', hasil);
+
+
+        const schedules = [];
+        const formattedSchedules = [];
+
+        for (let scheduleIndex = 0; scheduleIndex < hasil.length; scheduleIndex++) {
+          const formatTime = (timeArray: string | any[]) => {
+            const hours = String(timeArray[0]).padStart(2, '0');
+            const minutes = String(timeArray[1]).padStart(2, '0');
+            return `${hours}:${minutes}`;
+          };
+
+          const startTimeFormatted = formatTime(hasil[scheduleIndex].startTime);
+          const endTimeFormatted = formatTime(hasil[scheduleIndex].endTime);
+          formattedSchedules.push(`${startTimeFormatted} - ${endTimeFormatted}`);
+          schedules.push({
+            startTime: startTimeFormatted,
+            endTime: endTimeFormatted,
+          });
+        }
+        allSchedules.push({
+          id: result[index].id,
+          schedules: schedules,
+        });
+
+        dataSchedules.push({
+          id: result[index].id,
+          operationalSchedule: formattedSchedules.join(' / '),
+        });
+      }
+
+      console.log('Formatted Schedules:', dataSchedules);
+      setDatas(result);
+      setDataSchedules(dataSchedules);
+
       const buildingIds = result.map((data) => data.masterBuildingId);
       setDataIdBuilding(buildingIds);
     } catch (error) {
@@ -120,7 +141,7 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
     }
   };
 
-  
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -166,6 +187,8 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
     { value: 4, label: "Nama fasilitas Z-A" },
   ];
 
+
+
   const toggleCollapse = () => {
     setIsCollapsed((prev) => !prev);
   };
@@ -176,7 +199,7 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
     setOpen(true);
   };
 
-  
+
   const handleDeleteSuccess = () => {
     onSuccessDelete();
     fetchData();
@@ -201,7 +224,9 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
     handleDeleteSuccess,
     setOpen,
     Schedule,
-    dataSchedules
-    
+    dataSchedules,
+    setPageSize,
+    setPageNumber,
+    setSort
   };
 }

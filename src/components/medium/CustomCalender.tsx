@@ -19,7 +19,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
     const [availableTimes, setAvailableTimes] = useState<{ [date: string]: { timeRange: string, scheduleId: string, disabled: boolean }[] }>({});
     const [availableDates, setAvailableDates] = useState<Set<string>>(new Set());
     const [exclusionTimes, setExclusionTimes] = useState<{ [date: string]: { timeRange: string, disabled: boolean }[] }>({});
-    const [dataLoaded, setDataLoaded] = useState<boolean>(false); // untuk men cek data sudah ter load sepenuhnya belum
+    const [dataLoaded, setDataLoaded] = useState<boolean>(false);
 
     const fetchSchedules = async () => {
         try {
@@ -77,6 +77,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                     year: dayjs().year(),
                 },
             });
+            console.log('data exclusion month: ', response.data.data);
             if (Array.isArray(response.data.data) && response.data.data.length > 0) {
                 const exclusions = processExclusionData(response.data.data);
                 setExclusionTimes(exclusions);
@@ -132,6 +133,10 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
 
         setAvailableDates(dates);
         setAvailableTimes(times);
+
+        // Debugging output
+        console.log('Available Dates:', dates);
+        console.log('Available Times:', times);
     };
 
     const processExclusionData = (exclusionData: any[]) => {
@@ -160,26 +165,12 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
             }
         });
 
-        // Logika untuk memastikan jika masih ada sisa waktu operasional
-        for (const date in exclusionTimes) {
-            const exclusionSlots = exclusionTimes[date];
-            const availableSlots = availableTimes[date] || [];
-            //pemeriksaan logic
-            availableSlots.forEach((slot) => {
-                exclusionSlots.forEach((exclusion) => {
-                    const [exclusionStart, exclusionEnd] = exclusion.timeRange.split(' - ').map((time) => dayjs(time, 'HH:mm'));
-                    const [scheduleStart, scheduleEnd] = slot.timeRange.split(' - ').map((time) => dayjs(time, 'HH:mm'));
-
-                    // Jika exclusion tidak sepenuhnya menutupi schedule maka timeslot tetap nyala
-                    if (exclusionStart.isAfter(scheduleEnd) || exclusionEnd.isBefore(scheduleStart)) {
-                        exclusion.disabled = false;
-                    }
-                });
-            });
-        }
+        // Debugging output
+        console.log('Exclusion Times:', exclusionTimes);
 
         return exclusionTimes;
     };
+
 
 
     const checkDisabledDates = () => {
@@ -212,7 +203,7 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
 
     useEffect(() => {
         if (dataLoaded) {
-            checkDisabledDates(); 
+            checkDisabledDates();
         }
     }, [availableDates, availableTimes, exclusionTimes, dataLoaded]);
 
@@ -316,8 +307,10 @@ const CustomCalendar = ({ typeId, onChange }: { typeId: string; onChange: (sched
                                 shouldDisableDate={(date) => {
                                     if (!dataLoaded) return false;
                                     const formattedDate = date.format('YYYY-MM-DD');
-                                    return !availableDates.has(formattedDate); // Tanggal yang tidak memiliki jadwal atau ter-disable
+                                    // Pastikan jika tidak ada exclusion dan tanggal tersebut ada dalam availableDates
+                                    return !availableDates.has(formattedDate) || exclusionTimes[formattedDate]?.some(exclusion => exclusion.disabled);
                                 }}
+
                                 slotProps={{
                                     day: {
                                         sx: {

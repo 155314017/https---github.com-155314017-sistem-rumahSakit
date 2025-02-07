@@ -148,7 +148,10 @@ export default function LoginPegawai() {
                           marginTop: '10px',
                           '& .MuiOutlinedInput-root': {
                             borderRadius: '8px',
-                            backgroundColor: touched.email && errors.email ? '#ffcccc' : 'inherit'
+                            backgroundColor: touched.email && errors.email ? '#ffcccc' : 'inherit',
+                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                              borderColor: '#8F85F3',
+                            },
                           },
                           '& .MuiOutlinedInput-notchedOutline': {
                             border: '1px solid #ccc'
@@ -197,7 +200,10 @@ export default function LoginPegawai() {
                             '& .MuiOutlinedInput-root': {
                               borderRadius: '8px',
                               backgroundColor:
-                                touched.password && errors.password ? '#ffcccc' : 'inherit'
+                                touched.password && errors.password ? '#ffcccc' : 'inherit',
+                              '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                borderColor: '#8F85F3',
+                              },
                             },
                             '& .MuiOutlinedInput-notchedOutline': {
                               border: '1px solid #ccc'

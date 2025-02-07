@@ -83,6 +83,7 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
     confirmationDelete,
     handleDeleteSuccess,
     setOpen,
+    setSort,
   } = useTableFasilitas(fetchDatas, onSuccessDelete);
 
 
@@ -193,7 +194,7 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
               <DropdownList
                 options={urutkan}
                 placeholder="Urutkan"
-                // onChange={handleSelectionChange}
+                onChange={(value) => setSort(value)}
                 loading={false}
               />
             </Box>

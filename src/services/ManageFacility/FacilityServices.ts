@@ -57,10 +57,19 @@ export interface ApiResponse {
 
 const API_URL = `${
   import.meta.env.VITE_APP_BACKEND_URL_BASE
-}/v1/manage/facility/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`
+}/v1/manage/facility/?`
 
-export const FacilityServices = async (): Promise<FacilityDataItem[]> => {
+export const FacilityServices = async (
+  pageNumber: number = 0,
+  pageSize: number = 100,
+  orderBy: string = 'createdDateTime=asc'
+): Promise<FacilityDataItem[]> => {
   const response = await axios.get<ApiResponse>(API_URL, {
+    params: {
+      pageNumber,
+      pageSize,
+      orderBy
+    },
     timeout: 10000
   })
 
