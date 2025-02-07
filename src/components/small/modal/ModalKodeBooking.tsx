@@ -6,6 +6,11 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
+import PatientCheckIn from "../../../services/Patient Tenant/PatientCheckIn";
+import dayjs from "dayjs";
+import { GetDoctorServices } from "../../../services/Admin Tenant/ManageDoctor/GetDoctorService";
+import { getClinic } from "../../../services/Admin Tenant/ManageClinic/GetClinic";
+import ModalInformasiTiket from "./ModalInformasiTiket";
 
 const style = {
     position: "absolute" as const,
@@ -20,16 +25,118 @@ const style = {
     borderRadius: "16px",
 };
 
+type queueData = {
+    id: string;
+    registrationDataId: string;
+    createdBy: string;
+    createdDateTime: number;
+    updatedBy: string | null;
+    updatedDateTime: number | null;
+    deletedBy: string | null;
+    deletedDateTime: number | null;
+    queueNumber: number;
+    clinicId: string;
+    status: string | null;
+}
+
+type bookingCodeData = {
+    nomorAntrian: string,
+    namaDokter: string,
+    namaKlinik: string,
+    tanggalReserve: string,
+    jadwalKonsul: string,
+}
+
 const bookingCodeSchema = Yup.object().shape({
     bookingCode: Yup.string()
         .required("Kode booking wajib diisi")
-        .length(6, "Kode booking harus 6 karakter"),
+        .length(4, "Kode booking harus 6 karakter"),
 });
 
 const ModalKodeBooking: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
     const [isLoading, setIsLoading] = useState(false);
+        const [infoTicket, setInfoTicket] = useState(false);
+        const [dataKodeBooking, setDataKodeBooking] = useState<bookingCodeData>()
+    const onSubmitKodeBooking = async (values: any) => {
+        setIsLoading(true);
+        console.log('Form submitted:', values);
+        const bookingCode = { bookingCode: values };
+        try {
+            const response = await PatientCheckIn(bookingCode);
+            if (response.responseCode === "200") {
+                console.log('response book: ', response.data.scheduleIntervalDataId);
+                const scheduleIntervalDataId = response.data.scheduleIntervalDataId;
+                const dataSchedule = await axios.get(
+                    `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/schedule-interval/${scheduleIntervalDataId}`
+                );
+                console.log('data jadwal: ', dataSchedule.data.data.endTime)
+                console.log('tes: ', dataSchedule.data.data.startTime[0], dataSchedule.data.data.startTime[1], " akhir:", dataSchedule.data.data.endTime[0], dataSchedule.data.data.endTime[1])
+                const jam = `${dayjs().hour(dataSchedule.data.data.startTime[0]).minute(dataSchedule.data.data.startTime[1]).format('HH:mm')} - 
+${dayjs().hour(dataSchedule.data.data.endTime[0]).minute(dataSchedule.data.data.endTime[1]).format('HH:mm')}`;
+                const namaDokter = await GetDoctorServices(response.data.doctorDataId);
+                const namaKlinik = await getClinic(response.data.masterClinicId);
+
+                const dateReserve: string = dayjs(response.data.createdDateTime * 1000).isValid()
+                    ? dayjs(response.data.createdDateTime * 1000).format('YYYY-MM-DD HH:mm')
+                    : '';
+                const schedules = {
+                    year: response.data.scheduleDate[0],
+                    month: response.data.scheduleDate[1],
+                    day: response.data.scheduleDate[2],
+                };
+
+
+
+                const queueData = {
+                    registrationId: response.data.id,
+                    needAdmin: response.data.needAdmin,
+                    clinicId: response.data.masterClinicId
+
+                }
+                const queue = await axios.post(
+                    `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/queue/generated`,
+                    queueData,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                console.log(response.data.needAdmin);
+                if (response.data.needAdmin === true) {
+
+
+                    console.log(queue);
+
+                } else {
+                    const dataBooking = {
+                        nomorAntrian: queue.data.data.queueNumber,
+                        namaDokter: namaDokter.name,
+                        namaKlinik: namaKlinik.name,
+                        tanggalReserve: dateReserve,
+                        jadwalKonsul: `  ${schedules.day}/${dayjs(schedules.month).format("MMM")}/${schedules.year}, ${jam}`,
+                        needAdmin: response.data.needAdmin
+                    }
+                    setDataKodeBooking(dataBooking)
+                    setInfoTicket(true);
+                }
+
+
+                setIsLoading(false);
+            }
+
+        } catch (err: any) {
+            setIsLoading(false);
+
+            console.log(err)
+        }
+
+
+
+    }
 
     return (
+        <>
         <Modal
             open={open}
             onClose={onClose}
@@ -64,6 +171,7 @@ const ModalKodeBooking: React.FC<{ open: boolean; onClose: () => void }> = ({ op
                     enableReinitialize
                     onSubmit={async (values) => {
                         console.log("Kode booking:", values.bookingCode);
+                        onSubmitKodeBooking(values.bookingCode)
                         setIsLoading(true);
                         try {
                             const response = await axios.post(
@@ -124,7 +232,6 @@ const ModalKodeBooking: React.FC<{ open: boolean; onClose: () => void }> = ({ op
                                         fontWeight: 600,
                                         width: "100%",
                                     }}
-                                    disabled={!isValid || !dirty || isLoading}
                                 >
                                     {isLoading ? (
                                         <CircularProgress size={25} sx={{ color: "white" }} />
@@ -137,7 +244,22 @@ const ModalKodeBooking: React.FC<{ open: boolean; onClose: () => void }> = ({ op
                     )}
                 </Formik>
             </Box>
+            
         </Modal>
+        {infoTicket && (
+                <ModalInformasiTiket 
+                    open={infoTicket}
+                    clinic={dataKodeBooking.namaKlinik}
+                    jadwalKonsul={dataKodeBooking.jadwalKonsul}
+                    namaDokter={dataKodeBooking.namaDokter}
+                    tanggalReservasi={dataKodeBooking.tanggalReserve}
+                    nomorAntrian={queueData.queueNumber || 0}
+                    onClose={() => setInfoTicket(false)}
+                />
+            )}
+
+</>
+        
     );
 };
 

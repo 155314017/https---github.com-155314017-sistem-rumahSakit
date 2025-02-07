@@ -58,16 +58,17 @@ import useTablePasien from "../hooks/useTablePasien";
 export default function TablePasien() {
     const {
         page,
-        isCollapsed,
-        datas,
-        handleChangePage,
-        rowsPerPage,
-        displayedData,
-        sortir,
-        urutkan,
-        toggleCollapse,
-        confirmationDelete,
-        clinics
+    isCollapsed,
+    datas,
+    handleChangePage,
+    rowsPerPage,
+    displayedData,
+    sortir,
+    urutkan,
+    toggleCollapse,
+    confirmationDelete,
+    // clinics,
+    userDataPhone
     } = useTablePasien();
     return (
         <Box>
@@ -222,7 +223,7 @@ export default function TablePasien() {
                                             >
                                                 Nama Pasien
                                             </TableCell>
-                                            <TableCell
+                                            {/* <TableCell
                                                 width={"12%"}
                                                 sx={{
                                                     fontSize: "14px",
@@ -233,7 +234,7 @@ export default function TablePasien() {
                                                 align="left"
                                             >
                                                 Jenis Kunjungan
-                                            </TableCell>
+                                            </TableCell> */}
                                             <TableCell
                                                 width={"12%"}
                                                 sx={{
@@ -246,7 +247,7 @@ export default function TablePasien() {
                                             >
                                                 Jenis Kelamin
                                             </TableCell>
-                                            <TableCell
+                                            {/* <TableCell
                                                 width={"15%"}
                                                 sx={{
                                                     fontSize: "14px",
@@ -257,8 +258,8 @@ export default function TablePasien() {
                                                 align="center"
                                             >
                                                 Keluhan
-                                            </TableCell>
-                                            <TableCell
+                                            </TableCell> */}
+                                            {/* <TableCell
                                                 width={"15%"}
                                                 sx={{
                                                     fontSize: "14px",
@@ -269,8 +270,8 @@ export default function TablePasien() {
                                                 align="center"
                                             >
                                                 Poli
-                                            </TableCell>
-                                            <TableCell
+                                            </TableCell> */}
+                                            {/* <TableCell
                                                 width={"15%"}
                                                 sx={{
                                                     fontSize: "14px",
@@ -280,9 +281,21 @@ export default function TablePasien() {
                                                 }}
                                                 align="left"
                                             >
+                                                Waktu Kunjungan
+                                            </TableCell> */}
+                                            <TableCell
+                                                width={"15%"}
+                                                sx={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 700,
+                                                    color: "#292B2C",
+                                                    bgcolor: "#F1F0FE",
+                                                }}
+                                                align="center"
+                                            >
                                                 No telpon
                                             </TableCell>
-                                            <TableCell
+                                            {/* <TableCell
                                                 width={"15%"}
                                                 sx={{
                                                     fontSize: "14px",
@@ -346,7 +359,7 @@ export default function TablePasien() {
                                                     >
                                                         {data.name}
                                                     </TableCell>
-                                                    <TableCell
+                                                    {/* <TableCell
                                                         sx={[
                                                             {
                                                                 color: "#292B2C",
@@ -361,7 +374,7 @@ export default function TablePasien() {
                                                         align="center"
                                                     >
                                                         {data?.registrationDatumDto?.typeOfVisit || "Not Available"}
-                                                    </TableCell>
+                                                    </TableCell> */}
                                                     <TableCell
                                                         sx={[
                                                             {
@@ -378,7 +391,7 @@ export default function TablePasien() {
                                                     >
                                                         {data.gender}
                                                     </TableCell>
-                                                    <TableCell
+                                                    {/* <TableCell
                                                         sx={[
                                                             {
                                                                 color: "#292B2C",
@@ -393,8 +406,8 @@ export default function TablePasien() {
                                                         align="center"
                                                     >
                                                         {data?.registrationDatumDto?.symptomps || "Not Available"}
-                                                    </TableCell>
-                                                    <TableCell
+                                                    </TableCell> */}
+                                                    {/* <TableCell
                                                         sx={[
                                                             {
                                                                 color: "#292B2C",
@@ -409,7 +422,23 @@ export default function TablePasien() {
                                                         align="center"
                                                     >
                                                         {clinics[index]}
-                                                    </TableCell>
+                                                    </TableCell> */}
+                                                    {/* <TableCell
+                                                        sx={[
+                                                            {
+                                                                color: "#292B2C",
+                                                                overflow: "hidden",
+                                                                textOverflow: "ellipsis",
+                                                                whiteSpace: "nowrap",
+                                                                maxWidth: "150px",
+                                                                fontSize: "14px",
+                                                                textTransform: "capitalize",
+                                                            },
+                                                        ]}
+                                                        align="center"
+                                                    >
+                                                        {data.operationalSchedule}
+                                                    </TableCell> */}
                                                     <TableCell
                                                         sx={[
                                                             {
@@ -424,9 +453,9 @@ export default function TablePasien() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.phone}
+                                                        {userDataPhone[index]}
                                                     </TableCell>
-                                                    <TableCell
+                                                    {/* <TableCell
                                                         sx={[
                                                             {
                                                                 color: "#292B2C",
@@ -441,7 +470,7 @@ export default function TablePasien() {
                                                         align="center"
                                                     >
                                                         {data?.registrationDatumDto?.typeOfVisit || 'Not Available'}
-                                                    </TableCell>
+                                                    </TableCell> */}
                                                     {/* <TableCell
                                                         sx={[
                                                             {

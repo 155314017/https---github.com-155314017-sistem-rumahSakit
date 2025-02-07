@@ -7,6 +7,8 @@ export default function useTablePasien() {
   const [datas, setDatas] = useState<PatientDataItem[]>([]);
   const [dataIdClinic, setDataIdClinic] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [dataIdUser, setDataIdUser] = useState<string[]>([]);
+  const [userDataPhone, setUserDataPhone] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,6 +18,10 @@ export default function useTablePasien() {
         const clinicIds = result
           .map((item) => item.registrationDatumDto?.masterClinicId)
           .filter((id): id is string => !!id);
+
+        const userId = result.map((item) => item.masterUserId).filter((id): id is string => !!id);
+
+        setDataIdUser(userId);
         setDataIdClinic(clinicIds);
         setLoading(false);
       } catch (error) {
@@ -27,6 +33,28 @@ export default function useTablePasien() {
   }, []);
 
   const [clinics, setClinics] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const responses = await Promise.all(
+          dataIdUser.map((id) => axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/user/${id}`))
+        );
+
+        const userDataPhone = responses.map((response) => {
+          const name = response.data.data.phone;
+          return name ? name : "Data User Tidak Tercatat";
+        });
+        setUserDataPhone(userDataPhone);
+      } catch (err) {
+        console.error('Error:', err);
+      }
+    };
+
+    if (dataIdUser.length > 0) {
+      fetchUsers();
+    }
+  }, [dataIdUser]);
 
   useEffect(() => {
     const fetchClinics = async () => {
@@ -95,6 +123,7 @@ export default function useTablePasien() {
     toggleCollapse,
     confirmationDelete,
     clinics,
-    loading
+    loading,
+    userDataPhone
   }
 }

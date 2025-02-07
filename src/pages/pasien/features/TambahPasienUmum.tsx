@@ -5,19 +5,15 @@ import {
     Button,
     FormControl,
     FormControlLabel,
-    Radio,
     RadioGroup,
     TextField,
     OutlinedInput,
     FormLabel,
+    FormHelperText,
+    Checkbox,
 } from "@mui/material";
-import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import bgImage from "../../../assets/img/String.png";
 import FileUploader from '../../../components/medium/FileUploader';
 import PhoneInput from 'react-phone-input-2';
-import SwitchCustom from '../../../components/small/Switch/SwitchCustom';
-import CustomCalender from '../../../components/medium/CustomCalender';
-//hooks
 import useTambahPasienUmum from '../hooks/useTambahPasienUmum';
 import DropdownListAPI from "../../../components/small/dropdownlist/DropdownListAPI";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -25,38 +21,55 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import InformasiTicketAPI from "../../../components/small/InformasiTicketAPI";
 import dayjs from "dayjs";
-
+import AlertWarning from "../../../components/small/alert/AlertWarning";
+import { Field, Formik, Form } from "formik";
+import CustomTimePicker from "../../../components/medium/CustomTimePicker";
+import CardAntrianCounter from "../../../components/small/card/CardAntrianCounter";
+import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 
 export default function TambahPasienUmum() {
     const {
-        formik,
-        breadcrumbItems,
+        validationSchema,
         currentPage,
         setCurrentPage,
         getPageStyle,
         getBorderStyle,
-        isCurrentPageValid,
-        handleSwitchChange,
-        switchValue,
-        selectedMethod,
         mainPages,
-        guardFullPage,
-        setGuardFullPage,
         patientFullPage,
-        handleRadioChange,
         handleScheduleChange,
         doctorOptions,
         idDoctor,
         handleDropdownDocter,
+        findPatientByNik,
         patientData,
         BpRadio,
         changePage2,
         clinicOptions,
         handleDropdownPoli,
-        createTicket,
         dataTickets,
-        birthDate,
-        birthPlace
+        showAlert,
+        // calendarKey,
+        breadcrumbItems,
+        formik,
+        setNeedAdmin,
+        needAdmin,
+        NIK,
+        birth,
+        setPatientData,
+        validationSchema1,
+        navigate,
+        idClinic,
+        registrationPatient,
+        selectedScheduleId,
+        selectedSchedule,
+        clinicName,
+        docterName,
+        tanggalReserve,
+        registrationCode,
+        queueNumber,
+        queueData,
+        pasienBaru,
+        handleCreateUser
 
     } = useTambahPasienUmum();
 
@@ -64,817 +77,859 @@ export default function TambahPasienUmum() {
 
 
     return (
-        <Container sx={{ py: 2 }}>
-            <BreadCrumbs
-                breadcrumbItems={breadcrumbItems}
-                onBackClick={() => window.history.back()}
-            />
-            <Box mt={3}>
-                {mainPages && (
-                    <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content' }}>
-                        <Box position={"absolute"} sx={{ top: 0, left: "50%", transform: "translateX(-50%)", display: "flex" }}>
-                            <Box sx={{ width: "50px", height: "30px", bgcolor: "#F1F0FE" }}>
-                                <Box sx={{ width: "50px", height: "30px", bgcolor: "#fff", borderRadius: "0px 15px 0px 0px " }} />
+        
+
+            <Container  sx={{ py: 2 }}>
+                <BreadCrumbs
+                        breadcrumbItems={breadcrumbItems}
+                        onBackClick={() => window.history.back()}
+                    />
+                
+                        
+        
+
+                    {showAlert && <AlertWarning teks="Terjadi kesalahan. Silahkan coba lagi." />}
+
+
+                <Box mt={7}>
+
+
+                    {mainPages && (
+                        <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content' }}>
+                            <Box marginBottom={0} padding={'24px'} gap={"10px"} width={'100%'}>
+                                <Typography fontWeight={600} fontSize={'20px'} lineHeight={'22px'} fontFamily={'roboto'} marginBottom={1}>
+                                    Formulir pendaftaran pasien Umum
+                                </Typography>
+                                <Typography fontWeight={400} fontSize={'16px'} lineHeight={'18px'} color="#A8A8BD" maxWidth={'95%'} fontFamily={'roboto'}>
+                                    Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.
+                                </Typography>
                             </Box>
-                            <Box sx={{ width: "600px", height: "50px", bgcolor: "#F1F0FE", borderRadius: "0px 0px 22px 22px" }} />
-                            <Box sx={{ width: "50px", height: "30px", bgcolor: "#F1F0FE" }}>
-                                <Box sx={{ width: "50px", height: "30px", bgcolor: "#fff", borderRadius: "15px 0px 0px 0px " }} />
-                            </Box>
-                        </Box>
-                        <Typography fontSize="20px" fontWeight="700" maxWidth={'20%'}>Pasien umum/asuransi</Typography>
-                        <Typography mt="1%" color="#A8A8BD" fontWeight="400" fontSize="16px"  >Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan.</Typography>
-                        <Box sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, gap: 8 }}>
-                            <Box display={"flex"} flexDirection={"row"} width={"290px"}>
-                                <Button
-                                    onClick={() => setCurrentPage(1)}
-                                    sx={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        mx: 2,
-                                        ...getPageStyle(1),
-                                        "&:hover": {
-                                            backgroundColor: "inherit",
-                                        },
-                                    }}
-                                >
-                                    <Box sx={getBorderStyle(1)}>1</Box>
-                                    <Typography sx={{ ml: 1, textTransform: 'none' }}>Data diri pasien</Typography>
-                                </Button>
 
+                            <Box sx={{ display: "flex", justifyContent: "space-between", mt: 0, mb: 2, gap: 8 }} width={"100%"}>
+                                <Box display={"flex"} flexDirection={"row"} >
 
-                            </Box>
-                            <Box display={"flex"} flexDirection={"row"} width={"400px"}>
-                                <Button
-                                    onClick={() => setCurrentPage(2)}
-                                    disableRipple
-                                    disableElevation
-                                    // disabled={currentPage === 1}
-                                    sx={{
-                                        ...getPageStyle(2),
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        mx: 2,
-                                        "&:hover": {
-                                            backgroundColor: "inherit",
-                                        },
-                                    }}
-                                >
-                                    <Box sx={getBorderStyle(2)}>2</Box>
-                                    <Typography sx={{ ml: 1, textTransform: 'none' }}>
-                                        Data diri Penanggung Jawab Pasien
-                                    </Typography>
-                                </Button>
+                                    <Button
+                                        onClick={() => setCurrentPage(1)}
+                                        // disabled={currentPage > 1} 
+                                        sx={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            mx: 2,
+                                            ...getPageStyle(1),
+                                            "&:hover": {
+                                                backgroundColor: "inherit",
+                                            },
+                                        }}
+                                    >
+                                        <Box sx={getBorderStyle(1)}>1</Box>
+                                        <Typography sx={{ ml: 1, textTransform: 'none', fontSize: '14px', fontWeight: 600, lineHeight: '16px', fontFamily: 'roboto' }}>Data diri pasien</Typography>
+                                    </Button>
+                                </Box>
 
+                                <Box display={"flex"} flexDirection={"row"} width={"400px"}>
+                                    <Button
+                                        onClick={() => setCurrentPage(2)}
+                                        disabled={currentPage < 2}
+                                        sx={{
+                                            ...getPageStyle(2),
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            mx: 2,
+                                            "&:hover": {
+                                                backgroundColor: "inherit",
+                                            },
+                                        }}
+                                    >
+                                        <Box sx={getBorderStyle(2)}>2</Box>
+                                        <Typography sx={{ ml: 1, textTransform: 'none', fontSize: '14px', fontWeight: 600, lineHeight: '16px' }}>
+                                            Jenis Kunjungan dan Keluhan
+                                        </Typography>
+                                    </Button>
+                                </Box>
 
                             </Box>
-                            <Box display={"flex"} flexDirection={"row"} width={"350px"}>
-                                <Button
-                                    onClick={() => setCurrentPage(3)}
-                                    disableRipple
-                                    disableElevation
-                                    // disabled={currentPage === 1 || currentPage === 2}
-                                    sx={{
-                                        ...getPageStyle(3),
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        mx: 2,
-                                        "&:hover": {
-                                            backgroundColor: "inherit",
-                                        },
-                                    }}
-                                >
-                                    <Box sx={getBorderStyle(3)}>3</Box>
-                                    <Typography sx={{ ml: 1, textTransform: 'none' }}>
-                                        Jenis Kunjungan dan Keluhan
-                                    </Typography>
-                                </Button>
-                            </Box>
-                        </Box>
 
-                        <Box position="absolute" sx={{ top: 0, right: 0 }}>
-                            <img src={bgImage} alt="bg-image" />
-                        </Box>
 
-                        {currentPage === 1 && (
-                            <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                                {patientFullPage && (
-                                    <>
-                                        <Typography>NIK (Nomor induk kependudukan) Pasien</Typography>
-                                        <OutlinedInput
-                                            sx={{
-                                                borderRadius: '8px',
-                                                height: '48px',
-                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                    borderColor: '#8F85F3',
-                                                },
-                                                backgroundColor: formik.touched.nikCari && formik.errors.nikCari ? '#ffcccc' : 'inherit',
+                            {/* <Box position="absolute" sx={{ top: 0, right: 0 }}>
+                                <img src={bgImage} alt="bg-image" />
+                            </Box> */}
+
+                            {currentPage === 1 && (
+                                <Box sx={{ display: "flex", flexDirection: "column", gap: "0", width: "100%" }}>
+
+                                    {patientFullPage && (
+                                        <>
+
+                                            <Typography sx={{ fontSize: '16px', fontWeight: 400, lineHeight: '18px', fontFamily: 'roboto', mb: 2 }}>NIK (Nomor induk kependudukan) Pasien <span style={{ color: 'red' }}>*</span></Typography>
+                                            <OutlinedInput
+                                                sx={{
+                                                    borderRadius: '8px',
+                                                    height: '48px',
+                                                    '& .MuiInputBase-root': {
+                                                        height: '48px',
+                                                    },
+                                                    '& .MuiInputBase-input': {
+                                                        height: '15px',
+                                                    },
+                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                        borderColor: '#A8A8BD',
+                                                        border: '3px solid #8F85F3',
+
+                                                    },
+                                                    backgroundColor: formik.touched.nikCari && formik.errors.nikCari ? '#ffcccc' : '#fff',
+
+                                                }}
+                                                placeholder='Masukkan NIK ktp'
+                                                value={formik.values.nikCari}
+                                                onChange={formik.handleChange}
+                                                name="nikCari"
+                                                onBlur={formik.handleBlur}
+                                            />
+                                            {formik.touched.nikCari && formik.errors.nikCari && (
+                                                <FormHelperText sx={{ color: 'red', mt: '1px' }}>{formik.errors.nikCari}</FormHelperText>
+                                            )}
+                                            <Button
+                                                type="button"
+                                                // onClick={() => patientPage ? setPatientPage(true) : setCurrentPage(2)}
+                                                onClick={() => findPatientByNik(formik.values.nikCari)}
+                                                variant="contained"
+                                                color="inherit"
+                                                sx={{
+                                                    mt: 4,
+                                                    width: "100%",
+                                                    bgcolor: "#8F85F3",
+                                                    color: "#fff",
+                                                    textTransform: "none",
+                                                    borderRadius: "8px",
+                                                    ":hover": { bgcolor: "#a098f5" },
+                                                }}
+                                                disabled={!!(!formik.touched.nikCari && formik.errors.nikCari) || !formik.values.nikCari}
+                                            >
+                                                Selanjutnya
+                                            </Button>
+                                        </>
+                                    )}
+
+                                    {!patientFullPage && (<>
+                                        <Formik
+                                            initialValues={{
+                                                nik: NIK || '',
+                                                email: patientData?.email || '',
+                                                phone: patientData?.phone || '',
+                                                fullname: patientData?.fullname || '',
+                                                gender: patientData?.gender || '',
+                                                address: patientData?.address || '',
+                                                birthPlace: patientData?.birthPlace || '',
+                                                birthDate: patientData?.birthDate || '',
                                             }}
-                                            placeholder='Masukkan NIK ktp'
-                                            value={formik.values.nikCari}
-                                            onChange={formik.handleChange}
-                                            name="nikCari"
-                                            onBlur={formik.handleBlur}
-                                        />
-                                        <Button
-                                            type="button"
-                                            // onClick={() => patientPage ? setPatientPage(true) : setCurrentPage(2)}
-                                            // onClick={() => findPatientByNik(formik.values.nikCari)}
-                                            variant="contained"
-                                            color="inherit"
-                                            sx={{
-                                                mt: 4,
-                                                width: "100%",
-                                                bgcolor: "#8F85F3",
-                                                color: "#fff",
-                                                textTransform: "none",
-                                                borderRadius: "8px",
-                                                ":hover": { bgcolor: "#a098f5" },
+                                            enableReinitialize
+                                            validationSchema={validationSchema}
+                                            onSubmit={async (values) => {
+                                                console.log(values);
+
+                                                const dataRegis = {
+                                                    id: patientData?.id,
+                                                    address: values?.address,
+                                                    nik: values?.nik,
+                                                    email: values?.email,
+                                                    phone: values?.phone,
+                                                    gender: values?.gender,
+                                                    fullname: values?.fullname,
+                                                    birthDate: values.birthDate,
+                                                    birthPlace: values?.birthPlace,
+                                                };
+
+                                                if(pasienBaru === true){
+                                                    handleCreateUser(dataRegis);
+                                                }
+
+                                                
+                                                setPatientData(dataRegis);
+                                                console.log(patientData);
+                                                changePage2();
                                             }}
-                                            disabled={!isCurrentPageValid()}
                                         >
-                                            Selanjutnya
-                                        </Button>
-                                    </>
-                                )}
+                                            {({ errors, touched, handleChange, handleBlur, values, setFieldValue }) => (
+                                                <Form>
+                                                    <Box>
+                                                        <Typography sx={{ fontSize: "20px", fontWeight: 600, lineHeight: "22px", fontFamily: "roboto", marginBottom: "16px" }}>
+                                                            Konfirmasi data diri pasien
+                                                        </Typography>
 
-                                {!patientFullPage && (<>
-                                    <Box>
-                                        <Box height={"fit-content"} width={"100%"} borderRadius={"16px"} display="flex" flexDirection="column" justifyContent="center">
-                                            <Box display={"flex"} flexDirection="column" alignItems="flex-start" gap={"5px"} width={'99%'}>
-                                                <Typography>NIK (Nomor induk kependudukan) Pasien</Typography>
-                                                <OutlinedInput
-                                                    sx={{
-                                                        borderRadius: '8px',
-                                                        height: '48px',
-                                                        width: '100%',
-                                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                            borderColor: '#8F85F3',
-                                                        },
-                                                    }}
-                                                    placeholder='Masukkan NIK ktp'
-                                                    value={formik.values.nik}
-                                                    onChange={formik.handleChange}
-                                                    name="nik"
-                                                />
-                                                <Typography>Email</Typography>
-                                                <OutlinedInput
-                                                    sx={{
-                                                        borderRadius: '8px',
-                                                        height: '48px',
-                                                        width: '100%',
-                                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                            borderColor: '#8F85F3',
-                                                        },
-                                                    }}
-                                                    placeholder='Masukkan email'
-                                                    value={formik.values.email}
-                                                    onChange={formik.handleChange}
-                                                    name="email"
-                                                />
-                                                <Typography>No Handphone pasien</Typography>
-                                                <PhoneInput
-                                                    country={"id"}
-                                                    value={patientData?.phoneNumber}
-                                                    onChange={(values) => formik.setFieldValue("phone", values)}
-                                                    // disabled={switchValue}
-                                                    // onChange={(value) => console.log("nomor: ", value)}
-                                                    inputStyle={{
-                                                        height: "48px",
-                                                        borderRadius: "8px",
-                                                        border: "1px solid #ccc",
-                                                        padding: "10px 40px 10px 60px",
-                                                        fontSize: "16px",
-                                                        width: "100%",
-
-                                                    }}
-                                                    buttonStyle={{
-                                                        borderRadius: "8px 0 0 8px",
-                                                        border: "1px solid #ccc",
-                                                    }}
-                                                    containerStyle={{
-                                                        marginBottom: "10px",
-                                                        width: "100%",
-                                                    }}
-                                                />
-
-                                                <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '75px', width: '100%' }}>
-                                                    <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%' }}>
-                                                        <FormLabel>Tempat Lahir</FormLabel>
-                                                        <OutlinedInput
-                                                            name="birthPlace"
-                                                            placeholder="Tempat Lahir"
-                                                            fullWidth
+                                                        <Box
                                                             sx={{
-                                                                borderRadius: '8px',
-                                                                height: '44px',
-                                                                '& .MuiOutlinedInput-root': {
-                                                                    borderRadius: '8px',
-                                                                    backgroundColor: formik.touched.birthPlacePatient && formik.errors.birthPlacePatient ? "#ffcccc" : 'inherit',
-                                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                        borderColor: '#8F85F3',
-                                                                    },
-                                                                },
-                                                                '& .MuiOutlinedInput-notchedOutline': {
-                                                                    border: '1px solid #ccc',
-                                                                },
-                                                                '& .MuiOutlinedInput-input': {
-                                                                    padding: '10px',
-                                                                    fontSize: '16px',
-                                                                },
+                                                                display: "flex",
+                                                                alignItems: "center",
+                                                                border: "1px solid #c5a8ff",
+                                                                borderRadius: "8px",
+                                                                backgroundColor: "#f5f0ff",
+                                                                padding: "8px 16px",
+                                                                color: "#7b49c4",
+                                                                fontSize: "14px",
+                                                                fontWeight: 500,
+                                                                marginBottom: "16px",
                                                             }}
-                                                            onChange={formik.handleChange}
-                                                            onBlur={formik.handleBlur}
-                                                            value={birthPlace}
-                                                            error={formik.touched.birthPlacePatient && Boolean(formik.errors.birthPlacePatient)}
-                                                        // helperText={touched.fullname && errors.fullname}
-                                                        />
+                                                        >
+                                                            <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto" }}>
+                                                                Harap periksa kembali data diri Anda, jika ada data yang tidak sesuai anda dapat merubahnya di Admin.
+                                                            </Typography>
+                                                        </Box>
 
-                                                    </FormControl>
+                                                        <Box height={"fit-content"} width={"100%"} borderRadius={"16px"} display="flex" flexDirection="column" justifyContent="center">
+                                                            <Box display={"flex"} flexDirection="column" alignItems="flex-start" gap={"5px"} width={'99%'}>
+                                                                <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto", marginTop: "10px" }}>NIK (Nomor induk kependudukan) Pasien <span style={{ color: "red" }}>*</span></Typography>
+                                                                <FormControl fullWidth error={touched.nik && Boolean(errors.nik)}>
+                                                                    <OutlinedInput
+                                                                        name="nik"
+                                                                        placeholder="Masukkan NIK (Nomor induk kependudukan)"
+                                                                        sx={{
+                                                                            bgcolor: pasienBaru ? '#FFFFFF' : '#E8E8E8',
+                                                                            borderRadius: '8px',
+                                                                            '& .MuiOutlinedInput-root': {
+                                                                                borderRadius: '3px solid #8F85F3',
+                                                                                backgroundColor: touched.nik && errors.nik ? '#ffcccc' : 'inherit',
+                                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                    borderColor: '3px solid #8F85F3',
+                                                                                },
+                                                                            },
+                                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                borderColor: '#A8A8BD',
+                                                                                border: '3px solid #8F85F3',
 
-                                                    <FormControl sx={{ width: '49%', overflow: 'hidden', height: '100%' }}>
-                                                        <FormLabel>Tanggal Lahir</FormLabel>
-                                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                            <Box sx={{ overflow: 'hidden' }}>
-                                                                <DemoContainer components={['DatePicker']}>
-                                                                    <DatePicker
-                                                                        value={dayjs(birthDate)}
-                                                                        onChange={(newValue) => {
-                                                                            if (newValue) {
-                                                                                const formattedDate = newValue.format("YYYY-MM-DD");
-                                                                                formik.setFieldValue("birthDate", formattedDate);
-                                                                                console.log("tanggalLahir", formattedDate);
-                                                                            }
+                                                                            },
                                                                         }}
-                                                                        slotProps={{
-                                                                            textField: {
-                                                                                placeholder: "Tanggal Lahir",
-                                                                                sx: {
+                                                                        onChange={handleChange}
+                                                                        onBlur={handleBlur}
+                                                                        value={values.nik}
+                                                                        disabled={!pasienBaru}
+                                                                    />
+                                                                    {touched.nik && errors.nik && (
+                                                                        <FormHelperText>{errors.nik}</FormHelperText>
+                                                                    )}
+                                                                </FormControl>
+
+                                                                <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto", marginTop: "10px" }}>Email <span style={{ color: "red" }}>*</span></Typography>
+                                                                <FormControl fullWidth error={touched.email && Boolean(errors.email)}>
+                                                                    <OutlinedInput
+                                                                        name="email"
+                                                                        value={values.email}
+                                                                        onChange={handleChange}
+                                                                        onBlur={handleBlur}
+                                                                        disabled={!pasienBaru}
+                                                                        sx={{
+                                                                            borderRadius: '8px',
+                                                                            bgcolor: pasienBaru ? '#FFFFFF' : '#E8E8E8',
+                                                                            
+                                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                borderColor: '#A8A8BD',
+                                                                                border: '3px solid #8F85F3',
+
+                                                    },
+                                                                        }}
+                                                                    />
+                                                                    {/* {touched.email && errors.email && (
+                                                                        <FormHelperText error>{errors.email}</FormHelperText>
+                                                                    )} */}
+                                                                </FormControl>
+
+                                                                <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto", marginTop: "10px" }}>No Handphone pasien <span style={{ color: "red" }}>*</span></Typography>
+                                                                <FormControl fullWidth>
+                                                                    <PhoneInput
+                                                                        country={"id"}
+                                                                        value={patientData?.phone}
+                                                                        onChange={(values) => setFieldValue("phone", values)}
+
+
+                                                                        // sx={{
+                                                                        //     width: '100%',
+                                                                        //     height: 'auto',
+                                                                        //     marginTop: '10px',
+                                                                        //     '& .MuiOutlinedInput-root': {
+                                                                        //         borderRadius: '8px',
+                                                                        //         backgroundColor: touched.phone && errors.phone ? '#ffcccc' : 'inherit',
+                                                                        //         '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                        //             borderColor: '#8F85F3',
+                                                                        //         },
+                                                                        //     },
+                                                                        //     '& .MuiOutlinedInput-notchedOutline': {
+                                                                        //         border: '1px solid #ccc',
+                                                                        //     },
+                                                                        //     '& .MuiOutlinedInput-input': {
+                                                                        //         padding: '10px',
+                                                                        //         fontSize: '16px',
+                                                                        //     },
+                                                                        // }}
+
+                                                                        inputStyle={{
+                                                                            height: "48px",
+                                                                            borderRadius: "8px",
+                                                                            border: "1px solid #ccc",
+                                                                            padding: "10px 40px 10px 60px",
+                                                                            backgroundColor: pasienBaru ? "#FFFFFF" : "#EEEEF2",
+                                                                            fontSize: "16px",
+                                                                            width: "100%",
+                                                                            marginTop: "10px",
+                                                                            cursor: "default",
+                                                                        }}
+                                                                        buttonStyle={{
+                                                                            borderRadius: "8px 0 0 8px",
+                                                                            border: "1px solid #ccc",
+                                                                        }}
+                                                                        containerStyle={{
+                                                                            marginBottom: "10px",
+                                                                            width: "100%",
+                                                                        }}
+                                                                        
+                                                                        disabled={!pasienBaru}
+                                                                    />
+                                                                </FormControl>
+
+                                                                <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto" }}>Nama lengkap pasien <span style={{ color: "red" }}>*</span></Typography>
+                                                                <FormControl fullWidth>
+                                                                    <OutlinedInput
+                                                                        sx={{
+                                                                            borderRadius: '8px',
+                                                                            bgcolor:pasienBaru ? '#FFFFFF' : '#E8E8E8',
+                                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                borderColor: '#8F85F3',
+                                                                            },
+                                                                        }}
+                                                                        name="fullname"
+                                                                        value={values.fullname || ""}
+                                                                        onChange={handleChange}
+                                                                        disabled={!pasienBaru}
+                                                                    />
+                                                                </FormControl>
+
+                                                                <Box display={'flex'} justifyContent={'space-between'} sx={{ height: '75px', width: '100%', marginTop: "10px" }}>
+                                                                    <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%', height: '100%' }}>
+                                                                        <FormLabel>Tempat Lahir <span style={{ color: "red" }}>*</span></FormLabel>
+                                                                        <OutlinedInput
+                                                                            name="birthPlace"
+                                                                            placeholder="Tempat Lahir"
+                                                                            fullWidth
+                                                                            sx={{
+                                                                                borderRadius: '8px',
+                                                                                height: '75px',
+                                                                                bgcolor: pasienBaru ? '#FFFFFF' : '#E8E8E8',
+                                                                                '& .MuiOutlinedInput-root': {
                                                                                     borderRadius: '8px',
-                                                                                    height: '60px',
-                                                                                    width: '100%',
-                                                                                    '& .MuiOutlinedInput-root': {
-                                                                                        borderRadius: '8px',
-                                                                                        height: '44px',
-                                                                                    },
+                                                                                    backgroundColor: touched.birthPlace && errors.birthPlace ? "#ffcccc" : 'inherit',
+                                                                                },
+                                                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                        borderColor: '#A8A8BD',
+                                                                                        border: '3px solid #8F85F3',
+                                                                                },
+                                                                            }}
+                                                                            
+                                                                            onBlur={handleBlur}
+                                                                            value={values.birthPlace}
+                                                                            onChange={handleChange}
+                                                                            error={touched.birthPlace && Boolean(errors.birthPlace)}
+                                                                            disabled={!pasienBaru}
+                                                                        />
+                                                                    </FormControl>
+
+                                                                    < FormControl sx={{ width: '49%', height: '75px' }}>
+                                                                        <FormLabel >Tanggal Lahir <span style={{ color: "red" }}>*</span></FormLabel>
+                                                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                                            <Box sx={{ marginTop: "-9px" }}>
+                                                                                <DemoContainer components={['DatePicker']}>
+                                                                                    <DatePicker
+                                                                                        value={values.birthDate ? dayjs(values.birthDate, "MM-DD-YYYY") : dayjs(birth, "MM-DD-YYYY")}
+                                                                                        onChange={(newValue) => {
+                                                                                            if (newValue) {
+                                                                                                const formattedDate = newValue.format("MM-DD-YYYY");
+                                                                                                setFieldValue("birthDate", formattedDate);
+                                                                                            }
+                                                                                        }}
+                                                                                        slotProps={{
+                                                                                            textField: {
+                                                                                                placeholder: "Tanggal Lahir",
+                                                                                                sx: {
+                                                                                                    borderRadius: '8px',
+                                                                                                    height: '100%',
+                                                                                                    width: '100%',
+                                                                                                    bgcolor:pasienBaru ? '#FFFFFF' : '#E8E8E8',
+                                                                                                    '& .MuiOutlinedInput-root': {
+                                                                                                        borderRadius: '8px',
+                                                                                                        height: '58px',
+                                                                                                    },
+                                                                                                },
+                                                                                            },
+                                                                                        }}
+                                                                                        disabled={!pasienBaru}
+                                                                                    />
+                                                                                </DemoContainer>
+                                                                            </Box>
+                                                                        </LocalizationProvider>
+                                                                    </FormControl>
+                                                                </Box>
+
+
+
+                                                                <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto", marginTop: "10px" }}>
+                                                                    Jenis kelamin Pasien{" "}
+                                                                    <span style={{ color: "#d32f2f" }}>*</span>{" "}
+                                                                </Typography>
+                                                                <Box display={'flex'} flexDirection={'row'} padding={1} border={"1px solid #A8A8BD"} borderRadius={"12px"} pl={3} width={'96%'}>
+                                                                    <FormControl component="fieldset" error={touched.gender && Boolean(errors.gender)} disabled={!pasienBaru}>
+                                                                        <RadioGroup
+                                                                            aria-labelledby="gender-label"
+                                                                            name="gender"
+                                                                            value={patientData?.gender}
+                                                                            onChange={(e) => setFieldValue("gender", e.target.value)}
+                                                                            row
+                                                                        >
+                                                                            <FormControlLabel value="MALE" control={<BpRadio />} label="Pria" />
+                                                                            <FormControlLabel value="FEMALE" control={<BpRadio />} label="Wanita" />
+                                                                        </RadioGroup>
+                                                                    </FormControl>
+                                                                </Box>
+
+                                                                <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto", marginTop: "10px" }}>
+                                                                    Alamat tempat tinggal Pasien<span style={{ color: "red" }}>*</span>
+                                                                </Typography>
+                                                                <FormControl fullWidth>
+                                                                    <Field
+                                                                        name="address"
+                                                                        as={TextField}
+                                                                        placeholder="Masukkan tempat tinggal penanggung jawab"
+                                                                        variant="outlined"
+                                                                        fullWidth
+                                                                        size="medium"
+                                                                        sx={{
+
+                                                                            marginBottom: '8px',
+                                                                            alignItems: 'flex-start',
+                                                                            bgcolor: pasienBaru ? '#FFFFFF' : '#E8E8E8',
+                                                                            '& .MuiOutlinedInput-root': {
+                                                                                borderRadius: '8px',
+                                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                    borderColor: '#8F85F3',
                                                                                 },
                                                                             },
                                                                         }}
+                                                                        value={patientData?.address}
+                                                                        multiline
+                                                                        minRows={2}
+                                                                        disabled={!pasienBaru}
                                                                     />
-                                                                </DemoContainer>
-                                                            </Box>
-                                                        </LocalizationProvider>
-                                                    </FormControl>
-                                                </Box>
+                                                                </FormControl>
 
-                                                <Typography>Nama lengkap pasien</Typography>
-                                                <OutlinedInput
-                                                    sx={{
-                                                        width: '100%',
-                                                        maxHeight: '44px',
-                                                        borderRadius: '8px',
-                                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                            borderColor: '#8F85F3',
-                                                        },
-                                                    }}
-                                                    name="fullname"
-                                                    value={patientData?.fullName}
-                                                    // onChange={formik.handleChange}
-                                                    onChange={(value) => formik.setFieldValue("fullname", value)}
-                                                />
-                                                <Typography>Jenis Kelamin Pasien</Typography>
-                                                <Box width={'98%'} maxHeight={'56px'} border={'1px solid #ccc'} borderRadius={'12px'} padding={'8px 12px 8px 12px'} gap={'24px'} >
-                                                    <FormControl>
-                                                        <RadioGroup
-                                                            aria-labelledby="gender-label"
-                                                            name="gender"
-                                                            value={patientData?.gender}
-                                                            onChange={(e) => formik.setFieldValue("gender", e.target.value)}
-                                                            row
-
-                                                        >
-                                                            <FormControlLabel value="WOMEN" control={<BpRadio />} label="Female" />
-                                                            <FormControlLabel value="MEN" control={<BpRadio />} label="Male" />
-                                                        </RadioGroup>
-                                                    </FormControl>
-                                                </Box>
-
-                                                <Typography>Alamat tempat tinggal pasien</Typography>
-                                                <OutlinedInput
-                                                    id="address"
-                                                    name="address"
-                                                    size="small"
-                                                    placeholder="Masukkan deskripsi"
-                                                    value={patientData?.address}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={() => formik.setTouched({ ...formik.touched, address: true })}
-                                                    error={formik.touched.address && Boolean(formik.errors.address)}
-                                                    sx={{
-                                                        height: '107px',
-                                                        alignItems: 'flex-start',
-                                                        borderRadius: '8px',
-                                                        width: '100%',
-                                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                            borderColor: '#8F85F3',
-                                                        },
-                                                    }}
-                                                />
-                                            </Box>
-                                        </Box>
-                                    </Box>
-                                    <Button
-                                        type="button"
-                                        onClick={changePage2}
-                                        variant="contained"
-                                        color="inherit"
-                                        sx={{
-                                            mt: 6,
-                                            width: "100%",
-                                            bgcolor: "#8F85F3",
-                                            color: "#fff",
-                                            textTransform: "none",
-                                            borderRadius: "8px",
-                                            ":hover": { bgcolor: "#a098f5" },
-                                        }}
-                                    // disabled={!isCurrentPageValid()}
-                                    >
-                                        Selanjutnya
-                                    </Button>
-                                </>
-                                )}
-                            </Box>
-                        )}
-
-                        {currentPage === 2 && (
-                            <Box sx={{ display: "flex", flexDirection: "column" }}>
-                                {guardFullPage && (
-                                    <>
-                                        <SwitchCustom onChangeValue={handleSwitchChange} defaultValue={switchValue} />
-                                        <Typography>NIK (Nomor induk kependudukan) Penanggung jawab</Typography>
-                                        <OutlinedInput
-                                            sx={{
-                                                borderRadius: '8px',
-                                                height: '48px',
-                                                backgroundColor: switchValue ? "#E8E8E8" : "inherit"
-                                            }}
-                                            placeholder='Masukkan NIK ktp'
-                                            value={switchValue ? formik.values.nik : formik.values.nikGuardian}
-                                            onChange={formik.handleChange}
-                                            name="nikGuardian"
-                                            disabled={switchValue}
-                                        />
-                                        <Typography color="error">{formik.touched.nik && formik.errors.nik}</Typography>
-                                        <Button
-                                            type="button"
-                                            // onClick={() => patientPage ? setPatientPage(true) : setCurrentPage(2)}
-                                            onClick={() => setGuardFullPage(false)}
-                                            variant="contained"
-                                            color="inherit"
-                                            sx={{
-                                                mt: 4,
-                                                width: "100%",
-                                                bgcolor: "#8F85F3",
-                                                color: "#fff",
-                                                textTransform: "none",
-                                                borderRadius: "8px",
-                                                ":hover": { bgcolor: "#a098f5" },
-                                            }}
-                                        // disabled={!isCurrentPageValid()}
-                                        >
-                                            Selanjutnya
-                                        </Button>
-                                    </>
-                                )}
-
-                                {!guardFullPage && (
-                                    <>
-                                        <Box>
-                                            <Box height={"fit-content"} width={"100%"} borderRadius={"16px"} paddingLeft={"5px"} display="flex" flexDirection="column" justifyContent="center">
-                                                <Box display={"flex"} flexDirection="column" alignItems="flex-start" gap={"15px"} width={'99%'} mt={2}>
-                                                    <SwitchCustom onChangeValue={handleSwitchChange} defaultValue={switchValue ? true : false} />
-                                                    <Typography>NIK (Nomor induk kependudukan) Penanggung jawab</Typography>
-                                                    <OutlinedInput
-                                                        sx={{
-                                                            borderRadius: '8px',
-                                                            height: '48px',
-                                                            width: '100%',
-                                                            backgroundColor: switchValue ? "#E8E8E8" : "inherit",
-                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                borderColor: '#8F85F3',
-                                                            },
-                                                        }}
-                                                        placeholder='Masukkan NIK ktp'
-                                                        defaultValue={'tesNik'}
-                                                        value={formik.values.nikGuardian}
-                                                        onChange={formik.handleChange}
-                                                        name="nikGuardian"
-                                                        disabled={switchValue ? true : false}
-                                                    />
-                                                    <Typography>Email</Typography>
-                                                    <OutlinedInput
-                                                        sx={{
-                                                            borderRadius: '8px',
-                                                            height: '48px',
-                                                            width: '100%',
-                                                            mb: 2,
-                                                            backgroundColor: switchValue ? "#E8E8E8" : "inherit",
-                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                borderColor: '#8F85F3',
-                                                            },
-                                                        }}
-                                                        placeholder='Masukkan email'
-                                                        value={formik.values.emailGuardian}
-                                                        onChange={formik.handleChange}
-                                                        name="emailGuardian"
-                                                        disabled={switchValue ? true : false}
-                                                    />
-                                                    <Typography>No Handphone Penanggung Jawab</Typography>
-                                                    <PhoneInput
-                                                        country={"id"}
-                                                        value={formik.values.phoneGuardian}
-                                                        // onChange={(phone) => setFieldValue("phone", phone)}
-                                                        // disabled={switchValue}
-                                                        onChange={(value) => formik.setFieldValue("phoneGuardian", value)}
-                                                        inputStyle={{
-                                                            backgroundColor: switchValue ? "#E8E8E8" : "inherit",
-                                                            height: "48px",
-                                                            borderRadius: "8px",
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px 40px 10px 60px",
-                                                            fontSize: "16px",
-                                                            width: "100%",
-                                                        }}
-                                                        buttonStyle={{
-                                                            borderRadius: "8px 0 0 8px",
-                                                            border: "1px solid #ccc",
-                                                        }}
-                                                        containerStyle={{
-                                                            marginBottom: "10px",
-                                                            width: "100%",
-                                                        }}
-                                                        disabled={switchValue ? true : false}
-                                                    />
-                                                    <Box display={'flex'} justifyContent={'space-between'} sx={{ overflow: 'hidden', height: '80px', width: '100%' }}>
-                                                        <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%' }}>
-                                                            <FormLabel>Tempat Lahir</FormLabel>
-                                                            <OutlinedInput
-                                                                name="birthPlaceGuardian"
-                                                                placeholder="Tempat Lahir"
-                                                                fullWidth
-                                                                sx={{
-                                                                    width: '100%',
-                                                                    height: '44px',
-                                                                    mb: '5px',
-                                                                    marginTop: '10px',
-                                                                    borderRadius: '8px',
-                                                                    backgroundColor: switchValue ? "#E8E8E8" : "inherit",
-                                                                    '& .MuiOutlinedInput-root': {
-                                                                        borderRadius: '8px',
-                                                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                            borderColor: '#8F85F3',
-                                                                        },
-                                                                    },
-                                                                    '& .MuiOutlinedInput-notchedOutline': {
-                                                                        border: '1px solid #ccc',
-                                                                    },
-                                                                    '& .MuiOutlinedInput-input': {
-                                                                        padding: '10px',
-                                                                        fontSize: '16px',
-                                                                    },
-                                                                }}
-                                                                value={formik.values.birthPlaceGuardian}
-                                                                onChange={formik.handleChange}
-                                                                disabled={switchValue}
-                                                            />
-
-                                                        </FormControl>
-
-                                                        <FormControl sx={{ width: '49%', overflow: 'hidden', height: '100%' }}>
-                                                            <FormLabel>Tanggal Lahir</FormLabel>
-                                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                                <Box sx={{ overflow: 'hidden' }}>
-                                                                    <DemoContainer components={['DatePicker']}>
-                                                                        <DatePicker
-                                                                            value={dayjs(formik.values.birthDateGuardian)}
-                                                                            onChange={(newValue) => {
-                                                                                if (newValue) {
-                                                                                    const formattedDate = newValue.format("YYYY-MM-DD");
-                                                                                    formik.setFieldValue('birthDateGuardian', formattedDate);
-                                                                                    console.log("tanggalLahir", formattedDate);
-                                                                                }
-                                                                            }}
-                                                                            slotProps={{
-                                                                                textField: {
-                                                                                    placeholder: "Tanggal Lahir",
-                                                                                    sx: {
-                                                                                        borderRadius: '8px',
-                                                                                        height: '60px',
-                                                                                        width: '100%',
-                                                                                        '& .MuiOutlinedInput-root': {
-                                                                                            backgroundColor: switchValue ? "#E8E8E8" : "inherit",
-                                                                                            borderRadius: '8px',
-                                                                                            height: '44px',
-                                                                                        },
+                                                                <Box
+                                                                    sx={{
+                                                                        padding: '8px 24px 8px 24px',
+                                                                        borderRadius: '12px',
+                                                                        border: '1px solid #A8A8BD',
+                                                                        mt: '1%',
+                                                                        width: '95%',
+                                                                    }}
+                                                                >
+                                                                    <FormControlLabel
+                                                                        sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
+                                                                        control={
+                                                                            <Checkbox
+                                                                                sx={{
+                                                                                    color: '#A8A8BD',
+                                                                                    borderRadius: '4px',
+                                                                                    '&.Mui-checked': {
+                                                                                        color: '#7367F0',
                                                                                     },
-                                                                                },
-                                                                            }}
-                                                                            disabled={switchValue}
-                                                                        />
-                                                                    </DemoContainer>
-                                                                </Box>
-                                                            </LocalizationProvider>
-                                                        </FormControl>
-                                                    </Box>
-
-                                                    <Typography>Nama lengkap penanggung jawab</Typography>
-                                                    <OutlinedInput
-                                                        sx={{
-                                                            width: '100%',
-                                                            maxHeight: '44px',
-                                                            borderRadius: '8px',
-                                                            backgroundColor: switchValue ? "#E8E8E8" : "inherit",
-                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                borderColor: '#8F85F3',
-                                                            },
-                                                        }}
-                                                        name="fullnameGuardian"
-                                                        value={formik.values.fullnameGuardian}
-                                                        onChange={formik.handleChange}
-                                                        disabled={switchValue ? true : false}
-                                                    />
-                                                    <Typography>Cara datang/pengantar</Typography>
-                                                    <Box sx={{
-                                                        border: '1px solid #ccc',
-                                                        borderRadius: '12px',
-                                                        padding: '8px 12px 8px 12px',
-                                                        gap: '24px',
-                                                        backgroundColor: "inherit",
-                                                        width: '97.5%',
-                                                    }}
-                                                    >
-                                                        <FormControl sx={{ width: '95%' }} >
-                                                            <RadioGroup
-                                                                aria-labelledby="gender-label"
-                                                                name="typeGuardian"
-                                                                value={formik.values.typeGuardian}
-                                                                onChange={(e) => formik.setFieldValue("typeGuardian", e.target.value)}
-                                                                row
-                                                                sx={{
-                                                                    display: 'flex',
-                                                                    flexDirection: 'row',
-                                                                    justifyContent: 'space-between',
-                                                                    width: '100%',
-                                                                }}
-                                                            >
-                                                                <FormControlLabel value="SENDIRI" control={<BpRadio />} label="Sendiri" />
-                                                                <FormControlLabel value="KELUARGA" control={<BpRadio />} label="Keluarga" />
-                                                                <FormControlLabel value="POLISI" control={<BpRadio />} label="Polisi" />
-                                                                <FormControlLabel value="AMBULAN" control={<BpRadio />} label="Ambulan" />
-                                                                <FormControlLabel value="LAINNYA" control={<BpRadio />} label="Lainnya" />
-                                                            </RadioGroup>
-                                                        </FormControl>
-                                                    </Box>
-
-                                                    <Typography>Jenis Kelamin Penanggung Jawab</Typography>
-                                                    <Box sx={{
-                                                        border: '1px solid #ccc',
-                                                        borderRadius: '12px',
-                                                        padding: '8px 12px 8px 12px',
-                                                        gap: '24px',
-                                                        backgroundColor: switchValue ? "#E8E8E8" : "inherit",
-                                                        width: '97.5%',
-                                                    }}
-                                                    >
-                                                        <FormControl sx={{ width: '100%' }} >
-                                                            <RadioGroup
-                                                                aria-labelledby="gender-label"
-                                                                name="genderGuardian"
-                                                                value={formik.values.genderGuardian}
-                                                                onChange={(e) => formik.setFieldValue("genderGuardian", e.target.value)}
-                                                                row
-                                                                sx={{
-                                                                    display: 'flex',
-                                                                    flexDirection: 'row',
-                                                                    justifyContent: 'space-between',
-                                                                    width: '25%'
-                                                                }}
-                                                            >
-                                                                <FormControlLabel disabled={switchValue ? true : false} value="WOMEN" control={<BpRadio />} label="Female" />
-                                                                <FormControlLabel disabled={switchValue ? true : false} value="MEN" control={<BpRadio />} label="Male" />
-                                                            </RadioGroup>
-                                                        </FormControl>
-                                                    </Box>
-                                                    <Typography>Alamat tempat tinggal penanggung jawab</Typography>
-                                                    <OutlinedInput
-                                                        id="addressGuardian"
-                                                        name="addressGuardian"
-                                                        size="small"
-                                                        placeholder="Masukkan alamat tempat tinggal penanggug jawab"
-                                                        value={formik.values.addressGuardian}
-                                                        onChange={formik.handleChange}
-                                                        onBlur={() => formik.setTouched({ ...formik.touched, addressGuardian: true })}
-                                                        error={formik.touched.addressGuardian && Boolean(formik.errors.addressGuardian)}
-                                                        disabled={switchValue ? true : false}
-                                                        sx={{
-                                                            height: '107px',
-                                                            alignItems: 'flex-start',
-                                                            borderRadius: '8px',
-                                                            backgroundColor: switchValue ? "#E8E8E8" : "inherit",
-                                                            width: '100%',
-                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                borderColor: '#8F85F3',
-                                                            },
-                                                        }}
-                                                    />
-                                                </Box>
-                                            </Box>
-                                        </Box>
-                                        <Button
-                                            // type="button"
-                                            // onClick={() => setCurrentPage(3)}
-                                            // onClick={putGuard}
-                                            // onClick={() => console.log(formik.values.nikGuardian)}
-                                            variant="contained"
-                                            color="inherit"
-                                            sx={{
-                                                mt: 6,
-                                                width: "100%",
-                                                bgcolor: "#8F85F3",
-                                                color: "#fff",
-                                                textTransform: "none",
-                                                borderRadius: "8px",
-                                                ":hover": { bgcolor: "#a098f5" },
-                                            }}
-                                        // disabled={!isCurrentPageValid()}
-                                        >
-                                            Selanjutnya
-                                        </Button>
-                                    </>
-                                )}
-                            </Box>
-                        )}
-
-                        {currentPage === 3 && (
-                            <Box mt={3}>
-                                <Box sx={{ display: "flex" }}>
-                                    <Box sx={{ width: '100%' }}>
-                                        <Box>
-                                            <Box sx={{ display: "flex", flexDirection: "column" }}>
-                                                <FormControl>
-                                                    <Typography>Jenis Kunjungan</Typography>
-                                                    <TextField
-                                                        variant="outlined"
-                                                        sx={{
-                                                            width: "100%",
-                                                            borderRadius: "8px",
-                                                            mb: 2,
-                                                            padding: "0",
-                                                            "& .MuiOutlinedInput-root": {
-                                                                height: "44px",
-                                                                padding: "0 12px",
-                                                                border: "1px solid #A8A8BD",
-                                                                "& input": {
-                                                                    height: "44px",
-                                                                    padding: "0",
-                                                                },
-
-                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                    borderColor: '#8F85F3',
-                                                                },
-                                                            },
-                                                        }}
-                                                        name="jenisKunjungan"
-                                                        value={formik.values.jenisKunjungan}
-                                                        onChange={formik.handleChange}
-                                                    />
-                                                    <Typography color="error">{formik.touched.jenisKunjungan && formik.errors.jenisKunjungan}</Typography>
-                                                </FormControl>
-                                                <Typography>Poli yang dituju</Typography>
-                                                <DropdownListAPI
-                                                    options={clinicOptions.map(({ id, name }) => ({ value: id, label: name }))}
-                                                    placeholder="Pilih Fasilitas Induk"
-                                                    onChange={handleDropdownPoli}
-                                                    loading={false}
-                                                />
-                                                <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} sx={{ width: "100%" }}>
-                                                    <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
-                                                        <Typography>Dokter yang bertugas</Typography>
-                                                        <DropdownListAPI
-                                                            placeholder='Pilih dokter'
-                                                            options={doctorOptions.map(({ id, name }) => ({ value: id, label: name }))}
-                                                            onChange={handleDropdownDocter}
-                                                            loading={false}
-                                                        />
-                                                        <Typography color="error">{formik.touched.doctor && formik.errors.doctor}</Typography>
-                                                    </FormControl>
-                                                    <Box sx={{ ml: 2, width: "100%" }}>
-                                                        <Typography>Tanggal dan Jam Operasional</Typography>
-                                                        {/* <CalenderPopover title="Pilih tanggal" /> */}
-                                                        <CustomCalender typeId={idDoctor} onChange={handleScheduleChange} />
-                                                    </Box>
-                                                </Box>
-
-                                                <FormControl>
-                                                    <Typography sx={{ textTransform: "capitalize" }}>Keluhan pasien</Typography>
-                                                    <TextField
-                                                        id="outlined-multiline-static"
-                                                        multiline
-                                                        rows={4}
-                                                        variant="outlined"
-                                                        sx={{
-                                                            maxHeight: "107px",
-                                                            maxWidth: "100%",
-                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                borderColor: '#8F85F3',
-                                                            },
-                                                        }}
-                                                        name="keluhan"
-                                                        value={formik.values.keluhan}
-                                                        onChange={formik.handleChange}
-                                                    />
-                                                    <Typography color="error">{formik.touched.keluhan && formik.errors.keluhan}</Typography>
-                                                </FormControl>
-
-                                                <Box mt={4}>
-                                                    <Box>
-                                                        <RadioGroup
-                                                            aria-label="transport-method"
-                                                            name="transport-method"
-                                                            value={selectedMethod}
-                                                            onChange={handleRadioChange}
-                                                            sx={{ display: 'flex', flexDirection: 'column', border: '1px solid black', marginTop: '20px', marginBottom: '10px', borderRadius: '16px', padding: '16px 24px 16px 24px' }}
-                                                        >
-                                                            <Box display={'flex'} flexDirection={'row'} >
-                                                                <FormControlLabel value="asuransi" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Asuransi" />
-                                                                <FormControlLabel value="uang tunai dan debit" control={<Radio sx={{ '&.Mui-checked': { color: '#7367F0' } }} />} label="Uang tunai dan debit" />
-                                                            </Box>
-                                                            {selectedMethod == 'asuransi' && (
-                                                                <Box>
-                                                                    <Typography mb={'10px'} >Unggah kartu asuransi</Typography>
-                                                                    <FileUploader
-                                                                        onBase64Change={(base64String) =>
-                                                                            formik.setFieldValue("asuranceDocs", base64String)
+                                                                                }}
+                                                                                onChange={(e) => setNeedAdmin(e.target.checked)}
+                                                                            />
                                                                         }
+                                                                        label="Data diri tidak sesuai"
                                                                     />
-                                                                    <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
                                                                 </Box>
-                                                            )}
-                                                        </RadioGroup>
+
+                                                                <Button
+                                                                    type="submit"
+                                                                    variant="contained"
+                                                                    color="inherit"
+                                                                    sx={{
+                                                                        mt: 6,
+                                                                        width: "100%",
+                                                                        bgcolor: "#8F85F3",
+                                                                        color: "#fff",
+                                                                        textTransform: "none",
+                                                                        borderRadius: "8px",
+                                                                        ":hover": { bgcolor: "#a098f5" },
+                                                                    }}
+                                                                // disabled={!(isValid && dirty)}
+                                                                >
+                                                                    Selanjutnya
+                                                                </Button>
+                                                            </Box>
+                                                        </Box>
                                                     </Box>
-                                                </Box>
-                                                <Box>
-                                                    <Typography mb={'10px'} >Unggah surat rujukan</Typography>
-                                                    <FileUploader
-                                                        onBase64Change={(base64String) =>
-                                                            formik.setFieldValue("docs", base64String)
-                                                        }
-                                                    />
-                                                    <Typography fontSize={'14px'} color="#A8A8BD" >Ukuran file maksimal 1mb</Typography>
-                                                </Box>
-                                            </Box>
-                                        </Box>
+                                                </Form>
+                                            )}
+                                        </Formik>
 
-                                        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
-                                            <Button
-                                                // onClick={() => setMainPages(false)}
-                                                onClick={createTicket}
-                                                sx={{
-                                                    backgroundColor: "#8F85F3",
-                                                    color: "white",
-                                                    textTransform: "none",
-                                                    width: "100%",
-                                                    padding: "10px 24px",
-                                                    borderRadius: "8px",
-                                                    "&:hover": {
-                                                        backgroundColor: "#7C75E2",
-                                                    },
-                                                }}
-                                            // onClick={formik.handleSubmit}
-                                            >
-                                                Simpan
-                                            </Button>
-                                        </Box>
-                                    </Box>
+
+
+                                    </>
+                                    )}
                                 </Box>
-                            </Box>
-                        )}
-                    </Box>
-                )}
+                            )}
 
-                {!mainPages && (
-                    <Box marginLeft={"30%"} marginTop={"10%"}>
-                        <InformasiTicketAPI
-                            clinic={dataTickets?.clinic || "Unknown Clinic"}
-                            jadwalKonsul={dataTickets?.jadwalKonsul || "Unknown Date"}
-                            namaDokter={dataTickets?.namaDokter || "Unknow Doctor"}
-                            tanggalReservasi={dataTickets?.tanggalReservasi || "Unknown Date"}
-                            bookingCode={dataTickets?.bookingCode || "Unknown" }
-                        />
-                    </Box>
-                )}
-            </Box>
-        </Container >
+
+                            {/* Start */}
+                            {currentPage === 2 && (
+                                <Box >
+                                    <Box sx={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                                        <Formik
+                                            initialValues={{
+                                                phone: patientData?.phone,
+                                                fullname: patientData?.fullname,
+                                                gender: patientData?.gender,
+                                                address: patientData?.address,
+                                                birthPlace: patientData?.birthPlace,
+                                                jenisKunjungan: '',
+                                                doctor: '',
+                                                complaint: '',
+                                                email: patientData?.email || '',
+                                                nik: NIK,
+                                            }}
+                                            enableReinitialize
+                                            validationSchema={validationSchema1}
+                                            validateOnChange={true}
+                                            validateOnBlur={true}
+                                            onSubmit={async (values) => {
+                                                const currentDate = dayjs().format('YYYY-MM-DD');
+                                                // console.log('Form submitted:', patientData?.id);
+                                                const dataRegis = {
+                                                    patientId: patientData?.id,
+                                                    clinicId: idClinic,
+                                                    doctorId: idDoctor,
+                                                    typeOfVisit: values.jenisKunjungan,
+                                                    // scheduleDate: 1,
+                                                    scheduleDate: currentDate,
+                                                    scheduleIntervalId: selectedScheduleId,
+                                                    symptoms: values.complaint,
+                                                    referenceDoc: "",
+                                                    offline: true,
+                                                    phoneNumber: values.phone,
+                                                    email: values.email,
+                                                    needAdmin: needAdmin,
+                                                }
+                                                console.log('tes: ', dataRegis)
+                                                registrationPatient(dataRegis);
+
+                                            }}
+                                        >
+                                            {(
+                                                {
+                                                    errors,
+                                                    touched,
+                                                    handleChange,
+                                                    handleBlur,
+                                                    values,
+                                                    isValid,
+                                                    // dirty, 
+                                                    setFieldValue
+                                                }
+                                            ) => (
+                                                <Form>
+                                                    <Box sx={{ width: '93%' }}>
+
+                                                        <Box
+                                                            sx={{
+                                                                display: "flex",
+                                                                flexDirection: "column",
+                                                                width: "100%",
+
+
+                                                                marginBottom: '24px',
+                                                                padding: 4,
+                                                                border: "1px solid #ddd",
+                                                                borderRadius: "16px",
+                                                                backgroundColor: "#fff",
+                                                            }}>
+                                                            <Typography sx={{ fontWeight: 600, marginBottom: 2, fontSize: '16px', lineHeight: '18px', fontFamily: 'roboto' }}>
+                                                                Kontak Info
+                                                            </Typography>
+                                                            <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', fontFamily: 'roboto', mb: 1 }} >No Handphone pasien <span style={{ color: "red" }}>*</span></Typography>
+                                                            <FormControl>
+                                                                <PhoneInput
+                                                                    country={"id"}
+                                                                    value={values.phone}
+                                                                    onChange={(value) => setFieldValue("phone", value)}
+                                                                    onBlur={handleBlur}
+                                                                    inputStyle={{
+                                                                        height: "48px",
+                                                                        borderRadius: "8px",
+                                                                        border: touched.phone && errors.phone ? '1px solid #ffcccc' : '1px solid #ccc',
+                                                                        padding: "10px 40px 10px 60px",
+                                                                        fontSize: "16px",
+                                                                        width: "100%",
+                                                                        backgroundColor: 'white',
+                                                                        outline: touched.phone && errors.phone ? 'none' : 'inherit',
+                                                                    }}
+                                                                    buttonStyle={{
+                                                                        borderRadius: "8px 0 0 8px",
+                                                                        border: '1px solid #ccc',
+                                                                    }}
+                                                                    containerStyle={{
+                                                                        marginBottom: "10px",
+                                                                        width: "100%",
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        borderRadius: '8px',
+                                                                        border: touched.phone && errors.phone ? '1px solid #ffcccc' : '1px solid #ccc',
+                                                                        transition: 'border-color 0.3s',
+                                                                    }}
+                                                                />
+                                                                {/* {touched.phone && errors.phone && (
+                                                                                    <FormHelperText error>{errors.phone}</FormHelperText>
+                                                                                )} */}
+                                                            </FormControl>
+                                                            <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', fontFamily: 'roboto' }} >Email<span style={{ color: "red" }}>*</span></Typography>
+                                                            <FormControl>
+                                                                <TextField
+                                                                    placeholder="Masukkan email"
+                                                                    variant="outlined"
+                                                                    sx={{
+                                                                        width: '100%',
+                                                                        height: 'auto',
+                                                                        marginTop: '10px',
+                                                                        '& .MuiOutlinedInput-root': {
+                                                                            borderRadius: '8px',
+                                                                            backgroundColor: touched.email && errors.email ? '#ffcccc' : 'inherit',
+                                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                borderColor: '#8F85F3',
+                                                                            },
+                                                                        },
+                                                                        '& .MuiOutlinedInput-notchedOutline': {
+                                                                            border: '1px solid #ccc',
+                                                                        },
+                                                                        '& .MuiOutlinedInput-input': {
+                                                                            padding: '10px',
+                                                                            fontSize: '16px',
+                                                                        },
+                                                                    }}
+                                                                    name="email"
+                                                                    value={values.email}
+                                                                    error={touched.email && Boolean(errors.email)}
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                />
+                                                                {/* {touched.email && errors.email && (
+                                                                                    <FormHelperText error>{errors.email}</FormHelperText>
+                                                                                )} */}
+                                                            </FormControl>
+                                                        </Box>
+
+                                                        <Box>
+                                                            <Box sx={{
+                                                                display: "flex",
+                                                                flexDirection: "column",
+                                                                width: { sm: "91%", md: "93%", lg: "100%" },
+                                                                maxWidth: "1040px",
+
+                                                                padding: 4,
+                                                                border: "1px solid #ddd",
+                                                                borderRadius: "16px",
+                                                                backgroundColor: "#fff",
+                                                            }}>
+                                                                <Typography sx={{ fontWeight: 600, marginBottom: 2, fontSize: '16px', lineHeight: '18px', fontFamily: 'roboto' }}>
+                                                                    Keluhan Pasien
+                                                                </Typography>
+                                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Jenis Kunjungan<span style={{ color: "red" }}>*</span></Typography>
+                                                                <FormControl sx={{ marginBottom: '10px' }}>
+                                                                    <TextField
+                                                                        placeholder="Masukkan jenis kunjungan"
+                                                                        variant="outlined"
+                                                                        sx={{
+                                                                            width: '100%',
+                                                                            height: 'auto',
+                                                                            marginTop: '10px',
+                                                                            '& .MuiOutlinedInput-root': {
+                                                                                borderRadius: '8px',
+                                                                                backgroundColor: touched.jenisKunjungan && errors.jenisKunjungan ? '#ffcccc' : 'inherit',
+                                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                    borderColor: '#8F85F3',
+                                                                                },
+                                                                            },
+                                                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                                                border: '1px solid #ccc',
+                                                                            },
+                                                                            '& .MuiOutlinedInput-input': {
+                                                                                padding: '10px',
+                                                                                fontSize: '16px',
+                                                                            },
+                                                                        }}
+                                                                        name="jenisKunjungan"
+                                                                        value={values.jenisKunjungan}
+                                                                        onChange={handleChange}
+                                                                        onBlur={handleBlur}
+                                                                    />
+                                                                    {/* {touched.jenisKunjungan && errors.jenisKunjungan && (
+                                                                                        <FormHelperText error>{errors.jenisKunjungan}</FormHelperText>
+                                                                                    )} */}
+                                                                </FormControl>
+
+
+                                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', mt: 1, mb: 1, fontFamily: 'roboto' }} >Poli yang dituju<span style={{ color: "red" }}>*</span></Typography>
+                                                                <DropdownListAPI
+                                                                    options={clinicOptions.map(({ id, name }) => ({ value: id, label: name }))}
+                                                                    placeholder="Pilih Klinik yang dituju"
+                                                                    onChange={handleDropdownPoli}
+                                                                    loading={false}
+                                                                />
+
+                                                                <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} alignItems={"center"} sx={{ width: "100%", height: "auto" }}>
+                                                                    <FormControl sx={{ mt: 2, mb: 2, width: "100%" }} size="small">
+                                                                        <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', mt: 1, mb: 1, fontFamily: 'roboto' }} >Dokter yang bertugas<span style={{ color: "red" }}>*</span></Typography>
+                                                                        <DropdownListAPI
+                                                                            placeholder="Pilih dokter"
+                                                                            options={doctorOptions.map(({ id, name }) => ({ value: id, label: name }))}
+                                                                            onChange={handleDropdownDocter}
+                                                                            loading={false}
+
+                                                                        />
+                                                                        <Typography color="error">
+                                                                            {touched.doctor && errors.doctor}
+                                                                        </Typography>
+                                                                    </FormControl>
+                                                                    <Box sx={{ ml: 2, width: "100%" }}>
+                                                                        <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', mt: 1, mb: 1, fontFamily: 'roboto' }} >Tanggal dan Jam Operasional<span style={{ color: "red" }}>*</span></Typography>
+                                                                        {/* <CustomCalender key={calendarKey} typeId={idDoctor} onChange={handleScheduleChange} /> */}
+                                                                        <CustomTimePicker
+
+                                                                            typeId={idDoctor}
+                                                                            onChange={(scheduleId, schedule) => {
+                                                                                const id = scheduleId;
+                                                                                const jadwal = schedule;
+                                                                                handleScheduleChange(id, jadwal);
+                                                                                console.log(scheduleId, schedule);
+                                                                            }}
+                                                                        />
+
+                                                                    </Box>
+
+                                                                </Box>
+                                                                <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', fontFamily: 'roboto' }} >Keluhan Pasien<span style={{ color: "red" }}>*</span></Typography>
+                                                                <FormControl sx={{ marginBottom: '10px' }}>
+                                                                    <TextField
+
+                                                                        value={values.complaint}
+                                                                        onChange={handleChange}
+                                                                        onBlur={handleBlur}
+                                                                        name="complaint"
+                                                                        placeholder="Masukkan keluhan pasien"
+                                                                        fullWidth
+                                                                        required
+                                                                        multiline
+                                                                        rows={3}
+                                                                        variant="outlined"
+                                                                        sx={{
+                                                                            width: '100%',
+                                                                            height: 'auto',
+                                                                            marginTop: '10px',
+                                                                            '& .MuiOutlinedInput-root': {
+                                                                                borderRadius: '8px',
+                                                                                backgroundColor: touched.complaint && errors.complaint ? '#ffcccc' : 'inherit',
+                                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                                                                    borderColor: '#8F85F3',
+                                                                                },
+                                                                            },
+                                                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                                                border: '1px solid #ccc',
+                                                                            },
+                                                                            '& .MuiOutlinedInput-input': {
+                                                                                padding: '10px',
+                                                                                fontSize: '16px',
+                                                                            },
+                                                                        }}
+                                                                    />
+                                                                    {/* {touched.complaint && errors.complaint && (
+                                                                                        <FormHelperText error>{errors.complaint}</FormHelperText>
+                                                                                    )} */}
+                                                                </FormControl>
+
+                                                                <Box mt={1}>
+                                                                    <Box mt={2}>
+                                                                        <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Unggah surat rujukan</Typography>
+
+                                                                        <FileUploader
+                                                                            onBase64Change={(base64String) => setFieldValue('referenceDoc', base64String)}
+                                                                        />
+                                                                        <Typography fontSize={"14px"} color="#A8A8BD">
+                                                                            Ukuran maksimal 1mb
+                                                                        </Typography>
+                                                                    </Box>
+
+                                                                </Box>
+                                                            </Box>
+                                                        </Box>
+
+
+
+
+
+                                                        <Box sx={{ mt: 4, justifyContent: "center", width: "100%" }}>
+                                                            <Button
+                                                                type="submit"
+                                                                variant="contained"
+                                                                sx={{
+                                                                    width: "107%",
+                                                                    height: "44px",
+                                                                    marginTop: "20px",
+                                                                    backgroundColor: "#8F85F3",
+                                                                    ":hover": { backgroundColor: "#D5D1FB" },
+                                                                }}
+                                                                disabled={!isValid || !idClinic || !idDoctor || !selectedScheduleId}
+                                                            >
+                                                                Selesai
+                                                            </Button>
+                                                        </Box>
+                                                    </Box >
+                                                </Form >
+                                            )}
+                                        </Formik >
+                                    </Box >
+                                </Box >
+                            )}
+
+                            {/* end */}
+                        </Box >
+                    )}
+                    {
+                        needAdmin && !mainPages && (
+                            <Box marginLeft={"20%"} marginTop={"10%"} zIndex={1500} >
+                                <CardAntrianCounter
+                                    nomorAntrian={queueData?.queueNumber || queueNumber}
+                                    tanggalReservasi={tanggalReserve}
+                                    onClose={() => navigate("/offline/tambahPasien")}
+                                />
+                            </Box>
+                        )
+                    }
+
+                    {
+                        !mainPages && !needAdmin && (
+                            <Box marginLeft={"20%"} marginTop={"10%"} zIndex={1500}>
+
+                                <InformasiTicketAPI
+                                    clinic={clinicName}
+                                    jadwalKonsul={`${dayjs().format('DD')}/${dayjs().format('MMM')}/${dayjs().year()}, ${selectedSchedule}`}
+                                    namaDokter={docterName}
+                                    nomorAntrian={queueData?.queueNumber || queueNumber}
+                                    tanggalReservasi={tanggalReserve}
+                                    registrationId={registrationCode}
+                                    patienDataSent={dataTickets}
+                                    offline={true}
+                                    onClose={() => navigate("/offline/tambahPasien")}
+                                />
+                            </Box>
+                        )
+                    }
+                </Box >
+            </Container >
     );
 }
