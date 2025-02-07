@@ -54,6 +54,8 @@ import DetailFasilitas from './pages/fasilitas/features/DetailFasilitas';
 import DetailDokter from './pages/dokter/features/DetailDokter';
 import RegistrationOnline from './pages/pasien/features/RegistrationOnline';
 import NotFoundPage from './pages/NotFoundPage';
+import ModalPanggilPasien from './components/small/modal/ModalPanggilPasien';
+import AppointmentCard from './components/small/card/CardAppointmentCard';
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -145,6 +147,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
         {/* end no need auth */}
         <Route path="*" element={<NotFoundPage />} />
+        {/* Testing Dashboard */}
+        <Route path="/testing" element={<AppointmentCard/>} />
       </Routes>
     </Router>
   </StrictMode>
