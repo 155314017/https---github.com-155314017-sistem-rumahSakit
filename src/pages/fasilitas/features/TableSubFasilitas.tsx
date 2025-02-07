@@ -137,6 +137,7 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({ fetchDatas, onSuc
         handleDeleteSuccess,
         navigate,
         setOpen,
+        setSort,
         rowsPerPage } = useTableSubFasilitas(fetchDatas, onSuccessDelete);
     return (
         <Box>
@@ -243,7 +244,7 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({ fetchDatas, onSuc
                             <DropdownList
                                 options={urutkan}
                                 placeholder="Urutkan"
-                                // onChange={}
+                                onChange={(value) => setSort(value)}
                                 loading={false}
                             />
                         </Box>

@@ -20,12 +20,32 @@ export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDe
   const [isLoadingFac, setIsLoadingFac] = useState(false);
   const [facilities, setFacilities] = useState<string[]>([]);
   const [dataSchedules, setDataSchedules] = useState<any[]>([])
+  const [sort, setSort] = useState('');
+  const [orderBy, setOrderBy] = useState("createdDateTime=asc");
+  const [pageNumber, setPageNumber] = useState(0);
+  const [pageSize, setPageSize] = useState(100);
   const navigate = useNavigate();
-  // Fetch data for the sub-facilities
+
+  useEffect(() => {
+    if (sort == "Nama subfasilitas A-Z") {
+      setOrderBy('name=asc');
+    } else if (sort == "Nama subfasilitas Z-A") {
+      setOrderBy('name=desc');
+    } else if (sort == "Biaya penanganan terendah") {
+      setOrderBy('createdDateTime=asc');
+    } else if (sort == "Biaya penanganan tertinggi") {
+      setOrderBy('createdDateTime=desc');
+    }
+  }, [sort])
+
+  useEffect(() => {
+    fetchData();
+  }, [pageNumber, pageSize, orderBy]);
+
   const fetchData = async () => {
     setIsLoading(true)
     try {
-      const result = await SubFacilityServices();
+      const result = await SubFacilityServices(pageNumber, pageSize, orderBy);
       const allSchedules = [];
       const dataSchedules = [];
 
@@ -108,8 +128,8 @@ export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDe
   const urutkan = [
     { value: 1, label: "Biaya penanganan tertinggi" },
     { value: 2, label: "Biaya penanganan terendah" },
-    { value: 3, label: "Nama fasilitas A-Z" },
-    { value: 4, label: "Nama fasilitas Z-A" },
+    { value: 3, label: "Nama subfasilitas A-Z" },
+    { value: 4, label: "Nama subfasilitas Z-A" },
   ];
 
   const toggleCollapse = () => {
@@ -124,8 +144,8 @@ export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDe
 
   const handleDeleteSuccess = () => {
     onSuccessDelete();
-    fetchDatas(); // Call the fetchDatas prop to refresh data
-    fetchData();   // Refresh local data state
+    fetchDatas(); 
+    fetchData();  
   };
 
   return {
@@ -146,6 +166,9 @@ export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDe
     navigate,
     setOpen,
     rowsPerPage,
-    dataSchedules
+    dataSchedules,
+    setSort,
+    setPageNumber,
+    setPageSize
   };
 }

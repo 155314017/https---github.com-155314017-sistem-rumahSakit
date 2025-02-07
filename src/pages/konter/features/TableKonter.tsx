@@ -72,6 +72,7 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
         urutkan,
         toggleCollapse,
         confirmationDelete,
+        setSort,
         handleDeleteSuccess } = useTableKonter(fetchDatas, onSuccessDelete);
     return (
         <Box>
@@ -177,7 +178,7 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
                             <DropdownList
                                 options={urutkan}
                                 placeholder="Urutkan"
-                                // onChange={handleSelectionChange}
+                                onChange={(value) => setSort(value)}
                                 loading={false}
                             />
                         </Box>

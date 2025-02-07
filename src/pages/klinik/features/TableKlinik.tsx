@@ -79,6 +79,7 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({ fetchDatas, onSuccessDelete 
     urutkan,
     toggleCollapse,
     navigate,
+    setSort,
   } = useTableKlinik(fetchDatas, onSuccessDelete);
   return (
     <Box>
@@ -182,7 +183,7 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({ fetchDatas, onSuccessDelete 
               <DropdownList
                 options={urutkan}
                 placeholder="Urutkan"
-                // onChange={}
+                onChange={(value) => setSort(value)}
                 loading={false}
               />
             </Box>

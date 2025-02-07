@@ -54,12 +54,20 @@ export interface ApiResponse {
   }
 }
 
-const API_URL = `${
-  import.meta.env.VITE_APP_BACKEND_URL_BASE
-}/v1/manage/subfacility/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`
+const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/subfacility/?`
 
-export const SubFacilityServices = async (): Promise<SubFacilityDataItem[]> => {
-  const response = await axios.get<ApiResponse>(API_URL)
+export const SubFacilityServices = async (
+  pageNumber: number = 0,
+  pageSize: number = 100,
+  orderBy: string = 'createdDateTime=asc'
+): Promise<SubFacilityDataItem[]> => {
+  const response = await axios.get<ApiResponse>(API_URL, {
+    params: {
+      pageNumber,
+      pageSize,
+      orderBy
+    }
+  })
 
   if (response.status === 200) {
     // response.data.data.content.forEach((item) => {
