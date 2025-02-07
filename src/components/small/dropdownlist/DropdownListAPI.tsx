@@ -61,10 +61,26 @@ export default function DropdownListAPI({
                 displayEmpty
                 startAdornment={loading ? <CircularProgress size={20} /> : null}
                 sx={{
-                    flex: 1,
-                    height: "43px",
+                    width: "100%",
+                    color: "#555",
+                    bgcolor: "#FFF",
+                    border: "1px solid #A8A8BD",
                     borderRadius: "8px",
-                    color: "black",
+                    height: "40px",
+                    transition: "border-color 0.3s ease-in-out",
+
+                    "&:hover": {
+                        borderColor: "#8F85F3",
+                    },
+                    "&.Mui-focused": {
+                        borderColor: "#8F85F3",
+                    },
+                    "& .MuiSelect-select": {
+                        padding: "0 16px",
+                    },
+                    "& fieldset": {
+                        border: "none",
+                    },
                 }}
                 inputProps={{ "aria-label": "select dropdown" }}
             >

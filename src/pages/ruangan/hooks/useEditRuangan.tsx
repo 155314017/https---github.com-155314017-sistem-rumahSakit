@@ -11,7 +11,7 @@ import { GetBuildingById } from '../../../services/Admin Tenant/ManageBuilding/G
 import { editImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
 
 interface FormValues {
-    namaKlinik: string;
+    namaRuangan: string;
     masterBuildingId: string;
     jenisRuangan: string;
 }
@@ -72,7 +72,7 @@ export default function useEditRuangan() {
             setLoading(true);
             try {
                 const token = Cookies.get("accessToken");
-                const response = await GetRoomByIdServices(id,token)
+                const response = await GetRoomByIdServices(id, token)
                 setApiUrl(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/${id}`);
                 setRoomName(response.name);
                 setRoomType(response.type);
@@ -91,20 +91,20 @@ export default function useEditRuangan() {
 
     const formik = useFormik<FormValues>({
         initialValues: {
-            namaKlinik: roomName,
+            namaRuangan: roomName,
             masterBuildingId: buildingName,
             jenisRuangan: roomType,
         },
         enableReinitialize: true,
         validationSchema: Yup.object({
-            namaKlinik: Yup.string().required('Nama Ruangan is required'),
-            masterBuildingId: Yup.string().required('Gedung is required'),
-            jenisRuangan: Yup.string().required('Jenis Ruangan is required'),
+            namaRuangan: Yup.string().required('Nama Ruangan wajib diisi'),
+            masterBuildingId: Yup.string().required('Gedung wajib diisi'),
+            jenisRuangan: Yup.string().required('Jenis Ruangan wajib diisi'),
         }),
         onSubmit: async (values) => {
             const data = {
                 roomId: id,
-                name: values.namaKlinik,
+                name: values.namaRuangan,
                 masterBuildingId: values.masterBuildingId,
                 type: values.jenisRuangan,
                 additionalInfo: "add info,",

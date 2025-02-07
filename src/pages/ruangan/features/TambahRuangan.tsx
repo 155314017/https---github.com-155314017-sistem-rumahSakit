@@ -1,4 +1,4 @@
-import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "@mui/material";
+import { Container, Box, Typography, Button, FormControl, TextField } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
@@ -18,7 +18,7 @@ export default function TambahRuangan() {
         gedungOptions,
         errorAlert,
     } = useTambahRuangan();
-    
+
 
     return (
         <Container sx={{ py: 2 }}>
@@ -91,19 +91,36 @@ export default function TambahRuangan() {
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Ruangan<span style={{ color: "red" }}>*</span></Typography>
                         <FormControl fullWidth sx={{ my: 1 }}>
-                            <OutlinedInput
-                                id="namaKlinik"
-                                name="namaKlinik"
+                            <TextField
+                                variant="outlined"
+                                id="namaRuangan"
+                                name="namaRuangan"
                                 size="small"
-                                placeholder="Masukkan Nama ruangan"
-                                value={formik.values.namaKlinik}
+                                placeholder={(formik.touched.namaRuangan && formik.errors.namaRuangan) ? formik.errors.namaRuangan : "Masukkan nama ruangan"}
+                                value={formik.values.namaRuangan}
                                 onChange={formik.handleChange}
-                                onBlur={() => formik.setTouched({ ...formik.touched, namaKlinik: true })}
-                                error={formik.touched.namaKlinik && Boolean(formik.errors.namaKlinik)}
+                                onBlur={() => formik.setTouched({ ...formik.touched, namaRuangan: true })}
+                                error={formik.touched.namaRuangan && Boolean(formik.errors.namaRuangan)}
+                                sx={{
+                                    width: "100%",
+                                    height: "48px",
+                                    marginTop: "10px",
+                                    "& .MuiOutlinedInput-root": {
+                                        borderRadius: "8px",
+                                        backgroundColor: formik.touched.namaRuangan && formik.errors.namaRuangan ? "#ffcccc" : "inherit",
+                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: '#8F85F3',
+                                        },
+                                    },
+                                    "& .MuiOutlinedInput-notchedOutline": {
+                                        border: "1px solid #ccc",
+                                    },
+                                    "& .MuiOutlinedInput-input": {
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                    },
+                                }}
                             />
-                            {formik.touched.namaKlinik && formik.errors.namaKlinik && (
-                                <Typography color="error">{formik.errors.namaKlinik}</Typography>
-                            )}
                         </FormControl>
 
                         <Typography sx={{ fontSize: "16px" }}>Pilih Gedung<span style={{ color: "red" }}>*</span></Typography>

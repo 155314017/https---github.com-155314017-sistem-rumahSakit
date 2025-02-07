@@ -116,7 +116,7 @@ export default function Header() {
         <Typography fontSize="18px" sx={{ mx: 1 }}>
           -
         </Typography>
-        <Typography fontSize="18px">Role</Typography>
+        <Typography fontSize="18px">Admin</Typography>
       </Box>
 
       <Box
@@ -205,7 +205,8 @@ export default function Header() {
                     color: "#A8A8BD",
                   }}
                 >
-                  role
+                  {/* role */}
+                  Admin
                 </Typography>
               </Box>
             </Box>

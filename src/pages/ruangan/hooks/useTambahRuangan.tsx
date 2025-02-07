@@ -59,18 +59,18 @@ export default function useTambahRuangan() {
 
     const formik = useFormik({
         initialValues: {
-            namaKlinik: '',
+            namaRuangan: '',
             masterBuildingId: '',
             jenisRuangan: '',
         },
         validationSchema: Yup.object({
-            namaKlinik: Yup.string().required('Nama Ruangan is required'),
-            masterBuildingId: Yup.string().required('Gedung is required'),
-            jenisRuangan: Yup.string().required('Jenis Ruangan is required'),
+            namaRuangan: Yup.string().required('Nama Ruangan wajib diisi'),
+            masterBuildingId: Yup.string().required('Gedung wajib diisi'),
+            jenisRuangan: Yup.string().required('Jenis Ruangan wajib diisi'),
         }),
         onSubmit: async (values) => {
             const data = {
-                name: values.namaKlinik,
+                name: values.namaRuangan,
                 masterBuildingId: values.masterBuildingId,
                 type: values.jenisRuangan,
                 additionalInfo: "add info,"
