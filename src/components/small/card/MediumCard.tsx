@@ -29,7 +29,7 @@ export default function MediumCard({
             <img src={bgImage} alt="card-bg" />
           </Box>
           <Icon sx={{ color: "#8F85F3", fontSize: "50px", mb: 1 }} />
-          <Typography sx={{ fontSize: "16px", textTransform: "capitalize" }}>
+          <Typography sx={{ fontWeight: 400, lineHeight: '16px', fontSize: "16px", textTransform: "capitalize" }}>
             {title}
           </Typography>
           <Typography

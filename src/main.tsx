@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './index.css'
 // import App from './App';
 import LoginPasien from './pages/login/loginPasien/features/LoginPasien';
-import Home from './pages';
 import Gedung from '../src/pages/gedung/features/Index';
 import Ambulance from './pages/ambulance/features/Index';
 import DetailAmbulance from './pages/ambulance/features/DetailAmbulance';
@@ -54,8 +53,13 @@ import DetailFasilitas from './pages/fasilitas/features/DetailFasilitas';
 import DetailDokter from './pages/dokter/features/DetailDokter';
 import RegistrationOnline from './pages/pasien/features/RegistrationOnline';
 import NotFoundPage from './pages/NotFoundPage';
+<<<<<<< HEAD
 import ModalPanggilPasien from './components/small/modal/ModalPanggilPasien';
 import AppointmentCard from './components/small/card/CardAppointmentCard';
+=======
+import HomeAdmin from './pages/home/homeAdmin';
+import HomeQueue from './pages/home/homeQueue';
+>>>>>>> RumahSakit/Dev/Damar
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -74,8 +78,9 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/tambahAmbulance" element={<TambahAmbulance />} />
           <Route path="/editAmbulance/:id" element={<EditAmbulance />} />
 
-          {/* Dashboard  */}
-          <Route path="/dashboard" element={<Home />} />
+          {/* DashboardAdmin  */}
+          <Route path="/dashboard" element={<HomeAdmin />} />
+
 
           {/* Page Klinik */}
           <Route path="/klinik" element={<Klinik />} />
@@ -147,8 +152,17 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
         {/* end no need auth */}
         <Route path="*" element={<NotFoundPage />} />
+<<<<<<< HEAD
         {/* Testing Dashboard */}
         <Route path="/testing" element={<AppointmentCard/>} />
+=======
+
+
+
+
+        {/* Dashboard Queue  */}
+        <Route path="/dashboardQueue" element={<HomeQueue />} />
+>>>>>>> RumahSakit/Dev/Damar
       </Routes>
     </Router>
   </StrictMode>
