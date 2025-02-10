@@ -5,6 +5,7 @@ import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/G
 import { GetScheduleByTypeId, ScheduleDataItem } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
 import { OperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 import { convertToOperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
+import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
 
 // Image data type
 type ImageData = {
@@ -71,16 +72,9 @@ export default function useDetailKlinik() {
         setClinicData(clinicData);
 
         const imageResponse = await GetImageByParentId(clinicResponse.id);
-        console.log("Image Response from API:", imageResponse);
-        if (imageResponse?.data?.length > 0) {
-          setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
-          setSmallImages(imageResponse.data.slice(1).map((img) =>
-            `data:${img.imageType};base64,${img.imageData}`
-          ));
-        } else {
-          setLargeImage("");
-          setSmallImages([]);
-        }
+        const { largeImage, smallImages } = processImageResponse(imageResponse);
+        setLargeImage(largeImage);
+        setSmallImages(smallImages);
       }
     } catch (error) {
       console.error("Error fetching data:", error);

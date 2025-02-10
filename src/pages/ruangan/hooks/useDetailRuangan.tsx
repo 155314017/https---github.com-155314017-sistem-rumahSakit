@@ -4,6 +4,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { GetRoomByIdServices } from "../../../services/Admin Tenant/ManageRoom/GetRoomByIdServices";
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
+import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
+
+
 
 export default function useDetailRuangan() {
     const [roomName, setRoomName] = useState<string>("");
@@ -45,15 +48,9 @@ export default function useDetailRuangan() {
             setBuildingId(response.masterBuildingId);
             if (response.id) {
                 const imageResponse = await GetImageByParentId(response.id);
-                if (imageResponse?.data?.length > 0) {
-                    setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
-                    setSmallImages(imageResponse.data.map((img) =>
-                        `data:${img.imageType};base64,${img.imageData}`
-                    ));
-                } else {
-                    setLargeImage("");
-                    setSmallImages([]);
-                }
+                const { largeImage, smallImages } = processImageResponse(imageResponse);
+                setLargeImage(largeImage);
+                setSmallImages(smallImages);
             }
 
             setLoading(false);

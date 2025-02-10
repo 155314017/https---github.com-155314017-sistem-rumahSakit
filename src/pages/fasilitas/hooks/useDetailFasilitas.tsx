@@ -6,24 +6,25 @@ import axios from "axios";
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 import { GetScheduleByTypeId, ScheduleDataItem } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
 import { convertToOperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
+import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
 
 
 // Clinic data type
 export interface FacilityDataItem {
-    id: string;
-    name: string;
-    description: string;
-    additionalInfo: string;
-    createdBy: string;
-    createdDateTime: number;
-    updatedBy: string | null;
-    updatedDateTime: number | null;
-    deletedBy: string | null;
-    deletedDateTime: number | null;
-    masterBuildingId: string;
-    cost: number;
-    schedules: ScheduleDataItem[];
-    operationalSchedule?: OperationalSchedule;
+  id: string;
+  name: string;
+  description: string;
+  additionalInfo: string;
+  createdBy: string;
+  createdDateTime: number;
+  updatedBy: string | null;
+  updatedDateTime: number | null;
+  deletedBy: string | null;
+  deletedDateTime: number | null;
+  masterBuildingId: string;
+  cost: number;
+  schedules: ScheduleDataItem[];
+  operationalSchedule?: OperationalSchedule;
 }
 
 
@@ -71,28 +72,22 @@ export default function useDetailFasilitas() {
     try {
       const facilityResponse = await getFacilityByIdService(id || "");
       const scheduleResponse = await GetScheduleByTypeId(id || "");
-      
+
       if (facilityResponse) {
         const facilityDataWithSchedule: FacilityDataItem = {
           ...facilityResponse,
           schedules: scheduleResponse,
           operationalSchedule: convertToOperationalSchedule(scheduleResponse)
         };
-        
+
         setBuildingId(facilityResponse.masterBuildingId || '');
         setFacilityData(facilityDataWithSchedule);
 
         // Handle images
         const imageResponse = await GetImageByParentId(facilityResponse.id);
-          if (imageResponse?.data?.length > 0) {
-            setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
-            setSmallImages(imageResponse.data.slice(1).map((img) => 
-              `data:${img.imageType};base64,${img.imageData}`
-            ));
-          } else {
-            setLargeImage("");
-            setSmallImages([]);
-          }
+        const { largeImage, smallImages } = processImageResponse(imageResponse);
+        setLargeImage(largeImage);
+        setSmallImages(smallImages);
       }
     } catch (error) {
       console.error("Error fetching data:", error);

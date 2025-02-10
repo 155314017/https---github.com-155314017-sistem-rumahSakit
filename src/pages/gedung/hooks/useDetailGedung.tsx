@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
+import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
 
 
 export default function useDetailGedung() {
@@ -39,15 +40,9 @@ export default function useDetailGedung() {
 
         if (buildingResponse.id) {
           const imageResponse = await GetImageByParentId(buildingResponse.id);
-          if (imageResponse?.data?.length > 0) {
-            setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
-            setSmallImages(imageResponse.data.map((img) => 
-              `data:${img.imageType};base64,${img.imageData}`
-            ));
-          } else {
-            setLargeImage("");
-            setSmallImages([]);
-          }
+          const { largeImage, smallImages } = processImageResponse(imageResponse);
+          setLargeImage(largeImage);
+          setSmallImages(smallImages);
         }
         
         setLoading(false);
