@@ -70,18 +70,11 @@ export default function useIndex() {
 
     return {
         data,
-        setData,
         successAddRoom,
-        setSuccessAddRoom,
         successDeleteRoom,
-        setSuccessDeleteRoom,
         successEditRoom,
-        setSuccessEditRoom,
         isLoading,
-        setIsLoading,
-        showTemporaryAlertSuccess,
         showTemporarySuccessDelete,
-        showTemporarySuccessEdit,
         fetchData
     }
 }

@@ -232,21 +232,20 @@ export default function useEditAmbulance() {
   ]
   
   return {
-    formik,
     handleImageChange,
-    imagesData,
-    errorAlert,
     breadcrumbItems,
-    id,
-    currentPage,
+    formik,
     setCurrentPage,
     getPageStyle,
     getBorderStyle,
+    currentPage,
     handleEditAmbulance,
     kalenderRef,
+    id,
     ambulanceData,
     scheduleDataPraktek,
-    scheduleDataPengecualian
+    scheduleDataPengecualian,
+    errorAlert
   }
 }
 

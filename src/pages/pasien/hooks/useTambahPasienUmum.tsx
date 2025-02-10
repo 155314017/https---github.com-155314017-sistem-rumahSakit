@@ -83,21 +83,15 @@ export default function useTambahPasienUmum() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [guardFullPage, setGuardFullPage] = useState(true);
     const [patientFullPage, setPatientFullsPage] = useState(true);
-    const [switchValue, setSwitchValue] = useState(false);
     const [selectedSchedule, setSelectedSchedule] = useState<string | null>(null);
     const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
-    const [selectedMethod, setSelectedMethod] = useState('');
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
     const [dataTickets, setDataTickets] = useState<dataTicket>();
-    const [calendarKey, setCalendarKey] = useState<number>(0);
     const [needAdmin, setNeedAdmin] = useState(false);
     const [NIK, setNIK] = useState('');
-    const [dataPasien, setDataPasien] = useState<PatientData>();
     const [idClinic, setIdClinic] = useState('');
     const [idDoctor, setIdDoctor] = useState('');
     const [docterName, setDocterName] = useState('');
-    const [birthPlace, setBirthPlace] = useState('');
-    const [birthDate, setBirthDate] = useState('');
     const [mainPages, setMainPages] = useState(true);
     const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
     const [clinicName, setClinicName] = useState('');
@@ -280,7 +274,6 @@ export default function useTambahPasienUmum() {
                         birthDate: formattedBirthDate,
                         birthPlace: response?.data.birthPlace
                     }
-                    setDataPasien(dataGet);
                     setBirth(dataGet?.birthDate || '');
                     setPatientData(dataGet);
                     console.log(birth);
@@ -360,7 +353,6 @@ export default function useTambahPasienUmum() {
     const handleDropdownDocter = (value: string, label: string) => {
         setIdDoctor(value)
         setDocterName(label);
-        setCalendarKey((prevKey) => prevKey + 1);
     };
 
     const handleCreateUser = async (values: {
@@ -449,9 +441,7 @@ export default function useTambahPasienUmum() {
       };
       
 
-    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedMethod(event.target.value);
-    };
+    
 
     const getPageStyle = (page: number) => {
         if (page === currentPage) {
@@ -554,10 +544,7 @@ export default function useTambahPasienUmum() {
         fetchClinicData();
     }, []);
 
-    const handleSwitchChange = (value: boolean) => {
-        setSwitchValue(value);
-    };
-
+   
     const registrationPatient = async (data: any) => {
         setIsLoading(true)
         try {
@@ -636,58 +623,34 @@ export default function useTambahPasienUmum() {
 
     return {
         validationSchema,
-        breadcrumbItems,
         currentPage,
         setCurrentPage,
         getPageStyle,
         getBorderStyle,
-        handleSwitchChange,
-        switchValue,
-        selectedMethod,
-        setSelectedMethod,
         mainPages,
-        setMainPages,
-        guardFullPage,
-        setGuardFullPage,
         patientFullPage,
-        setPatientFullsPage,
-        handleRadioChange,
         handleScheduleChange,
-        setIdClinic,
-        idClinic,
-        handleDropdownDocter,
         doctorOptions,
-        setIdDoctor,
         idDoctor,
+        handleDropdownDocter,
         findPatientByNik,
         patientData,
         BpRadio,
-        // putGuard,
         changePage2,
-        dataPasien,
         clinicOptions,
         handleDropdownPoli,
-        createTicket,
-        setDataTickets,
         dataTickets,
-        birthDate,
-        birthPlace,
         showAlert,
-        calendarKey,
-        isLoading,
-        handleGoBack,
+        breadcrumbItems,
         formik,
         setNeedAdmin,
         needAdmin,
-        fileName,
-        handleFileChange,
         NIK,
         birth,
         setPatientData,
         validationSchema1,
         navigate,
-        setBirthDate,
-        setBirthPlace,
+        idClinic,
         registrationPatient,
         selectedScheduleId,
         selectedSchedule,
@@ -695,10 +658,8 @@ export default function useTambahPasienUmum() {
         docterName,
         tanggalReserve,
         registrationCode,
-        bookingCode,
         queueNumber,
         queueData,
-        idPatient,
         pasienBaru,
         handleCreateUser
     }

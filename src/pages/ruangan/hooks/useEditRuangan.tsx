@@ -40,7 +40,6 @@ export default function useEditRuangan() {
     const [errorAlert, setErrorAlert] = useState(false);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [apiUrl, setApiUrl] = useState('');
     const { id } = useParams();
     const [gedungOptions, setGedungOptions] = useState<Building[]>([]);
     const [roomName, setRoomName] = useState<string>('');
@@ -73,7 +72,6 @@ export default function useEditRuangan() {
             try {
                 const token = Cookies.get("accessToken");
                 const response = await GetRoomByIdServices(id, token)
-                setApiUrl(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/${id}`);
                 setRoomName(response.name);
                 setRoomType(response.type);
 
@@ -145,7 +143,6 @@ export default function useEditRuangan() {
         successAlert,
         errorAlert,
         loading,
-        apiUrl,
         gedungOptions,
         jenisRuangan,
         id

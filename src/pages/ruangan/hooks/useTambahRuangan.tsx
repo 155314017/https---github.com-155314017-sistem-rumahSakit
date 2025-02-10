@@ -108,11 +108,8 @@ export default function useTambahRuangan() {
     return {
         formik,
         breadcrumbItems,
-        imagesData,
         setImagesData,
         gedungOptions,
         errorAlert,
-        setErrorAlert,
-        showTemporaryAlertError
     }
 }

@@ -9,11 +9,8 @@ import useDetailPegawai from "../hooks/useDetailPegawai";
 export default function DetailPegawai() {
     const {
         breadcrumbItems,
-        // name,
-        // deletedItems,
         employeeData,
         handleDeleteSuccess,
-        // confirmationDelete,
     } = useDetailPegawai();
 
 

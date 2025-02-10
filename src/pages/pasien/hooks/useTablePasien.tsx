@@ -5,7 +5,6 @@ export default function useTablePasien() {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [datas, setDatas] = useState<PatientDataItem[]>([]);
-  const [dataIdClinic, setDataIdClinic] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [dataIdUser, setDataIdUser] = useState<string[]>([]);
   const [userDataPhone, setUserDataPhone] = useState<string[]>([]);
@@ -15,14 +14,12 @@ export default function useTablePasien() {
       try {
         const result = await PatientServices();
         setDatas(result);
-        const clinicIds = result
-          .map((item) => item.registrationDatumDto?.masterClinicId)
-          .filter((id): id is string => !!id);
+        
 
         const userId = result.map((item) => item.masterUserId).filter((id): id is string => !!id);
 
         setDataIdUser(userId);
-        setDataIdClinic(clinicIds);
+        // setDataIdClinic(clinicIds);
         setLoading(false);
       } catch (error) {
         console.error('Failed to fetch data from API: ', error);
@@ -32,7 +29,6 @@ export default function useTablePasien() {
     fetchData();
   }, []);
 
-  const [clinics, setClinics] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -56,28 +52,28 @@ export default function useTablePasien() {
     }
   }, [dataIdUser]);
 
-  useEffect(() => {
-    const fetchClinics = async () => {
-      try {
-        const responses = await Promise.all(
-          dataIdClinic.map((id) => axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/${id}`))
-        );
+  // useEffect(() => {
+  //   const fetchClinics = async () => {
+  //     try {
+  //       const responses = await Promise.all(
+  //         dataIdClinic.map((id) => axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/${id}`))
+  //       );
 
-        const CLinicData = responses.map((response) => {
-          const name = response.data.data.name;
-          return name ? name : "Data Gedung Tidak Tercatat";
-        });
-        setClinics(CLinicData);
+  //       const CLinicData = responses.map((response) => {
+  //         const name = response.data.data.name;
+  //         return name ? name : "Data Gedung Tidak Tercatat";
+  //       });
+  //       setClinics(CLinicData);
 
-      } catch (err) {
-        console.error('Error:', err);
-      }
-    };
+  //     } catch (err) {
+  //       console.error('Error:', err);
+  //     }
+  //   };
 
-    if (dataIdClinic.length > 0) {
-      fetchClinics();
-    }
-  }, [dataIdClinic]);
+  //   if (dataIdClinic.length > 0) {
+  //     fetchClinics();
+  //   }
+  // }, [dataIdClinic]);
 
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
@@ -110,11 +106,8 @@ export default function useTablePasien() {
   };
   return {
     page,
-    setPage,
     isCollapsed,
-    setIsCollapsed,
     datas,
-    setDatas,
     handleChangePage,
     rowsPerPage,
     displayedData,
@@ -122,8 +115,7 @@ export default function useTablePasien() {
     urutkan,
     toggleCollapse,
     confirmationDelete,
-    clinics,
-    loading,
-    userDataPhone
+    userDataPhone,
+    loading
   }
 }

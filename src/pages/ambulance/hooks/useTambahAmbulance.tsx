@@ -149,16 +149,16 @@ export default function useTambahAmbulance() {
 
 
   return {
-    errorAlert,
     handleImageChange,
     breadcrumbItems,
     formik,
-    currentPage,
     setCurrentPage,
     getPageStyle,
     getBorderStyle,
+    currentPage,
     handleSaveAmbulance,
-    kalenderRef
+    kalenderRef,
+    errorAlert
   }
 
 }
