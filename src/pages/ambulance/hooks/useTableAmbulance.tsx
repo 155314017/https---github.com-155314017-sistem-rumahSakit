@@ -15,7 +15,7 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
   const [page, setPage] = useState(1)
   const [isCollapsed, setIsCollapsed] = useState(true)
   const [open, setOpen] = useState(false)
-  const [datas, setDatas] = useState<AmbulanceDataItem[]>([])
+  const [datasAmbulance, setDatasAmbulance] = useState<AmbulanceDataItem[]>([])
   const [deletedItems, setDeletedItems] = useState('')
 
   const navigate = useNavigate()
@@ -57,7 +57,7 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
           operationalSchedule: formattedSchedules.join(' / '),
         });
       }
-      setDatas(result);
+      setDatasAmbulance(result);
     } catch (error) {
       console.error('Failed to fetch data from API: ', error);
     }
@@ -76,7 +76,7 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
 
   const rowsPerPage = 10
 
-  const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+  const displayedData = datasAmbulance.slice((page - 1) * rowsPerPage, page * rowsPerPage)
 
   
 
@@ -92,10 +92,10 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
     setIsCollapsed(prev => !prev)
   }
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
+  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, ambulanceId: string) => {
     event.preventDefault()
 
-    setDeletedItems(buildingId)
+    setDeletedItems(ambulanceId)
 
     setOpen(true)
   }
@@ -105,7 +105,7 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
     isCollapsed,
     open,
     setOpen,
-    datas,
+    datasAmbulance,
     deletedItems,
     navigate,
     handleChangePage,

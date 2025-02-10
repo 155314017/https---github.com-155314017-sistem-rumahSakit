@@ -67,7 +67,7 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
     isCollapsed,
     open,
     setOpen,
-    datas,
+    datasAmbulance,
     deletedItems,
     navigate,
     handleChangePage,
@@ -314,24 +314,28 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
                               onDeleteSuccess={handleDeleteSuccess}
                             />
                             <Link
-                              href="#"
                               onClick={() => navigate(`/editAmbulance/${data.id}`)}
                               mr={2}
                               underline="hover"
                               sx={{
                                 textTransform: 'capitalize',
-                                color: '#8F85F3'
+                                color: '#8F85F3',
+                                ":hover": {
+                                  cursor: 'pointer'
+                                }
                               }}
                             >
                               Ubah
                             </Link>
                             <Link
-                              href="#"
                               onClick={() => navigate(`/detailAmbulance/${data.id}`)}
-                              underline="hover"
+                              underline="none"
                               sx={{
                                 textTransform: 'capitalize',
-                                color: '#8F85F3'
+                                color: '#8F85F3',
+                                ":hover": {
+                                  cursor: 'pointer'
+                                }
                               }}
                             >
                               Lihat Selengkapnya
@@ -358,10 +362,10 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
             >
               <Typography sx={{ color: '#A8A8BD' }}>
                 Showing {(page - 1) * rowsPerPage + 1} to{' '}
-                {Math.min(page * rowsPerPage, datas.length)} of {datas.length} entries
+                {Math.min(page * rowsPerPage, datasAmbulance.length)} of {datasAmbulance.length} entries
               </Typography>
               <Pagination
-                count={Math.ceil(datas.length / rowsPerPage)}
+                count={Math.ceil(datasAmbulance.length / rowsPerPage)}
                 variant="outlined"
                 shape="rounded"
                 page={page}
