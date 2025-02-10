@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type React from "react";
 import { useState } from "react";
 import { Button, CircularProgress, IconButton, Modal, Typography, TextField } from "@mui/material";
@@ -25,19 +26,19 @@ const style = {
     borderRadius: "16px",
 };
 
-type queueData = {
-    id: string;
-    registrationDataId: string;
-    createdBy: string;
-    createdDateTime: number;
-    updatedBy: string | null;
-    updatedDateTime: number | null;
-    deletedBy: string | null;
-    deletedDateTime: number | null;
-    queueNumber: number;
-    clinicId: string;
-    status: string | null;
-}
+// type queueData = {
+//     id: string;
+//     registrationDataId: string;
+//     createdBy: string;
+//     createdDateTime: number;
+//     updatedBy: string | null;
+//     updatedDateTime: number | null;
+//     deletedBy: string | null;
+//     deletedDateTime: number | null;
+//     queueNumber: number;
+//     clinicId: string;
+//     status: string | null;
+// }
 
 type bookingCodeData = {
     nomorAntrian: string,
@@ -55,8 +56,8 @@ const bookingCodeSchema = Yup.object().shape({
 
 const ModalKodeBooking: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
     const [isLoading, setIsLoading] = useState(false);
-        const [infoTicket, setInfoTicket] = useState(false);
-        const [dataKodeBooking, setDataKodeBooking] = useState<bookingCodeData>()
+    const [infoTicket, setInfoTicket] = useState(false);
+    const [dataKodeBooking, setDataKodeBooking] = useState<bookingCodeData>()
     const onSubmitKodeBooking = async (values: any) => {
         setIsLoading(true);
         console.log('Form submitted:', values);
@@ -137,129 +138,141 @@ ${dayjs().hour(dataSchedule.data.data.endTime[0]).minute(dataSchedule.data.data.
 
     return (
         <>
-        <Modal
-            open={open}
-            onClose={onClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            BackdropProps={{
-                style: { backgroundColor: "rgba(211, 211, 211, 0.2)" },
-            }}
-        >
-            <Box sx={style}>
-                <IconButton
-                    onClick={onClose}
-                    sx={{
-                        position: "absolute",
-                        top: 8,
-                        right: 8,
-                        color: "#A8A8BD",
-                    }}
-                >
-                    <CloseIcon />
-                </IconButton>
-                <Typography id="modal-modal-title" sx={{ mt: 2, fontSize: "18px", fontWeight: 600 }}>
-                    Masukkan kode booking
-                </Typography>
-                <Typography id="modal-modal-description" sx={{ mb: 3 }}>
-                    Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian.
-                </Typography>
+            <Modal
+                open={open}
+                onClose={onClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                BackdropProps={{
+                    style: { backgroundColor: "rgba(211, 211, 211, 0.2)" },
+                }}
+            >
+                <Box sx={style}>
+                    <IconButton
+                        onClick={onClose}
+                        sx={{
+                            position: "absolute",
+                            top: 8,
+                            right: 8,
+                            color: "#A8A8BD",
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                    <Typography id="modal-modal-title" sx={{ mt: 2, fontSize: "18px", fontWeight: 600 }}>
+                        Masukkan kode booking
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mb: 3 }}>
+                        Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian.
+                    </Typography>
 
-                <Formik
-                    initialValues={{ bookingCode: "" }}
-                    validationSchema={bookingCodeSchema}
-                    enableReinitialize
-                    onSubmit={async (values) => {
-                        console.log("Kode booking:", values.bookingCode);
-                        onSubmitKodeBooking(values.bookingCode)
-                        setIsLoading(true);
-                        try {
-                            const response = await axios.post(
-                                `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/patient/check-in`,
-                                { bookingCode: values.bookingCode },
-                                {
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                    },
-                                }
-                            );
-                            console.log(response);
-                        } catch (error) {
-                            console.error(error);
-                        } finally {
-                            setIsLoading(false);
-                            onClose();
-                        }
-                    }}
-                >
-                    {({ errors, touched, setFieldValue, values, isValid, dirty }) => (
-                        <Form>
-                            <Field name="bookingCode">
-                                {() => (
-                                    <TextField
-                                        variant="outlined"
-                                        fullWidth
-                                        placeholder="Masukkan kode booking"
-                                        value={values.bookingCode}
-                                        onChange={(e) => setFieldValue("bookingCode", e.target.value)}
-                                        error={Boolean(errors.bookingCode && touched.bookingCode)}
-                                        helperText={errors.bookingCode && touched.bookingCode ? errors.bookingCode : ""}
-                                        sx={{
-                                            borderRadius: "8px",
-                                            fontSize: "16px",
-                                            marginBottom: "16px",
-                                        }}
-                                        inputProps={{
-                                            style: {
-                                                padding: "10px",
-                                                textAlign: "center",
-                                            },
-                                        }}
-                                    />
-                                )}
-                            </Field>
-
-                            <Box sx={{ mt: 3, textAlign: "right" }}>
-                                <Button
-                                    type="submit"
-                                    style={{
-                                        padding: "10px 20px",
-                                        backgroundColor: isValid && dirty ? "#8F85F3" : "#A8A8A8",
-                                        color: "white",
-                                        border: "none",
-                                        borderRadius: "8px",
-                                        cursor: isValid && dirty ? "pointer" : "not-allowed",
-                                        fontWeight: 600,
-                                        width: "100%",
-                                    }}
-                                >
-                                    {isLoading ? (
-                                        <CircularProgress size={25} sx={{ color: "white" }} />
-                                    ) : (
-                                        "Submit"
+                    <Formik
+                        initialValues={{ bookingCode: "" }}
+                        validationSchema={bookingCodeSchema}
+                        enableReinitialize
+                        onSubmit={async (values) => {
+                            console.log("Kode booking:", values.bookingCode);
+                            onSubmitKodeBooking(values.bookingCode)
+                            setIsLoading(true);
+                            try {
+                                const response = await axios.post(
+                                    `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/patient/check-in`,
+                                    { bookingCode: values.bookingCode },
+                                    {
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                    }
+                                );
+                                console.log(response);
+                            } catch (error) {
+                                console.error(error);
+                            } finally {
+                                setIsLoading(false);
+                                onClose();
+                            }
+                        }}
+                    >
+                        {({ errors, touched, setFieldValue, values, isValid, dirty }) => (
+                            <Form>
+                                <Field name="bookingCode">
+                                    {() => (
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            placeholder="Masukkan kode booking"
+                                            value={values.bookingCode}
+                                            onChange={(e) => setFieldValue("bookingCode", e.target.value)}
+                                            error={Boolean(errors.bookingCode && touched.bookingCode)}
+                                            helperText={errors.bookingCode && touched.bookingCode ? errors.bookingCode : ""}
+                                            sx={{
+                                                borderRadius: "8px",
+                                                fontSize: "16px",
+                                                marginBottom: "16px",
+                                            }}
+                                            inputProps={{
+                                                style: {
+                                                    padding: "10px",
+                                                    textAlign: "center",
+                                                },
+                                            }}
+                                        />
                                     )}
-                                </Button>
-                            </Box>
-                        </Form>
-                    )}
-                </Formik>
-            </Box>
-            
-        </Modal>
-        {infoTicket && (
-                <ModalInformasiTiket 
+                                </Field>
+
+                                <Box sx={{ mt: 3, textAlign: "right" }}>
+                                    <Button
+                                        type="submit"
+                                        style={{
+                                            padding: "10px 20px",
+                                            backgroundColor: isValid && dirty ? "#8F85F3" : "#A8A8A8",
+                                            color: "white",
+                                            border: "none",
+                                            borderRadius: "8px",
+                                            cursor: isValid && dirty ? "pointer" : "not-allowed",
+                                            fontWeight: 600,
+                                            width: "100%",
+                                        }}
+                                    >
+                                        {isLoading ? (
+                                            <CircularProgress size={25} sx={{ color: "white" }} />
+                                        ) : (
+                                            "Submit"
+                                        )}
+                                    </Button>
+                                </Box>
+                            </Form>
+                        )}
+                    </Formik>
+                </Box>
+
+            </Modal>
+            {infoTicket && (
+                // <ModalInformasiTiket 
+                //     open={infoTicket}
+                //     clinic={dataKodeBooking.namaKlinik}
+                //     jadwalKonsul={dataKodeBooking.jadwalKonsul}
+                //     namaDokter={dataKodeBooking.namaDokter}
+                //     tanggalReservasi={dataKodeBooking.tanggalReserve}
+                //     nomorAntrian={queueData.queueNumber || 0}
+                //     onClose={() => setInfoTicket(false)}
+                // />
+                <ModalInformasiTiket
                     open={infoTicket}
-                    clinic={dataKodeBooking.namaKlinik}
-                    jadwalKonsul={dataKodeBooking.jadwalKonsul}
-                    namaDokter={dataKodeBooking.namaDokter}
-                    tanggalReservasi={dataKodeBooking.tanggalReserve}
-                    nomorAntrian={queueData.queueNumber || 0}
-                    onClose={() => setInfoTicket(false)}
+                    clinic={'dataKodeBooking.namaKlinik'}
+                    jadwalKonsul={'dataKodeBooking.jadwalKonsul'}
+                    namaDokter={'dataKodeBooking.namaDokter'}
+                    tanggalReservasi={'dataKodeBooking.tanggalReserve'}
+                    nomorAntrian={0}
+                    onClose={() => {
+                        setInfoTicket(false);
+                        console.log(dataKodeBooking)
+                    }}
                 />
             )}
 
-</>
-        
+        </>
+
     );
 };
 

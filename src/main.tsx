@@ -48,6 +48,7 @@ import RegistrationOnline from './pages/pasien/features/RegistrationOnline';
 import NotFoundPage from './pages/NotFoundPage';
 import HomeAdmin from './pages/home/homeAdmin';
 import HomeQueue from './pages/home/homeQueue';
+import Admin from './pages/admin/features/Admin';
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -125,7 +126,7 @@ createRoot(document.getElementById('root')!).render(
         {/* login pegawai/admin  */}
         <Route path="/" element={<LoginPegawai />} />
         <Route path="/login/pegawai" element={<LoginPegawai />} />
-        
+
         {/* reset pass admin/pegawai  */}
         <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
 
@@ -134,6 +135,8 @@ createRoot(document.getElementById('root')!).render(
 
         {/* dashboard antrian  */}
         <Route path="/dashboardQueue" element={<HomeQueue />} />
+
+        <Route path="/min" element={<Admin />} />
       </Routes>
     </Router>
   </StrictMode>
