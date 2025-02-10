@@ -34,36 +34,36 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-const StyledTableContainer = styled(TableContainer)`
-  ::-webkit-scrollbar {
-    display: none;
-  }
-
-  scrollbar-width: none;
-
-  overflow: auto;
-`;
-
 // const StyledTableContainer = styled(TableContainer)`
 //   ::-webkit-scrollbar {
-//     width: 8px;
+//     display: none;
 //   }
 
-//   ::-webkit-scrollbar-track {
-//     border-radius: 10px;
-//   }
+//   scrollbar-width: none;
 
-//   ::-webkit-scrollbar-thumb {
-//     background-color: #8f85f3;
-//     border-radius: 10px;
-//     border: 2px solid #f1f1f1;
-//   }
-
-//   ::-webkit-scrollbar-thumb:hover {
-//     background-color: #6c63ff;
-//     cursor: pointer;
-//   }
+//   overflow: auto;
 // `;
+
+const StyledTableContainer = styled(TableContainer)`
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #8f85f3;
+    border-radius: 10px;
+    border: 2px solid #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #6c63ff;
+    cursor: pointer;
+  }
+`;
 
 //hooks
 
@@ -79,9 +79,10 @@ export default function TableRawatJalan() {
         sortir,
         urutkan,
         toggleCollapse,
-        confirmationDelete,
+        countDownPanggil,
         getButtonStyle,
         handleButtonClick,
+        countdowns
     } = useTableRawatJalan();
     return (
         <Box>
@@ -243,7 +244,7 @@ export default function TableRawatJalan() {
                                     mt: 2,
                                     boxShadow: "none",
                                     mb: 2,
-                                    maxHeight: "610px",
+                                    maxHeight: "fit-content",
                                     borderRadius: "16px",
                                 }}
                             >
@@ -311,19 +312,7 @@ export default function TableRawatJalan() {
                                                 Nama Pasien
                                             </TableCell>
                                             <TableCell
-                                                width={"10%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="center"
-                                            >
-                                                No telpon
-                                            </TableCell>
-                                            <TableCell
-                                                width={"30%"}
+                                                width={"20%"}
                                                 sx={{
                                                     fontSize: "14px",
                                                     fontWeight: 700,
@@ -344,7 +333,7 @@ export default function TableRawatJalan() {
                                                         sx={[{ color: "#292B2C", fontSize: "14px" }]}
                                                         align="center"
                                                     >
-                                                        {index + 1}
+                                                        {data.nomorAntrian}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[
@@ -360,7 +349,7 @@ export default function TableRawatJalan() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.namaPasien}
+                                                        {data.nomorRM}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[
@@ -376,7 +365,7 @@ export default function TableRawatJalan() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.namaPjPasien}
+                                                        {data.jenisKunjungan}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[
@@ -392,7 +381,7 @@ export default function TableRawatJalan() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {data.namaPasien}
+                                                        {data.dokter}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={[
@@ -410,32 +399,15 @@ export default function TableRawatJalan() {
                                                     >
                                                         <BadgeStatusPasien
                                                             name={data.namaPasien}
-                                                            status={data.Status}
+                                                            status={data.status}
                                                             color={
-                                                                data.Status === 'Baru'
+                                                                data.status === 'Baru'
                                                                     ? '#D5D1FB'
-                                                                    : data.Status === 'INACTIVE'
+                                                                    : data.status === 'INACTIVE'
                                                                         ? '#FA4659'
                                                                         : ''
                                                             }
                                                         />
-                                                        {/* {data.namaPasien} {data.Status} */}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        sx={[
-                                                            {
-                                                                color: "#292B2C",
-                                                                overflow: "hidden",
-                                                                textOverflow: "ellipsis",
-                                                                whiteSpace: "nowrap",
-                                                                maxWidth: "150px",
-                                                                fontSize: "14px",
-                                                                textTransform: "capitalize",
-                                                            },
-                                                        ]}
-                                                        align="center"
-                                                    >
-                                                        {data.pembayaran}
                                                     </TableCell>
                                                     <TableCell
                                                         align="center"
@@ -444,18 +416,40 @@ export default function TableRawatJalan() {
                                                                 color: "#292B2C",
                                                                 fontSize: "14px",
                                                                 textTransform: "capitalize",
+                                                                display: "flex",
+                                                                flexDirection: "row",
+                                                                justifyContent: 'center',
+                                                                alignItems: 'center',
+                                                                gap: 4,
                                                             },
                                                         ]}
                                                     >
-                                                        <Link
-                                                            href="#"
-                                                            underline="none"
-                                                            color={"#8F85F3"}
-                                                            onClick={confirmationDelete}
-                                                            sx={{ mr: 2 }}
+                                                        <Box
+                                                            sx={{
+                                                                cursor: 'pointer',
+                                                                padding: '8px',
+                                                                border: countdowns[data.nomorAntrian]?.isCounting ? '1px solid #A8A8BD' : '1px solid #8F85F3',
+                                                                width: '74px',
+                                                                height: '25px',
+                                                                bgcolor: countdowns[data.nomorAntrian]?.isCounting ? '#A8A8BD' : '#8F85F3',
+                                                                borderRadius: '8px',
+                                                                justifyContent: 'center',
+                                                                alignItems: 'center',
+
+
+                                                            }}
+                                                            onClick={() => countDownPanggil(data.nomorAntrian)}
                                                         >
-                                                            Hapus
-                                                        </Link>
+                                                            <Typography
+                                                                sx={{
+                                                                    cursor: countdowns[data.nomorAntrian]?.isCounting ? 'default' : 'pointer',
+                                                                    color: countdowns[data.nomorAntrian]?.isCounting ? '#ccc' : 'white',
+                                                                    fontSize: '16px',
+                                                                }}
+                                                            >
+                                                                {countdowns[data.nomorAntrian]?.isCounting ? countdowns[data.nomorAntrian]?.countdown : 'Panggil'}
+                                                            </Typography>
+                                                        </Box>
                                                         <Link
                                                             href="#"
                                                             mr={2}
@@ -465,17 +459,21 @@ export default function TableRawatJalan() {
                                                                 color: "#8F85F3",
                                                             }}
                                                         >
-                                                            Ubah
+                                                            <Box padding={'8px'} border={'1px solid #8F85F3'} width={'fit-content'} height={'fit-content'} bgcolor={'inherit'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
+                                                                <Typography color="#8F85F3" >Lihat Detail</Typography>
+                                                            </Box>
                                                         </Link>
                                                         <Link
-                                                            href="/detailGedung "
+                                                            href="# "
                                                             underline="hover"
                                                             sx={{
                                                                 textTransform: "capitalize",
                                                                 color: "#8F85F3",
                                                             }}
                                                         >
-                                                            Lihat Selengkapnya
+                                                            <Box padding={'8px'} px={'16px'} border={'1px solid #8F85F3'} width={'fit-content'} height={'fit-content'} bgcolor={'inherit'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
+                                                                <Typography color="#8F85F3" >:</Typography>
+                                                            </Box>
                                                         </Link>
                                                     </TableCell>
                                                 </StyledTableRow>
@@ -524,7 +522,7 @@ export default function TableRawatJalan() {
                         </Stack>
                     </Box>
                 </Collapse>
-            </Box>
-        </Box>
+            </Box >
+        </Box >
     );
 }

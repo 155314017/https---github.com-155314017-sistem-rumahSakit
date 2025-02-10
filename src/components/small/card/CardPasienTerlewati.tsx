@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import bgImage from "../../../assets/img/String.png";
 import MiniTableRawatJalan from "../../../pages/pasien/pasienRawatJalan/features/MiniTableRawatJalan";
 

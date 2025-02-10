@@ -14,7 +14,7 @@ export default function QueueDashboard() {
     return (
         <Box>
             <Box>
-                <Typography sx={{ fontSize: '32px', fontWeight: '700' }}>Dashboard Antrian</Typography>
+                <Typography sx={{ fontSize: '32px', fontWeight: '700', mb: 2, mt: 2 }}>Dashboard Antrian</Typography>
                 <Grid container justifyContent={'space-between'} flex={1} flexDirection={'row'} >
                     <Box display={'flex'} flexDirection={'column'} gap={2} width={'48%'}>
                         <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} >
