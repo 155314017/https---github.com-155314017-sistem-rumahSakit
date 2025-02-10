@@ -118,8 +118,6 @@ export default function useTambahAmbulance() {
       const { data: { id: ambulanceId } } = await CreateAmbulanceService(ambulanceData);
       if (!ambulanceId) throw new Error('Ambulance ID tidak ditemukan');
 
-      console.log("here exclusion: ");
-      console.log(kalenderData.exclusion);
       // Proses secara parallel untuk optimasi
       await Promise.all([
         createSchedules(ambulanceId, kalenderData.praktek),
