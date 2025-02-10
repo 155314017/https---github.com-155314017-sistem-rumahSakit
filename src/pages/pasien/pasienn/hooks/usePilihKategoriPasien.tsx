@@ -52,39 +52,20 @@ const bookingCodeSchema = Yup.object({
 });
 
 export default function usePilihKategoriPasien() {
-    const [openModalKodeBooking, setOpenModalKodeBooking] = useState(false);
-    const [openModalPilihPembayaran, setOpenModalPilihPembayaran] = useState(false);
     const [mainPages, setMainPages] = useState(true);
     const [inputCodePages, setInputCodePages] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [infoTicket, setInfoTicket] = useState(false);
-    const [nomorAntrian] = useState<string | number>(0);
     const [tiketAntrianKonter, setTiketAntrianKonter] = useState(false);
     const [noDataBooking, setNoDataBooking] = useState(false)
     const [dataKodeBooking, setDataKodeBooking] = useState<bookingCodeData>()
     const [queueData, setQueueData] = useState<queueData>();
-    const [needAdmin, setNeedAdmin] = useState(false);
     const [tanggalReservasi, setTanggalReservasi] = useState<string>();
 
 
-    const handleBack = () => {
-        setOpenModalPilihPembayaran(false);
-        setMainPages(true);
-    }
+   
 
-    // const pasienBaru = async () => {
-    //     const counterId = "f2ac5cf2-b023-4756-ac33-b7b493d065dd" //nanti diganti
-    //     setTiketAntrianKonter(true);
-    //     setMainPages(false);
-    //     try {
-    //         const response = await GenerateQueuePatientServices(counterId)
-    //         setNomorAntrian(response);
-
-    //     } catch {
-    //         console.error('error')
-    //     }
-
-    // }
+   
 
     const onSubmitKodeBooking = async (values: any) => {
         setIsLoading(true);
@@ -102,7 +83,6 @@ export default function usePilihKategoriPasien() {
                 console.log('tes: ', dataSchedule.data.data.startTime[0], dataSchedule.data.data.startTime[1], " akhir:", dataSchedule.data.data.endTime[0], dataSchedule.data.data.endTime[1])
                 const jam = `${dayjs().hour(dataSchedule.data.data.startTime[0]).minute(dataSchedule.data.data.startTime[1]).format('HH:mm')} - 
 ${dayjs().hour(dataSchedule.data.data.endTime[0]).minute(dataSchedule.data.data.endTime[1]).format('HH:mm')}`;
-                setNeedAdmin(response.data.needAdmin)
                 const namaDokter = await GetDoctorServices(response.data.doctorDataId);
                 const namaKlinik = await getClinic(response.data.masterClinicId);
 
@@ -140,7 +120,6 @@ ${dayjs().hour(dataSchedule.data.data.endTime[0]).minute(dataSchedule.data.data.
                     console.log(queue);
 
                     setQueueData(queue.data.data)
-                    setOpenModalKodeBooking(false);
                     setTiketAntrianKonter(true);
                 } else {
                     const dataBooking = {
@@ -153,7 +132,6 @@ ${dayjs().hour(dataSchedule.data.data.endTime[0]).minute(dataSchedule.data.data.
                     }
                     setQueueData(queue.data.data)
                     setDataKodeBooking(dataBooking)
-                    setOpenModalKodeBooking(false);
                     setInfoTicket(true);
                 }
 
@@ -180,10 +158,6 @@ ${dayjs().hour(dataSchedule.data.data.endTime[0]).minute(dataSchedule.data.data.
     };
 
     return {
-        setOpenModalKodeBooking,
-        openModalKodeBooking,
-        openModalPilihPembayaran,
-        setOpenModalPilihPembayaran,
         mainPages,
         setMainPages,
         inputCodePages,
@@ -192,18 +166,15 @@ ${dayjs().hour(dataSchedule.data.data.endTime[0]).minute(dataSchedule.data.data.
         setIsLoading,
         infoTicket,
         setInfoTicket,
-        nomorAntrian,
         tiketAntrianKonter,
         setTiketAntrianKonter,
         noDataBooking,
         setNoDataBooking,
         dataKodeBooking,
-        handleBack,
         bookingCodeSchema,
         style,
         onSubmitKodeBooking,
         queueData,
-        needAdmin,
         tanggalReservasi
     }
 }

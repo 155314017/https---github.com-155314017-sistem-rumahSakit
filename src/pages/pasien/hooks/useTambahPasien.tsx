@@ -61,7 +61,6 @@ export default function useTambahPasien() {
         formik,
         breadcrumbItems,
         handleTambahHari,
-        selectedDay,
         setSelectedDay,
         startTime,
         setStartTime,
@@ -70,7 +69,7 @@ export default function useTambahPasien() {
         successAlert,
         showTemporaryAlertSuccess,
         listFasilitas,
-        hari,
+        hari
 
     }
 }

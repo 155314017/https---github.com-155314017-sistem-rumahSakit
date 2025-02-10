@@ -67,7 +67,6 @@ export default function TablePasien() {
     urutkan,
     toggleCollapse,
     confirmationDelete,
-    // clinics,
     userDataPhone
     } = useTablePasien();
     return (

@@ -63,8 +63,8 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
   const [loading, setLoading] = useState(false);
-  const [pageNumber, setPageNumber] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageNumber] = useState(0);
+  const [pageSize] = useState(10);
   const [sort, setSort] = useState('');
   const [orderBy, setOrderBy] = useState("createdDateTime=asc");
 
@@ -177,25 +177,13 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
   };
   return {
     page,
-    setPage,
     isCollapsed,
-    setIsCollapsed,
     open,
     setOpen,
     datas,
-    setDatas,
     deletedItems,
-    setDeletedItems,
     loading,
-    setLoading,
-    pageNumber,
-    setPageNumber,
-    pageSize,
-    setPageSize,
-    sort,
     setSort,
-    orderBy,
-    setOrderBy,
     displayedData,
     buildings,
     confirmationDelete,

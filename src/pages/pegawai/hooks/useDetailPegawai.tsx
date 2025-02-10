@@ -67,7 +67,6 @@ interface MenuPrivilege {
 
 
 export default function useDetailPegawai() {
-    const [name, setName] = useState<string>("");
     const [deletedItems, setDeletedItems] = useState<string>("");
     const [open, setOpen] = useState(false);
     const { id } = useParams();
@@ -175,15 +174,13 @@ export default function useDetailPegawai() {
 
 
     return {
-      setName,
-        breadcrumbItems,
-        name,
-        deletedItems,
-        employeeData,
-        handleDeleteSuccess,
-        confirmationDelete,
-        open,
-        loading
+      breadcrumbItems,
+      employeeData,
+      handleDeleteSuccess,
+      confirmationDelete,
+      deletedItems,
+      open,
+      loading
     }
         
 }

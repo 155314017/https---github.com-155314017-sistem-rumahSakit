@@ -86,9 +86,7 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
 
   const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage)
 
-  const handleSelectionChange = (selectedValue: string) => {
-    console.log('Selected Value:', selectedValue)
-  }
+  
 
   const handleDeleteSuccess = () => {
     onSuccessDelete()
@@ -112,26 +110,18 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
 
   return {
     page,
-    setPage,
     isCollapsed,
-    setIsCollapsed,
     open,
     setOpen,
     datas,
-    setDatas,
     deletedItems,
-    setDeletedItems,
     navigate,
-    fetchData,
     handleChangePage,
     rowsPerPage,
     displayedData,
-    handleSelectionChange,
     handleDeleteSuccess,
     toggleCollapse,
     confirmationDelete,
-    dataSchedules,
-    onDeleteSuccess: handleDeleteSuccess
 
   }
 

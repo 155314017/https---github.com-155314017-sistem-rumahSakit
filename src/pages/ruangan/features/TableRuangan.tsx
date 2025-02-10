@@ -68,7 +68,7 @@ import React from "react";
 
 const TableRuangan: React.FC<TableRuanganProps> = ({fetchDatas, onSuccessDelete}) => {
     const {
-        page,
+    page,
     isCollapsed,
     open,
     setOpen,

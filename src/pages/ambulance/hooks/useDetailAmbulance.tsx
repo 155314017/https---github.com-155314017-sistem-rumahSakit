@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getAmbulanceByIdService } from "../../../services/Admin Tenant/ManageAmbulance/GetAmbulanceByIdService";
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 import { GetScheduleByTypeId, ScheduleDataItem } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
@@ -31,10 +31,7 @@ type AmbulanceDataItem = {
 }
 
 export default function useDetailAmbulance() {
-    const [deletedItems, setDeletedItems] = useState<string>("");
-    const [open, setOpen] = useState(false);
     const { id } = useParams();
-    const navigate = useNavigate();
     const [largeImage, setLargeImage] = useState<string>("");
     const [smallImage, setSmallImages] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
@@ -92,26 +89,15 @@ export default function useDetailAmbulance() {
       if (id) fetchData();
     }, [id]);
     
-    const handleDeleteSuccess = () => {
-      setOpen(false);
-      navigate("/ambulance", { state: { successDelete: true, message: "Gedung berhasil dihapus!" } });
-    };
     
-    const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
-      event.preventDefault();
-      setDeletedItems(buildingId);
-      setOpen(true);
-    };
+    
+    
     
     return {
-      breadcrumbItems,
-      largeImage,
-      smallImage,
-      handleDeleteSuccess,
-      confirmationDelete,
-      open,
-      loading,
-      deletedItems,
-      ambulanceData,
+    breadcrumbItems,
+    largeImage,
+    smallImage,
+    ambulanceData,
+    loading
     };
 }

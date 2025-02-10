@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-// import bgImage from "../../../../assets/img/String.png";
 import PhoneInput from 'react-phone-input-2';
 //hooks
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -30,9 +29,7 @@ import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
-// import FileUploader from "../../../../components/medium/FileUploader";
 import CustomTimePicker from "../../../../components/medium/CustomTimePicker";
-// import { Email } from "@mui/icons-material";
 
 
 export default function TambahPasienUmumOffline() {
@@ -56,7 +53,6 @@ export default function TambahPasienUmumOffline() {
         handleDropdownPoli,
         dataTickets,
         showAlert,
-        // calendarKey,
         handleGoBack,
         formik,
         setNeedAdmin,
@@ -962,7 +958,7 @@ export default function TambahPasienUmumOffline() {
                                     registrationId={registrationCode}
                                     patienDataSent={dataTickets}
                                     offline={true}
-                                    onClose={() => navigate("/registrasi/offline")}
+                                    onClose={() => navigate("/tambahPasien/Umum")}
                                 />
                             </Box>
                         )

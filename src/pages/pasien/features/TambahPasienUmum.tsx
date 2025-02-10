@@ -48,7 +48,6 @@ export default function TambahPasienUmum() {
         handleDropdownPoli,
         dataTickets,
         showAlert,
-        // calendarKey,
         breadcrumbItems,
         formik,
         setNeedAdmin,

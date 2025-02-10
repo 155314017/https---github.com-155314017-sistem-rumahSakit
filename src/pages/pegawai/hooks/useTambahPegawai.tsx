@@ -19,13 +19,7 @@ export interface Exclusion {
 export default function useTambahPegawai() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [gender, setGender] = useState('');
-    const [senin, setSenin] = useState<boolean>(false);
-    const [selasa, setSelasa] = useState<boolean>(false);
-    const [rabu, setRabu] = useState<boolean>(false);
-    const [kamis, setKamis] = useState<boolean>(false);
-    const [jumat, setJumat] = useState<boolean>(false);
-    const [sabtu, setSabtu] = useState<boolean>(false);
-    const [minggu, setMinggu] = useState<boolean>(false);
+    
 
     const labels = [
         "Pilih semua menu",
@@ -80,24 +74,7 @@ export default function useTambahPegawai() {
         { value: 4, label: "Manajemen" },
     ];
 
-    const jamOperasional = [
-        { value: 1, label: "07:00 am" },
-        { value: 2, label: "08:00 am" },
-        { value: 3, label: "09:00 am" },
-        { value: 4, label: "10:00 am" },
-        { value: 5, label: "11:00 am" },
-        { value: 6, label: "12:00 pm" },
-        { value: 7, label: "01:00 pm" },
-        { value: 8, label: "02:00 pm" },
-        { value: 9, label: "03:00 pm" },
-        { value: 10, label: "04:00 pm" },
-        { value: 11, label: "05:00 pm" },
-        { value: 12, label: "06:00 pm" },
-        { value: 13, label: "07:00 pm" },
-        { value: 14, label: "08:00 pm" },
-        { value: 15, label: "09:00 pm" },
-    ];
-
+   
     const formik = useFormik({
         initialValues: {
             nip: '12341234',
@@ -207,7 +184,6 @@ export default function useTambahPegawai() {
     const [selectAllChecked, setSelectAllChecked] = useState<boolean>(false);
 
     // Derived state: Menentukan apakah 'Pilih Semua Tindakan' harus disabled
-    const isSelectAllActionsDisabled = checkedItems.slice(1).every(item => !item);
 
     // Handler untuk checkbox individual (menu)
     const handleCheckboxChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -298,28 +274,12 @@ export default function useTambahPegawai() {
         setSelectAllChecked(allActionsChecked);
     };
 
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    const handleOpenModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
+    
 
     // State untuk Exclusions
-    const [exclusions, setExclusions] = useState<Exclusion[]>([]);
-    const [exclusionIdCounter, setExclusionIdCounter] = useState<number>(1);
 
-    const addExclusion = (exclusion: Omit<Exclusion, 'id'>) => {
-        setExclusions([...exclusions, { ...exclusion, id: exclusionIdCounter }]);
-        setExclusionIdCounter(exclusionIdCounter + 1);
-    };
-
-    const removeExclusion = (id: number) => {
-        setExclusions(exclusions.filter(exclusion => exclusion.id !== id));
-    };
+    
 
     const handleSubmitPage3 = () => {
         const selectedMenus = labels.slice(1).map((label, index) => ({
@@ -349,39 +309,15 @@ export default function useTambahPegawai() {
         getPageStyle,
         getBorderStyle,
         checkedItems,
-        setCheckedItems,
         menuActions,
-        setMenuActions,
         selectAllChecked,
-        setSelectAllChecked,
         handleCheckboxChange,
         handleSelectAll,
         handleSelectAllActions,
         handleIndividualCheckboxChange,
         gender,
         setGender,
-        senin,
-        setSenin,
-        selasa,
-        setSelasa,
-        rabu,
-        setRabu,
-        kamis,
-        setKamis,
-        jumat,
-        setJumat,
-        sabtu,
-        setSabtu,
-        minggu,
-        setMinggu,
-        jamOperasional,
-        isModalOpen,
-        handleOpenModal,
-        handleCloseModal,
-        exclusions,
-        addExclusion,
-        removeExclusion,
+
         handleSubmitPage3,
-        isSelectAllActionsDisabled,
     }
 }

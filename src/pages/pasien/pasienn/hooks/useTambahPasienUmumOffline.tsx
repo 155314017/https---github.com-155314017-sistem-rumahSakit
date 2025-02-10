@@ -83,21 +83,15 @@ export default function useTambahPasienUmumOffline() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [guardFullPage, setGuardFullPage] = useState(true);
     const [patientFullPage, setPatientFullsPage] = useState(true);
-    const [switchValue, setSwitchValue] = useState(false);
     const [selectedSchedule, setSelectedSchedule] = useState<string | null>(null);
     const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
-    const [selectedMethod, setSelectedMethod] = useState('');
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
     const [dataTickets, setDataTickets] = useState<dataTicket>();
-    const [calendarKey, setCalendarKey] = useState<number>(0);
     const [needAdmin, setNeedAdmin] = useState(false);
     const [NIK, setNIK] = useState('');
-    const [dataPasien, setDataPasien] = useState<PatientData>();
     const [idClinic, setIdClinic] = useState('');
     const [idDoctor, setIdDoctor] = useState('');
     const [docterName, setDocterName] = useState('');
-    const [birthPlace, setBirthPlace] = useState('');
-    const [birthDate, setBirthDate] = useState('');
     const [mainPages, setMainPages] = useState(true);
     const [clinicOptions, setClinicOptions] = useState<Clinic[]>([]);
     const [clinicName, setClinicName] = useState('');
@@ -122,11 +116,7 @@ export default function useTambahPasienUmumOffline() {
     };
 
 
-    const breadcrumbItems = [
-        { label: "Pasien Lama", href: "/tes" },
-        // { label: "Pasien", href: "/pasien" },
-        // { label: "Tambah Pasien", href: "/tambahPasien/Umum" },
-    ];
+
 
     const formik = useFormik({
         initialValues: {
@@ -273,7 +263,6 @@ export default function useTambahPasienUmumOffline() {
                         birthDate: formattedBirthDate,
                         birthPlace: response?.data.birthPlace
                     }
-                    setDataPasien(dataGet);
                     setBirth(dataGet?.birthDate || '');
                     setPatientData(dataGet);
                     console.log(birth);
@@ -349,13 +338,10 @@ export default function useTambahPasienUmumOffline() {
     const handleDropdownDocter = (value: string, label: string) => {
         setIdDoctor(value)
         setDocterName(label);
-        setCalendarKey((prevKey) => prevKey + 1);
     };
 
 
-    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedMethod(event.target.value);
-    };
+   
 
     const getPageStyle = (page: number) => {
         if (page === currentPage) {
@@ -405,37 +391,7 @@ export default function useTambahPasienUmumOffline() {
         }
     };
 
-    const createTicket = async (dataPatient: dataTicket) => {
-        setIsLoading(true)
-        try {
-            const response = await axios.post(
-                `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/registration/`,
-                dataPatient,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-            const createdDateTimeFormatted = dayjs.unix(response.data.scheduleDatum.createdDateTime).format('DD/MMM/YYYY, HH:mm');
-            const dataSent = {
-                nomorAntrian: response.data.queueDatum.queueNumber,
-                namaDokter: docterName,
-                clinic: clinicName,
-                tanggalReservasi: createdDateTimeFormatted,
-                jadwalKonsul: selectedSchedule,
-                bookingCode: response.data.bookingCode
-            }
-            setDataTickets(dataSent)
-            setMainPages(false)
-            // setCurrentPage(3);
-        } catch (err: any) {
-            setMainPages(false)
-            setCurrentPage(3);
-        } finally {
-            setIsLoading(false);
-        }
-    }
+    
 
     useEffect(() => {
         const fetchClinicData = async () => {
@@ -458,9 +414,7 @@ export default function useTambahPasienUmumOffline() {
         fetchClinicData();
     }, []);
 
-    const handleSwitchChange = (value: boolean) => {
-        setSwitchValue(value);
-    };
+   
 
     const registrationPatient = async (data: any) => {
         setIsLoading(true)
@@ -538,58 +492,34 @@ export default function useTambahPasienUmumOffline() {
 
     return {
         validationSchema,
-        breadcrumbItems,
         currentPage,
         setCurrentPage,
         getPageStyle,
         getBorderStyle,
-        handleSwitchChange,
-        switchValue,
-        selectedMethod,
-        setSelectedMethod,
         mainPages,
-        setMainPages,
-        guardFullPage,
-        setGuardFullPage,
         patientFullPage,
-        setPatientFullsPage,
-        handleRadioChange,
         handleScheduleChange,
-        setIdClinic,
-        idClinic,
-        handleDropdownDocter,
         doctorOptions,
-        setIdDoctor,
         idDoctor,
+        handleDropdownDocter,
         findPatientByNik,
         patientData,
         BpRadio,
-        // putGuard,
         changePage2,
-        dataPasien,
         clinicOptions,
         handleDropdownPoli,
-        createTicket,
-        setDataTickets,
         dataTickets,
-        birthDate,
-        birthPlace,
         showAlert,
-        calendarKey,
-        isLoading,
         handleGoBack,
         formik,
         setNeedAdmin,
         needAdmin,
-        fileName,
-        handleFileChange,
         NIK,
         birth,
         setPatientData,
         validationSchema1,
         navigate,
-        setBirthDate,
-        setBirthPlace,
+        idClinic,
         registrationPatient,
         selectedScheduleId,
         selectedSchedule,
@@ -597,9 +527,7 @@ export default function useTambahPasienUmumOffline() {
         docterName,
         tanggalReserve,
         registrationCode,
-        bookingCode,
         queueNumber,
         queueData,
-        idPatient,
     }
 }
