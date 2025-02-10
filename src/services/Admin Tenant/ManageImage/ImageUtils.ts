@@ -22,9 +22,12 @@ export interface ImageData {
 export const uploadImages = async (parentId: string, images: ImageData[]) => {
     if (!images.length) return;
 
+    // Filter gambar yang tidak kosong
+    const validImages = images.filter(img => img.imageData && img.imageType && img.imageName);
+
     const imageRequest = {
         parentId: parentId,
-        images: images.map(({ imageName = "", imageType = "", imageData = "" }) => ({
+        images: validImages.map(({ imageName = "", imageType = "", imageData = "" }) => ({
             imageName,
             imageType,
             imageData
@@ -36,9 +39,12 @@ export const uploadImages = async (parentId: string, images: ImageData[]) => {
 export const editImages = async (parentId: string, images: ImageData[]) => {
     if (!images.length) return;
 
+    // Filter gambar yang tidak kosong
+    const validImages = images.filter(img => img.imageData && img.imageType && img.imageName);
+
     const imageRequest = {
         parentId: parentId,
-        images: images.map(({ imageName = "", imageType = "", imageData = "" }) => ({
+        images: validImages.map(({ imageName = "", imageType = "", imageData = "" }) => ({
             imageName,
             imageType,
             imageData
@@ -46,3 +52,30 @@ export const editImages = async (parentId: string, images: ImageData[]) => {
     };
     return EditImageService(imageRequest);
 };
+
+export const convertToBase64Image = (imageType: string, imageData: string): string => {
+    return `data:${imageType};base64,${imageData}`;
+};
+
+export const processImageResponse = (imageResponse: any) => {
+    if (!imageResponse?.data?.length) {
+        return {
+            largeImage: "",
+            smallImages: []
+        };
+    }
+
+    const largeImage = convertToBase64Image(
+        imageResponse.data[0].imageType,
+        imageResponse.data[0].imageData
+    );
+
+    const smallImages = imageResponse.data
+        .slice(1)
+        .map((img: any) => convertToBase64Image(img.imageType, img.imageData));
+
+    return {
+        largeImage,
+        smallImages
+    };
+}; 
