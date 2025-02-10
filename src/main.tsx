@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './index.css'
 // import App from './App';
-import LoginPasien from './pages/login/loginPasien/features/LoginPasien';
 import Gedung from '../src/pages/gedung/features/Index';
 import Ambulance from './pages/ambulance/features/Index';
 import DetailAmbulance from './pages/ambulance/features/DetailAmbulance';
@@ -21,16 +20,11 @@ import DetailRuangan from './pages/ruangan/features/DetailRuangan';
 import Fasilitas from './pages/fasilitas/features/Index';
 import TambahFasilitas from './pages/fasilitas/features/TambahFasilitas';
 import TambahRuangan from './pages/ruangan/features/TambahRuangan';
-import BioPjBaru from './pages/login/loginPasien/features/BioPjBaru';
 import Pegawai from './pages/pegawai/features/Index';
 import DetailPegawai from './pages/pegawai/features/DetailPegawai';
 import TambahPegawai from './pages/pegawai/features/TambahPegawai';
 import Dokter from './pages/dokter/features/Index';
 import Pasien from './pages/pasien/features/Index';
-import RegisterPasienBaru from './pages/login/loginPasien/features/RegisterPasienBaru';
-import KategoriPasien from './pages/login/loginPasien/features/KategoriPasien';
-import RawatJalanBPJS from './pages/login/loginPasien/features/RawatJalanBPJS';
-import RawatJalanUmum from './pages/login/loginPasien/features/RawatJalanUmum';
 import TambahPasienBPJS from './pages/pasien/features/TambahPasienBPJS';
 import TambahPasienUmum from './pages/pasien/features/TambahPasienUmum';
 import EditPasienBPJS from './pages/pasien/features/EditPasienBPJS';
@@ -45,7 +39,6 @@ import EditFasilitas from './pages/fasilitas/features/EditFasilitas';
 import EditSUbFasilitas from './pages/fasilitas/features/EditSubFasilitas';
 import EditKlinik from './pages/klinik/features/EditKlinik';
 import EditKonter from './pages/konter/features/EditKonter';
-import RegisterPJ from './pages/login/penanggungJawab/features/RegisterPJ';
 import PrivateRoute from './services/Admin Tenant/Auth/PrivateRoute';
 import PilihKategoriPasien from './pages/pasien/pasienn/features/PilihKategoriPasien';
 import TambahPasienUmumOffline from './pages/pasien/pasienn/features/TambahPasienUmumOffline';
@@ -60,7 +53,10 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Router>
       <Routes>
+
+        {/* need auth login admin  */}
         <Route element={<PrivateRoute />} >
+
           {/* Gedung */}
           <Route path="/gedung" element={<Gedung />} />
           <Route path="/detailGedung/:id" element={<DetailGedung />} />
@@ -75,7 +71,6 @@ createRoot(document.getElementById('root')!).render(
 
           {/* DashboardAdmin  */}
           <Route path="/dashboard" element={<HomeAdmin />} />
-
 
           {/* Page Klinik */}
           <Route path="/klinik" element={<Klinik />} />
@@ -118,40 +113,26 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/tambahPasien/Umum" element={<TambahPasienUmum />} />
           <Route path="/editPasien/BPJS" element={<EditPasienBPJS />} />
           <Route path="/editPasien/Umum" element={<EditPasienUmum />} />
-          <Route path="/pasienn" element={<PilihKategoriPasien />} />
-
           {/* <Route path="/about" element={<About />} /> */}
-
         </Route>
 
-        {/* no need auth */}
-        {/* yang dipakai */}
-        {/* register pasien */}
-        <Route path="/register/pasien" element={<LoginPasien />} /> {/*1*/}
-        <Route path="/register/pasien/baru" element={<RegisterPasienBaru />} /> {/*2*/}
-        <Route path="/kategori/pasien" element={<KategoriPasien />} /> {/*5*/}
-        <Route path="/rawatjalan/umum" element={<RawatJalanUmum />} /> {/*Selected Umum*/}
+        {/* registrasi pasien  */}
         <Route path="/registrasi/offline" element={<PilihKategoriPasien />} />
         <Route path="/tambahPasien/umum/offline" element={<TambahPasienUmumOffline />} />
+
         <Route path="/registrasi/online" element={<RegistrationOnline />} />
-        {/* end yang dipakai  */}
 
-
-
-        <Route path="/register/pj" element={<RegisterPJ />} /> {/*3*/}
-        <Route path="/register/penanggungJawab" element={<BioPjBaru />} /> {/*4*/}
-        <Route path="/rawatjalan/bpjs" element={<RawatJalanBPJS />} /> {/*Selected BPJS*/}
-        {/* login pegawai */}
+        {/* login pegawai/admin  */}
         <Route path="/" element={<LoginPegawai />} />
         <Route path="/login/pegawai" element={<LoginPegawai />} />
+        
+        {/* reset pass admin/pegawai  */}
         <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
-        {/* end no need auth */}
+
+        {/* not found route  */}
         <Route path="*" element={<NotFoundPage />} />
 
-
-
-
-        {/* Dashboard Queue  */}
+        {/* dashboard antrian  */}
         <Route path="/dashboardQueue" element={<HomeQueue />} />
       </Routes>
     </Router>
