@@ -312,24 +312,28 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({ fetchDatas, onSuccessDelete 
                               onDeleteSuccess={handleDeleteSuccess}
                             />
                             <Link
-                              href="#"
                               onClick={() => navigate(`/editKlinik/${data.id}`)}
                               mr={2}
                               underline="hover"
                               sx={{
                                 textTransform: "capitalize",
                                 color: "#8F85F3",
+                                ":hover": {
+                                  cursor: "pointer",
+                                }
                               }}
                             >
                               Ubah
                             </Link>
                             <Link
-                              href="#"
                               onClick={() => navigate(`/detailKlinik/${data.id}`)}
                               underline="hover"
                               sx={{
                                 textTransform: "capitalize",
                                 color: "#8F85F3",
+                                ":hover": {
+                                  cursor: "pointer",
+                                }
                               }}
                             >
                               Lihat selengkapnya

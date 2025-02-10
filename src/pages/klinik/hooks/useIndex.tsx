@@ -8,9 +8,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 export default function useIndex() {
     const [data, setData] = useState<ClinicDataItem[]>([]);
-    const [successAddBuilding, setSuccessAddBuilding] = useState(false);
-    const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
-    const [successEditBuilding, setSuccessEditBuilding] = useState(false);
+    const [successAddClinic, setSuccessAddClinic] = useState(false);
+    const [successDeleteClinic, setSuccessDeleteClinic] = useState(false);
+    const [successEditClinic, setSuccessEditClinic] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
     const location = useLocation();
     const navigate = useNavigate();
@@ -45,31 +45,29 @@ export default function useIndex() {
     }, [location.state, navigate]);
 
     const showTemporaryAlertSuccess = async () => {
-        setSuccessAddBuilding(true);
+        setSuccessAddClinic(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessAddBuilding(false);
+        setSuccessAddClinic(false);
     };
 
     const showTemporarySuccessDelete = async () => {
-        setSuccessDeleteBuilding(true);
+        setSuccessDeleteClinic(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessDeleteBuilding(false);
+        setSuccessDeleteClinic(false);
     };
 
     const showTemporarySuccessEdit = async () => {
-        setSuccessEditBuilding(true);
+        setSuccessEditClinic(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessEditBuilding(false);
+        setSuccessEditClinic(false);
     };
   return {
-    data,
-    successAddBuilding,
-    successDeleteBuilding,
-    successEditBuilding,
-    isLoading,
-    showTemporaryAlertSuccess,
-    showTemporarySuccessDelete,
-    showTemporarySuccessEdit,
-    fetchData
+    data, 
+    isLoading, 
+    fetchData, 
+    successAddClinic, 
+    successDeleteClinic, 
+    successEditClinic, 
+    showTemporarySuccessDelete
   }
 }

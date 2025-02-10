@@ -48,11 +48,11 @@ export default function useDetailKlinik() {
       href: "/dashboard",
     },
     {
-      label: "Gedung",
+      label: "Klinik",
       href: "/Klinik",
     },
     {
-      label: "Detail Gedung",
+      label: "Detail Klinik",
       href: "/detailKlinik",
     },
   ];
@@ -89,12 +89,12 @@ export default function useDetailKlinik() {
 
   const handleDeleteSuccess = () => {
     setOpen(false);
-    navigate("/gedung", { state: { successDelete: true, message: "Gedung berhasil dihapus!" } });
+    navigate("/klinik", { state: { successDelete: true, message: "Klinik berhasil dihapus!" } });
   };
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
+  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, clinicId: string) => {
     event.preventDefault();
-    setDeletedItems(buildingId);
+    setDeletedItems(clinicId);
     setOpen(true);
   };
 
@@ -104,13 +104,11 @@ export default function useDetailKlinik() {
     breadcrumbItems,
     largeImage,
     smallImage,
-    handleDeleteSuccess,
-    confirmationDelete,
     loading,
-    deletedItems,
-    setOpen,
-    navigate,
-    open,
     clinicData,
+    confirmationDelete,
+    handleDeleteSuccess,
+    deletedItems,
+    open,
   };
 }

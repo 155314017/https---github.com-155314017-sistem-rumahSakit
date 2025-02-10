@@ -22,11 +22,6 @@ type ImageData = {
   imageData: string;
 };
 
-// type Schedule = {
-//   day: string
-//   startTime: dayjs.Dayjs
-//   endTime: dayjs.Dayjs
-// }
 export default function useEditKlinik() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [imagesData, setImagesData] = useState<ImageData[]>([])
@@ -93,8 +88,6 @@ export default function useEditKlinik() {
         const clinicResponse = await getClinicByIdService(id); 
         const scheduleResponse = await GetScheduleByTypeId(id || "");
         const exclusionResponse = await GetExclusionByTypeId(id || "");
-        console.log("Schedule Response from API:", scheduleResponse);
-        console.log("Exclusion Response from API:", exclusionResponse);
 
         if (clinicResponse) {
           setClinicData(clinicResponse);
@@ -154,7 +147,6 @@ export default function useEditKlinik() {
   const handleEditClinic = async () => {
     try {
       const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
-      console.log("kalenderData: ", kalenderData);
       // Validasi input schedule
       validateInput(kalenderData);
 
@@ -183,12 +175,10 @@ export default function useEditKlinik() {
       const promises = [];
       
       if (newPraktekData.length > 0) {
-        console.log('Creating new praktek schedules:', newPraktekData);
         promises.push(createSchedules(clinicId, newPraktekData));
       }
 
       if (newExclusionData.length > 0) {
-        console.log('Creating new exclusion schedules:', newExclusionData);
         promises.push(createExclusions(clinicId, newExclusionData));
       }
 
@@ -218,20 +208,18 @@ export default function useEditKlinik() {
   };
 
   return {
-    formik,
     handleImageChange,
-    imagesData,
-    errorAlert,
     breadcrumbItems,
-    id,
-    currentPage,
+    formik,
     setCurrentPage,
     getPageStyle,
     getBorderStyle,
+    currentPage,
     handleEditClinic,
     kalenderRef,
-    clinicData,
+    id,
     scheduleDataPraktek,
-    scheduleDataPengecualian
+    scheduleDataPengecualian,
+    errorAlert
   }
 }

@@ -11,9 +11,8 @@ export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: 
   const [open, setOpen] = React.useState<boolean>(false);
   const [datas, setDatas] = useState<ClinicDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
-  const [dataSchedules, setDataSchedules] = useState<any[]>([])
-  const [pageNumber, setPageNumber] = useState(0);
-  const [pageSize, setPageSize] = useState(100);
+  const [pageNumber] = useState(0);
+  const [pageSize] = useState(100);
   const [sort, setSort] = useState('');
   const [orderBy, setOrderBy] = useState("createdDateTime=asc");
 
@@ -43,9 +42,7 @@ export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: 
 
       // Loop untuk setiap id dari hasil ClinicServices
       for (let index = 0; index < result.length; index++) {
-        console.log('id ke-', index, ': ', result[index].id);
         const hasil = await GetScheduleByTypeId(result[index].id);
-        console.log('data schedule: ', hasil);
 
         // Array untuk menyimpan jadwal startTime dan endTime per id
         const schedules = [];
@@ -77,9 +74,7 @@ export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: 
         });
       }
 
-      console.log('Formatted Schedules:', dataSchedules);
       setDatas(result);
-      setDataSchedules(dataSchedules);
     } catch (error) {
       console.error('Failed to fetch data from API: ', error);
     }
@@ -88,10 +83,10 @@ export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: 
     fetchData();
   }, []);
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
+  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, clinicId: string) => {
 
     event.preventDefault();
-    setDeletedItems(buildingId);
+    setDeletedItems(clinicId);
     setOpen(true);
   };
 
@@ -122,15 +117,11 @@ export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: 
 
   return {
     page,
-    setPage,
     isCollapsed,
-    setIsCollapsed,
     open,
     setOpen,
     datas,
-    setDatas,
     deletedItems,
-    setDeletedItems,
     confirmationDelete,
     handleDeleteSuccess,
     handleChangePage,
@@ -139,10 +130,6 @@ export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: 
     urutkan,
     toggleCollapse,
     navigate,
-    dataSchedules,
-    setPageNumber,
-    setPageSize,
-    setOrderBy,
     setSort,
   }
 }

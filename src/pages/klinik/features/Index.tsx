@@ -15,7 +15,7 @@ import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import useIndex from "../hooks/useIndex";
 
 export default function Index() {
-    const { data, isLoading, fetchData, successAddBuilding, successDeleteBuilding, successEditBuilding, showTemporarySuccessDelete } = useIndex();
+    const { data, isLoading, fetchData, successAddClinic, successDeleteClinic, successEditClinic, showTemporarySuccessDelete } = useIndex();
     return (
         <Box>
             <SideBar />
@@ -23,13 +23,13 @@ export default function Index() {
             <Box p={2} sx={{ marginLeft: "130px" }}>
                 <Header />
                 <Box>
-                    {successAddBuilding && (
+                    {successAddClinic && (
                         <AlertSuccess label="Success adding clinic" />
                     )}
-                    {successDeleteBuilding && (
+                    {successDeleteClinic && (
                         <AlertSuccess label="Success delete clinic" />
                     )}
-                    {successEditBuilding && (
+                    {successEditClinic && (
                         <AlertSuccess label="Success edit clinic" />
                     )}
                     <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
