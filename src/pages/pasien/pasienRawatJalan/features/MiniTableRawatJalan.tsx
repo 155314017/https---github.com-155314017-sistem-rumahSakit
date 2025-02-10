@@ -1,6 +1,6 @@
-import { Box, Stack, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Link, Pagination } from "@mui/material";
+import { Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Link, } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import bgImage from "../../../../assets/img/String.png";
+
 import useMiniTableRawatJalan from "../hooks/useMiniTableRawatJalan";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -34,7 +34,7 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 export default function MiniTableRawatJalan() {
-    const { page, datas, handleChangePage, rowsPerPage, displayedData, confirmationDelete, userDataPhone } = useMiniTableRawatJalan();
+    const { displayedData, confirmationDelete } = useMiniTableRawatJalan();
 
     return (
         <Box>
@@ -42,9 +42,9 @@ export default function MiniTableRawatJalan() {
                 <Box>
                     <StyledTableContainer
                         sx={{
-                            mt: 2,
+                            mt: '-2%',
                             boxShadow: "none",
-                            mb: 2,
+                            // mb: 2,
                             maxHeight: "350px",
                             borderRadius: "16px",
                             overflowY: "auto",
@@ -53,16 +53,16 @@ export default function MiniTableRawatJalan() {
                         <Table stickyHeader sx={{ width: "100%" }}>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell width={"8%"} sx={{ lineHeight: '18px', fontSize: "16px", fontWeight: 600, color: "#292B2C", bgcolor: "#F1F0FE" }} align="center">
+                                    <TableCell width={"15%"} sx={{ lineHeight: '18px', fontSize: "16px", fontWeight: 600, color: "#292B2C", bgcolor: "#F1F0FE" }} align="center">
                                         No Antri
                                     </TableCell>
-                                    <TableCell width={"8%"} sx={{ fontSize: "14px", fontWeight: 700, color: "#292B2C", bgcolor: "#F1F0FE" }} align="center">
+                                    <TableCell width={"15%"} sx={{ fontSize: "14px", fontWeight: 700, color: "#292B2C", bgcolor: "#F1F0FE" }} align="center">
                                         No RM
                                     </TableCell>
-                                    <TableCell width={"12%"} sx={{ fontSize: "14px", fontWeight: 700, color: "#292B2C", bgcolor: "#F1F0FE" }} align="center">
+                                    <TableCell width={"20%"} sx={{ fontSize: "14px", fontWeight: 700, color: "#292B2C", bgcolor: "#F1F0FE" }} align="center">
                                         Nama Pasien
                                     </TableCell>
-                                    <TableCell width={"20%"} sx={{ fontSize: "14px", fontWeight: 700, color: "#292B2C", bgcolor: "#F1F0FE" }} align="center">
+                                    <TableCell width={"5%"} sx={{ fontSize: "14px", fontWeight: 700, color: "#292B2C", bgcolor: "#F1F0FE" }} align="center">
                                         Aksi
                                     </TableCell>
                                 </TableRow>
@@ -102,15 +102,57 @@ export default function MiniTableRawatJalan() {
                                             >
                                                 {data.gender}
                                             </TableCell>
-                                            <TableCell align="center" sx={{ color: "#292B2C", fontSize: "14px", textTransform: "capitalize" }}>
-                                                <Link href="#" underline="none" color={"#8F85F3"} onClick={confirmationDelete} sx={{ mr: 2 }}>
-                                                    Panggil
+                                            <TableCell
+                                                align="center"
+                                                sx={[
+                                                    {
+                                                        color: "#292B2C",
+                                                        fontSize: "14px",
+                                                        textTransform: "capitalize",
+                                                        display: "flex",
+                                                        flexDirection: "row",
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        gap: 1,
+                                                    },
+                                                ]}
+                                            >
+                                                <Link
+                                                    href="#"
+                                                    underline="none"
+                                                    color={"#8F85F3"}
+                                                    onClick={confirmationDelete}
+                                                // sx={{ mr: 2 }}
+                                                >
+                                                    {/* Panggil */}
+                                                    <Box padding={'6px'} border={'1px solid #8F85F3'} width={'fit-content'} height={'fit-content'} bgcolor={'#8F85F3'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
+                                                        <Typography fontSize={'12px'} color="white" >Panggil</Typography>
+                                                    </Box>
                                                 </Link>
-                                                <Link href="#" mr={2} underline="hover" sx={{ textTransform: "capitalize", color: "#8F85F3" }}>
-                                                    Lihat Detail
+                                                <Link
+                                                    href="#"
+                                                    // mr={2}
+                                                    underline="hover"
+                                                    sx={{
+                                                        textTransform: "capitalize",
+                                                        color: "#8F85F3",
+                                                    }}
+                                                >
+                                                    <Box padding={'6px'} border={'1px solid #8F85F3'} width={'65px'} height={'fit-content'} bgcolor={'inherit'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
+                                                        <Typography fontSize={'12px'} color="#8F85F3" >Lihat Detail</Typography>
+                                                    </Box>
                                                 </Link>
-                                                <Link href="/detailGedung" underline="hover" sx={{ textTransform: "capitalize", color: "#8F85F3" }}>
-                                                    :
+                                                <Link
+                                                    href="# "
+                                                    underline="hover"
+                                                    sx={{
+                                                        textTransform: "capitalize",
+                                                        color: "#8F85F3",
+                                                    }}
+                                                >
+                                                    <Box padding={'2px'} px={'14px'} border={'1px solid #8F85F3'} width={'fit-content'} height={'fit-content'} bgcolor={'inherit'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
+                                                        <Typography color="#8F85F3" >:</Typography>
+                                                    </Box>
                                                 </Link>
                                             </TableCell>
                                         </StyledTableRow>

@@ -1,19 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import Data from "../../../../dummyData/dataPasien"
+
 export default function useTableRawatJalan() {
     const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [selected, setSelected] = useState<string | null>(null);
 
-    // Fungsi untuk mengubah tombol yang dipilih
-    const handleButtonClick = (buttonName: string) => {
-        setSelected(buttonName);
-    };
+    const [countdowns, setCountdowns] = useState<{ [key: string]: { countdown: number, isCounting: boolean, timer: number | null } }>({});
 
-    // setDatas(Data)
-    const datas = Data
-
+    const datas = Data;
 
     const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
@@ -39,9 +34,34 @@ export default function useTableRawatJalan() {
         setIsCollapsed((prev) => !prev);
     };
 
-    const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
-        event.preventDefault();
-        // setOpen(true);
+    const countDownPanggil = (id: string) => {
+        if (!countdowns[id]?.isCounting) {
+            setCountdowns(prev => {
+                const newCountdowns = { ...prev };
+                newCountdowns[id] = { countdown: 30, isCounting: true, timer: null };
+                return newCountdowns;
+            });
+
+            const interval = setInterval(() => {
+                setCountdowns(prev => {
+                    const newCountdowns = { ...prev };
+                    const currentCountdown = newCountdowns[id];
+                    if (currentCountdown.countdown > 0) {
+                        newCountdowns[id] = { ...currentCountdown, countdown: currentCountdown.countdown - 1 };
+                    } else {
+                        clearInterval(currentCountdown.timer!);
+                        newCountdowns[id] = { ...currentCountdown, isCounting: false, countdown: 30 }; 
+                    }
+                    return newCountdowns;
+                });
+            }, 1000);
+
+            setCountdowns(prev => {
+                const newCountdowns = { ...prev };
+                newCountdowns[id] = { ...newCountdowns[id], timer: interval };
+                return newCountdowns;
+            });
+        }
     };
 
     const getButtonStyle = (buttonName: string) => {
@@ -62,8 +82,8 @@ export default function useTableRawatJalan() {
                 color: '#ffff',
             },
             ...(selected === buttonName && {
-                backgroundColor: "#8F85F3", // Warna latar belakang ketika dipilih
-                color: "#fff", // Warna teks ketika dipilih
+                backgroundColor: "#8F85F3",
+                color: "#fff",
             }),
         };
     };
@@ -80,8 +100,10 @@ export default function useTableRawatJalan() {
         sortir,
         urutkan,
         toggleCollapse,
-        confirmationDelete,
+        countDownPanggil,
         getButtonStyle,
-        handleButtonClick,
+        handleButtonClick: setSelected,
+        isCounting: false,
+        countdowns
     }
 }
