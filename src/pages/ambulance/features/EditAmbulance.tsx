@@ -22,10 +22,10 @@ export default function EditAmbulance() {
     currentPage,
     handleEditAmbulance,
     kalenderRef,
-    idAmbulance,
     ambulanceData,
     scheduleDataPraktek,
-    scheduleDataPengecualian 
+    scheduleDataPengecualian,
+    id
   } = useEditAmbulance();
 
 
@@ -142,7 +142,7 @@ export default function EditAmbulance() {
               <Typography fontSize="20px" fontWeight="700" mb="32px" mt="54px">
                 Informasi Ambulance
               </Typography>
-              <ImageUploaderGroupAPI onChange={handleImageChange} parentId={idAmbulance || ''} />
+              <ImageUploaderGroupAPI onChange={handleImageChange} parentId={id || ''} />
               <Box component="form" noValidate autoComplete="off" mt={3}>
                 <Typography sx={{ fontSize: '16px' }}>
                   Biaya Tarif<span style={{ color: 'red' }}>*</span>
@@ -179,7 +179,7 @@ export default function EditAmbulance() {
                 ref={kalenderRef} 
                 initialData={scheduleDataPraktek} 
                 initialDataPengecualian={scheduleDataPengecualian}
-                typeId={idAmbulance} 
+                typeId={id} 
               />
               <Button
                 onClick={handleEditAmbulance}
