@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { CounterDataItem, CounterServices } from "../../../services/Admin Tenant/ManageCounter/CounterServices";
@@ -8,7 +9,7 @@ export default function useTableKonter(fetchDatas: () => void, onSuccessDelete: 
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
-  const [datas, setDatas] = useState<CounterDataItem[]>([]);
+  const [dataCounter, setDataCounter] = useState<CounterDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
   const navigate = useNavigate();
   const [dataSchedules, setDataSchedules] = useState<any[]>([])
@@ -42,18 +43,13 @@ export default function useTableKonter(fetchDatas: () => void, onSuccessDelete: 
   const fetchData = async () => {
     try {
       const result = await CounterServices(pageNumber, pageSize, orderBy);
-      const allSchedules = []; // Array untuk menyimpan semua jadwal
-      const dataSchedules = []; // Array untuk menyimpan jadwal terpisah
+      const allSchedules = [];
+      const dataSchedules = [];
 
-      // Loop untuk setiap id dari hasil AmbulanceServices
       for (let index = 0; index < result.length; index++) {
-        console.log('id ke-', index, ': ', result[index].id);
         const hasil = await GetScheduleByTypeId(result[index].id);
-        console.log('data schedule: ', hasil);
-
-        // Array untuk menyimpan jadwal startTime dan endTime per id
         const schedules = [];
-        const formattedSchedules = []; // Array untuk menyimpan jadwal yang sudah diformat
+        const formattedSchedules = [];
 
         for (let scheduleIndex = 0; scheduleIndex < hasil.length; scheduleIndex++) {
           const formatTime = (timeArray: string | any[]) => {
@@ -80,10 +76,7 @@ export default function useTableKonter(fetchDatas: () => void, onSuccessDelete: 
           operationalSchedule: formattedSchedules.join(' / '),
         });
       }
-
-      console.log('Formatted Schedules:', dataSchedules);
-
-      setDatas(result); // Store the result in datas state
+      setDataCounter(result);
       setDataSchedules(dataSchedules);
     } catch (error) {
       console.error('Failed to fetch data from API: ', error);
@@ -100,7 +93,7 @@ export default function useTableKonter(fetchDatas: () => void, onSuccessDelete: 
 
   const rowsPerPage = 10;
 
-  const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const displayedData = dataCounter.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
 
 
@@ -121,26 +114,21 @@ export default function useTableKonter(fetchDatas: () => void, onSuccessDelete: 
   };
   return {
     page,
-    setPage,
     isCollapsed,
-    setIsCollapsed,
     open,
     setOpen,
-    datas,
-    setDatas,
+    dataCounter,
     deletedItems,
-    setDeletedItems,
     navigate,
-    fetchData,
     handleChangePage,
     rowsPerPage,
     displayedData,
     urutkan,
     toggleCollapse,
     confirmationDelete,
+    setSort,
     handleDeleteSuccess,
     dataSchedules,
-    setSort,
     setPageNumber,
     setPageSize
   }

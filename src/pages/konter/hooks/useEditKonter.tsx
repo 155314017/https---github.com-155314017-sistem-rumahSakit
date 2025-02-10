@@ -28,22 +28,18 @@ export default function useEditKonter() {
     namaKonter: string;
     lokasiKonter: string;
   }
-   
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDataCounter = async () => {
       try {
-        const counterResponse = await  GetCounterByIdServices(id); 
+        const counterResponse = await GetCounterByIdServices(id);
         const scheduleResponse = await GetScheduleByTypeId(id || "");
         const exclusionResponse = await GetExclusionByTypeId(id || "");
-        console.log("Schedule Response from API:", scheduleResponse);
-        console.log("Exclusion Response from API:", exclusionResponse);
-
         if (counterResponse) {
           setCounterData(counterResponse);
         }
 
-        if (scheduleResponse) { 
-          // Transform API data ke format yang sesuai dengan getKalenderData  
+        if (scheduleResponse) {
           setScheduleDataPraktek(scheduleResponse);
         }
 
@@ -56,96 +52,91 @@ export default function useEditKonter() {
       }
 
     };
-    fetchData();
+    fetchDataCounter();
   }, [id]);
 
 
-    const handleImageChange = (images: ImageData[]) => {
-        setImagesData(images);
-    };
+  const handleImageChange = (images: ImageData[]) => {
+    setImagesData(images);
+  };
 
-    const showTemporaryAlertError = async () => {
-        setErrorAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setErrorAlert(false);
-    };
+  const showTemporaryAlertError = async () => {
+    setErrorAlert(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setErrorAlert(false);
+  };
 
-    const breadcrumbItems = [
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "Konter", href: "/konter" },
-        { label: "Edit Konter", href: "/editKonter/:id" },
-    ];
+  const breadcrumbItems = [
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "Konter", href: "/konter" },
+    { label: "Edit Konter", href: "/editKonter/:id" },
+  ];
 
-    const formik = useFormik<FormValues>({
-        initialValues: {
-            namaKonter: counterData?.name || '',
-            lokasiKonter: counterData?.location || '',
-        },
-        enableReinitialize: true,
-        validationSchema: Yup.object({
-            namaKonter: Yup.string().required('Nama Konter is required'),
-            lokasiKonter: Yup.string().required('Deskripsi Konter is required'),
-        }),
-        onSubmit: async (values) => {
-          console.log(values);
-        },
-    });
+  const formik = useFormik<FormValues>({
+    initialValues: {
+      namaKonter: counterData?.name || '',
+      lokasiKonter: counterData?.location || '',
+    },
+    enableReinitialize: true,
+    validationSchema: Yup.object({
+      namaKonter: Yup.string().required('Nama Konter wajib diisi'),
+      lokasiKonter: Yup.string().required('Deskripsi Konter wajib diisi'),
+    }),
+    onSubmit: async () => {
+    },
+  });
 
-    const getPageStyle = (page: number) => {
-      if (page === currentPage) {
-          return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
-      } else if (page < currentPage) {
-          return { color: "#8F85F3", cursor: "pointer" };
-      } else {
-          return { color: "black", cursor: "pointer" };
-      }
+  const getPageStyle = (page: number) => {
+    if (page === currentPage) {
+      return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
+    } else if (page < currentPage) {
+      return { color: "#8F85F3", cursor: "pointer" };
+    } else {
+      return { color: "black", cursor: "pointer" };
+    }
   };
 
   const getBorderStyle = (page: number) => {
-      if (page === currentPage) {
-          return {
-              display: "flex",
-              border: "1px solid #8F85F3",
-              width: "38px",
-              height: "38px",
-              borderRadius: "8px",
-              justifyContent: "center",
-              alignItems: "center",
-          };
-      } else if (page < currentPage) {
-          return {
-              display: "flex",
-              border: "1px solid #8F85F3",
-              width: "38px",
-              height: "38px",
-              borderRadius: "8px",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "#8F85F3",
-              color: "white",
-          };
-      } else {
-          return {
-              display: "flex",
-              border: "1px solid #8F85F3",
-              width: "38px",
-              height: "38px",
-              borderRadius: "8px",
-              justifyContent: "center",
-              alignItems: "center",
-              color: "#8F85F3",
-          };
-      }
+    if (page === currentPage) {
+      return {
+        display: "flex",
+        border: "1px solid #8F85F3",
+        width: "38px",
+        height: "38px",
+        borderRadius: "8px",
+        justifyContent: "center",
+        alignItems: "center",
+      };
+    } else if (page < currentPage) {
+      return {
+        display: "flex",
+        border: "1px solid #8F85F3",
+        width: "38px",
+        height: "38px",
+        borderRadius: "8px",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#8F85F3",
+        color: "white",
+      };
+    } else {
+      return {
+        display: "flex",
+        border: "1px solid #8F85F3",
+        width: "38px",
+        height: "38px",
+        borderRadius: "8px",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "#8F85F3",
+      };
+    }
   };
 
   const handleEditCounter = async () => {
     try {
       const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
-      console.log("kalenderData: ", kalenderData);
-      // Validasi input schedule
       validateInput(kalenderData);
-
-      // Data untuk EditAmbulanceService
       const counterData = {
         name: formik.values.namaKonter,
         location: formik.values.lokasiKonter,
@@ -153,39 +144,34 @@ export default function useEditKonter() {
         counterId: id || ''
       };
 
-      // Edit ambulance
       const { data: { id: counterId } } = await EditCounterServices(counterData);
       if (!counterId) throw new Error('Counter ID tidak ditemukan');
 
       await editImages(counterId, imagesData);
       // Pisahkan data praktek yang baru (yang memiliki id dengan format 'session-')
       const newPraktekData = kalenderData.praktek.filter(item => item.id.startsWith('session-'));
-      
+
       // Pisahkan data exclusion yang baru (yang memiliki id dengan format 'exclusion-')
       const newExclusionData = kalenderData.exclusion.filter(item => item.id.startsWith('exclusion-'));
 
       // Proses data baru secara parallel jika ada
       const promises = [];
-      
+
       if (newPraktekData.length > 0) {
-        console.log('Creating new praktek schedules:', newPraktekData);
         promises.push(createSchedules(counterId, newPraktekData));
       }
 
       if (newExclusionData.length > 0) {
-        console.log('Creating new exclusion schedules:', newExclusionData);
         promises.push(createExclusions(counterId, newExclusionData));
       }
 
-      // Tunggu semua proses selesai
       if (promises.length > 0) {
         await Promise.all(promises);
       }
 
-      // Reset state dan redirect
       formik.resetForm();
       setImagesData([]);
-      
+
       navigate('/konter', {
         state: {
           successAdd: true,

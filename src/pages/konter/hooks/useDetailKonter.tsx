@@ -105,5 +105,6 @@ export default function useDetailKonter() {
     navigate,
     open,
     counterData,
+    id
   };
 }

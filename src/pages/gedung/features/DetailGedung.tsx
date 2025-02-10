@@ -10,7 +10,7 @@ import ModalDeleteConfirmation from "../../../components/small/modal/ModalDelete
 import useDetailGedung from "../hooks/useDetailGedung";
 
 export default function DetailGedung() {
-    const{
+  const {
     name,
     address,
     deletedItems,
@@ -24,7 +24,7 @@ export default function DetailGedung() {
     navigate,
     setOpen,
     id
-    }=useDetailGedung();
+  } = useDetailGedung();
   return (
     <Container sx={{ py: 2 }}>
       <BreadCrumbs
@@ -32,7 +32,7 @@ export default function DetailGedung() {
         onBackClick={() => window.history.back()}
       />
       <Box mt={3}>
-        <ImageGrid largeImage={largeImage} smallImages={smallImage} loading={loading}  />
+        <ImageGrid largeImage={largeImage} smallImages={smallImage} loading={loading} />
       </Box>
 
       <Box mt={3}>
@@ -44,7 +44,7 @@ export default function DetailGedung() {
           ]}
           data={[
             {
-              nomor: "K 204",
+              nomor: name,
               alamatGedung: address,
               aksi: {
                 hapusLink: "#",

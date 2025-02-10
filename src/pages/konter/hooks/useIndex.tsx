@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { CounterServices, CounterDataItem } from "../../../services/Admin Tenant/ManageCounter/CounterServices";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -14,7 +15,6 @@ export default function useIndex() {
         setIsLoading(true)
         try {
             const result = await CounterServices();
-            console.log(result);
             setData(result);
             setIsLoading(false)
         } catch (error) {
@@ -28,14 +28,14 @@ export default function useIndex() {
     useEffect(() => {
         if (location.state && location.state.successAdd) {
             showTemporaryAlertSuccess();
-            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+            navigate(location.pathname, { replace: true, state: undefined }); 
         }
     }, [location.state, navigate]);
 
     useEffect(() => {
         if (location.state && location.state.successEdit) {
             showTemporarySuccessEdit();
-            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+            navigate(location.pathname, { replace: true, state: undefined }); 
         }
     }, [location.state, navigate]);
 

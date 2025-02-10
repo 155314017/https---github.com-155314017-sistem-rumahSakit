@@ -55,8 +55,7 @@ export default function useTambahKonter() {
             namaKonter: Yup.string().required('Nama Konter is required'),
             lokasiKonter: Yup.string().required('Deskripsi Konter is required'),
         }),
-        onSubmit: async (values) => {
-            console.log(values);
+        onSubmit: async () => {
         },
     });
 

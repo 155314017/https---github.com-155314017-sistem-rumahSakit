@@ -8,7 +8,6 @@ import {
     TableRow,
     TableCell,
     TableBody,
-    Link,
     Pagination,
     IconButton,
     Collapse,
@@ -59,11 +58,12 @@ interface TableKonterProps {
     onSuccessDelete: () => void;
 }
 const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }) => {
-    const { page,
+    const {
+        page,
         isCollapsed,
         open,
         setOpen,
-        datas,
+        dataCounter,
         deletedItems,
         navigate,
         handleChangePage,
@@ -73,7 +73,8 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
         toggleCollapse,
         confirmationDelete,
         setSort,
-        handleDeleteSuccess } = useTableKonter(fetchDatas, onSuccessDelete);
+        handleDeleteSuccess
+    } = useTableKonter(fetchDatas, onSuccessDelete);
     return (
         <Box>
             <Box
@@ -296,42 +297,40 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
                                                                 color: "#292B2C",
                                                                 fontSize: "14px",
                                                                 textTransform: "capitalize",
+                                                                display: "flex",
+                                                                flexDirection: "row",
                                                             },
                                                         ]}
                                                     >
-                                                        <Link
-                                                            href="#"
-                                                            underline="none"
+                                                        <Typography
                                                             color={"#8F85F3"}
-                                                            onClick={(event) => confirmationDelete(event, data.id)}
-                                                            sx={{ mr: 2 }}
+                                                            onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => confirmationDelete(event, data.id)}
+                                                            sx={{ mr: 2, cursor: 'pointer' }}
                                                         >
                                                             Hapus
-                                                        </Link>
+                                                        </Typography>
                                                         <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/counter/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
-                                                        <Link
-                                                            href="#"
+                                                        <Typography
                                                             mr={2}
                                                             onClick={() => navigate(`/editKonter/${data.id}`)}
-                                                            underline="hover"
                                                             sx={{
                                                                 textTransform: "capitalize",
                                                                 color: "#8F85F3",
+                                                                cursor: 'pointer'
                                                             }}
                                                         >
                                                             Ubah
-                                                        </Link>
-                                                        <Link
-                                                            href="#"
+                                                        </Typography>
+                                                        <Typography
                                                             onClick={() => navigate(`/detailKonter/${data.id}`)}
-                                                            underline="hover"
                                                             sx={{
                                                                 textTransform: "capitalize",
                                                                 color: "#8F85F3",
+                                                                cursor: 'pointer'
                                                             }}
                                                         >
                                                             Lihat Selengkapnya
-                                                        </Link>
+                                                        </Typography>
                                                     </TableCell>
                                                 </StyledTableRow>
                                             ))
@@ -349,10 +348,10 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
 
                         <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center">
                             <Typography sx={{ color: "#A8A8BD" }}>
-                                Showing {(page - 1) * rowsPerPage + 1} to {Math.min(page * rowsPerPage, datas.length)} of {datas.length} entries
+                                Showing {(page - 1) * rowsPerPage + 1} to {Math.min(page * rowsPerPage, dataCounter.length)} of {dataCounter.length} entries
                             </Typography>
                             <Pagination
-                                count={Math.ceil(datas.length / rowsPerPage)}
+                                count={Math.ceil(dataCounter.length / rowsPerPage)}
                                 shape="rounded"
                                 page={page}
                                 onChange={handleChangePage}
