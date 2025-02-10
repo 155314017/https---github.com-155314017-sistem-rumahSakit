@@ -1,18 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { GetRoomByIdServices } from "../../../services/Admin Tenant/ManageRoom/GetRoomByIdServices";
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
+import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
+import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
 
 
 
 export default function useDetailRuangan() {
-    const [name, setName] = useState<string>("");
-    const [type, setType] = useState<string>("");
+    const [roomName, setRoomName] = useState<string>("");
+    const [roomType, setRoomType] = useState<string>("");
     const [deletedItems, setDeletedItems] = useState("");
     const [open, setOpen] = useState(false);
-    const [ids, setIds] = useState("");
+    const [roomId, setRoomId] = useState("");
     const { id } = useParams();
     const navigate = useNavigate();
     const [largeImage, setLargeImage] = useState<string>("");
@@ -40,24 +41,16 @@ export default function useDetailRuangan() {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const token = Cookies.get("accessToken");
-            const response = await GetRoomByIdServices(id, token);
-            setIds(response.id);
-            setName(response.name);
-            setType(response.type);
+            const response = await GetRoomByIdServices(id);
+            setRoomId(response.id);
+            setRoomName(response.name);
+            setRoomType(response.type);
             setBuildingId(response.masterBuildingId);
-
             if (response.id) {
                 const imageResponse = await GetImageByParentId(response.id);
-                if (imageResponse?.data?.length > 0) {
-                    setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
-                    setSmallImages(imageResponse.data.map((img) => 
-                        `data:${img.imageType};base64,${img.imageData}`
-                    ));
-                } else {
-                    setLargeImage("");
-                    setSmallImages([]);
-                }
+                const { largeImage, smallImages } = processImageResponse(imageResponse);
+                setLargeImage(largeImage);
+                setSmallImages(smallImages);
             }
 
             setLoading(false);
@@ -75,17 +68,8 @@ export default function useDetailRuangan() {
     useEffect(() => {
         const fetchDataBuildings = async () => {
             try {
-                const token = Cookies.get("accessToken");
-                const response = await axios.get(
-                    `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${buildingId}`,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            accessToken: `${token}`,
-                        }
-                    }
-                );
-                setBuildingName(response.data.data.name)
+                const response = await GetBuildingById(buildingId);
+                setBuildingName(response.name)
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -106,11 +90,11 @@ export default function useDetailRuangan() {
     };
 
     return {
-        name,
-        type,
+        roomName,
+        roomType,
         deletedItems,
         open,
-        ids,
+        roomId,
         largeImage,
         smallImage,
         loading,
@@ -121,5 +105,5 @@ export default function useDetailRuangan() {
         navigate,
         setOpen
     }
-        
+
 }

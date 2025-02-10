@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import Cookies from 'js-cookie'
 export interface RoomDataItem {
   id: string
   name: string
@@ -34,11 +34,9 @@ export interface ApiResponse {
   data: RoomDataItem
 }
 
-export const GetRoomByIdServices = async (
-  id: string | undefined,
-  token: string | undefined
-): Promise<RoomDataItem> => {
+export const GetRoomByIdServices = async (id: string | undefined): Promise<RoomDataItem> => {
   try {
+    const token = Cookies.get('accessToken')
     const response = await axios.get<ApiResponse>(
       `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/${id}`,
       {
@@ -50,7 +48,6 @@ export const GetRoomByIdServices = async (
     )
 
     if (response.status === 200) {
-
       return response.data.data
     } else {
       throw new Error(`API responded with status: ${response.status}`)

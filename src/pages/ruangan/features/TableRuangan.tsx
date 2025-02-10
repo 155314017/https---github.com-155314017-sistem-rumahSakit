@@ -1,46 +1,46 @@
 import {
-    Box,
-    Stack,
-    Typography,
-    TableContainer,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody,
-    Link,
-    IconButton,
-    Pagination,
-    Collapse,
-  } from "@mui/material";
-  import SearchBar from "../../../components/small/SearchBar";
-  import DropdownList from "../../../components/small/dropdownlist/DropdownList";
-  import { styled } from "@mui/material/styles";
-  
-  // icon
-  import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
-  import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-  
-  import bgImage from "../../../assets/img/String.png";
-  import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
+  Box,
+  Stack,
+  Typography,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Link,
+  IconButton,
+  Pagination,
+  Collapse,
+} from "@mui/material";
+import SearchBar from "../../../components/small/SearchBar";
+import DropdownList from "../../../components/small/dropdownlist/DropdownList";
+import { styled } from "@mui/material/styles";
+
+// icon
+import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+
+import bgImage from "../../../assets/img/String.png";
+import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
 
 
-  //hooks
+//hooks
 import useTableRuangan from "../hooks/useTableRuangan";
 import React from "react";
 
 
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-  }));
-  
-  const StyledTableContainer = styled(TableContainer)`
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
+
+const StyledTableContainer = styled(TableContainer)`
     ::-webkit-scrollbar {
       width: 8px;
     }
@@ -61,18 +61,18 @@ import React from "react";
     }
   `;
 
-  interface TableRuanganProps {
-    fetchDatas: () => void;
-    onSuccessDelete: () => void;
-  }
+interface TableRuanganProps {
+  fetchDatas: () => void;
+  onSuccessDelete: () => void;
+}
 
-const TableRuangan: React.FC<TableRuanganProps> = ({fetchDatas, onSuccessDelete}) => {
-    const {
+const TableRuangan: React.FC<TableRuanganProps> = ({ fetchDatas, onSuccessDelete }) => {
+  const {
     page,
     isCollapsed,
     open,
     setOpen,
-    datas,
+    roomData,
     deletedItems,
     loading,
     setSort,
@@ -86,359 +86,359 @@ const TableRuangan: React.FC<TableRuanganProps> = ({fetchDatas, onSuccessDelete}
     toggleCollapse,
     handleDeleteSuccess,
     navigate
-    } = useTableRuangan(fetchDatas, onSuccessDelete);
+  } = useTableRuangan(fetchDatas, onSuccessDelete);
   return (
     <Box>
-    <Box
-      position="relative"
-      p={3}
-      sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}
-    >
-      <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Typography
-          sx={{
-            textTransform: "capitalize",
-            fontWeight: "700",
-            fontSize: "20px",
-          }}
-        >
-          Daftar Ruangan
-        </Typography>
-        {/* collapse button */}
-        <IconButton sx={{ zIndex: 1 }} onClick={toggleCollapse}>
-          {isCollapsed ? (
-            <ChevronRightRoundedIcon
-              sx={{ fontSize: "30px", color: "#8F85F3" }}
-            />
-          ) : (
-            <ExpandMoreRoundedIcon
-              sx={{ fontSize: "30px", color: "#8F85F3" }}
-            />
-          )}
-        </IconButton>
-      </Box>
-
-      <Box position="absolute" sx={{ top: 0, right: 0 }}>
-        <img src={bgImage} alt="bg-image" />
-      </Box>
-
-      {/* membuat bentuk lengkung atas */}
       <Box
-        position={"absolute"}
-        sx={{
-          top: 0,
-          left: "50%",
-          transform: "translateX(-50%)",
-          display: "flex",
-        }}
+        position="relative"
+        p={3}
+        sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden" }}
       >
-        {/* lengkung kiri */}
-        <Box
-          sx={{
-            width: "50px",
-            height: "30px",
-            bgcolor: "#F1F0FE",
-          }}
-        >
-          <Box
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Typography
             sx={{
-              width: "50px",
-              height: "30px",
-              bgcolor: "#fff",
-              borderRadius: "0px 15px 0px 0px ",
+              textTransform: "capitalize",
+              fontWeight: "700",
+              fontSize: "20px",
             }}
-          />
-        </Box>
-
-        {/* kotak tengah */}
-        <Box
-          sx={{
-            width: "600px",
-            height: "50px",
-            bgcolor: "#F1F0FE",
-            borderRadius: "0px 0px 22px 22px",
-          }}
-        />
-
-        {/* lengkung kanan */}
-        <Box
-          sx={{
-            width: "50px",
-            height: "30px",
-            bgcolor: "#F1F0FE",
-          }}
-        >
-          <Box
-            sx={{
-              width: "50px",
-              height: "30px",
-              bgcolor: "#fff",
-              borderRadius: "15px 0px 0px 0px ",
-            }}
-          />
-        </Box>
-      </Box>
-      {/* ---------- */}
-
-      <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
-        <Box>
-          <Box
-            mt={3}
-            display={"flex"}
-            justifyContent={"space-between"}
-            sx={{ gap: 3 }}
           >
-            <SearchBar />
-            <DropdownList
-              options={sortir}
-              placeholder="Sortir"
-              // onChange={handleSelectionChange}
-              loading={false}
-            />
-            <DropdownList
-              options={urutkan}
-              placeholder="Urutkan"
-              onChange={(value) => setSort(value)}
-              loading={false}
+            Daftar Ruangan
+          </Typography>
+          {/* collapse button */}
+          <IconButton sx={{ zIndex: 1 }} onClick={toggleCollapse}>
+            {isCollapsed ? (
+              <ChevronRightRoundedIcon
+                sx={{ fontSize: "30px", color: "#8F85F3" }}
+              />
+            ) : (
+              <ExpandMoreRoundedIcon
+                sx={{ fontSize: "30px", color: "#8F85F3" }}
+              />
+            )}
+          </IconButton>
+        </Box>
+
+        <Box position="absolute" sx={{ top: 0, right: 0 }}>
+          <img src={bgImage} alt="bg-image" />
+        </Box>
+
+        {/* membuat bentuk lengkung atas */}
+        <Box
+          position={"absolute"}
+          sx={{
+            top: 0,
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "flex",
+          }}
+        >
+          {/* lengkung kiri */}
+          <Box
+            sx={{
+              width: "50px",
+              height: "30px",
+              bgcolor: "#F1F0FE",
+            }}
+          >
+            <Box
+              sx={{
+                width: "50px",
+                height: "30px",
+                bgcolor: "#fff",
+                borderRadius: "0px 15px 0px 0px ",
+              }}
             />
           </Box>
 
-          <Box mt={3}>
-            <StyledTableContainer
+          {/* kotak tengah */}
+          <Box
+            sx={{
+              width: "600px",
+              height: "50px",
+              bgcolor: "#F1F0FE",
+              borderRadius: "0px 0px 22px 22px",
+            }}
+          />
+
+          {/* lengkung kanan */}
+          <Box
+            sx={{
+              width: "50px",
+              height: "30px",
+              bgcolor: "#F1F0FE",
+            }}
+          >
+            <Box
               sx={{
-                mt: 2,
-                boxShadow: "none",
-                mb: 2,
-                maxHeight: "610px",
-                borderRadius: "16px",
+                width: "50px",
+                height: "30px",
+                bgcolor: "#fff",
+                borderRadius: "15px 0px 0px 0px ",
               }}
+            />
+          </Box>
+        </Box>
+        {/* ---------- */}
+
+        <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
+          <Box>
+            <Box
+              mt={3}
+              display={"flex"}
+              justifyContent={"space-between"}
+              sx={{ gap: 3 }}
             >
-              <Table stickyHeader sx={{ width: "100%" }}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell
-                      width={"12%"}
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#292B2C",
-                        bgcolor: "#F1F0FE",
-                      }}
-                      align="center"
-                    >
-                      No.Ruangan
-                    </TableCell>
-                    <TableCell
-                      width={"15%"}
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#292B2C",
-                        bgcolor: "#F1F0FE",
-                      }}
-                      align="center"
-                    >
-                      Nama Ruangan
-                    </TableCell>
-                    <TableCell
-                      width={"15%"}
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#292B2C",
-                        bgcolor: "#F1F0FE",
-                      }}
-                      align="left"
-                    >
-                      Nama Gedung
-                    </TableCell>
-                    <TableCell
-                      width={"12%"}
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#292B2C",
-                        bgcolor: "#F1F0FE",
-                      }}
-                      align="left"
-                    >
-                      Jenis Ruangan
-                    </TableCell>
-                    <TableCell
-                      width={"15%"}
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#292B2C",
-                        bgcolor: "#F1F0FE",
-                      }}
-                      align="center"
-                    >
-                      Aksi
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {displayedData.length > 0 ? (
-                    displayedData.map((data, index) => (
-                      <StyledTableRow key={index}>
-                        <TableCell
-                          sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                          align="center"
-                        >
-                          {index + 1}
-                        </TableCell>
-                        <TableCell
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              maxWidth: "150px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                          align="center"
-                        >
-                          {data.name}
-                        </TableCell>
-                        <TableCell
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              maxWidth: "150px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                          align="left"
-                        >
-                          {buildings[index]}
-                        </TableCell>
-                        <TableCell
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              maxWidth: "150px",
-                              fontSize: "14px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                          align="left"
-                        >
-                          {data.type}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={[
-                            {
-                              color: "#292B2C",
-                              fontSize: "14px",
-                              textTransform: "capitalize",
-                            },
-                          ]}
-                        >
-                          <Link
-                            href="#"
-                            underline="none"
-                            color={"#8F85F3"}
-                            onClick={(event) => confirmationDelete(event, data.id)}
-                            sx={{ mr: 2 }}
+              <SearchBar />
+              <DropdownList
+                options={sortir}
+                placeholder="Sortir"
+                // onChange={handleSelectionChange}
+                loading={false}
+              />
+              <DropdownList
+                options={urutkan}
+                placeholder="Urutkan"
+                onChange={(value) => setSort(value)}
+                loading={false}
+              />
+            </Box>
+
+            <Box mt={3}>
+              <StyledTableContainer
+                sx={{
+                  mt: 2,
+                  boxShadow: "none",
+                  mb: 2,
+                  maxHeight: "610px",
+                  borderRadius: "16px",
+                }}
+              >
+                <Table stickyHeader sx={{ width: "100%" }}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell
+                        width={"12%"}
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
+                        align="center"
+                      >
+                        No.Ruangan
+                      </TableCell>
+                      <TableCell
+                        width={"15%"}
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
+                        align="center"
+                      >
+                        Nama Ruangan
+                      </TableCell>
+                      <TableCell
+                        width={"15%"}
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
+                        align="left"
+                      >
+                        Nama Gedung
+                      </TableCell>
+                      <TableCell
+                        width={"12%"}
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
+                        align="left"
+                      >
+                        Jenis Ruangan
+                      </TableCell>
+                      <TableCell
+                        width={"15%"}
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#292B2C",
+                          bgcolor: "#F1F0FE",
+                        }}
+                        align="center"
+                      >
+                        Aksi
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {displayedData.length > 0 ? (
+                      displayedData.map((data, index) => (
+                        <StyledTableRow key={index}>
+                          <TableCell
+                            sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                            align="center"
                           >
-                            Hapus
-                          </Link>
-                          <ModalDeleteConfirmation 
-                            open={open} 
-                            onClose={() => setOpen(false)} 
-                            apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/${deletedItems}`} 
-                            onDeleteSuccess={handleDeleteSuccess} 
-                          />
-                          <Link
-                            href="#"
-                            onClick={() => navigate(`/editRuangan/${data.id}`)}
-                            mr={2}
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
+                            {index + 1}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                fontSize: "14px",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                            align="center"
                           >
-                            Ubah
-                          </Link>
-                          <Link
-                            href="#"
-                            onClick={() => navigate(`/detailRuangan/${data.id}`)}
-                            underline="hover"
-                            sx={{
-                              textTransform: "capitalize",
-                              color: "#8F85F3",
-                            }}
+                            {data.name}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                fontSize: "14px",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                            align="left"
                           >
-                            Lihat Selengkapnya
-                          </Link>
+                            {buildings[index]}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                            align="left"
+                          >
+                            {data.type}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                          >
+                            <Link
+                              href="#"
+                              underline="none"
+                              color={"#8F85F3"}
+                              onClick={(event) => confirmationDelete(event, data.id)}
+                              sx={{ mr: 2 }}
+                            >
+                              Hapus
+                            </Link>
+                            <ModalDeleteConfirmation
+                              open={open}
+                              onClose={() => setOpen(false)}
+                              apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/${deletedItems}`}
+                              onDeleteSuccess={handleDeleteSuccess}
+                            />
+                            <Link
+                              href="#"
+                              onClick={() => navigate(`/editRuangan/${data.id}`)}
+                              mr={2}
+                              underline="hover"
+                              sx={{
+                                textTransform: "capitalize",
+                                color: "#8F85F3",
+                              }}
+                            >
+                              Ubah
+                            </Link>
+                            <Link
+                              href="#"
+                              onClick={() => navigate(`/detailRuangan/${data.id}`)}
+                              underline="hover"
+                              sx={{
+                                textTransform: "capitalize",
+                                color: "#8F85F3",
+                              }}
+                            >
+                              Lihat Selengkapnya
+                            </Link>
+                          </TableCell>
+                        </StyledTableRow>
+                      ))
+                    ) : loading ? (
+                      <StyledTableRow>
+                        <TableCell colSpan={5} align="center">
+                          Sedang mengambil data . . .
                         </TableCell>
                       </StyledTableRow>
-                    ))
-                  ) : loading ? (
-                    <StyledTableRow>
-                      <TableCell colSpan={5} align="center">
-                        Sedang mengambil data . . .
-                      </TableCell>
-                    </StyledTableRow>
-                  ) : (
-                    <StyledTableRow>
-                      <TableCell colSpan={5} align="center">
-                        Tidak ada data
-                      </TableCell>
-                    </StyledTableRow>
-                  )
-                  }
-                </TableBody>
-              </Table>
-            </StyledTableContainer>
-          </Box>
-          <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
-            <Typography sx={{ color: "#A8A8BD" }}>
-              Showing {((page - 1) * rowsPerPage) + 1} to{" "}
-              {Math.min(page * rowsPerPage, datas.length)} of{" "}
-              {datas.length} entries
-            </Typography>
-            <Pagination
-              count={Math.ceil(datas.length / rowsPerPage)}
-              variant="outlined"
-              shape="rounded"
-              page={page}
-              onChange={handleChangePage}
-              sx={{
-                "& .MuiPaginationItem-root": {
-                  color: "#8F85F3",
-                  border: 'none',
-                },
-                "& .Mui-selected": {
-                  bgcolor: '#D5D1FB',
-                },
-                "& .MuiPaginationItem-ellipsis": {
-                  border: 'none',
-                },
-                "& .MuiPaginationItem-text": {
-                  border: 'none',
-                },
-              }}
-            />
+                    ) : (
+                      <StyledTableRow>
+                        <TableCell colSpan={5} align="center">
+                          Tidak ada data
+                        </TableCell>
+                      </StyledTableRow>
+                    )
+                    }
+                  </TableBody>
+                </Table>
+              </StyledTableContainer>
+            </Box>
+            <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+              <Typography sx={{ color: "#A8A8BD" }}>
+                Showing {((page - 1) * rowsPerPage) + 1} to{" "}
+                {Math.min(page * rowsPerPage, roomData.length)} of{" "}
+                {roomData.length} entries
+              </Typography>
+              <Pagination
+                count={Math.ceil(roomData.length / rowsPerPage)}
+                variant="outlined"
+                shape="rounded"
+                page={page}
+                onChange={handleChangePage}
+                sx={{
+                  "& .MuiPaginationItem-root": {
+                    color: "#8F85F3",
+                    border: 'none',
+                  },
+                  "& .Mui-selected": {
+                    bgcolor: '#D5D1FB',
+                  },
+                  "& .MuiPaginationItem-ellipsis": {
+                    border: 'none',
+                  },
+                  "& .MuiPaginationItem-text": {
+                    border: 'none',
+                  },
+                }}
+              />
 
-          </Stack>
-        </Box>
-      </Collapse>
+            </Stack>
+          </Box>
+        </Collapse>
+      </Box>
     </Box>
-  </Box>
   )
 }
 
