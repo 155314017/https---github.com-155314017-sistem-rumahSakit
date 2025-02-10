@@ -8,9 +8,9 @@ import {
   
 export default function useIndex() {
   const [data, setData] = useState<AmbulanceDataItem[]>([])
-  const [successAddBuilding, setSuccessAddBuilding] = useState(false)
-  const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false)
-  const [successEditBuilding, setSuccessEditBuilding] = useState(false)
+  const [successAddAmbulance, setSuccessAddAmbulance] = useState(false)
+  const [successDeleteAmbulance, setSuccessDeleteAmbulance] = useState(false)
+  const [successEditAmbulance, setSuccessEditAmbulance] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -49,30 +49,30 @@ export default function useIndex() {
 
   const showTemporaryAlertSuccess = async () => {
    
-    setSuccessAddBuilding(true)
+    setSuccessAddAmbulance(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
-    setSuccessAddBuilding(false)
+    setSuccessAddAmbulance(false)
   }
 
   const showTemporarySuccessDelete = async () => {
     
-    setSuccessDeleteBuilding(true)
+    setSuccessDeleteAmbulance(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
-    setSuccessDeleteBuilding(false)
+    setSuccessDeleteAmbulance(false)
   }
 
   const showTemporarySuccessEdit = async () => {
     
-    setSuccessEditBuilding(true)
+    setSuccessEditAmbulance(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
-    setSuccessEditBuilding(false)
+    setSuccessEditAmbulance(false)
   }
   return {
     fetchData,
     data,
-    successAddBuilding,
-    successDeleteBuilding,
-    successEditBuilding,
+    successAddAmbulance,
+    successDeleteAmbulance,
+    successEditAmbulance,
     showTemporarySuccessDelete,
     
   }

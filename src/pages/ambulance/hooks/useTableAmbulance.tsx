@@ -15,9 +15,7 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
   const [page, setPage] = useState(1)
   const [isCollapsed, setIsCollapsed] = useState(true)
   const [open, setOpen] = useState(false)
-  // const [data, setData] = useState<AmbulanceDataItem[]>([]);
   const [datas, setDatas] = useState<AmbulanceDataItem[]>([])
-  const [dataSchedules, setDataSchedules] = useState<any[]>([])
   const [deletedItems, setDeletedItems] = useState('')
 
   const navigate = useNavigate()
@@ -60,7 +58,6 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
         });
       }
       setDatas(result);
-      setDataSchedules(dataSchedules);
     } catch (error) {
       console.error('Failed to fetch data from API: ', error);
     }
@@ -70,12 +67,7 @@ export default function useTableAmbulance(fetchDatas: () => void, onSuccessDelet
     fetchData();
   }, []);
 
-  useEffect(() => {
-    for (let index = 0; index < dataSchedules.length; index++) {
-      console.log('hasil simpan data: ', dataSchedules[index]);
-
-    }
-  }, [dataSchedules]);
+  
 
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
