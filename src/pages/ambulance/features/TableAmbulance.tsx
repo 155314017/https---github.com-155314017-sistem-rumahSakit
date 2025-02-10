@@ -22,7 +22,7 @@ import bgImage from '../../../assets/img/String.png'
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
 import ModalDeleteConfirmation from '../../../components/small/modal/ModalDeleteConfirmation'
-import BadgeStatus from '../../../components/small/BadgeStatus'
+import BadgeStatus from '../../../components/small/badge/BadgeStatus'
 
 //hooks
 import useTableAmbulance from '../hooks/useTableAmbulance'
