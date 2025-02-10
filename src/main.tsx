@@ -152,17 +152,13 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
         {/* end no need auth */}
         <Route path="*" element={<NotFoundPage />} />
-<<<<<<< HEAD
-        {/* Testing Dashboard */}
-        <Route path="/testing" element={<AppointmentCard/>} />
-=======
+
 
 
 
 
         {/* Dashboard Queue  */}
         <Route path="/dashboardQueue" element={<HomeQueue />} />
->>>>>>> RumahSakit/Dev/Damar
       </Routes>
     </Router>
   </StrictMode>
