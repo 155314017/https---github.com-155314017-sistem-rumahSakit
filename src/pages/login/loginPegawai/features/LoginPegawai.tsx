@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import my from '../../../../assets/img/loginImg.png'
+import loginImage from '../../../../assets/img/loginImg.png'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import AlertSuccess from '../../../../components/small/alert/AlertSuccess'
@@ -28,7 +28,7 @@ export default function LoginPegawai() {
   const {
     showPassword,
     showLogin,
-    showEmailChanged,
+    gantiPassword,
     isCounting,
     resendSuccess,
     successLogout,
@@ -74,8 +74,8 @@ export default function LoginPegawai() {
               top: '0',
               left: '0'
             }}
-            image={my}
-            alt="Example Image"
+            image={loginImage}
+            alt="Login Image"
           />
         </Box>
 
@@ -92,7 +92,7 @@ export default function LoginPegawai() {
           }}
         >
           {resendSuccess && <AlertSuccess label="Link tautan berhasil dikirim ulang" />}
-          {successLogout && <AlertSuccess label="Success Log Out" />}
+          {successLogout && <AlertSuccess label="Berhasil Log Out" />}
           {wrongPassword && (
             <AlertWarning teks="Kata sandi yang Anda masukkan salah, silahkan coba lagi." />
           )}
@@ -161,7 +161,6 @@ export default function LoginPegawai() {
                             fontSize: '16px'
                           }
                         }}
-                        // onChange={handleChange}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           handleChange(e)
                         }}
@@ -170,6 +169,7 @@ export default function LoginPegawai() {
                         error={touched.email && Boolean(errors.email)}
                         helperText={touched.email && errors.email}
                       />
+
                       <FormLabel sx={{ fontSize: '18px', marginTop: '20px' }}>Kata Sandi</FormLabel>
                       <FormControl
                         variant="outlined"
@@ -252,7 +252,6 @@ export default function LoginPegawai() {
                       </Box>
                       <Button
                         type="submit"
-                        // onClick={() => navigate('/dashboard') }
                         variant="contained"
                         color="primary"
                         fullWidth
@@ -275,7 +274,7 @@ export default function LoginPegawai() {
           )}
           {!showLogin && (
             <>
-              {showEmailChanged && (
+              {gantiPassword && (
                 <Box
                   sx={{
                     marginLeft: '50px',
@@ -362,7 +361,6 @@ export default function LoginPegawai() {
                             type="submit"
                             variant="contained"
                             color="primary"
-                            // onClick={() => setShowEmailChanged(false)}
                             fullWidth
                             sx={{
                               width: '100%',
@@ -384,7 +382,7 @@ export default function LoginPegawai() {
                 </Box>
               )}
 
-              {!showEmailChanged && (
+              {!gantiPassword && (
                 <Box
                   sx={{
                     marginLeft: '50px',
@@ -432,10 +430,6 @@ export default function LoginPegawai() {
                     {isCounting ? `Kirim ulang dalam ${formatTime()}` : 'Kirim ulang tautan'}
                   </Button>
                   <CustomButton onClick={handleClick} label="Kembali ke halaman masuk" />
-
-                  {/* {resendSuccess && (
-                  <AlertSuccess label="Link tautan berhasil dikirim ulang" />
-                )} */}
                 </Box>
               )}
             </>

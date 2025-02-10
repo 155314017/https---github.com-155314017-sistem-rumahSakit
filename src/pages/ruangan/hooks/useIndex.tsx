@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 
 // icon
@@ -12,7 +13,7 @@ export default function useIndex() {
     const [successAddRoom, setSuccessAddRoom] = useState(false);
     const [successDeleteRoom, setSuccessDeleteRoom] = useState(false);
     const [successEditRoom, setSuccessEditRoom] = useState(false);
-    const [isLoading, setIsLoading] = useState (false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const fetchData = async () => {
         setIsLoading(true)
@@ -31,21 +32,21 @@ export default function useIndex() {
     useEffect(() => {
         if (location.state && location.state.successAdd) {
             showTemporaryAlertSuccess();
-            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+            navigate(location.pathname, { replace: true, state: undefined });
         }
     }, [location.state, navigate]);
 
     useEffect(() => {
         if (location.state && location.state.successEdit) {
             showTemporarySuccessEdit();
-            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+            navigate(location.pathname, { replace: true, state: undefined });
         }
     }, [location.state, navigate]);
 
     useEffect(() => {
         if (location.state && location.state.successDelete) {
             showTemporarySuccessEdit();
-            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+            navigate(location.pathname, { replace: true, state: undefined });
         }
     }, [location.state, navigate]);
 

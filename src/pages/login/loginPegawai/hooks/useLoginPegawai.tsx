@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react'
 import { useEffect, useState } from 'react'
 import * as Yup from 'yup'
@@ -24,7 +25,7 @@ interface FormResetPasswordValues {
 export default function useLoginPegawai() {
   const [showPassword, setShowPassword] = useState(false)
   const [showLogin, setShowLogin] = useState(true)
-  const [showEmailChanged, setShowEmailChanged] = useState(true)
+  const [gantiPassword, setGantiPassword] = useState(true)
   const [emailError, setEmailError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
   const [isCounting, setIsCounting] = useState(false)
@@ -51,7 +52,7 @@ export default function useLoginPegawai() {
 
   const handleClick = () => {
     setShowLogin(true)
-    setShowEmailChanged(true)
+    setGantiPassword(true)
   }
 
   const showTemporarySuccessLogin = async () => {
@@ -77,7 +78,7 @@ export default function useLoginPegawai() {
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked)
-    
+
   }
 
   const validationCheck = async (values: FormValues) => {
@@ -163,8 +164,8 @@ export default function useLoginPegawai() {
     setShowPassword,
     showLogin,
     setShowLogin,
-    showEmailChanged,
-    setShowEmailChanged,
+    gantiPassword,
+    setGantiPassword,
     emailError,
     setEmailError,
     passwordError,

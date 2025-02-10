@@ -25,14 +25,11 @@ import TableKonter from '../../../pages/konter/features/TableKonter'
 import TablePasien from '../../../pages/pasien/features/TablePasien'
 import AlertSuccess from '../../../components/small/alert/AlertSuccess'
 
-
-
-
-
 //hooks
 import useIndex from "../hooks/useIndex";
 export default function Index() {
-  const { dataClinic,
+  const {
+    dataClinic,
     dataRoom,
     dataFacility,
     dataDoctor,

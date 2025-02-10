@@ -94,7 +94,7 @@ export default function useIndex() {
     useEffect(() => {
       if (location.state && location.state.statusLogin) {
         showTemporarySuccessLogin()
-        navigate(location.pathname, { replace: true, state: undefined }) //clear state
+        navigate(location.pathname, { replace: true, state: undefined }) 
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.state, navigate])
@@ -126,6 +126,4 @@ export default function useIndex() {
     showTemporarySuccessDeleteClinic,
     showTemporarySuccessDeleteCounter
   }
-   
-  
 }

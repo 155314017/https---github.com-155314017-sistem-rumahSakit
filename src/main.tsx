@@ -48,7 +48,6 @@ import RegistrationOnline from './pages/pasien/features/RegistrationOnline';
 import NotFoundPage from './pages/NotFoundPage';
 import HomeAdmin from './pages/home/homeAdmin';
 import HomeQueue from './pages/home/homeQueue';
-import Admin from './pages/admin/features/Admin';
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -57,12 +56,33 @@ createRoot(document.getElementById('root')!).render(
 
         {/* need auth login admin  */}
         <Route element={<PrivateRoute />} >
+          {/* DashboardAdmin  */}
+          <Route path="/dashboard" element={<HomeAdmin />} />
 
+          {/* User Management Section  */}
+
+          {/* Page Pegawai  */}
+          <Route path="/pegawai" element={<Pegawai />} />
+          <Route path="/detailPegawai/:id" element={<DetailPegawai />} />
+          <Route path="/tambahPegawai" element={<TambahPegawai />} />
+
+          {/* Page Dokter  */}
+          <Route path="/dokter" element={<Dokter />} />
+          <Route path="/detailDokter/:id" element={<DetailDokter />} />
+
+
+          {/* Health Manage  */}
           {/* Gedung */}
           <Route path="/gedung" element={<Gedung />} />
           <Route path="/detailGedung/:id" element={<DetailGedung />} />
           <Route path="/tambahGedung" element={<TambahGedung />} />
           <Route path="/editGedung/:id" element={<EditGedung />} />
+
+          {/* Page Ruangan */}
+          <Route path="/ruangan" element={<Ruangan />} />
+          <Route path="/detailRuangan/:id" element={<DetailRuangan />} />
+          <Route path="/tambahRuangan" element={<TambahRuangan />} />
+          <Route path="/editRuangan/:id" element={<EditRuangan />} />
 
           {/* Ambulance */}
           <Route path="/ambulance" element={<Ambulance />} />
@@ -70,8 +90,13 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/tambahAmbulance" element={<TambahAmbulance />} />
           <Route path="/editAmbulance/:id" element={<EditAmbulance />} />
 
-          {/* DashboardAdmin  */}
-          <Route path="/dashboard" element={<HomeAdmin />} />
+          {/* Page Fasilitas */}
+          <Route path="/fasilitas" element={<Fasilitas />} />
+          <Route path="/detailFasilitas/:id" element={<DetailFasilitas />} />
+          <Route path="/tambahFasilitas" element={<TambahFasilitas />} />
+          <Route path="/tambahSubFasilitas" element={<TambahSubFasilitas />} />
+          <Route path="/editSubFasilitas/:id" element={<EditSUbFasilitas />} />
+          <Route path="/editFasilitas/:id" element={<EditFasilitas />} />
 
           {/* Page Klinik */}
           <Route path="/klinik" element={<Klinik />} />
@@ -84,29 +109,6 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/detailKonter/:id" element={<DetailKonter />} />
           <Route path="/tambahKonter" element={<TambahKonter />} />
           <Route path="/editKonter/:id" element={<EditKonter />} />
-
-          {/* Page Ruangan */}
-          <Route path="/ruangan" element={<Ruangan />} />
-          <Route path="/detailRuangan/:id" element={<DetailRuangan />} />
-          <Route path="/tambahRuangan" element={<TambahRuangan />} />
-          <Route path="/editRuangan/:id" element={<EditRuangan />} />
-
-          {/* Page Fasilitas */}
-          <Route path="/fasilitas" element={<Fasilitas />} />
-          <Route path="/detailFasilitas/:id" element={<DetailFasilitas />} />
-          <Route path="/tambahFasilitas" element={<TambahFasilitas />} />
-          <Route path="/tambahSubFasilitas" element={<TambahSubFasilitas />} />
-          <Route path="/editSubFasilitas/:id" element={<EditSUbFasilitas />} />
-          <Route path="/editFasilitas/:id" element={<EditFasilitas />} />
-
-          {/* Page Pegawai  */}
-          <Route path="/pegawai" element={<Pegawai />} />
-          <Route path="/detailPegawai/:id" element={<DetailPegawai />} />
-          <Route path="/tambahPegawai" element={<TambahPegawai />} />
-
-          {/* Page Dokter  */}
-          <Route path="/dokter" element={<Dokter />} />
-          <Route path="/detailDokter/:id" element={<DetailDokter />} />
 
           {/* Page Pasien  */}
           <Route path="/pasien" element={<Pasien />} />
@@ -136,7 +138,6 @@ createRoot(document.getElementById('root')!).render(
         {/* dashboard antrian  */}
         <Route path="/dashboardQueue" element={<HomeQueue />} />
 
-        <Route path="/min" element={<Admin />} />
       </Routes>
     </Router>
   </StrictMode>

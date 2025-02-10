@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import my from "../../../../assets/img/loginImg.png";
+import loginImage from "../../../../assets/img/loginImg.png";
 import { Formik, Form, Field } from "formik";
 import logo from "../../../../assets/img/St.carolus.png";
 import CustomButton from "../../../../components/small/CustomButton";
@@ -20,14 +20,14 @@ import CustomButton from "../../../../components/small/CustomButton";
 import useAturUlangKataSandiPegawai from "../hooks/useAturUlangKataSandiPegawai";
 
 export default function AturUlangKataSandiPegawai() {
-   const {
-    showPassword,
-    showConfirmPassword,
-    handleClickShowPassword,
-    handleClickShowConfirmPassword,
-    validationSchema,
-    navigate
-   } = useAturUlangKataSandiPegawai();
+    const {
+        showPassword,
+        showConfirmPassword,
+        handleClickShowPassword,
+        handleClickShowConfirmPassword,
+        validationSchema,
+        navigate
+    } = useAturUlangKataSandiPegawai();
 
     return (
         <Box>
@@ -43,7 +43,7 @@ export default function AturUlangKataSandiPegawai() {
                             top: "0",
                             left: "0",
                         }}
-                        image={my}
+                        image={loginImage}
                         alt="Example Image"
                     />
                 </Box>
@@ -79,7 +79,7 @@ export default function AturUlangKataSandiPegawai() {
                             marginY: "auto",
                             marginX: "auto",
                             width: "90%",
-                            
+
                         }}
                     >
                         <img src={logo} alt="logo-carolus" />
@@ -100,9 +100,7 @@ export default function AturUlangKataSandiPegawai() {
                         <Formik
                             initialValues={{ password: '', confirmPassword: '' }}
                             validationSchema={validationSchema}
-                            onSubmit={(values) => {
-                                // Logika pengiriman data
-                                console.log(values);
+                            onSubmit={() => {
                             }}
                         >
                             {({ errors, touched }) => (
@@ -117,7 +115,7 @@ export default function AturUlangKataSandiPegawai() {
                                             width: "100%",
                                             height: "48px",
                                             marginTop: "10px",
-                                            mb:2
+                                            mb: 2
                                         }}
                                     >
                                         <Field
@@ -126,7 +124,7 @@ export default function AturUlangKataSandiPegawai() {
                                             placeholder="Masukkan kata sandi"
                                             variant="outlined"
                                             type={showPassword ? "text" : "password"}
-                                            
+
                                             InputProps={{
                                                 endAdornment: (
                                                     <InputAdornment position="end">
@@ -231,7 +229,7 @@ export default function AturUlangKataSandiPegawai() {
                                         }}>
                                         Atur kata sandi
                                     </Button>
-                                    <CustomButton onClick={ () => navigate('/login/pegawai')} label="Kembali ke halaman masuk" />
+                                    <CustomButton onClick={() => navigate('/login/pegawai')} label="Kembali ke halaman masuk" />
                                 </Form>
                             )}
                         </Formik>
