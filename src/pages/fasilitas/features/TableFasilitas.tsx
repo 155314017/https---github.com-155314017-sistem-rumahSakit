@@ -8,7 +8,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Link,
   IconButton,
   Pagination,
   Collapse,
@@ -363,47 +362,45 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
                                 color: "#292B2C",
                                 fontSize: "14px",
                                 textTransform: "capitalize",
+                                display: 'flex',
+                                flexDirection: 'row',
                               },
                             ]}
                           >
-                            <Link
-                              href="#"
-                              underline="none"
+                            <Typography
                               color={"#8F85F3"}
-                              onClick={(event) => confirmationDelete(event, data.id)}
-                              sx={{ mr: 2 }}
+                              onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => confirmationDelete(event, data.id)}
+                              sx={{ mr: 2, cursor: 'pointer  ' }}
                             >
                               Hapus
-                            </Link>
+                            </Typography>
                             <ModalDeleteConfirmation
                               open={open}
                               onClose={() => setOpen(false)}
                               apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/${deletedItems}`}
                               onDeleteSuccess={handleDeleteSuccess}
                             />
-                            <Link
-                              href="#"
+                            <Typography
                               mr={2}
                               onClick={() => navigate(`/editFasilitas/${data.id}`)}
-                              underline="hover"
                               sx={{
                                 textTransform: "capitalize",
                                 color: "#8F85F3",
+                                cursor: 'pointer'
                               }}
                             >
                               Ubah
-                            </Link>
-                            <Link
-                              href="#"
+                            </Typography>
+                            <Typography
                               onClick={() => navigate(`/detailFasilitas/${data.id}`)}
-                              underline="hover"
                               sx={{
                                 textTransform: "capitalize",
                                 color: "#8F85F3",
+                                cursor: 'pointer'
                               }}
                             >
                               Lihat Selengkapnya
-                            </Link>
+                            </Typography>
                           </TableCell>
                         </StyledTableRow>
                       ))
