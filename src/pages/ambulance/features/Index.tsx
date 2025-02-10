@@ -20,9 +20,9 @@ export default function Index() {
     const{
         fetchData,
         data,
-        successAddBuilding,
-        successDeleteBuilding,
-        successEditBuilding,
+        successAddAmbulance,
+        successDeleteAmbulance,
+        successEditAmbulance,
         showTemporarySuccessDelete,
     }=useIndex()
   return (
@@ -32,9 +32,9 @@ export default function Index() {
       <Box p={2} sx={{ marginLeft: '130px' }}>
         <Header />
         <Box>
-          {successAddBuilding && <AlertSuccess label="Success adding ambulance" />}
-          {successDeleteBuilding && <AlertSuccess label="Success delete ambulance" />}
-          {successEditBuilding && <AlertSuccess label="Success edit ambulance" />}
+          {successAddAmbulance && <AlertSuccess label="Success adding ambulance" />}
+          {successDeleteAmbulance && <AlertSuccess label="Success delete ambulance" />}
+          {successEditAmbulance && <AlertSuccess label="Success edit ambulance" />}
           <Typography sx={{ fontSize: '32px', fontWeight: '700', py: 5 }}>Ambulance</Typography>
           <Grid container spacing={3} flex={1} mb={3}>
             <MediumCard

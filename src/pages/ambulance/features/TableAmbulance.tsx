@@ -173,7 +173,6 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
                   { value: 4, label: 'Nomor Ambulance 9-1' }
                 ]}
                 placeholder="Urutkan"
-                // onChange={}
                 loading={false}
               />
             </Box>
