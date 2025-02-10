@@ -4,6 +4,7 @@ import { getAmbulanceByIdService } from "../../../services/Admin Tenant/ManageAm
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 import { GetScheduleByTypeId, ScheduleDataItem } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
 import { OperationalSchedule, convertToOperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
+import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
 
 // Image data type
 type ImageData = {
@@ -68,15 +69,9 @@ export default function useDetailAmbulance() {
           setAmbulanceData(ambulanceData);
 
           const imageResponse = await GetImageByParentId(ambulanceData.id);
-          if (imageResponse?.data?.length > 0) {
-            setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
-            setSmallImages(imageResponse.data.slice(1).map((img) => 
-              `data:${img.imageType};base64,${img.imageData}`
-            ));
-          } else {
-            setLargeImage("");
-            setSmallImages([]);
-          }
+          const { largeImage, smallImages } = processImageResponse(imageResponse);
+          setLargeImage(largeImage);
+          setSmallImages(smallImages);
         }
       } catch (error) {
         console.error("Error fetching data:", error);

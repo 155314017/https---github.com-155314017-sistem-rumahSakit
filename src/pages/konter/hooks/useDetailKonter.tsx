@@ -5,6 +5,7 @@ import { GetScheduleByTypeId, ScheduleDataItem } from "../../../services/Admin T
 import { OperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 import { convertToOperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 import { GetCounterByIdServices } from "../../../services/Admin Tenant/ManageCounter/GetCounterById";
+import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
 
 
 
@@ -64,16 +65,9 @@ export default function useDetailKonter() {
         setCounterData(counterData);
 
         const imageResponse = await GetImageByParentId(counterResponse.id);
-        console.log("Image Response from API:", imageResponse);
-        if (imageResponse?.data?.length > 0) {
-          setLargeImage(`data:${imageResponse.data[0].imageType};base64,${imageResponse.data[0].imageData}`);
-          setSmallImages(imageResponse.data.slice(1).map((img) =>
-            `data:${img.imageType};base64,${img.imageData}`
-          ));
-        } else {
-          setLargeImage("");
-          setSmallImages([]);
-        }
+        const { largeImage, smallImages } = processImageResponse(imageResponse);
+        setLargeImage(largeImage);
+        setSmallImages(smallImages);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
