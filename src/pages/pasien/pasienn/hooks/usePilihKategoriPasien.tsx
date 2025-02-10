@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import * as Yup from "yup";
-// import GenerateQueuePatientServices from "../../../../services/Patient Tenant/GenerateQueuePatientServices";
 import { GetDoctorServices } from "../../../../services/Admin Tenant/ManageDoctor/GetDoctorService";
 import { getClinic } from "../../../../services/Admin Tenant/ManageClinic/GetClinic";
 import dayjs from "dayjs";
@@ -69,18 +68,14 @@ export default function usePilihKategoriPasien() {
 
     const onSubmitKodeBooking = async (values: any) => {
         setIsLoading(true);
-        console.log('Form submitted:', values);
         const bookingCode = { bookingCode: values };
         try {
             const response = await PatientCheckIn(bookingCode);
             if (response.responseCode === "200") {
-                console.log('response book: ', response.data.scheduleIntervalDataId);
                 const scheduleIntervalDataId = response.data.scheduleIntervalDataId;
                 const dataSchedule = await axios.get(
                     `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/schedule-interval/${scheduleIntervalDataId}`
                 );
-                console.log('data jadwal: ', dataSchedule.data.data.endTime)
-                console.log('tes: ', dataSchedule.data.data.startTime[0], dataSchedule.data.data.startTime[1], " akhir:", dataSchedule.data.data.endTime[0], dataSchedule.data.data.endTime[1])
                 const jam = `${dayjs().hour(dataSchedule.data.data.startTime[0]).minute(dataSchedule.data.data.startTime[1]).format('HH:mm')} - 
 ${dayjs().hour(dataSchedule.data.data.endTime[0]).minute(dataSchedule.data.data.endTime[1]).format('HH:mm')}`;
                 const namaDokter = await GetDoctorServices(response.data.doctorDataId);
@@ -117,7 +112,6 @@ ${dayjs().hour(dataSchedule.data.data.endTime[0]).minute(dataSchedule.data.data.
                 if (response.data.needAdmin === true) {
 
 
-                    console.log(queue);
 
                     setQueueData(queue.data.data)
                     setTiketAntrianKonter(true);
