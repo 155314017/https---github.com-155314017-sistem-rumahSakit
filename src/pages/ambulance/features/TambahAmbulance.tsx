@@ -35,7 +35,6 @@ export default function TambahAmbulance() {
 
         <Box mt={3}>
           <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#FAFAFA", overflow: "hidden" }}>
-            {/* Membuat bentuk lengkung atas */}
 
             <Box
               position={"absolute"}

@@ -56,7 +56,6 @@ export default function useDetailAmbulance() {
       try {
         const ambulanceResponse = await getAmbulanceByIdService(id); 
         const scheduleResponse = await GetScheduleByTypeId(id || "");
-        console.log("Schedule Response from API:", scheduleResponse);
         
         if (ambulanceResponse) {
           const ambulanceData: AmbulanceDataItem = {
