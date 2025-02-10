@@ -1,12 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getFacilityByIdService } from "../../../services/ManageFacility/GetFacilityByIdService";
-import Cookies from "js-cookie";
-import axios from "axios";
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 import { GetScheduleByTypeId, ScheduleDataItem } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
 import { convertToOperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
+import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 
 
 // Clinic data type
@@ -67,7 +67,7 @@ export default function useDetailFasilitas() {
     },
   ];
 
-  const fetchData = async () => {
+  const fetchDataFacility = async () => {
     setLoading(true);
     try {
       const facilityResponse = await getFacilityByIdService(id || "");
@@ -83,7 +83,6 @@ export default function useDetailFasilitas() {
         setBuildingId(facilityResponse.masterBuildingId || '');
         setFacilityData(facilityDataWithSchedule);
 
-        // Handle images
         const imageResponse = await GetImageByParentId(facilityResponse.id);
         const { largeImage, smallImages } = processImageResponse(imageResponse);
         setLargeImage(largeImage);
@@ -97,23 +96,14 @@ export default function useDetailFasilitas() {
   };
 
   useEffect(() => {
-    if (id) fetchData();
+    if (id) fetchDataFacility();
   }, [id]);
 
   useEffect(() => {
     const fetchDataBuildings = async () => {
       try {
-        const token = Cookies.get("accessToken");
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${buildingId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              accessToken: `${token}`,
-            }
-          }
-        );
-        setBuildingName(response.data.data.name)
+        const response = await GetBuildingById(buildingId)
+        setBuildingName(response.name)
       } catch (error) {
         console.error("Error fetching data:", error);
       }

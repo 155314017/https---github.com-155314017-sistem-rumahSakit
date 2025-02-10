@@ -1,19 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { SubFacilityServices, SubFacilityDataItem } from "../../../services/ManageSubFacility/SubFacility";
 import { useNavigate } from "react-router-dom";
 import { GetScheduleByTypeId } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
-// Define the interfaces
-
-
+import { getFacilityByIdService } from "../../../services/ManageFacility/GetFacilityByIdService";
 
 // Custom hook
 export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDelete: () => void) {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
-  const [datas, setDatas] = useState<SubFacilityDataItem[]>([]);
+  const [dataSubFacility, setDataSubFacility] = useState<SubFacilityDataItem[]>([]);
   const [dataIdFacility, setDataIdFacility] = useState<string[]>([]);
   const [deletedItems, setDeletedItems] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
@@ -80,7 +78,7 @@ export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDe
           operationalSchedule: formattedSchedules.join(' / '),
         });
       }
-      setDatas(result);
+      setDataSubFacility(result);
       setDataSchedules(dataSchedules);
       const facilityIds = result.map((data) => data.facilityDataId);
       setDataIdFacility(facilityIds);
@@ -93,17 +91,16 @@ export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDe
     fetchData();
   }, []);
 
-  // Fetch facilities for each sub-facility
   useEffect(() => {
     if (dataIdFacility.length > 0) {
       setIsLoadingFac(true);
       const fetchFacilities = async () => {
         try {
           const responses = await Promise.all(
-            dataIdFacility.map((id) => axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/${id}`))
+            dataIdFacility.map((id) => getFacilityByIdService(id))
           );
 
-          const facilitiesData = responses.map((response) => response.data.data.name);
+          const facilitiesData = responses.map((response) => response ? response.name : "Data Tidak Tercatat");
           setFacilities(facilitiesData);
           setIsLoadingFac(false);
         } catch (err) {
@@ -116,9 +113,8 @@ export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDe
     }
   }, [dataIdFacility]);
 
-  // Pagination logic
   const rowsPerPage = 10;
-  const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const displayedData = dataSubFacility.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -144,15 +140,15 @@ export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDe
 
   const handleDeleteSuccess = () => {
     onSuccessDelete();
-    fetchDatas(); 
-    fetchData();  
+    fetchDatas();
+    fetchData();
   };
 
   return {
     page,
     isCollapsed,
     open,
-    datas,
+    dataSubFacility,
     deletedItems,
     facilities,
     isLoading,

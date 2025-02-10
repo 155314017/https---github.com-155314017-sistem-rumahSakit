@@ -15,19 +15,6 @@ import { GetSubFacilityById } from '../../../services/ManageFacility/GetSubFacil
 import { editSubfacility } from '../../../services/ManageFacility/EditSubfacilityService'
 
 
-// type SubFacilityDataItem = {
-//     id: string;
-//     name: string;
-//     additionalInfo: string;
-//     facilityDataId: string;
-//     createdBy: string;
-//     createdDateTime: number;
-//     updatedBy: string | null;
-//     updatedDateTime: number | null;
-//     deletedBy: string | null;
-//     deletedDateTime: number | null;
-// }
-
 type Facility = {
     id: string;
     name: string;
@@ -61,20 +48,11 @@ export default function useEditSubFasilitas() {
 
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchDataSchedule = async () => {
             try {
-                // const ambulanceResponse = await GetSubFacilityById(id);
                 const scheduleResponse = await GetScheduleByTypeId(id || "");
                 const exclusionResponse = await GetExclusionByTypeId(id || "");
-                console.log("Schedule Response from API:", scheduleResponse);
-                console.log("Exclusion Response from API:", exclusionResponse);
-
-                // if (ambulanceResponse) {
-                //     setAmbulanceData(ambulanceResponse);
-                // }
-
                 if (scheduleResponse) {
-                    // Transform API data ke format yang sesuai dengan getKalenderData  
                     setScheduleDataPraktek(scheduleResponse);
                 }
 
@@ -87,7 +65,7 @@ export default function useEditSubFasilitas() {
             }
 
         };
-        fetchData();
+        fetchDataSchedule();
     }, [id]);
 
     useEffect(() => {
@@ -134,11 +112,10 @@ export default function useEditSubFasilitas() {
         enableReinitialize: true,
         validationSchema: Yup.object({
             operationalCost: Yup.number()
-                .required('Operational Cost is required')
-                .positive('Must be a positive number')
+                .required('Biaya penangan wajib diisi')
+                .positive('Nilai harus positif')
         }),
-        onSubmit: async (values) => {
-            console.log(values);
+        onSubmit: async () => {
         }
     })
 
@@ -197,11 +174,7 @@ export default function useEditSubFasilitas() {
     const handleEditSubFasilitas = async () => {
         try {
             const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
-            console.log("kalenderData: ", kalenderData);
-            // Validasi input schedule
             validateInput(kalenderData);
-
-            // Data untuk EditSubFacilityceService
             const data = {
                 subfacilityId: id,
                 name: formik.values.namaSubFasilitas,
@@ -223,21 +196,17 @@ export default function useEditSubFasilitas() {
             const promises = [];
 
             if (newPraktekData.length > 0) {
-                console.log('Creating new praktek schedules:', newPraktekData);
                 promises.push(createSchedules(subfacilityId, newPraktekData));
             }
 
             if (newExclusionData.length > 0) {
-                console.log('Creating new exclusion schedules:', newExclusionData);
                 promises.push(createExclusions(subfacilityId, newExclusionData));
             }
 
-            // Tunggu semua proses selesai
             if (promises.length > 0) {
                 await Promise.all(promises);
             }
 
-            // Reset state dan redirect
             formik.resetForm();
             setImagesData([]);
 

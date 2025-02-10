@@ -8,7 +8,6 @@ import {
     TableRow,
     TableCell,
     TableBody,
-    Link,
     IconButton,
     Pagination,
     Collapse,
@@ -25,64 +24,6 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
 import useTableSubFasilitas from "../hooks/useTableSubFasilitas";
-
-
-
-export interface FacilityDataItem {
-    id: string;
-    name: string;
-    description: string;
-    additionalInfo: string;
-    createdBy: string;
-    createdDateTime: number;
-    updatedBy: string | null;
-    updatedDateTime: number | null;
-    deletedBy: string | null;
-    deletedDateTime: number | null;
-    masterBuildingId: string;
-    cost: number;
-    images: string[];
-    schedules: { id: string; startDateTime: number; endDateTime: number }[];
-    operationalSchedule?: string;
-
-}
-
-export interface Pageable {
-    pageNumber: number;
-    pageSize: number;
-    sort: {
-        sorted: boolean;
-        empty: boolean;
-        unsorted: boolean;
-    };
-    offset: number;
-    paged: boolean;
-    unpaged: boolean;
-}
-
-export interface ApiResponse {
-    responseCode: string;
-    statusCode: string;
-    message: string;
-    data: {
-        content: FacilityDataItem[];
-        pageable: Pageable;
-        totalPages: number;
-        totalElements: number;
-        last: boolean;
-        size: number;
-        number: number;
-        sort: {
-            sorted: boolean;
-            empty: boolean;
-            unsorted: boolean;
-        };
-        numberOfElements: number;
-        first: boolean;
-        empty: boolean;
-    };
-}
-
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -124,7 +65,7 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({ fetchDatas, onSuc
         page,
         isCollapsed,
         open,
-        datas,
+        dataSubFacility,
         deletedItems,
         facilities,
         isLoading,
@@ -361,41 +302,40 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({ fetchDatas, onSuc
                                                                 color: "#292B2C",
                                                                 fontSize: "14px",
                                                                 textTransform: "capitalize",
+                                                                display: 'flex',
+                                                                flexDirection: 'row',
+                                                                justifyContent: 'center'
                                                             },
                                                         ]}
                                                     >
-                                                        <Link
-                                                            href="#"
-                                                            underline="none"
+                                                        <Typography
                                                             color={"#8F85F3"}
-                                                            onClick={(event) => confirmationDelete(event, data.id)}
-                                                            sx={{ mr: 2 }}
+                                                            onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => confirmationDelete(event, data.id)}
+                                                            sx={{ mr: 2, cursor: 'pointer' }}
                                                         >
                                                             Hapus
-                                                        </Link>
+                                                        </Typography>
                                                         <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/subfacility/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
-                                                        <Link
-                                                            href="#"
+                                                        <Typography
                                                             mr={2}
                                                             onClick={() => navigate(`/editSubFasilitas/${data.id}`)}
-                                                            underline="hover"
                                                             sx={{
                                                                 textTransform: "capitalize",
                                                                 color: "#8F85F3",
+                                                                cursor: 'pointer'
                                                             }}
                                                         >
                                                             Ubah
-                                                        </Link>
-                                                        <Link
-                                                            href="/detailGedung"
-                                                            underline="hover"
+                                                        </Typography>
+                                                        <Typography
                                                             sx={{
                                                                 textTransform: "capitalize",
                                                                 color: "#8F85F3",
+                                                                cursor: 'pointer'
                                                             }}
                                                         >
                                                             Lihat Selengkapnya
-                                                        </Link>
+                                                        </Typography>
                                                     </TableCell>
                                                 </StyledTableRow>
                                             ))
@@ -419,11 +359,11 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({ fetchDatas, onSuc
                         <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
                             <Typography sx={{ color: "#A8A8BD" }}>
                                 Showing {((page - 1) * rowsPerPage) + 1} to{" "}
-                                {Math.min(page * rowsPerPage, datas.length)} of{" "}
-                                {datas.length} entries
+                                {Math.min(page * rowsPerPage, dataSubFacility.length)} of{" "}
+                                {dataSubFacility.length} entries
                             </Typography>
                             <Pagination
-                                count={Math.ceil(datas.length / rowsPerPage)}
+                                count={Math.ceil(dataSubFacility.length / rowsPerPage)}
                                 variant="outlined"
                                 shape="rounded"
                                 page={page}

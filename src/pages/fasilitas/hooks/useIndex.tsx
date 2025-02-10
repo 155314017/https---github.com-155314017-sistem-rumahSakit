@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { FacilityServices, FacilityDataItem } from "../../../services/ManageFacility/FacilityServices";
 import { SubFacilityServices, SubFacilityDataItem } from "../../../services/ManageSubFacility/SubFacility";
@@ -6,8 +7,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 
 export default function useIndex() {
-    const [data, setData] = useState<FacilityDataItem[]>([]);
-    const [data1, setData1] = useState<SubFacilityDataItem[]>([]);
+    const [dataFacility, setDataFacility] = useState<FacilityDataItem[]>([]);
+    const [dataSubFacility, setDataSubFacility] = useState<SubFacilityDataItem[]>([]);
     //fasilitas
     const [successAddBuilding, setSuccessAddBuilding] = useState(false);
     const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
@@ -25,8 +26,8 @@ export default function useIndex() {
     const fetchDataFacility = async () => {
         setIsLoading(true)
         try {
-            const result = await FacilityServices();
-            setData(result);
+            const resultFacility = await FacilityServices();
+            setDataFacility(resultFacility);
             setIsLoading(false)
         } catch (error) {
             console.error('Failed to fetch data from API' + error);
@@ -39,9 +40,8 @@ export default function useIndex() {
 
     const fetchDataSubFacility = async () => {
         try {
-            const result1 = await SubFacilityServices();
-            setData1(result1);
-            console.log('sub: ', result1)
+            const resultSubFacility = await SubFacilityServices();
+            setDataSubFacility(resultSubFacility);
         } catch (error) {
             console.error('Failed to fetch data from API' + error);
         }
@@ -55,14 +55,14 @@ export default function useIndex() {
     useEffect(() => {
         if (location.state && location.state.successAdd) {
             showTemporaryAlertSuccess();
-            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+            navigate(location.pathname, { replace: true, state: undefined });
         }
     }, [location.state, navigate]);
 
     useEffect(() => {
         if (location.state && location.state.successEdit) {
             showTemporarySuccessEdit();
-            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+            navigate(location.pathname, { replace: true, state: undefined });
         }
     }, [location.state, navigate]);
 
@@ -87,18 +87,17 @@ export default function useIndex() {
 
 
     //Sub Fasilitas
-
     useEffect(() => {
         if (location.state && location.state.successAddSub) {
             showTemporaryAlertSuccessSub();
-            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+            navigate(location.pathname, { replace: true, state: undefined });
         }
     }, [location.state, navigate]);
 
     useEffect(() => {
         if (location.state && location.state.successEditSub) {
             showTemporarySuccessEditSub();
-            navigate(location.pathname, { replace: true, state: undefined }); //clear state
+            navigate(location.pathname, { replace: true, state: undefined });
         }
     }, [location.state, navigate]);
 
@@ -120,8 +119,8 @@ export default function useIndex() {
         setSuccessEditSub(false);
     };
     return {
-        data,
-        data1,
+        dataFacility,
+        dataSubFacility,
         fetchDataFacility,
         fetchDataSubFacility,
         successAddBuilding,

@@ -132,17 +132,17 @@ export default function TambahSubFasilitas() {
                                 <Typography sx={{ fontSize: "16px" }}>Nama SubFasilitas<span style={{ color: "red" }}>*</span></Typography>
                                 <FormControl fullWidth sx={{ my: 1 }}>
                                     <OutlinedInput
-                                        id="namaKlinik"
-                                        name="namaKlinik"
+                                        id="namaSubFasilitas"
+                                        name="namaSubFasilitas"
                                         size="small"
                                         placeholder="Masukkan Nama subfasilitas"
-                                        value={formik.values.namaKlinik}
+                                        value={formik.values.namaSubFasilitas}
                                         onChange={formik.handleChange}
-                                        onBlur={() => formik.setTouched({ ...formik.touched, namaKlinik: true })}
-                                        error={formik.touched.namaKlinik && Boolean(formik.errors.namaKlinik)}
+                                        onBlur={() => formik.setTouched({ ...formik.touched, namaSubFasilitas: true })}
+                                        error={formik.touched.namaSubFasilitas && Boolean(formik.errors.namaSubFasilitas)}
                                     />
-                                    {formik.touched.namaKlinik && formik.errors.namaKlinik && (
-                                        <Typography color="error">{formik.errors.namaKlinik}</Typography>
+                                    {formik.touched.namaSubFasilitas && formik.errors.namaSubFasilitas && (
+                                        <Typography color="error">{formik.errors.namaSubFasilitas}</Typography>
                                     )}
                                 </FormControl>
 
@@ -176,7 +176,6 @@ export default function TambahSubFasilitas() {
                                 >
                                     Selanjutnya
                                 </Button>
-                                {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
                             </Box>
                         </>
                     )}

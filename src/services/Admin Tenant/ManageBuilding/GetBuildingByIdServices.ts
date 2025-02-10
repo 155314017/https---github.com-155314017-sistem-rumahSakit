@@ -20,10 +20,6 @@ export interface ApiResponse {
   data: BuildingDataItem
 }
 
-
-
-
-
 export const GetBuildingById = async (
   id : string | undefined,
 ): Promise<BuildingDataItem> => {

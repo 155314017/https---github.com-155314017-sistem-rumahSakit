@@ -29,7 +29,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
@@ -59,9 +58,6 @@ const StyledTableContainer = styled(TableContainer)`
 
 //hooks
 import useTableFasilitas from "../hooks/useTableFasilitas";
-import React from "react";
-
-
 
 interface TableFacilityProps {
   fetchDatas: () => void;
@@ -72,7 +68,7 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
     page,
     isCollapsed,
     open,
-    datas,
+    dataFacility,
     deletedItems,
     buildings,
     toggleCollapse,
@@ -425,11 +421,11 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
             <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
               <Typography sx={{ color: "#A8A8BD" }}>
                 Showing {((page - 1) * rowsPerPage) + 1} to{" "}
-                {Math.min(page * rowsPerPage, datas.length)} of{" "}
-                {datas.length} entries
+                {Math.min(page * rowsPerPage, dataFacility.length)} of{" "}
+                {dataFacility.length} entries
               </Typography>
               <Pagination
-                count={Math.ceil(datas.length / rowsPerPage)}
+                count={Math.ceil(dataFacility.length / rowsPerPage)}
                 variant="outlined"
                 shape="rounded"
                 page={page}
