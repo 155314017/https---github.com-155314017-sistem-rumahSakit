@@ -5,20 +5,16 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CreateBuildingService } from "../../../services/Admin Tenant/ManageBuilding/AddBuildingServices";
 import { uploadImages } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
+import { ImageItem } from "../../../types/images.types";
 
-type ImageData = {
-    imageName: string;
-    imageType: string;
-    imageData: string;
-};
 
 export default function useTambahGedung() {
     const [errorAlert, setErrorAlert] = useState(false);
-    const [imagesData, setImagesData] = useState<ImageData[]>([]);
+    const [imagesData, setImagesData] = useState<ImageItem[]>([]);
 
     const navigate = useNavigate();
 
-    const handleImageChange = (images: ImageData[]) => {
+    const handleImageChange = (images: ImageItem[]) => {
         setImagesData(images);
     };
 

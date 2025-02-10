@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Building, BuildingDataItem } from "../../../services/Admin Tenant/ManageBuilding/Building";
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Building } from "../../../services/Admin Tenant/ManageBuilding/Building";
+import { BuildingDataItem } from "../../../types/building.types";
 
 
 export default function useIndex() {

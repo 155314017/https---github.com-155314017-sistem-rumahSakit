@@ -1,39 +1,22 @@
 import axios from 'axios';
+import Cookies from "js-cookie";
+import { EditRoomRequest, RoomDataItem } from '../../../types/room.types';
+import { BaseResponse } from '../../../types/api.types';
 
-// Define the interfaces for the request data structure
-export interface Schedule {
-    startDateTime: string; // ISO 8601 format
-    endDateTime: string;   // ISO 8601 format
-}
-
-export interface EditRoomRequest {
-    name: string;
-    masterBuildingId: string;
-    type: string;
-    additionalInfo: string;
-}
-
-export interface ApiResponse<T> {
-    responseCode: string;
-    statusCode: string;
-    message: string;
-    data: T;
-}
 
 const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/`;
 
-// Function to create a facility
 export const editRoom = async (
     roomData: EditRoomRequest,
-    token: string | undefined
-): Promise<ApiResponse<null>> => {
-    
-    
-     // Assuming 'accessToken' is stored in cookies
+): Promise<BaseResponse<RoomDataItem>> => {
+    const token = Cookies.get("accessToken");
+
+    if (!token) {
+      throw new Error("No access token found.");
+    }
 
     try {
-        // Make the POST request to create the facility
-        const response = await axios.put<ApiResponse<null>>(BASE_URL, roomData, {
+        const response = await axios.put<BaseResponse<RoomDataItem>>(BASE_URL, roomData, {
             headers: {
                 'Content-Type': 'application/json',
                 'accessToken': `${token}`,

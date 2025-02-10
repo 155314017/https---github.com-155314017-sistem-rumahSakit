@@ -1,38 +1,8 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { BaseResponse } from '../../../types/api'
+import { BaseResponse } from '../../../types/api.types'
+import { CreateRoomRequest, RoomDataItem } from '../../../types/room.types'
 
-export interface Schedule {
-  startDateTime: string
-  endDateTime: string
-}
-
-export interface Image {
-  imageName: string
-  imageType: string
-  imageData: string
-}
-
-export interface CreateRoomRequest {
-  name: string
-  masterBuildingId: string
-  type: string
-  additionalInfo: string
-}
-
-export interface RoomDataItem {
-  id: string
-  name: string
-  masterBuildingId: string
-  type: string
-  additionalInfo: string
-  createdBy: string
-  createdDateTime: number
-  updatedBy: string | null
-  updatedDateTime: number | null
-  deletedBy: string | null
-  deletedDateTime: number | null
-}
 
 const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/`
 export const createRoom = async (

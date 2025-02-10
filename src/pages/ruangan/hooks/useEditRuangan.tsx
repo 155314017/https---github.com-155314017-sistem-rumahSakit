@@ -1,14 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import axios from "axios";
-import Cookies from "js-cookie";
-import { useParams } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
-import { editRoom } from '../../../services/Admin Tenant/ManageRoom/EditRoomService';
-import { GetRoomByIdServices } from '../../../services/Admin Tenant/ManageRoom/GetRoomByIdServices';
+import { useFormik } from "formik";
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import * as Yup from "yup";
 import { GetBuildingById } from '../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices';
 import { editImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
+import { editRoom } from '../../../services/Admin Tenant/ManageRoom/EditRoomService';
+import { GetRoomByIdServices } from '../../../services/Admin Tenant/ManageRoom/GetRoomByIdServices';
 
 interface FormValues {
     namaRuangan: string;
@@ -70,8 +68,7 @@ export default function useEditRuangan() {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const token = Cookies.get("accessToken");
-                const response = await GetRoomByIdServices(id, token)
+                const response = await GetRoomByIdServices(id)
                 setRoomName(response.name);
                 setRoomType(response.type);
 
@@ -108,9 +105,8 @@ export default function useEditRuangan() {
                 additionalInfo: "add info,",
             };
 
-            const token = Cookies.get("accessToken");
             try {
-                await editRoom(data, token);
+                await editRoom(data);
                 await editImages(id || "", imagesData);
 
                 setSuccessAlert(true);

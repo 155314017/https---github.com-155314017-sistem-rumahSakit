@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import {
-    AmbulanceServices,
-    AmbulanceDataItem
-  } from '../../../services/Admin Tenant/ManageAmbulance/AmbulanceServices'
+  AmbulanceServices
+} from '../../../services/Admin Tenant/ManageAmbulance/AmbulanceServices'
+import { AmbulanceDataItem } from '../../../types/ambulance.types'
   
 export default function useIndex() {
   const [data, setData] = useState<AmbulanceDataItem[]>([])

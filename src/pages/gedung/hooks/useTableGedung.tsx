@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Building, BuildingDataItem } from "../../../services/Admin Tenant/ManageBuilding/Building";
+import { Building } from "../../../services/Admin Tenant/ManageBuilding/Building";
 import { useNavigate } from "react-router-dom";
+import { BuildingDataItem } from "../../../types/building.types";
 
 export default function useTableGedung(fetchDatas: () => void, onSuccessDelete: () => void) {
     const [page, setPage] = useState(1);

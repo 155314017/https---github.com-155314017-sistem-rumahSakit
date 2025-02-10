@@ -1,16 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-
-export interface ImageItem {
-  imageName: string;
-  imageType: string;
-  imageData: string;
-}
-
-export interface ImageDataItems {
-  parentId: string;
-  images: ImageItem[];
-}
+import { ImageDataItems } from "../../../types/images.types";
 
 const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/image`;
 

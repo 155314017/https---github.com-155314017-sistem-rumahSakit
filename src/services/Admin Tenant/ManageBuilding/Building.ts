@@ -1,54 +1,6 @@
 import axios from 'axios'
-
-export interface BuildingDataItem {
-  id: string
-  name: string
-  address: string
-  additionalInfo: string
-  createdBy: string
-  createdDateTime: number
-  updatedBy: string | null
-  updatedDateTime: number | null
-  deletedBy: string | null
-  deletedDateTime: number | null
-  images: string[]
-}
-
-export interface Pageable {
-  pageNumber: number
-  pageSize: number
-  sort: {
-    sorted: boolean
-    empty: boolean
-    unsorted: boolean
-  }
-  offset: number
-  paged: boolean
-  unpaged: boolean
-}
-
-export interface ApiResponse {
-  responseCode: string
-  statusCode: string
-  message: string
-  data: {
-    content: BuildingDataItem[]
-    pageable: Pageable
-    totalPages: number
-    totalElements: number
-    last: boolean
-    size: number
-    number: number
-    sort: {
-      sorted: boolean
-      empty: boolean
-      unsorted: boolean
-    }
-    numberOfElements: number
-    first: boolean
-    empty: boolean
-  }
-}
+import { PaginatedResponse } from '../../../types/api.types'
+import { BuildingDataItem } from '../../../types/building.types'
 
 const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/`
 
@@ -58,7 +10,7 @@ export const Building = async (
   orderBy: string = 'createdDateTime=asc' 
 ): Promise<BuildingDataItem[]> => {
   try {
-    const response = await axios.get<ApiResponse>(API_URL, {
+    const response = await axios.get<PaginatedResponse<BuildingDataItem>>(API_URL, {
       params: {
         pageNumber,
         pageSize,
