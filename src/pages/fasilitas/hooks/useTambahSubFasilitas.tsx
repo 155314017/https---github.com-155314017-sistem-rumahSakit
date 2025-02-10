@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
 import { ImageData } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
-import { createSubFacilityServices } from "../../../services/ManageFacility/CreateSubfacilityService";
-import { FacilityServices } from "../../../services/ManageFacility/FacilityServices";
+import { createSubFacilityServices } from "../../../services/Admin Tenant/ManageFacility/CreateSubfacilityService";
+import { FacilityServices } from "../../../services/Admin Tenant/ManageFacility/FacilityServices";
 type Facility = {
     id: string;
     name: string;

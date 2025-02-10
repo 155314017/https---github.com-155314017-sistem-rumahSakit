@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createFacility } from '../../../services/ManageFacility/CreateFacilityService';
+import { createFacility } from '../../../services/Admin Tenant/ManageFacility/CreateFacilityService';
 import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 import { uploadImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';

@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
-import { SubFacilityServices, SubFacilityDataItem } from "../../../services/ManageSubFacility/SubFacility";
+import { SubFacilityServices, SubFacilityDataItem } from "../../../services/Admin Tenant/ManageSubFacility/SubFacility";
 import { useNavigate } from "react-router-dom";
 import { GetScheduleByTypeId } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
-import { getFacilityByIdService } from "../../../services/ManageFacility/GetFacilityByIdService";
+import { getFacilityByIdService } from "../../../services/Admin Tenant/ManageFacility/GetFacilityByIdService";
 
 // Custom hook
 export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDelete: () => void) {

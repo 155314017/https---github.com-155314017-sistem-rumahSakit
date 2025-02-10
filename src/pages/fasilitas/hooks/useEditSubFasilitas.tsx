@@ -10,9 +10,9 @@ import { createSchedules, KalenderData, validateInput } from '../../../services/
 import { createExclusions } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils'
 import { ScheduleDataItem } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices'
 import { ExclusionDataItem, GetExclusionByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices'
-import { FacilityServices } from '../../../services/ManageFacility/FacilityServices'
-import { GetSubFacilityById } from '../../../services/ManageFacility/GetSubFacilityByIdServices'
-import { editSubfacility } from '../../../services/ManageFacility/EditSubfacilityService'
+import { FacilityServices } from '../../../services/Admin Tenant/ManageFacility/FacilityServices'
+import { GetSubFacilityById } from '../../../services/Admin Tenant/ManageFacility/GetSubFacilityByIdServices'
+import { editSubfacility } from '../../../services/Admin Tenant/ManageFacility/EditSubfacilityService'
 
 
 type Facility = {

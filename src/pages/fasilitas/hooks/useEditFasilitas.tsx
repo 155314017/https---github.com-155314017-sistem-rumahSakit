@@ -6,12 +6,12 @@ import 'dayjs/locale/id';
 dayjs.locale('id');
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FacilityData, getFacilityByIdService } from '../../../services/ManageFacility/GetFacilityByIdService';
+import { FacilityData, getFacilityByIdService } from '../../../services/Admin Tenant/ManageFacility/GetFacilityByIdService';
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 import { GetScheduleByTypeId, ScheduleDataItem } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices';
 import { ExclusionDataItem, GetExclusionByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices';
 import { editImages, ImageData } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
-import { EditFacilityServices, EditFacilityRequest } from '../../../services/ManageFacility/EditFacilityService';
+import { EditFacilityServices, EditFacilityRequest } from '../../../services/Admin Tenant/ManageFacility/EditFacilityService';
 import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
 
 type Building = {

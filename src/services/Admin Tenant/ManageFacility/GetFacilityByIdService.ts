@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { ScheduleData } from '../Admin Tenant/ManageSchedule/GetScheduleById'
+import { ScheduleData } from '../ManageSchedule/GetScheduleById'
 
 // Interface untuk response Ambulance
 export interface FacilityData {

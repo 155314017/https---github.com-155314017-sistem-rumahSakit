@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { FacilityServices, FacilityDataItem } from "../../../services/ManageFacility/FacilityServices";
-import { SubFacilityServices, SubFacilityDataItem } from "../../../services/ManageSubFacility/SubFacility";
+import { FacilityServices, FacilityDataItem } from "../../../services/Admin Tenant/ManageFacility/FacilityServices";
+import { SubFacilityServices, SubFacilityDataItem } from "../../../services/Admin Tenant/ManageSubFacility/SubFacility";
 import { useLocation, useNavigate } from "react-router-dom";
 
 

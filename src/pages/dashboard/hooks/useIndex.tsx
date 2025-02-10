@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { Clinic, ClinicDataItem } from '../../../services/Admin Tenant/ManageClinic/Clinic'
 import { RoomDataItem, RoomServices } from '../../../services/Admin Tenant/ManageRoom/RoomServices'
-import { FacilityDataItem, FacilityServices } from '../../../services/ManageFacility/FacilityServices'
+import { FacilityDataItem, FacilityServices } from '../../../services/Admin Tenant/ManageFacility/FacilityServices'
 import {
   DoctorServices,
   DoctorDataItem
