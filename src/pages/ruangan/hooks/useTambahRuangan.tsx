@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom';
 import { createRoom } from '../../../services/Admin Tenant/ManageRoom/CreateRoomService';
 import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
@@ -27,7 +26,7 @@ export default function useTambahRuangan() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchGedungData = async () => {
+        const fetchDataGedung = async () => {
             try {
                 const response = await Building();
                 setGedungOptions(response.map((item: Building) => ({
@@ -42,7 +41,7 @@ export default function useTambahRuangan() {
                 }
             }
         };
-        fetchGedungData();
+        fetchDataGedung();
     }, []);
 
     const showTemporaryAlertError = async () => {
@@ -76,9 +75,8 @@ export default function useTambahRuangan() {
                 additionalInfo: "add info,"
             };
 
-            const token = Cookies.get("accessToken");
             try {
-                const response = await createRoom(data, token);
+                const response = await createRoom(data);
                 const roomId = response.data.id;
 
                 if (!roomId) {

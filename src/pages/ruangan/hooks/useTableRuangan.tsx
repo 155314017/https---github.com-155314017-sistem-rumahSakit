@@ -1,65 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-
 import { RoomServices, RoomDataItem } from "../../../services/Admin Tenant/ManageRoom/RoomServices";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-export interface BuildingDataItem {
-    id: string;
-    name: string;
-    address: string;
-    additionalInfo: string;
-    createdBy: string;
-    createdDateTime: number;
-    updatedBy: string | null;
-    updatedDateTime: number | null;
-    deletedBy: string | null;
-    deletedDateTime: number | null;
-    images: string[];
-  }
-  
-  export interface Pageable {
-    pageNumber: number;
-    pageSize: number;
-    sort: {
-      sorted: boolean;
-      empty: boolean;
-      unsorted: boolean;
-    };
-    offset: number;
-    paged: boolean;
-    unpaged: boolean;
-  }
-  
-  export interface ApiResponse {
-    responseCode: string;
-    statusCode: string;
-    message: string;
-    data: {
-      content: BuildingDataItem[];
-      pageable: Pageable;
-      totalPages: number;
-      totalElements: number;
-      last: boolean;
-      size: number;
-      number: number;
-      sort: {
-        sorted: boolean;
-        empty: boolean;
-        unsorted: boolean;
-      };
-      numberOfElements: number;
-      first: boolean;
-      empty: boolean;
-    };
-  }
-  
-
-
+import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete: () => void) {
-    const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = React.useState<boolean>(false);
-  const [datas, setDatas] = useState<RoomDataItem[]>([]);
+  const [roomData, setRoomData] = useState<RoomDataItem[]>([]);
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
   const [loading, setLoading] = useState(false);
@@ -92,7 +40,7 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
     setLoading(true)
     try {
       const result = await RoomServices(pageNumber, pageSize, orderBy);
-      setDatas(result);
+      setRoomData(result);
       const buildingIds = result.map((data) => data.masterBuildingId);
       setDataIdBuilding(buildingIds);
       setLoading(false);
@@ -112,11 +60,11 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
     const fetchBuildings = async () => {
       try {
         const responses = await Promise.all(
-          dataIdBuilding.map((id) => axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${id}`))
+          dataIdBuilding.map((id) => GetBuildingById(id))
         );
 
         const facilitiesData = responses.map((response) => {
-          const name = response.data.data.name;
+          const name = response.name;
           return name ? name : "Data Gedung Tidak Tercatat";
         });
 
@@ -146,7 +94,7 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
 
   const rowsPerPage = 10;
 
-  const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const displayedData = roomData.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
 
 
@@ -180,7 +128,7 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
     isCollapsed,
     open,
     setOpen,
-    datas,
+    roomData,
     deletedItems,
     loading,
     setSort,

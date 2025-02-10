@@ -16,7 +16,7 @@ import useIndex from "../hooks/useIndex";
 
 export default function Index() {
     const {
-        data,
+        roomData,
         successAddRoom,
         successDeleteRoom,
         successEditRoom,
@@ -45,7 +45,7 @@ export default function Index() {
                         Ruangan
                     </Typography>
                     <Grid container spacing={3} flex={1} mb={3}>
-                        <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString() || "0"} />
+                        <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : roomData.length.toString() || "0"} />
                         <CardAdd icon={AddBoxIcon} title="Tambah Ruangan" link="/tambahRuangan" />
                     </Grid>
                     <TableRuangan fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDelete} />

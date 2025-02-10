@@ -10,12 +10,12 @@ import useDetailRuangan from "../hooks/useDetailRuangan";
 
 
 export default function DetailRuangan() {
-  const {
-    name,
-        type,
+    const {
+        roomName,
+        roomType,
         deletedItems,
         open,
-        ids,
+        roomId,
         largeImage,
         smallImage,
         loading,
@@ -25,7 +25,7 @@ export default function DetailRuangan() {
         handleDeleteSuccess,
         navigate,
         setOpen
-  } = useDetailRuangan();
+    } = useDetailRuangan();
 
     return (
         <Container sx={{ py: 2 }}>
@@ -39,14 +39,14 @@ export default function DetailRuangan() {
 
             <Box mt={3}>
                 <CardDetail
-                    title={name}
+                    title={roomName}
                     columns={[
                         { id: "nomorRuangan", label: "No. Ruangan" },
                         { id: "namaGedung", label: "Nama Gedung" },
                         { id: "jenisRuangan", label: "Jenis Ruangan" },
 
                     ]}
-                    data={[{ nomorRuangan: ids, namaGedung: buildingName, jenisRuangan: type }]}
+                    data={[{ nomorRuangan: roomId, namaGedung: buildingName, jenisRuangan: roomType }]}
                     actions={() => (
                         <>
                             <ModalDeleteConfirmation
@@ -57,7 +57,7 @@ export default function DetailRuangan() {
                             />
                             <Link
                                 underline="hover"
-                                onClick={(event) => confirmationDelete(event, ids)}
+                                onClick={(event) => confirmationDelete(event, roomId)}
                                 sx={{ color: "#8F85F3" }}
                                 href="#">
                                 Hapus
@@ -66,7 +66,7 @@ export default function DetailRuangan() {
                                 underline="hover"
                                 sx={{ color: "#8F85F3" }}
                                 href="#"
-                                onClick={() => navigate(`/editRuangan/${ids}`)}
+                                onClick={() => navigate(`/editRuangan/${roomId}`)}
                             >
                                 Ubah
                             </Link>

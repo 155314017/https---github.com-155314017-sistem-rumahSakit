@@ -7,7 +7,7 @@ import { RoomServices, RoomDataItem } from "../../../services/Admin Tenant/Manag
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function useIndex() {
-    const [data, setData] = useState<RoomDataItem[]>([]);
+    const [roomData, setRoomData] = useState<RoomDataItem[]>([]);
     const location = useLocation();
     const navigate = useNavigate();
     const [successAddRoom, setSuccessAddRoom] = useState(false);
@@ -19,7 +19,7 @@ export default function useIndex() {
         setIsLoading(true)
         try {
             const result = await RoomServices();
-            setData(result);
+            setRoomData(result);
             setIsLoading(false)
         } catch (error) {
             console.error('Failed to fetch data from API' + error);
@@ -70,7 +70,7 @@ export default function useIndex() {
 
 
     return {
-        data,
+        roomData,
         successAddRoom,
         successDeleteRoom,
         successEditRoom,
