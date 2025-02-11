@@ -1,53 +1,56 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Building } from "../../../services/Admin Tenant/ManageBuilding/Building";
 import { BuildingDataItem } from "../../../types/building.types";
 
+export const PAGE_SIZE = 10;
 
 export default function useIndex() {
-    const [data, setData] = useState<BuildingDataItem[]>([]);
+  const [data, setData] = useState<BuildingDataItem[]>([]);
   const [successAddBuilding, setSuccessAddBuilding] = useState(false);
   const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
   const [successEditBuilding, setSuccessEditBuilding] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [orderBy, setOrderBy] = useState("createdDateTime=asc");
+  const [totalElements, setTotalElements] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const result = await Building();
-      setData(result);
-      setLoading(false);
+      const result = await Building(pageNumber, PAGE_SIZE, orderBy);
+      setTotalElements(result.data.totalElements);
+      setData(result.data.content);
     } catch (error) {
       console.error('Failed to fetch data from API', error);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [pageNumber, orderBy]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   useEffect(() => {
-    if (location.state && location.state.successAdd) {
-      showTemporaryAlertSuccess();
-      navigate(location.pathname, { replace: true, state: undefined }); //clear state
-    }
-  }, [location.state, navigate]);
+    const handleLocationState = async () => {
+      if (location.state) {
+        if (location.state.successAdd) {
+          await showTemporaryAlertSuccess();
+        } else if (location.state.successEdit) {
+          await showTemporarySuccessEdit();
+        } else if (location.state.successDelete) {
+          await showTemporarySuccessDelete();
+        }
+        navigate(location.pathname, { replace: true, state: undefined });
+        fetchData();
+      }
+    };
 
-  useEffect(() => {
-    if (location.state && location.state.successEdit) {
-      showTemporarySuccessEdit();
-      navigate(location.pathname, { replace: true, state: undefined }); //clear state
-    }
-  }, [location.state, navigate]);
-
-  useEffect(() => {
-    if (location.state && location.state.successDelete) {
-      showTemporarySuccessDelete();
-      navigate(location.pathname, { replace: true, state: undefined }); //clear state
-    }
-  }, [location.state, navigate]);
+    handleLocationState();
+  }, [location.state]);
 
   const showTemporaryAlertSuccess = async () => {
     setSuccessAddBuilding(true);
@@ -66,6 +69,7 @@ export default function useIndex() {
     await new Promise((resolve) => setTimeout(resolve, 3000));
     setSuccessEditBuilding(false);
   };
+
   return {
     data,
     successAddBuilding,
@@ -75,6 +79,12 @@ export default function useIndex() {
     fetchData,
     showTemporaryAlertSuccess,
     showTemporarySuccessDelete,
-    showTemporarySuccessEdit
+    showTemporarySuccessEdit,
+    pageNumber,
+    setPageNumber,
+    orderBy,
+    setOrderBy,
+    totalElements,
+    PAGE_SIZE
   }
 }

@@ -8,7 +8,7 @@ export const Building = async (
   pageNumber: number = 0,
   pageSize: number = 100, 
   orderBy: string = 'createdDateTime=asc' 
-): Promise<BuildingDataItem[]> => {
+): Promise<PaginatedResponse<BuildingDataItem>> => {
   try {
     const response = await axios.get<PaginatedResponse<BuildingDataItem>>(API_URL, {
       params: {
@@ -19,7 +19,7 @@ export const Building = async (
     })
 
     if (response.status === 200) {
-      return response.data.data.content
+      return response.data
     } else {
       throw new Error(`API responded with status: ${response.status}`)
     }
