@@ -58,30 +58,41 @@ const StyledTableContainer = styled(TableContainer)`
 import useTableKlinik from "../hooks/useTableKlinik";
 import React from "react";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
+import { ClinicDataItem } from "../../../types/clinic.types";
 
 interface TableKlinikgProps {
-  fetchDatas: () => void;
+  data: ClinicDataItem[];
   onSuccessDelete: () => void;
+  setPageNumber: (page: number) => void;
+  setOrderBy: (order: string) => void;
+  totalElements: number;
 }
 
-const TableKlinik: React.FC<TableKlinikgProps> = ({ fetchDatas, onSuccessDelete }) => {
+const TableKlinik: React.FC<TableKlinikgProps> = ({ 
+  data,
+  onSuccessDelete,
+  setPageNumber,
+  setOrderBy,
+  totalElements }) => {
   const {
     page,
     isCollapsed,
     open,
     setOpen,
-    dataClinic,
     deletedItems,
     confirmationDelete,
     handleDeleteSuccess,
     handleChangePage,
-    rowsPerPage,
-    displayedData,
     urutkan,
     toggleCollapse,
     navigate,
     setSort,
-  } = useTableKlinik(fetchDatas, onSuccessDelete);
+    pageSize
+  } = useTableKlinik(
+  onSuccessDelete,
+  setPageNumber,
+  setOrderBy
+  );
   return (
     <Box>
       <Box
@@ -196,8 +207,8 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({ fetchDatas, onSuccessDelete 
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {displayedData.length > 0 ? (
-                      displayedData.map((data, index) => (
+                    {data.length > 0 ? (
+                      data.map((data, index) => (
                         <StyledTableRow key={index}>
                           <TableCell
                             sx={[{ color: "#292B2C", fontSize: "14px" }]}
@@ -298,12 +309,10 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({ fetchDatas, onSuccessDelete 
             </Box>
             <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
               <Typography sx={{ color: "#A8A8BD" }}>
-                Showing {((page - 1) * rowsPerPage) + 1} to{" "}
-                {Math.min(page * rowsPerPage, dataClinic.length)} of{" "}
-                {dataClinic.length} entries
+                Showing {data.length > 0 ? (page - 1) * pageSize + 1 : 0} to{" "}
               </Typography>
               <Pagination
-                count={Math.ceil(dataClinic.length / rowsPerPage)}
+                count={Math.max(Math.ceil(totalElements / pageSize))}
                 variant="outlined"
                 shape="rounded"
                 page={page}

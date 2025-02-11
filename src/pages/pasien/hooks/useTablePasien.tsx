@@ -1,56 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { PatientDataItem, PatientServices } from "../../../services/ManagePatient/PatientServices";
-import axios from "axios";
-export default function useTablePasien() {
+import { PAGE_SIZE } from "./useIndex";
+export default function useTablePasien(
+  onSuccessDelete: () => void,
+  setPageNumber: (page: number) => void,
+  setOrderBy: (order: string) => void
+) {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [datas, setDatas] = useState<PatientDataItem[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [dataIdUser, setDataIdUser] = useState<string[]>([]);
-  const [userDataPhone, setUserDataPhone] = useState<string[]>([]);
+  const [sort, setSort] = useState('');
+  const [deletedItems, setDeletedItems] = useState("");
+  const [open, setOpen] = useState(false)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await PatientServices();
-        setDatas(result);
-        
-
-        const userId = result.map((item) => item.masterUserId).filter((id): id is string => !!id);
-
-        setDataIdUser(userId);
-        // setDataIdClinic(clinicIds);
-        setLoading(false);
-      } catch (error) {
-        console.error('Failed to fetch data from API: ', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  
 
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const responses = await Promise.all(
-          dataIdUser.map((id) => axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/user/${id}`))
-        );
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {
+  //       const responses = await Promise.all(
+  //         dataIdUser.map((id) => axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/user/${id}`))
+  //       );
 
-        const userDataPhone = responses.map((response) => {
-          const name = response.data.data.phone;
-          return name ? name : "Data User Tidak Tercatat";
-        });
-        setUserDataPhone(userDataPhone);
-      } catch (err) {
-        console.error('Error:', err);
-      }
-    };
+  //       const userDataPhone = responses.map((response) => {
+  //         const name = response.data.data.phone;
+  //         return name ? name : "Data User Tidak Tercatat";
+  //       });
+  //       setUserDataPhone(userDataPhone);
+  //     } catch (err) {
+  //       console.error('Error:', err);
+  //     }
+  //   };
 
-    if (dataIdUser.length > 0) {
-      fetchUsers();
-    }
-  }, [dataIdUser]);
+  //   if (dataIdUser.length > 0) {
+  //     fetchUsers();
+  //   }
+  // }, [dataIdUser]);
 
   // useEffect(() => {
   //   const fetchClinics = async () => {
@@ -78,11 +62,10 @@ export default function useTablePasien() {
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
+    setPageNumber(value - 1)
   };
 
-  const rowsPerPage = 10;
-
-  const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  
 
   const sortir = [
     { value: 1, label: "Pria" },
@@ -96,26 +79,47 @@ export default function useTablePasien() {
     { value: 4, label: "Nomor Pasien 9-1" },
   ];
 
+  useEffect(() => {
+    if (sort === "Nama Pasien A-Z") {
+      setOrderBy('name=asc');
+    } else if (sort === "Nama Pasien Z-A") {
+      setOrderBy('name=desc');
+    } else if (sort === "Nomor Pasien 1-9") {
+      setOrderBy('createdDateTime=asc');
+    } else if (sort === "Nomor Pasien 9-1") {
+      setOrderBy('createdDateTime=desc');
+    }
+  }, [sort, setOrderBy]);
+
   const toggleCollapse = () => {
     setIsCollapsed((prev) => !prev);
   };
+  const handleDeleteSuccess = () => {
+    setOpen(false);
+    onSuccessDelete();
+  };
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>) => {
+
+
+  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, patientId: string) => {
     event.preventDefault();
-    // setOpen(true);
+    setDeletedItems(patientId)
+    setOpen(true);
   };
   return {
     page,
     isCollapsed,
-    datas,
     handleChangePage,
-    rowsPerPage,
-    displayedData,
     sortir,
     urutkan,
     toggleCollapse,
     confirmationDelete,
-    userDataPhone,
-    loading
+    sort,
+    setSort,
+    setOpen,
+    handleDeleteSuccess,
+    deletedItems,
+    open,
+    pageSize : PAGE_SIZE
   }
 }

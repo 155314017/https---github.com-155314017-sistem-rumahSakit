@@ -1,20 +1,26 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import {
   AmbulanceServices
 } from '../../../services/Admin Tenant/ManageAmbulance/AmbulanceServices'
 import { AmbulanceDataItem } from '../../../types/ambulance.types'
+
+export const PAGE_SIZE = 10;
   
 export default function useIndex() {
   const [data, setData] = useState<AmbulanceDataItem[]>([])
   const [successAddAmbulance, setSuccessAddAmbulance] = useState(false)
   const [successDeleteAmbulance, setSuccessDeleteAmbulance] = useState(false)
   const [successEditAmbulance, setSuccessEditAmbulance] = useState(false)
+  const [pageNumber, setPageNumber] = useState(0);
+  const [orderBy, setOrderBy] = useState("createdDateTime=asc");
+  const [totalElements, setTotalElements] = useState(0);
+  const [loading, setLoading] = useState(false);
   const location = useLocation()
   const navigate = useNavigate()
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     
     try {
       const result = await AmbulanceServices()
@@ -22,30 +28,35 @@ export default function useIndex() {
       setData(result)
     } catch (error) {
       console.error('Failed to fetch data from API' + error)
+    } finally {
+      setLoading(false)
     }
-  }
+  }, [pageNumber, orderBy])
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [fetchData])
 
   useEffect(() => {
-    if (location.state && location.state.successAdd) {
-      showTemporaryAlertSuccess()
-      
-      navigate(location.pathname, { replace: true, state: undefined }) 
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.state, navigate])
+    const handleLocationState = async () => {
+      if (location.state) {
+        if (location.state.successAdd) {
+          await showTemporaryAlertSuccess();
+        } else if (location.state.successEdit) {
+          await showTemporarySuccessEdit();
+        } else if (location.state.successDelete) {
+          await showTemporarySuccessDelete();
+        }
+        navigate(location.pathname, { replace: true, state: undefined });
+        fetchData();
+      }
+    };
 
-  useEffect(() => {
-    if (location.state && location.state.successEdit) {
-      showTemporarySuccessEdit()
-     
-      navigate(location.pathname, { replace: true, state: undefined }) //clear state
-    }
+    handleLocationState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.state, navigate])
+  }, [location.state])
+
+  
 
   const showTemporaryAlertSuccess = async () => {
    
@@ -68,12 +79,16 @@ export default function useIndex() {
     setSuccessEditAmbulance(false)
   }
   return {
-    fetchData,
     data,
     successAddAmbulance,
     successDeleteAmbulance,
     successEditAmbulance,
     showTemporarySuccessDelete,
+    setPageNumber,
+    setOrderBy,
+    totalElements,
+    setTotalElements,
+    loading
     
   }
 

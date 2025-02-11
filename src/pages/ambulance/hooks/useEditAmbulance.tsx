@@ -60,8 +60,6 @@ export default function useEditAmbulance() {
         const ambulanceResponse = await getAmbulanceByIdService(id); 
         const scheduleResponse = await GetScheduleByTypeId(id || "");
         const exclusionResponse = await GetExclusionByTypeId(id || "");
-        console.log("Schedule Response from API:", scheduleResponse);
-        console.log("Exclusion Response from API:", exclusionResponse);
 
         if (ambulanceResponse) {
           setAmbulanceData(ambulanceResponse);
