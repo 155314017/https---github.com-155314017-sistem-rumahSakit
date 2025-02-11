@@ -57,6 +57,7 @@ const StyledTableContainer = styled(TableContainer)`
 
 //hooks
 import useTableFasilitas from "../hooks/useTableFasilitas";
+import CustomFrameTable from "../../../components/small/CustomFrameTable";
 
 interface TableFacilityProps {
   fetchDatas: () => void;
@@ -115,63 +116,7 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
           </IconButton>
         </Box>
 
-        {/* membuat bentuk lengkung atas */}
-        <Box
-          position={"absolute"}
-          sx={{
-            top: 0,
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "flex",
-          }}
-        >
-          {/* lengkung kiri */}
-          <Box
-            sx={{
-              width: "50px",
-              height: "30px",
-              bgcolor: "#F1F0FE",
-            }}
-          >
-            <Box
-              sx={{
-                width: "50px",
-                height: "30px",
-                bgcolor: "#fff",
-                borderRadius: "0px 15px 0px 0px ",
-              }}
-            />
-          </Box>
-
-          {/* kotak tengah */}
-          <Box
-            sx={{
-              width: "600px",
-              height: "50px",
-              bgcolor: "#F1F0FE",
-              borderRadius: "0px 0px 22px 22px",
-            }}
-          />
-
-          {/* lengkung kanan */}
-          <Box
-            sx={{
-              width: "50px",
-              height: "30px",
-              bgcolor: "#F1F0FE",
-            }}
-          >
-            <Box
-              sx={{
-                width: "50px",
-                height: "30px",
-                bgcolor: "#fff",
-                borderRadius: "15px 0px 0px 0px ",
-              }}
-            />
-          </Box>
-        </Box>
-        {/* ---------- */}
+        <CustomFrameTable />
 
         <Box position="absolute" sx={{ top: 0, right: 0 }}>
           <img src={bgImage} alt="bg-image" />

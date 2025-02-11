@@ -57,6 +57,7 @@ const StyledTableContainer = styled(TableContainer)`
 //hooks
 import useTableKlinik from "../hooks/useTableKlinik";
 import React from "react";
+import CustomFrameTable from "../../../components/small/CustomFrameTable";
 
 interface TableKlinikgProps {
   fetchDatas: () => void;
@@ -69,7 +70,7 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({ fetchDatas, onSuccessDelete 
     isCollapsed,
     open,
     setOpen,
-    datas,
+    dataClinic,
     deletedItems,
     confirmationDelete,
     handleDeleteSuccess,
@@ -108,64 +109,7 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({ fetchDatas, onSuccessDelete 
           </IconButton>
         </Box>
 
-        {/* membuat bentuk lengkung atas */}
-        <Box
-          position={"absolute"}
-          sx={{
-            top: 0,
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "flex",
-          }}
-        >
-          {/* lengkung kiri */}
-          <Box
-            sx={{
-              width: "50px",
-              height: "30px",
-              bgcolor: "#F1F0FE",
-            }}
-          >
-            <Box
-              sx={{
-                width: "50px",
-                height: "30px",
-                bgcolor: "#fff",
-                borderRadius: "0px 15px 0px 0px ",
-              }}
-            />
-          </Box>
-
-          {/* kotak tengah */}
-          <Box
-            sx={{
-              width: "600px",
-              height: "50px",
-              bgcolor: "#F1F0FE",
-              borderRadius: "0px 0px 22px 22px",
-            }}
-          />
-
-          {/* lengkung kanan */}
-          <Box
-            sx={{
-              width: "50px",
-              height: "30px",
-              bgcolor: "#F1F0FE",
-            }}
-          >
-            <Box
-              sx={{
-                width: "50px",
-                height: "30px",
-                bgcolor: "#fff",
-                borderRadius: "15px 0px 0px 0px ",
-              }}
-            />
-          </Box>
-        </Box>
-        {/* ---------- */}
-
+        <CustomFrameTable />
         <Box position="absolute" sx={{ top: 0, right: 0 }}>
           <img src={bgImage} alt="bg-image" />
         </Box>
@@ -355,11 +299,11 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({ fetchDatas, onSuccessDelete 
             <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
               <Typography sx={{ color: "#A8A8BD" }}>
                 Showing {((page - 1) * rowsPerPage) + 1} to{" "}
-                {Math.min(page * rowsPerPage, datas.length)} of{" "}
-                {datas.length} entries
+                {Math.min(page * rowsPerPage, dataClinic.length)} of{" "}
+                {dataClinic.length} entries
               </Typography>
               <Pagination
-                count={Math.ceil(datas.length / rowsPerPage)}
+                count={Math.ceil(dataClinic.length / rowsPerPage)}
                 variant="outlined"
                 shape="rounded"
                 page={page}
