@@ -8,7 +8,7 @@ export const RoomServices = async (
   pageNumber: number = 0,
   pageSize: number = 100,
   orderBy: string = 'createdDateTime=asc'
-): Promise<RoomDataItem[]> => {
+): Promise<PaginatedResponse<RoomDataItem>> => {
   try {
     const response = await axios.get<PaginatedResponse<RoomDataItem>>(API_URL, {
       params: {
@@ -19,8 +19,7 @@ export const RoomServices = async (
     })
 
     if (response.status === 200) {
-      
-      return response.data.data.content
+      return response.data
     } else {
       throw new Error(`API responded with status: ${response.status}`)
     }

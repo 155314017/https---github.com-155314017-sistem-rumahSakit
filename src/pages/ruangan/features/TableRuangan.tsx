@@ -28,6 +28,7 @@ import ModalDeleteConfirmation from "../../../components/small/modal/ModalDelete
 import useTableRuangan from "../hooks/useTableRuangan";
 import React from "react";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
+import { RoomDataItem } from "../../../types/room.types";
 
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -62,31 +63,44 @@ const StyledTableContainer = styled(TableContainer)`
   `;
 
 interface TableRuanganProps {
-  fetchDatas: () => void;
+  data: RoomDataItem[];
   onSuccessDelete: () => void;
+  setPageNumber: (page: number) => void;
+  setOrderBy: (order: string) => void;
+  totalElements: number;
+  dataIdBuilding: string[]
 }
 
-const TableRuangan: React.FC<TableRuanganProps> = ({ fetchDatas, onSuccessDelete }) => {
+const TableRuangan: React.FC<TableRuanganProps> = ({
+  data,
+  onSuccessDelete,
+  setPageNumber,
+  setOrderBy,
+  totalElements,
+  dataIdBuilding
+}) => {
   const {
     page,
     isCollapsed,
     open,
     setOpen,
-    roomData,
     deletedItems,
-    loading,
     setSort,
-    displayedData,
     buildings,
     confirmationDelete,
     handleChangePage,
-    rowsPerPage,
     sortir,
     urutkan,
+    pageSize,
     toggleCollapse,
     handleDeleteSuccess,
     navigate
-  } = useTableRuangan(fetchDatas, onSuccessDelete);
+  } = useTableRuangan(
+    onSuccessDelete,
+    setPageNumber,
+    setOrderBy,
+    dataIdBuilding
+  );
   return (
     <Box>
       <Box
@@ -223,8 +237,8 @@ const TableRuangan: React.FC<TableRuanganProps> = ({ fetchDatas, onSuccessDelete
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {displayedData.length > 0 ? (
-                      displayedData.map((data, index) => (
+                    {data.length > 0 ? (
+                      data.map((data, index) => (
                         <StyledTableRow key={index}>
                           <TableCell
                             sx={[{ color: "#292B2C", fontSize: "14px" }]}
@@ -334,12 +348,6 @@ const TableRuangan: React.FC<TableRuanganProps> = ({ fetchDatas, onSuccessDelete
                           </TableCell>
                         </StyledTableRow>
                       ))
-                    ) : loading ? (
-                      <StyledTableRow>
-                        <TableCell colSpan={5} align="center">
-                          Sedang mengambil data . . .
-                        </TableCell>
-                      </StyledTableRow>
                     ) : (
                       <StyledTableRow>
                         <TableCell colSpan={5} align="center">
@@ -352,35 +360,20 @@ const TableRuangan: React.FC<TableRuanganProps> = ({ fetchDatas, onSuccessDelete
                 </Table>
               </StyledTableContainer>
             </Box>
-            <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+            <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center">
               <Typography sx={{ color: "#A8A8BD" }}>
-                Showing {((page - 1) * rowsPerPage) + 1} to{" "}
-                {Math.min(page * rowsPerPage, roomData.length)} of{" "}
-                {roomData.length} entries
+                Showing {data.length > 0 ? (page - 1) * pageSize + 1 : 0} to {Math.min((page) * pageSize, totalElements)} of {totalElements} entries
               </Typography>
               <Pagination
-                count={Math.ceil(roomData.length / rowsPerPage)}
-                variant="outlined"
+                count={Math.max(1, Math.ceil(totalElements / pageSize))}
                 shape="rounded"
                 page={page}
                 onChange={handleChangePage}
                 sx={{
-                  "& .MuiPaginationItem-root": {
-                    color: "#8F85F3",
-                    border: 'none',
-                  },
-                  "& .Mui-selected": {
-                    bgcolor: '#D5D1FB',
-                  },
-                  "& .MuiPaginationItem-ellipsis": {
-                    border: 'none',
-                  },
-                  "& .MuiPaginationItem-text": {
-                    border: 'none',
-                  },
+                  "& .MuiPaginationItem-root": { color: "#8F85F3" },
+                  "& .Mui-selected": { bgcolor: "#D5D1FB" },
                 }}
               />
-
             </Stack>
           </Box>
         </Collapse>

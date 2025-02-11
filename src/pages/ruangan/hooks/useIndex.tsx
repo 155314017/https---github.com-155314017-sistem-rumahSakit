@@ -1,11 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 // icon
 
 import { RoomServices } from "../../../services/Admin Tenant/ManageRoom/RoomServices";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RoomDataItem } from "../../../types/room.types";
+
+export const PAGE_SIZE = 10;
 
 export default function useIndex() {
     const [roomData, setRoomData] = useState<RoomDataItem[]>([]);
@@ -15,42 +17,48 @@ export default function useIndex() {
     const [successDeleteRoom, setSuccessDeleteRoom] = useState(false);
     const [successEditRoom, setSuccessEditRoom] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [pageNumber, setPageNumber] = useState(0);
+    const [orderBy, setOrderBy] = useState("createdDateTime=asc");
+    const [totalElements, setTotalElements] = useState(0);
+    const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
 
-    const fetchData = async () => {
-        setIsLoading(true)
+    const fetchData = useCallback(async () => {
         try {
-            const result = await RoomServices();
-            setRoomData(result);
-            setIsLoading(false)
+            setIsLoading(true)
+            const result = await RoomServices(pageNumber, PAGE_SIZE, orderBy);
+            setTotalElements(result.data.totalElements);
+            setRoomData(result.data.content);
+            const buildingIds = result.data.content.map((data: { masterBuildingId: string; }) => data.masterBuildingId);
+            setDataIdBuilding(buildingIds);
         } catch (error) {
             console.error('Failed to fetch data from API' + error);
+        } finally {
+            setIsLoading(false);
         }
-    };
+    }, [pageNumber, orderBy]);
+
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [fetchData]);
 
     useEffect(() => {
-        if (location.state && location.state.successAdd) {
-            showTemporaryAlertSuccess();
-            navigate(location.pathname, { replace: true, state: undefined });
-        }
-    }, [location.state, navigate]);
+        const handleLocationState = async () => {
+            if (location.state) {
+                if (location.state.successAdd) {
+                    await showTemporaryAlertSuccess();
+                } else if (location.state.successEdit) {
+                    await showTemporarySuccessEdit();
+                } else if (location.state.successDelete) {
+                    await showTemporarySuccessDelete();
+                }
+                navigate(location.pathname, { replace: true, state: undefined });
+                fetchData();
+            }
+        };
 
-    useEffect(() => {
-        if (location.state && location.state.successEdit) {
-            showTemporarySuccessEdit();
-            navigate(location.pathname, { replace: true, state: undefined });
-        }
-    }, [location.state, navigate]);
-
-    useEffect(() => {
-        if (location.state && location.state.successDelete) {
-            showTemporarySuccessEdit();
-            navigate(location.pathname, { replace: true, state: undefined });
-        }
-    }, [location.state, navigate]);
-
+        handleLocationState();
+    }, [location.state]);
+    
     const showTemporaryAlertSuccess = async () => {
         setSuccessAddRoom(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -77,6 +85,10 @@ export default function useIndex() {
         successEditRoom,
         isLoading,
         showTemporarySuccessDelete,
-        fetchData
+        fetchData,
+        totalElements,
+        dataIdBuilding,
+        setPageNumber,
+        setOrderBy
     }
 }

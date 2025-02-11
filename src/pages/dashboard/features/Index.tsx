@@ -43,6 +43,7 @@ export default function Index() {
     successDeleteCounter,
     isLoading,
     showTemporarySuccessDeleteRoom,
+    dataIdBuilding,
     showTemporarySuccessDeleteBuilding,
     showTemporarySuccessDeleteFacility,
     showTemporarySuccessDeleteAmbulance,
@@ -51,6 +52,7 @@ export default function Index() {
     dataBuilding,
     setPageNumber,
     setOrderBy,
+    totalElementsRoom,
     totalElementsBuilding
   } = useIndex()
   return (
@@ -98,7 +100,7 @@ export default function Index() {
 
       <Stack mt={3} spacing={3}>
         <TableGedung data={dataBuilding} onSuccessDelete={showTemporarySuccessDeleteBuilding} setPageNumber={setPageNumber} setOrderBy={setOrderBy} totalElements={totalElementsBuilding} />
-        <TableRuangan fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteRoom} />
+        <TableRuangan data={dataRoom} onSuccessDelete={showTemporarySuccessDeleteRoom} setPageNumber={setPageNumber} setOrderBy={setOrderBy} totalElements={totalElementsRoom} dataIdBuilding={dataIdBuilding} />
         <TablePegawai />
         <TableFasilitas
           fetchDatas={fetchData}

@@ -69,7 +69,7 @@ export const DoctorServices = async (): Promise<DoctorDataItem[]> => {
       throw new Error(`API responded with status: ${response.status}`);
     }
   } catch (error) {
-    console.error("Error fetching ambulance services:", error);
-    throw error; // Re-throw the error for handling by the caller
+    console.error("Error fetching doctor services:", error);
+    throw error; 
   }
 };

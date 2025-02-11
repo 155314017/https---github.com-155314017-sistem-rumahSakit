@@ -1,28 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { RoomServices } from "../../../services/Admin Tenant/ManageRoom/RoomServices";
 import { useNavigate } from "react-router-dom";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
-import { RoomDataItem } from "../../../types/room.types";
-export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete: () => void) {
-  const [roomData, setRoomData] = useState<RoomDataItem[]>([]);
+import { PAGE_SIZE } from "./useIndex";
+export default function useTableRuangan(
+  onSuccessDelete: () => void,
+  setPageNumber: (page: number) => void,
+  setOrderBy: (order: string) => void,
+  dataIdBuilding: string[]
+) {
   const [buildings, setBuildings] = useState<string[]>([]);
-  const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
-  const [orderBy, setOrderBy] = useState("createdDateTime=asc");
   const [sort, setSort] = useState('');
   const [open, setOpen] = React.useState<boolean>(false);
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [pageNumber] = useState(0);
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(10);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchRoomData();
-  }, [pageNumber, pageSize, orderBy]);
 
   useEffect(() => {
     if (sort == "Nama Gedung A-Z") {
@@ -37,22 +31,6 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
       setOrderBy('createdDateTime=asc');
     }
   }, [sort])
-
-  const fetchRoomData = async () => {
-    setLoading(true)
-    try {
-      const result = await RoomServices(pageNumber, pageSize, orderBy);
-      setRoomData(result);
-      const buildingIds = result.map((data) => data.masterBuildingId);
-      setDataIdBuilding(buildingIds);
-      setLoading(false);
-    } catch (error) {
-      console.error('Failed to fetch data from API: ', error);
-    }
-  };
-  useEffect(() => {
-    fetchRoomData();
-  }, []);
 
   useEffect(() => {
     const fetchBuildings = async () => {
@@ -88,12 +66,8 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
+    setPageNumber(value - 1);
   };
-
-  const rowsPerPage = 10;
-
-  const displayedData = roomData.slice((page - 1) * rowsPerPage, page * rowsPerPage);
-
 
 
   const sortir = [
@@ -117,8 +91,6 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
   };
 
   const handleDeleteSuccess = () => {
-    fetchDatas();
-    fetchRoomData();
     onSuccessDelete();
   };
   return {
@@ -126,19 +98,16 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
     isCollapsed,
     open,
     setOpen,
-    roomData,
     deletedItems,
-    loading,
     setSort,
-    displayedData,
     buildings,
     confirmationDelete,
     handleChangePage,
-    rowsPerPage,
     sortir,
     urutkan,
     toggleCollapse,
     handleDeleteSuccess,
-    navigate
+    navigate,
+    pageSize: PAGE_SIZE,
   }
 }
