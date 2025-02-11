@@ -22,11 +22,12 @@ import bgImage from '../../../assets/img/String.png'
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
 import ModalDeleteConfirmation from '../../../components/small/modal/ModalDeleteConfirmation'
-import BadgeStatus from '../../../components/small/BadgeStatus'
+import BadgeStatus from '../../../components/small/badge/BadgeStatus'
 
 //hooks
 import useTableAmbulance from '../hooks/useTableAmbulance'
 import React from 'react'
+import CustomFrameTable from '../../../components/small/CustomFrameTable'
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
@@ -67,7 +68,7 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
     isCollapsed,
     open,
     setOpen,
-    datas,
+    datasAmbulance,
     deletedItems,
     navigate,
     handleChangePage,
@@ -104,58 +105,7 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
           </IconButton>
         </Box>
 
-        <Box
-          position={'absolute'}
-          sx={{
-            top: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            display: 'flex'
-          }}
-        >
-          <Box
-            sx={{
-              width: '50px',
-              height: '30px',
-              bgcolor: '#F1F0FE'
-            }}
-          >
-            <Box
-              sx={{
-                width: '50px',
-                height: '30px',
-                bgcolor: '#fff',
-                borderRadius: '0px 15px 0px 0px '
-              }}
-            />
-          </Box>
-
-          <Box
-            sx={{
-              width: '600px',
-              height: '50px',
-              bgcolor: '#F1F0FE',
-              borderRadius: '0px 0px 22px 22px'
-            }}
-          />
-
-          <Box
-            sx={{
-              width: '50px',
-              height: '30px',
-              bgcolor: '#F1F0FE'
-            }}
-          >
-            <Box
-              sx={{
-                width: '50px',
-                height: '30px',
-                bgcolor: '#fff',
-                borderRadius: '15px 0px 0px 0px '
-              }}
-            />
-          </Box>
-        </Box>
+        <CustomFrameTable />
 
         <Box position="absolute" sx={{ top: 0, right: 0 }}>
           <img src={bgImage} alt="bg-image" />
@@ -314,24 +264,28 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
                               onDeleteSuccess={handleDeleteSuccess}
                             />
                             <Link
-                              href="#"
                               onClick={() => navigate(`/editAmbulance/${data.id}`)}
                               mr={2}
                               underline="hover"
                               sx={{
                                 textTransform: 'capitalize',
-                                color: '#8F85F3'
+                                color: '#8F85F3',
+                                ":hover": {
+                                  cursor: 'pointer'
+                                }
                               }}
                             >
                               Ubah
                             </Link>
                             <Link
-                              href="#"
                               onClick={() => navigate(`/detailAmbulance/${data.id}`)}
-                              underline="hover"
+                              underline="none"
                               sx={{
                                 textTransform: 'capitalize',
-                                color: '#8F85F3'
+                                color: '#8F85F3',
+                                ":hover": {
+                                  cursor: 'pointer'
+                                }
                               }}
                             >
                               Lihat Selengkapnya
@@ -358,10 +312,10 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
             >
               <Typography sx={{ color: '#A8A8BD' }}>
                 Showing {(page - 1) * rowsPerPage + 1} to{' '}
-                {Math.min(page * rowsPerPage, datas.length)} of {datas.length} entries
+                {Math.min(page * rowsPerPage, datasAmbulance.length)} of {datasAmbulance.length} entries
               </Typography>
               <Pagination
-                count={Math.ceil(datas.length / rowsPerPage)}
+                count={Math.ceil(datasAmbulance.length / rowsPerPage)}
                 variant="outlined"
                 shape="rounded"
                 page={page}

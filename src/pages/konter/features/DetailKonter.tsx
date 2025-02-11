@@ -2,19 +2,28 @@ import { Container, Box } from "@mui/system";
 
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import ImageGrid from "../../../components/medium/imageComponent/ImageGrid";
-import CardDetailKonter from "./CardDetailKonter";
 import CardOperasionalKlinik from "../../../components/small/card/CardOperasional";
 
 //hooks
 import useDetailKonter from "../hooks/useDetailKonter";
+import CardDetail from "../../../components/small/card/CardDetail";
+import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
+import { Link } from "@mui/material";
 
 export default function DetailKonter() {
     const {
         breadcrumbItems,
         largeImage,
         smallImage,
+        handleDeleteSuccess,
+        confirmationDelete,
         loading,
-        counterData
+        deletedItems,
+        setOpen,
+        navigate,
+        open,
+        counterData,
+        id
     } = useDetailKonter();
 
     return (
@@ -28,16 +37,48 @@ export default function DetailKonter() {
             </Box>
 
             <Box mt={3}>
-                <CardDetailKonter
-                    title="Detail Konter"
-                    data={{
-                        nama: counterData?.name || "",
-                        lokasiKonter: counterData?.location || "",
-                        aksi: {
-                            hapusLink: "#",
-                            ubahLink: "#",
+                <CardDetail
+                    title={`Gedung ${name}`}
+                    columns={[
+                        { id: "namaKonter", label: "Nama Konter" },
+                        { id: "lokasiKonter", label: "Lokasi Konter" },
+                    ]}
+                    data={[
+                        {
+                            namaKonter: counterData?.name,
+                            lokasiKonter: counterData?.location,
+                            aksi: {
+                                hapusLink: "#",
+                                ubahLink: "",
+                            },
                         },
-                    }}
+                    ]}
+                    actions={() => (
+                        <>
+                            <ModalDeleteConfirmation
+                                open={open}
+                                onClose={() => setOpen(false)}
+                                apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/counter/${deletedItems}`}
+                                onDeleteSuccess={handleDeleteSuccess}
+                            />
+                            <Link
+                                underline="hover"
+                                sx={{ color: "#8F85F3" }}
+                                href="#"
+                                onClick={(event) => confirmationDelete(event, id || "")}
+                            >
+                                Hapus
+                            </Link>
+                            <Link
+                                underline="hover"
+                                sx={{ color: "#8F85F3" }}
+                                href="#"
+                                onClick={() => navigate(`/editKonter/${id || ""}`)}
+                            >
+                                Ubah
+                            </Link>
+                        </>
+                    )}
                 />
             </Box>
 

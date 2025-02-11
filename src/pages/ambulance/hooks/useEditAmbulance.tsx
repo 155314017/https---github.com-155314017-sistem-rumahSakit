@@ -40,7 +40,7 @@ export default function useEditAmbulance() {
   const [imagesData, setImagesData] = useState<ImageData[]>([])
   const [errorAlert, setErrorAlert] = useState(false)
   const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
-  const { idAmbulance } = useParams()
+  const { id } = useParams()
   const [ambulanceData, setAmbulanceData] = useState<AmbulanceDataItem | null>(null);
   const [scheduleDataPraktek, setScheduleDataPraktek] = useState<ScheduleDataItem[] | null>(null);
   const [scheduleDataPengecualian, setScheduleDataPengecualian] = useState<ExclusionDataItem[] | null>(null);
@@ -57,9 +57,11 @@ export default function useEditAmbulance() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ambulanceResponse = await getAmbulanceByIdService(idAmbulance); 
-        const scheduleResponse = await GetScheduleByTypeId(idAmbulance || "");
-        const exclusionResponse = await GetExclusionByTypeId(idAmbulance || "");
+        const ambulanceResponse = await getAmbulanceByIdService(id); 
+        const scheduleResponse = await GetScheduleByTypeId(id || "");
+        const exclusionResponse = await GetExclusionByTypeId(id || "");
+        console.log("Schedule Response from API:", scheduleResponse);
+        console.log("Exclusion Response from API:", exclusionResponse);
 
         if (ambulanceResponse) {
           setAmbulanceData(ambulanceResponse);
@@ -80,7 +82,7 @@ export default function useEditAmbulance() {
 
     };
     fetchData();
-  }, [idAmbulance]);
+  }, [id]);
 
 
   const showTemporaryAlertError = async () => {
@@ -160,6 +162,7 @@ export default function useEditAmbulance() {
   const handleEditAmbulance = async () => {
     try {
       const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
+      console.log("kalenderData: ", kalenderData);
       // Validasi input schedule
       validateInput(kalenderData);
 
@@ -169,7 +172,7 @@ export default function useEditAmbulance() {
         status: 'ACTIVE',
         additionalInfo: '',
         cost: formik.values.operationalCost,
-        ambulanceId: idAmbulance || ''
+        ambulanceId: id || ''
       };
 
       // Edit ambulance
@@ -177,15 +180,22 @@ export default function useEditAmbulance() {
       if (!ambulanceId) throw new Error('Ambulance ID tidak ditemukan');
 
       await editImages(ambulanceId, imagesData);
+      // Pisahkan data praktek yang baru (yang memiliki id dengan format 'session-')
       const newPraktekData = kalenderData.praktek.filter(item => item.id.startsWith('session-'));
+      
+      // Pisahkan data exclusion yang baru (yang memiliki id dengan format 'exclusion-')
       const newExclusionData = kalenderData.exclusion.filter(item => item.id.startsWith('exclusion-'));
+
+      // Proses data baru secara parallel jika ada
       const promises = [];
       
       if (newPraktekData.length > 0) {
+        console.log('Creating new praktek schedules:', newPraktekData);
         promises.push(createSchedules(ambulanceId, newPraktekData));
       }
 
       if (newExclusionData.length > 0) {
+        console.log('Creating new exclusion schedules:', newExclusionData);
         promises.push(createExclusions(ambulanceId, newExclusionData));
       }
 
@@ -218,24 +228,25 @@ export default function useEditAmbulance() {
   const breadcrumbItems = [
     { label: 'Dashboard', href: '/dashboard' },
     { label: 'Ambulance', href: '/ambulance' },
-    { label: 'Edit Ambulance', href: `/editAmbulance/${idAmbulance}` }
+    { label: 'Edit Ambulance', href: `/editAmbulance/${id}` }
   ]
   
   return {
-    handleImageChange,
-    breadcrumbItems,
     formik,
+    handleImageChange,
+    imagesData,
+    errorAlert,
+    breadcrumbItems,
+    id,
+    currentPage,
     setCurrentPage,
     getPageStyle,
     getBorderStyle,
-    currentPage,
     handleEditAmbulance,
     kalenderRef,
-    idAmbulance,
     ambulanceData,
     scheduleDataPraktek,
-    scheduleDataPengecualian,
-    errorAlert
+    scheduleDataPengecualian
   }
 }
 

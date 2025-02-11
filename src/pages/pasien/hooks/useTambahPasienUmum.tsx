@@ -364,84 +364,84 @@ export default function useTambahPasienUmum() {
         address: string | undefined;
         birthPlace: string | undefined;
         birthDate: string;
-      }) => {
+    }) => {
         console.log('Values:', values);
         try {
-          // Menyusun data untuk dikirim ke API pertama
-          const userData = {
-            email: values.email || '',
-            firstName: values.fullname?.split(' ')[0] || '', // Ambil nama depan dari fullname
-            lastName: values.fullname?.split(' ')[1] || '', // Ambil nama belakang dari fullname
-            nickname: values.fullname?.split(' ')[0] || '', // Menggunakan nama depan sebagai nickname, bisa disesuaikan
-            phoneNumber: values.phone || '',
-            maritalStatus: 'SINGLE', // Misalnya, ini bisa diambil dari input
-            gender: values.gender || '',
-            address: values.address || '',
-            identityNumber: values.nik || '', // Menggunakan NIK untuk identityNumber
-          };
-      
-          // Mengirimkan data ke API user pertama
-          const response = await axios.post(
-            `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/user/`,
-            userData,
-            {
-              headers: {
-                'Content-Type': 'application/json',
-                // Jika ada token atau header lain, bisa ditambahkan di sini
-                // 'Authorization': `Bearer ${yourToken}`,
-              }
-            }
-          );
-      
-          // Mengecek response dari API user pertama
-          if (response.status === 200) {
-            console.log('User data created successfully:', response.data);
-            const formattedBirthDate = dayjs(values.birthDate).format('YYYY-MM-DD');
-      
-            // Mengirimkan data ke API pasien
-            const patientData = {
-              masterUserId: response.data.data.id, // Pastikan response API user pertama memberikan `id` atau identifier lain
-              name: values.fullname || '',
-              birthDate: formattedBirthDate || '',
-              birthPlace: values.birthPlace || '',
-              gender: values.gender || '',
-              address: values.address || '',
+            // Menyusun data untuk dikirim ke API pertama
+            const userData = {
+                email: values.email || '',
+                firstName: values.fullname?.split(' ')[0] || '', // Ambil nama depan dari fullname
+                lastName: values.fullname?.split(' ')[1] || '', // Ambil nama belakang dari fullname
+                nickname: values.fullname?.split(' ')[0] || '', // Menggunakan nama depan sebagai nickname, bisa disesuaikan
+                phoneNumber: values.phone || '',
+                maritalStatus: 'SINGLE', // Misalnya, ini bisa diambil dari input
+                gender: values.gender || '',
+                address: values.address || '',
+                identityNumber: values.nik || '', // Menggunakan NIK untuk identityNumber
             };
-      
-            try {
-              const patientResponse = await axios.post(
-                `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/patient/`,
-                patientData,
-                {
-                  headers: {
-                    'Content-Type': 'application/json',
-                    // Jika ada token atau header lain, bisa ditambahkan di sini
-                    // 'Authorization': `Bearer ${yourToken}`,
-                  }
-                }
-              );
-              
-              // Mengecek response dari API pasien
-              if (patientResponse.status === 200) {
-                console.log('Patient data created successfully:', patientResponse.data);
-                // Lakukan tindakan lain yang diperlukan setelah data berhasil dikirim (misalnya, navigasi atau notifikasi)
-              } else {
-                console.error('Failed to create patient data:', patientResponse.data);
-              }
-            } catch (error) {
-              console.error('Error while creating patient data:', error);
-            }
-      
-          } else {
-            console.error('Failed to create user data:', response.data);
-          }
-        } catch (error) {
-          console.error('Error while creating user data:', error);
-        }
-      };
-      
 
-    
+            // Mengirimkan data ke API user pertama
+            const response = await axios.post(
+                `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/user/`,
+                userData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // Jika ada token atau header lain, bisa ditambahkan di sini
+                        // 'Authorization': `Bearer ${yourToken}`,
+                    }
+                }
+            );
+
+            // Mengecek response dari API user pertama
+            if (response.status === 200) {
+                console.log('User data created successfully:', response.data);
+                const formattedBirthDate = dayjs(values.birthDate).format('YYYY-MM-DD');
+
+                // Mengirimkan data ke API pasien
+                const patientData = {
+                    masterUserId: response.data.data.id, // Pastikan response API user pertama memberikan `id` atau identifier lain
+                    name: values.fullname || '',
+                    birthDate: formattedBirthDate || '',
+                    birthPlace: values.birthPlace || '',
+                    gender: values.gender || '',
+                    address: values.address || '',
+                };
+
+                try {
+                    const patientResponse = await axios.post(
+                        `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/patient/`,
+                        patientData,
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                // Jika ada token atau header lain, bisa ditambahkan di sini
+                                // 'Authorization': `Bearer ${yourToken}`,
+                            }
+                        }
+                    );
+
+                    // Mengecek response dari API pasien
+                    if (patientResponse.status === 200) {
+                        console.log('Patient data created successfully:', patientResponse.data);
+                        // Lakukan tindakan lain yang diperlukan setelah data berhasil dikirim (misalnya, navigasi atau notifikasi)
+                    } else {
+                        console.error('Failed to create patient data:', patientResponse.data);
+                    }
+                } catch (error) {
+                    console.error('Error while creating patient data:', error);
+                }
+
+            } else {
+                console.error('Failed to create user data:', response.data);
+            }
+        } catch (error) {
+            console.error('Error while creating user data:', error);
+        }
+    };
+
+
+
 
     const getPageStyle = (page: number) => {
         if (page === currentPage) {
@@ -544,7 +544,7 @@ export default function useTambahPasienUmum() {
         fetchClinicData();
     }, []);
 
-   
+
     const registrationPatient = async (data: any) => {
         setIsLoading(true)
         try {
@@ -618,7 +618,7 @@ export default function useTambahPasienUmum() {
         }
     }
 
-    
+
 
 
     return {
@@ -661,6 +661,13 @@ export default function useTambahPasienUmum() {
         queueNumber,
         queueData,
         pasienBaru,
-        handleCreateUser
+        handleCreateUser,
+        isLoading,
+        idPatient,
+        fileName,
+        bookingCode,
+        handleFileChange,
+        createTicket,
+        handleGoBack
     }
 }

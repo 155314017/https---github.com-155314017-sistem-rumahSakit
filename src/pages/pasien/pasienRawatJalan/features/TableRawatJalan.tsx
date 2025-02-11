@@ -22,7 +22,7 @@ import bgImage from "../../../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import useTableRawatJalan from "../hooks/useTableRawatJalan";
-import BadgeStatusPasien from "../../../../components/small/BadgeStatusPasien";
+import BadgeStatusPasien from "../../../../components/small/badge/BadgeStatusPasien";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {

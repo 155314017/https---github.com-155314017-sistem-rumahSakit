@@ -4,22 +4,23 @@ import { RoomServices, RoomDataItem } from "../../../services/Admin Tenant/Manag
 import { useNavigate } from "react-router-dom";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete: () => void) {
-  const [page, setPage] = useState(1);
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const [open, setOpen] = React.useState<boolean>(false);
   const [roomData, setRoomData] = useState<RoomDataItem[]>([]);
+  const [buildings, setBuildings] = useState<string[]>([]);
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
+  const [orderBy, setOrderBy] = useState("createdDateTime=asc");
+  const [sort, setSort] = useState('');
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const [loading, setLoading] = useState(false);
   const [pageNumber] = useState(0);
+  const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
-  const [sort, setSort] = useState('');
-  const [orderBy, setOrderBy] = useState("createdDateTime=asc");
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchData();
+    fetchRoomData();
   }, [pageNumber, pageSize, orderBy]);
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
     }
   }, [sort])
 
-  const fetchData = async () => {
+  const fetchRoomData = async () => {
     setLoading(true)
     try {
       const result = await RoomServices(pageNumber, pageSize, orderBy);
@@ -49,12 +50,8 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
     }
   };
   useEffect(() => {
-    fetchData();
+    fetchRoomData();
   }, []);
-
-
-
-  const [buildings, setBuildings] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchBuildings = async () => {
@@ -120,7 +117,7 @@ export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete:
 
   const handleDeleteSuccess = () => {
     fetchDatas();
-    fetchData();
+    fetchRoomData();
     onSuccessDelete();
   };
   return {

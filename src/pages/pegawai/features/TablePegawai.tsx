@@ -24,6 +24,7 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 //hooks
 import useTablePegawai from '../hooks/useTablePegawai';
+import CustomFrameTable from "../../../components/small/CustomFrameTable";
 
 
 
@@ -60,20 +61,20 @@ const StyledTableContainer = styled(TableContainer)`
 `;
 
 export default function TablePegawai() {
-    const { 
-        page,
-        isCollapsed,
-        datas,
-        handleChangePage,
-        rowsPerPage,
-        displayedData,
-        sortir,
-        urutkan,
-        toggleCollapse,
-        confirmationDelete,
-        navigate
-    } = useTablePegawai();
-  
+  const {
+    page,
+    isCollapsed,
+    datas,
+    handleChangePage,
+    rowsPerPage,
+    displayedData,
+    sortir,
+    urutkan,
+    toggleCollapse,
+    confirmationDelete,
+    navigate
+  } = useTablePegawai();
+
 
 
   return (
@@ -107,63 +108,7 @@ export default function TablePegawai() {
           </IconButton>
         </Box>
 
-        {/* membuat bentuk lengkung atas */}
-        <Box
-          position={"absolute"}
-          sx={{
-            top: 0,
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "flex",
-          }}
-        >
-          {/* lengkung kiri */}
-          <Box
-            sx={{
-              width: "50px",
-              height: "30px",
-              bgcolor: "#F1F0FE",
-            }}
-          >
-            <Box
-              sx={{
-                width: "50px",
-                height: "30px",
-                bgcolor: "#fff",
-                borderRadius: "0px 15px 0px 0px ",
-              }}
-            />
-          </Box>
-
-          {/* kotak tengah */}
-          <Box
-            sx={{
-              width: "600px",
-              height: "50px",
-              bgcolor: "#F1F0FE",
-              borderRadius: "0px 0px 22px 22px",
-            }}
-          />
-
-          {/* lengkung kanan */}
-          <Box
-            sx={{
-              width: "50px",
-              height: "30px",
-              bgcolor: "#F1F0FE",
-            }}
-          >
-            <Box
-              sx={{
-                width: "50px",
-                height: "30px",
-                bgcolor: "#fff",
-                borderRadius: "15px 0px 0px 0px ",
-              }}
-            />
-          </Box>
-        </Box>
-        {/* ---------- */}
+        <CustomFrameTable />
 
         <Box position="absolute" sx={{ top: 0, right: 0 }}>
           <img src={bgImage} alt="bg-image" />
@@ -281,102 +226,102 @@ export default function TablePegawai() {
                   </TableHead>
                   <TableBody>
                     {displayedData.length > 0 ? (
-                        displayedData.map((data, index) => (
-                          <StyledTableRow key={index}>
-                            <TableCell
-                              sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                              align="center"
+                      displayedData.map((data, index) => (
+                        <StyledTableRow key={index}>
+                          <TableCell
+                            sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                            align="center"
+                          >
+                            {data?.masterUser?.identityNumber || "-"}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                fontSize: "14px",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                maxWidth: "150px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                          >
+                            {data.name}
+                          </TableCell>
+                          <TableCell
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                          >
+                            {data.role}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                          >
+                            {data.name}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={[{ color: "#292B2C", fontSize: "14px" }]}
+                          >
+                            {data.name}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={[
+                              {
+                                color: "#292B2C",
+                                fontSize: "14px",
+                                textTransform: "capitalize",
+                              },
+                            ]}
+                          >
+                            <Link
+                              onClick={confirmationDelete}
+                              href="#"
+                              mr={2}
+                              underline="hover"
+                              sx={{
+                                textTransform: "capitalize",
+                                color: "#8F85F3",
+                              }}
                             >
-                              {data?.masterUser?.identityNumber || "-"}  
-                            </TableCell>
-                            <TableCell
-                              sx={[
-                                {
-                                  color: "#292B2C",
-                                  fontSize: "14px",
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                  whiteSpace: "nowrap",
-                                  maxWidth: "150px",
-                                  textTransform: "capitalize",
-                                },
-                              ]}
-                            >
-                              {data.name}
-                            </TableCell>
-                            <TableCell
-                              sx={[
-                                {
-                                  color: "#292B2C",
-                                  fontSize: "14px",
-                                  textTransform: "capitalize",
-                                },
-                              ]}
-                            >
-                              {data.role}
-                            </TableCell>
-                            <TableCell
-                              align="center"
-                              sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                            >
-                              {data.name}
-                            </TableCell>
-                            <TableCell
-                              align="center"
-                              sx={[{ color: "#292B2C", fontSize: "14px" }]}
-                            >
-                              {data.name}
-                            </TableCell>
-                            <TableCell
-                              align="center"
-                              sx={[
-                                {
-                                  color: "#292B2C",
-                                  fontSize: "14px",
-                                  textTransform: "capitalize",
-                                },
-                              ]}
-                            >
-                              <Link
-                                onClick={confirmationDelete}
-                                href="#"
-                                mr={2}
-                                underline="hover"
-                                sx={{
-                                  textTransform: "capitalize",
-                                  color: "#8F85F3",
-                                }}
-                              >
-                                Hapus
-                              </Link>
+                              Hapus
+                            </Link>
 
-                              {/* <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} /> */}
-                              <Link
-                                href="#"
-                                mr={2}
-                                underline="hover"
-                                sx={{
-                                  textTransform: "capitalize",
-                                  color: "#8F85F3",
-                                }}
-                              >
-                                Ubah
-                              </Link>
-                              <Link
-                                href="#"
-                                onClick={()=> navigate(`/detailPegawai/${data.id}`) }
-                                underline="hover"
-                                sx={{
-                                  textTransform: "capitalize",
-                                  color: "#8F85F3",
-                                }}
-                              >
-                                Lihat selengkapnya
-                              </Link>
-                            </TableCell>
-                          </StyledTableRow>
-                        ))
-                     ) : (
+                            {/* <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} /> */}
+                            <Link
+                              href="#"
+                              mr={2}
+                              underline="hover"
+                              sx={{
+                                textTransform: "capitalize",
+                                color: "#8F85F3",
+                              }}
+                            >
+                              Ubah
+                            </Link>
+                            <Link
+                              href="#"
+                              onClick={() => navigate(`/detailPegawai/${data.id}`)}
+                              underline="hover"
+                              sx={{
+                                textTransform: "capitalize",
+                                color: "#8F85F3",
+                              }}
+                            >
+                              Lihat selengkapnya
+                            </Link>
+                          </TableCell>
+                        </StyledTableRow>
+                      ))
+                    ) : (
                       <StyledTableRow>
                         <TableCell colSpan={11} align="center">
                           Tidak ada data

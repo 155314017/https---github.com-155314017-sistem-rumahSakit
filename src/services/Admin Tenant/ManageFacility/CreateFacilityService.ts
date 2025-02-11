@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { BaseResponse } from '../../types/api.types'
+import { BaseResponse } from '../../../types/api.types'
 
 export interface FacilityDataItem {
   id: string

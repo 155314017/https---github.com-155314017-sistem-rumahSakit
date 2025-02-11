@@ -380,25 +380,7 @@ export default function TambahPasienUmumOffline() {
                                                                         onChange={(values) => setFieldValue("phone", values)}
 
 
-                                                                        // sx={{
-                                                                        //     width: '100%',
-                                                                        //     height: 'auto',
-                                                                        //     marginTop: '10px',
-                                                                        //     '& .MuiOutlinedInput-root': {
-                                                                        //         borderRadius: '8px',
-                                                                        //         backgroundColor: touched.phone && errors.phone ? '#ffcccc' : 'inherit',
-                                                                        //         '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                        //             borderColor: '#8F85F3',
-                                                                        //         },
-                                                                        //     },
-                                                                        //     '& .MuiOutlinedInput-notchedOutline': {
-                                                                        //         border: '1px solid #ccc',
-                                                                        //     },
-                                                                        //     '& .MuiOutlinedInput-input': {
-                                                                        //         padding: '10px',
-                                                                        //         fontSize: '16px',
-                                                                        //     },
-                                                                        // }}
+                                                                        
 
                                                                         inputStyle={{
                                                                             height: "48px",

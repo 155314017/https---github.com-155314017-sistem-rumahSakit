@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { Clinic, ClinicDataItem } from "../../../services/Admin Tenant/ManageClinic/Clinic";
@@ -8,12 +9,11 @@ import { GetScheduleByTypeId } from "../../../services/Admin Tenant/ManageSchedu
 export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: () => void) {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [open, setOpen] = React.useState<boolean>(false);
-  const [datas, setDatas] = useState<ClinicDataItem[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [dataClinic, setDataClinic] = useState<ClinicDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
-  const [dataSchedules, setDataSchedules] = useState<any[]>([])
-  const [pageNumber, setPageNumber] = useState(0);
-  const [pageSize, setPageSize] = useState(100);
+  const [pageNumber] = useState(0);
+  const [pageSize] = useState(100);
   const [sort, setSort] = useState('');
   const [orderBy, setOrderBy] = useState("createdDateTime=asc");
 
@@ -38,16 +38,12 @@ export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: 
   const fetchData = async () => {
     try {
       const result = await Clinic(pageNumber, pageSize, orderBy);
-      const allSchedules = []; // Array untuk menyimpan semua jadwal
-      const dataSchedules = []; // Array untuk menyimpan jadwal terpisah
+      const allSchedules = [];
+      const dataSchedules = [];
 
-      // Loop untuk setiap id dari hasil ClinicServices
       for (let index = 0; index < result.length; index++) {
-        console.log('id ke-', index, ': ', result[index].id);
         const hasil = await GetScheduleByTypeId(result[index].id);
-        console.log('data schedule: ', hasil);
 
-        // Array untuk menyimpan jadwal startTime dan endTime per id
         const schedules = [];
         const formattedSchedules = []; // Array untuk menyimpan jadwal yang sudah diformat
 
@@ -77,9 +73,7 @@ export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: 
         });
       }
 
-      console.log('Formatted Schedules:', dataSchedules);
-      setDatas(result);
-      setDataSchedules(dataSchedules);
+      setDataClinic(result);
     } catch (error) {
       console.error('Failed to fetch data from API: ', error);
     }
@@ -88,12 +82,13 @@ export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: 
     fetchData();
   }, []);
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
+  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, clinicId: string) => {
 
     event.preventDefault();
-    setDeletedItems(buildingId);
+    setDeletedItems(clinicId);
     setOpen(true);
   };
+
 
   const handleDeleteSuccess = () => {
     onSuccessDelete();
@@ -107,7 +102,7 @@ export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: 
 
   const rowsPerPage = 10;
 
-  const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const displayedData = dataClinic.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const urutkan = [
     { value: 1, label: "Nomor klinik 1-9" },
@@ -122,15 +117,11 @@ export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: 
 
   return {
     page,
-    setPage,
     isCollapsed,
-    setIsCollapsed,
     open,
     setOpen,
-    datas,
-    setDatas,
+    dataClinic,
     deletedItems,
-    setDeletedItems,
     confirmationDelete,
     handleDeleteSuccess,
     handleChangePage,
@@ -139,10 +130,6 @@ export default function useTableKlinik(fetchDatas: () => void, onSuccessDelete: 
     urutkan,
     toggleCollapse,
     navigate,
-    dataSchedules,
-    setPageNumber,
-    setPageSize,
-    setOrderBy,
     setSort,
   }
 }

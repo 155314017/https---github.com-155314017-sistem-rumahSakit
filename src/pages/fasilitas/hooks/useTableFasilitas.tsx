@@ -1,66 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-// import { useNavigate } from "react-router-dom";
-import { FacilityServices, FacilityDataItem } from "../../../services/ManageFacility/FacilityServices";
+import { FacilityServices, FacilityDataItem } from "../../../services/Admin Tenant/ManageFacility/FacilityServices";
 import { Schedule } from "@mui/icons-material";
 import { GetScheduleByTypeId } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
-
-export interface BuildingDataItem {
-  id: string;
-  name: string;
-  address: string;
-  additionalInfo: string;
-  createdBy: string;
-  createdDateTime: number;
-  updatedBy: string | null;
-  updatedDateTime: number | null;
-  deletedBy: string | null;
-  deletedDateTime: number | null;
-  images: string[];
-}
-
-export interface Pageable {
-  pageNumber: number;
-  pageSize: number;
-  sort: {
-    sorted: boolean;
-    empty: boolean;
-    unsorted: boolean;
-  };
-  offset: number;
-  paged: boolean;
-  unpaged: boolean;
-}
-
-export interface ApiResponse {
-  responseCode: string;
-  statusCode: string;
-  message: string;
-  data: {
-    content: BuildingDataItem[];
-    pageable: Pageable;
-    totalPages: number;
-    totalElements: number;
-    last: boolean;
-    size: number;
-    number: number;
-    sort: {
-      sorted: boolean;
-      empty: boolean;
-      unsorted: boolean;
-    };
-    numberOfElements: number;
-    first: boolean;
-    empty: boolean;
-  };
-}
+import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 
 export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelete: () => void) {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState<boolean>(false);
-  const [datas, setDatas] = useState<FacilityDataItem[]>([]);
+  const [dataFacility, setDataFacility] = useState<FacilityDataItem[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
   const [buildings, setBuildings] = useState<string[]>([]);
@@ -69,8 +19,6 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
   const [orderBy, setOrderBy] = useState("createdDateTime=asc");
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(100);
-
-  //   const navigate = useNavigate();
 
   useEffect(() => {
     if (sort == "Nama fasilitas A-Z") {
@@ -85,10 +33,10 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
   }, [sort])
 
   useEffect(() => {
-    fetchData();
+    fetchDataFacility();
   }, [pageNumber, pageSize, orderBy]);
 
-  const fetchData = async () => {
+  const fetchDataFacility = async () => {
     try {
       const result = await FacilityServices(pageNumber, pageSize, orderBy);
 
@@ -96,11 +44,7 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
       const dataSchedules = [];
 
       for (let index = 0; index < result.length; index++) {
-        console.log('id ke-', index, ': ', result[index].id);
         const hasil = await GetScheduleByTypeId(result[index].id);
-        console.log('data schedule: ', hasil);
-
-
         const schedules = [];
         const formattedSchedules = [];
 
@@ -131,7 +75,7 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
       }
 
       console.log('Formatted Schedules:', dataSchedules);
-      setDatas(result);
+      setDataFacility(result);
       setDataSchedules(dataSchedules);
 
       const buildingIds = result.map((data) => data.masterBuildingId);
@@ -143,7 +87,7 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
 
 
   useEffect(() => {
-    fetchData();
+    fetchDataFacility();
   }, []);
 
   useEffect(() => {
@@ -151,15 +95,13 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
       try {
         const responses = await Promise.all(
           dataIdBuilding.map((id) =>
-            axios
-              .get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${id}`)
-              .catch(() => ({ data: { data: { name: "Data Facility Tidak Ditemukan" } } }))
+            GetBuildingById(id)
           )
         );
 
         const facilitiesData = responses.map((response) => {
-          const name = response.data.data.name;
-          return name || "Data Gedung Tidak Tercatat";
+          const buildingName = response.name;
+          return buildingName || "Data Gedung Tidak Tercatat";
         });
 
         setBuildings(facilitiesData);
@@ -178,7 +120,7 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
   };
 
   const rowsPerPage = 10;
-  const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const displayedData = dataFacility.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const urutkan = [
     { value: 1, label: "Biaya penanganan tertinggi" },
@@ -202,7 +144,7 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
 
   const handleDeleteSuccess = () => {
     onSuccessDelete();
-    fetchData();
+    fetchDataFacility();
     fetchDatas();
   };
 
@@ -210,11 +152,10 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
     page,
     isCollapsed,
     open,
-    datas,
+    dataFacility,
     deletedItems,
     dataIdBuilding,
     buildings,
-    fetchData,
     toggleCollapse,
     handleChangePage,
     rowsPerPage,

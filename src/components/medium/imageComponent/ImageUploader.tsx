@@ -12,8 +12,8 @@ interface ImageInfo {
 }
 
 interface ImageUploaderProps {
-  onImagesSelected?: (images: ImageInfo[]) => void; // Callback saat gambar dipilih
-  maxFileSize?: number; // Maksimal ukuran file dalam bytes
+  onImagesSelected?: (images: ImageInfo[]) => void; 
+  maxFileSize?: number;
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({
@@ -37,7 +37,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 
       setSelectedImages((prevImages) => {
         const allImages = [...prevImages, ...newImages];
-        // Panggil callback jika ada
         if (onImagesSelected) {
           onImagesSelected(allImages);
         }
@@ -52,14 +51,13 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
     accept: {
       "image/*": [],
     },
-    maxSize: maxFileSize, // Menetapkan batas ukuran file
+    maxSize: maxFileSize,
     multiple: true,
   });
 
   const handleRemoveImage = (index: number) => {
     setSelectedImages((prevImages) => {
       const updatedImages = prevImages.filter((_, i) => i !== index);
-      // Panggil callback saat gambar dihapus
       if (onImagesSelected) {
         onImagesSelected(updatedImages);
       }

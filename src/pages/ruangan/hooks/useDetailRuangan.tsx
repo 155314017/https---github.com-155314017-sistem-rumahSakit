@@ -6,8 +6,6 @@ import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/G
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
 
-
-
 export default function useDetailRuangan() {
     const [roomName, setRoomName] = useState<string>("");
     const [roomType, setRoomType] = useState<string>("");
@@ -38,7 +36,7 @@ export default function useDetailRuangan() {
         },
     ];
 
-    const fetchData = async () => {
+    const fetchRoomById = async () => {
         setLoading(true);
         try {
             const response = await GetRoomByIdServices(id);
@@ -52,7 +50,6 @@ export default function useDetailRuangan() {
                 setLargeImage(largeImage);
                 setSmallImages(smallImages);
             }
-
             setLoading(false);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -61,7 +58,7 @@ export default function useDetailRuangan() {
     };
 
     useEffect(() => {
-        fetchData();
+        fetchRoomById();
     }, [id]);
 
 

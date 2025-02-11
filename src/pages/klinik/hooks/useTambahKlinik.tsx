@@ -10,7 +10,6 @@ import { createExclusions, createSchedules, KalenderData, validateInput } from '
 
 export default function useTambahKlinik() {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [successAlert, setSuccessAlert] = useState(false);
   const [imagesData, setImagesData] = useState<ImageData[]>([]);
   const [errorAlert, setErrorAlert] = useState(false);
   const [operationalTime] = useState<string | null>(null);
@@ -23,11 +22,7 @@ export default function useTambahKlinik() {
     setErrorAlert(false);
   };
 
-  const showTemporaryAlertSuccess = async () => {
-    setSuccessAlert(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setSuccessAlert(false);
-  };
+  
 
   const breadcrumbItems = [
     { label: "Dashboard", href: "/dashboard" },
@@ -150,18 +145,15 @@ export default function useTambahKlinik() {
   return {
     breadcrumbItems,
     formik,
-    imagesData,
-    setImagesData,
     handleImageChange,
-    successAlert,
-    errorAlert,
-    operationalTime,
-    showTemporaryAlertSuccess,
-    currentPage,
     setCurrentPage,
     getPageStyle,
     getBorderStyle,
+    currentPage,
     kalenderRef,
-    handleSaveKlinik
+    handleSaveKlinik,
+    operationalTime,
+    errorAlert,
+    
   }
 }

@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
 import { ImageData } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
-import { createSubFacilityServices } from "../../../services/ManageFacility/CreateSubfacilityService";
+import { createSubFacilityServices } from "../../../services/Admin Tenant/ManageFacility/CreateSubfacilityService";
+import { FacilityServices } from "../../../services/Admin Tenant/ManageFacility/FacilityServices";
 type Facility = {
     id: string;
     name: string;
@@ -24,10 +25,8 @@ export default function useTambahSubFasilitas() {
     useEffect(() => {
         const fetchFacilityData = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`, {
-                    timeout: 10000
-                });
-                setFacilityOptions(response.data.data.content.map((item: Facility) => ({
+                const response = await FacilityServices();
+                setFacilityOptions(response.map((item: Facility) => ({
                     id: item.id,
                     name: item.name,
                 })));
@@ -62,11 +61,11 @@ export default function useTambahSubFasilitas() {
 
     const formik = useFormik({
         initialValues: {
-            namaKlinik: '',
+            namaSubFasilitas: '',
             facilityId: '',
         },
         validationSchema: Yup.object({
-            namaKlinik: Yup.string().required('Nama Klinik is required'),
+            namaSubFasilitas: Yup.string().required('Nama Klinik is required'),
             facilityId: Yup.string().required('Deskripsi Klinik is required'),
         }),
         onSubmit: async (values) => {
@@ -128,27 +127,20 @@ export default function useTambahSubFasilitas() {
     const handleSaveKlinik = async () => {
         try {
             const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
-
-            // Validasi input schedule
             validateInput(kalenderData);
-
-            // Data untuk CreateClinic
             const klinikData = {
-                name: formik.values.namaKlinik,
+                name: formik.values.namaSubFasilitas,
                 facilityDataId: formik.values.facilityId,
             };
             // Buat klinik baru
             const { data: { id: facilityDataId } } = await createSubFacilityServices(klinikData);
             if (!facilityDataId) throw new Error('Klinik ID tidak ditemukan');
-
-            // Proses secara parallel untuk optimasi
             await Promise.all([
                 createSchedules(facilityDataId, kalenderData.praktek),
                 createExclusions(facilityDataId, kalenderData.exclusion),
                 // uploadImages(facilityDataId, imagesData)
             ]);
 
-            // Reset state dan redirect
             formik.resetForm();
             setImagesData([]);
 

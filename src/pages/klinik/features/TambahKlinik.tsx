@@ -7,7 +7,8 @@ import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageU
 import TestKalender from "../../../components/medium/TestKalender";
 import useTambahKlinik from "../hooks/useTambahKlinik";
 export default function TambahKlinik() {
-    const { breadcrumbItems,
+    const { 
+        breadcrumbItems,
         formik,
         handleImageChange,
         setCurrentPage,

@@ -13,7 +13,7 @@ interface ImageDatas {
 }
 
 interface ImageUploaderGroupProps {
-    onChange: (images: { imageName: string; imageType: string; imageData: string;  }[]) => void;
+    onChange: (images: { imageName: string; imageType: string; imageData: string; }[]) => void;
 }
 
 const ImageUploaderGroup: React.FC<ImageUploaderGroupProps> = ({ onChange }) => {
@@ -146,7 +146,7 @@ const ImageUploaderGroup: React.FC<ImageUploaderGroupProps> = ({ onChange }) => 
                                 onChange={(e) => handleFileChange(e, index)}
                             />
                             {imgData.loading ? (
-                                <CircularProgress sx={{ color:'#8F85F3'}} />
+                                <CircularProgress sx={{ color: '#8F85F3' }} />
                             ) : imgData.image ? (
                                 <img
                                     src={imgData.image}

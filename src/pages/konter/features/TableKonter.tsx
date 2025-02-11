@@ -8,7 +8,6 @@ import {
     TableRow,
     TableCell,
     TableBody,
-    Link,
     Pagination,
     IconButton,
     Collapse,
@@ -24,6 +23,7 @@ import ModalDeleteConfirmation from "../../../components/small/modal/ModalDelete
 
 //hooks
 import useTableKonter from "../hooks/useTableKonter";
+import CustomFrameTable from "../../../components/small/CustomFrameTable";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -59,11 +59,12 @@ interface TableKonterProps {
     onSuccessDelete: () => void;
 }
 const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }) => {
-    const { page,
+    const {
+        page,
         isCollapsed,
         open,
         setOpen,
-        datas,
+        dataCounter,
         deletedItems,
         navigate,
         handleChangePage,
@@ -73,7 +74,8 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
         toggleCollapse,
         confirmationDelete,
         setSort,
-        handleDeleteSuccess } = useTableKonter(fetchDatas, onSuccessDelete);
+        handleDeleteSuccess
+    } = useTableKonter(fetchDatas, onSuccessDelete);
     return (
         <Box>
             <Box
@@ -109,63 +111,9 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
                 <Box position="absolute" sx={{ top: 0, right: 0 }}>
                     <img src={bgImage} alt="bg-image" />
                 </Box>
-                {/* membuat bentuk lengkung atas */}
-                <Box
-                    position={"absolute"}
-                    sx={{
-                        top: 0,
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        display: "flex",
-                    }}
-                >
-                    {/* lengkung kiri */}
-                    <Box
-                        sx={{
-                            width: "50px",
-                            height: "30px",
-                            bgcolor: "#F1F0FE",
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#fff",
-                                borderRadius: "0px 15px 0px 0px ",
-                            }}
-                        />
-                    </Box>
 
-                    {/* kotak tengah */}
-                    <Box
-                        sx={{
-                            width: "600px",
-                            height: "50px",
-                            bgcolor: "#F1F0FE",
-                            borderRadius: "0px 0px 22px 22px",
-                        }}
-                    />
+                <CustomFrameTable />
 
-                    {/* lengkung kanan */}
-                    <Box
-                        sx={{
-                            width: "50px",
-                            height: "30px",
-                            bgcolor: "#F1F0FE",
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#fff",
-                                borderRadius: "15px 0px 0px 0px ",
-                            }}
-                        />
-                    </Box>
-                </Box>
-                {/* ---------- */}
                 <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
                     <Box>
                         <Box
@@ -296,42 +244,40 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
                                                                 color: "#292B2C",
                                                                 fontSize: "14px",
                                                                 textTransform: "capitalize",
+                                                                display: "flex",
+                                                                flexDirection: "row",
                                                             },
                                                         ]}
                                                     >
-                                                        <Link
-                                                            href="#"
-                                                            underline="none"
+                                                        <Typography
                                                             color={"#8F85F3"}
-                                                            onClick={(event) => confirmationDelete(event, data.id)}
-                                                            sx={{ mr: 2 }}
+                                                            onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => confirmationDelete(event, data.id)}
+                                                            sx={{ mr: 2, cursor: 'pointer' }}
                                                         >
                                                             Hapus
-                                                        </Link>
+                                                        </Typography>
                                                         <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/counter/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
-                                                        <Link
-                                                            href="#"
+                                                        <Typography
                                                             mr={2}
                                                             onClick={() => navigate(`/editKonter/${data.id}`)}
-                                                            underline="hover"
                                                             sx={{
                                                                 textTransform: "capitalize",
                                                                 color: "#8F85F3",
+                                                                cursor: 'pointer'
                                                             }}
                                                         >
                                                             Ubah
-                                                        </Link>
-                                                        <Link
-                                                            href="#"
+                                                        </Typography>
+                                                        <Typography
                                                             onClick={() => navigate(`/detailKonter/${data.id}`)}
-                                                            underline="hover"
                                                             sx={{
                                                                 textTransform: "capitalize",
                                                                 color: "#8F85F3",
+                                                                cursor: 'pointer'
                                                             }}
                                                         >
                                                             Lihat Selengkapnya
-                                                        </Link>
+                                                        </Typography>
                                                     </TableCell>
                                                 </StyledTableRow>
                                             ))
@@ -349,10 +295,10 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
 
                         <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center">
                             <Typography sx={{ color: "#A8A8BD" }}>
-                                Showing {(page - 1) * rowsPerPage + 1} to {Math.min(page * rowsPerPage, datas.length)} of {datas.length} entries
+                                Showing {(page - 1) * rowsPerPage + 1} to {Math.min(page * rowsPerPage, dataCounter.length)} of {dataCounter.length} entries
                             </Typography>
                             <Pagination
-                                count={Math.ceil(datas.length / rowsPerPage)}
+                                count={Math.ceil(dataCounter.length / rowsPerPage)}
                                 shape="rounded"
                                 page={page}
                                 onChange={handleChangePage}

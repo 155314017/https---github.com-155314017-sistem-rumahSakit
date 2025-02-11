@@ -22,7 +22,6 @@ import CustomCalendar from "../../../components/medium/CustomCalender";
 import DropdownListAPI from "../../../components/small/dropdownlist/DropdownListAPI";
 import InformasiTicketAPI from "../../../components/small/InformasiTicketAPI";
 import useRegistrationOnline from "../hooks/useRegistrationOnline";
-// import FileUploader from "../../../components/medium/FileUploader";
 import PasienCard from "../../../components/small/card/PasienCard";
 import imgUmum from "../../../assets/img/filling.png";
 import imgInsurance from "../../../assets/img/injury-pana 1.png";

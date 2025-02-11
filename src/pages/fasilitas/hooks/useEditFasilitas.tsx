@@ -6,12 +6,12 @@ import 'dayjs/locale/id';
 dayjs.locale('id');
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FacilityData, getFacilityByIdService } from '../../../services/ManageFacility/GetFacilityByIdService';
+import { FacilityData, getFacilityByIdService } from '../../../services/Admin Tenant/ManageFacility/GetFacilityByIdService';
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 import { GetScheduleByTypeId, ScheduleDataItem } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices';
 import { ExclusionDataItem, GetExclusionByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices';
 import { editImages, ImageData } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
-import { EditFacilityServices, EditFacilityRequest } from '../../../services/ManageFacility/EditFacilityService';
+import { EditFacilityServices, EditFacilityRequest } from '../../../services/Admin Tenant/ManageFacility/EditFacilityService';
 import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
 
 type Building = {
@@ -40,24 +40,23 @@ export default function useEditFasilitas() {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDataFacility = async () => {
       try {
-        const fasilitasResponse = await getFacilityByIdService(id); 
+        const fasilitasResponse = await getFacilityByIdService(id);
         const scheduleResponse = await GetScheduleByTypeId(id || "");
         const exclusionResponse = await GetExclusionByTypeId(id || "");
         const response = await Building();
         setGedungOptions(response.map((item: Building) => ({
-            id: item.id,
-            name: item.name,
-        })));        
+          id: item.id,
+          name: item.name,
+        })));
         console.log("Schedule Response from API:", scheduleResponse);
         console.log("Exclusion Response from API:", exclusionResponse);
         if (fasilitasResponse) {
           setFasilitasData(fasilitasResponse);
         }
 
-        if (scheduleResponse) { 
-          // Transform API data ke format yang sesuai dengan getKalenderData  
+        if (scheduleResponse) {
           setScheduleDataPraktek(scheduleResponse);
         }
 
@@ -71,43 +70,42 @@ export default function useEditFasilitas() {
       }
 
     };
-    fetchData();
+    fetchDataFacility();
   }, [id]);
 
-    const handleImageChange = (images: ImageData[]) => {
-        setImagesData(images);
-    };
+  const handleImageChange = (images: ImageData[]) => {
+    setImagesData(images);
+  };
 
-    const showTemporaryAlertError = async () => {
-        setErrorAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setErrorAlert(false);
-    };
+  const showTemporaryAlertError = async () => {
+    setErrorAlert(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setErrorAlert(false);
+  };
 
-    const breadcrumbItems = [
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "Fasilitas", href: "/fasilitas" },
-        { label: "Edit Fasilitas", href: "/editFasilitas/:id" },
-    ];
+  const breadcrumbItems = [
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "Fasilitas", href: "/fasilitas" },
+    { label: "Edit Fasilitas", href: "/editFasilitas/:id" },
+  ];
 
-    const formik = useFormik<FormValues>({
-        initialValues: {
-            namaFasilitas: fasilitasData?.name || "",
-            masterBuildingId: fasilitasData?.masterBuildingId || "",
-            deskripsiKlinik: fasilitasData?.description || "",
-            operationalCost: fasilitasData?.cost || 0,
-        },
-        enableReinitialize: true,
-        validationSchema: Yup.object({
-            namaFasilitas: Yup.string().required('Facility Name is required'),
-            masterBuildingId: Yup.string().required('Gedung is required'),
-            deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
-            operationalCost: Yup.number().required('Operational Cost is required').positive('Must be a positive number'),
-        }),
-        onSubmit: async (values) => {
-            console.log(values);
-        }
-    });
+  const formik = useFormik<FormValues>({
+    initialValues: {
+      namaFasilitas: fasilitasData?.name || "",
+      masterBuildingId: fasilitasData?.masterBuildingId || "",
+      deskripsiKlinik: fasilitasData?.description || "",
+      operationalCost: fasilitasData?.cost || 0,
+    },
+    enableReinitialize: true,
+    validationSchema: Yup.object({
+      namaFasilitas: Yup.string().required('Nama fasilitas wajib diisi'),
+      masterBuildingId: Yup.string().required('Gedung wajib dipilih'),
+      deskripsiKlinik: Yup.string().required('Deskripsi Klinik wajib diisi'),
+      operationalCost: Yup.number().required('Biaya penanganan wajib diisi').positive('Nilai harus positif'),
+    }),
+    onSubmit: async () => {
+    }
+  });
 
 
   const getPageStyle = (page: number) => {
@@ -160,11 +158,7 @@ export default function useEditFasilitas() {
   const handleEditFasilitas = async () => {
     try {
       const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
-      console.log("kalenderData: ", kalenderData);
-      // Validasi input schedule
       validateInput(kalenderData);
-
-      // Data untuk EditAmbulanceService
       const fasilitasData: EditFacilityRequest = {
         facilityId: id || "",
         name: formik.values.namaFasilitas,
@@ -174,39 +168,34 @@ export default function useEditFasilitas() {
         masterBuildingId: formik.values.masterBuildingId,
       };
 
-      // Edit ambulance
       const { data: { id: fasilitasId } } = await EditFacilityServices(fasilitasData);
       if (!fasilitasId) throw new Error('Fasilitas ID tidak ditemukan');
 
       await editImages(fasilitasId, imagesData);
       // Pisahkan data praktek yang baru (yang memiliki id dengan format 'session-')
       const newPraktekData = kalenderData.praktek.filter(item => item.id.startsWith('session-'));
-      
+
       // Pisahkan data exclusion yang baru (yang memiliki id dengan format 'exclusion-')
       const newExclusionData = kalenderData.exclusion.filter(item => item.id.startsWith('exclusion-'));
 
       // Proses data baru secara parallel jika ada
       const promises = [];
-      
+
       if (newPraktekData.length > 0) {
-        console.log('Creating new praktek schedules:', newPraktekData);
         promises.push(createSchedules(fasilitasId, newPraktekData));
       }
 
       if (newExclusionData.length > 0) {
-        console.log('Creating new exclusion schedules:', newExclusionData);
         promises.push(createExclusions(fasilitasId, newExclusionData));
       }
 
-      // Tunggu semua proses selesai
       if (promises.length > 0) {
         await Promise.all(promises);
       }
 
-      // Reset state dan redirect
       formik.resetForm();
       setImagesData([]);
-      
+
       navigate('/fasilitas', {
         state: {
           successAdd: true,
@@ -224,25 +213,25 @@ export default function useEditFasilitas() {
   };
 
 
-    return {
-      formik,
-      handleImageChange,
-      imagesData,
-      errorAlert,
-      breadcrumbItems,
-      id,
-      currentPage,
-      setCurrentPage,
-      getPageStyle,
-      getBorderStyle,
-      handleEditFasilitas,
-      kalenderRef,
-      fasilitasData,
-      scheduleDataPraktek,
-      scheduleDataPengecualian,
-      gedungOptions
+  return {
+    formik,
+    handleImageChange,
+    imagesData,
+    errorAlert,
+    breadcrumbItems,
+    id,
+    currentPage,
+    setCurrentPage,
+    getPageStyle,
+    getBorderStyle,
+    handleEditFasilitas,
+    kalenderRef,
+    fasilitasData,
+    scheduleDataPraktek,
+    scheduleDataPengecualian,
+    gedungOptions
 
 
 
-    }
+  }
 }

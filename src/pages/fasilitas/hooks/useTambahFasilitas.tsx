@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createFacility } from '../../../services/ManageFacility/CreateFacilityService';
+import { createFacility } from '../../../services/Admin Tenant/ManageFacility/CreateFacilityService';
 import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 import { uploadImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
@@ -18,7 +18,6 @@ type ImageData = {
     imageType: string;
     imageData: string;
 };
-
 
 
 export default function useTambahFasilitas() {
@@ -127,10 +126,10 @@ export default function useTambahFasilitas() {
             operationalCost: 0
         },
         validationSchema: Yup.object({
-            deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
-            masterBuildingId: Yup.string().required('Gedung is required'),
-            namaFasilitas: Yup.string().required('Facility Name is required'),
-            operationalCost: Yup.number().required('Operational Cost is required').min(0, 'Must be a positive number')
+            deskripsiKlinik: Yup.string().required('Deskripsi Klinik wajib diisi'),
+            masterBuildingId: Yup.string().required('Gedung wajib dipilih'),
+            namaFasilitas: Yup.string().required('Nama Fasilitas wajib diisi'),
+            operationalCost: Yup.number().required('Biaya wajib diisi').min(0, 'Nilai harus positif')
         }),
         onSubmit: async (values) => {
             console.log(values)
@@ -140,11 +139,8 @@ export default function useTambahFasilitas() {
     const handleSaveFasilitas = async () => {
         try {
             const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
-
-            // Validasi input schedule
             validateInput(kalenderData);
 
-            // Data untuk CreateFacilityService
             const facilityData = {
                 name: formik.values.namaFasilitas,
                 description: formik.values.deskripsiKlinik,
@@ -157,14 +153,12 @@ export default function useTambahFasilitas() {
             const { data: { id: facilityId } } = await createFacility(facilityData);
             if (!facilityId) throw new Error('Facility ID tidak ditemukan');
 
-            // Proses secara parallel untuk optimasi
             await Promise.all([
                 createSchedules(facilityId, kalenderData.praktek),
                 createExclusions(facilityId, kalenderData.exclusion),
                 uploadImages(facilityId, imagesData)
             ]);
 
-            // Reset state dan redirect
             formik.resetForm();
             setImagesData([]);
             showTemporaryAlertSuccess();

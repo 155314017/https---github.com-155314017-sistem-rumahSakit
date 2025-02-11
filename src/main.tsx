@@ -2,7 +2,6 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './index.css'
-// import App from './App';
 import Gedung from '../src/pages/gedung/features/Index';
 import Ambulance from './pages/ambulance/features/Index';
 import DetailAmbulance from './pages/ambulance/features/DetailAmbulance';
@@ -132,12 +131,12 @@ createRoot(document.getElementById('root')!).render(
         {/* reset pass admin/pegawai  */}
         <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
 
-        {/* not found route  */}
-        <Route path="*" element={<NotFoundPage />} />
 
         {/* dashboard antrian  */}
         <Route path="/dashboardQueue" element={<HomeQueue />} />
 
+        {/* not found route  */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   </StrictMode>
