@@ -256,7 +256,6 @@ export default function useRegistrationOnline() {
                     },
                 }
             );
-            console.log('regis: ', response)
             setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format('DD/MMM/YYYY, HH:mm'));
             setBookingCode(response.data.data.bookingCode);
             setRegistrationId(response.data.data.id);
@@ -270,7 +269,6 @@ export default function useRegistrationOnline() {
         setIsLoading(true);
         try {
             const responseUser = await GetUserByNIK(nik);
-            console.log(responseUser);
             if (responseUser?.responseCode === '200') {
                 if (responseUser?.data != null) {
                     const fullname = responseUser?.data.firstName + ' ' + responseUser?.data.lastName;
@@ -298,11 +296,7 @@ export default function useRegistrationOnline() {
             }
         } catch (err: any) {
             if (err.response?.status === 404) {
-                const data = {
-                    id: null,
-                    needAdmin: true,
-                };
-                console.log('data data: ', data);
+                
                 setCurrentPage(3);
             } else {
                 console.error('Unexpected error:', err);

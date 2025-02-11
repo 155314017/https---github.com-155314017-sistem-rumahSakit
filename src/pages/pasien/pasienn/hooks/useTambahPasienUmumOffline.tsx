@@ -86,7 +86,7 @@ export default function useTambahPasienUmumOffline() {
     const [selectedSchedule, setSelectedSchedule] = useState<string | null>(null);
     const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(null);
     const [doctorOptions, setDoctorOptions] = useState<Doctor[]>([]);
-    const [dataTickets, setDataTickets] = useState<dataTicket>();
+    const [dataTickets] = useState<dataTicket>();
     const [needAdmin, setNeedAdmin] = useState(false);
     const [NIK, setNIK] = useState('');
     const [idClinic, setIdClinic] = useState('');
@@ -101,19 +101,12 @@ export default function useTambahPasienUmumOffline() {
     const [birth, setBirth] = useState('');
     const [idPatient, setIdPatient] = useState<string | undefined>('');
     const [patientData, setPatientData] = useState<PatientData>();
-    const [fileName, setFileName] = useState("");
     const [tanggalReserve, setTanggalReserve] = useState('');
     const [registrationCode, setRegistrationCode] = useState('');
-    const [bookingCode, setBookingCode] = useState('');
     const [queueNumber,] = useState('');
     const [queueData, setQueueData] = useState<queueData>();
 
-    const handleFileChange = (event: any) => {
-        const file = event.target.files[0];
-        if (file) {
-            setFileName(file.name);
-        }
-    };
+    
 
 
 
@@ -428,8 +421,6 @@ export default function useTambahPasienUmumOffline() {
                     },
                 }
             );
-            console.log("response Booking code : ", response.data.data.bookingCode);
-            setBookingCode(response.data.data.bookingCode);
             setTanggalReserve(dayjs.unix(response.data.data.createdDateTime).format(' DD/MMM/YYYY, HH:mm'));
             setRegistrationCode(response.data.data.id);
             const queueData = {
@@ -529,5 +520,7 @@ export default function useTambahPasienUmumOffline() {
         registrationCode,
         queueNumber,
         queueData,
+        isLoading,
+        idPatient
     }
 }
