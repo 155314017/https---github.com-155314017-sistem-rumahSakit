@@ -11,6 +11,8 @@ import { FacilityDataItem, FacilityServices } from '../../../services/Admin Tena
 import { RoomServices } from '../../../services/Admin Tenant/ManageRoom/RoomServices'
 import { BuildingDataItem } from '../../../types/building.types'
 import { RoomDataItem } from '../../../types/room.types'
+import { PAGE_SIZE } from '../../gedung/hooks/useIndex'
+
 
 export default function useIndex() {
   const [dataClinic, setDataClinic] = useState<ClinicDataItem[]>([])
@@ -29,7 +31,10 @@ export default function useIndex() {
   const [pageNumber, setPageNumber] = useState(0);
   const [totalElementsBuilding, setTotalElementsBuilding] = useState(0);
   const [totalElementsRoom, setTotalElementsRoom] = useState(0);
-  const [orderBy, setOrderBy] = useState("createdDateTime=asc");
+  const [totalElementsFacility, setTotalElementsFacility] = useState(0);
+  const [orderByBuilding, setOrderByBuilding] = useState("createdDateTime=asc");
+  const [orderByRoom, setOrderByRoom] = useState("createdDateTime=asc");
+  const [orderByFacility, setOrderByFacility] = useState("createdDateTime=asc");
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
   const location = useLocation()
   const navigate = useNavigate()
@@ -39,20 +44,22 @@ export default function useIndex() {
 
     try {
       const resultClinic = await Clinic()
-      const resultRoom = await RoomServices()
-      const resultFacility = await FacilityServices()
+      const resultRoom = await RoomServices(pageNumber, PAGE_SIZE, orderByRoom)
+      const resultFacility = await FacilityServices(pageNumber, PAGE_SIZE, orderByFacility)
       const resultDoctor = await DoctorServices()
-      const resultBuilding = await Building(pageNumber, 1, orderBy);
+      const resultBuilding = await Building(pageNumber, PAGE_SIZE, orderByBuilding);
       setTotalElementsBuilding(resultBuilding.data.totalElements);
       setDataRoom(resultRoom.data.content)
       setTotalElementsRoom(resultRoom.data.totalElements);
       const buildingIds = resultRoom.data.content.map((data: { masterBuildingId: string; }) => data.masterBuildingId);
       setDataIdBuilding(buildingIds);
       setDataClinic(resultClinic)
-      setDataFacility(resultFacility)
+      setDataFacility(resultFacility.data.content)
+      setTotalElementsFacility(resultFacility.data.totalElements);
       setDataDoctor(resultDoctor)
       setDataBuilding(resultBuilding.data.content)
       setIsLoading(false)
+
     } catch (error) {
       console.error('Failed to fetch data from API' + error)
     }
@@ -60,7 +67,7 @@ export default function useIndex() {
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [orderByBuilding, orderByRoom, orderByFacility])
 
 
   const showTemporarySuccessDeleteRoom = async () => {
@@ -141,9 +148,12 @@ export default function useIndex() {
     showTemporarySuccessDeleteCounter,
     dataBuilding,
     setPageNumber,
-    setOrderBy,
+    setOrderByBuilding,
+    setOrderByRoom,
+    setOrderByFacility,
     dataIdBuilding,
     totalElementsBuilding,
-    totalElementsRoom
+    totalElementsRoom,
+    totalElementsFacility
   }
 }

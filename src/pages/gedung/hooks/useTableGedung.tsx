@@ -37,7 +37,7 @@ export default function useTableGedung(
     } else if (sort === "Nomor Gedung 9-1") {
       setOrderBy('createdDateTime=desc');
     }
-  }, [sort, setOrderBy]);
+  }, [sort]);
 
   const urutkan = [
     { value: 1, label: "Nama Gedung A-Z" },

@@ -51,9 +51,11 @@ export default function Index() {
     showTemporarySuccessDeleteCounter,
     dataBuilding,
     setPageNumber,
-    setOrderBy,
     totalElementsRoom,
-    totalElementsBuilding
+    totalElementsBuilding,
+    setOrderByBuilding,
+    setOrderByRoom,
+    setOrderByFacility,
   } = useIndex()
   return (
     <Box>
@@ -99,13 +101,16 @@ export default function Index() {
       </Grid>
 
       <Stack mt={3} spacing={3}>
-        <TableGedung data={dataBuilding} onSuccessDelete={showTemporarySuccessDeleteBuilding} setPageNumber={setPageNumber} setOrderBy={setOrderBy} totalElements={totalElementsBuilding} />
-        <TableRuangan data={dataRoom} onSuccessDelete={showTemporarySuccessDeleteRoom} setPageNumber={setPageNumber} setOrderBy={setOrderBy} totalElements={totalElementsRoom} dataIdBuilding={dataIdBuilding} />
-        <TablePegawai />
-        <TableFasilitas
-          fetchDatas={fetchData}
-          onSuccessDelete={showTemporarySuccessDeleteFacility}
+        <TableGedung
+          data={dataBuilding}
+          onSuccessDelete={showTemporarySuccessDeleteBuilding}
+          setPageNumber={setPageNumber}
+          setOrderBy={setOrderByBuilding}
+          totalElements={totalElementsBuilding}
         />
+        <TableRuangan data={dataRoom} onSuccessDelete={showTemporarySuccessDeleteRoom} setPageNumber={setPageNumber} setOrderBy={setOrderByRoom} totalElements={totalElementsRoom} dataIdBuilding={dataIdBuilding} />
+        <TablePegawai />
+        <TableFasilitas data={dataFacility} onSuccessDelete={showTemporarySuccessDeleteFacility} setPageNumber={setPageNumber} setOrderBy={setOrderByFacility} totalElements={totalElementsRoom} />
         <TableDokter />
         <TableAmbulance
           fetchDatas={fetchData}

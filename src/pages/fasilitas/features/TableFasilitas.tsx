@@ -58,12 +58,23 @@ const StyledTableContainer = styled(TableContainer)`
 //hooks
 import useTableFasilitas from "../hooks/useTableFasilitas";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
+import { FacilityDataItem } from "../../../services/Admin Tenant/ManageFacility/FacilityServices";
 
 interface TableFacilityProps {
-  fetchDatas: () => void;
+  data: FacilityDataItem[];
   onSuccessDelete: () => void;
+  setPageNumber: (page: number) => void;
+  setOrderBy: (order: string) => void;
+  totalElements: number;
 }
-const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDelete }) => {
+
+const TableFasilitas: React.FC<TableFacilityProps> = ({
+  data,
+  onSuccessDelete,
+  setPageNumber,
+  setOrderBy,
+  totalElements
+}) => {
   const {
     page,
     isCollapsed,
@@ -73,14 +84,18 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
     buildings,
     toggleCollapse,
     handleChangePage,
-    rowsPerPage,
-    displayedData,
     urutkan,
     confirmationDelete,
     handleDeleteSuccess,
     setOpen,
     setSort,
-  } = useTableFasilitas(fetchDatas, onSuccessDelete);
+    pageSize
+  } = useTableFasilitas(
+    onSuccessDelete,
+    setPageNumber,
+    setOrderBy,
+    data
+  );
 
 
   const navigate = useNavigate();
@@ -227,8 +242,8 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {displayedData.length > 0 ? (
-                      displayedData.map((data, index) => (
+                    {data.length > 0 ? (
+                      data.map((data, index) => (
                         <StyledTableRow key={index}>
                           <TableCell
                             sx={[{ color: "#292B2C", fontSize: "14px" }]}
@@ -362,31 +377,18 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({ fetchDatas, onSuccessDel
             </Box>
             <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
               <Typography sx={{ color: "#A8A8BD" }}>
-                Showing {((page - 1) * rowsPerPage) + 1} to{" "}
-                {Math.min(page * rowsPerPage, dataFacility.length)} of{" "}
+                Showing {((page - 1) * pageSize) + 1} to{" "}
+                {Math.min(page * pageSize, dataFacility.length)} of{" "}
                 {dataFacility.length} entries
               </Typography>
               <Pagination
-                count={Math.ceil(dataFacility.length / rowsPerPage)}
-                variant="outlined"
+                count={Math.max(1, Math.ceil(totalElements / pageSize))}
                 shape="rounded"
                 page={page}
                 onChange={handleChangePage}
                 sx={{
-                  "& .MuiPaginationItem-root": {
-                    color: "#8F85F3",
-                    border: 'none',
-                  },
-                  "& .Mui-selected": {
-                    backgroundColor: "#8F85F3",
-                    bgcolor: '#D5D1FB',
-                  },
-                  "& .MuiPaginationItem-ellipsis": {
-                    border: 'none',
-                  },
-                  "& .MuiPaginationItem-text": {
-                    border: 'none',
-                  },
+                  "& .MuiPaginationItem-root": { color: "#8F85F3" },
+                  "& .Mui-selected": { bgcolor: "#D5D1FB" },
                 }}
               />
 

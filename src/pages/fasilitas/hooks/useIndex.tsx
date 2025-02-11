@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FacilityServices, FacilityDataItem } from "../../../services/Admin Tenant/ManageFacility/FacilityServices";
 import { SubFacilityServices, SubFacilityDataItem } from "../../../services/Admin Tenant/ManageSubFacility/SubFacility";
 import { useLocation, useNavigate } from "react-router-dom";
 
-
+export const PAGE_SIZE = 10;
 
 export default function useIndex() {
     const [dataFacility, setDataFacility] = useState<FacilityDataItem[]>([]);
@@ -13,6 +13,9 @@ export default function useIndex() {
     const [successAddBuilding, setSuccessAddBuilding] = useState(false);
     const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
     const [successEditBuilding, setSuccessEditBuilding] = useState(false);
+    const [pageNumberFacility, setPageNumberFacility] = useState(0);
+    const [orderByFacility, setOrderByFacility] = useState("createdDateTime=asc");
+    const [totalElementsFacility, setTotalElementsFacility] = useState(0);
     //sub
     const [successAddSub, setSuccessAddSub] = useState(false);
     const [successDeleteSub, setSuccessDeleteSub] = useState(false);
@@ -23,16 +26,17 @@ export default function useIndex() {
 
 
 
-    const fetchDataFacility = async () => {
+    const fetchDataFacility = useCallback(async () => {
         setIsLoading(true)
         try {
-            const resultFacility = await FacilityServices();
-            setDataFacility(resultFacility);
+            const resultFacility = await FacilityServices(pageNumberFacility, PAGE_SIZE, orderByFacility);
+            setDataFacility(resultFacility.data.content);
+            setTotalElementsFacility(resultFacility.data.totalElements);
             setIsLoading(false)
         } catch (error) {
             console.error('Failed to fetch data from API' + error);
         }
-    };
+    }, [pageNumberFacility, orderByFacility]);
     useEffect(() => {
         fetchDataFacility();
     }, []);
@@ -135,6 +139,9 @@ export default function useIndex() {
         showTemporarySuccessEdit,
         showTemporaryAlertSuccessSub,
         showTemporarySuccessDeleteSub,
-        showTemporarySuccessEditSub
+        showTemporarySuccessEditSub,
+        totalElementsFacility,
+        setOrderByFacility,
+        setPageNumberFacility,
     }
 }

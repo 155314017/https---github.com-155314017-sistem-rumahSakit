@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { PaginatedResponse } from '../../../types/api.types'
 // import dayjs from 'dayjs'
 
 export interface FacilityDataItem {
@@ -55,16 +56,14 @@ export interface ApiResponse {
   }
 }
 
-const API_URL = `${
-  import.meta.env.VITE_APP_BACKEND_URL_BASE
-}/v1/manage/facility/?`
+const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/?`
 
 export const FacilityServices = async (
   pageNumber: number = 0,
   pageSize: number = 100,
   orderBy: string = 'createdDateTime=asc'
-): Promise<FacilityDataItem[]> => {
-  const response = await axios.get<ApiResponse>(API_URL, {
+): Promise<PaginatedResponse<FacilityDataItem>> => {
+  const response = await axios.get<PaginatedResponse<FacilityDataItem>>(API_URL, {
     params: {
       pageNumber,
       pageSize,
@@ -74,35 +73,7 @@ export const FacilityServices = async (
   })
 
   if (response.status === 200) {
-    // const convertUnixToReadableTime = (timestamp: number) => {
-    //                 const date = dayjs(timestamp); // Use dayjs to parse Unix timestamp
-
-    //                 const dayOfWeek = date.format('dddd'); // Get the day of the week
-    //                 const time = date.format('HH:mm'); // Get the formatted time (HH:mm)
-
-    //                 return { day: dayOfWeek, time };
-    //               };
-
-    //       response.data.data.content.forEach((item) => {
-    //         if (item.schedules.length > 0) {
-    //           const operationalSchedules: string[] = item.schedules.map((schedule) => {
-    //             const startDate = convertUnixToReadableTime(schedule.startDateTime);
-    //             const endDate = convertUnixToReadableTime(schedule.endDateTime);
-
-    //             const startDay = startDate.day;
-    //             const start = `${startDate.time}`;
-    //             const end = ` ${endDate.time}`;
-
-    //             return `${startDay}, ${start} - ${end}`;
-    //           });
-
-    //     item.operationalSchedule = operationalSchedules.join(" | "); // Combine all schedules with a separator
-
-    //   }
-
-    // });
-
-    return response.data.data.content
+    return response.data
   } else {
     throw new Error(`API responded with status: ${response.status}`)
   }

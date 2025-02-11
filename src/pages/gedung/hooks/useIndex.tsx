@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, useCallback } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Building } from "../../../services/Admin Tenant/ManageBuilding/Building";

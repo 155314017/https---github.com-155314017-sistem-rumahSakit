@@ -238,13 +238,13 @@ const TableRuangan: React.FC<TableRuanganProps> = ({
                   </TableHead>
                   <TableBody>
                     {data.length > 0 ? (
-                      data.map((data, index) => (
+                      data.map((item, index) => (
                         <StyledTableRow key={index}>
                           <TableCell
                             sx={[{ color: "#292B2C", fontSize: "14px" }]}
                             align="center"
                           >
-                            {index + 1}
+                            {(page - 1) * pageSize + index + 1}
                           </TableCell>
                           <TableCell
                             sx={[
@@ -260,7 +260,7 @@ const TableRuangan: React.FC<TableRuanganProps> = ({
                             ]}
                             align="center"
                           >
-                            {data.name}
+                            {item.name}
                           </TableCell>
                           <TableCell
                             sx={[
@@ -292,7 +292,7 @@ const TableRuangan: React.FC<TableRuanganProps> = ({
                             ]}
                             align="left"
                           >
-                            {data.type}
+                            {item.type}
                           </TableCell>
                           <TableCell
                             align="center"
@@ -309,7 +309,7 @@ const TableRuangan: React.FC<TableRuanganProps> = ({
                           >
                             <Typography
                               color={"#8F85F3"}
-                              onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => confirmationDelete(event, data.id)}
+                              onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => confirmationDelete(event, item.id)}
                               sx=
                               {{
                                 mr: 2,
@@ -325,7 +325,7 @@ const TableRuangan: React.FC<TableRuanganProps> = ({
                               onDeleteSuccess={handleDeleteSuccess}
                             />
                             <Typography
-                              onClick={() => navigate(`/editRuangan/${data.id}`)}
+                              onClick={() => navigate(`/editRuangan/${item.id}`)}
                               mr={2}
                               sx={{
                                 textTransform: "capitalize",
@@ -336,7 +336,7 @@ const TableRuangan: React.FC<TableRuanganProps> = ({
                               Ubah
                             </Typography>
                             <Typography
-                              onClick={() => navigate(`/detailRuangan/${data.id}`)}
+                              onClick={() => navigate(`/detailRuangan/${item.id}`)}
                               sx={{
                                 textTransform: "capitalize",
                                 color: "#8F85F3",

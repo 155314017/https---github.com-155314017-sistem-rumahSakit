@@ -1,12 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
-import { FacilityServices, FacilityDataItem } from "../../../services/Admin Tenant/ManageFacility/FacilityServices";
+import { FacilityDataItem } from "../../../services/Admin Tenant/ManageFacility/FacilityServices";
 import { Schedule } from "@mui/icons-material";
 import { GetScheduleByTypeId } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
+import { PAGE_SIZE } from "./useIndex";
 
-export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelete: () => void) {
+export default function useTableFasilitas(
+  onSuccessDelete: () => void,
+  setPageNumber: (page: number) => void,
+  setOrderBy: (order: string) => void,
+  data: FacilityDataItem[],
+) {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState<boolean>(false);
@@ -16,9 +22,6 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
   const [buildings, setBuildings] = useState<string[]>([]);
   const [dataSchedules, setDataSchedules] = useState<any[]>([])
   const [sort, setSort] = useState('');
-  const [orderBy, setOrderBy] = useState("createdDateTime=asc");
-  const [pageNumber, setPageNumber] = useState(0);
-  const [pageSize, setPageSize] = useState(100);
 
   useEffect(() => {
     if (sort == "Nama fasilitas A-Z") {
@@ -31,20 +34,13 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
       setOrderBy('cost=desc');
     }
   }, [sort])
-
-  useEffect(() => {
-    fetchDataFacility();
-  }, [pageNumber, pageSize, orderBy]);
-
   const fetchDataFacility = async () => {
     try {
-      const result = await FacilityServices(pageNumber, pageSize, orderBy);
-
       const allSchedules = [];
       const dataSchedules = [];
 
-      for (let index = 0; index < result.length; index++) {
-        const hasil = await GetScheduleByTypeId(result[index].id);
+      for (let index = 0; index < data.length; index++) {
+        const hasil = await GetScheduleByTypeId(data[index].id);
         const schedules = [];
         const formattedSchedules = [];
 
@@ -64,27 +60,24 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
           });
         }
         allSchedules.push({
-          id: result[index].id,
+          id: data[index].id,
           schedules: schedules,
         });
 
         dataSchedules.push({
-          id: result[index].id,
+          id: data[index].id,
           operationalSchedule: formattedSchedules.join(' / '),
         });
       }
 
-      console.log('Formatted Schedules:', dataSchedules);
-      setDataFacility(result);
+      setDataFacility(data);
       setDataSchedules(dataSchedules);
-
-      const buildingIds = result.map((data) => data.masterBuildingId);
+      const buildingIds = data.map((data) => data.masterBuildingId);
       setDataIdBuilding(buildingIds);
     } catch (error) {
       console.error("Failed to fetch data from API: ", error);
     }
   };
-
 
   useEffect(() => {
     fetchDataFacility();
@@ -92,6 +85,7 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
 
   useEffect(() => {
     const fetchBuildings = async () => {
+
       try {
         const responses = await Promise.all(
           dataIdBuilding.map((id) =>
@@ -119,8 +113,6 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
     setPage(value);
   };
 
-  const rowsPerPage = 10;
-  const displayedData = dataFacility.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const urutkan = [
     { value: 1, label: "Biaya penanganan tertinggi" },
@@ -143,9 +135,8 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
 
 
   const handleDeleteSuccess = () => {
+    setOpen(false);
     onSuccessDelete();
-    fetchDataFacility();
-    fetchDatas();
   };
 
   return {
@@ -158,16 +149,14 @@ export default function useTableFasilitas(fetchDatas: () => void, onSuccessDelet
     buildings,
     toggleCollapse,
     handleChangePage,
-    rowsPerPage,
-    displayedData,
     urutkan,
     confirmationDelete,
     handleDeleteSuccess,
     setOpen,
     Schedule,
     dataSchedules,
-    setPageSize,
     setPageNumber,
-    setSort
+    setSort,
+    pageSize: PAGE_SIZE,
   };
 }

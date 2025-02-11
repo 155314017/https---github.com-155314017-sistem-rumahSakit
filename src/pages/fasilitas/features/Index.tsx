@@ -18,7 +18,6 @@ export default function Index() {
     const {
         dataFacility,
         dataSubFacility,
-        fetchDataFacility,
         fetchDataSubFacility,
         successAddBuilding,
         successDeleteBuilding,
@@ -27,8 +26,11 @@ export default function Index() {
         successDeleteSub,
         successEditSub,
         isLoading,
+        totalElementsFacility,
         showTemporarySuccessDelete,
         showTemporarySuccessDeleteSub,
+        setOrderByFacility,
+        setPageNumberFacility,
     } = useIndex()
     return (
         <Box>
@@ -62,13 +64,19 @@ export default function Index() {
                         Fasilitas
                     </Typography>
                     <Grid container spacing={3} flex={1} mb={3}>
-                        <MediumCard icon={BusinessOutlinedIcon} title="Total Fasilitas" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataFacility.length.toString()} />
+                        <MediumCard icon={BusinessOutlinedIcon} title="Total Fasilitas" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : totalElementsFacility} />
                         <MediumCard icon={BusinessOutlinedIcon} title="Total Sub Fasilitas" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataSubFacility.length.toString()} />
                         <CardAdd icon={AddBoxIcon} title="Tambah Fasilitas" link="/tambahFasilitas" />
                         <CardAdd icon={AddBoxIcon} title="Tambah Sub Fasilitas" link="/tambahSubFasilitas" />
                     </Grid>
                     <Box display={"flex"} flexDirection={"column"} gap={5} >
-                        <TableFasilitas fetchDatas={fetchDataFacility} onSuccessDelete={showTemporarySuccessDelete} />
+                        <TableFasilitas
+                            data={dataFacility}
+                            onSuccessDelete={showTemporarySuccessDelete}
+                            setPageNumber={setPageNumberFacility}
+                            setOrderBy={setOrderByFacility}
+                            totalElements={totalElementsFacility}
+                        />
                         <TableSubFasilitas fetchDatas={fetchDataSubFacility} onSuccessDelete={showTemporarySuccessDeleteSub} />
                     </Box>
                 </Box>

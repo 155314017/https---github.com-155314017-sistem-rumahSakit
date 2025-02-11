@@ -61,7 +61,7 @@ interface TableGedungProps {
   totalElements: number;
 }
 
-const TableGedung: React.FC<TableGedungProps> = ({ 
+const TableGedung: React.FC<TableGedungProps> = ({
   data,
   onSuccessDelete,
   setPageNumber,
@@ -130,7 +130,10 @@ const TableGedung: React.FC<TableGedungProps> = ({
               <DropdownList
                 options={urutkan}
                 placeholder="Urutkan"
-                onChange={(value) => setSort(value)}
+                onChange={(value) => {
+                  setSort(value);
+                  console.log(value)
+                }}
                 loading={false}
               />
             </Box>
