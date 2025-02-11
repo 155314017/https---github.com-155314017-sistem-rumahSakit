@@ -46,7 +46,7 @@ export default function useEditFasilitas() {
         const scheduleResponse = await GetScheduleByTypeId(id || "");
         const exclusionResponse = await GetExclusionByTypeId(id || "");
         const response = await Building();
-        setGedungOptions(response.map((item: Building) => ({
+        setGedungOptions(response.data.content.map((item: Building) => ({
           id: item.id,
           name: item.name,
         })));

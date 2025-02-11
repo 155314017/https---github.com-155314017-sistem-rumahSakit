@@ -47,8 +47,11 @@ export default function Index() {
     showTemporarySuccessDeleteFacility,
     showTemporarySuccessDeleteAmbulance,
     showTemporarySuccessDeleteClinic,
-    showTemporarySuccessDeleteCounter
-
+    showTemporarySuccessDeleteCounter,
+    dataBuilding,
+    setPageNumber,
+    setOrderBy,
+    totalElementsBuilding
   } = useIndex()
   return (
     <Box>
@@ -94,7 +97,7 @@ export default function Index() {
       </Grid>
 
       <Stack mt={3} spacing={3}>
-        <TableGedung fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteBuilding} />
+        <TableGedung data={dataBuilding} onSuccessDelete={showTemporarySuccessDeleteBuilding} setPageNumber={setPageNumber} setOrderBy={setOrderBy} totalElements={totalElementsBuilding} />
         <TableRuangan fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteRoom} />
         <TablePegawai />
         <TableFasilitas

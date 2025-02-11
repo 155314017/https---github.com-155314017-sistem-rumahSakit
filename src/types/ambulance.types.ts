@@ -1,4 +1,3 @@
-import { ScheduleData } from "../services/Admin Tenant/ManageSchedule/GetScheduleById";
 
 export interface AmbulanceDataItem {
     id: string;

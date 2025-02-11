@@ -24,6 +24,7 @@ export default function useTableGedung(
     event.preventDefault();
     setDeletedItems(buildingId);
     setOpen(true);
+    console.log(deletedItems)
   };
 
   useEffect(() => {

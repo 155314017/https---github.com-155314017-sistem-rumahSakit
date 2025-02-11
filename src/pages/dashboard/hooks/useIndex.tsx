@@ -1,19 +1,23 @@
 // table
 import { useEffect, useState } from 'react'
-import { Clinic, ClinicDataItem } from '../../../services/Admin Tenant/ManageClinic/Clinic'
-import { RoomDataItem, RoomServices } from '../../../services/Admin Tenant/ManageRoom/RoomServices'
-import { FacilityDataItem, FacilityServices } from '../../../services/Admin Tenant/ManageFacility/FacilityServices'
-import {
-  DoctorServices,
-  DoctorDataItem
-} from '../../../services/Admin Tenant/ManageDoctor/DoctorServices'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building'
+import { Clinic, ClinicDataItem } from '../../../services/Admin Tenant/ManageClinic/Clinic'
+import {
+  DoctorDataItem,
+  DoctorServices
+} from '../../../services/Admin Tenant/ManageDoctor/DoctorServices'
+import { FacilityDataItem, FacilityServices } from '../../../services/Admin Tenant/ManageFacility/FacilityServices'
+import { RoomServices } from '../../../services/Admin Tenant/ManageRoom/RoomServices'
+import { BuildingDataItem } from '../../../types/building.types'
+import { RoomDataItem } from '../../../types/room.types'
 
 export default function useIndex() {
     const [dataClinic, setDataClinic] = useState<ClinicDataItem[]>([])
     const [dataRoom, setDataRoom] = useState<RoomDataItem[]>([])
     const [dataFacility, setDataFacility] = useState<FacilityDataItem[]>([])
     const [dataDoctor, setDataDoctor] = useState<DoctorDataItem[]>([])
+    const [dataBuilding, setDataBuilding] = useState<BuildingDataItem[]>([])
     const [successLogin, setSuccessLogin] = useState(false)
     const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false)
     const [successDeleteRoom, setSuccessDeleteRoom] = useState(false)
@@ -22,6 +26,9 @@ export default function useIndex() {
     const [successDeleteClinic, setSuccessDeleteClinic] = useState(false)
     const [successDeleteCounter, setSuccessDeleteCounter] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [pageNumber, setPageNumber] = useState(0);
+    const [totalElementsBuilding, setTotalElementsBuilding] = useState(0);
+    const [orderBy, setOrderBy] = useState("createdDateTime=asc");
     const location = useLocation()
     const navigate = useNavigate()
   
@@ -33,11 +40,13 @@ export default function useIndex() {
         const resultRoom = await RoomServices()
         const resultFacility = await FacilityServices()
         const resultDoctor = await DoctorServices()
-  
+        const resultBuilding = await Building(pageNumber, 1, orderBy);
+        setTotalElementsBuilding(resultBuilding.data.totalElements);
         setDataRoom(resultRoom)
         setDataClinic(resultClinic)
         setDataFacility(resultFacility)
         setDataDoctor(resultDoctor)
+        setDataBuilding(resultBuilding.data.content)
         setIsLoading(false)
       } catch (error) {
         console.error('Failed to fetch data from API' + error)
@@ -124,6 +133,10 @@ export default function useIndex() {
     showTemporarySuccessDeleteFacility,
     showTemporarySuccessDeleteAmbulance,
     showTemporarySuccessDeleteClinic,
-    showTemporarySuccessDeleteCounter
+    showTemporarySuccessDeleteCounter,
+    dataBuilding,
+    setPageNumber,
+    setOrderBy,
+    totalElementsBuilding
   }
 }
