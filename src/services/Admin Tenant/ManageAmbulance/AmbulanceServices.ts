@@ -9,7 +9,7 @@ export const AmbulanceServices = async (
   pageNumber: number = 0,
   pageSize: number = 100, 
   orderBy: string = 'createdDateTime=asc' 
-): Promise<AmbulanceDataItem[]> => {
+): Promise<PaginatedResponse<AmbulanceDataItem>> => {
   try {
     const response = await axios.get<PaginatedResponse<AmbulanceDataItem>>(API_URL, {
       params: {
@@ -22,7 +22,7 @@ export const AmbulanceServices = async (
 
     if (response.status === 200) {
       // Return the updated ambulance data items
-      return response.data.data.content;
+      return response.data;
     } else {
       throw new Error(`API responded with status: ${response.status}`);
     }

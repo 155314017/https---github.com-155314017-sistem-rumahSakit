@@ -29,11 +29,9 @@ import AlertSuccess from '../../../components/small/alert/AlertSuccess'
 import useIndex from "../hooks/useIndex";
 export default function Index() {
   const {
-    dataClinic,
     dataRoom,
     dataFacility,
     dataDoctor,
-    fetchData,
     successLogin,
     successDeleteBuilding,
     successDeleteRoom,
@@ -46,9 +44,10 @@ export default function Index() {
     dataIdBuilding,
     showTemporarySuccessDeleteBuilding,
     showTemporarySuccessDeleteFacility,
-    showTemporarySuccessDeleteAmbulance,
     showTemporarySuccessDeleteClinic,
     showTemporarySuccessDeleteCounter,
+    showTemporarySuccessDeleteAmbulance,
+    showTemporarySuccessDeletePatient,
     dataBuilding,
     setPageNumber,
     totalElementsRoom,
@@ -56,6 +55,19 @@ export default function Index() {
     setOrderByBuilding,
     setOrderByRoom,
     setOrderByFacility,
+    totalElementsAmbulance,
+    totalElementsClinic,
+    totalElementsCounter,
+    totalElementsPatient,
+    setOrderAmbulance,
+    setOrderClinic,
+    setOrderCounter,
+    setOrderPatient,
+    dataAmbulance,
+    dataClinic,
+    dataCounter,
+    dataPatient,
+
   } = useIndex()
   return (
     <Box>
@@ -113,12 +125,11 @@ export default function Index() {
         <TableFasilitas data={dataFacility} onSuccessDelete={showTemporarySuccessDeleteFacility} setPageNumber={setPageNumber} setOrderBy={setOrderByFacility} totalElements={totalElementsRoom} />
         <TableDokter />
         <TableAmbulance
-          fetchDatas={fetchData}
-          onSuccessDelete={showTemporarySuccessDeleteAmbulance}
+          data={dataAmbulance} onSuccessDelete={showTemporarySuccessDeleteAmbulance} setPageNumber={setPageNumber} setOrderBy={setOrderAmbulance} totalElements={totalElementsAmbulance}
         />
-        <TableKlinik fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteClinic} />
-        <TableKonter fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDeleteCounter} />
-        <TablePasien />
+        <TableKlinik data={dataClinic} onSuccessDelete={showTemporarySuccessDeleteClinic} setPageNumber={setPageNumber} setOrderBy={setOrderClinic} totalElements={totalElementsClinic} />
+        <TableKonter data={dataCounter} onSuccessDelete={showTemporarySuccessDeleteCounter} setPageNumber={setPageNumber} setOrderBy={setOrderCounter} totalElements={totalElementsCounter} />
+        <TablePasien data={dataPatient} onSuccessDelete={showTemporarySuccessDeletePatient} setPageNumber={setPageNumber} setOrderBy={setOrderPatient} totalElements={totalElementsPatient} />
       </Stack>
     </Box>
 

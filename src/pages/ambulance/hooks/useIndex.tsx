@@ -23,9 +23,10 @@ export default function useIndex() {
   const fetchData = useCallback(async () => {
     
     try {
-      const result = await AmbulanceServices()
+      const result = await AmbulanceServices(pageNumber, PAGE_SIZE, orderBy)
+      setTotalElements(result.data.totalElements);
+      setData(result.data.content);
      
-      setData(result)
     } catch (error) {
       console.error('Failed to fetch data from API' + error)
     } finally {
