@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { BaseResponse } from "../../../types/api";
-import { ImageItem } from "./AddImageServices";
+import { BaseResponse } from "../../../types/api.types";
+import { ImageItem } from "../../../types/images.types";
 
 export interface ImageResponse {
   images: ImageItem[];

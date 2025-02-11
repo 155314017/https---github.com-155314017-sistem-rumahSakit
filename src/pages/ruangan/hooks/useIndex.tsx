@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 
 // icon
 
-import { RoomServices, RoomDataItem } from "../../../services/Admin Tenant/ManageRoom/RoomServices";
+import { RoomServices } from "../../../services/Admin Tenant/ManageRoom/RoomServices";
 import { useLocation, useNavigate } from "react-router-dom";
+import { RoomDataItem } from "../../../types/room.types";
 
 export default function useIndex() {
     const [roomData, setRoomData] = useState<RoomDataItem[]>([]);

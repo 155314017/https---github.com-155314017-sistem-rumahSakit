@@ -29,7 +29,7 @@ export default function useTambahRuangan() {
         const fetchDataGedung = async () => {
             try {
                 const response = await Building();
-                setGedungOptions(response.map((item: Building) => ({
+                setGedungOptions(response.data.content.map((item: Building) => ({
                     id: item.id,
                     name: item.name,
                 })));

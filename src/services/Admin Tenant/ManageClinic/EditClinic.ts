@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { BaseResponse } from "../../../types/api";
+import { BaseResponse } from "../../../types/api.types";
 import { ClinicData } from "./GetClinicByIdService";
 const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/`;
 

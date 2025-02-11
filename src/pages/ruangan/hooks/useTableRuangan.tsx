@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { RoomServices, RoomDataItem } from "../../../services/Admin Tenant/ManageRoom/RoomServices";
+import { RoomServices } from "../../../services/Admin Tenant/ManageRoom/RoomServices";
 import { useNavigate } from "react-router-dom";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
+import { RoomDataItem } from "../../../types/room.types";
 export default function useTableRuangan(fetchDatas: () => void, onSuccessDelete: () => void) {
   const [roomData, setRoomData] = useState<RoomDataItem[]>([]);
   const [buildings, setBuildings] = useState<string[]>([]);

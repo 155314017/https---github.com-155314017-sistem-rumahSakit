@@ -17,6 +17,7 @@ import SearchBar from "../../../components/small/SearchBar";
 import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 import { styled } from "@mui/material/styles";
 import bgImage from "../../../assets/img/String.png";
+import { BuildingDataItem } from "../../../types/building.types";
 
 // Icons
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
@@ -53,17 +54,25 @@ import React from "react";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
 
 interface TableGedungProps {
-  fetchDatas: () => void;
+  data: BuildingDataItem[];
   onSuccessDelete: () => void;
+  setPageNumber: (page: number) => void;
+  setOrderBy: (order: string) => void;
+  totalElements: number;
 }
-const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }) => {
-  const { page,
+
+const TableGedung: React.FC<TableGedungProps> = ({ 
+  data,
+  onSuccessDelete,
+  setPageNumber,
+  setOrderBy,
+  totalElements
+}) => {
+  const {
+    page,
     isCollapsed,
     open,
-    datas,
-    deletedItems,
-    displayedData,
-    rowsPerPage,
+    pageSize,
     handleChangePage,
     confirmationDelete,
     handleDeleteSuccess,
@@ -71,7 +80,12 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
     urutkan,
     setSort,
     setOpen,
-    navigate } = useTableGedung(fetchDatas, onSuccessDelete);
+    navigate
+  } = useTableGedung(
+    onSuccessDelete,
+    setPageNumber,
+    setOrderBy
+  );
 
   return (
     <Box>
@@ -107,7 +121,7 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
                 display: "flex",
                 justifyContent: "space-between",
                 gap: 55,
-                '@media (max-width: 1194px)': { //responsif layar
+                '@media (max-width: 1194px)': {
                   gap: 10
                 }
               }}
@@ -176,8 +190,8 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {displayedData.length > 0 ? (
-                    displayedData.map((data, index) => (
+                  {data.length > 0 ? (
+                    data.map((item, index) => (
                       <StyledTableRow key={index}>
                         <TableCell
                           sx={[
@@ -188,7 +202,7 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
                           ]}
                           align="center"
                         >
-                          {(page - 1) * rowsPerPage + index + 1}
+                          {(page - 1) * pageSize + index + 1}
                         </TableCell>
                         <TableCell
                           sx={[
@@ -203,7 +217,7 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
                             },
                           ]}
                         >
-                          {data.name}
+                          {item.name}
                         </TableCell>
                         <TableCell
                           sx={[
@@ -218,7 +232,7 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
                             },
                           ]}
                           align="left"
-                        >{data.address}</TableCell>
+                        >{item.address}</TableCell>
                         <TableCell
                           sx={[
                             {
@@ -234,7 +248,7 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
                           align="center"
                         >
                           <Link
-                            onClick={(event) => confirmationDelete(event, data.id)}
+                            onClick={(event) => confirmationDelete(event, item.id)}
                             href="#"
                             mr={2}
                             underline="hover"
@@ -248,13 +262,12 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
                           <ModalDeleteConfirmation
                             open={open}
                             onClose={() => setOpen(false)}
-                            apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${deletedItems}`}
+                            apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${item.id}`}
                             onDeleteSuccess={handleDeleteSuccess}
                           />
                           <Link
-                            onClick={() => navigate(`/editGedung/${data.id}`)}
+                            onClick={() => navigate(`/editGedung/${item.id}`)}
                             mr={2}
-                            // href="#"
                             underline="hover"
                             sx={{
                               textTransform: "capitalize",
@@ -265,8 +278,7 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
                             Ubah
                           </Link>
                           <Link
-                            // href="#"
-                            onClick={() => navigate(`/detailGedung/${data.id}`)}
+                            onClick={() => navigate(`/detailGedung/${item.id}`)}
                             mr={2}
                             underline="hover"
                             sx={{
@@ -292,10 +304,10 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
 
             <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center">
               <Typography sx={{ color: "#A8A8BD" }}>
-                Showing {(page - 1) * rowsPerPage + 1} to {Math.min(page * rowsPerPage, datas.length)} of {datas.length} entries
+                Showing {data.length > 0 ? (page - 1) * pageSize + 1 : 0} to {Math.min((page) * pageSize, totalElements)} of {totalElements} entries
               </Typography>
               <Pagination
-                count={Math.ceil(datas.length / rowsPerPage)}
+                count={Math.max(1, Math.ceil(totalElements / pageSize))}
                 shape="rounded"
                 page={page}
                 onChange={handleChangePage}
@@ -309,7 +321,6 @@ const TableGedung: React.FC<TableGedungProps> = ({ fetchDatas, onSuccessDelete }
         </Collapse>
       </Box>
     </Box>
-
   )
 }
 

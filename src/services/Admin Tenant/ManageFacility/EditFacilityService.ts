@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { FacilityDataItem } from './FacilityServices';
-import { BaseResponse } from '../../../types/api';
+import { BaseResponse } from '../../../types/api.types';
 import Cookies from 'js-cookie';
 
 export interface EditFacilityRequest {

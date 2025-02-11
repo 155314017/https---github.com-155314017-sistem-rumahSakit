@@ -1,43 +1,16 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-export interface RoomDataItem {
-  id: string
-  name: string
-  masterBuildingId: string
-  type: string
-  additionalInfo: string
-  createdBy: string
-  createdDateTime: number
-  updatedBy: string | null
-  updatedDateTime: number | null
-  deletedBy: string | null
-  deletedDateTime: number | null
-  images: { imageName: string; imageType: string; imageData: string }[]
-}
-
-export interface Pageable {
-  pageNumber: number
-  pageSize: number
-  sort: {
-    sorted: boolean
-    empty: boolean
-    unsorted: boolean
-  }
-  offset: number
-  paged: boolean
-  unpaged: boolean
-}
-
-export interface ApiResponse {
-  status: number
-  message: string
-  data: RoomDataItem
-}
+import { RoomDataItem } from '../../../types/room.types'
+import { BaseResponse } from '../../../types/api.types'
 
 export const GetRoomByIdServices = async (id: string | undefined): Promise<RoomDataItem> => {
   try {
-    const token = Cookies.get('accessToken')
-    const response = await axios.get<ApiResponse>(
+    const token = Cookies.get("accessToken");
+
+    if (!token) {
+      throw new Error("No access token found.");
+    }
+    const response = await axios.get<BaseResponse<RoomDataItem>>(
       `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/${id}`,
       {
         headers: {

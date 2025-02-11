@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   AmbulanceServices,
-  AmbulanceDataItem
 } from '../../../services/Admin Tenant/ManageAmbulance/AmbulanceServices'
 import { GetScheduleByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices'
+import { AmbulanceDataItem } from '../../../types/ambulance.types'
 
 
 

@@ -1,29 +1,17 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { BaseResponse } from "../../../types/api";
+import { BaseResponse } from "../../../types/api.types";
+import { BuildingDataItem, CreateBuildingRequest } from "../../../types/building.types";
 
-export interface BuildingDataItem {
-  id: string;
-  name: string;
-  address: string;
-  additionalInfo: string;
-  createdBy: string;
-  createdDateTime: number;
-  updatedBy: string | null;
-  updatedDateTime: number | null;
-  deletedBy: string | null;
-  deletedDateTime: number | null;
-}
 
 const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/`;
 
 // Function to create a building
-export const CreateBuildingService = async (data: {
-  name: string;
-  address: string;
-  additionalInfo: string;
-}): Promise<BaseResponse<BuildingDataItem>> => {
+export const CreateBuildingService = async (
+  data: CreateBuildingRequest
+): Promise<BaseResponse<BuildingDataItem>> => {
   const token = Cookies.get("accessToken");
+  
 
   if (!token) {
     throw new Error("No access token found.");

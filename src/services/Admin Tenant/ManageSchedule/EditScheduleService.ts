@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { BaseResponse } from "../../../types/api";
+import { BaseResponse } from "../../../types/api.types";
 import { ScheduleDataItem } from "./CreateScheduleService";
 
 interface EditScheduleRequest {

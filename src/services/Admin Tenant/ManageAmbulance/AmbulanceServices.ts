@@ -1,64 +1,24 @@
 import axios from "axios";
-import { ScheduleData } from "../ManageSchedule/GetScheduleById";
+import { PaginatedResponse } from "../../../types/api.types";
+import { AmbulanceDataItem } from "../../../types/ambulance.types";
 
-export interface AmbulanceDataItem {
-  id: string;
-  number: string;
-  status: string;
-  additionalInfo: string;
-  createdBy: string;
-  createdDateTime: number;
-  updatedBy: string | null;
-  updatedDateTime: number | null;
-  deletedBy: string | null;
-  deletedDateTime: number | null;
-  cost: number;
-  images: string[];
-  schedules: ScheduleData[];
-  operationalSchedule?: string;
-}
 
-export interface Pageable {
-  pageNumber: number;
-  pageSize: number;
-  sort: {
-    sorted: boolean;
-    empty: boolean;
-    unsorted: boolean;
-  };
-  offset: number;
-  paged: boolean;
-  unpaged: boolean;
-}
+const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/ambulance/`;
 
-export interface ApiResponse {
-  responseCode: string;
-  statusCode: string;
-  message: string;
-  data: {
-    content: AmbulanceDataItem[];
-    pageable: Pageable;
-    totalPages: number;
-    totalElements: number;
-    last: boolean;
-    size: number;
-    number: number;
-    sort: {
-      sorted: boolean;
-      empty: boolean;
-      unsorted: boolean;
-    };
-    numberOfElements: number;
-    first: boolean;
-    empty: boolean;
-  };
-}
-
-const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/ambulance/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`;
-
-export const AmbulanceServices = async (): Promise<AmbulanceDataItem[]> => {
+export const AmbulanceServices = async (
+  pageNumber: number = 0,
+  pageSize: number = 100, 
+  orderBy: string = 'createdDateTime=asc' 
+): Promise<AmbulanceDataItem[]> => {
   try {
-    const response = await axios.get<ApiResponse>(API_URL);
+    const response = await axios.get<PaginatedResponse<AmbulanceDataItem>>(API_URL, {
+      params: {
+        pageNumber,
+        pageSize,
+        orderBy
+      }
+    });
+
 
     if (response.status === 200) {
       // Return the updated ambulance data items
