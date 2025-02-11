@@ -70,8 +70,7 @@ export default function useEditRuangan() {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const token = Cookies.get("accessToken");
-                const response = await GetRoomByIdServices(id, token)
+                const response = await GetRoomByIdServices(id)
                 setRoomName(response.name);
                 setRoomType(response.type);
 
