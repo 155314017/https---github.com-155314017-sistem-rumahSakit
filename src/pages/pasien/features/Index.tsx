@@ -18,6 +18,10 @@ export default function Index() {
     data,
     open,
     setOpen,
+    showTemporarySuccessDelete,
+    setOrderBy,
+    setPageNumber,
+    totalElements
     } = useIndex();
   return (
     <Box>
@@ -38,7 +42,13 @@ export default function Index() {
                     onClick={() => setOpen(true)} 
                 />
             </Grid>
-            <TablePasien />
+            <TablePasien 
+             data={data}
+             onSuccessDelete={showTemporarySuccessDelete}
+             setPageNumber={setPageNumber}
+             setOrderBy={setOrderBy}
+             totalElements={totalElements}
+            />
         </Box>
     </Box>
 

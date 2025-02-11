@@ -1,5 +1,5 @@
 import { Box, Grid } from '@mui/system'
-import { Typography } from '@mui/material'
+import { CircularProgress, Typography } from '@mui/material'
 
 // components
 import CardAdd from '../../../components/small/card/CardAdd'
@@ -18,12 +18,15 @@ import TableAmbulance from '../../../pages/ambulance/features/TableAmbulance'
 import useIndex from "../hooks/useIndex";
 export default function Index() {
     const{
-        fetchData,
         data,
         successAddAmbulance,
         successDeleteAmbulance,
         successEditAmbulance,
         showTemporarySuccessDelete,
+        loading,
+        setPageNumber,
+        setOrderBy,
+        totalElements,
     }=useIndex()
   return (
     <Box>
@@ -40,12 +43,18 @@ export default function Index() {
             <MediumCard
               icon={MinorCrashIcon}
               title="Total Ambulance"
-              subtitle={data.length.toString()}
+              subtitle={loading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : totalElements.toString()  || "0"}
             />
             <CardAdd icon={AddBoxIcon} title="Tambah Ambulance" link="/tambahAmbulance" />
           </Grid>
 
-          <TableAmbulance fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDelete} />
+          <TableAmbulance 
+          data={data}
+          onSuccessDelete={showTemporarySuccessDelete}
+          setPageNumber={setPageNumber}
+          setOrderBy={setOrderBy}
+          totalElements={totalElements}
+          />
         </Box>
       </Box>
     </Box>

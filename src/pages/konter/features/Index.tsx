@@ -20,7 +20,10 @@ export default function Index() {
         successEditBuilding,
         isLoading,
         showTemporarySuccessDelete,
-        fetchData}=useIndex();
+        setPageNumber,
+        setOrderBy,
+        totalElements
+        }=useIndex();
   return (
     <Box>
             <SideBar />
@@ -44,7 +47,13 @@ export default function Index() {
                         <MediumCard icon={BusinessOutlinedIcon} title="Daftar Konter" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString()} />
                         <CardAdd icon={AddBoxIcon} title="Tambah Konter" link="/tambahKonter" />
                     </Grid>
-                    <TableKonter fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDelete} />
+                    <TableKonter 
+                    data={data}
+                    onSuccessDelete={showTemporarySuccessDelete}
+                    setPageNumber={setPageNumber}
+                    setOrderBy={setOrderBy}
+                    totalElements={totalElements}
+                     />
                 </Box>
             </Box>
         </Box>

@@ -15,7 +15,17 @@ import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import useIndex from "../hooks/useIndex";
 
 export default function Index() {
-    const { data, isLoading, fetchData, successAddClinic, successDeleteClinic, successEditClinic, showTemporarySuccessDelete } = useIndex();
+    const { 
+        data, 
+        isLoading, 
+        successAddClinic, 
+        successDeleteClinic, 
+        successEditClinic, 
+        showTemporarySuccessDelete,
+        setPageNumber,
+        setOrderBy,
+        totalElements
+    } = useIndex();
     return (
         <Box>
             <SideBar />
@@ -40,7 +50,13 @@ export default function Index() {
                         <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString() || "0"} />
                         <CardAdd icon={AddBoxIcon} title="Tambah Klinik" link="/tambahKlinik" />
                     </Grid>
-                    <TableKlinik fetchDatas={fetchData} onSuccessDelete={showTemporarySuccessDelete} />
+                    <TableKlinik 
+                    data={data}
+                    onSuccessDelete={showTemporarySuccessDelete}
+                    setPageNumber={setPageNumber}
+                    setOrderBy={setOrderBy}
+                    totalElements={totalElements}
+                     />
                 </Box>
             </Box>
         </Box>

@@ -28,6 +28,7 @@ import BadgeStatus from '../../../components/small/badge/BadgeStatus'
 import useTableAmbulance from '../hooks/useTableAmbulance'
 import React from 'react'
 import CustomFrameTable from '../../../components/small/CustomFrameTable'
+import { AmbulanceDataItem } from '../../../types/ambulance.types'
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
@@ -60,24 +61,31 @@ const StyledTableContainer = styled(TableContainer)`
   `
 
 interface TableAmbulanceProps {
-  fetchDatas: () => void;
+  data: AmbulanceDataItem[];
   onSuccessDelete: () => void;
+  setPageNumber: (page: number) => void;
+  setOrderBy: (order: string) => void;
+  totalElements: number;
 }
-const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDelete }) => {
+const TableAmbulance: React.FC<TableAmbulanceProps> = ({ 
+  data,
+  onSuccessDelete,
+  setPageNumber,
+  setOrderBy,
+  totalElements
+ }) => {
   const { page,
     isCollapsed,
     open,
+    pageSize,
     setOpen,
-    datasAmbulance,
     deletedItems,
     navigate,
     handleChangePage,
-    rowsPerPage,
-    displayedData,
     handleDeleteSuccess,
     toggleCollapse,
     confirmationDelete,
-  } = useTableAmbulance(fetchDatas, onSuccessDelete);
+  } = useTableAmbulance(onSuccessDelete, setPageNumber, setOrderBy);
   return (
     <Box>
       <Box
@@ -191,8 +199,8 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {displayedData.length > 0 ? (
-                      displayedData.map((data, index) => (
+                    {data.length > 0 ? (
+                      data.map((data, index) => (
                         <StyledTableRow key={index}>
                           <TableCell sx={[{ color: '#292B2C', fontSize: '14px' }]} align="center">
                             {index + 1}
@@ -311,11 +319,10 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({ fetchDatas, onSuccessDe
               alignItems={'center'}
             >
               <Typography sx={{ color: '#A8A8BD' }}>
-                Showing {(page - 1) * rowsPerPage + 1} to{' '}
-                {Math.min(page * rowsPerPage, datasAmbulance.length)} of {datasAmbulance.length} entries
+               Showing {data.length > 0 ? (page - 1) * pageSize + 1 : 0} to {Math.min(page * pageSize, totalElements)} of {totalElements} entries
               </Typography>
               <Pagination
-                count={Math.ceil(datasAmbulance.length / rowsPerPage)}
+                count={Math.max(1, Math.ceil(totalElements / pageSize))}
                 variant="outlined"
                 shape="rounded"
                 page={page}

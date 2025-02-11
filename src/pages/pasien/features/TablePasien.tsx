@@ -55,21 +55,36 @@ const StyledTableContainer = styled(TableContainer)`
 //hooks
 import useTablePasien from "../hooks/useTablePasien";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
+import { PatientDataItem } from "../../../types/patient.types";
 
-export default function TablePasien() {
+interface TablePatientProp{
+    data: PatientDataItem[];
+    onSuccessDelete: () => void;
+    setPageNumber: (page: number) => void;
+    setOrderBy: (order: string) => void;
+    totalElements: number;
+}
+const TablePasien: React.FC<TablePatientProp> = ({
+    data,
+    onSuccessDelete,
+    setPageNumber,
+    setOrderBy,
+    totalElements
+}) => {
     const {
         page,
         isCollapsed,
-        datas,
         handleChangePage,
-        rowsPerPage,
-        displayedData,
         sortir,
         urutkan,
         toggleCollapse,
         confirmationDelete,
-        userDataPhone
-    } = useTablePasien();
+        pageSize
+    } = useTablePasien(
+    onSuccessDelete,
+    setPageNumber,
+    setOrderBy
+    );
     return (
         <Box>
             <Box
@@ -278,8 +293,8 @@ export default function TablePasien() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {displayedData.length > 0 ? (
-                                            displayedData.map((data, index) => (
+                                        {data.length > 0 ? (
+                                            data.map((data, index) => (
                                                 <StyledTableRow key={index}>
                                                     <TableCell
                                                         sx={[{ color: "#292B2C", fontSize: "14px" }]}
@@ -397,7 +412,7 @@ export default function TablePasien() {
                                                         ]}
                                                         align="center"
                                                     >
-                                                        {userDataPhone[index]}
+                                                        {data.phone}
                                                     </TableCell>
                                                     {/* <TableCell
                                                         sx={[
@@ -445,7 +460,7 @@ export default function TablePasien() {
                                                             href="#"
                                                             underline="none"
                                                             color={"#8F85F3"}
-                                                            onClick={confirmationDelete}
+                                                            onClick={(event) => confirmationDelete(event, data.id)}
                                                             sx={{ mr: 2 }}
                                                         >
                                                             Hapus
@@ -488,12 +503,10 @@ export default function TablePasien() {
                         </Box>
                         <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
                             <Typography sx={{ color: "#A8A8BD" }}>
-                                Showing {((page - 1) * rowsPerPage) + 1} to{" "}
-                                {Math.min(page * rowsPerPage, datas.length)} of{" "}
-                                {datas.length} entries
+                                Showing {data.length > 0 ? (page - 1) * pageSize + 1 : 0} to {Math.min((page) * pageSize, totalElements)} of {totalElements} entries
                             </Typography>
                             <Pagination
-                                count={Math.ceil(datas.length / rowsPerPage)}
+                                count={Math.max(Math.ceil(data.length / pageSize))}
                                 variant="outlined"
                                 shape="rounded"
                                 page={page}
@@ -523,3 +536,5 @@ export default function TablePasien() {
         </Box>
     );
 }
+
+export default TablePasien

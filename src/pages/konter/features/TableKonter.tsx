@@ -24,6 +24,7 @@ import ModalDeleteConfirmation from "../../../components/small/modal/ModalDelete
 //hooks
 import useTableKonter from "../hooks/useTableKonter";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
+import { CounterDataItem } from "../../../types/counter.types";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -55,27 +56,37 @@ const StyledTableContainer = styled(TableContainer)`
   }
 `;
 interface TableKonterProps {
-    fetchDatas: () => void;
+    data: CounterDataItem[];
     onSuccessDelete: () => void;
+    setPageNumber: (page: number) => void;
+    setOrderBy: (order: string) => void;
+    totalElements: number;
 }
-const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }) => {
+const TableKonter: React.FC<TableKonterProps> = ({data,
+  onSuccessDelete,
+  setPageNumber,
+  setOrderBy,
+  totalElements
+ }) => {
     const {
         page,
         isCollapsed,
         open,
         setOpen,
-        dataCounter,
         deletedItems,
         navigate,
         handleChangePage,
-        rowsPerPage,
-        displayedData,
         urutkan,
         toggleCollapse,
         confirmationDelete,
         setSort,
-        handleDeleteSuccess
-    } = useTableKonter(fetchDatas, onSuccessDelete);
+        handleDeleteSuccess,
+        pageSize
+    } = useTableKonter(
+    onSuccessDelete,
+    setPageNumber,
+    setOrderBy
+    );
     return (
         <Box>
             <Box
@@ -195,8 +206,8 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {displayedData.length > 0 ? (
-                                            displayedData.map((data, index) => (
+                                        {data.length > 0 ? (
+                                            data.map((data, index) => (
                                                 <StyledTableRow key={index}>
                                                     <TableCell
                                                         sx={[{ color: "#292B2C", fontSize: "14px" }]}
@@ -295,10 +306,10 @@ const TableKonter: React.FC<TableKonterProps> = ({ fetchDatas, onSuccessDelete }
 
                         <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center">
                             <Typography sx={{ color: "#A8A8BD" }}>
-                                Showing {(page - 1) * rowsPerPage + 1} to {Math.min(page * rowsPerPage, dataCounter.length)} of {dataCounter.length} entries
+                                Showing {data.length > 0 ? (page - 1) * pageSize + 1 : 0} to {Math.min((page) * pageSize, totalElements)} of {totalElements} entries
                             </Typography>
                             <Pagination
-                                count={Math.ceil(dataCounter.length / rowsPerPage)}
+                                count={Math.max(1, Math.ceil(totalElements / pageSize))}
                                 shape="rounded"
                                 page={page}
                                 onChange={handleChangePage}
