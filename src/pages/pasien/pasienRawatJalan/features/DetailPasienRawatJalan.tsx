@@ -1,5 +1,4 @@
 import { Container, Box } from "@mui/system";
-import useDetailDokter from "../../../dokter/hooks/useDetailDokter";
 import BreadCrumbs from "../../../../components/medium/BreadCrumbs";
 import CardInfoPasienRawatJalan from "../../../../components/small/card/CardInfoPasienRawatJalan";
 import CardRekamMedis from "../../../../components/small/card/CardRekamMedis";
@@ -7,13 +6,14 @@ import CardAppointmentCard from "../../../../components/small/card/CardAppointme
 import profilePict from "../../../../assets/img/meme.jpg";
 import imgString from "../../../../assets/img/String.png";
 import { Button } from "@mui/material";
+import useDetailPasienRawatJalan from "../hooks/useDetailPasienRawatJalan";
 
 
 export default function DetailPasienRawatJalan() {
     const {
         breadcrumbItems,
         handleDeleteSuccess,
-    } = useDetailDokter();
+    } = useDetailPasienRawatJalan();
 
     return (
         <>
@@ -58,7 +58,7 @@ export default function DetailPasienRawatJalan() {
                     bgcolor: 'white',
                     zIndex: 999,
                     position: 'absolute',
-                    bottom: -655,
+                    bottom: -770,
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
