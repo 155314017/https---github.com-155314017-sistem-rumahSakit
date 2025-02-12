@@ -1,27 +1,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { BaseResponse } from '../../../types/api.types'
-
-export interface CreateClinicRequest {
-  name: string
-  description: string
-  additionalInfo: string
-  code: string
-}
-
-export interface ClinicDataItem {
-  id: string
-  name: string
-  description: string
-  additionalInfo: string
-  code: string
-  createdBy: string
-  createdDateTime: number
-  updatedBy: string | null
-  updatedDateTime: number | null
-  deletedBy: string | null
-  deletedDateTime: number | null
-}
+import { ClinicDataItem } from '../../../types/clinic.types'
 
 const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/`
 
