@@ -63,7 +63,7 @@ export default function CardBiodataPegawai({
                 {/* kotak tengah */}
                 <Box
                     sx={{
-                        width: "80px",
+                        width: "60px",
                         height: "40px",
                         bgcolor: "#F1F0FE",
                         borderRadius: "0px 0px 22px 22px",
@@ -98,7 +98,7 @@ export default function CardBiodataPegawai({
                         fontSize: "20px",
                     }}
                 >
-                    Biodata Pegawai
+                    Biodata Pasien
                 </Typography>
             </Box>
             <Box p={2} >

@@ -1,29 +1,33 @@
 import { Container, Box } from "@mui/system";
 import useDetailDokter from "../../../dokter/hooks/useDetailDokter";
 import BreadCrumbs from "../../../../components/medium/BreadCrumbs";
-import CardJamPraktek from "../../../pegawai/features/CardJamPraktek";
 import CardInfoPasienRawatJalan from "../../../../components/small/card/CardInfoPasienRawatJalan";
 import CardRekamMedis from "../../../../components/small/card/CardRekamMedis";
+import CardAppointmentCard from "../../../../components/small/card/CardAppointmentCard";
+import profilePict from "../../../../assets/img/meme.jpg";
 
 
 export default function DetailPasienRawatJalan() {
     const {
         breadcrumbItems,
-        doctorData,
         handleDeleteSuccess,
     } = useDetailDokter();
 
 
     return (
-        <Container sx={{ py: 2, minWidth: '90vw' }} >
+        <Container sx={{ py: 2, minWidth: '100%' }}>
             <BreadCrumbs
                 breadcrumbItems={breadcrumbItems}
                 onBackClick={() => window.history.back()}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 10 }} >
-
-                <Box mt={3} width={'30%'} display={'flex'} flexDirection={'column'} gap={3} >
-
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                <Box
+                    mt={3}
+                    display={'flex'}
+                    flexDirection={'column'}
+                    gap={3}
+                    sx={{ flexShrink: 0, width: '25%' }}
+                >
                     <CardInfoPasienRawatJalan
                         tanggalDitambahkan={"Data Tidak Ditemukan"}
                         namaPegawai={"Data Tidak Ditemukan"}
@@ -33,29 +37,21 @@ export default function DetailPasienRawatJalan() {
                         rolePegawai={"Data Tidak Ditemukan"}
                         noHandphone={"Data Tidak Ditemukan"}
                         dokumen={"Data Tidak Ditemukan"}
-                        avatarUrl={""}
+                        avatarUrl={profilePict}
                         onUbahData={() => { }}
                         onHapusData={() => handleDeleteSuccess()}
                     />
-                    <CardJamPraktek
-                        title="Jam Operasional"
-                        data={doctorData?.operationalSchedule || {
-                            senin: "-",
-                            selasa: "-",
-                            rabu: "-",
-                            kamis: "-",
-                            jumat: "-",
-                            sabtu: "-",
-                            minggu: "-",
-                        }}
-                    />
-                </Box>
-                <Box mt={3} >
-                    {/* <CardIzinAkses /> */}
-                    <CardRekamMedis />
+                    <CardAppointmentCard />
                 </Box>
 
+                <Box
+                    mt={3}
+                    sx={{ flexShrink: 0, width: '72.5%' }}
+                >
+                    <CardRekamMedis />
+                </Box>
             </Box>
         </Container>
+
     );
 }
