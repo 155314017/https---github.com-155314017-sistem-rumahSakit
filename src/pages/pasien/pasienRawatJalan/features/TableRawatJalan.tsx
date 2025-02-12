@@ -179,7 +179,7 @@ export default function TableRawatJalan() {
 
                 <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
                     <Box>
-                        <Box mt={3} display={"flex"} justifyContent={"space-between"}>
+                        <Box mt={3} display={"flex"} justifyContent={"space-between"} width={"100%"}>
                             <Button
                                 sx={getButtonStyle('Antrian')}
                                 onClick={() => handleButtonClick('Antrian')}

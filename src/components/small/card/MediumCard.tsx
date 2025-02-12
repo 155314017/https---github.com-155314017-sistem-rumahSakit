@@ -6,6 +6,8 @@ interface MediumCardProps {
   icon: ElementType;
   title: string;
   subtitle: ReactNode;
+  width?: string;
+  heigth?: string;
 }
 
 
@@ -13,12 +15,14 @@ export default function MediumCard({
   icon: Icon,
   title,
   subtitle,
+  width,
+  heigth
 }: MediumCardProps) {
   return (
     <Box>
       <Box
-        height={"162px"}
-        width={"296.755px"}
+        height={heigth || "162px"}
+        width={width || "296.755px"}
         sx={{
           backgroundColor: "#fff",
           borderRadius: "24px",
