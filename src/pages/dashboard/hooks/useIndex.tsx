@@ -59,7 +59,6 @@ export default function useIndex() {
 
   const fetchData = async () => {
     setIsLoading(true)
-
     try {
       const resultRoom = await RoomServices(pageNumber, PAGE_SIZE, orderByRoom)
       const resultFacility = await FacilityServices(pageNumber, PAGE_SIZE, orderByFacility)
