@@ -1,5 +1,5 @@
 import { Formik, Form, Field } from "formik";
-import { Box, display, fontSize, fontWeight, lineHeight, Stack } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import { Button, FormControl, Pagination, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import SearchBar from "../SearchBar";
