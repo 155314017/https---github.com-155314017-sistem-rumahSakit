@@ -19,15 +19,16 @@ export default function useTableRawatJalan() {
     const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
     const sortir = [
-        { value: 1, label: "Pria" },
-        { value: 2, label: "Wanita" },
+        { value: 1, label: "BPJS" },
+        { value: 2, label: "Asuransi" },
+        { value: 3, label: "Kredit.Debit,Tunai" },
     ];
 
     const urutkan = [
-        { value: 1, label: "Nama Pasien A-Z" },
-        { value: 2, label: "Nama Pasien Z-A" },
-        { value: 3, label: "Nomor Pasien 1-9" },
-        { value: 4, label: "Nomor Pasien 9-1" },
+        { value: 1, label: "Terbaru" },
+        { value: 2, label: "Terlama" },
+        { value: 3, label: "Jenis Kunjungan A-Z" },
+        { value: 4, label: "Jenis Kunjungan Z-A" },
     ];
 
     const toggleCollapse = () => {
@@ -64,17 +65,17 @@ export default function useTableRawatJalan() {
         }
     };
 
-    const getButtonStyle = (buttonName: string) => {
+    const getButtonStyle = (buttonName: string, width: string) => {
         return {
             fontWeight: 400,
             fontSize: '16px',
             lineHeight: '18px',
-            padding: '12px',
+            padding: '8px',
             mr: 1,
             bgcolor: '#ffff',
             border: '1px solid #8F85F3',
             color: '#8F85F3',
-            width: 'fit-content',
+            width: width,
             borderRadius: '8px',
             height: '44px',
             '&:hover': {

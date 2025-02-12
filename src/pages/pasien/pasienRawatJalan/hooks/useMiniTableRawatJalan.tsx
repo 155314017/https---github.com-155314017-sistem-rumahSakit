@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Data from "../../../../dummyData/dataPasien";
 import { PatientDataItem } from "../../../../types/patient.types";
 export default function useMiniTableRawatJalan() {
     const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
-    const [datas, setDatas] = useState<PatientDataItem[]>([]);
     const [dataIdClinic, setDataIdClinic] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [dataIdUser, setDataIdUser] = useState<string[]>([]);
     const [userDataPhone, setUserDataPhone] = useState<string[]>([]);
 
+    const datas = Data;
+    
     
 
    
@@ -95,7 +97,6 @@ export default function useMiniTableRawatJalan() {
         isCollapsed,
         setIsCollapsed,
         datas,
-        setDatas,
         handleChangePage,
         rowsPerPage,
         displayedData,

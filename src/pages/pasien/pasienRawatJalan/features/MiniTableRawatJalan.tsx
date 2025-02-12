@@ -1,6 +1,9 @@
 import { Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Link, } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
+//Icon
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 import useMiniTableRawatJalan from "../hooks/useMiniTableRawatJalan";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -72,7 +75,7 @@ export default function MiniTableRawatJalan() {
                                     displayedData.map((data, index) => (
                                         <StyledTableRow key={index}>
                                             <TableCell sx={{ color: "#292B2C", fontSize: "14px" }} align="center">
-                                                {index + 1}
+                                            {data.nomorAntrian}
                                             </TableCell>
                                             <TableCell
                                                 sx={{
@@ -86,7 +89,7 @@ export default function MiniTableRawatJalan() {
                                                 }}
                                                 align="center"
                                             >
-                                                {data.name}
+                                               {data.nomorRM} 
                                             </TableCell>
                                             <TableCell
                                                 sx={{
@@ -100,8 +103,9 @@ export default function MiniTableRawatJalan() {
                                                 }}
                                                 align="center"
                                             >
-                                                {data.gender}
+                                                {data.namaPasien}
                                             </TableCell>
+                                            
                                             <TableCell
                                                 align="center"
                                                 sx={[
@@ -150,8 +154,8 @@ export default function MiniTableRawatJalan() {
                                                         color: "#8F85F3",
                                                     }}
                                                 >
-                                                    <Box padding={'2px'} px={'14px'} border={'1px solid #8F85F3'} width={'fit-content'} height={'fit-content'} bgcolor={'inherit'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
-                                                        <Typography color="#8F85F3" >:</Typography>
+                                                    <Box padding={'2px'} px={'14px'} border={'1px solid #8F85F3'} width={'15px'} height={'26px'} bgcolor={'inherit'} borderRadius={'8px'} display={'flex'} justifyContent={'center'} alignItems={'center'} >
+                                                        <MoreVertIcon sx={{ color: "#8F85F3", fontSize: "16px" }} />
                                                     </Box>
                                                 </Link>
                                             </TableCell>
