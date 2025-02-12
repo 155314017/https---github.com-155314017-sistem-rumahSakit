@@ -23,6 +23,7 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import useTableRawatJalan from "../hooks/useTableRawatJalan";
 import BadgeStatusPasien from "../../../../components/small/badge/BadgeStatusPasien";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -181,37 +182,37 @@ export default function TableRawatJalan() {
                     <Box>
                         <Box mt={3} display={"flex"} justifyContent={"space-between"} width={"100%"}>
                             <Button
-                                sx={getButtonStyle('Antrian')}
+                                sx={getButtonStyle('Antrian', '12%')}
                                 onClick={() => handleButtonClick('Antrian')}
                             >
                                 Antrian (10)
                             </Button>
                             <Button
-                                sx={getButtonStyle('Tensi')}
+                                sx={getButtonStyle('Tensi', '12%')}
                                 onClick={() => handleButtonClick('Tensi')}
                             >
                                 Tensi (10)
                             </Button>
                             <Button
-                                sx={getButtonStyle('SiapDiperiksa')}
+                                sx={getButtonStyle('SiapDiperiksa', '22%')}
                                 onClick={() => handleButtonClick('SiapDiperiksa')}
                             >
                                 Siap diperiksa dokter (10)
                             </Button>
                             <Button
-                                sx={getButtonStyle('SedangDiperiksa')}
+                                sx={getButtonStyle('SedangDiperiksa', '22%')}
                                 onClick={() => handleButtonClick('SedangDiperiksa')}
                             >
                                 Sedang diperiksa dokter (10)
                             </Button>
                             <Button
-                                sx={getButtonStyle('PerluTindakan')}
+                                sx={getButtonStyle('PerluTindakan', '22%')}
                                 onClick={() => handleButtonClick('PerluTindakan')}
                             >
                                 Perlu tindakan lanjutan (10)
                             </Button>
                             <Button
-                                sx={getButtonStyle('Selesai')}
+                                sx={getButtonStyle('Selesai', '12%')}
                                 onClick={() => handleButtonClick('Selesai')}
                             >
                                 Selesai (10)
@@ -420,7 +421,7 @@ export default function TableRawatJalan() {
                                                                 flexDirection: "row",
                                                                 justifyContent: 'center',
                                                                 alignItems: 'center',
-                                                                gap: 4,
+                                                                gap: 2,
                                                             },
                                                         ]}
                                                     >
@@ -459,7 +460,7 @@ export default function TableRawatJalan() {
                                                                 color: "#8F85F3",
                                                             }}
                                                         >
-                                                            <Box padding={'8px'} border={'1px solid #8F85F3'} width={'fit-content'} height={'fit-content'} bgcolor={'inherit'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
+                                                            <Box padding={'8px'} border={'1px solid #8F85F3'} width={'hut-content'} height={'fit-content'} bgcolor={'inherit'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
                                                                 <Typography color="#8F85F3" >Lihat Detail</Typography>
                                                             </Box>
                                                         </Link>
@@ -471,8 +472,8 @@ export default function TableRawatJalan() {
                                                                 color: "#8F85F3",
                                                             }}
                                                         >
-                                                            <Box padding={'8px'} px={'16px'} border={'1px solid #8F85F3'} width={'fit-content'} height={'fit-content'} bgcolor={'inherit'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
-                                                                <Typography color="#8F85F3" >:</Typography>
+                                                            <Box padding={'8px'} border={'1px solid #8F85F3'} width={'hut-content'} height={'30px'} bgcolor={'inherit'} borderRadius={'8px'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+                                                                <MoreVertIcon sx={{ color: "#8F85F3", fontSize: "20px", justifyContent: 'center', alignItems: 'center' }} />
                                                             </Box>
                                                         </Link>
                                                     </TableCell>

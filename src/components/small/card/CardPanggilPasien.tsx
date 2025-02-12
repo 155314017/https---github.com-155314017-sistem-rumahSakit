@@ -1,6 +1,9 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import bgImage from "../../../assets/img/String.png";
 
+//icon
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 
 export default function CardPanggilPasien() {
     return (
@@ -56,21 +59,21 @@ export default function CardPanggilPasien() {
                     {/* Box navigasi */}
                     <Box display="flex" mt={8} justifyContent={'space-between'}>
                         <Button color="primary" sx={{
-                            padding: '12px', mr: 1, bgcolor: '#ffff', border: '1px solid #8F85F3', color: '#8F85F3', maxWidth: '8px', borderRadius: '8px', height: '44px', '&:hover': {
+                            padding: '2px', mr: 1, bgcolor: '#ffff', border: '1px solid #8F85F3', color: '#8F85F3', width: '2%', borderRadius: '8px', height: '44px', '&:hover': {
                                 backgroundColor: "#8F85F3", color: '#ffff',
                             },
                         }}>
-                            :
+                            <MoreVertIcon />
                         </Button>
                         <Button color="primary" sx={{
-                            padding: 1, px: 5, mr: 1, bgcolor: '#ffff', border: '1px solid #8F85F3', color: '#8F85F3', height: '44px', width: '255px', '&:hover': {
+                            padding: 1, px: 5, mr: 1, bgcolor: '#ffff', border: '1px solid #8F85F3', color: '#8F85F3', height: '44px', width: '45%', '&:hover': {
                                 backgroundColor: "#8F85F3", color: '#ffff',
                             },
                         }}>
                             Proses Pasien
                         </Button>
                         <Button sx={{
-                            bgcolor: '#8F85F3', color: '#ffff', border: '1px solid #8F85F3', padding: 1, px: 5, height: '44px', width: '255px', '&:hover': {
+                            bgcolor: '#8F85F3', color: '#ffff', border: '1px solid #8F85F3', padding: 1, px: 5, height: '44px', width: '45%', '&:hover': {
                                 backgroundColor: "#ffff", color: '#8F85F3',
                             },
                         }}>
