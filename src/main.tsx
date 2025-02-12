@@ -47,6 +47,7 @@ import RegistrationOnline from './pages/pasien/features/RegistrationOnline';
 import NotFoundPage from './pages/NotFoundPage';
 import HomeAdmin from './pages/home/homeAdmin';
 import HomeQueue from './pages/home/homeQueue';
+import DetailPasienRawatJalan from './pages/pasien/pasienRawatJalan/features/DetailPasienRawatJalan';
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -134,6 +135,10 @@ createRoot(document.getElementById('root')!).render(
 
         {/* dashboard antrian  */}
         <Route path="/dashboardQueue" element={<HomeQueue />} />
+
+
+        {/* not found route  */}
+        <Route path="/detailRawat" element={<DetailPasienRawatJalan />} />
 
         {/* not found route  */}
         <Route path="*" element={<NotFoundPage />} />
