@@ -19,7 +19,7 @@ export default function MediumCard({
   heigth
 }: MediumCardProps) {
   return (
-    <Box>
+    <Box width={"100%"} height={"100%"}>
       <Box
         height={heigth || "162px"}
         width={width || "296.755px"}

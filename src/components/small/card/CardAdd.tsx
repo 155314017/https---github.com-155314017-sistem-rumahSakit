@@ -12,7 +12,7 @@ interface CardAddProps {
 
 export default function CardAdd({ icon: Icon, title, link, width, heigth }: CardAddProps) {
   return (
-    <Box>
+    <Box width={"100%"}>
       <Box
         height={heigth || "162px"}
         width={width || "296.75px"}
