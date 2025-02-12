@@ -6,14 +6,16 @@ interface CardAddProps {
   icon: ElementType;
   title: string;
   link: string;
+  width?: string;
+  heigth?: string;
 }
 
-export default function CardAdd({ icon: Icon, title, link }: CardAddProps) {
+export default function CardAdd({ icon: Icon, title, link, width, heigth }: CardAddProps) {
   return (
     <Box>
       <Box
-        height={"162px"}
-        width={"296.75px"}
+        height={heigth || "162px"}
+        width={width || "296.75px"}
         sx={{
           backgroundColor: "#fff",
           borderRadius: "24px",

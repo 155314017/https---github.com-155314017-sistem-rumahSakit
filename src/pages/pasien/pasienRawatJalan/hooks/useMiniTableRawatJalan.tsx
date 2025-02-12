@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { PatientDataItem, PatientServices } from "../../../../services/ManagePatient/PatientServices";
+import { PatientDataItem } from "../../../../types/patient.types";
 export default function useMiniTableRawatJalan() {
     const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
@@ -10,28 +10,9 @@ export default function useMiniTableRawatJalan() {
     const [dataIdUser, setDataIdUser] = useState<string[]>([]);
     const [userDataPhone, setUserDataPhone] = useState<string[]>([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await PatientServices();
-                setDatas(result);
-                const clinicIds = result
-                    .map((item) => item.registrationDatumDto?.masterClinicId)
-                    .filter((id): id is string => !!id);
+    
 
-                const userId = result.map((item) => item.masterUserId).filter((id): id is string => !!id);
-
-                setDataIdUser(userId);
-                setDataIdClinic(clinicIds);
-                setLoading(false);
-            } catch (error) {
-                console.error('Failed to fetch data from API: ', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
+   
     const [clinics, setClinics] = useState<string[]>([]);
 
     useEffect(() => {
