@@ -6,7 +6,7 @@ import SearchBar from "../SearchBar";
 import CardCatatanDetailTindakanPasien from "./CardCatatanDetailTindakanPasien";
 
 export default function CardRekamMedis() {
-    const [currentPage, setCurrentPage] = useState(2 );
+    const [currentPage, setCurrentPage] = useState(1);
     const components = Array(5).fill(null);
     const [page, setPage] = useState(1);
     const pageSize = 2;
@@ -128,7 +128,7 @@ export default function CardRekamMedis() {
 
                                 <Box mt={2} display={'flex'} flexDirection={'row'} gap={2} justifyContent={'space-between'} >
                                     <Button sx={{ width: '100%', height: '38px', bgcolor: '#8F85F3', color: 'white', border: '1px solid #8F85F3' }} >Data Pemeriksaan</Button>
-                                    <Button sx={{ width: '100%', height: '38px', bgcolor: 'inherit', color: '#8F85F3', border: '1px solid #8F85F3' }} >Rekam Medis</Button>
+                                    <Button sx={{ width: '100%', height: '38px', bgcolor: 'inherit', color: '#8F85F3', border: '1px solid #8F85F3' }} onClick={() => setCurrentPage(2)} >Rekam Medis</Button>
                                 </Box>
 
                                 <Box
