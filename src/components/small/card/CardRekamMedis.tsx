@@ -5,12 +5,24 @@ import { Button, FormControl, TextField, Typography } from "@mui/material";
 export default function CardRekamMedis() {
     return (
         <Formik
-            initialValues={{ tinggiBadan: "" }}
+            initialValues={{
+                tinggiBadan: "",
+                beratBadan: "",
+                tekananDarah: "",
+                suhuBadan: "",
+                golonganDarah: "",
+                detakJantung: "",
+                frekuensiNafas: "",
+                tingkatKesadaran: "",
+                saturasi: "",
+                alergi: "",
+                catatanPerawat: "",
+            }}
             onSubmit={(values) => {
                 console.log(values);
             }}
         >
-            {({ handleSubmit }) => (
+            {({ handleSubmit, values }) => (
                 <Form onSubmit={handleSubmit}>
                     <Box
                         sx={{
@@ -171,7 +183,7 @@ export default function CardRekamMedis() {
                                 <Typography>Berat Badan</Typography>
                                 <Field
                                     as={TextField}
-                                    name="tinggiBadan"
+                                    name="beratBadan"
                                     placeholder="Masukkan Berat Badan"
                                     variant="outlined"
                                     InputProps={{
@@ -226,7 +238,7 @@ export default function CardRekamMedis() {
                                 <Typography>Tekanan Darah</Typography>
                                 <Field
                                     as={TextField}
-                                    name="tinggiBadan"
+                                    name="tekananDarah"
                                     placeholder="Masukkan Tekanan Darah"
                                     variant="outlined"
                                     InputProps={{
@@ -281,7 +293,7 @@ export default function CardRekamMedis() {
                                 <Typography>Suhu Badan</Typography>
                                 <Field
                                     as={TextField}
-                                    name="tinggiBadan"
+                                    name="suhuBadan"
                                     placeholder="Masukkan Suhu Badan"
                                     variant="outlined"
                                     InputProps={{
@@ -336,7 +348,7 @@ export default function CardRekamMedis() {
                                 <Typography>Golongan Darah</Typography>
                                 <Field
                                     as={TextField}
-                                    name="tinggiBadan"
+                                    name="golonganDarah"
                                     placeholder="Masukkan Golongan Darah"
                                     variant="outlined"
                                     sx={{
@@ -365,7 +377,7 @@ export default function CardRekamMedis() {
                                 <Typography>Detak Jantung</Typography>
                                 <Field
                                     as={TextField}
-                                    name="tinggiBadan"
+                                    name="detakJantung"
                                     placeholder="Masukkan Detakan Jantung"
                                     variant="outlined"
                                     InputProps={{
@@ -420,7 +432,7 @@ export default function CardRekamMedis() {
                                 <Typography>Frekuensi Nafas</Typography>
                                 <Field
                                     as={TextField}
-                                    name="tinggiBadan"
+                                    name="frekuensiNafas"
                                     placeholder="Masukkan Frekuensi Nafas"
                                     variant="outlined"
                                     InputProps={{
@@ -475,7 +487,7 @@ export default function CardRekamMedis() {
                                 <Typography>Tingkat Kesadaran</Typography>
                                 <Field
                                     as={TextField}
-                                    name="tinggiBadan"
+                                    name="tingkatKesadaran"
                                     placeholder="Masukkan Tingkat Kesadaran"
                                     variant="outlined"
                                     sx={{
@@ -504,7 +516,7 @@ export default function CardRekamMedis() {
                                 <Typography>Saturasi</Typography>
                                 <Field
                                     as={TextField}
-                                    name="tinggiBadan"
+                                    name="saturasi"
                                     placeholder="Masukkan Saturasi"
                                     variant="outlined"
                                     InputProps={{
@@ -559,7 +571,7 @@ export default function CardRekamMedis() {
                                 <Typography>Alergi</Typography>
                                 <Field
                                     as={TextField}
-                                    name="tinggiBadan"
+                                    name="alergi"
                                     placeholder="Masukkan Alergi"
                                     variant="outlined"
                                     sx={{
@@ -588,13 +600,18 @@ export default function CardRekamMedis() {
                                 <Typography>Catatan Perawat</Typography>
                                 <Field
                                     as={TextField}
-                                    name="tinggiBadan"
+                                    name="catatanPerawat"
                                     placeholder="Masukkan Catatan Perawat"
                                     variant="outlined"
                                     multiline
+                                    // maxRows={1}
+                                    inputProps={{
+                                        maxLength: 500
+                                    }}
                                     sx={{
                                         width: "100%",
                                         height: "111px",
+                                        // maxHeight: '50px',
                                         marginTop: "10px",
                                         "& .MuiOutlinedInput-root": {
                                             borderRadius: "8px",
@@ -609,10 +626,12 @@ export default function CardRekamMedis() {
                                         "& .MuiOutlinedInput-input": {
                                             padding: "10px",
                                             fontSize: "16px",
+                                            // overflow: 'auto',
                                         },
                                     }}
                                 />
                             </FormControl>
+                            <Typography sx={{ color: '#A8A8BD', mt: values.catatanPerawat.length >= 350 ? 8 : 2, display: 'flex', flexDirection: 'row-reverse' }} >{values.catatanPerawat.length} / 500 Karakter</Typography>
                         </Box>
                     </Box>
                 </Form>

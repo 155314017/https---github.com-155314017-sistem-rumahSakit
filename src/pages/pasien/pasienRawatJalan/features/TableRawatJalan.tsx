@@ -451,7 +451,7 @@ export default function TableRawatJalan() {
                                                             </Typography>
                                                         </Box>
                                                         <Link
-                                                            href="#"
+                                                            href="/detailRawat"
                                                             mr={2}
                                                             underline="hover"
                                                             sx={{

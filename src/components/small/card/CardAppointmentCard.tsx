@@ -9,7 +9,7 @@ export default function CardAppointmentCard() {
             p={1}
             height="fit-content "
             width={'100%'}
-            sx={{ borderRadius: "24px", bgcolor: "#ffff", overflow: "hidden", pb: 4 }}
+            sx={{ borderRadius: "24px", bgcolor: "#ffff", overflow: "hidden", pb: 2 }}
         >
 
             {/* membuat bentuk lengkung atas */}
@@ -125,8 +125,17 @@ export default function CardAppointmentCard() {
 
                 </Box>
                 <Box display="flex" justifyContent="center" textAlign="center" mt={2}>
-                    <Typography variant="body2" color="primary" sx={{ cursor: "pointer" }}>
-                        Lihat selengkapnya ▼
+                <Typography
+                        sx={{
+                            color: '#8F85F3',
+                            fontWeight: 400,
+                            fontSize: '16px',
+                            lineHeight: '18px',
+                            mt: 3,
+                            alignItems: 'center'
+                        }}
+                    >
+                        Lihat selengkapnya
                     </Typography>
                 </Box>
             </Box>
