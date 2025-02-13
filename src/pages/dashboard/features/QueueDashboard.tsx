@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Typography } from '@mui/material'
 import { Box, Grid } from '@mui/system'
 import AccessibleForwardOutlinedIcon from '@mui/icons-material/AccessibleForwardOutlined';
@@ -20,9 +21,10 @@ export default function QueueDashboard() {
 
     useEffect(() => {
         if (location.state && location.state.successSkip) {
-            showTemporarySuccessSkipPatient()
+            showTemporarySuccessSkipPatient();
+            navigate(location.pathname);
         }
-    }, [location.state, navigate])
+    }, [location.state, navigate]);
 
     const showTemporarySuccessSkipPatient = async () => {
         setSuccessSkipPatient(true)
@@ -53,7 +55,7 @@ export default function QueueDashboard() {
                                 width='100%'
                                 heigth='200px' />
                         </Box>
-                        <CardPanggilPasien onSkipQueue={() => { }} onViewDetails={() => { }} />
+                        <CardPanggilPasien />
                     </Box>
 
                     <Box display={'flex'} flexDirection={'column'} gap={2} width={'49.5%'}>

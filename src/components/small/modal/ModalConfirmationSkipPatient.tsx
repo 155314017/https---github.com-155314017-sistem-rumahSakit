@@ -2,8 +2,8 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography }
 import { useNavigate } from 'react-router-dom';
 
 interface ModalConfirmationSkipPatientProps {
-    open: boolean; // properti untuk mengatur dialog apakah terbuka atau tidak
-    onClose: () => void; // fungsi untuk menutup modal
+    open: boolean;
+    onClose: () => void; 
 }
 
 export default function ModalConfirmationSkipPatient({ open, onClose }: ModalConfirmationSkipPatientProps) {
@@ -11,6 +11,7 @@ export default function ModalConfirmationSkipPatient({ open, onClose }: ModalCon
 
     const handleLewatiPasien = () => {
         navigate("/dashboardQueue", { state: { successSkip: true, message: "Pasien Berhasil Dilewati!" } });
+        onClose();
     }
 
     const handleCloseModal = () => {
