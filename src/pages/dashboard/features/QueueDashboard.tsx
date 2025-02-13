@@ -13,8 +13,9 @@ import TableRawatJalan from '../../pasien/pasienRawatJalan/features/TableRawatJa
 import AlertSuccess from '../../../components/small/alert/AlertSuccess';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import TableAntrian from '../../pasien/pasienRawatJalan/features/TableAntrian';
 
-export default function QueueDashboard() {
+export default function QueueDashboard({ selectedValue }) {
     const [successSkipPatient, setSuccessSkipPatient] = useState(false);
     const location = useLocation()
     const navigate = useNavigate()
@@ -37,7 +38,8 @@ export default function QueueDashboard() {
         <Box>
             <Box>
                 {successSkipPatient && <AlertSuccess label="Pasien Berhasil Dilewati" />}
-                <Typography sx={{ fontSize: '32px', fontWeight: '700', mb: 2, mt: 2 }}>Dashboard</Typography>
+                {selectedValue === 'Dasboard'? <Typography sx={{ fontSize: '32px', fontWeight: '700', mb: 2, mt: 2 }}>Dashboard</Typography> : <Typography sx={{ fontSize: '32px', fontWeight: '700', mb: 2, mt: 2 }}>Rawat Jalan - {selectedValue}</Typography>}
+                
                 <Grid container justifyContent={'space-between'} flex={1} flexDirection={'row'} width={'100%'} >
                     <Box display={'flex'} flexDirection={'column'} gap={2} width={'49.5%'}>
                         <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} maxWidth={'100%'} >
@@ -55,7 +57,7 @@ export default function QueueDashboard() {
                                 width='100%'
                                 heigth='200px' />
                         </Box>
-                        <CardPanggilPasien />
+                        {selectedValue === 'Dasboard' && <CardPanggilPasien />}
                     </Box>
 
                     <Box display={'flex'} flexDirection={'column'} gap={2} width={'49.5%'}>
@@ -70,11 +72,14 @@ export default function QueueDashboard() {
                             <CardAdd icon={AddSharpIcon} title="Tambah pasien" link="/tambahRuangan" width='96%'
                                 heigth='200px' />
                         </Box>
-                        <CardPasienTerlewati />
+                        {selectedValue === 'Dasboard'  && <CardPasienTerlewati />}
                     </Box>
                 </Grid>
                 <Box mt={3} >
-                    <TableRawatJalan />
+                {selectedValue === 'Dasboard' ?  <TableRawatJalan /> : <TableAntrian />}  
+                    
+
+                    
                 </Box>
 
             </Box>
