@@ -50,7 +50,14 @@ const PopoverMenu: React.FC<PopoverMenuProps> = ({
           key={index}
           fullWidth
           color="inherit"
-          onClick={onItemSelect ? () => onItemSelect(item.label) : item.onClick}
+          onClick={() => {
+            if (onItemSelect) {
+              onItemSelect(item.label);
+            } else if (item.onClick) {
+              item.onClick();
+            }
+            onClose();
+          }}
           sx={{
             display: "flex",
             justifyContent: "flex-start",
