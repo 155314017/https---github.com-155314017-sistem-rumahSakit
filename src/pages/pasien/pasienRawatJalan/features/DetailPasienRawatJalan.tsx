@@ -18,7 +18,7 @@ export default function DetailPasienRawatJalan() {
 
     return (
         <>
-            <Container sx={{ py: 2, minWidth: '100%', minHeight: '170vh', position: 'relative' }}>
+            <Container sx={{ py: 2, minWidth: '100%', minHeight: 'fit-content', position: 'relative', pb:15 }}>
                 <BreadCrumbs
                     breadcrumbItems={breadcrumbItems}
                     onBackClick={() => window.history.back()}

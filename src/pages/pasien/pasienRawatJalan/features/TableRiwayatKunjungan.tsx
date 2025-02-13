@@ -76,7 +76,7 @@ export default function TableRiwayatKunjungan() {
             <Box
                 position={"relative"}
                 p={3}
-                sx={{ borderRadius: "24px", overflow: "hidden", width: '98%' }}
+                sx={{ borderRadius: "24px", overflow: "hidden", width: '98%', bgcolor:'#FFFFFF', border:'1px solid #C5C5D3' }}
             >
                 <Box display="flex" alignItems="center" justifyContent="space-between" flexDirection={'row'}>
                     {/* <Typography

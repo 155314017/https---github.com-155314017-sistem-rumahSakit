@@ -1,6 +1,10 @@
 import { Box } from '@mui/system'
 
-export default function CustomFrameTable() {
+interface CustomFrameTableProps {
+    tipe?: string
+}
+
+const CustomFrameTable: React.FC<CustomFrameTableProps> = ({ tipe }) => {
     return (
         <>
             {/* membuat bentuk lengkung atas */}
@@ -11,7 +15,6 @@ export default function CustomFrameTable() {
                     left: "50%",
                     transform: "translateX(-50%)",
                     display: "flex",
-                    // bgcolor: 'red'
                 }}
             >
                 {/* lengkung kiri */}
@@ -26,7 +29,7 @@ export default function CustomFrameTable() {
                         sx={{
                             width: "50px",
                             height: "30px",
-                            bgcolor: "#fff",
+                            bgcolor: tipe === 'infromasi' ? "#FAFAFA" : "#fff",
                             borderRadius: "0px 15px 0px 0px ",
                         }}
                     />
@@ -35,7 +38,7 @@ export default function CustomFrameTable() {
                 {/* kotak tengah */}
                 <Box
                     sx={{
-                        width: "600px",
+                        width: tipe === 'infromasi' ? "350px" : "600px",
                         height: "50px",
                         bgcolor: "#F1F0FE",
                         borderRadius: "0px 0px 22px 22px",
@@ -57,7 +60,7 @@ export default function CustomFrameTable() {
                         sx={{
                             width: "50px",
                             height: "30px",
-                            bgcolor: "#fff",
+                            bgcolor: tipe === 'infromasi' ? "#FAFAFA" : "#fff",
                             borderRadius: "15px 0px 0px 0px ",
                         }}
                     />
@@ -67,3 +70,5 @@ export default function CustomFrameTable() {
         </>
     )
 }
+
+export default CustomFrameTable
