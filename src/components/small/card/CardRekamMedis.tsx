@@ -1,21 +1,44 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Formik, Form, Field } from "formik";
 import { Box, Stack } from "@mui/system";
 import { Button, FormControl, Pagination, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import SearchBar from "../SearchBar";
 import CardCatatanDetailTindakanPasien from "./CardCatatanDetailTindakanPasien";
+import DropdownList from "../dropdownlist/DropdownList";
+import TableRiwayatKunjungan from "../../../pages/pasien/pasienRawatJalan/features/TableRiwayatKunjungan";
 
 export default function CardRekamMedis() {
     const [currentPage, setCurrentPage] = useState(1);
     const components = Array(5).fill(null);
     const [page, setPage] = useState(1);
+    const [tipe, setTipe] = useState('kunjunganTerakhir');
     const pageSize = 2;
     const totalElements = components.length;
     const totalPages = Math.ceil(components.length / pageSize);
-    const handleChangePage = (event, value) => {
+    const handleChangePage = (event: any, value: SetStateAction<number>) => {
         setPage(value);
+        console.log(event);
     };
 
+    const handleChange = (value: string) => {
+        if (value === 'Kunjungan Terakhir') {
+            console.log(value);
+            setTipe('kunjunganTerakhir');
+        } else if (value === 'Riwayat Kunjungan') {
+            console.log(value);
+            setTipe('riwayatKunjungan');
+        } else if (value === 'Berkas Lab') {
+            console.log(value);
+            setTipe('berkasLab');
+        }
+    };
+
+    const tipeJadwal = [
+        { value: 'kunjunganTerakhir', label: "Kunjungan Terakhir" },
+        { value: 'riwayatKunjungan', label: "Riwayat Kunjungan" },
+        { value: 'berkasLab', label: "Berkas Lab" },
+    ];
     const startIndex = (page - 1) * pageSize;
     const endIndex = page * pageSize;
     return (
@@ -44,7 +67,7 @@ export default function CardRekamMedis() {
                             borderRadius: "24px",
                             bgcolor: "#FAFAFA",
                             overflow: "hidden",
-                            width: 'fit-content',
+                            width: '94%',
                             height: 'fit-content',
                             p: 4,
                             position: 'relative',
@@ -112,7 +135,7 @@ export default function CardRekamMedis() {
                             </Box>
                         </Box>
                         {/* ---------- */}
-                        <Box display={"flex"} flexDirection={"column"} justifyContent={"space-between"}>
+                        <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"}>
                             <Typography
                                 sx={{
                                     textTransform: "capitalize",
@@ -120,8 +143,22 @@ export default function CardRekamMedis() {
                                     fontSize: "20px",
                                 }}
                             >
-                                Data Pemeriksaan
+                                {/* Data Pemeriksaan */}
+                                {currentPage === 1 ? "Data Pemeriksaan" : "Rekam Medis"}
                             </Typography>
+                            {currentPage === 2 && (
+
+                                <Box display={'flex'} flexDirection={'row'} gap={2} minWidth={'30%'} alignItems={'center'} >
+                                    <Typography fontWeight={600} fontSize={'16px'} lineHeight={'18px'} >Tipe</Typography>
+                                    <DropdownList
+                                        defaultValue='Kunjungan Terakhir'
+                                        onChange={handleChange}
+                                        loading={false}
+                                        options={tipeJadwal}
+                                    // placeholder='Pilih tipe jadwal'
+                                    />
+                                </Box>
+                            )}
                         </Box>
                         {currentPage === 1 && (
                             <>
@@ -657,112 +694,125 @@ export default function CardRekamMedis() {
                         {currentPage === 2 && (
                             <>
                                 <Box>
-                                    <Box>
-                                        <Box
-                                            display={'flex'}
-                                            flexDirection={'column'}
-                                            p={2}
-                                            minWidth={'970px'}
-                                            mt={2}
-                                            bgcolor={'#FFFFFF'}
-                                            border={"1px solid #C5C5D3"}
-                                            borderRadius={"24px"}
-                                            minHeight={"fit-content"}
-                                        >
-                                            <Typography sx={{ fontWeight: 600, fontSize: '18px', lineHeight: '20px', color: '#0A0A0D', mb: 2 }} >Informasi Kunjungan</Typography>
-                                            <Stack sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-                                                <Box width={'100%'} >
-                                                    <Typography sx={titleData} >Jenis Kunjungan</Typography>
-                                                    <Typography sx={detailData} >Rawat Inap</Typography>
-                                                </Box>
-                                                <Box width={'100%'}  >
-                                                    <Typography sx={titleData} >Keluhan</Typography>
-                                                    <Typography sx={detailData} >Dada Berdebar</Typography>
-                                                </Box>
-                                                <Box width={'100%'} >
-                                                    <Typography sx={titleData} >Tanggal masuk</Typography>
-                                                    <Typography sx={detailData} >2025/01/02</Typography>
-                                                </Box>
-                                                <Box width={'100%'} >
-                                                    <Typography sx={titleData} >Jenis Kunjungan</Typography>
-                                                    <Typography sx={detailData} >Rawat Inap</Typography>
-                                                </Box>
-                                            </Stack>
 
-                                            <Stack sx={{ display: 'flex', flexDirection: 'row', width: '100%', mt: 2 }}>
-                                                <Box width={'100%'} >
-                                                    <Typography sx={titleData} >Jenis Kunjungan</Typography>
-                                                    <Typography sx={detailData} >Rawat Inap</Typography>
-                                                </Box>
-                                                <Box width={'100%'} >
-                                                    <Typography sx={titleData} >Keluhan</Typography>
-                                                    <Typography sx={detailData} >Dada Berdebar</Typography>
-                                                </Box>
-                                                <Box width={'100%'}  >
-                                                    <Typography sx={titleData} >Tanggal masuk</Typography>
-                                                    <Typography sx={detailData} >2025/01/02</Typography>
-                                                </Box>
-                                                <Box width={'100%'}>
-                                                    <Typography sx={titleData} >Jenis Kunjungan</Typography>
-                                                    <Typography sx={detailData} >Rawat Inap</Typography>
-                                                </Box>
-                                            </Stack>
-                                        </Box>
-                                    </Box>
 
-                                    <Box
-                                        display={'flex'}
-                                        flexDirection={'column'}
-                                        p={2}
-                                        minWidth={'970px'}
-                                        mt={2}
-                                        bgcolor={'#FFFFFF'}
-                                        border={"1px solid #C5C5D3"}
-                                        borderRadius={"24px"}
-                                        minHeight={"fit-content"}
-                                    >
-                                        <Typography sx={{ fontWeight: 600, fontSize: '18px', lineHeight: '20px', color: '#0A0A0D', mb: 2 }} >Informasi Kunjungan</Typography>
-                                        <Stack>
-                                            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }} >
-                                                <SearchBar />
-                                                <SearchBar />
-                                                <SearchBar />
-                                                <SearchBar />
+                                    {tipe === 'kunjunganTerakhir' && (
+                                        <>
+                                            <Box>
+                                                <Box
+                                                    display={'flex'}
+                                                    flexDirection={'column'}
+                                                    p={2}
+                                                    minWidth={'970px'}
+                                                    mt={2}
+                                                    bgcolor={'#FFFFFF'}
+                                                    border={"1px solid #C5C5D3"}
+                                                    borderRadius={"24px"}
+                                                    minHeight={"fit-content"}
+                                                >
+                                                    <Typography sx={{ fontWeight: 600, fontSize: '18px', lineHeight: '20px', color: '#0A0A0D', mb: 2 }} >Informasi Kunjungan</Typography>
+                                                    <Stack sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+                                                        <Box width={'100%'} >
+                                                            <Typography sx={titleData} >Jenis Kunjungan</Typography>
+                                                            <Typography sx={detailData} >Rawat Inap</Typography>
+                                                        </Box>
+                                                        <Box width={'100%'}  >
+                                                            <Typography sx={titleData} >Keluhan</Typography>
+                                                            <Typography sx={detailData} >Dada Berdebar</Typography>
+                                                        </Box>
+                                                        <Box width={'100%'} >
+                                                            <Typography sx={titleData} >Tanggal masuk</Typography>
+                                                            <Typography sx={detailData} >2025/01/02</Typography>
+                                                        </Box>
+                                                        <Box width={'100%'} >
+                                                            <Typography sx={titleData} >Jenis Kunjungan</Typography>
+                                                            <Typography sx={detailData} >Rawat Inap</Typography>
+                                                        </Box>
+                                                    </Stack>
+
+                                                    <Stack sx={{ display: 'flex', flexDirection: 'row', width: '100%', mt: 2 }}>
+                                                        <Box width={'100%'} >
+                                                            <Typography sx={titleData} >Jenis Kunjungan</Typography>
+                                                            <Typography sx={detailData} >Rawat Inap</Typography>
+                                                        </Box>
+                                                        <Box width={'100%'} >
+                                                            <Typography sx={titleData} >Keluhan</Typography>
+                                                            <Typography sx={detailData} >Dada Berdebar</Typography>
+                                                        </Box>
+                                                        <Box width={'100%'}  >
+                                                            <Typography sx={titleData} >Tanggal masuk</Typography>
+                                                            <Typography sx={detailData} >2025/01/02</Typography>
+                                                        </Box>
+                                                        <Box width={'100%'}>
+                                                            <Typography sx={titleData} >Jenis Kunjungan</Typography>
+                                                            <Typography sx={detailData} >Rawat Inap</Typography>
+                                                        </Box>
+                                                    </Stack>
+                                                </Box>
                                             </Box>
-                                            {components.slice(startIndex, endIndex).map((_, index) => (
-                                                <CardCatatanDetailTindakanPasien key={startIndex + index} />
-                                            ))}
-                                        </Stack>
-                                    </Box>
-                                    {/* Paginasi */}
-                                    <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                                        <Typography sx={{ color: "#A8A8BD" }}>
-                                            Showing {components.length > 0 ? (page - 1) * pageSize + 1 : 0} to {Math.min((page) * pageSize, totalElements)} of {totalElements} entries
-                                        </Typography>
-                                        <Pagination
-                                            count={totalPages}
-                                            variant="outlined"
-                                            shape="rounded"
-                                            page={page}
-                                            onChange={handleChangePage}
-                                            sx={{
-                                                "& .MuiPaginationItem-root": {
-                                                    color: "#8F85F3",
-                                                    border: 'none',
-                                                },
-                                                "& .Mui-selected": {
-                                                    backgroundColor: "#8F85F3",
-                                                    bgcolor: '#D5D1FB',
-                                                },
-                                                "& .MuiPaginationItem-ellipsis": {
-                                                    border: 'none',
-                                                },
-                                                "& .MuiPaginationItem-text": {
-                                                    border: 'none',
-                                                },
-                                            }}
-                                        />
-                                    </Stack>
+                                            <Box
+                                                display={'flex'}
+                                                flexDirection={'column'}
+                                                p={2}
+                                                minWidth={'970px'}
+                                                mt={2}
+                                                border={"1px solid #C5C5D3"}
+                                                borderRadius={"24px"}
+                                                minHeight={"fit-content"}
+                                            >
+                                                <Typography sx={{ fontWeight: 600, fontSize: '18px', lineHeight: '20px', color: '#0A0A0D', mb: 2 }} >Informasi Kunjungan</Typography>
+                                                <Stack>
+                                                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }} >
+                                                        <SearchBar />
+                                                        <SearchBar />
+                                                        <SearchBar />
+                                                        <SearchBar />
+                                                    </Box>
+                                                    {components.slice(startIndex, endIndex).map((_, index) => (
+                                                        <CardCatatanDetailTindakanPasien key={startIndex + index} />
+                                                    ))}
+                                                </Stack>
+                                            </Box>
+                                            {/* Paginasi */}
+                                            <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+                                                <Typography sx={{ color: "#A8A8BD" }}>
+                                                    Showing {components.length > 0 ? (page - 1) * pageSize + 1 : 0} to {Math.min((page) * pageSize, totalElements)} of {totalElements} entries
+                                                </Typography>
+                                                <Pagination
+                                                    count={totalPages}
+                                                    variant="outlined"
+                                                    shape="rounded"
+                                                    page={page}
+                                                    onChange={handleChangePage}
+                                                    sx={{
+                                                        "& .MuiPaginationItem-root": {
+                                                            color: "#8F85F3",
+                                                            border: 'none',
+                                                        },
+                                                        "& .Mui-selected": {
+                                                            backgroundColor: "#8F85F3",
+                                                            bgcolor: '#D5D1FB',
+                                                        },
+                                                        "& .MuiPaginationItem-ellipsis": {
+                                                            border: 'none',
+                                                        },
+                                                        "& .MuiPaginationItem-text": {
+                                                            border: 'none',
+                                                        },
+                                                    }}
+                                                />
+                                            </Stack>
+                                        </>
+                                    )}
+
+                                    {tipe === 'riwayatKunjungan' && (
+                                        <Box  >
+                                            <TableRiwayatKunjungan />
+                                        </Box>
+                                    )}
+
+
+
                                 </Box>
                             </>
                         )}

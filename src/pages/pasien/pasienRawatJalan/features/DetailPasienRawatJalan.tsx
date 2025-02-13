@@ -6,6 +6,7 @@ import CardAppointmentCard from "../../../../components/small/card/CardAppointme
 import profilePict from "../../../../assets/img/meme.jpg";
 import imgString from "../../../../assets/img/String.png";
 import { Button } from "@mui/material";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import useDetailPasienRawatJalan from "../hooks/useDetailPasienRawatJalan";
 
 
@@ -17,7 +18,7 @@ export default function DetailPasienRawatJalan() {
 
     return (
         <>
-            <Container sx={{ py: 2, minWidth: '100%', minHeight: '100vh', position: 'relative' }}>
+            <Container sx={{ py: 2, minWidth: '100%', minHeight: '170vh', position: 'relative' }}>
                 <BreadCrumbs
                     breadcrumbItems={breadcrumbItems}
                     onBackClick={() => window.history.back()}
@@ -57,24 +58,46 @@ export default function DetailPasienRawatJalan() {
                     height: '100px',
                     bgcolor: 'white',
                     zIndex: 999,
-                    position: 'absolute',
-                    bottom: -770,
+                    position: 'fixed',
+                    bottom: 0,
                     display: 'flex',
-                    justifyContent: 'center',
+                    justifyContent: 'space-evenly',
                     alignItems: 'center',
                     boxShadow: '0px -8px 8px rgba(0, 0, 4, 0.05)',
                 }}
             >
                 <Button sx={{
-                    width: '90%',
-                    height: '38px',
+                    width: '44px',
+                    height: '44px',
+                    bgcolor: 'inherit',
+                    color: '#8F85F3',
+                    border: '1px solid #8F85F3',
+                    // position: 'relative',
+                    // zIndex: 2,
+                }}>
+                    <MoreVertIcon />
+                </Button>
+                <Button sx={{
+                    width: '642px',
+                    height: '44px',
+                    bgcolor: 'inherit',
+                    color: '#8F85F3',
+                    border: '1px solid #8F85F3',
+                    position: 'relative',
+                    zIndex: 2,
+                }}>
+                    Proses Pasien
+                </Button>
+                <Button sx={{
+                    width: '642px',
+                    height: '44px',
                     bgcolor: '#8F85F3',
                     color: 'white',
                     border: '1px solid #8F85F3',
                     position: 'relative',
                     zIndex: 2,
                 }}>
-                    Selesai
+                    Panggil Pasien
                 </Button>
 
                 <Box sx={{

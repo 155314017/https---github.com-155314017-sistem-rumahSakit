@@ -11,21 +11,21 @@ import {
     Skeleton,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import patientImage from "../../../assets/img/registrationImg.jpg";
+import patientImage from "../../../../assets/img/registrationImg.jpg";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import PhoneInput from "react-phone-input-2";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { Formik, Form, Field } from "formik";
-import CustomCalendar from "../../../components/medium/CustomCalender";
-import DropdownListAPI from "../../../components/small/dropdownlist/DropdownListAPI";
-import InformasiTicketAPI from "../../../components/small/InformasiTicketAPI";
+import CustomCalendar from "../../../../components/medium/CustomCalender";
+import DropdownListAPI from "../../../../components/small/dropdownlist/DropdownListAPI";
+import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 import useRegistrationOnline from "../hooks/useRegistrationOnline";
-import PasienCard from "../../../components/small/card/PasienCard";
-import imgUmum from "../../../assets/img/filling.png";
-import imgInsurance from "../../../assets/img/injury-pana 1.png";
-import imgBPBJS from "../../../assets/img/meidicine.png";
+import PasienCard from "../../../../components/small/card/PasienCard";
+import imgUmum from "../../../../assets/img/filling.png";
+import imgInsurance from "../../../../assets/img/injury-pana 1.png";
+import imgBPBJS from "../../../../assets/img/meidicine.png";
 
 
 export default function RegistrationOnline() {

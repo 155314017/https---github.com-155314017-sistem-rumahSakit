@@ -7,8 +7,8 @@ import {
 import { styled } from "@mui/system";
 import * as Yup from "yup";
 import axios from "axios";
-import GetPatientByUserIdServices from "../../../services/Patient Tenant/GetPatientByUserIdServices";
-import GetUserByNIK from "../../../services/Admin Tenant/ManageUser/GetUserByNIK";
+import GetPatientByUserIdServices from "../../../../services/Patient Tenant/GetPatientByUserIdServices";
+import GetUserByNIK from "../../../../services/Admin Tenant/ManageUser/GetUserByNIK";
 import dayjs from "dayjs";
 
 type PatientData =

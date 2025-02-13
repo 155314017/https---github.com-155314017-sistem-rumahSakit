@@ -14,7 +14,7 @@ interface Option {
 
 interface DropdownListProps {
   options: Option[];
-  placeholder: string;
+  placeholder?: string;
   onChange?: (value: string) => void;
   defaultValue?: string;
   loading: boolean;
