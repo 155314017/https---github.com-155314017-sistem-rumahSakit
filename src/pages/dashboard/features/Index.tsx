@@ -81,7 +81,7 @@ export default function Index() {
         {successLogin && <AlertSuccess label="Success Login" />}
         <Typography sx={{ fontSize: '32px', fontWeight: '700' }}>Dashboard</Typography>
       </Box>
-      <Grid container spacing={3} flex={1} justifyContent={'space-between'}>
+      <Grid container spacing={3} flex={1} justifyContent={'space-between'}  >
         <MediumCard
           icon={MeetingRoomIcon}
           title="Total Ruangan"

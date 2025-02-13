@@ -76,18 +76,18 @@ export default function TableRiwayatKunjungan() {
             <Box
                 position={"relative"}
                 p={3}
-                sx={{ borderRadius: "24px", overflow: "hidden", width: '98%', bgcolor:'#FFFFFF', border:'1px solid #C5C5D3' }}
+                sx={{ borderRadius: "24px", overflow: "hidden", width: '98%', bgcolor: '#FFFFFF', border: '1px solid #C5C5D3' }}
             >
+                <Typography
+                    sx={{
+                        textTransform: "capitalize",
+                        fontWeight: "700",
+                        fontSize: "20px",
+                    }}
+                >
+                    Riwayat Kunjungan
+                </Typography>
                 <Box display="flex" alignItems="center" justifyContent="space-between" flexDirection={'row'}>
-                    {/* <Typography
-                        sx={{
-                            textTransform: "capitalize",
-                            fontWeight: "700",
-                            fontSize: "20px",
-                        }}
-                    >
-                        Riwayat Kunjungan
-                    </Typography> */}
 
                     <Box width={'100%'} >
                         <Box
