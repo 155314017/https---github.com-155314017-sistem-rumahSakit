@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import useMiniTableRawatJalan from "../hooks/useMiniTableRawatJalan";
-import { useState } from "react";
+import { useEffect } from "react";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -36,18 +36,26 @@ const StyledTableContainer = styled(TableContainer)`
     cursor: pointer;
   }
 `;
+interface MiniTableRawatJalanProps {
+    showAll: boolean;
+  }
+export default function MiniTableRawatJalan(props: MiniTableRawatJalanProps) {
+    const { showAll } = props;
+    const { displayedData, confirmationDelete,
+        anchorEl,
+        handleMenuClick,
+        handleMenuClose,
+        setShowAll
+     } = useMiniTableRawatJalan();
 
-export default function MiniTableRawatJalan() {
-    const { displayedData, confirmationDelete } = useMiniTableRawatJalan();
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+     useEffect(() => {
+        if (showAll) {
+          setShowAll(showAll);
+
+        }
+      }, [showAll, setShowAll]);
+     
     
-        const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-            setAnchorEl(event.currentTarget);
-        };
-    
-        const handleMenuClose = () => {
-            setAnchorEl(null);
-        };
     
 
     return (
@@ -59,9 +67,9 @@ export default function MiniTableRawatJalan() {
                             mt: '-2%',
                             boxShadow: "none",
                             // mb: 2,
-                            maxHeight: "350px",
+                            maxHeight: "250px",
                             borderRadius: "16px",
-                            overflowY: "auto",
+                            overflowY: showAll ? "auto" : "hidden" 
                         }}
                     >
                         <Table stickyHeader sx={{ width: "100%" }}>

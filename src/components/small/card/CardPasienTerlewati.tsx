@@ -1,8 +1,15 @@
 import { Box, Stack, Typography } from "@mui/material";
 import bgImage from "../../../assets/img/String.png";
 import MiniTableRawatJalan from "../../../pages/pasien/pasienRawatJalan/features/MiniTableRawatJalan";
+import { useState } from "react";
 
 export default function CardPasienTerlewati() {
+    const [showAll, setShowAll] = useState(false);
+
+    const toggleShowAll = () => {
+        setShowAll((prev) => !prev);
+    };
+
     return (
         <Box>
             <Box
@@ -22,7 +29,7 @@ export default function CardPasienTerlewati() {
                     </Box>
 
                     <Box>
-                        <MiniTableRawatJalan />
+                        <MiniTableRawatJalan showAll={showAll} />
                     </Box>
 
                     <Box display="flex" justifyContent={'center'} >
@@ -33,7 +40,12 @@ export default function CardPasienTerlewati() {
                         }}>
                             Lihat Semua
                         </Button> */}
-                        <Typography color="#8F85F3" fontWeight={400} fontSize={'16px'} lineHeight={'18px'} >Lihat Semua</Typography>
+                        <Typography
+                            onClick={toggleShowAll}
+                            sx={{ cursor: "pointer", color: "#8F85F3", fontWeight: 400, fontSize: "16px", lineHeight: "18px" }}
+                        >
+                            {showAll ? "Tampilkan Lebih Sedikit" : "Lihat Semua"}
+                        </Typography>
                     </Box>
                 </Stack>
             </Box>
