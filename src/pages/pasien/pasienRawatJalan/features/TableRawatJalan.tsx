@@ -465,7 +465,7 @@ export default function TableRawatJalan() {
                                                         <Link
                                                             href="/detailRawat"
                                                             mr={2}
-                                                            underline="hover"
+                                                            underline="none"
                                                             sx={{
                                                                 textTransform: "capitalize",
                                                                 color: "#8F85F3",

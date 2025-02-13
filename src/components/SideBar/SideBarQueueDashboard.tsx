@@ -54,13 +54,14 @@ export default function SideBarQueueDashboard() {
     const patientManagerOpen = Boolean(patientManagerAnchorEl);
 
     const userManagementItems = [
-        { label: "Pegawai", href: "/pegawai" },
-        { label: "Dokter", href: "/dokter" },
-        { label: "Menu", href: "/menu" },
+        { label: "Antrian", href: "#" },
+        { label: "Tensi", href: "#" },
+        { label: "Siap diperiksa dokter", href: "#" },
         {
-            label: "Menu Privilege",
-            href: "/menuPrivilege",
+            label: "Sedang diperiksa dokter", ref: "#",
         },
+        { label: "Perlu tindakan lanjut", href: "#" },
+        { label: "Selesai", href: "#" },
     ];
 
     const healthManagerItems = [
