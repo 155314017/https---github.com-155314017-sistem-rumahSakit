@@ -48,6 +48,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import HomeAdmin from './pages/home/homeAdmin';
 import HomeQueue from './pages/home/homeQueue';
 import DetailPasienRawatJalan from './pages/pasien/pasienRawatJalan/features/DetailPasienRawatJalan';
+import TambahPasien from './pages/pasien/features/TambahPasien';
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -116,6 +117,8 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/tambahPasien/Umum" element={<TambahPasienUmum />} />
           <Route path="/editPasien/BPJS" element={<EditPasienBPJS />} />
           <Route path="/editPasien/Umum" element={<EditPasienUmum />} />
+          <Route path="/tambahPasien" element={<TambahPasien />} />
+
           {/* <Route path="/about" element={<About />} /> */}
         </Route>
 

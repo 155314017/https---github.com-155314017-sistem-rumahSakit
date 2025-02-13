@@ -13,6 +13,7 @@ import ModalKategoriPasien from '../../../components/small/modal/ModalKategoriPa
 
 //hooks
 import useIndex from "../hooks/useIndex";
+import CardAdd from "../../../components/small/card/CardAdd";
 export default function Index() {
     const {
     data,
@@ -35,12 +36,7 @@ export default function Index() {
             </Typography>
             <Grid container spacing={3} flex={1} mb={3}>
                 <MediumCard icon={BusinessOutlinedIcon} title="Total Pasien" subtitle={data.length.toString()} />
-                <CardAddOnClick
-                    icon={AddBoxIcon}
-                    title="Tambah Pasien"
-                    link="/add-patient" 
-                    onClick={() => setOpen(true)} 
-                />
+                <CardAdd icon={AddBoxIcon} title="Tambah Pasien" link="/tambahPasien" />
             </Grid>
             <TablePasien 
              data={data}
