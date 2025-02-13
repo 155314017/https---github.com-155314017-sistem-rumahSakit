@@ -40,15 +40,15 @@ const StyledTableContainer = styled(TableContainer)`
 export default function MiniTableRawatJalan() {
     const { displayedData, confirmationDelete } = useMiniTableRawatJalan();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    
-        const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-            setAnchorEl(event.currentTarget);
-        };
-    
-        const handleMenuClose = () => {
-            setAnchorEl(null);
-        };
-    
+
+    const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
 
     return (
         <Box>
@@ -86,7 +86,7 @@ export default function MiniTableRawatJalan() {
                                     displayedData.map((data, index) => (
                                         <StyledTableRow key={index}>
                                             <TableCell sx={{ color: "#292B2C", fontSize: "14px" }} align="center">
-                                            {data.nomorAntrian}
+                                                {data.nomorAntrian}
                                             </TableCell>
                                             <TableCell
                                                 sx={{
@@ -100,7 +100,7 @@ export default function MiniTableRawatJalan() {
                                                 }}
                                                 align="center"
                                             >
-                                               {data.nomorRM} 
+                                                {data.nomorRM}
                                             </TableCell>
                                             <TableCell
                                                 sx={{
@@ -116,7 +116,7 @@ export default function MiniTableRawatJalan() {
                                             >
                                                 {data.namaPasien}
                                             </TableCell>
-                                            
+
                                             <TableCell
                                                 align="center"
                                                 sx={[
@@ -145,9 +145,9 @@ export default function MiniTableRawatJalan() {
                                                     </Box>
                                                 </Link>
                                                 <Link
-                                                    href="#"
+                                                    href="/detailRawat"
                                                     // mr={2}
-                                                    underline="hover"
+                                                    underline="none"
                                                     sx={{
                                                         textTransform: "capitalize",
                                                         color: "#8F85F3",
@@ -194,50 +194,50 @@ export default function MiniTableRawatJalan() {
                                 horizontal: 'left',
                             }}
                             sx={{
-                            '& .MuiPaper-root': {
-                                borderRadius: '16px',
-                                border: '1px solid #A8A8BD',
-                                width: '329px',
-                                height: '120px',
-                                gap: '8px',
-                                borderWidth: '1px',
-                                padding: '8px',
-                                top: '0px',
-                                left: '172px',
-                            
-                            },
+                                '& .MuiPaper-root': {
+                                    borderRadius: '16px',
+                                    border: '1px solid #A8A8BD',
+                                    width: '329px',
+                                    height: '120px',
+                                    gap: '8px',
+                                    borderWidth: '1px',
+                                    padding: '8px',
+                                    top: '0px',
+                                    left: '172px',
+
+                                },
                             }}
                         >
                             <MenuItem onClick={() => { handleMenuClose(); }}>
                                 <Typography
                                     sx={{
-                                    fontFamily: 'Roboto',
-                                    fontWeight: 400,
-                                    fontSize: '16px',
-                                    lineHeight: '18px',
-                                    letterSpacing: '0%',
-                                    color: '#8F85F3', // Text color,
-                                    padding: '8px',
+                                        fontFamily: 'Roboto',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '18px',
+                                        letterSpacing: '0%',
+                                        color: '#8F85F3', // Text color,
+                                        padding: '8px',
                                     }}
                                 >
                                     Lewati Antrian
                                 </Typography>
-                                </MenuItem>
-                                <MenuItem onClick={() => { handleMenuClose(); }}>
+                            </MenuItem>
+                            <MenuItem onClick={() => { handleMenuClose(); }}>
                                 <Typography
                                     sx={{
-                                    fontFamily: 'Roboto',
-                                    fontWeight: 400,
-                                    fontSize: '16px',
-                                    lineHeight: '18px',
-                                    letterSpacing: '0%',
-                                    color: '#8F85F3', // Text color
-                                    padding: '8px',
+                                        fontFamily: 'Roboto',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '18px',
+                                        letterSpacing: '0%',
+                                        color: '#8F85F3', // Text color
+                                        padding: '8px',
                                     }}
                                 >
                                     Lihat Detail
                                 </Typography>
-                                </MenuItem>
+                            </MenuItem>
                         </Menu>
                     </StyledTableContainer>
 

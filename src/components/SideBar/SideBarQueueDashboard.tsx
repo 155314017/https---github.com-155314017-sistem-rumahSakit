@@ -6,7 +6,7 @@ import PopoverMenu from "./PopoverMenu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LocalHotelOutlinedIcon from '@mui/icons-material/LocalHotelOutlined';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
-import SleddingOutlinedIcon from '@mui/icons-material/SleddingOutlined';
+import AccessibleOutlinedIcon from '@mui/icons-material/AccessibleOutlined';
 
 // image
 import Logo from "../../assets/img/Logo - St carolus.png";
@@ -101,7 +101,7 @@ export default function SideBarQueueDashboard() {
                     <Tooltip title="Dashboard" placement="right" arrow>
                         <IconButton
                             size="large"
-                            href="/dashboard"
+                            href="/dashboardQueue"
                             sx={{
                                 color: "#8F85F3",
                                 bgcolor: "#fff",
@@ -114,7 +114,7 @@ export default function SideBarQueueDashboard() {
                     </Tooltip>
 
                     {/* user-management */}
-                    <Tooltip title="User Management" placement="right" arrow>
+                    <Tooltip title="Rawat Jalan" placement="right" arrow>
                         <IconButton
                             size="large"
                             onClick={handleUserManagementClick}
@@ -125,7 +125,7 @@ export default function SideBarQueueDashboard() {
                                 height: "50px",
                             }}
                         >
-                            <SleddingOutlinedIcon />
+                            <AccessibleOutlinedIcon />
                         </IconButton>
                     </Tooltip>
 
@@ -137,7 +137,7 @@ export default function SideBarQueueDashboard() {
                     />
 
                     {/* health-manager */}
-                    <Tooltip title="Health Manager" placement="right" arrow>
+                    <Tooltip title="Rawat Inap" placement="right" arrow>
                         <IconButton
                             size="large"
                             onClick={handleHealthManagerClick}
@@ -159,7 +159,7 @@ export default function SideBarQueueDashboard() {
                     />
 
                     {/* patient */}
-                    <Tooltip title="Patient Manager" placement="right" arrow>
+                    <Tooltip title="Rekam Medis" placement="right" arrow>
                         <IconButton
                             size="large"
                             onClick={handlePatientManagerClick}
