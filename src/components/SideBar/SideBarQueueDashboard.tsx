@@ -11,7 +11,11 @@ import AccessibleOutlinedIcon from '@mui/icons-material/AccessibleOutlined';
 // image
 import Logo from "../../assets/img/Logo - St carolus.png";
 
-export default function SideBarQueueDashboard() {
+
+interface SideBarQueueDashboardProps {
+    onSelect: (value: string) => void;
+}
+export default function SideBarQueueDashboard({onSelect}: SideBarQueueDashboardProps ) {
     const [userManagementAnchorEl, setUserManagementAnchorEl] =
         useState<HTMLButtonElement | null>(null);
     const [healthManagerAnchorEl, setHealthManagerAnchorEl] =
@@ -49,20 +53,23 @@ export default function SideBarQueueDashboard() {
         setpatientManagerAnchorEl(null);
     };
 
+    const handleItemSelect = (value: string) => {
+        console.log("Selected:", value);
+        onSelect(value);
+      };
+
     const userManagementOpen = Boolean(userManagementAnchorEl);
     const healthManagerOpen = Boolean(healthManagerAnchorEl);
     const patientManagerOpen = Boolean(patientManagerAnchorEl);
 
     const userManagementItems = [
-        { label: "Antrian", href: "#" },
-        { label: "Tensi", href: "#" },
-        { label: "Siap diperiksa dokter", href: "#" },
-        {
-            label: "Sedang diperiksa dokter", ref: "#",
-        },
-        { label: "Perlu tindakan lanjut", href: "#" },
-        { label: "Selesai", href: "#" },
-    ];
+    { label: "Antrian", value: "Antrian" },
+    { label: "Tensi", value: "Tensi" },
+    { label: "Siap diperiksa dokter", value: "Siap diperiksa dokter" },
+    { label: "Sedang diperiksa dokter", value: "Sedang diperiksa dokter" },
+    { label: "Perlu tindakan lanjut", value: "Perlu tindakan lanjut" },
+    { label: "Selesai", value: "Selesai" },
+];
 
     const healthManagerItems = [
         { label: "Gedung", href: "/gedung" },
@@ -135,6 +142,7 @@ export default function SideBarQueueDashboard() {
                         open={userManagementOpen}
                         onClose={handleUserManagementClose}
                         items={userManagementItems}
+                        onItemSelect={handleItemSelect}
                     />
 
                     {/* health-manager */}
@@ -157,6 +165,7 @@ export default function SideBarQueueDashboard() {
                         open={healthManagerOpen}
                         onClose={handleHealthManagerClose}
                         items={healthManagerItems}
+                        
                     />
 
                     {/* patient */}
@@ -179,6 +188,7 @@ export default function SideBarQueueDashboard() {
                         open={patientManagerOpen}
                         onClose={handlePatientManagerClose}
                         items={patientManagerItems}
+                        
                     />
                 </Stack>
             </Box>
