@@ -15,7 +15,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import dummy from "../../../assets/img/Dummy2.png";
 
 
-const ModalPanggilPasien: React.FC = () => {
+interface ModalPanggilPasienProps {
+  onClose: () => void;
+  countdown: number;
+}
+const ModalPanggilPasien: React.FC<ModalPanggilPasienProps> = ({onClose, countdown}) => {
   const [actionType, setActionType] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -29,6 +33,13 @@ const ModalPanggilPasien: React.FC = () => {
  
   const handleBatal = () => {
     setIsProcessing(false);
+
+    if (isPasienTidakDatang) {
+      setIsPasienTidakDatang(false);
+    }
+    if (isLewatiPasien) {
+      setIsLewatiPasien(false);
+    }
   };
 
   const handleConfirm = (type: string) => {
@@ -76,10 +87,7 @@ const ModalPanggilPasien: React.FC = () => {
 
         
         <IconButton
-                        onClick={() => {
-                        
-                            
-                        }}
+                        onClick={onClose} // Call onClose when the close button is clicked (onClose) 
                         sx={{
                             position: 'absolute',
                             top: 8,
@@ -98,10 +106,10 @@ const ModalPanggilPasien: React.FC = () => {
                 Jika Anda yakin, maka nomor antrian pasien akan di undur.
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 2 }}>
-                  <Button variant="outlined" sx={{ color: '#8F85F3', border: '1px solid #8F85F3', width: '185.5px', height: '44px', borderRadius: '8px' }} onClick={() => handleConfirm('proses pasien')}>
+                  <Button variant="outlined" sx={{ color: '#8F85F3', border: '1px solid #8F85F3', width: '185.5px', height: '44px', borderRadius: '8px' }} onClick={() => handleBatal()}>
                   Batal
                   </Button>
-                  <Button variant="contained" sx={{ width: '185.5px', height: '44px', borderRadius: '8px', backgroundColor: '#8F85F3'}} onClick={() => handleBatal()}>
+                  <Button variant="contained" sx={{ width: '185.5px', height: '44px', borderRadius: '8px', backgroundColor: '#8F85F3'}}  onClick={() => handleConfirm('proses pasien')}>
                   Lewati Antrian
                   </Button>
                   </Box>
@@ -115,10 +123,10 @@ const ModalPanggilPasien: React.FC = () => {
             Jika Anda yakin, maka data yang anda sudah diproses tidak dapat di kembalikan kembali
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 2 }}>
-              <Button variant="outlined" sx={{ color: '#8F85F3', border: '1px solid #8F85F3', width: '185.5px', height: '44px', borderRadius: '8px' }} onClick={() => handleConfirm('proses pasien')}>
+              <Button variant="outlined" sx={{ color: '#8F85F3', border: '1px solid #8F85F3', width: '185.5px', height: '44px', borderRadius: '8px' }} onClick={() => handleBatal()}>
               Keluar
               </Button>
-              <Button variant="contained" sx={{ width: '185.5px', height: '44px', borderRadius: '8px', backgroundColor: '#8F85F3'}} onClick={() => handleBatal()}>
+              <Button variant="contained" sx={{ width: '185.5px', height: '44px', borderRadius: '8px', backgroundColor: '#8F85F3'}} onClick={() => handleConfirm('proses pasien')}>
               Proses tindakan
               </Button>
               </Box>
@@ -187,7 +195,7 @@ const ModalPanggilPasien: React.FC = () => {
               Proses pasien
             </Button>
             <Button variant="contained" disabled sx={{ width: '233px', height: '44px', borderRadius: '8px', }} onClick={() => handleOpenConfirm('panggil pasien')}>
-              Panggil pasien dalam 00:30
+              Panggil pasien dalam {countdown}
             </Button>
           </Box>
           </Box>
@@ -206,9 +214,7 @@ const ModalPanggilPasien: React.FC = () => {
             borderRadius: '16px',
             border: '1px solid #A8A8BD',
           },
-          position: 'absolute',
-          top: '-20%',
-          left: '10%',
+          position: 'relative',
           width: '300px',
           height: '300px',
           

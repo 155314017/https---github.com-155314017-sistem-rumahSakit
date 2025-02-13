@@ -4,8 +4,9 @@ import Data from "../../../../dummyData/dataPasien"
 export default function useTableRawatJalan() {
     const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
-    const [selected, setSelected] = useState<string | null>(null);
-
+    const [selected, setSelected] = useState<string | null>("Antrian");
+    const [showModal, setShowModal] = useState(false);
+    const [countdown, setCountdown] = useState<number>(30)
     const [countdowns, setCountdowns] = useState<{ [key: string]: { countdown: number, isCounting: boolean, timer: number | null } }>({});
 
     const datas = Data;
@@ -37,6 +38,9 @@ export default function useTableRawatJalan() {
 
     const countDownPanggil = (id: string) => {
         if (!countdowns[id]?.isCounting) {
+            setShowModal(true);
+            setCountdown(30);
+
             setCountdowns(prev => {
                 const newCountdowns = { ...prev };
                 newCountdowns[id] = { countdown: 30, isCounting: true, timer: null };
@@ -89,6 +93,20 @@ export default function useTableRawatJalan() {
         };
     };
 
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    
+    const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+            setAnchorEl(event.currentTarget);
+        };
+    
+    const handleMenuClose = () => {
+            setAnchorEl(null);
+        };
+
+    const handleClose = () => {
+        setShowModal(false);
+    };
+
     return {
         page,
         setPage,
@@ -105,6 +123,13 @@ export default function useTableRawatJalan() {
         getButtonStyle,
         handleButtonClick: setSelected,
         isCounting: false,
-        countdowns
+        countdowns,
+        showModal,
+        handleClose,
+        countdown,
+        selected,
+        anchorEl,
+        handleMenuClick,
+        handleMenuClose
     }
 }
