@@ -53,7 +53,7 @@ export default function QueueDashboard() {
                                 width='100%'
                                 heigth='200px' />
                         </Box>
-                        <CardPanggilPasien />
+                        <CardPanggilPasien onSkipQueue={() => { }} onViewDetails={() => { }} />
                     </Box>
 
                     <Box display={'flex'} flexDirection={'column'} gap={2} width={'49.5%'}>

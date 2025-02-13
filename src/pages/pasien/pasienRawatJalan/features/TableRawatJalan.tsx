@@ -13,6 +13,8 @@ import {
     Pagination,
     Collapse,
     Button,
+    MenuItem,
+    Menu,
 } from "@mui/material";
 import SearchBar from "../../../../components/small/SearchBar";
 import DropdownList from "../../../../components/small/dropdownlist/DropdownList";
@@ -83,7 +85,11 @@ export default function TableRawatJalan() {
         countDownPanggil,
         getButtonStyle,
         handleButtonClick,
-        countdowns
+        countdowns,
+        selected,
+        anchorEl,
+        handleMenuClick,
+        handleMenuClose
     } = useTableRawatJalan();
     return (
         <Box>
@@ -249,6 +255,7 @@ export default function TableRawatJalan() {
                                     borderRadius: "16px",
                                 }}
                             >
+                                
                                 <Table stickyHeader sx={{ width: "100%" }}>
                                     <TableHead >
                                         <TableRow>
@@ -312,7 +319,8 @@ export default function TableRawatJalan() {
                                             >
                                                 Nama Pasien
                                             </TableCell>
-                                            <TableCell
+                                            {selected === 'Antrian' && (
+                                                <TableCell
                                                 width={"20%"}
                                                 sx={{
                                                     fontSize: "14px",
@@ -324,6 +332,8 @@ export default function TableRawatJalan() {
                                             >
                                                 Aksi
                                             </TableCell>
+                                            )}
+                                            
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -410,7 +420,8 @@ export default function TableRawatJalan() {
                                                             }
                                                         />
                                                     </TableCell>
-                                                    <TableCell
+                                                    {selected === 'Antrian' && (
+                                                        <TableCell
                                                         align="center"
                                                         sx={[
                                                             {
@@ -430,8 +441,8 @@ export default function TableRawatJalan() {
                                                                 cursor: 'pointer',
                                                                 padding: '8px',
                                                                 border: countdowns[data.nomorAntrian]?.isCounting ? '1px solid #A8A8BD' : '1px solid #8F85F3',
-                                                                width: '74px',
-                                                                height: '25px',
+                                                                width:'30%',
+                                                                height:'25px',
                                                                 bgcolor: countdowns[data.nomorAntrian]?.isCounting ? '#A8A8BD' : '#8F85F3',
                                                                 borderRadius: '8px',
                                                                 justifyContent: 'center',
@@ -460,7 +471,7 @@ export default function TableRawatJalan() {
                                                                 color: "#8F85F3",
                                                             }}
                                                         >
-                                                            <Box padding={'8px'} border={'1px solid #8F85F3'} width={'hut-content'} height={'fit-content'} bgcolor={'inherit'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
+                                                            <Box padding={'8px'} border={'1px solid #8F85F3'} width={'100%'} height={'25px'} bgcolor={'inherit'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
                                                                 <Typography color="#8F85F3" >Lihat Detail</Typography>
                                                             </Box>
                                                         </Link>
@@ -472,11 +483,18 @@ export default function TableRawatJalan() {
                                                                 color: "#8F85F3",
                                                             }}
                                                         >
-                                                            <Box padding={'8px'} border={'1px solid #8F85F3'} width={'hut-content'} height={'30px'} bgcolor={'inherit'} borderRadius={'8px'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
-                                                                <MoreVertIcon sx={{ color: "#8F85F3", fontSize: "20px", justifyContent: 'center', alignItems: 'center' }} />
-                                                            </Box>
+                                                            <Button color="primary" sx={{
+                                                                    padding: '0px', bgcolor: '#ffff', border: '1px solid #8F85F3', color: '#8F85F3', width: '1%', borderRadius: '8px', height: '44px', '&:hover': {
+                                                                        backgroundColor: "#8F85F3", color: '#ffff',
+                                                                    },
+                                                                }} 
+                                                                onClick={handleMenuClick}>
+                                                                    <MoreVertIcon />
+                                                                </Button>
                                                         </Link>
                                                     </TableCell>
+                                                    )}
+                                                    
                                                 </StyledTableRow>
                                             ))
                                         ) : (
@@ -521,8 +539,68 @@ export default function TableRawatJalan() {
                             />
 
                         </Stack>
+                        <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                anchorOrigin={{
+                    vertical: 'bottom', // Position the menu below the button
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom', // Align the top of the menu with the bottom of the button
+                    horizontal: 'center',
+                }}
+                sx={{
+                '& .MuiPaper-root': {
+                    position: 'absolute',
+                    borderRadius: '16px',
+                    border: '1px solid #A8A8BD',
+                    width: '329px',
+                    height: '120px',
+                    gap: '8px',
+                    borderWidth: '1px',
+                    padding: '8px',
+                    
+                
+                },
+                }}
+            >
+                <MenuItem onClick={() => { handleMenuClose(); }}>
+                    <Typography
+                        sx={{
+                        fontFamily: 'Roboto',
+                        fontWeight: 400,
+                        fontSize: '16px',
+                        lineHeight: '18px',
+                        letterSpacing: '0%',
+                        color: '#8F85F3', // Text color,
+                        padding: '8px',
+                        }}
+                    >
+                        Lewati Antrian
+                    </Typography>
+                    </MenuItem>
+                    <MenuItem onClick={() => { handleMenuClose(); }}>
+                    <Typography
+                        sx={{
+                        fontFamily: 'Roboto',
+                        fontWeight: 400,
+                        fontSize: '16px',
+                        lineHeight: '18px',
+                        letterSpacing: '0%',
+                        color: '#8F85F3', // Text color
+                        padding: '8px',
+                        }}
+                    >
+                        Lihat Detail
+                    </Typography>
+                    </MenuItem>
+            </Menu>
                     </Box>
                 </Collapse>
+
+               
             </Box >
         </Box >
     );

@@ -1,10 +1,11 @@
-import { Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Link, } from "@mui/material";
+import { Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Link, Menu, MenuItem, } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 //Icon
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import useMiniTableRawatJalan from "../hooks/useMiniTableRawatJalan";
+import { useState } from "react";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -38,6 +39,16 @@ const StyledTableContainer = styled(TableContainer)`
 
 export default function MiniTableRawatJalan() {
     const { displayedData, confirmationDelete } = useMiniTableRawatJalan();
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    
+        const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+            setAnchorEl(event.currentTarget);
+        };
+    
+        const handleMenuClose = () => {
+            setAnchorEl(null);
+        };
+    
 
     return (
         <Box>
@@ -154,7 +165,7 @@ export default function MiniTableRawatJalan() {
                                                         color: "#8F85F3",
                                                     }}
                                                 >
-                                                    <Box padding={'2px'} px={'14px'} border={'1px solid #8F85F3'} width={'15px'} height={'26px'} bgcolor={'inherit'} borderRadius={'8px'} display={'flex'} justifyContent={'center'} alignItems={'center'} >
+                                                    <Box padding={'2px'} px={'14px'} border={'1px solid #8F85F3'} width={'15px'} height={'26px'} bgcolor={'inherit'} borderRadius={'8px'} display={'flex'} justifyContent={'center'} alignItems={'center'} onClick={handleMenuClick} >
                                                         <MoreVertIcon sx={{ color: "#8F85F3", fontSize: "16px" }} />
                                                     </Box>
                                                 </Link>
@@ -170,7 +181,66 @@ export default function MiniTableRawatJalan() {
                                 )}
                             </TableBody>
                         </Table>
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleMenuClose}
+                            anchorOrigin={{
+                                vertical: 'top', // Position the menu below the button
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'bottom', // Align the top of the menu with the bottom of the button
+                                horizontal: 'left',
+                            }}
+                            sx={{
+                            '& .MuiPaper-root': {
+                                borderRadius: '16px',
+                                border: '1px solid #A8A8BD',
+                                width: '329px',
+                                height: '120px',
+                                gap: '8px',
+                                borderWidth: '1px',
+                                padding: '8px',
+                                top: '0px',
+                                left: '172px',
+                            
+                            },
+                            }}
+                        >
+                            <MenuItem onClick={() => { handleMenuClose(); }}>
+                                <Typography
+                                    sx={{
+                                    fontFamily: 'Roboto',
+                                    fontWeight: 400,
+                                    fontSize: '16px',
+                                    lineHeight: '18px',
+                                    letterSpacing: '0%',
+                                    color: '#8F85F3', // Text color,
+                                    padding: '8px',
+                                    }}
+                                >
+                                    Lewati Antrian
+                                </Typography>
+                                </MenuItem>
+                                <MenuItem onClick={() => { handleMenuClose(); }}>
+                                <Typography
+                                    sx={{
+                                    fontFamily: 'Roboto',
+                                    fontWeight: 400,
+                                    fontSize: '16px',
+                                    lineHeight: '18px',
+                                    letterSpacing: '0%',
+                                    color: '#8F85F3', // Text color
+                                    padding: '8px',
+                                    }}
+                                >
+                                    Lihat Detail
+                                </Typography>
+                                </MenuItem>
+                        </Menu>
                     </StyledTableContainer>
+
                 </Box>
 
                 {/* <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>

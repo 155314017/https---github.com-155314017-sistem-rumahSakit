@@ -1,11 +1,29 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import bgImage from "../../../assets/img/String.png";
 
 //icon
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import React, { useState } from "react";
 
+interface CardPanggilPasienProps {
+    onSkipQueue: () => void; // Parameter for skip queue action
+    onViewDetails: () => void; // Parameter for view details action
+  }
+const CardPanggilPasien: React.FC<CardPanggilPasienProps> = ({
+    onSkipQueue,
+    onViewDetails
+}) => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-export default function CardPanggilPasien() {
+    const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    
     return (
         <Box>
             <Box
@@ -62,7 +80,8 @@ export default function CardPanggilPasien() {
                             padding: '2px', mr: 1, bgcolor: '#ffff', border: '1px solid #8F85F3', color: '#8F85F3', width: '2%', borderRadius: '8px', height: '44px', '&:hover': {
                                 backgroundColor: "#8F85F3", color: '#ffff',
                             },
-                        }}>
+                        }} 
+                            onClick={handleMenuClick}>
                             <MoreVertIcon />
                         </Button>
                         <Button color="primary" sx={{
@@ -83,6 +102,66 @@ export default function CardPanggilPasien() {
 
                 </Stack>
             </Box>
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                anchorOrigin={{
+                    vertical: 'top', // Position the menu below the button
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom', // Align the top of the menu with the bottom of the button
+                    horizontal: 'left',
+                }}
+                sx={{
+                '& .MuiPaper-root': {
+                    borderRadius: '16px',
+                    border: '1px solid #A8A8BD',
+                    width: '329px',
+                    height: '120px',
+                    gap: '8px',
+                    borderWidth: '1px',
+                    padding: '8px',
+                    top: '0px',
+                    left: '172px',
+                
+                },
+                }}
+            >
+                <MenuItem onClick={() => { onSkipQueue(); handleMenuClose(); }}>
+                    <Typography
+                        sx={{
+                        fontFamily: 'Roboto',
+                        fontWeight: 400,
+                        fontSize: '16px',
+                        lineHeight: '18px',
+                        letterSpacing: '0%',
+                        color: '#8F85F3', // Text color,
+                        padding: '8px',
+                        }}
+                    >
+                        Lewati Antrian
+                    </Typography>
+                    </MenuItem>
+                    <MenuItem onClick={() => { onViewDetails(); handleMenuClose(); }}>
+                    <Typography
+                        sx={{
+                        fontFamily: 'Roboto',
+                        fontWeight: 400,
+                        fontSize: '16px',
+                        lineHeight: '18px',
+                        letterSpacing: '0%',
+                        color: '#8F85F3', // Text color
+                        padding: '8px',
+                        }}
+                    >
+                        Lihat Detail
+                    </Typography>
+                    </MenuItem>
+            </Menu>
         </Box>
-    );
-}
+    )
+};
+
+export default CardPanggilPasien;
