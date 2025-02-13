@@ -9,7 +9,7 @@ export default function useMiniTableRawatJalan() {
     const [loading, setLoading] = useState(false);
     const [dataIdUser, setDataIdUser] = useState<string[]>([]);
     const [userDataPhone, setUserDataPhone] = useState<string[]>([]);
-
+    const [showAll, setShowAll] = useState(false);
     const datas = Data;
     
     
@@ -68,8 +68,10 @@ export default function useMiniTableRawatJalan() {
     };
 
     const rowsPerPage = 3;
+    const displayedData = showAll ? datas : datas.slice(0, rowsPerPage);
 
-    const displayedData = datas.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+
+   
 
     const sortir = [
         { value: 1, label: "Pria" },
@@ -91,6 +93,17 @@ export default function useMiniTableRawatJalan() {
         event.preventDefault();
         // setOpen(true);
     };
+
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    
+    const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+            setAnchorEl(event.currentTarget);
+        };
+    
+    const handleMenuClose = () => {
+            setAnchorEl(null);
+        };
     return {
         page,
         setPage,
@@ -106,6 +119,11 @@ export default function useMiniTableRawatJalan() {
         confirmationDelete,
         clinics,
         loading,
-        userDataPhone
+        userDataPhone,
+        anchorEl,
+        handleMenuClick,
+        handleMenuClose,
+        setShowAll
+        
     }
 }

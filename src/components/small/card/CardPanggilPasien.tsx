@@ -13,6 +13,7 @@ const CardPanggilPasien: React.FC<CardPanggilPasienProps> = ({
     onSkipQueue,
     onViewDetails
 }) => {
+    
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -22,6 +23,8 @@ const CardPanggilPasien: React.FC<CardPanggilPasienProps> = ({
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
+
+    
 
     
     return (
