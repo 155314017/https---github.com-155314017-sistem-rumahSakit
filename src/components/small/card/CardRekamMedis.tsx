@@ -9,6 +9,7 @@ import CardRiwayatKunjungan from "./CardRiwayatKunjungan";
 import CardDetailInformasiKunjungan from "./CardDetailInformasiKunjungan";
 import EndAdornmentCustom from "../EndAdornmentCustom";
 import CustomFrameTable from "../CustomFrameTable";
+import TableBerkasPasien from "../../../pages/pasien/pasienRawatJalan/features/TableBerkasPasien";
 
 export default function CardRekamMedis() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -66,7 +67,7 @@ export default function CardRekamMedis() {
                             maxWidth: '100%'
                         }}
                     >
-                      <CustomFrameTable tipe="infromasi" />
+                        <CustomFrameTable tipe="infromasi" />
                         <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"}>
                             <Typography
                                 sx={{
@@ -294,6 +295,12 @@ export default function CardRekamMedis() {
                                     {tipe === 'riwayatKunjungan' && (
                                         <Box width={'fit-content'} mt={2} >
                                             <TableRiwayatKunjungan />
+                                        </Box>
+                                    )}
+
+                                    {tipe === 'berkasLab' && (
+                                        <Box width={'fit-content'} minWidth={'97%'} mt={2} >
+                                            <TableBerkasPasien />
                                         </Box>
                                     )}
                                 </Box>

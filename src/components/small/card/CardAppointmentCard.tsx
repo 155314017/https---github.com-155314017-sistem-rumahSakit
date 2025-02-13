@@ -87,45 +87,45 @@ export default function CardAppointmentCard() {
                 <Box maxWidth={'100%'} display={'flex'} flexDirection={'column'} gap={2} justifyContent={'center'} >
 
                     <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="body2">Status</Typography>
-                        <Chip label="Tensi" sx={{ backgroundColor: "#FFE082", color: "black" }} />
+                        <Typography sx={titleText}>Status</Typography>
+                        <Chip label="Antrian" sx={{ backgroundColor: "#D5D1FB", color: "black", border: '1px solid #7367F0' }} />
                     </Box>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="body2" mt={1}>
-                            <strong>Jadwal konsultasi</strong>
+                        <Typography sx={titleText} mt={1}>
+                            Jadwal konsultasi
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography sx={detailText}>
                             29/Jul/2024, 13:00-14:00
                         </Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="body2" mt={1}>
-                            <strong>Nomor antrian</strong>
+                        <Typography sx={titleText} mt={1}>
+                            Nomor antrian
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">1</Typography>
+                        <Typography sx={detailText}>1</Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="body2" mt={1}>
-                            <strong>Keluhan</strong>
+                        <Typography sx={titleText} mt={1}>
+                            Keluhan
                         </Typography>
-                        <Typography variant="body2" fontWeight={600}>Sesak nafas</Typography>
+                        <Typography sx={detailText}>Sesak nafas</Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="body2" mt={1}>
-                            <strong>Jenis kunjungan</strong>
+                        <Typography sx={titleText} mt={1}>
+                            Jenis kunjungan
                         </Typography>
-                        <Typography variant="body2" fontWeight={600}>Konsultasi</Typography>
+                        <Typography sx={detailText}>Konsultasi</Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="body2" mt={1}>
-                            <strong>Jenis pendaftaran</strong>
+                        <Typography sx={titleText} mt={1}>
+                            Jenis pendaftaran
                         </Typography>
-                        <Chip label="Onsite" sx={{ backgroundColor: "#A5D6A7", color: "black" }} />
+                        <Chip label="Onsite" sx={{ backgroundColor: "#C2ECE8", color: "black", border: '1px solid #084C47' }} />
                     </Box>
 
                 </Box>
                 <Box display="flex" justifyContent="center" textAlign="center" mt={2}>
-                <Typography
+                    <Typography
                         sx={{
                             color: '#8F85F3',
                             fontWeight: 400,
@@ -141,4 +141,18 @@ export default function CardAppointmentCard() {
             </Box>
         </Box>
     )
+}
+
+const titleText = {
+    fontWeight: 400,
+    fontSize: '14px',
+    lineHeight: '16px',
+    color: '#0A0A0D'
+}
+
+const detailText = {
+    color: '#0A0A0D',
+    fontWeight: 600,
+    fontSize: '14px',
+    lineHeight: '16px'
 }

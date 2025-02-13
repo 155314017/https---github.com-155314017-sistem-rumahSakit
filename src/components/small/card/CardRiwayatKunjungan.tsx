@@ -1,17 +1,40 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Pagination, Typography } from '@mui/material'
 import { Box, Stack } from '@mui/system'
-import React, { SetStateAction, useState } from 'react'
+import { SetStateAction, useState } from 'react'
 import CardCatatanDetailTindakanPasien from './CardCatatanDetailTindakanPasien'
 import DropdownList from '../dropdownlist/DropdownList'
 import SearchBar from '../SearchBar'
+import Data from "../../../dummyData/dataInformasiRiwayat";
+
+interface DataItem {
+    tanggal: any;
+    perawat: string;
+    jamLaporan: string;
+    catatanKeluhan: string;
+}
+
+interface GroupedData {
+    [key: string]: DataItem[];
+}
 
 export default function CardRiwayatKunjungan() {
-    const components = Array(5).fill(null);
     const [page, setPage] = useState(1);
+    const data = Data;
     const pageSize = 2;
-    const totalElements = components.length;
-    const totalPages = Math.ceil(components.length / pageSize);
+
+    const groupedData: GroupedData = data.reduce((acc: GroupedData, currentItem: DataItem) => {
+        const date = currentItem.tanggal;
+        if (!acc[date]) {
+            acc[date] = [];
+        }
+        acc[date].push(currentItem);
+        return acc;
+    }, {});
+
+    const uniqueDates = Object.keys(groupedData);
+
+    const totalPages = Math.ceil(uniqueDates.length / pageSize);
     const startIndex = (page - 1) * pageSize;
     const endIndex = page * pageSize;
 
@@ -34,13 +57,10 @@ export default function CardRiwayatKunjungan() {
     const handleChangeUrutkan = (value: string) => {
         console.log(value);
     };
-    const handleChangePage = (event: any, value: SetStateAction<number>) => {
+
+    const handleChangePage = (_event: any, value: SetStateAction<number>) => {
         setPage(value);
-        console.log(event);
     };
-
-
-
 
     return (
         <>
@@ -63,7 +83,6 @@ export default function CardRiwayatKunjungan() {
                             onChange={handleChangeFilter}
                             loading={false}
                             options={filter}
-                        // placeholder='Pilih tipe jadwal'
                         />
                         <SearchBar />
                         <DropdownList
@@ -71,18 +90,38 @@ export default function CardRiwayatKunjungan() {
                             onChange={handleChangeUrutkan}
                             loading={false}
                             options={urutkan}
-                        // placeholder='Pilih tipe jadwal'
                         />
                     </Box>
-                    {components.slice(startIndex, endIndex).map((_, index) => (
-                        <CardCatatanDetailTindakanPasien key={startIndex + index} />
+                    {uniqueDates.slice(startIndex, endIndex).map(date => (
+                        <Box key={date}>
+                            <Box
+                                sx={{
+                                    bgcolor: '#EEEEF2',
+                                    width: '97%',
+                                    height: 'fit-content',
+                                    padding: '16px',
+                                    borderRadius: '12px',
+                                    mt: 2
+                                }}
+                            >
+                                <Typography>{date}</Typography>
+                            </Box>
+                            {groupedData[date].map((item: DataItem, index: number) => (
+                                <CardCatatanDetailTindakanPasien
+                                    key={item.tanggal + index}
+                                    namaPerawat={item.perawat}
+                                    jamLaporan={item.jamLaporan}
+                                    catatan={item.catatanKeluhan}
+                                />
+                            ))}
+                        </Box>
                     ))}
                 </Stack>
             </Box>
-            {/* Paginasi */}
-            <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+
+            <Stack spacing={2} mt={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
                 <Typography sx={{ color: "#A8A8BD" }}>
-                    Showing {components.length > 0 ? (page - 1) * pageSize + 1 : 0} to {Math.min((page) * pageSize, totalElements)} of {totalElements} entries
+                    Showing {uniqueDates.length > 0 ? (page - 1) * pageSize + 1 : 0} to {Math.min(page * pageSize, uniqueDates.length)} of {uniqueDates.length} entries
                 </Typography>
                 <Pagination
                     count={totalPages}
@@ -109,5 +148,5 @@ export default function CardRiwayatKunjungan() {
                 />
             </Stack>
         </>
-    )
+    );
 }

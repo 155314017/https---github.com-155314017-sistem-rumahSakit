@@ -37,20 +37,20 @@ export default function CardDetailInformasiKunjungan() {
 
                 <Stack sx={{ display: 'flex', flexDirection: 'row', width: '100%', mt: 2 }}>
                     <Box width={'100%'} >
-                        <Typography sx={titleData} >Jenis Kunjungan</Typography>
-                        <Typography sx={detailData} >Rawat Inap</Typography>
+                        <Typography sx={titleData} >Nama Pasien</Typography>
+                        <Typography sx={detailData} >Syahidan</Typography>
                     </Box>
                     <Box width={'100%'} >
-                        <Typography sx={titleData} >Keluhan</Typography>
-                        <Typography sx={detailData} >Dada Berdebar</Typography>
+                        <Typography sx={titleData} >Nama Dokter</Typography>
+                        <Typography sx={detailData} >Dr. Grayson Schonberg</Typography>
                     </Box>
                     <Box width={'100%'}  >
-                        <Typography sx={titleData} >Tanggal masuk</Typography>
-                        <Typography sx={detailData} >2025/01/02</Typography>
+                        <Typography sx={titleData} >Jenis Poli</Typography>
+                        <Typography sx={detailData} >Penyakit Dalam</Typography>
                     </Box>
                     <Box width={'100%'}>
-                        <Typography sx={titleData} >Jenis Kunjungan</Typography>
-                        <Typography sx={detailData} >Rawat Inap</Typography>
+                        <Typography sx={titleData} >Diagnosa</Typography>
+                        <Typography sx={detailData} >Paru - paru bolong</Typography>
                     </Box>
                 </Stack>
             </Box>

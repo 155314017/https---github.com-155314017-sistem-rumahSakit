@@ -20,6 +20,7 @@ export default function useTambahPegawai() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [gender, setGender] = useState('');
     
+    
 
     const labels = [
         "Pilih semua menu",

@@ -5,7 +5,7 @@ import CardRekamMedis from "../../../../components/small/card/CardRekamMedis";
 import CardAppointmentCard from "../../../../components/small/card/CardAppointmentCard";
 import profilePict from "../../../../assets/img/meme.jpg";
 import imgString from "../../../../assets/img/String.png";
-import { Button } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Menu, MenuItem, Typography } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import useDetailPasienRawatJalan from "../hooks/useDetailPasienRawatJalan";
 
@@ -13,12 +13,19 @@ import useDetailPasienRawatJalan from "../hooks/useDetailPasienRawatJalan";
 export default function DetailPasienRawatJalan() {
     const {
         breadcrumbItems,
+        handleClose,
         handleDeleteSuccess,
+        handleCloseModal,
+        handleOpenModal,
+        handleClick,
+        anchorEl,
+        openModal,
+        handleLewatiPasien
     } = useDetailPasienRawatJalan();
 
     return (
         <>
-            <Container sx={{ py: 2, minWidth: '100%', minHeight: 'fit-content', position: 'relative', pb:15 }}>
+            <Container sx={{ py: 2, minWidth: '100%', minHeight: 'fit-content', position: 'relative', pb: 15 }}>
                 <BreadCrumbs
                     breadcrumbItems={breadcrumbItems}
                     onBackClick={() => window.history.back()}
@@ -74,7 +81,9 @@ export default function DetailPasienRawatJalan() {
                     border: '1px solid #8F85F3',
                     // position: 'relative',
                     // zIndex: 2,
-                }}>
+                }}
+                    onClick={handleClick}
+                >
                     <MoreVertIcon />
                 </Button>
                 <Button sx={{
@@ -99,7 +108,34 @@ export default function DetailPasienRawatJalan() {
                 }}>
                     Panggil Pasien
                 </Button>
-
+                <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    PaperProps={{
+                        sx: {
+                            marginTop: '10px',
+                            bgcolor: '#FFFFFF',
+                            border: '1px solid #A8A8BD',
+                            borderRadius: '16px',
+                            width: '393px',
+                            height: '128px',
+                            display: 'flex',
+                            alignItems: 'center',
+                        },
+                    }}
+                >
+                    <MenuItem sx={{ color: '#8F85F3', fontWeight: 400, fontSize: '16px', lineHeight: '18px', minWidth: '180%', ml: 2, borderRadius: '12px' }} onClick={handleOpenModal}>Lewati Antrian</MenuItem>
+                    <MenuItem sx={{ color: '#8F85F3', fontWeight: 400, fontSize: '16px', lineHeight: '18px', mt: 1, minWidth: '180%', ml: 2, borderRadius: '12px' }} onClick={handleOpenModal}>Pasien Tidak Datang</MenuItem>
+                </Menu>
                 <Box sx={{
                     position: 'absolute',
                     top: 0,
@@ -110,6 +146,30 @@ export default function DetailPasienRawatJalan() {
                 }}>
                     <img src={imgString} alt="bgImage" style={{ height: '100%' }} />
                 </Box>
+                <Dialog
+                    open={openModal}
+                    onClose={handleCloseModal}
+                    PaperProps={{
+                        sx: {
+                            borderRadius: '24px',
+                            border: '1px solid #C5C5D3',
+                            padding: '26px',
+                        }
+                    }}
+                >
+                    <DialogTitle>Apakah anda yakin ingin lewati antrian pasien ini?</DialogTitle>
+                    <DialogContent >
+                        <Typography>Jika Anda yakin, maka nomor antrian pasien akan di undur.</Typography>
+                    </DialogContent>
+                    <DialogActions sx={{ display: 'flex', justifyContent: 'center' }} >
+                        <Button onClick={handleCloseModal} sx={{ color: '#8F85F3', bgcolor: 'inherit', border: '1px solid #8F85F3', borderRadius: '8px', padding: '8px', width: '185px', height: '38px' }}>
+                            Batal
+                        </Button>
+                        <Button onClick={handleLewatiPasien} sx={{ color: 'white', bgcolor: '#8F85F3', border: '1px solid #8F85F3', borderRadius: '8px', padding: '8px', width: '185px', height: '38px' }}>
+                            Lewati Antrian
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Box>
         </>
     );

@@ -9,11 +9,32 @@ import MediumCard from '../../../components/small/card/MediumCard'
 import CardPanggilPasien from '../../../components/small/card/CardPanggilPasien';
 import CardPasienTerlewati from '../../../components/small/card/CardPasienTerlewati';
 import TableRawatJalan from '../../pasien/pasienRawatJalan/features/TableRawatJalan';
+import AlertSuccess from '../../../components/small/alert/AlertSuccess';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function QueueDashboard() {
+    const [successSkipPatient, setSuccessSkipPatient] = useState(false);
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (location.state && location.state.successSkip) {
+            showTemporarySuccessSkipPatient()
+        }
+    }, [location.state, navigate])
+
+    const showTemporarySuccessSkipPatient = async () => {
+        setSuccessSkipPatient(true)
+        await new Promise(resolve => setTimeout(resolve, 3000))
+        setSuccessSkipPatient(false)
+    }
+
+
     return (
         <Box>
             <Box>
+                {successSkipPatient && <AlertSuccess label="Pasien Berhasil Dilewati" />}
                 <Typography sx={{ fontSize: '32px', fontWeight: '700', mb: 2, mt: 2 }}>Dashboard Antrian</Typography>
                 <Grid container justifyContent={'space-between'} flex={1} flexDirection={'row'} width={'100%'} >
                     <Box display={'flex'} flexDirection={'column'} gap={2} width={'49.5%'}>
@@ -45,7 +66,7 @@ export default function QueueDashboard() {
                                 heigth='200px'
                             />
                             <CardAdd icon={AddSharpIcon} title="Tambah pasien" link="/tambahRuangan" width='96%'
-                                heigth='200px'/>
+                                heigth='200px' />
                         </Box>
                         <CardPasienTerlewati />
                     </Box>
