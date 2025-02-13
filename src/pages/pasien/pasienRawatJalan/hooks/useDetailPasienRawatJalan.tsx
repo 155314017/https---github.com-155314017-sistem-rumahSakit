@@ -23,7 +23,6 @@ export default function useDetailPasienRawatJalan() {
 
     const handleOpenModal = () => {
         setOpenModal(true);
-        handleClose();
     };
 
     const handleCloseModal = () => {

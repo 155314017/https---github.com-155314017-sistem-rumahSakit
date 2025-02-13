@@ -5,9 +5,10 @@ import CardRekamMedis from "../../../../components/small/card/CardRekamMedis";
 import CardAppointmentCard from "../../../../components/small/card/CardAppointmentCard";
 import profilePict from "../../../../assets/img/meme.jpg";
 import imgString from "../../../../assets/img/String.png";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Menu, MenuItem, Typography } from "@mui/material";
+import { Button, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import useDetailPasienRawatJalan from "../hooks/useDetailPasienRawatJalan";
+import ModalConfirmationSkipPatient from "../../../../components/small/modal/ModalConfirmationSkipPatient";
 
 
 export default function DetailPasienRawatJalan() {
@@ -20,7 +21,6 @@ export default function DetailPasienRawatJalan() {
         handleClick,
         anchorEl,
         openModal,
-        handleLewatiPasien
     } = useDetailPasienRawatJalan();
 
     return (
@@ -146,30 +146,7 @@ export default function DetailPasienRawatJalan() {
                 }}>
                     <img src={imgString} alt="bgImage" style={{ height: '100%' }} />
                 </Box>
-                <Dialog
-                    open={openModal}
-                    onClose={handleCloseModal}
-                    PaperProps={{
-                        sx: {
-                            borderRadius: '24px',
-                            border: '1px solid #C5C5D3',
-                            padding: '26px',
-                        }
-                    }}
-                >
-                    <DialogTitle>Apakah anda yakin ingin lewati antrian pasien ini?</DialogTitle>
-                    <DialogContent >
-                        <Typography>Jika Anda yakin, maka nomor antrian pasien akan di undur.</Typography>
-                    </DialogContent>
-                    <DialogActions sx={{ display: 'flex', justifyContent: 'center' }} >
-                        <Button onClick={handleCloseModal} sx={{ color: '#8F85F3', bgcolor: 'inherit', border: '1px solid #8F85F3', borderRadius: '8px', padding: '8px', width: '185px', height: '38px' }}>
-                            Batal
-                        </Button>
-                        <Button onClick={handleLewatiPasien} sx={{ color: 'white', bgcolor: '#8F85F3', border: '1px solid #8F85F3', borderRadius: '8px', padding: '8px', width: '185px', height: '38px' }}>
-                            Lewati Antrian
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                <ModalConfirmationSkipPatient open={openModal} onClose={handleCloseModal} />
             </Box>
         </>
     );
