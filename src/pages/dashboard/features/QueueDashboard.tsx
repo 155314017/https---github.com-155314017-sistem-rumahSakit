@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Typography } from '@mui/material'
 import { Box, Grid } from '@mui/system'
@@ -15,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import TableAntrian from '../../pasien/pasienRawatJalan/features/TableAntrian';
 
-export default function QueueDashboard({ selectedValue }) {
+export default function QueueDashboard({ selectedValue }: any) {
     const [successSkipPatient, setSuccessSkipPatient] = useState(false);
     const location = useLocation()
     const navigate = useNavigate()
@@ -38,8 +39,8 @@ export default function QueueDashboard({ selectedValue }) {
         <Box>
             <Box>
                 {successSkipPatient && <AlertSuccess label="Pasien Berhasil Dilewati" />}
-                {selectedValue === 'Dasboard'? <Typography sx={{ fontSize: '32px', fontWeight: '700', mb: 2, mt: 2 }}>Dashboard</Typography> : <Typography sx={{ fontSize: '32px', fontWeight: '700', mb: 2, mt: 2 }}>Rawat Jalan - {selectedValue}</Typography>}
-                
+                {selectedValue === 'Dasboard' ? <Typography sx={{ fontSize: '32px', fontWeight: '700', mb: 2, mt: 2 }}>Dashboard</Typography> : <Typography sx={{ fontSize: '32px', fontWeight: '700', mb: 2, mt: 2 }}>Rawat Jalan - {selectedValue}</Typography>}
+
                 <Grid container justifyContent={'space-between'} flex={1} flexDirection={'row'} width={'100%'} >
                     <Box display={'flex'} flexDirection={'column'} gap={2} width={'49.5%'} >
                         <Box display={'flex'} flexDirection={'row'} gap={1.5} maxWidth={'100%'} >
@@ -72,14 +73,14 @@ export default function QueueDashboard({ selectedValue }) {
                             />
                             <CardAdd icon={AddSharpIcon} title="Tambah pasien" link="/tambahRuangan" location='queue' width='330px' />
                         </Box>
-                        {selectedValue === 'Dasboard'  && <CardPasienTerlewati />}
+                        {selectedValue === 'Dasboard' && <CardPasienTerlewati />}
                     </Box>
                 </Grid>
                 <Box mt={3} >
-                {selectedValue === 'Dasboard' ?  <TableRawatJalan /> : <TableAntrian />}  
-                    
+                    {selectedValue === 'Dasboard' ? <TableRawatJalan /> : <TableAntrian />}
 
-                    
+
+
                 </Box>
 
             </Box>
