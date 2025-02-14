@@ -42,8 +42,14 @@ const CustomFrameTable: React.FC<CustomFrameTableProps> = ({ tipe }) => {
                         height: "50px",
                         bgcolor: "#F1F0FE",
                         borderRadius: "0px 0px 22px 22px",
-                        '@media (max-width: 1194px)': { //responsif layar
+                        '@media (min-width: 750px) and (max-width: 1194px)': { //responsif layar
                             width: '200px'
+                        },
+                        '@media (min-width: 625px) and (max-width: 750px)': { //responsif layar
+                            width: '100px'
+                        },
+                        '@media (max-width: 625px)': { //responsif layar
+                            width: '40px'
                         }
                     }}
                 />

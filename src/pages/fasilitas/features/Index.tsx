@@ -63,11 +63,47 @@ export default function Index() {
                     <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
                         Fasilitas
                     </Typography>
-                    <Grid container spacing={3} flex={1} mb={3}>
-                        <MediumCard icon={BusinessOutlinedIcon} title="Total Fasilitas" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : totalElementsFacility} />
-                        <MediumCard icon={BusinessOutlinedIcon} title="Total Sub Fasilitas" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataSubFacility.length.toString()} />
-                        <CardAdd icon={AddBoxIcon} title="Tambah Fasilitas" link="/tambahFasilitas" />
-                        <CardAdd icon={AddBoxIcon} title="Tambah Sub Fasilitas" link="/tambahSubFasilitas" />
+                    <Grid container
+                        sx={{
+                            flex: 1,
+                            mb: 3,
+                            gap: 1,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            '@media (max-width: 1194px)': {
+                                flexDirection: 'column',
+                            }
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                width: '49%',
+                                gap: 2,
+                                '@media (max-width: 1194px)': {
+                                    width: 'auto',
+                                }
+                            }}
+                        >
+                            <MediumCard icon={BusinessOutlinedIcon} title="Total Fasilitas" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : totalElementsFacility} />
+                            <MediumCard icon={BusinessOutlinedIcon} title="Total Sub Fasilitas" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataSubFacility.length.toString()} />
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                width: '49%',
+                                gap: 2,
+                                '@media (max-width: 1194px)': {
+                                    width: 'auto',
+                                }
+                            }}
+                        >
+                            <CardAdd icon={AddBoxIcon} title="Tambah Fasilitas" link="/tambahFasilitas" />
+                            <CardAdd icon={AddBoxIcon} title="Tambah Sub Fasilitas" link="/tambahSubFasilitas" />
+                        </Box>
                     </Grid>
                     <Box display={"flex"} flexDirection={"column"} gap={5} >
                         <TableFasilitas

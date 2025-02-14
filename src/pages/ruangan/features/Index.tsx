@@ -47,9 +47,46 @@ export default function Index() {
                     <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
                         Ruangan
                     </Typography>
-                    <Grid container spacing={3} flex={1} mb={3}>
-                        <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : totalElements || "0"} />
-                        <CardAdd icon={AddBoxIcon} title="Tambah Ruangan" link="/tambahRuangan" />
+                    <Grid container
+                        sx={{
+                            flex: 1,
+                            mb: 3,
+                            gap: 1,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            maxWidth: '50%',
+                            justifyContent: 'space-between',
+                            '@media (min-width: 1010px) and (max-width: 1194px)': {
+                                maxWidth: '55%'
+                            },
+                            '@media (min-width: 900px) and (max-width: 1010px)': {
+                                maxWidth: '60%'
+                            },
+                            '@media (min-width: 750px) and (max-width: 900px)': {
+                                maxWidth: '70%'
+                            },
+                            '@media  (max-width: 750px)': {
+                                maxWidth: '100%'
+                            }
+
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                width: '49%'
+                            }}
+                        >
+                            <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : totalElements || "0"} />
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                width: '49%'
+                            }}
+                        >
+                            <CardAdd icon={AddBoxIcon} title="Tambah Ruangan" link="/tambahRuangan" />
+                        </Box>
                     </Grid>
                     <TableRuangan
                         data={roomData}

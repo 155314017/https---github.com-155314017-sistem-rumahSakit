@@ -6,8 +6,6 @@ interface MediumCardProps {
   icon: ElementType;
   title: string;
   subtitle: ReactNode;
-  location?: string;
-  width?: string;
 }
 
 
@@ -15,14 +13,11 @@ export default function MediumCard({
   icon: Icon,
   title,
   subtitle,
-  location = 'admin',
-  width
 }: MediumCardProps) {
   return (
-    <Box height={location === 'admin' ? 'auto' : '100%'} width={location === 'admin' ? 'auto' : '100%'} >
       <Box
         height={"162px"}
-        width={width || "296.755px"}
+        width={"100%"}
         sx={{
           backgroundColor: "#fff",
           borderRadius: "24px",
@@ -47,6 +42,5 @@ export default function MediumCard({
           </Typography>
         </Stack>
       </Box>
-    </Box>
   );
 }
