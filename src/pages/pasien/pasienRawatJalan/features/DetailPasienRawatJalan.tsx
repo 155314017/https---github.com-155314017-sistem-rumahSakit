@@ -9,6 +9,7 @@ import { Button, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import useDetailPasienRawatJalan from "../hooks/useDetailPasienRawatJalan";
 import ModalConfirmationSkipPatient from "../../../../components/small/modal/ModalConfirmationSkipPatient";
+import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
 
 
 export default function DetailPasienRawatJalan() {
@@ -21,10 +22,17 @@ export default function DetailPasienRawatJalan() {
         handleClick,
         anchorEl,
         openModal,
+        startCountdown,
+        isCounting,
+        countdown,
+        alertPanggil
     } = useDetailPasienRawatJalan();
 
     return (
         <>
+            {alertPanggil && (
+                <AlertSuccess label="Pasien sedang dipanggil" />
+            )}
             <Container sx={{ py: 2, minWidth: '100%', minHeight: 'fit-content', position: 'relative', pb: 15 }}>
                 <BreadCrumbs
                     breadcrumbItems={breadcrumbItems}
@@ -100,13 +108,15 @@ export default function DetailPasienRawatJalan() {
                 <Button sx={{
                     width: '642px',
                     height: '44px',
-                    bgcolor: '#8F85F3',
-                    color: 'white',
+                    bgcolor: isCounting ? "#ccc" : "#8F85F3", color: "white",
                     border: '1px solid #8F85F3',
                     position: 'relative',
                     zIndex: 2,
-                }}>
-                    Panggil Pasien
+                }}
+                onClick={startCountdown}
+                disabled={isCounting}
+                >
+                    {isCounting ? countdown : "Panggil Pasien"}
                 </Button>
                 <Menu
                     anchorEl={anchorEl}

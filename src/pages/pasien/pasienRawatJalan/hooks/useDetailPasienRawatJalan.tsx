@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function useDetailPasienRawatJalan() {
@@ -7,6 +7,38 @@ export default function useDetailPasienRawatJalan() {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [openModal, setOpenModal] = useState(false);
+    const [alertPanggil, setAlertPanggil] = useState(false);
+
+
+
+    const [countdown, setCountdown] = useState(30);
+    const [isCounting, setIsCounting] = useState(false);
+
+    useEffect(() => {
+        let interval: number | undefined;
+        if (isCounting && countdown > 0) {
+            interval = setInterval(() => {
+                setCountdown((prev) => prev - 1);
+            }, 1000);
+        } else if (countdown === 0) {
+            setIsCounting(false);
+            setCountdown(30);
+        }
+        return () => clearInterval(interval);
+    }, [isCounting, countdown]);
+
+    const startCountdown = () => {
+        showTemporarySuccessCall();
+        if (!isCounting) {
+            setIsCounting(true);
+        }
+    };
+
+    const showTemporarySuccessCall = async () => {
+        setAlertPanggil(true)
+        await new Promise(resolve => setTimeout(resolve, 3000))
+        setAlertPanggil(false)
+    }
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -59,7 +91,11 @@ export default function useDetailPasienRawatJalan() {
         anchorEl,
         openModal,
         handleClose,
-        handleLewatiPasien
+        handleLewatiPasien,
+        startCountdown,
+        isCounting,
+        countdown,
+        alertPanggil
     }
 
 }

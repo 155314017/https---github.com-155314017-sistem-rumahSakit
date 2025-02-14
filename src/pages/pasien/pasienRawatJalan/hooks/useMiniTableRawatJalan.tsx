@@ -15,6 +15,8 @@ export default function useMiniTableRawatJalan() {
     const [showModal, setShowModal] = useState(false);
     const [countdown, setCountdown] = useState<number>(30)
     const [countdowns, setCountdowns] = useState<{ [key: string]: { countdown: number, isCounting: boolean, timer: number | null } }>({});
+    const [openModal, setOpenModal] = useState(false);
+
 
     const countDownPanggil = (id: string) => {
         if (!countdowns[id]?.isCounting) {
@@ -48,6 +50,14 @@ export default function useMiniTableRawatJalan() {
                 return newCountdowns;
             });
         }
+    };
+
+    const handleOpenModal = () => {
+        setOpenModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setOpenModal(false);
     };
 
     const showTemporarySuccessCall = async () => {
@@ -167,6 +177,9 @@ export default function useMiniTableRawatJalan() {
         countdown,
         showModal,
         countDownPanggil,
-        countdowns
+        countdowns,
+        handleOpenModal,
+        handleCloseModal,
+        openModal
     }
 }

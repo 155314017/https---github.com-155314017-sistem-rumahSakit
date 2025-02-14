@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Data from "../../../../dummyData/dataPasien"
+import { useNavigate } from "react-router-dom";
 
 export default function useTableAntrian() {
     const [page, setPage] = useState(1);
@@ -8,6 +9,8 @@ export default function useTableAntrian() {
     const [showModal, setShowModal] = useState(false);
     const [countdown, setCountdown] = useState<number>(30)
     const [countdowns, setCountdowns] = useState<{ [key: string]: { countdown: number, isCounting: boolean, timer: number | null } }>({});
+    const [openModal, setOpenModal] = useState(false);
+    const navigate = useNavigate();
 
     const datas = Data;
 
@@ -31,6 +34,13 @@ export default function useTableAntrian() {
         { value: 3, label: "Jenis Kunjungan A-Z" },
         { value: 4, label: "Jenis Kunjungan Z-A" },
     ];
+    const handleOpenModal = () => {
+        setOpenModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setOpenModal(false);
+    };
 
     const toggleCollapse = () => {
         setIsCollapsed((prev) => !prev);
@@ -100,6 +110,7 @@ export default function useTableAntrian() {
         };
     
     const handleMenuClose = () => {
+        
             setAnchorEl(null);
         };
 
@@ -130,6 +141,10 @@ export default function useTableAntrian() {
         selected,
         anchorEl,
         handleMenuClick,
-        handleMenuClose
+        handleMenuClose,
+        openModal,
+        handleOpenModal,
+        handleCloseModal,
+        navigate
     }
 }
