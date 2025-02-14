@@ -6,6 +6,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import useMiniTableRawatJalan from "../hooks/useMiniTableRawatJalan";
 import { useEffect } from "react";
+import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -42,11 +43,15 @@ interface MiniTableRawatJalanProps {
 export default function MiniTableRawatJalan(props: MiniTableRawatJalanProps) {
     const { showAll } = props;
 
-    const { displayedData, confirmationDelete,
+    const {
+        displayedData,
         anchorEl,
         handleMenuClick,
         handleMenuClose,
-        setShowAll
+        setShowAll,
+        alertPanggil,
+        countDownPanggil,
+        countdowns,
     } = useMiniTableRawatJalan();
 
     useEffect(() => {
@@ -58,6 +63,9 @@ export default function MiniTableRawatJalan(props: MiniTableRawatJalanProps) {
 
     return (
         <Box>
+            {alertPanggil && (
+                <AlertSuccess label="Pasien sedang dipanggil" />
+            )}
             <Box position={"relative"} p={3} sx={{ borderRadius: "24px", bgcolor: "transparent", overflow: "hidden" }}>
                 <Box>
                     <StyledTableContainer
@@ -142,12 +150,20 @@ export default function MiniTableRawatJalan(props: MiniTableRawatJalanProps) {
                                                     href="#"
                                                     underline="none"
                                                     color={"#8F85F3"}
-                                                    onClick={confirmationDelete}
+                                                    onClick={() => countDownPanggil(data.nomorAntrian)}
                                                 // sx={{ mr: 2 }}
                                                 >
                                                     {/* Panggil */}
-                                                    <Box padding={'6px'} border={'1px solid #8F85F3'} width={'fit-content'} height={'fit-content'} bgcolor={'#8F85F3'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
-                                                        <Typography fontSize={'12px'} color="white" >Panggil</Typography>
+                                                    <Box padding={'6px'} border={'1px solid #8F85F3'} width={'74px'} height={'24px'} bgcolor={'#8F85F3'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
+                                                        <Typography
+                                                            sx={{
+                                                                cursor: countdowns[data.nomorAntrian]?.isCounting ? 'default' : 'pointer',
+                                                                color: countdowns[data.nomorAntrian]?.isCounting ? '#ccc' : 'white',
+                                                                fontSize: '16px',
+                                                            }}
+                                                        >
+                                                            {countdowns[data.nomorAntrian]?.isCounting ? countdowns[data.nomorAntrian]?.countdown : 'Panggil'}
+                                                        </Typography>
                                                     </Box>
                                                 </Link>
                                                 <Link
@@ -192,11 +208,11 @@ export default function MiniTableRawatJalan(props: MiniTableRawatJalanProps) {
                             open={Boolean(anchorEl)}
                             onClose={handleMenuClose}
                             anchorOrigin={{
-                                vertical: 'top', // Position the menu below the button
+                                vertical: 'top',
                                 horizontal: 'center',
                             }}
                             transformOrigin={{
-                                vertical: 'bottom', // Align the top of the menu with the bottom of the button
+                                vertical: 'bottom',
                                 horizontal: 'left',
                             }}
                             sx={{
@@ -222,7 +238,7 @@ export default function MiniTableRawatJalan(props: MiniTableRawatJalanProps) {
                                         fontSize: '16px',
                                         lineHeight: '18px',
                                         letterSpacing: '0%',
-                                        color: '#8F85F3', // Text color,
+                                        color: '#8F85F3',
                                         padding: '8px',
                                     }}
                                 >
@@ -237,7 +253,7 @@ export default function MiniTableRawatJalan(props: MiniTableRawatJalanProps) {
                                         fontSize: '16px',
                                         lineHeight: '18px',
                                         letterSpacing: '0%',
-                                        color: '#8F85F3', // Text color
+                                        color: '#8F85F3',
                                         padding: '8px',
                                     }}
                                 >

@@ -6,7 +6,9 @@ import HeaderNameClinic from "../../components/medium/HeaderNameClinic";
 export default function DokterQueue() {
     return (
         <Box>
-            <SideBarQueueDashboard />
+            <SideBarQueueDashboard onSelect={function (value: string): void {
+                throw new Error("Function not implemented.");
+            }} />
 
             <Box p={2} sx={{ marginLeft: "130px" }}>
                 <HeaderNameClinic />

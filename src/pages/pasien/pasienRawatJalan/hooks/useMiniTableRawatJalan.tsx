@@ -1,21 +1,60 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Data from "../../../../dummyData/dataPasien";
-import { PatientDataItem } from "../../../../types/patient.types";
 export default function useMiniTableRawatJalan() {
     const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [dataIdClinic, setDataIdClinic] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [dataIdUser, setDataIdUser] = useState<string[]>([]);
+    const [alertPanggil, setAlertPanggil] = useState(false);
     const [userDataPhone, setUserDataPhone] = useState<string[]>([]);
     const [showAll, setShowAll] = useState(false);
     const datas = Data;
-    
-    
-
-   
     const [clinics, setClinics] = useState<string[]>([]);
+    const [showModal, setShowModal] = useState(false);
+    const [countdown, setCountdown] = useState<number>(30)
+    const [countdowns, setCountdowns] = useState<{ [key: string]: { countdown: number, isCounting: boolean, timer: number | null } }>({});
+
+    const countDownPanggil = (id: string) => {
+        if (!countdowns[id]?.isCounting) {
+            showTemporarySuccessCall();
+            setShowModal(true);
+            setCountdown(30);
+
+            setCountdowns(prev => {
+                const newCountdowns = { ...prev };
+                newCountdowns[id] = { countdown: 30, isCounting: true, timer: null };
+                return newCountdowns;
+            });
+
+            const interval = setInterval(() => {
+                setCountdowns(prev => {
+                    const newCountdowns = { ...prev };
+                    const currentCountdown = newCountdowns[id];
+                    if (currentCountdown.countdown > 0) {
+                        newCountdowns[id] = { ...currentCountdown, countdown: currentCountdown.countdown - 1 };
+                    } else {
+                        clearInterval(currentCountdown.timer!);
+                        newCountdowns[id] = { ...currentCountdown, isCounting: false, countdown: 30 };
+                    }
+                    return newCountdowns;
+                });
+            }, 1000);
+
+            setCountdowns(prev => {
+                const newCountdowns = { ...prev };
+                newCountdowns[id] = { ...newCountdowns[id], timer: interval };
+                return newCountdowns;
+            });
+        }
+    };
+
+    const showTemporarySuccessCall = async () => {
+        setAlertPanggil(true)
+        await new Promise(resolve => setTimeout(resolve, 3000))
+        setAlertPanggil(false)
+    }
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -71,7 +110,7 @@ export default function useMiniTableRawatJalan() {
     const displayedData = showAll ? datas : datas.slice(0, rowsPerPage);
 
 
-   
+
 
     const sortir = [
         { value: 1, label: "Pria" },
@@ -96,14 +135,14 @@ export default function useMiniTableRawatJalan() {
 
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    
+
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-            setAnchorEl(event.currentTarget);
-        };
-    
+        setAnchorEl(event.currentTarget);
+    };
+
     const handleMenuClose = () => {
-            setAnchorEl(null);
-        };
+        setAnchorEl(null);
+    };
     return {
         page,
         setPage,
@@ -123,7 +162,11 @@ export default function useMiniTableRawatJalan() {
         anchorEl,
         handleMenuClick,
         handleMenuClose,
-        setShowAll
-        
+        setShowAll,
+        alertPanggil,
+        countdown,
+        showModal,
+        countDownPanggil,
+        countdowns
     }
 }

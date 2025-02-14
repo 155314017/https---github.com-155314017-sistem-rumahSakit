@@ -8,6 +8,7 @@ export default function useTableRawatJalan() {
     const [showModal, setShowModal] = useState(false);
     const [countdown, setCountdown] = useState<number>(30)
     const [countdowns, setCountdowns] = useState<{ [key: string]: { countdown: number, isCounting: boolean, timer: number | null } }>({});
+    const [alertPanggil, setAlertPanggil] = useState(false);
 
     const datas = Data;
 
@@ -38,6 +39,7 @@ export default function useTableRawatJalan() {
 
     const countDownPanggil = (id: string) => {
         if (!countdowns[id]?.isCounting) {
+            showTemporarySuccessCall();
             setShowModal(true);
             setCountdown(30);
 
@@ -55,7 +57,7 @@ export default function useTableRawatJalan() {
                         newCountdowns[id] = { ...currentCountdown, countdown: currentCountdown.countdown - 1 };
                     } else {
                         clearInterval(currentCountdown.timer!);
-                        newCountdowns[id] = { ...currentCountdown, isCounting: false, countdown: 30 }; 
+                        newCountdowns[id] = { ...currentCountdown, isCounting: false, countdown: 30 };
                     }
                     return newCountdowns;
                 });
@@ -68,6 +70,12 @@ export default function useTableRawatJalan() {
             });
         }
     };
+
+    const showTemporarySuccessCall = async () => {
+        setAlertPanggil(true)
+        await new Promise(resolve => setTimeout(resolve, 3000))
+        setAlertPanggil(false)
+    }
 
     const getButtonStyle = (buttonName: string, width: string) => {
         return {
@@ -94,14 +102,14 @@ export default function useTableRawatJalan() {
     };
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    
+
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-            setAnchorEl(event.currentTarget);
-        };
-    
+        setAnchorEl(event.currentTarget);
+    };
+
     const handleMenuClose = () => {
-            setAnchorEl(null);
-        };
+        setAnchorEl(null);
+    };
 
     const handleClose = () => {
         setShowModal(false);
@@ -130,6 +138,7 @@ export default function useTableRawatJalan() {
         selected,
         anchorEl,
         handleMenuClick,
-        handleMenuClose
+        handleMenuClose,
+        alertPanggil
     }
 }

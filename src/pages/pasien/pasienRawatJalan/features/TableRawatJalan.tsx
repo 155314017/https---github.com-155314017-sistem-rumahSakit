@@ -26,6 +26,7 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import useTableRawatJalan from "../hooks/useTableRawatJalan";
 import BadgeStatusPasien from "../../../../components/small/badge/BadgeStatusPasien";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -89,10 +90,14 @@ export default function TableRawatJalan() {
         selected,
         anchorEl,
         handleMenuClick,
-        handleMenuClose
+        handleMenuClose,
+        alertPanggil
     } = useTableRawatJalan();
     return (
         <Box>
+            {alertPanggil && (
+                <AlertSuccess label="Pasien sedang dipanggil" />
+            )}
             <Box
                 position={"relative"}
                 p={3}
@@ -255,7 +260,7 @@ export default function TableRawatJalan() {
                                     borderRadius: "16px",
                                 }}
                             >
-                                
+
                                 <Table stickyHeader sx={{ width: "100%" }}>
                                     <TableHead >
                                         <TableRow>
@@ -321,19 +326,19 @@ export default function TableRawatJalan() {
                                             </TableCell>
                                             {selected === 'Antrian' && (
                                                 <TableCell
-                                                width={"20%"}
-                                                sx={{
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color: "#292B2C",
-                                                    bgcolor: "#F1F0FE",
-                                                }}
-                                                align="center"
-                                            >
-                                                Aksi
-                                            </TableCell>
+                                                    width={"20%"}
+                                                    sx={{
+                                                        fontSize: "14px",
+                                                        fontWeight: 700,
+                                                        color: "#292B2C",
+                                                        bgcolor: "#F1F0FE",
+                                                    }}
+                                                    align="center"
+                                                >
+                                                    Aksi
+                                                </TableCell>
                                             )}
-                                            
+
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -422,79 +427,79 @@ export default function TableRawatJalan() {
                                                     </TableCell>
                                                     {selected === 'Antrian' && (
                                                         <TableCell
-                                                        align="center"
-                                                        sx={[
-                                                            {
-                                                                color: "#292B2C",
-                                                                fontSize: "14px",
-                                                                textTransform: "capitalize",
-                                                                display: "flex",
-                                                                flexDirection: "row",
-                                                                justifyContent: 'center',
-                                                                alignItems: 'center',
-                                                                gap: 2,
-                                                            },
-                                                        ]}
-                                                    >
-                                                        <Box
-                                                            sx={{
-                                                                cursor: 'pointer',
-                                                                padding: '8px',
-                                                                border: countdowns[data.nomorAntrian]?.isCounting ? '1px solid #A8A8BD' : '1px solid #8F85F3',
-                                                                width:'30%',
-                                                                height:'25px',
-                                                                bgcolor: countdowns[data.nomorAntrian]?.isCounting ? '#A8A8BD' : '#8F85F3',
-                                                                borderRadius: '8px',
-                                                                justifyContent: 'center',
-                                                                alignItems: 'center',
-
-
-                                                            }}
-                                                            onClick={() => countDownPanggil(data.nomorAntrian)}
+                                                            align="center"
+                                                            sx={[
+                                                                {
+                                                                    color: "#292B2C",
+                                                                    fontSize: "14px",
+                                                                    textTransform: "capitalize",
+                                                                    display: "flex",
+                                                                    flexDirection: "row",
+                                                                    justifyContent: 'center',
+                                                                    alignItems: 'center',
+                                                                    gap: 2,
+                                                                },
+                                                            ]}
                                                         >
-                                                            <Typography
+                                                            <Box
                                                                 sx={{
-                                                                    cursor: countdowns[data.nomorAntrian]?.isCounting ? 'default' : 'pointer',
-                                                                    color: countdowns[data.nomorAntrian]?.isCounting ? '#ccc' : 'white',
-                                                                    fontSize: '16px',
+                                                                    cursor: 'pointer',
+                                                                    padding: '8px',
+                                                                    border: countdowns[data.nomorAntrian]?.isCounting ? '1px solid #A8A8BD' : '1px solid #8F85F3',
+                                                                    width: '30%',
+                                                                    height: '25px',
+                                                                    bgcolor: countdowns[data.nomorAntrian]?.isCounting ? '#A8A8BD' : '#8F85F3',
+                                                                    borderRadius: '8px',
+                                                                    justifyContent: 'center',
+                                                                    alignItems: 'center',
+
+
+                                                                }}
+                                                                onClick={() => countDownPanggil(data.nomorAntrian)}
+                                                            >
+                                                                <Typography
+                                                                    sx={{
+                                                                        cursor: countdowns[data.nomorAntrian]?.isCounting ? 'default' : 'pointer',
+                                                                        color: countdowns[data.nomorAntrian]?.isCounting ? '#ccc' : 'white',
+                                                                        fontSize: '16px',
+                                                                    }}
+                                                                >
+                                                                    {countdowns[data.nomorAntrian]?.isCounting ? countdowns[data.nomorAntrian]?.countdown : 'Panggil'}
+                                                                </Typography>
+                                                            </Box>
+                                                            <Link
+                                                                href="/detailRawat"
+                                                                mr={2}
+                                                                underline="none"
+                                                                sx={{
+                                                                    textTransform: "capitalize",
+                                                                    color: "#8F85F3",
                                                                 }}
                                                             >
-                                                                {countdowns[data.nomorAntrian]?.isCounting ? countdowns[data.nomorAntrian]?.countdown : 'Panggil'}
-                                                            </Typography>
-                                                        </Box>
-                                                        <Link
-                                                            href="/detailRawat"
-                                                            mr={2}
-                                                            underline="none"
-                                                            sx={{
-                                                                textTransform: "capitalize",
-                                                                color: "#8F85F3",
-                                                            }}
-                                                        >
-                                                            <Box padding={'8px'} border={'1px solid #8F85F3'} width={'100%'} height={'25px'} bgcolor={'inherit'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
-                                                                <Typography color="#8F85F3" >Lihat Detail</Typography>
-                                                            </Box>
-                                                        </Link>
-                                                        <Link
-                                                            href="# "
-                                                            underline="hover"
-                                                            sx={{
-                                                                textTransform: "capitalize",
-                                                                color: "#8F85F3",
-                                                            }}
-                                                        >
-                                                            <Button color="primary" sx={{
+                                                                <Box padding={'8px'} border={'1px solid #8F85F3'} width={'100%'} height={'25px'} bgcolor={'inherit'} borderRadius={'8px'} justifyContent={'center'} alignItems={'center'} >
+                                                                    <Typography color="#8F85F3" >Lihat Detail</Typography>
+                                                                </Box>
+                                                            </Link>
+                                                            <Link
+                                                                href="# "
+                                                                underline="hover"
+                                                                sx={{
+                                                                    textTransform: "capitalize",
+                                                                    color: "#8F85F3",
+                                                                }}
+                                                            >
+                                                                <Button color="primary" sx={{
                                                                     padding: '0px', bgcolor: '#ffff', border: '1px solid #8F85F3', color: '#8F85F3', width: '1%', borderRadius: '8px', height: '44px', '&:hover': {
                                                                         backgroundColor: "#8F85F3", color: '#ffff',
                                                                     },
-                                                                }} 
-                                                                onClick={handleMenuClick}>
+                                                                }}
+                                                                    onClick={handleMenuClick}>
                                                                     <MoreVertIcon />
                                                                 </Button>
-                                                        </Link>
-                                                    </TableCell>
+                                                            </Link>
+                                                        </TableCell>
                                                     )}
-                                                    
+
                                                 </StyledTableRow>
                                             ))
                                         ) : (
@@ -540,67 +545,67 @@ export default function TableRawatJalan() {
 
                         </Stack>
                         <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
-                anchorOrigin={{
-                    vertical: 'bottom', // Position the menu below the button
-                    horizontal: 'center',
-                }}
-                transformOrigin={{
-                    vertical: 'bottom', // Align the top of the menu with the bottom of the button
-                    horizontal: 'center',
-                }}
-                sx={{
-                '& .MuiPaper-root': {
-                    position: 'absolute',
-                    borderRadius: '16px',
-                    border: '1px solid #A8A8BD',
-                    width: '329px',
-                    height: '120px',
-                    gap: '8px',
-                    borderWidth: '1px',
-                    padding: '8px',
-                    
-                
-                },
-                }}
-            >
-                <MenuItem onClick={() => { handleMenuClose(); }}>
-                    <Typography
-                        sx={{
-                        fontFamily: 'Roboto',
-                        fontWeight: 400,
-                        fontSize: '16px',
-                        lineHeight: '18px',
-                        letterSpacing: '0%',
-                        color: '#8F85F3', // Text color,
-                        padding: '8px',
-                        }}
-                    >
-                        Lewati Antrian
-                    </Typography>
-                    </MenuItem>
-                    <MenuItem onClick={() => { handleMenuClose(); }}>
-                    <Typography
-                        sx={{
-                        fontFamily: 'Roboto',
-                        fontWeight: 400,
-                        fontSize: '16px',
-                        lineHeight: '18px',
-                        letterSpacing: '0%',
-                        color: '#8F85F3', // Text color
-                        padding: '8px',
-                        }}
-                    >
-                        Lihat Detail
-                    </Typography>
-                    </MenuItem>
-            </Menu>
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleMenuClose}
+                            anchorOrigin={{
+                                vertical: 'bottom', // Position the menu below the button
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'bottom', // Align the top of the menu with the bottom of the button
+                                horizontal: 'center',
+                            }}
+                            sx={{
+                                '& .MuiPaper-root': {
+                                    position: 'absolute',
+                                    borderRadius: '16px',
+                                    border: '1px solid #A8A8BD',
+                                    width: '329px',
+                                    height: '120px',
+                                    gap: '8px',
+                                    borderWidth: '1px',
+                                    padding: '8px',
+
+
+                                },
+                            }}
+                        >
+                            <MenuItem onClick={() => { handleMenuClose(); }}>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Roboto',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '18px',
+                                        letterSpacing: '0%',
+                                        color: '#8F85F3', // Text color,
+                                        padding: '8px',
+                                    }}
+                                >
+                                    Lewati Antrian
+                                </Typography>
+                            </MenuItem>
+                            <MenuItem onClick={() => { handleMenuClose(); }}>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Roboto',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '18px',
+                                        letterSpacing: '0%',
+                                        color: '#8F85F3', // Text color
+                                        padding: '8px',
+                                    }}
+                                >
+                                    Lihat Detail
+                                </Typography>
+                            </MenuItem>
+                        </Menu>
                     </Box>
                 </Collapse>
 
-               
+
             </Box >
         </Box >
     );
