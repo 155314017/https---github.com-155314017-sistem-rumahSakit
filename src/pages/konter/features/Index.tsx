@@ -14,7 +14,7 @@ import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 //hooks
 import useIndex from "../hooks/useIndex";
 export default function Index() {
-    const{data,
+    const { data,
         successAddBuilding,
         successDeleteBuilding,
         successEditBuilding,
@@ -23,9 +23,9 @@ export default function Index() {
         setPageNumber,
         setOrderBy,
         totalElements
-        }=useIndex();
-  return (
-    <Box>
+    } = useIndex();
+    return (
+        <Box>
             <SideBar />
 
             <Box p={2} sx={{ marginLeft: "130px" }}>
@@ -43,19 +43,43 @@ export default function Index() {
                     <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
                         Konter
                     </Typography>
-                    <Grid container spacing={3} flex={1} mb={3}>
-                        <MediumCard icon={BusinessOutlinedIcon} title="Daftar Konter" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString()} />
-                        <CardAdd icon={AddBoxIcon} title="Tambah Konter" link="/tambahKonter" />
+                    <Grid container
+                        sx={{
+                            flex: 1,
+                            mb: 3,
+                            gap: 1,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            maxWidth: '50%',
+                            justifyContent: 'space-between'
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                width: '49%'
+                            }}
+                        >
+                            <MediumCard icon={BusinessOutlinedIcon} title="Daftar Konter" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString()} />
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                width: '49%'
+                            }}
+                        >
+                            <CardAdd icon={AddBoxIcon} title="Tambah Konter" link="/tambahKonter" />
+                        </Box>
                     </Grid>
-                    <TableKonter 
-                    data={data}
-                    onSuccessDelete={showTemporarySuccessDelete}
-                    setPageNumber={setPageNumber}
-                    setOrderBy={setOrderBy}
-                    totalElements={totalElements}
-                     />
+                    <TableKonter
+                        data={data}
+                        onSuccessDelete={showTemporarySuccessDelete}
+                        setPageNumber={setPageNumber}
+                        setOrderBy={setOrderBy}
+                        totalElements={totalElements}
+                    />
                 </Box>
             </Box>
         </Box>
-  )
+    )
 }
