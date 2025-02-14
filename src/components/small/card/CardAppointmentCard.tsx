@@ -1,8 +1,14 @@
 import { Box } from '@mui/system'
 import { Chip, Typography } from '@mui/material';
+import { useState } from 'react';
 
 
 export default function CardAppointmentCard() {
+    const [showAll, setShowAll] = useState(false);
+    
+        const toggleShowAll = () => {
+            setShowAll((prev) => !prev);
+        };
     return (
         <Box
             position={"relative"}
@@ -126,7 +132,9 @@ export default function CardAppointmentCard() {
                 </Box>
                 <Box display="flex" justifyContent="center" textAlign="center" mt={2}>
                     <Typography
+                        onClick={toggleShowAll}
                         sx={{
+                            cursor: 'pointer',
                             color: '#8F85F3',
                             fontWeight: 400,
                             fontSize: '16px',
@@ -135,7 +143,7 @@ export default function CardAppointmentCard() {
                             alignItems: 'center'
                         }}
                     >
-                        Lihat selengkapnya
+                        {showAll ? "Tampilkan Lebih Sedikit" : "Lihat Selengkapnya"}
                     </Typography>
                 </Box>
             </Box>

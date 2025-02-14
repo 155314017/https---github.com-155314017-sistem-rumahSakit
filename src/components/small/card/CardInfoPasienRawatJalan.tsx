@@ -1,5 +1,6 @@
 import { Box } from '@mui/system'
 import { Avatar, Typography } from '@mui/material';
+import { useState } from 'react';
 
 
 interface CardBiodataPegawaiProps {
@@ -19,6 +20,12 @@ export default function CardBiodataPegawai({
     avatarUrl,
 
 }: CardBiodataPegawaiProps) {
+
+     const [showAll, setShowAll] = useState(false);
+    
+        const toggleShowAll = () => {
+            setShowAll((prev) => !prev);
+        };
     return (
         <Box
             position={"relative"}
@@ -133,16 +140,18 @@ export default function CardBiodataPegawai({
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
                     <Typography
+                        onClick={toggleShowAll}
                         sx={{
                             color: '#8F85F3',
                             fontWeight: 400,
                             fontSize: '16px',
                             lineHeight: '18px',
                             mt: 3,
-                            alignItems: 'center'
+                            alignItems: 'center',
+                            cursor: 'pointer'
                         }}
                     >
-                        Lihat selengkapnya
+                       {showAll ? "Tampilkan Lebih Sedikit" : "Lihat Selengkapnya"}
                     </Typography>
                 </Box>
             </Box>
