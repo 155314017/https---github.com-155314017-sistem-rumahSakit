@@ -15,44 +15,68 @@ import ModalKategoriPasien from '../../../components/small/modal/ModalKategoriPa
 import useIndex from "../hooks/useIndex";
 export default function Index() {
     const {
-    data,
-    open,
-    setOpen,
-    showTemporarySuccessDelete,
-    setOrderBy,
-    setPageNumber,
-    totalElements
+        data,
+        open,
+        setOpen,
+        showTemporarySuccessDelete,
+        setOrderBy,
+        setPageNumber,
+        totalElements
     } = useIndex();
-  return (
-    <Box>
-    <SideBar />
-
-    <Box p={2} sx={{ marginLeft: "130px" }}>
-        <Header />
+    return (
         <Box>
-            <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
-                Pasien
-            </Typography>
-            <Grid container spacing={3} flex={1} mb={3}>
-                <MediumCard icon={BusinessOutlinedIcon} title="Total Pasien" subtitle={data.length.toString()} />
-                <CardAddOnClick
-                    icon={AddBoxIcon}
-                    title="Tambah Pasien"
-                    link="/add-patient" 
-                    onClick={() => setOpen(true)} 
-                />
-            </Grid>
-            <TablePasien 
-             data={data}
-             onSuccessDelete={showTemporarySuccessDelete}
-             setPageNumber={setPageNumber}
-             setOrderBy={setOrderBy}
-             totalElements={totalElements}
-            />
-        </Box>
-    </Box>
+            <SideBar />
 
-    <ModalKategoriPasien open={open} onClose={() => setOpen(false)} />
-</Box>
-  )
+            <Box p={2} sx={{ marginLeft: "130px" }}>
+                <Header />
+                <Box>
+                    <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
+                        Pasien
+                    </Typography>
+                    <Grid container
+                        sx={{
+                            flex: 1,
+                            mb: 3,
+                            gap: 1,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            maxWidth: '50%',
+                            justifyContent: 'space-between'
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                width: '49%'
+                            }}
+                        >
+                            <MediumCard icon={BusinessOutlinedIcon} title="Total Pasien" subtitle={data.length.toString()} />
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                width: '49%'
+                            }}
+                        >
+                            <CardAddOnClick
+                                icon={AddBoxIcon}
+                                title="Tambah Pasien"
+                                link="/add-patient"
+                                onClick={() => setOpen(true)}
+                            />
+                        </Box>
+                    </Grid>
+                    <TablePasien
+                        data={data}
+                        onSuccessDelete={showTemporarySuccessDelete}
+                        setPageNumber={setPageNumber}
+                        setOrderBy={setOrderBy}
+                        totalElements={totalElements}
+                    />
+                </Box>
+            </Box>
+
+            <ModalKategoriPasien open={open} onClose={() => setOpen(false)} />
+        </Box>
+    )
 }
