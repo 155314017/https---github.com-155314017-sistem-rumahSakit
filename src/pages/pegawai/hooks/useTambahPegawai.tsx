@@ -19,8 +19,8 @@ export interface Exclusion {
 export default function useTambahPegawai() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [gender, setGender] = useState('');
-    
-    
+
+
 
     const labels = [
         "Pilih semua menu",
@@ -75,7 +75,7 @@ export default function useTambahPegawai() {
         { value: 4, label: "Manajemen" },
     ];
 
-   
+
     const formik = useFormik({
         initialValues: {
             nip: '12341234',
@@ -134,42 +134,7 @@ export default function useTambahPegawai() {
         }
     };
 
-    const getBorderStyle = (page: number) => {
-        if (page === currentPage) {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-            };
-        } else if (page < currentPage) {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#8F85F3",
-                color: "white",
-            };
-        } else {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "#8F85F3",
-            };
-        }
-    };
+
 
     // State untuk mengelola status checkbox
     const [checkedItems, setCheckedItems] = useState<boolean[]>(labels.slice(0).map(() => false));
@@ -275,13 +240,6 @@ export default function useTambahPegawai() {
         setSelectAllChecked(allActionsChecked);
     };
 
-
-    
-
-    // State untuk Exclusions
-
-    
-
     const handleSubmitPage3 = () => {
         const selectedMenus = labels.slice(1).map((label, index) => ({
             menu: label,
@@ -308,7 +266,6 @@ export default function useTambahPegawai() {
         rolePegawai,
         formik,
         getPageStyle,
-        getBorderStyle,
         checkedItems,
         menuActions,
         selectAllChecked,

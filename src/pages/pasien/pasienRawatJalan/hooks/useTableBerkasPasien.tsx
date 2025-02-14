@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Data from "../../../../dummyData/dataBerkasPasien";
+import Data from "../../../../data/dummyData/dataBerkasPasien";
 
 export default function useTableBerkasPasien() {
     const [page, setPage] = useState(1);

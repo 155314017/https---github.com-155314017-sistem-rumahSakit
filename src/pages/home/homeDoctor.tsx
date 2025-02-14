@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box } from "@mui/material";
 import QueueDashboard from "../dashboard/features/QueueDashboard";
 import SideBarQueueDashboard from "../../components/SideBar/SideBarQueueDashboard";
 import HeaderNameClinic from "../../components/medium/HeaderNameClinic";
 
-export default function DokterQueue() {
+export default function HomeDoctor() {
     return (
         <Box>
             <SideBarQueueDashboard onSelect={function (value: string): void {

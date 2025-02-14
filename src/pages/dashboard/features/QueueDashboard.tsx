@@ -12,29 +12,14 @@ import CardPanggilPasien from '../../../components/small/card/CardPanggilPasien'
 import CardPasienTerlewati from '../../../components/small/card/CardPasienTerlewati';
 import TableRawatJalan from '../../pasien/pasienRawatJalan/features/TableRawatJalan';
 import AlertSuccess from '../../../components/small/alert/AlertSuccess';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+
 import TableAntrian from '../../pasien/pasienRawatJalan/features/TableAntrian';
+import useQueueDashboard from '../hooks/useQueueDashboard';
 
 export default function QueueDashboard({ selectedValue }: any) {
-    const [successSkipPatient, setSuccessSkipPatient] = useState(false);
-    const location = useLocation()
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (location.state && location.state.successSkip) {
-            showTemporarySuccessSkipPatient();
-            navigate(location.pathname);
-        }
-    }, [location.state, navigate]);
-
-    const showTemporarySuccessSkipPatient = async () => {
-        setSuccessSkipPatient(true)
-        await new Promise(resolve => setTimeout(resolve, 3000))
-        setSuccessSkipPatient(false)
-    }
-
-
+    const {
+        successSkipPatient
+    } = useQueueDashboard();
     return (
         <Box>
             <Box height={'fit-content'} >

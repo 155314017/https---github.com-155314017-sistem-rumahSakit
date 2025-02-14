@@ -29,30 +29,9 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useRef } from "react";
 import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
-
-interface PraktekData {
-    id: string;
-    startTime: string;
-    endTime: string;
-    selectedDay: string[];
-    notes: string;
-    type: string;
-}
-
-interface ExclusionData {
-    id: string;
-    start: string;
-    end?: string;
-    title: string;
-    type: string;
-    notes: string;
-    allDay?: boolean;
-}
-
-interface KalenderData {
-    praktek: PraktekData[];
-    exclusion: ExclusionData[];
-}
+import { getBorderStyle } from "../../../utils/getBorderStyle";
+import { KalenderData } from "../../../types/scheduling.types";
+import CustomFrameTable from "../../../components/small/CustomFrameTable";
 
 export default function TambahPegawai() {
     const {
@@ -65,7 +44,6 @@ export default function TambahPegawai() {
         rolePegawai,
         formik,
         getPageStyle,
-        getBorderStyle,
         checkedItems,
         menuActions,
         selectAllChecked,
@@ -88,8 +66,6 @@ export default function TambahPegawai() {
             const data = kalenderRef.current.getData();
             console.log('Praktek:', data.praktek);
             console.log('Exclusion:', data.exclusion);
-            console.log('Praktek:', JSON.stringify(data.praktek, null, 2));
-            console.log('Exclusion:', JSON.stringify(data.exclusion, null, 2));
         } else {
             console.log('Ref belum terhubung ke TestKalender');
         }
@@ -103,63 +79,7 @@ export default function TambahPegawai() {
             />
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#FAFAFA", overflow: "hidden" }}>
-                    {/* Membuat bentuk lengkung atas */}
-                    <Box
-                        position={"absolute"}
-                        sx={{
-                            top: 0,
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            display: "flex",
-                        }}
-                    >
-                        {/* Lengkung kiri */}
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#FAFAFA",
-                                    borderRadius: "0px 15px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-
-                        {/* Kotak tengah */}
-                        <Box
-                            sx={{
-                                width: "600px",
-                                height: "50px",
-                                bgcolor: "#F1F0FE",
-                                borderRadius: "0px 0px 22px 22px",
-                            }}
-                        />
-
-                        {/* Lengkung kanan */}
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#FAFAFA",
-                                    borderRadius: "15px 0px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-                    </Box>
-                    {/* ---------- */}
+                    <CustomFrameTable />
                     <Typography fontSize="20px" fontWeight="700">Formulir Tambah Pegawai</Typography>
                     <Box
                         sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, justifyContent: 'space-between', ml: 2 }}
@@ -173,7 +93,7 @@ export default function TambahPegawai() {
                                 sx={getPageStyle(1)}
                                 mx={2}
                             >
-                                <Box sx={getBorderStyle(1)}>1</Box>
+                                <Box sx={getBorderStyle(1, currentPage)}>1</Box>
                                 <Typography sx={{ ml: 1 }}>
                                     Biodata Pegawai
                                 </Typography>
@@ -189,7 +109,7 @@ export default function TambahPegawai() {
                                 sx={getPageStyle(2)}
                                 mx={2}
                             >
-                                <Box sx={getBorderStyle(2)}>2</Box>
+                                <Box sx={getBorderStyle(2, currentPage)}>2</Box>
                                 <Typography sx={{ ml: 1 }}>
                                     Jadwal Dokter
                                 </Typography>
@@ -200,11 +120,11 @@ export default function TambahPegawai() {
                                 display={"flex"}
                                 flexDirection={"row"}
                                 alignItems="center"
-                                onClick={() => setCurrentPage(3)} // Perbaiki halaman 3
-                                sx={getPageStyle(3)} // Perbaiki halaman 3
+                                onClick={() => setCurrentPage(3)}
+                                sx={getPageStyle(3)}
                                 mx={2}
                             >
-                                <Box sx={getBorderStyle(3)}>3</Box>
+                                <Box sx={getBorderStyle(3, currentPage)}>3</Box>
                                 <Typography sx={{ ml: 1 }}>
                                     Hak Akses Pegawai
                                 </Typography>
@@ -385,9 +305,6 @@ export default function TambahPegawai() {
                                     onBlur={() => formik.setTouched({ ...formik.touched, alamatTinggal: true })}
                                     error={formik.touched.alamatTinggal && Boolean(formik.errors.alamatTinggal)}
                                 />
-                                {/* {formik.touched.alamatTinggal && formik.errors.alamatTinggal && (
-                                    <Typography color="error">{formik.errors.alamatTinggal}</Typography>
-                                )} */}
                             </FormControl>
 
                             {/* Jenis Kelamin */}
@@ -526,9 +443,6 @@ export default function TambahPegawai() {
                                 }}
                                 onBlur={() => formik.setTouched({ ...formik.touched, nomorHandphone: true })}
                             />
-                            {/* {formik.touched.nomorHandphone && formik.errors.nomorHandphone && (
-                                <Typography color="error">{formik.errors.nomorHandphone}</Typography>
-                            )} */}
 
                             {/* Role Pegawai */}
                             <Typography mt={2} >Role Pegawai<span style={{ color: 'red' }} >*</span></Typography>
@@ -538,9 +452,6 @@ export default function TambahPegawai() {
                                 options={rolePegawai}
                                 loading={false}
                             />
-                            {/* {formik.touched.rolePegawai && formik.errors.rolePegawai && (
-                                <Typography color="error">{formik.errors.rolePegawai}</Typography>
-                            )} */}
 
                             {/* Jenis Spesialisasi */}
                             <Typography mt={2} >Jenis Spesialisasi<span style={{ color: 'red' }} >*</span></Typography>
@@ -550,9 +461,6 @@ export default function TambahPegawai() {
                                 options={rolePegawai}
                                 loading={false}
                             />
-                            {/* {formik.touched.jenisSpesialis && formik.errors.jenisSpesialis && (
-                                <Typography color="error">{formik.errors.jenisSpesialis}</Typography>
-                            )} */}
 
                             {/* Klinik */}
                             <Typography mt={2} >Klinik<span style={{ color: 'red' }} >*</span></Typography>
@@ -562,9 +470,6 @@ export default function TambahPegawai() {
                                 options={rolePegawai}
                                 loading={false}
                             />
-                            {/* {formik.touched.namaKlinik && formik.errors.namaKlinik && (
-                                <Typography color="error">{formik.errors.namaKlinik}</Typography>
-                            )} */}
 
                             {/* Tipe Antrian */}
                             <Typography mt={2} >Tipe Antrian<span style={{ color: 'red' }} >*</span></Typography>
@@ -574,9 +479,6 @@ export default function TambahPegawai() {
                                 options={rolePegawai}
                                 loading={false}
                             />
-                            {/* {formik.touched.tipeAntrian && formik.errors.tipeAntrian && (
-                                <Typography color="error">{formik.errors.tipeAntrian}</Typography>
-                            )} */}
 
                             {/* Biaya Penanganan */}
                             <Typography sx={{ fontSize: '16px', mt: 2 }}>
@@ -586,9 +488,6 @@ export default function TambahPegawai() {
                                 onChange={value => formik.setFieldValue('biayaPenanganan', value)}
                                 defaultValue={0}
                             />
-                            {/* {formik.touched.biayaPenanganan && formik.errors.biayaPenanganan && (
-                                <Typography color="error">{formik.errors.biayaPenanganan}</Typography>
-                            )} */}
 
                             {/* Tombol Submit */}
                             <Button
@@ -604,7 +503,7 @@ export default function TambahPegawai() {
                                     borderRadius: "8px",
                                     ":hover": { bgcolor: "#a098f5" },
                                 }}
-                                disabled={!formik.isValid || !formik.dirty} 
+                                disabled={!formik.isValid || !formik.dirty}
                             >
                                 Selanjutnya
                             </Button>
@@ -812,7 +711,7 @@ export default function TambahPegawai() {
                                         </Table>
                                     </StyledTableContainer>
                                     <Button
-                                        onClick={handleSubmitPage3} // Panggil handler saat klik
+                                        onClick={handleSubmitPage3}
                                         variant="contained"
                                         color="inherit"
                                         sx={{

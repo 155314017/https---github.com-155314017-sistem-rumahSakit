@@ -18,7 +18,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { Formik, Form, Field } from "formik";
-import CustomCalendar from "../../../../components/medium/CustomCalender";
+import CustomCalendar from "../components/CustomCalender";
 import DropdownListAPI from "../../../../components/small/dropdownlist/DropdownListAPI";
 import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
 import useRegistrationOnline from "../hooks/useRegistrationOnline";
@@ -896,11 +896,6 @@ export default function RegistrationOnline() {
                                                                     handleScheduleChange(scheduleId, schedule);
                                                                 }}
                                                             />
-                                                            {/* {touched.schedule && errors.schedule && (
-                                                            <Typography variant="caption" color="error">
-                                                                {errors.schedule as string}
-                                                            </Typography>
-                                                        )} */}
                                                         </Box>
                                                     </Box>
                                                     <FormControl sx={{ mt: 2 }}>

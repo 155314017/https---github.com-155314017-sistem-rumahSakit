@@ -5,7 +5,7 @@ import { SetStateAction, useState } from 'react'
 import CardCatatanDetailTindakanPasien from './CardCatatanDetailTindakanPasien'
 import DropdownList from '../../../../components/small/dropdownlist/DropdownList'
 import SearchBar from '../../../../components/small/SearchBar'
-import Data from "../../../../dummyData/dataInformasiRiwayat";
+import Data from "../../../../data/dummyData/dataInformasiRiwayat";
 
 interface DataItem {
     tanggal: any;

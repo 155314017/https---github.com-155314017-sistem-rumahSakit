@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Data from "../../../../dummyData/dataPasien"
+import Data from "../../../../data/dummyData/dataPasien"
 import { useNavigate } from "react-router-dom";
 
 export default function useTableAntrian() {

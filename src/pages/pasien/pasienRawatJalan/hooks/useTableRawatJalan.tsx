@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Data from "../../../../dummyData/dataPasien"
+import Data from "../../../../data/dummyData/dataPasien"
 
 export default function useTableRawatJalan() {
     const [page, setPage] = useState(1);

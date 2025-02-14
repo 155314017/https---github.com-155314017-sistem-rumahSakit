@@ -46,72 +46,10 @@ import { ScheduleDataItem } from '../../services/Admin Tenant/ManageSchedule/Get
 import { ExclusionDataItem } from '../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices';
 import { EditScheduleService } from '../../services/Admin Tenant/ManageSchedule/EditScheduleService';
 import { EditExclusionService } from '../../services/Admin Tenant/ManageSchedule/EditExclusionService';
-
-// Definisikan interface untuk Event dan Session
-interface Event {
-    id: string;
-    title: string;
-    start: string;
-    end?: string;
-    allDay?: boolean;
-    type?: string;
-    notes?: string;
-    color?: string;
-    textColor?: string;
-    borderColor?: string;
-    startTime?: string;
-    endTime?: string;
-    senin?: boolean;
-    selasa?: boolean;
-    rabu?: boolean;
-    kamis?: boolean;
-    jumat?: boolean;
-    sabtu?: boolean;
-    minggu?: boolean;
-}
-
-interface Session {
-    id: string;
-    startTime: string;
-    endTime: string;
-    selectedDays: string[];
-    notes: string;
-}
-
-// Definisikan interface untuk data yang akan diekspose ke parent
-interface KalenderData {
-    praktek: PraktekData[];
-    exclusion: ExclusionData[];
-}
-
-interface PraktekData {
-    id: string;
-    startTime: string;
-    endTime: string;
-    selectedDay: string[];
-    notes: string;
-    type: string;
-}
-
-interface ExclusionData {
-    id: string;
-    start: string;
-    end?: string;
-    title: string;
-    type: string;
-    notes: string;
-    allDay?: boolean;
-}
-
-interface TestKalenderRef {
-    getData: () => KalenderData;
-}
-
-interface TestKalenderProps {
-    initialData?: ScheduleDataItem[] | null;
-    initialDataPengecualian?: ExclusionDataItem[] | null;
-    typeId?: string;
-}
+import { KalenderData, Event, PraktekData, ExclusionData, Session } from '../../types/scheduling.types';
+import dataJamOperasional from '../../data/jamOperasional';
+import shorthenedDays from '../../data/daysData/shortenedDays';
+import scheduleType from '../../data/scheduleType';
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiPaper-root': {
@@ -131,24 +69,6 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
         },
     },
 }));
-
-const jamOperasional = [
-    { value: "07:00 am", label: "07:00 am" },
-    { value: "08:00 am", label: "08:00 am" },
-    { value: "09:00 am", label: "09:00 am" },
-    { value: "10:00 am", label: "10:00 am" },
-    { value: "11:00 am", label: "11:00 am" },
-    { value: "12:00 pm", label: "12:00 pm" },
-    { value: "01:00 pm", label: "01:00 pm" },
-    { value: "02:00 pm", label: "02:00 pm" },
-    { value: "03:00 pm", label: "03:00 pm" },
-    { value: "04:00 pm", label: "04:00 pm" },
-    { value: "05:00 pm", label: "05:00 pm" },
-    { value: "06:00 pm", label: "06:00 pm" },
-    { value: "07:00 pm", label: "07:00 pm" },
-    { value: "08:00 pm", label: "08:00 pm" },
-    { value: "09:00 pm", label: "09:00 pm" },
-];
 
 const GlobalStyles = styled('style')`
   @keyframes slideIn {
@@ -258,6 +178,19 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     },
 }));
 
+const jamOperasional = dataJamOperasional;
+
+interface TestKalenderRef {
+    getData: () => KalenderData;
+}
+
+interface TestKalenderProps {
+    initialData?: ScheduleDataItem[] | null;
+    initialDataPengecualian?: ExclusionDataItem[] | null;
+    typeId?: string;
+}
+
+
 const convertTimeArrayToAMPM = (timeArray: number[]): string => {
     const [hours, minutes] = timeArray;
     const period = hours >= 12 ? 'pm' : 'am';
@@ -299,7 +232,6 @@ const CustomBigCalendar = forwardRef<TestKalenderRef, TestKalenderProps>(({ init
     useImperativeHandle(ref, () => ({
         getData: () => getKalenderData(),
     }));
-    // State management
     const [events, setEvents] = useState<Event[]>([]);
     const [sessions, setSessions] = useState<Session[]>([]);
     const [exclusionEvents, setExclusionEvents] = useState<Event[]>([]);
@@ -341,20 +273,8 @@ const CustomBigCalendar = forwardRef<TestKalenderRef, TestKalenderProps>(({ init
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
     const [openExclusionDetail, setOpenExclusionDetail] = useState(false);
 
-    const days = [
-        { label: 'Min', value: 'minggu' },
-        { label: 'Sen', value: 'senin' },
-        { label: 'Sel', value: 'selasa' },
-        { label: 'Rab', value: 'rabu' },
-        { label: 'Kam', value: 'kamis' },
-        { label: 'Jum', value: 'jumat' },
-        { label: 'Sab', value: 'sabtu' },
-    ];
-
-    const tipeJadwal = [
-        { value: 'Praktek', label: "Praktek" },
-        { value: 'Pengecualian', label: "Pengecualian" },
-    ];
+    const days = shorthenedDays;
+    const tipeJadwal = scheduleType;
 
     // Mengatur fungsi untuk mengekspos data ke parent
     useImperativeHandle(ref, () => ({
@@ -362,7 +282,6 @@ const CustomBigCalendar = forwardRef<TestKalenderRef, TestKalenderProps>(({ init
     }));
 
     const getKalenderData = (): KalenderData => {
-        // Mapping sessions to praktek array
         const praktek: PraktekData[] = sessions.map(session => ({
             id: session.id,
             startTime: session.startTime,
@@ -372,7 +291,6 @@ const CustomBigCalendar = forwardRef<TestKalenderRef, TestKalenderProps>(({ init
             type: 'Praktek',
         }));
 
-        // Mapping exclusionEvents to exclusion array
         const exclusion: ExclusionData[] = exclusionEvents.map(event => ({
             id: event.id,
             start: event.start,
@@ -389,7 +307,6 @@ const CustomBigCalendar = forwardRef<TestKalenderRef, TestKalenderProps>(({ init
         };
     };
 
-    // Hooks useEffect
     useEffect(() => {
         console.log('Tanggal yang diformat: ', currentDate.format('dddd, D MMMM YYYY'));
     }, [currentDate]);
