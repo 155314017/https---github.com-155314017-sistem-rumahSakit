@@ -15,12 +15,12 @@ import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import useIndex from "../hooks/useIndex";
 
 export default function Index() {
-    const { 
-        data, 
-        isLoading, 
-        successAddClinic, 
-        successDeleteClinic, 
-        successEditClinic, 
+    const {
+        data,
+        isLoading,
+        successAddClinic,
+        successDeleteClinic,
+        successEditClinic,
         showTemporarySuccessDelete,
         setPageNumber,
         setOrderBy,
@@ -45,18 +45,41 @@ export default function Index() {
                     <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
                         Klinik
                     </Typography>
-                    <Grid container spacing={3} flex={1} mb={3}>
-                        {/* <MediumCard icon={BusinessOutlinedIcon} title="Daftar Klinik" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString()} /> */}
-                        <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString() || "0"} />
-                        <CardAdd icon={AddBoxIcon} title="Tambah Klinik" link="/tambahKlinik" />
+                    <Grid container
+                        sx={{
+                            flex: 1,
+                            mb: 3,
+                            gap: 1,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            maxWidth: '50%',
+                            justifyContent: 'space-between'
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                width: '49%'
+                            }}
+                        >
+                            <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString() || "0"} />
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                width: '49%'
+                            }}
+                        >
+                            <CardAdd icon={AddBoxIcon} title="Tambah Klinik" link="/tambahKlinik" />
+                        </Box>
                     </Grid>
-                    <TableKlinik 
-                    data={data}
-                    onSuccessDelete={showTemporarySuccessDelete}
-                    setPageNumber={setPageNumber}
-                    setOrderBy={setOrderBy}
-                    totalElements={totalElements}
-                     />
+                    <TableKlinik
+                        data={data}
+                        onSuccessDelete={showTemporarySuccessDelete}
+                        setPageNumber={setPageNumber}
+                        setOrderBy={setOrderBy}
+                        totalElements={totalElements}
+                    />
                 </Box>
             </Box>
         </Box>
