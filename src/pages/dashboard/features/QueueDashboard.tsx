@@ -37,7 +37,7 @@ export default function QueueDashboard({ selectedValue }: any) {
 
     return (
         <Box>
-            <Box>
+            <Box height={'fit-content'} >
                 {successSkipPatient && <AlertSuccess label="Pasien Berhasil Dilewati" />}
                 {selectedValue === 'Dasboard' ? <Typography sx={{ fontSize: '32px', fontWeight: '700', mb: 2, mt: 2 }}>Dashboard</Typography> : <Typography sx={{ fontSize: '32px', fontWeight: '700', mb: 2, mt: 2 }}>Rawat Jalan - {selectedValue}</Typography>}
 
@@ -72,9 +72,6 @@ export default function QueueDashboard({ selectedValue }: any) {
                 </Grid>
                 <Box mt={3} >
                     {selectedValue === 'Dasboard' ? <TableRawatJalan /> : <TableAntrian />}
-
-
-
                 </Box>
 
             </Box>

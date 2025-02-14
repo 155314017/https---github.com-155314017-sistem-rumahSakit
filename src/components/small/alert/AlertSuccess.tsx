@@ -7,7 +7,6 @@ interface Props {
 const AlertSuccess: React.FC<Props> = ({ label }) => {
     return (
         <Alert
-            severity="success"
             sx={{
                 width: 'fit-content',
                 height: '36px',
@@ -18,15 +17,15 @@ const AlertSuccess: React.FC<Props> = ({ label }) => {
                 color: '#77C397',
                 fontSize: '16px',
                 lineHeight: '18px',
-                position: 'fixed', 
+                position: 'fixed',
                 top: '10%',
                 left: '50%',
-                zIndex:999,
-                transform: 'translate(-50%, -100%)', 
+                zIndex: 999,
+                transform: 'translate(-50%, -100%)',
                 animation: 'slideIn 0.5s ease-out',
                 '@keyframes slideIn': {
                     '0%': {
-                        transform: 'translate(-50%, -150%)', 
+                        transform: 'translate(-50%, -150%)',
                         opacity: 0,
                     },
                     '100%': {

@@ -105,6 +105,7 @@ export default function useTableRawatJalan() {
 
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
+        
     };
 
     const handleMenuClose = () => {

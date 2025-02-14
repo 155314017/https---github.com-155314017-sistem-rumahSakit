@@ -73,6 +73,7 @@ export default function CardRiwayatKunjungan() {
                 border={"1px solid #C5C5D3"}
                 borderRadius={"24px"}
                 minHeight={"fit-content"}
+                bgcolor={'#ffff'}
             >
                 <Typography sx={{ fontWeight: 600, fontSize: '18px', lineHeight: '20px', color: '#0A0A0D', mb: 2 }} >Informasi Kunjungan</Typography>
                 <Stack>
@@ -104,6 +105,7 @@ export default function CardRiwayatKunjungan() {
                                     mt: 2
                                 }}
                             >
+                            
                                 <Typography>{date}</Typography>
                             </Box>
                             {groupedData[date].map((item: DataItem, index: number) => (

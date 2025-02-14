@@ -76,7 +76,7 @@ export default function TableBerkasPasien() {
             <Box
                 position={"relative"}
                 p={3}
-                sx={{ borderRadius: "24px", overflow: "hidden", width: '98%', border: '1px solid #C5C5D3' }}
+                sx={{ borderRadius: "24px", overflow: "hidden", width: '98%', border: '1px solid #C5C5D3', bgcolor: '#ffff' }}
             >
                 <Typography
                     sx={{
