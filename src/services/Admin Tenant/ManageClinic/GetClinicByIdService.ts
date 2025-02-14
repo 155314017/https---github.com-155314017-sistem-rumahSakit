@@ -23,7 +23,6 @@ export interface ApiResponse{
   data:ClinicData
 }
 
-// Layanan untuk mendapatkan data Ambulance
 export const getClinicByIdService = async (id: string | undefined): Promise<ClinicData | null> => {
   try {
     const token = Cookies.get('accessToken');
