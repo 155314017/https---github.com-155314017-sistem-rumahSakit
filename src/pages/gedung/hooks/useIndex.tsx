@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Building } from "../../../services/Admin Tenant/ManageBuilding/Building";
 import { BuildingDataItem } from "../../../types/building.types";
+import { debounce } from "@mui/material";
 
 export const PAGE_SIZE = 10;
 
@@ -15,13 +16,18 @@ export default function useIndex() {
   const [pageNumber, setPageNumber] = useState(0);
   const [orderBy, setOrderBy] = useState("createdDateTime=asc");
   const [totalElements, setTotalElements] = useState(0);
+  const [searchItem, setSearchItem] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
 
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const result = await Building(pageNumber, PAGE_SIZE, orderBy);
+      console.log('page number: ', pageNumber);
+      console.log('page size: ', PAGE_SIZE);
+      console.log('order: ', orderBy);
+      console.log('page search: ', searchItem);
+      const result = await Building(pageNumber, PAGE_SIZE, orderBy, searchItem);
       setTotalElements(result.data.totalElements);
       setData(result.data.content);
     } catch (error) {
@@ -34,6 +40,24 @@ export default function useIndex() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  const debounceFetchBuilding = useCallback(
+    debounce(async () => {
+      fetchData();
+    }, 300),
+    [fetchData]
+  );
+
+  useEffect(() => {
+    console.log('MASOK!')
+    debounceFetchBuilding();
+  }, [searchItem]);
+
+  const handleSearchChange = (newSearchValue: string) => {
+    setSearchItem(newSearchValue);
+  };
+
+
 
   useEffect(() => {
     const handleLocationState = async () => {
@@ -86,6 +110,7 @@ export default function useIndex() {
     orderBy,
     setOrderBy,
     totalElements,
-    PAGE_SIZE
+    PAGE_SIZE,
+    handleSearchChange
   }
 }

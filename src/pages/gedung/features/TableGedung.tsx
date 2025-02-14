@@ -59,6 +59,7 @@ interface TableGedungProps {
   setPageNumber: (page: number) => void;
   setOrderBy: (order: string) => void;
   totalElements: number;
+  onSearchChange?: (value: string) => void;
 }
 
 const TableGedung: React.FC<TableGedungProps> = ({
@@ -66,7 +67,8 @@ const TableGedung: React.FC<TableGedungProps> = ({
   onSuccessDelete,
   setPageNumber,
   setOrderBy,
-  totalElements
+  totalElements,
+  onSearchChange
 }) => {
   const {
     page,
@@ -80,11 +82,12 @@ const TableGedung: React.FC<TableGedungProps> = ({
     urutkan,
     setSort,
     setOpen,
-    navigate
+    navigate,
   } = useTableGedung(
     onSuccessDelete,
     setPageNumber,
-    setOrderBy
+    setOrderBy,
+
   );
 
   return (
@@ -126,7 +129,7 @@ const TableGedung: React.FC<TableGedungProps> = ({
                 }
               }}
             >
-              <SearchBar />
+              <SearchBar onChange={onSearchChange} />
               <DropdownList
                 options={urutkan}
                 placeholder="Urutkan"

@@ -21,7 +21,8 @@ export default function Index() {
     showTemporarySuccessDelete,
     setPageNumber,
     setOrderBy,
-    totalElements
+    totalElements,
+    handleSearchChange
   } = useIndex();
 
   return (
@@ -100,6 +101,7 @@ export default function Index() {
             setPageNumber={setPageNumber}
             setOrderBy={setOrderBy}
             totalElements={totalElements}
+            onSearchChange={handleSearchChange}
           />
         </Box>
       </Box>

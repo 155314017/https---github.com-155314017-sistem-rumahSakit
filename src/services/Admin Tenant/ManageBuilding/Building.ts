@@ -6,15 +6,17 @@ const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building
 
 export const Building = async (
   pageNumber: number = 0,
-  pageSize: number = 100, 
-  orderBy: string = 'createdDateTime=asc' 
+  pageSize: number = 100,
+  orderBy: string = 'createdDateTime=asc',
+  search: string = ''
 ): Promise<PaginatedResponse<BuildingDataItem>> => {
   try {
     const response = await axios.get<PaginatedResponse<BuildingDataItem>>(API_URL, {
       params: {
         pageNumber,
         pageSize,
-        orderBy
+        orderBy,
+        search
       }
     })
 

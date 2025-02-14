@@ -5,7 +5,7 @@ import { PAGE_SIZE } from "./useIndex";
 export default function useTableGedung(
   onSuccessDelete: () => void,
   setPageNumber: (page: number) => void,
-  setOrderBy: (order: string) => void
+  setOrderBy: (order: string) => void,
 ) {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -14,6 +14,8 @@ export default function useTableGedung(
   const [sort, setSort] = useState('');
 
   const navigate = useNavigate();
+
+
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -52,7 +54,7 @@ export default function useTableGedung(
   };
 
   const toggleCollapse = () => setIsCollapsed((prev) => !prev);
-  
+
   return {
     page,
     isCollapsed,
@@ -66,6 +68,6 @@ export default function useTableGedung(
     sort,
     setSort,
     navigate,
-    setOpen
+    setOpen,
   }
 }

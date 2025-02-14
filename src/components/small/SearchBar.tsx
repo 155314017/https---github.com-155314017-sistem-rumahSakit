@@ -1,7 +1,17 @@
 import { Box, InputBase, Icon } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-export default function SearchBar() {
+interface SearchBarProps {
+  onChange?: (value: string) => void;
+}
+
+export default function SearchBar({ onChange }: SearchBarProps) {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(event.target.value);
+    }
+  };
+
   return (
     <Box
       display="flex"
@@ -22,6 +32,7 @@ export default function SearchBar() {
         placeholder="Cari"
         sx={{ flex: 1 }}
         inputProps={{ "aria-label": "search" }}
+        onChange={handleChange}
       />
     </Box>
   );
