@@ -81,35 +81,91 @@ export default function Index() {
         {successLogin && <AlertSuccess label="Success Login" />}
         <Typography sx={{ fontSize: '32px', fontWeight: '700' }}>Dashboard</Typography>
       </Box>
-      <Grid container spacing={3} flex={1} justifyContent={'space-between'}  >
-        <MediumCard
-          icon={MeetingRoomIcon}
-          title="Total Ruangan"
-          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataRoom.length.toString() || '0'}
-        />
-        <MediumCard
-          icon={BedIcon}
-          title={'Ruangan tersedia'}
-          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataRoom.length.toString() || '0'}
-        />
-        <MediumCard icon={PeopleIcon} title={'Total pegawai'} subtitle={'2'} />
-        <MediumCard
-          icon={LocalHospitalIcon}
-          title="Total poliklinik"
-          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataClinic.length.toString() || '0'}
-        />
-        <MediumCard
-          icon={MedicalServicesIcon}
-          title="Total dokter"
-          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataDoctor.length.toString() || '0'}
-        />
-        <MediumCard
-          icon={MonitorHeartIcon}
-          title="Total fasilitas"
-          subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataFacility.length.toString() || '0'}
-        />
-        <CardAdd icon={RoomPreferencesIcon} title="Tambah ruangan" link="/tambahRuangan" />
-        <CardAdd icon={PersonAddIcon} title="Tambah pegawai" link="/tambahPegawai" />
+
+      {/* note layout:
+      destkop view {
+        grid utama: row
+        2 box pembungkus konten: width 49% 
+      }
+
+      tablet view {
+        grid utama: column
+        2 box pembungkus konten width auto
+      } */}
+
+      <Grid container spacing={2}
+        sx={{
+          display: 'flex',
+          flex: 1,
+          flexDirection: 'row',
+          '@media (max-width: 980px)': {
+            flexDirection: 'column'
+          }
+        }}
+      >
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '49%',
+            gap: 2,
+            '@media (max-width: 980px)': {
+              width: 'auto'
+            }
+          }}
+        >
+          <Grid display={'flex'} flexDirection={'row'} gap={2}  >
+            <MediumCard
+              icon={MeetingRoomIcon}
+              title="Total Ruangan"
+              subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataRoom.length.toString() || '0'}
+            />
+            <MediumCard
+              icon={BedIcon}
+              title={'Ruangan tersedia'}
+              subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataRoom.length.toString() || '0'}
+            />
+          </Grid>
+
+          <Grid display={'flex'} flexDirection={'row'} gap={2} >
+            <MediumCard icon={PeopleIcon} title={'Total pegawai'} subtitle={'2'} />
+            <MediumCard
+              icon={LocalHospitalIcon}
+              title="Total poliklinik"
+              subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataClinic.length.toString() || '0'}
+            />
+          </Grid>
+        </Box>
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '49%',
+            gap: 2,
+            '@media (max-width: 980px)': {
+              width: 'auto'
+            }
+          }}
+        >
+          <Grid display={'flex'} flexDirection={'row'} gap={2} >
+            <MediumCard
+              icon={MedicalServicesIcon}
+              title="Total dokter"
+              subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataDoctor.length.toString() || '0'}
+            />
+            <MediumCard
+              icon={MonitorHeartIcon}
+              title="Total fasilitas"
+              subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataFacility.length.toString() || '0'}
+            />
+          </Grid>
+          <Grid display={'flex'} flexDirection={'row'} gap={2} >
+            <CardAdd icon={RoomPreferencesIcon} title="Tambah ruangan" link="/tambahRuangan" />
+            <CardAdd icon={PersonAddIcon} title="Tambah pegawai" link="/tambahPegawai" />
+          </Grid>
+        </Box>
       </Grid>
 
       <Stack mt={3} spacing={3}>
