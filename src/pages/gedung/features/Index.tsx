@@ -50,17 +50,30 @@ export default function Index() {
               gap: 1,
               display: 'flex',
               flexDirection: 'row',
-              // '@media (max-width: 1194px)': {
-              //   gap: '11.5%'
-              // }
               maxWidth: '50%',
-              justifyContent: 'space-between'
+              justifyContent: 'space-between',
+              '@media (min-width: 1010px) and (max-width: 1194px)': {
+                maxWidth: '55%'
+              },
+              '@media (min-width: 900px) and (max-width: 1010px)': {
+                maxWidth: '60%'
+              },
+              '@media (min-width: 750px) and (max-width: 900px)': {
+                maxWidth: '70%'
+              },
+              '@media  (max-width: 750px)': {
+                maxWidth: '100%'
+              }
+
             }}
           >
             <Box
               sx={{
                 display: 'flex',
-                width: '49%'
+                width: '49%',
+                // '@media (max-width: 1194px)': {
+                //   width: '50%'
+                // }
               }}
             >
               <MediumCard
@@ -72,7 +85,10 @@ export default function Index() {
             <Box
               sx={{
                 display: 'flex',
-                width: '49%'
+                width: '49%',
+                // '@media (max-width: 1194px)': {
+                //   width: '50%'
+                // }
               }}
             >
               <CardAdd icon={AddBoxIcon} title="Tambah Gedung" link="/tambahGedung" />
