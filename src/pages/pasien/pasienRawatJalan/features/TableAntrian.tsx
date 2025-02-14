@@ -23,6 +23,7 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import useTableAntrian from "../hooks/useTableAntrian";
 import BadgeStatusPasien from "../../../../components/small/badge/BadgeStatusPasien";
+import ModalConfirmationSkipPatient from "../../../../components/small/modal/ModalConfirmationSkipPatient";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -80,7 +81,11 @@ export default function TableAntrian() {
         urutkan,
         toggleCollapse,
         anchorEl,
-        handleMenuClose
+        handleMenuClose,
+        openModal,
+        handleOpenModal,
+        handleCloseModal,
+        navigate
     } = useTableAntrian();
     return (
         <Box>
@@ -373,6 +378,64 @@ export default function TableAntrian() {
                                         )}
                                     </TableBody>
                                 </Table>
+                                <Menu
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleMenuClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom', // Position the menu below the button
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'bottom', // Align the top of the menu with the bottom of the button
+                                    horizontal: 'center',
+                                }}
+                                sx={{
+                                '& .MuiPaper-root': {
+                                    position: '-webkit-sticky',
+                                    borderRadius: '16px',
+                                    border: '1px solid #A8A8BD',
+                                    width: '100%',
+                                    height: '120px',
+                                    gap: '8px',
+                                    borderWidth: '1px',
+                                    padding: '8px',
+                                    
+                                
+                                },
+                                }}
+                            >
+                                <MenuItem onClick={() => {handleOpenModal(); handleMenuClose(); }}>
+                                    <Typography
+                                        sx={{
+                                        fontFamily: 'Roboto',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '18px',
+                                        letterSpacing: '0%',
+                                        color: '#8F85F3', // Text color,
+                                        padding: '8px',
+                                        }}
+                                    >
+                                        Lewati Antrian
+                                    </Typography>
+                                    </MenuItem>
+                                    <MenuItem onClick={() => {navigate(`/detailRawat`); handleMenuClose(); }}>
+                                        <Typography
+                                            sx={{
+                                            fontFamily: 'Roboto',
+                                            fontWeight: 400,
+                                            fontSize: '16px',
+                                            lineHeight: '18px',
+                                            letterSpacing: '0%',
+                                            color: '#8F85F3', // Text color
+                                            padding: '8px',
+                                            }}
+                                        >
+                                            Lihat Detail
+                                        </Typography>
+                                        </MenuItem>
+                                </Menu>
                             </StyledTableContainer>
                         </Box>
                         <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
@@ -406,69 +469,13 @@ export default function TableAntrian() {
                             />
 
                         </Stack>
-                        <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
-                anchorOrigin={{
-                    vertical: 'bottom', // Position the menu below the button
-                    horizontal: 'center',
-                }}
-                transformOrigin={{
-                    vertical: 'bottom', // Align the top of the menu with the bottom of the button
-                    horizontal: 'center',
-                }}
-                sx={{
-                '& .MuiPaper-root': {
-                    position: 'absolute',
-                    borderRadius: '16px',
-                    border: '1px solid #A8A8BD',
-                    width: '329px',
-                    height: '120px',
-                    gap: '8px',
-                    borderWidth: '1px',
-                    padding: '8px',
-                    
-                
-                },
-                }}
-            >
-                <MenuItem onClick={() => { handleMenuClose(); }}>
-                    <Typography
-                        sx={{
-                        fontFamily: 'Roboto',
-                        fontWeight: 400,
-                        fontSize: '16px',
-                        lineHeight: '18px',
-                        letterSpacing: '0%',
-                        color: '#8F85F3', // Text color,
-                        padding: '8px',
-                        }}
-                    >
-                        Lewati Antrian
-                    </Typography>
-                    </MenuItem>
-                    <MenuItem onClick={() => { handleMenuClose(); }}>
-                    <Typography
-                        sx={{
-                        fontFamily: 'Roboto',
-                        fontWeight: 400,
-                        fontSize: '16px',
-                        lineHeight: '18px',
-                        letterSpacing: '0%',
-                        color: '#8F85F3', // Text color
-                        padding: '8px',
-                        }}
-                    >
-                        Lihat Detail
-                    </Typography>
-                    </MenuItem>
-            </Menu>
+                        
                     </Box>
                 </Collapse>
 
                
             </Box >
+            <ModalConfirmationSkipPatient open={openModal} onClose={handleCloseModal} />
         </Box >
     );
 }

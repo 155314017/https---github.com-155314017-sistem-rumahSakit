@@ -3,15 +3,48 @@ import bgImage from "../../../assets/img/String.png";
 
 //icon
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalConfirmationSkipPatient from "../modal/ModalConfirmationSkipPatient";
 import { useNavigate } from "react-router-dom";
+import AlertSuccess from "../alert/AlertSuccess";
 
 
 const CardPanggilPasien = () => {
     const [openModal, setOpenModal] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
+    const [alertPanggil, setAlertPanggil] = useState(false);
+
+
+
+    const [countdown, setCountdown] = useState(30);
+    const [isCounting, setIsCounting] = useState(false);
+
+    useEffect(() => {
+            let interval: number | undefined;
+            if (isCounting && countdown > 0) {
+                interval = setInterval(() => {
+                    setCountdown((prev) => prev - 1);
+                }, 1000);
+            } else if (countdown === 0) {
+                setIsCounting(false);
+                setCountdown(30);
+            }
+            return () => clearInterval(interval);
+        }, [isCounting, countdown]);
+    
+        const startCountdown = () => {
+            showTemporarySuccessCall();
+            if (!isCounting) {
+                setIsCounting(true);
+            }
+        };
+
+        const showTemporarySuccessCall = async () => {
+            setAlertPanggil(true)
+            await new Promise(resolve => setTimeout(resolve, 3000))
+            setAlertPanggil(false)
+        }
 
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -32,6 +65,9 @@ const CardPanggilPasien = () => {
 
     return (
         <Box>
+            {alertPanggil && (
+                <AlertSuccess label="Pasien sedang dipanggil" />
+            )}
             <Box
                 height={"378px"}
                 width={"100%"}
@@ -98,11 +134,14 @@ const CardPanggilPasien = () => {
                             Proses Pasien
                         </Button>
                         <Button sx={{
-                            bgcolor: '#8F85F3', color: '#ffff', border: '1px solid #8F85F3', padding: 1, px: 5, height: '44px', width: '45%', '&:hover': {
+                            bgcolor: isCounting ? "#ccc" : "#8F85F3", color: '#ffff', border: '1px solid #8F85F3', padding: 1, px: 5, height: '44px', width: '45%', '&:hover': {
                                 backgroundColor: "#ffff", color: '#8F85F3',
                             },
-                        }}>
-                            Panggil Pasien
+                        }}
+                        onClick={startCountdown}
+                        disabled={isCounting}
+                        >
+                            {isCounting ? countdown : "Panggil Pasien"}
                         </Button>
                     </Box>
 

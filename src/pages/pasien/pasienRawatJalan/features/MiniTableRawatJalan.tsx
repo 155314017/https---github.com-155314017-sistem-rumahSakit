@@ -7,6 +7,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import useMiniTableRawatJalan from "../hooks/useMiniTableRawatJalan";
 import { useEffect } from "react";
 import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
+import ModalConfirmationSkipPatient from "../../../../components/small/modal/ModalConfirmationSkipPatient";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -52,6 +53,10 @@ export default function MiniTableRawatJalan(props: MiniTableRawatJalanProps) {
         alertPanggil,
         countDownPanggil,
         countdowns,
+        handleOpenModal,
+        handleCloseModal,
+        openModal
+
     } = useMiniTableRawatJalan();
 
     useEffect(() => {
@@ -230,7 +235,7 @@ export default function MiniTableRawatJalan(props: MiniTableRawatJalanProps) {
                                 },
                             }}
                         >
-                            <MenuItem onClick={() => { handleMenuClose(); }}>
+                            <MenuItem onClick={() => { handleOpenModal(); handleMenuClose(); }}>
                                 <Typography
                                     sx={{
                                         fontFamily: 'Roboto',
@@ -245,7 +250,7 @@ export default function MiniTableRawatJalan(props: MiniTableRawatJalanProps) {
                                     Lewati Antrian
                                 </Typography>
                             </MenuItem>
-                            <MenuItem onClick={() => { handleMenuClose(); }}>
+                            <MenuItem onClick={() => { handleOpenModal(); handleMenuClose(); }}>
                                 <Typography
                                     sx={{
                                         fontFamily: 'Roboto',
@@ -291,6 +296,7 @@ export default function MiniTableRawatJalan(props: MiniTableRawatJalanProps) {
                     />
                 </Stack> */}
             </Box>
+            <ModalConfirmationSkipPatient open={openModal} onClose={handleCloseModal} />
         </Box>
     );
 }

@@ -12,6 +12,7 @@ export default function CardPasienTerlewati() {
 
     return (
         <Box>
+            
             <Box
                 height={"378px"}
                 width={"100%"}
