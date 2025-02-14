@@ -5,7 +5,7 @@ import { Box, Container } from '@mui/system'
 import bgImage from "../../../assets/img/String.png"
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr'
 import BreadCrumbs from '../../../components/medium/BreadCrumbs'
-import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageUploaderGroup'
+import ImageUploaderGroup from '../../../components/inputComponent/ImageUploaderComponents/ImageUploaderGroup'
 
 // hooks
 import useTambahAmbulance from '../hooks/useTambahAmbulance'

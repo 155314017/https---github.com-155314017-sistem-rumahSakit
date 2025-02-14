@@ -4,7 +4,7 @@ import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 import CustomTimePicker from "../../../components/small/CustomTimePicker";
-import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageUploaderGroup';
+import ImageUploaderGroup from '../../../components/inputComponent/ImageUploaderComponents/ImageUploaderGroup';
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr';
 
 //hooks

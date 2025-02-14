@@ -4,7 +4,7 @@ import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr';
 import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
-import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/ImageGroupUploaderAPI';
+import ImageUploaderGroupAPI from '../../../components/inputComponent/ImageUploaderComponents/ImageGroupUploaderAPI';
 
 //hooks
 import useEditFasilitas from "../hooks/useEditFasilitas";

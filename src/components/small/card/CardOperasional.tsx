@@ -24,7 +24,7 @@ interface DetailCardProps {
     };
 }
 
-const CardOperasionalKlinik: React.FC<DetailCardProps> = ({ title, data }) => {
+const CardOperasional: React.FC<DetailCardProps> = ({ title, data }) => {
     return (
         <div>
             <Box
@@ -150,4 +150,4 @@ const CardOperasionalKlinik: React.FC<DetailCardProps> = ({ title, data }) => {
     );
 };
 
-export default CardOperasionalKlinik;
+export default CardOperasional;

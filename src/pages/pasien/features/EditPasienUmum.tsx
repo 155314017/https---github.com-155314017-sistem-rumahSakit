@@ -17,7 +17,7 @@ import {
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import PhoneInputComponent from '../../../components/inputComponent/PhoneInputComponent';
-import FileUploader from '../../../components/medium/FileUploader';
+import FileUploader from '../../../components/inputComponent/FileUploader';
 import CalenderPopover from '../../../components/medium/CalenderPopover';
 import { doctors } from '../../../dummyData/dummyData';
 

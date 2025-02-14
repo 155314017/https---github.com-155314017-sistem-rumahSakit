@@ -5,7 +5,7 @@ import 'dayjs/locale/id';
 // components
 import BreadCrumbs from '../../../components/medium/BreadCrumbs'
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr'
-import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/ImageGroupUploaderAPI'
+import ImageUploaderGroupAPI from '../../../components/inputComponent/ImageUploaderComponents/ImageGroupUploaderAPI'
 
 // hooks
 import useEditAmbulance from '../hooks/useEditAmbulance';

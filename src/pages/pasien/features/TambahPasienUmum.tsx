@@ -12,7 +12,7 @@ import {
     FormHelperText,
     Checkbox,
 } from "@mui/material";
-import FileUploader from '../../../components/medium/FileUploader';
+import FileUploader from '../../../components/inputComponent/FileUploader';
 import PhoneInput from 'react-phone-input-2';
 import useTambahPasienUmum from '../hooks/useTambahPasienUmum';
 import DropdownListAPI from "../../../components/small/dropdownlist/DropdownListAPI";

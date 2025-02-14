@@ -20,7 +20,7 @@ interface DropdownListProps {
   defaultValue?: string;
   loading: boolean;
   value?: string;
-  error?: boolean; // Added error prop
+  error?: boolean;
 }
 
 export default function DropdownListTime({

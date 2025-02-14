@@ -26,19 +26,13 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
         return;
       }
 
-      // Validasi jenis file 
-      // if (file.type !== 'application/pdf') {
-      //   setError("Jenis file tidak valid. Hanya file PDF yang diperbolehkan.");
-      //   return;
-      // }
-
-      setError(null); // Reset error jika file valid
+      setError(null);
       setFileName(file.name);
 
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
-        onBase64Change?.(base64String); // Kirim Base64
+        onBase64Change?.(base64String); 
       };
 
       reader.onerror = () => {
@@ -56,7 +50,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
         display: "flex",
         flexDirection: "column",
         marginBottom: "5px",
-        // border: `1px solid ${error ? "red" : "#E0E0E0"}`, // Border merah jika error
         borderRadius: "8px",
         padding: "8px",
         transition: "border-color 0.3s ease",
@@ -91,7 +84,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onBase64Change }) => {
           sx={{
             display: "flex",
             alignItems: "center",
-            backgroundColor: error ? "#FFC1C1" : "#FAFAFA", // Background merah saat error
+            backgroundColor: error ? "#FFC1C1" : "#FAFAFA",
             borderRadius: "0px 6px 6px 0px",
             width: "100%",
             height: "44px",

@@ -1,7 +1,7 @@
 import { Box, Button, Container, FormControl, OutlinedInput, Typography } from "@mui/material";
 import bgImage from "../../../assets/img/String.png";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageUploaderGroup';
+import ImageUploaderGroup from '../../../components/inputComponent/ImageUploaderComponents/ImageUploaderGroup';
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 
 //hooks

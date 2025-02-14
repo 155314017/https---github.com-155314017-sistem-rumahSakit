@@ -19,7 +19,6 @@ import * as Yup from 'yup'
 import AlertSuccess from '../../../../components/small/alert/AlertSuccess'
 import AlertWarning from '../../../../components/small/alert/AlertWarning'
 import CustomButton from '../../../../components/small/CustomButton'
-import LabelHandler from '../../../../components/small/LabelHandler'
 import logo from '../../../../assets/img/St.carolus.png'
 
 //hooks
@@ -248,7 +247,9 @@ export default function LoginPegawai() {
                           sx={{ marginRight: 'auto' }}
                         />
 
-                        <LabelHandler onClick={forgotPass} href="#" label="Lupa kata sandi?" />
+                        <a href={'#'} onClick={forgotPass} style={{ textDecoration: 'none', fontSize: '16px', color: '#8F85F3' }}>
+                          Lupa kata sandi?
+                        </a>
                       </Box>
                       <Button
                         type="submit"

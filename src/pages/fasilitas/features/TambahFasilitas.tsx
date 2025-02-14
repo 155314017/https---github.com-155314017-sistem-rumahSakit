@@ -2,7 +2,7 @@ import { Container, Box, Typography, Button, FormControl, OutlinedInput } from "
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
-import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageUploaderGroup';
+import ImageUploaderGroup from '../../../components/inputComponent/ImageUploaderComponents/ImageUploaderGroup';
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr';
 import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
 import useTambahFasilitas from '../hooks/useTambahFasilitas';

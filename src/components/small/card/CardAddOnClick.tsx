@@ -10,6 +10,7 @@ interface CardAddProps {
     onClick: () => void;  
 }
 
+
 export default function CardAddOnClick({ icon: Icon, title, link, onClick }: CardAddProps) {
     return (
         <Box>
