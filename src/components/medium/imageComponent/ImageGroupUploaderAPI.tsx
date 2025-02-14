@@ -144,9 +144,6 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, pa
         <>
             <Typography sx={{ fontSize: "16px", fontWeight: 600, mt: 1 }}>Unggah Foto<span style={{ color: "red" }}>*</span></Typography>
             <Typography fontSize={'14px'} mb={1} color='#A8A8BD' >Format foto harus .SVG, .PNG, atau .JPG dan ukuran foto maksimal 4MB.</Typography>
-            {/* {tes ? (
-                <CircularProgress size={60} sx={{ ml:"50%"}}  />
-            ) : ( */}
             <Grid container justifyContent="center" alignItems="center" direction="column" spacing={4} maxHeight={'350px'} maxWidth={'100%'} >
                 {images.map((imgData, index) => (
                     <Grid key={index}>

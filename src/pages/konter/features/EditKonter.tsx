@@ -4,10 +4,10 @@ import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/ImageGroupUploaderAPI';
 import "dayjs/locale/id";
-import TestKalender from '../../../components/medium/TestKalender';
 
 //hooks
 import useEditKonter from "../hooks/useEditKonter";
+import CustomBigCalendar from '../../../components/medium/CustomBigCalendar';
 
 export default function EditKonter() {
     const {
@@ -199,7 +199,7 @@ export default function EditKonter() {
 
                     {currentPage === 2 && (
                         <>
-                            <TestKalender 
+                            <CustomBigCalendar 
                                 ref={kalenderRef} 
                                 initialData={scheduleDataPraktek} 
                                 initialDataPengecualian={scheduleDataPengecualian}

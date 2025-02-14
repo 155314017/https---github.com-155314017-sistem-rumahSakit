@@ -1,8 +1,8 @@
 import { Container, Box } from "@mui/system";
 import BreadCrumbs from "../../../../components/medium/BreadCrumbs";
 import CardInfoPasienRawatJalan from "../../../../components/small/card/CardInfoPasienRawatJalan";
-import CardRekamMedis from "../../../../components/small/card/CardRekamMedis";
-import CardAppointmentCard from "../../../../components/small/card/CardAppointmentCard";
+import CardRekamMedis from "../components/CardRekamMedis";
+import CardAppointmentCard from "../components/CardAppointmentCard";
 import profilePict from "../../../../assets/img/meme.jpg";
 import imgString from "../../../../assets/img/String.png";
 import { Button, Menu, MenuItem } from "@mui/material";

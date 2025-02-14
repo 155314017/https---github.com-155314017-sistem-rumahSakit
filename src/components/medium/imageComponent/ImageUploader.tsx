@@ -12,13 +12,13 @@ interface ImageInfo {
 }
 
 interface ImageUploaderProps {
-  onImagesSelected?: (images: ImageInfo[]) => void; 
+  onImagesSelected?: (images: ImageInfo[]) => void;
   maxFileSize?: number;
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({
   onImagesSelected,
-  maxFileSize = 3 * 1024 * 1024, // Default 3MB
+  maxFileSize = 3 * 1024 * 1024,
 }) => {
   const [selectedImages, setSelectedImages] = useState<ImageInfo[]>([]);
 
@@ -68,7 +68,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   return (
     <div>
       <Box mt={3}>
-        <Typography sx={{mb: 1}}>
+        <Typography sx={{ mb: 1 }}>
           Unggah gambar<span style={{ color: "red" }}>*</span>
         </Typography>
 

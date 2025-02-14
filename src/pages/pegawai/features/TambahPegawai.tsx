@@ -27,8 +27,8 @@ import PhoneInput from "react-phone-input-2";
 import dayjs, { Dayjs } from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import TestKalender from "../../../components/medium/TestKalender";
 import { useRef } from "react";
+import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
 
 interface PraktekData {
     id: string;
@@ -613,7 +613,7 @@ export default function TambahPegawai() {
 
                     {currentPage === 2 && (
                         <>
-                            <TestKalender ref={kalenderRef} />
+                            <CustomBigCalendar ref={kalenderRef} />
 
                             <Button
                                 variant="contained"

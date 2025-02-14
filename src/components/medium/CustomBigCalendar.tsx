@@ -295,7 +295,7 @@ const convertAPIDataToSession = (apiData: ScheduleDataItem): Session => {
     };
 };
 
-const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialData, initialDataPengecualian, typeId }, ref) => {
+const CustomBigCalendar = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialData, initialDataPengecualian, typeId }, ref) => {
     useImperativeHandle(ref, () => ({
         getData: () => getKalenderData(),
     }));
@@ -485,7 +485,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
     const renderEventContent = (eventInfo: any) => {
         const start = dayjs(eventInfo.event.start).format('hh:mm a');
         const end = dayjs(eventInfo.event.end).format('hh:mm a');
-        
+
         // Tambahkan log untuk ID event
         console.log('Event ID:', eventInfo.event.id, 'Title:', eventInfo.event.title, 'Type:', eventInfo.event.extendedProps.type);
 
@@ -765,7 +765,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
         setSelectedEvent(event);
         setEditingEvent(event);
         console.log('event: ', selectedEvent);
-        
+
         // Buka modal yang sesuai berdasarkan tipe event
         if (event.type === 'Pengecualian') {
             setOpenExclusionDetail(true);
@@ -773,7 +773,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
             // Untuk jadwal praktek, tetap set selectedDays
             const eventId = event.id.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)?.[0];
             const session = sessions.find(s => s.id === eventId);
-            
+
             if (session) {
                 setSelectedDays(session.selectedDays);
             } else {
@@ -787,7 +787,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
     // Tambahkan kembali fungsi untuk handle perubahan data
     const handleEventDetailChange = (field: keyof Event, value: any) => {
         if (!editingEvent) return;
-        
+
         setEditingEvent(prev => {
             if (!prev) return prev;
             return {
@@ -815,14 +815,14 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
             // Konversi format waktu dari event ke format yang dibutuhkan
             const startTime = dayjs(editingEvent.start).format('HH:mm');
             const endTime = dayjs(editingEvent.end).format('HH:mm');
-            
+
             // Ekstrak UUID lengkap (36 karakter)
             const scheduleId = editingEvent.id.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)?.[0];
-            
+
             if (!scheduleId) {
                 throw new Error('Invalid schedule ID format');
             }
-            
+
             // Data untuk edit jadwal
             const scheduleData = {
                 scheduleIntervalId: scheduleId,
@@ -844,7 +844,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
 
             // Panggil service editSchedule
             await EditScheduleService(scheduleData);
-            
+
             console.log('Jadwal berhasil diupdate');
 
             // Update events state dengan data yang baru
@@ -883,7 +883,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                     return session;
                 });
             });
-            
+
             handleCloseEventDetail();
 
         } catch (error) {
@@ -913,11 +913,11 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
         try {
             // Ekstrak UUID lengkap (36 karakter)
             const exclusionId = editingEvent.id.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)?.[0];
-            
+
             if (!exclusionId) {
                 throw new Error('Invalid exclusion ID format');
             }
-            
+
             // Data untuk edit jadwal pengecualian sesuai interface EditExclusionRequest
             const exclusionData = {
                 exclusionIntervalId: exclusionId,
@@ -933,7 +933,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
 
             // Panggil service edit pengecualian
             await EditExclusionService(exclusionData);
-            
+
             console.log('Jadwal pengecualian berhasil diupdate');
 
             // Update exclusionEvents state
@@ -951,7 +951,7 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                     return event;
                 });
             });
-            
+
             handleCloseExclusionDetail();
 
         } catch (error) {
@@ -1526,15 +1526,15 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                             {editingEvent && editingEvent.type !== 'Pengecualian' && (
                                 <Box display="flex" flexDirection="column" gap={2}>
                                     <Typography>Tipe Jadwal</Typography>
-                                    <Box sx={{ 
-                                        opacity: 0.7, 
+                                    <Box sx={{
+                                        opacity: 0.7,
                                         pointerEvents: 'none',
                                         backgroundColor: '#f5f5f5',
                                         borderRadius: '8px'
                                     }}>
                                         <DropdownList
                                             defaultValue={'Praktek'}
-                                            onChange={() => {}}
+                                            onChange={() => { }}
                                             loading={false}
                                             options={[{ value: 'Praktek', label: 'Praktek' }]}
                                             placeholder='Pilih tipe jadwal'
@@ -1663,15 +1663,15 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
                             {editingEvent && editingEvent.type === 'Pengecualian' && (
                                 <Box display="flex" flexDirection="column" gap={2}>
                                     <Typography>Tipe Jadwal</Typography>
-                                    <Box sx={{ 
-                                        opacity: 0.7, 
+                                    <Box sx={{
+                                        opacity: 0.7,
                                         pointerEvents: 'none',
                                         backgroundColor: '#f5f5f5',
                                         borderRadius: '8px'
                                     }}>
                                         <DropdownList
                                             defaultValue={'Pengecualian'}
-                                            onChange={() => {}}
+                                            onChange={() => { }}
                                             loading={false}
                                             options={[{ value: 'Pengecualian', label: 'Pengecualian' }]}
                                             placeholder='Pilih tipe jadwal'
@@ -1813,4 +1813,4 @@ const TestKalender = forwardRef<TestKalenderRef, TestKalenderProps>(({ initialDa
 
 });
 
-export default TestKalender;
+export default CustomBigCalendar;

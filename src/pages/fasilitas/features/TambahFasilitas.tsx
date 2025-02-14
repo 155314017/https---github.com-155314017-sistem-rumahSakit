@@ -7,7 +7,7 @@ import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyId
 import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
 import useTambahFasilitas from '../hooks/useTambahFasilitas';
 import 'dayjs/locale/id';
-import TestKalender from "../../../components/medium/TestKalender";
+import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
 
 export default function TambahFasilitas() {
     const {
@@ -214,7 +214,7 @@ export default function TambahFasilitas() {
 
                     {currentPage === 2 && (
                         <>
-                            <TestKalender ref={kalenderRef} />
+                            <CustomBigCalendar ref={kalenderRef} />
                             <Button
                                 variant="contained"
                                 color="primary"

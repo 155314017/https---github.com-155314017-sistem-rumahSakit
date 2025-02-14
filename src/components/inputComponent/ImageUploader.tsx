@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { Box, Typography, Button, Grid, CircularProgress, Alert } from "@mui/material";
 
 const ImageUploader: React.FC = () => {
-    const [image, setImage] = useState<string | null>(null);        // Menyimpan URL gambar untuk ditampilkan
-    const [imageBase64] = useState<string>("");     // Menyimpan gambar dalam base64
-    const [loading, setLoading] = useState<boolean>(false);         // Status loading
-    const [dragging, setDragging] = useState<boolean>(false);       // Status dragging
-    const [error, setError] = useState<string>("");                 // Pesan error
+    const [image, setImage] = useState<string | null>(null);      
+    const [imageBase64] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false); 
+    const [dragging, setDragging] = useState<boolean>(false); 
+    const [error, setError] = useState<string>("");
 
-    // Validasi file tipe image
     const validateFile = (file: File): boolean => {
         const validTypes = ["image/jpeg", "image/png", "image/svg+xml", "image/gif"];
         if (!validTypes.includes(file.type)) {
@@ -18,7 +17,6 @@ const ImageUploader: React.FC = () => {
         return true;
     };
 
-    // Validasi dimensi file
     const validateDimensions = (file: File, callback: (isValid: boolean) => void) => {
         const img = new Image();
         img.src = URL.createObjectURL(file);
@@ -33,7 +31,7 @@ const ImageUploader: React.FC = () => {
         };
     };
 
-    // Drag-and-drop handlers
+
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setDragging(true);
@@ -46,11 +44,10 @@ const ImageUploader: React.FC = () => {
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setDragging(false);
-        const file = e.dataTransfer.files[0]; // mengambil file yang di drop
-        handleFileUpload(file); // lanjut ke validasi
+        const file = e.dataTransfer.files[0];
+        handleFileUpload(file); 
     };
 
-    // File input handler
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -58,10 +55,9 @@ const ImageUploader: React.FC = () => {
         }
     };
 
-    // Upload file dan validasi
     const handleFileUpload = (file: File) => {
         if (validateFile(file)) {
-            setError(""); // Reset error jika tidak ada masalah dengan file
+            setError(""); 
 
             validateDimensions(file, (isValid) => {
                 if (isValid) {
@@ -70,22 +66,19 @@ const ImageUploader: React.FC = () => {
 
                     reader.onload = () => {
                         setTimeout(() => {
-                            setImage(reader.result as string); // menampilkan gambar
-                            // setImageBase64(reader.result!.split(",")[1]); // menyimpan base64
+                            setImage(reader.result as string);
                             setLoading(false);
-                        }, 2000); // delay 2 detik
+                        }, 2000);
                     };
 
-                    reader.readAsDataURL(file); // membaca file sebagai base64
+                    reader.readAsDataURL(file);
                 }
             });
         }
     };
 
-    // Simpan ke database (dummy action)
     const handleSaveToDatabase = () => {
         console.log("Image in Base64:", imageBase64);
-        // Kirim ke server atau database
     };
 
     return (

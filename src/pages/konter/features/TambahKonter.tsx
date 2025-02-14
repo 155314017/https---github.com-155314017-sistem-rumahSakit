@@ -5,8 +5,8 @@ import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageU
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 
 //hooks
-import TestKalender from "../../../components/medium/TestKalender";
 import useTambahKonter from "../hooks/useTambahKonter";
+import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
 export default function TambahKonter() {
     const {
         breadcrumbItems,
@@ -186,7 +186,7 @@ export default function TambahKonter() {
 
                     {currentPage === 2 && (
                         <>
-                            <TestKalender ref={kalenderRef} />
+                            <CustomBigCalendar ref={kalenderRef} />
                             <Button
                                 variant="contained"
                                 color="primary"

@@ -8,7 +8,7 @@ import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/Ima
 
 //hooks
 import useEditFasilitas from "../hooks/useEditFasilitas";
-import TestKalender from "../../../components/medium/TestKalender";
+import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
 
 export default function EditFasilitas() {
     const{
@@ -220,7 +220,7 @@ export default function EditFasilitas() {
 
                     {currentPage === 2 && (
                         <>
-                             <TestKalender 
+                             <CustomBigCalendar 
                                 ref={kalenderRef} 
                                 initialData={scheduleDataPraktek} 
                                 initialDataPengecualian={scheduleDataPengecualian}

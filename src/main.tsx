@@ -45,8 +45,6 @@ import DetailFasilitas from './pages/fasilitas/features/DetailFasilitas';
 import DetailDokter from './pages/dokter/features/DetailDokter';
 import RegistrationOnline from './pages/registrationPatient/online/features/RegistrationOnline';
 import NotFoundPage from './pages/NotFoundPage';
-// import ModalPanggilPasien from './components/small/modal/ModalPanggilPasien';
-// import AppointmentCard from './components/small/card/CardAppointmentCard';
 import HomeAdmin from './pages/home/homeAdmin';
 import HomeQueue from './pages/home/homeQueue';
 import DetailPasienRawatJalan from './pages/pasien/pasienRawatJalan/features/DetailPasienRawatJalan';
