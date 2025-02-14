@@ -74,22 +74,22 @@ createRoot(document.getElementById('root')!).render(
 
           {/* Health Manage  */}
           {/* Gedung */}
-          <Route path="/gedung" element={<Gedung />} />
+          {/* <Route path="/gedung" element={<Gedung />} />
           <Route path="/detailGedung/:id" element={<DetailGedung />} />
           <Route path="/tambahGedung" element={<TambahGedung />} />
-          <Route path="/editGedung/:id" element={<EditGedung />} />
+          <Route path="/editGedung/:id" element={<EditGedung />} /> */}
 
           {/* Page Ruangan */}
-          <Route path="/ruangan" element={<Ruangan />} />
+          {/* <Route path="/ruangan" element={<Ruangan />} />
           <Route path="/detailRuangan/:id" element={<DetailRuangan />} />
           <Route path="/tambahRuangan" element={<TambahRuangan />} />
-          <Route path="/editRuangan/:id" element={<EditRuangan />} />
+          <Route path="/editRuangan/:id" element={<EditRuangan />} /> */}
 
           {/* Ambulance */}
-          <Route path="/ambulance" element={<Ambulance />} />
+          {/* <Route path="/ambulance" element={<Ambulance />} />
           <Route path="/detailAmbulance/:id" element={<DetailAmbulance />} />
           <Route path="/tambahAmbulance" element={<TambahAmbulance />} />
-          <Route path="/editAmbulance/:id" element={<EditAmbulance />} />
+          <Route path="/editAmbulance/:id" element={<EditAmbulance />} /> */}
 
           {/* Page Fasilitas */}
           <Route path="/fasilitas" element={<Fasilitas />} />

@@ -50,9 +50,9 @@ export default function SideBar() {
   ];
 
   const healthManagerItems = [
-    { label: "Gedung", href: "/gedung" },
-    { label: "Ruangan", href: "/ruangan" },
-    { label: "Ambulance", href: "/ambulance" },
+    // { label: "Gedung", href: "/gedung" },
+    // { label: "Ruangan", href: "/ruangan" },
+    // { label: "Ambulance", href: "/ambulance" },
     { label: "Fasilitas", href: "/fasilitas" },
     { label: "Klinik", href: "/klinik" },
     { label: "Konter", href: "/konter" },
