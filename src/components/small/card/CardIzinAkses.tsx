@@ -11,13 +11,13 @@ import {
     TableBody,
     TablePagination,
 } from "@mui/material";
-import SearchBar from "../../../components/small/SearchBar";
-import DropdownList from "../../../components/small/dropdownlist/DropdownList";
+import SearchBar from "../SearchBar";
+import DropdownList from "../dropdownlist/DropdownList";
 import { styled } from "@mui/material/styles";
 import bgImage from "../../../assets/img/String.png";
 
 //hooks
-import useCardIzinAkses from "../hooks/useCardIzinAkses";
+import useCardIzinAkses from "../../../pages/pegawai/hooks/useCardIzinAkses";
 
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
