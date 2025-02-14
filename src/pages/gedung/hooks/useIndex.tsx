@@ -17,16 +17,13 @@ export default function useIndex() {
   const [orderBy, setOrderBy] = useState("createdDateTime=asc");
   const [totalElements, setTotalElements] = useState(0);
   const [searchItem, setSearchItem] = useState('');
+  const [searchReady, setSearchReady] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
 
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      console.log('page number: ', pageNumber);
-      console.log('page size: ', PAGE_SIZE);
-      console.log('order: ', orderBy);
-      console.log('page search: ', searchItem);
       const result = await Building(pageNumber, PAGE_SIZE, orderBy, searchItem);
       setTotalElements(result.data.totalElements);
       setData(result.data.content);
@@ -35,7 +32,7 @@ export default function useIndex() {
     } finally {
       setLoading(false);
     }
-  }, [pageNumber, orderBy]);
+  }, [pageNumber, orderBy, searchReady]);
 
   useEffect(() => {
     fetchData();
@@ -43,7 +40,7 @@ export default function useIndex() {
 
   const debounceFetchBuilding = useCallback(
     debounce(async () => {
-      fetchData();
+      setSearchReady(searchReady + 1)
     }, 300),
     [fetchData]
   );
