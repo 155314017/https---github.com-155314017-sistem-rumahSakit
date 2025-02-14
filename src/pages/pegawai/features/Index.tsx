@@ -33,7 +33,6 @@ export default function Pegawai() {
                             },
                             '@media (min-width: 990px) and (max-width: 1360px)': {
                                 flexDirection: 'row',
-                                // backgroundColor: 'red'
                             }
                         }}
                     >
