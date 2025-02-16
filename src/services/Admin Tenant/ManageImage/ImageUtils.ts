@@ -1,5 +1,6 @@
-import { CreateImageService } from "./AddImageServices";
-import { EditImageService } from "./EditImageServices";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { CreateImageService } from './AddImageServices'
+import { EditImageService } from './EditImageServices'
 
 /**
  * Interface untuk data gambar
@@ -8,9 +9,9 @@ import { EditImageService } from "./EditImageServices";
  * @property imageData - Data gambar dalam format base64
  */
 export interface ImageData {
-    imageName: string;
-    imageType: string;
-    imageData: string;
+  imageName: string
+  imageType: string
+  imageData: string
 }
 
 /**
@@ -20,62 +21,62 @@ export interface ImageData {
  * @returns Promise yang mengembalikan hasil pengunggahan gambar
  */
 export const uploadImages = async (parentId: string, images: ImageData[]) => {
-    if (!images.length) return;
+  if (!images.length) return
 
-    // Filter gambar yang tidak kosong
-    const validImages = images.filter(img => img.imageData && img.imageType && img.imageName);
+  // Filter gambar yang tidak kosong
+  const validImages = images.filter((img) => img.imageData && img.imageType && img.imageName)
 
-    const imageRequest = {
-        parentId: parentId,
-        images: validImages.map(({ imageName = "", imageType = "", imageData = "" }) => ({
-            imageName,
-            imageType,
-            imageData
-        }))
-    };
-    return CreateImageService(imageRequest);
-};
+  const imageRequest = {
+    parentId: parentId,
+    images: validImages.map(({ imageName = '', imageType = '', imageData = '' }) => ({
+      imageName,
+      imageType,
+      imageData
+    }))
+  }
+  return CreateImageService(imageRequest)
+}
 
 export const editImages = async (parentId: string, images: ImageData[]) => {
-    if (!images.length) return;
+  if (!images.length) return
 
-    // Filter gambar yang tidak kosong
-    const validImages = images.filter(img => img.imageData && img.imageType && img.imageName);
+  // Filter gambar yang tidak kosong
+  const validImages = images.filter((img) => img.imageData && img.imageType && img.imageName)
 
-    const imageRequest = {
-        parentId: parentId,
-        images: validImages.map(({ imageName = "", imageType = "", imageData = "" }) => ({
-            imageName,
-            imageType,
-            imageData
-        }))
-    };
-    return EditImageService(imageRequest);
-};
+  const imageRequest = {
+    parentId: parentId,
+    images: validImages.map(({ imageName = '', imageType = '', imageData = '' }) => ({
+      imageName,
+      imageType,
+      imageData
+    }))
+  }
+  return EditImageService(imageRequest)
+}
 
 export const convertToBase64Image = (imageType: string, imageData: string): string => {
-    return `data:${imageType};base64,${imageData}`;
-};
+  return `data:${imageType};base64,${imageData}`
+}
 
 export const processImageResponse = (imageResponse: any) => {
-    if (!imageResponse?.data?.length) {
-        return {
-            largeImage: "",
-            smallImages: []
-        };
-    }
-
-    const largeImage = convertToBase64Image(
-        imageResponse.data[0].imageType,
-        imageResponse.data[0].imageData
-    );
-
-    const smallImages = imageResponse.data
-        .slice(1)
-        .map((img: any) => convertToBase64Image(img.imageType, img.imageData));
-
+  if (!imageResponse?.data?.length) {
     return {
-        largeImage,
-        smallImages
-    };
-}; 
+      largeImage: '',
+      smallImages: []
+    }
+  }
+
+  const largeImage = convertToBase64Image(
+    imageResponse.data[0].imageType,
+    imageResponse.data[0].imageData
+  )
+
+  const smallImages = imageResponse.data
+    .slice(1)
+    .map((img: any) => convertToBase64Image(img.imageType, img.imageData))
+
+  return {
+    largeImage,
+    smallImages
+  }
+}

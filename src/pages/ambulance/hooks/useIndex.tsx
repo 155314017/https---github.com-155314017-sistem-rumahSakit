@@ -1,42 +1,38 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import {
   AmbulanceServices
 } from '../../../services/Admin Tenant/ManageAmbulance/AmbulanceServices'
 import { AmbulanceDataItem } from '../../../types/ambulance.types'
+import { useFetchData } from '../../../hooks/useFetchData';
 
 export const PAGE_SIZE = 10;
-  
+
 export default function useIndex() {
-  const [data, setData] = useState<AmbulanceDataItem[]>([])
+  const [pageNumber, setPageNumber] = useState(0);
+  const [orderBy, setOrderBy] = useState("createdDateTime=asc");
+  // const [searchItem, setSearchItem] = useState("");
   const [successAddAmbulance, setSuccessAddAmbulance] = useState(false)
   const [successDeleteAmbulance, setSuccessDeleteAmbulance] = useState(false)
   const [successEditAmbulance, setSuccessEditAmbulance] = useState(false)
-  const [pageNumber, setPageNumber] = useState(0);
-  const [orderBy, setOrderBy] = useState("createdDateTime=asc");
-  const [totalElements, setTotalElements] = useState(0);
-  const [loading, setLoading] = useState(false);
   const location = useLocation()
   const navigate = useNavigate()
 
-  const fetchData = useCallback(async () => {
-    
-    try {
-      const result = await AmbulanceServices(pageNumber, PAGE_SIZE, orderBy)
-      setTotalElements(result.data.totalElements);
-      setData(result.data.content);
-     
-    } catch (error) {
-      console.error('Failed to fetch data from API' + error)
-    } finally {
-      setLoading(false)
-    }
-  }, [pageNumber, orderBy])
+  const { data, totalElements, loading, error, refetch } = useFetchData<AmbulanceDataItem[]>(
+    AmbulanceServices,
+    [pageNumber, PAGE_SIZE, orderBy],
+    false
+  );
 
+  const hasFetched = useRef(false);
   useEffect(() => {
-    fetchData()
-  }, [fetchData])
+    if (!hasFetched.current) {
+      refetch();
+      hasFetched.current = true;
+    }
+  }, [refetch]);
+
 
   useEffect(() => {
     const handleLocationState = async () => {
@@ -49,32 +45,32 @@ export default function useIndex() {
           await showTemporarySuccessDelete();
         }
         navigate(location.pathname, { replace: true, state: undefined });
-        fetchData();
+        // refetch();
       }
     };
 
     handleLocationState();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.state])
+  }, [location.state]);
 
-  
+
+
 
   const showTemporaryAlertSuccess = async () => {
-   
+
     setSuccessAddAmbulance(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
     setSuccessAddAmbulance(false)
   }
 
   const showTemporarySuccessDelete = async () => {
-    
+    refetch();
     setSuccessDeleteAmbulance(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
     setSuccessDeleteAmbulance(false)
   }
 
   const showTemporarySuccessEdit = async () => {
-    
+
     setSuccessEditAmbulance(true)
     await new Promise(resolve => setTimeout(resolve, 3000))
     setSuccessEditAmbulance(false)
@@ -88,11 +84,11 @@ export default function useIndex() {
     setPageNumber,
     setOrderBy,
     totalElements,
-    setTotalElements,
+    error,
     loading
-    
+
   }
 
-    
-  
+
+
 }

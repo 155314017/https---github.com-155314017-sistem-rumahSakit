@@ -47,7 +47,7 @@ export default function Index() {
     showTemporarySuccessDeleteClinic,
     showTemporarySuccessDeleteCounter,
     showTemporarySuccessDeleteAmbulance,
-    showTemporarySuccessDeletePatient,
+    // showTemporarySuccessDeletePatient,
     dataBuilding,
     setPageNumber,
     totalElementsRoom,
@@ -185,7 +185,7 @@ export default function Index() {
         />
         <TableKlinik data={dataClinic} onSuccessDelete={showTemporarySuccessDeleteClinic} setPageNumber={setPageNumber} setOrderBy={setOrderClinic} totalElements={totalElementsClinic} />
         <TableKonter data={dataCounter} onSuccessDelete={showTemporarySuccessDeleteCounter} setPageNumber={setPageNumber} setOrderBy={setOrderCounter} totalElements={totalElementsCounter} />
-        <TablePasien data={dataPatient} onSuccessDelete={showTemporarySuccessDeletePatient} setPageNumber={setPageNumber} setOrderBy={setOrderPatient} totalElements={totalElementsPatient} />
+        <TablePasien data={dataPatient} onSuccessDelete={showTemporarySuccessDeleteCounter} setPageNumber={setPageNumber} setOrderBy={setOrderPatient} totalElements={totalElementsPatient} />
       </Stack>
     </Box>
 

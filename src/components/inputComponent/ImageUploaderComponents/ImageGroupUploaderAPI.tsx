@@ -26,7 +26,6 @@ const ImageUploaderGroupAPI: React.FC<ImageUploaderGroupProps> = ({ onChange, pa
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log("parentId: ", parentId);
             try {
                 const imageResponse = await GetImageByParentId(parentId);
 

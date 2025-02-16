@@ -1,60 +1,53 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState, useCallback } from "react";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Building } from "../../../services/Admin Tenant/ManageBuilding/Building";
 import { BuildingDataItem } from "../../../types/building.types";
-import { debounce } from "@mui/material";
+import { useFetchData } from "../../../hooks/useFetchData";
+import useDebounce from "../../../hooks/useDebounce"; 
 
 export const PAGE_SIZE = 10;
 
 export default function useIndex() {
-  const [data, setData] = useState<BuildingDataItem[]>([]);
-  const [successAddBuilding, setSuccessAddBuilding] = useState(false);
-  const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
-  const [successEditBuilding, setSuccessEditBuilding] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
   const [orderBy, setOrderBy] = useState("createdDateTime=asc");
-  const [totalElements, setTotalElements] = useState(0);
-  const [searchItem, setSearchItem] = useState('');
-  const [searchReady, setSearchReady] = useState(0);
+  const [searchItem, setSearchItem] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
 
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const result = await Building(pageNumber, PAGE_SIZE, orderBy, searchItem);
-      setTotalElements(result.data.totalElements);
-      setData(result.data.content);
-    } catch (error) {
-      console.error('Failed to fetch data from API', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [pageNumber, orderBy, searchReady]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  const debounceFetchBuilding = useCallback(
-    debounce(async () => {
-      setSearchReady(searchReady + 1)
-    }, 300),
-    [fetchData]
+  const { data, totalElements, loading, error, refetch } = useFetchData<BuildingDataItem[]>(
+    Building,
+    [pageNumber, PAGE_SIZE, orderBy, searchItem],
+    false
   );
 
+  const hasFetched = useRef(false);
   useEffect(() => {
-    console.log('MASOK!')
-    debounceFetchBuilding();
-  }, [searchItem]);
+    if (!hasFetched.current) {
+      refetch();
+      hasFetched.current = true;
+    }
+  }, [refetch]);
+
+  // useEffect(() => {
+  //   refetch();
+  // }, [pageNumber, orderBy, refetch]);
+
+  // Menggunakan useDebounce untuk debounced searchItem
+  const debouncedSearchItem = useDebounce(searchItem, 300); 
+
+  useEffect(() => {
+    if (debouncedSearchItem !== searchItem) {
+      refetch();
+    }
+  }, [debouncedSearchItem, refetch, searchItem]);
 
   const handleSearchChange = (newSearchValue: string) => {
     setSearchItem(newSearchValue);
   };
 
-
+  const [successAddBuilding, setSuccessAddBuilding] = useState(false);
+  const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
+  const [successEditBuilding, setSuccessEditBuilding] = useState(false);
 
   useEffect(() => {
     const handleLocationState = async () => {
@@ -67,7 +60,7 @@ export default function useIndex() {
           await showTemporarySuccessDelete();
         }
         navigate(location.pathname, { replace: true, state: undefined });
-        fetchData();
+        // refetch();
       }
     };
 
@@ -81,6 +74,7 @@ export default function useIndex() {
   };
 
   const showTemporarySuccessDelete = async () => {
+    refetch();
     setSuccessDeleteBuilding(true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
     setSuccessDeleteBuilding(false);
@@ -98,7 +92,7 @@ export default function useIndex() {
     successDeleteBuilding,
     successEditBuilding,
     loading,
-    fetchData,
+    refetch,
     showTemporaryAlertSuccess,
     showTemporarySuccessDelete,
     showTemporarySuccessEdit,
@@ -108,6 +102,7 @@ export default function useIndex() {
     setOrderBy,
     totalElements,
     PAGE_SIZE,
-    handleSearchChange
-  }
+    handleSearchChange,
+    error,
+  };
 }

@@ -17,7 +17,7 @@ export default function DetailGedung() {
     open,
     breadcrumbItems,
     largeImage,
-    smallImage,
+    smallImages,
     loading,
     confirmationDelete,
     handleDeleteSuccess,
@@ -32,7 +32,7 @@ export default function DetailGedung() {
         onBackClick={() => window.history.back()}
       />
       <Box mt={3}>
-        <ImageGrid largeImage={largeImage} smallImages={smallImage} loading={loading} />
+        <ImageGrid largeImage={largeImage} smallImages={smallImages} loading={loading} />
       </Box>
 
       <Box mt={3}>
