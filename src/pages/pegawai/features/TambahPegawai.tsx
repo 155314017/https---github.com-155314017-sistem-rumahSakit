@@ -29,7 +29,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useRef } from "react";
 import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
-import { getBorderStyle } from "../../../utils/getBorderStyle";
+import { getBorderStyle } from "../../../style/ts/getBorderStyle";
 import { KalenderData } from "../../../types/scheduling.types";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
 
