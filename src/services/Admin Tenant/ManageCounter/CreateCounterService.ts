@@ -1,6 +1,7 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
 import { BaseResponse } from '../../../types/api.types';
+import { CounterDataItem } from "../../../types/counter.types";
 
 export interface CreateCounterRequest {
   name: string;
@@ -8,20 +9,7 @@ export interface CreateCounterRequest {
   additionalInfo: string;
  }
 
-export interface CounterDataItem {
-  id: string;
-  name: string;
-  location: string;
-  queueNumber: number;
-  additionalInfo: string;
-  masterTypeId: string;
-  createdBy: string;
-  createdDateTime: number;
-  updatedBy: string | null;
-  updatedDateTime: number | null;
-  deletedBy: string | null;
-  deletedDateTime: number | null;
-}
+
 
 const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/counter/`;
 
