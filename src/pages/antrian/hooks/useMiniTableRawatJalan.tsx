@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Data from "../../../../data/dummyData/dataPasien";
+import Data from "../../../data/dummyData/dataPasien";
 export default function useMiniTableRawatJalan() {
     const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);

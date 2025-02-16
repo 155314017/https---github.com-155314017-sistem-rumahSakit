@@ -15,19 +15,19 @@ import {
     MenuItem,
     Menu,
 } from "@mui/material";
-import SearchBar from "../../../../components/small/SearchBar";
-import DropdownList from "../../../../components/small/dropdownlist/DropdownList";
+import SearchBar from "../../../components/small/SearchBar";
+import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 import { styled } from "@mui/material/styles";
-import bgImage from "../../../../assets/img/String.png";
+import bgImage from "../../../assets/img/String.png";
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import useTableRawatJalan from "../hooks/useTableRawatJalan";
 import BadgeStatusPasien from "../components/BadgeStatusPasien";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
-import PaginationTable from "../../../../components/tableComponents/PaginationTable";
-import ShowingDataInformation from "../../../../components/tableComponents/ShowingDataInformation";
+import AlertSuccess from "../../../components/small/alert/AlertSuccess";
+import PaginationTable from "../../../components/tableComponents/PaginationTable";
+import ShowingDataInformation from "../../../components/tableComponents/ShowingDataInformation";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {

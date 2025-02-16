@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import Data from "../../../../data/dummyData/dataPasien"
-import { useNavigate } from "react-router-dom";
+import Data from "../../../data/dummyData/dataPasien"
 
-export default function useTableAntrian() {
+export default function useTableRawatJalan() {
     const [page, setPage] = useState(1);
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [selected, setSelected] = useState<string | null>("Antrian");
     const [showModal, setShowModal] = useState(false);
     const [countdown, setCountdown] = useState<number>(30)
     const [countdowns, setCountdowns] = useState<{ [key: string]: { countdown: number, isCounting: boolean, timer: number | null } }>({});
-    const [openModal, setOpenModal] = useState(false);
-    const navigate = useNavigate();
+    const [alertPanggil, setAlertPanggil] = useState(false);
 
     const datas = Data;
 
@@ -34,13 +32,6 @@ export default function useTableAntrian() {
         { value: 3, label: "Jenis Kunjungan A-Z" },
         { value: 4, label: "Jenis Kunjungan Z-A" },
     ];
-    const handleOpenModal = () => {
-        setOpenModal(true);
-    };
-
-    const handleCloseModal = () => {
-        setOpenModal(false);
-    };
 
     const toggleCollapse = () => {
         setIsCollapsed((prev) => !prev);
@@ -48,6 +39,7 @@ export default function useTableAntrian() {
 
     const countDownPanggil = (id: string) => {
         if (!countdowns[id]?.isCounting) {
+            showTemporarySuccessCall();
             setShowModal(true);
             setCountdown(30);
 
@@ -65,7 +57,7 @@ export default function useTableAntrian() {
                         newCountdowns[id] = { ...currentCountdown, countdown: currentCountdown.countdown - 1 };
                     } else {
                         clearInterval(currentCountdown.timer!);
-                        newCountdowns[id] = { ...currentCountdown, isCounting: false, countdown: 30 }; 
+                        newCountdowns[id] = { ...currentCountdown, isCounting: false, countdown: 30 };
                     }
                     return newCountdowns;
                 });
@@ -78,6 +70,12 @@ export default function useTableAntrian() {
             });
         }
     };
+
+    const showTemporarySuccessCall = async () => {
+        setAlertPanggil(true)
+        await new Promise(resolve => setTimeout(resolve, 3000))
+        setAlertPanggil(false)
+    }
 
     const getButtonStyle = (buttonName: string, width: string) => {
         return {
@@ -104,15 +102,15 @@ export default function useTableAntrian() {
     };
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    
+
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-            setAnchorEl(event.currentTarget);
-        };
-    
-    const handleMenuClose = () => {
+        setAnchorEl(event.currentTarget);
         
-            setAnchorEl(null);
-        };
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
 
     const handleClose = () => {
         setShowModal(false);
@@ -142,9 +140,6 @@ export default function useTableAntrian() {
         anchorEl,
         handleMenuClick,
         handleMenuClose,
-        openModal,
-        handleOpenModal,
-        handleCloseModal,
-        navigate
+        alertPanggil
     }
 }

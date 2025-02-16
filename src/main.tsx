@@ -47,7 +47,7 @@ import RegistrationOnline from './pages/registrationPatient/online/features/Regi
 import NotFoundPage from './pages/NotFoundPage';
 import HomeAdmin from './pages/home/homeAdmin';
 import HomeQueue from './pages/home/homeQueue';
-import DetailPasienRawatJalan from './pages/pasien/pasienRawatJalan/features/DetailPasienRawatJalan';
+import DetailPasienRawatJalan from './pages/antrian/features/DetailPasienRawatJalan';
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

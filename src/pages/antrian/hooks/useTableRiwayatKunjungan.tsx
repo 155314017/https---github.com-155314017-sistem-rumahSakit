@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Data from "../../../../data/dummyData/dataRiwayatKunjungan";
+import Data from "../../../data/dummyData/dataRiwayatKunjungan";
 
 export default function useTableRiwayatKunjungan() {
     const [page, setPage] = useState(1);

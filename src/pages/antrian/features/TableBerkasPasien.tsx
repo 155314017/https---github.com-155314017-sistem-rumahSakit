@@ -11,8 +11,8 @@ import {
     Link,
     Pagination,
 } from "@mui/material";
-import SearchBar from "../../../../components/small/SearchBar";
-import DropdownList from "../../../../components/small/dropdownlist/DropdownList";
+import SearchBar from "../../../components/small/SearchBar";
+import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 import { styled } from "@mui/material/styles";
 import useTableBerkasPasien from "../hooks/useTableBerkasPasien";
 // icon

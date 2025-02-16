@@ -3,12 +3,12 @@ import { Formik, Form, Field } from "formik";
 import { Box } from "@mui/system";
 import { Button, FormControl, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import DropdownList from "../../../../components/small/dropdownlist/DropdownList";
+import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 import TableRiwayatKunjungan from "../features/TableRiwayatKunjungan";
 import CardRiwayatKunjungan from "./CardRiwayatKunjungan";
 import CardDetailInformasiKunjungan from "./CardDetailInformasiKunjungan";
-import EndAdornmentCustom from "../../../../components/small/EndAdornmentCustom";
-import CustomFrameTable from "../../../../components/small/CustomFrameTable";
+import EndAdornmentCustom from "../../../components/small/EndAdornmentCustom";
+import CustomFrameTable from "../../../components/small/CustomFrameTable";
 import TableBerkasPasien from "../features/TableBerkasPasien";
 
 export default function CardRekamMedis() {

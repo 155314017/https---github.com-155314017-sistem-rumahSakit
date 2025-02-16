@@ -1,15 +1,15 @@
 import { Container, Box } from "@mui/system";
-import BreadCrumbs from "../../../../components/medium/BreadCrumbs";
-import CardInfoPasienRawatJalan from "../../../../components/small/card/CardInfoPasienRawatJalan";
+import BreadCrumbs from "../../../components/medium/BreadCrumbs";
+import CardInfoPasienRawatJalan from "../../../components/small/card/CardInfoPasienRawatJalan";
 import CardRekamMedis from "../components/CardRekamMedis";
 import CardAppointmentCard from "../components/CardAppointmentCard";
-import profilePict from "../../../../assets/img/meme.jpg";
-import imgString from "../../../../assets/img/String.png";
+import profilePict from "../../../assets/img/meme.jpg";
+import imgString from "../../../assets/img/String.png";
 import { Button, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import useDetailPasienRawatJalan from "../hooks/useDetailPasienRawatJalan";
-import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
-import ModalConfirmationSkipPatient from "../../../../components/medium/modal/ModalConfirmationSkipPatient";
+import AlertSuccess from "../../../components/small/alert/AlertSuccess";
+import ModalConfirmationSkipPatient from "../../../components/medium/modal/ModalConfirmationSkipPatient";
 
 
 export default function DetailPasienRawatJalan() {

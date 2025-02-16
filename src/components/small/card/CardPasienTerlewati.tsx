@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import bgImage from "../../../assets/img/String.png";
-import MiniTableRawatJalan from "../../../pages/pasien/pasienRawatJalan/features/MiniTableRawatJalan";
 import { useState } from "react";
+import MiniTableRawatJalan from "../../../pages/antrian/features/MiniTableRawatJalan";
 
 export default function CardPasienTerlewati() {
     const [showAll, setShowAll] = useState(false);
@@ -12,7 +12,7 @@ export default function CardPasienTerlewati() {
 
     return (
         <Box>
-            
+
             <Box
                 height={"378px"}
                 width={"100%"}

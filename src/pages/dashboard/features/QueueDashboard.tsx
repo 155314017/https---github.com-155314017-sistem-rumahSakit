@@ -10,11 +10,11 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import MediumCard from '../../../components/small/card/MediumCard'
 import CardPanggilPasien from '../../../components/small/card/CardPanggilPasien';
 import CardPasienTerlewati from '../../../components/small/card/CardPasienTerlewati';
-import TableRawatJalan from '../../pasien/pasienRawatJalan/features/TableRawatJalan';
 import AlertSuccess from '../../../components/small/alert/AlertSuccess';
 
-import TableAntrian from '../../pasien/pasienRawatJalan/features/TableAntrian';
 import useQueueDashboard from '../hooks/useQueueDashboard';
+import TableRawatJalan from '../../antrian/features/TableRawatJalan';
+import TableAntrian from '../../antrian/features/TableAntrian';
 
 export default function QueueDashboard({ selectedValue }: any) {
     const {

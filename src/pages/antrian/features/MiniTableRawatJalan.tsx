@@ -6,8 +6,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import useMiniTableRawatJalan from "../hooks/useMiniTableRawatJalan";
 import { useEffect } from "react";
-import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
-import ModalConfirmationSkipPatient from "../../../../components/medium/modal/ModalConfirmationSkipPatient";
+import AlertSuccess from "../../../components/small/alert/AlertSuccess";
+import ModalConfirmationSkipPatient from "../../../components/medium/modal/ModalConfirmationSkipPatient";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
