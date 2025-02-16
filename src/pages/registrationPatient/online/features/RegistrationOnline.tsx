@@ -28,6 +28,7 @@ import imgInsurance from "../../../../assets/img/injury-pana 1.png";
 import imgBPBJS from "../../../../assets/img/meidicine.png";
 import { getBorderStyle } from "../../../../style/ts/getBorderStyle";
 import { fieldFormStyle } from "../../../../style/ts/fieldFormStyle";
+import CustomButtonFilled from "../../../../components/small/button/CustomButtonFilled";
 
 
 export default function RegistrationOnline() {
@@ -396,26 +397,7 @@ export default function RegistrationOnline() {
                                                     error={touched.nik && Boolean(errors.nik)}
                                                 />
                                             </FormControl>
-                                            <Button
-                                                type="submit"
-                                                variant="contained"
-                                                disabled={!isValid}
-                                                sx={{
-                                                    mt: 2,
-                                                    width: "100%",
-                                                    backgroundColor: !isValid ? "#A8A8BD" : "#8F85F3",
-                                                    color: "white",
-                                                    ":hover": {
-                                                        backgroundColor: !isValid ? "red" : "#D5D1FB",
-                                                    },
-                                                    "&.Mui-disabled": {
-                                                        backgroundColor: "#A8A8BD",
-                                                        color: "white",
-                                                    },
-                                                }}
-                                            >
-                                                Lanjutkan
-                                            </Button>
+                                            <CustomButtonFilled disabled={!isValid} text="Selanjutnya" variant="contained" type="submit" />
 
                                         </Box>
                                     )}
@@ -853,7 +835,7 @@ export default function RegistrationOnline() {
                                                     </Box> */}
                                                 </Box>
                                             </Box>
-                                            <Button
+                                            {/* <Button
                                                 type="submit"
                                                 variant="contained"
                                                 sx={{
@@ -866,7 +848,8 @@ export default function RegistrationOnline() {
                                                 disabled={!isValid}
                                             >
                                                 Selesai
-                                            </Button>
+                                            </Button> */}
+                                            <CustomButtonFilled variant="contained" disabled={!isValid} text="Selesai" type="submit" />
                                         </Box>
                                     )}
 

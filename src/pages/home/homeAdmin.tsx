@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import SideBar from "../../components/SideBar/SideBar";
 import Dashboard from "../dashboard/features/Index";
-import Header from "../../components/medium/Header";
+import Header from "../../components/header/Header";
 
 export default function HomeAdmin() {
   return (

@@ -4,7 +4,7 @@ import { CircularProgress, Typography } from '@mui/material'
 // components
 import CardAdd from '../../../components/small/card/CardAdd'
 import MediumCard from '../../../components/small/card/MediumCard'
-import Header from '../../../components/medium/Header'
+import Header from '../../../components/header/Header'
 import SideBar from '../../../components/SideBar/SideBar'
 import AlertSuccess from '../../../components/small/alert/AlertSuccess'
 

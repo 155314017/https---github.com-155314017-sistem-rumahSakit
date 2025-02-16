@@ -24,6 +24,7 @@ import { Helmet } from 'react-helmet';
 //hooks
 import useLoginPegawai from '../hooks/useLoginPegawai'
 import { fieldFormStyle } from '../../../../style/ts/fieldFormStyle'
+import CustomButtonFilled from '../../../../components/small/button/CustomButtonFilled'
 export default function LoginPegawai() {
   const {
     showPassword,
@@ -240,7 +241,7 @@ export default function LoginPegawai() {
                           Lupa kata sandi?
                         </a>
                       </Box>
-                      <Button
+                      {/* <Button
                         type="submit"
                         variant="contained"
                         color="primary"
@@ -255,7 +256,8 @@ export default function LoginPegawai() {
                         disabled={isChecked ? !isChecked : !isValid || !dirty}
                       >
                         Login
-                      </Button>
+                      </Button> */}
+                      <CustomButtonFilled type='submit' variant='contained' color='primary' text='Login' disabled={isChecked ? !isChecked : !isValid || !dirty} />
                     </Box>
                   </Form>
                 )}
@@ -324,30 +326,14 @@ export default function LoginPegawai() {
                             placeholder="example@mail.com"
                             variant="outlined"
                             fullWidth
-                            sx={{
-                              width: '100%',
-                              height: '48px',
-                              marginTop: '10px',
-                              '& .MuiOutlinedInput-root': {
-                                borderRadius: '8px',
-                                backgroundColor:
-                                  touched.email && errors.email ? '#ffcccc' : 'inherit'
-                              },
-                              '& .MuiOutlinedInput-notchedOutline': {
-                                border: '1px solid #ccc'
-                              },
-                              '& .MuiOutlinedInput-input': {
-                                padding: '10px',
-                                fontSize: '16px'
-                              }
-                            }}
+                            sx={fieldFormStyle(touched, errors, 'email')}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.email}
                             error={touched.email && Boolean(errors.email)}
                             helperText={touched.email && errors.email}
                           />
-                          <Button
+                          {/* <Button
                             type="submit"
                             variant="contained"
                             color="primary"
@@ -362,7 +348,9 @@ export default function LoginPegawai() {
                             disabled={!isValid || !dirty}
                           >
                             Setel ulang kata sandi
-                          </Button>
+                          </Button> */}
+
+                          <CustomButtonFilled type='submit' variant='contained' color='primary' text='Setel ulang kata sandi' disabled={!isValid || !dirty} />
 
                           <CustomButton onClick={loginComponent} label="Kembali ke halaman masuk" />
                         </Box>
