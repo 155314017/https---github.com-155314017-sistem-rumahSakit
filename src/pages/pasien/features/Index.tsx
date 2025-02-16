@@ -9,10 +9,10 @@ import TablePasien from "../../../pages/pasien/features/TablePasien";
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import ModalKategoriPasien from '../../../components/small/modal/ModalKategoriPasien';
 
 //hooks
 import useIndex from "../hooks/useIndex";
+import ModalKategoriPasien from "../../../components/medium/modal/ModalKategoriPasien";
 export default function Index() {
     const {
         data,

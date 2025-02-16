@@ -22,7 +22,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import useTambahPasienUmumOffline from "../hooks/useTambahPasienUmumOffline";
 import DropdownListAPI from "../../../../components/small/dropdownlist/DropdownListAPI";
-import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
+import InformasiTicketAPI from "../../../../components/medium/InformasiTicketAPI";
 import bgImg from "../../../../assets/img/Bg-desktop.svg"
 import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
 import AlertWarning from "../../../../components/small/alert/AlertWarning";

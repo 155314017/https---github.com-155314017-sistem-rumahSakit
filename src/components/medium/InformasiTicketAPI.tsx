@@ -9,8 +9,8 @@ import logo from "../../assets/img/St.carolus.png";
 import CloseIcon from '@mui/icons-material/Close';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PrintIcon from "@mui/icons-material/Print";
+import AlertSuccess from "../small/alert/AlertSuccess";
 import ModalUbahNoHp from "./modal/ModalUbahNoHp";
-import AlertSuccess from "./alert/AlertSuccess";
 type InformasiTicketProps = {
   nomorAntrian?: string | number;
   namaDokter: string | undefined;
@@ -52,7 +52,7 @@ const InformasiTicketAPI = ({
   const [isLoading, setIsLoading] = useState(false);
   const [localBookingCode, setLocalBookingCode] = useState(bookingCode);
 
-  
+
 
 
   const showTemporaryAlertSuccessChangePhone = async () => {
@@ -146,7 +146,7 @@ const InformasiTicketAPI = ({
 
   const handleBookingCodeUpdate = (newBookingCode: string) => {
     setLocalBookingCode(newBookingCode); // Simpan booking code baru di state
-};
+  };
 
 
   return (
@@ -306,7 +306,7 @@ const InformasiTicketAPI = ({
           <Box
             display={"flex"}
             flexDirection={"row"}
-            
+
             justifyContent={"space-between"}
             maxWidth={"80%"}
           // bgcolor={'red'}
@@ -424,32 +424,32 @@ const InformasiTicketAPI = ({
           </Button>
           {!offline && (
             <Box
-            display={"flex"}
-            flexDirection={"row"}
-            gap={"5px"}
-            justifyContent={"space-between"}
-            width={"95%"}
-            
-          >
-            <Typography color={"#A8A8BD"} fontSize={"16px"} fontWeight={400}>Tidak mendapatkan tiket booking?</Typography>
-            <Typography
-              onClick={!isCounting ? handleResendClick : undefined}
-              sx={{
-                cursor: isCounting ? 'default' : 'pointer',
-                color: isCounting ? '#ccc' : '#8F85F3',
-                textDecoration: 'none',
-                fontSize: '16px',
-              }}
+              display={"flex"}
+              flexDirection={"row"}
+              gap={"5px"}
+              justifyContent={"space-between"}
+              width={"95%"}
+
             >
-              {loading ? <CircularProgress size={18} sx={{ color: '#8F85F3' }} /> :
-                (isCounting ? `${formatTime()}` : 'Kirim ulang')
-              }
-            </Typography>
-            <Typography sx={{ cursor: 'pointer' }} color={"#8F85F3"} fontSize={"16px"} fontWeight={400} alignItems="right" onClick={handleEditClick}>Ubah</Typography>
-          </Box>
-            
+              <Typography color={"#A8A8BD"} fontSize={"16px"} fontWeight={400}>Tidak mendapatkan tiket booking?</Typography>
+              <Typography
+                onClick={!isCounting ? handleResendClick : undefined}
+                sx={{
+                  cursor: isCounting ? 'default' : 'pointer',
+                  color: isCounting ? '#ccc' : '#8F85F3',
+                  textDecoration: 'none',
+                  fontSize: '16px',
+                }}
+              >
+                {loading ? <CircularProgress size={18} sx={{ color: '#8F85F3' }} /> :
+                  (isCounting ? `${formatTime()}` : 'Kirim ulang')
+                }
+              </Typography>
+              <Typography sx={{ cursor: 'pointer' }} color={"#8F85F3"} fontSize={"16px"} fontWeight={400} alignItems="right" onClick={handleEditClick}>Ubah</Typography>
+            </Box>
+
           )}
-          
+
         </Box>
       </Box>
     </Box>

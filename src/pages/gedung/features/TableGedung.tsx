@@ -10,7 +10,6 @@ import {
   TableBody,
   Link,
   IconButton,
-  Pagination,
   Collapse,
 } from "@mui/material";
 import SearchBar from "../../../components/small/SearchBar";
@@ -22,7 +21,6 @@ import { BuildingDataItem } from "../../../types/building.types";
 // Icons
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -52,6 +50,9 @@ const StyledTableContainer = styled(TableContainer)`
 import useTableGedung from "../hooks/useTableGedung";
 import React from "react";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
+import PaginationTable from "../../../components/tableComponents/PaginationTable";
+import ModalDeleteConfirmation from "../../../components/medium/modal/ModalDeleteConfirmation";
+import ShowingDataInformation from "../../../components/tableComponents/ShowingDataInformation";
 
 interface TableGedungProps {
   data: BuildingDataItem[];
@@ -309,19 +310,8 @@ const TableGedung: React.FC<TableGedungProps> = ({
             </StyledTableContainer>
 
             <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center">
-              <Typography sx={{ color: "#A8A8BD" }}>
-                Showing {data.length > 0 ? (page - 1) * pageSize + 1 : 0} to {Math.min((page) * pageSize, totalElements)} of {totalElements} entries
-              </Typography>
-              <Pagination
-                count={Math.max(1, Math.ceil(totalElements / pageSize))}
-                shape="rounded"
-                page={page}
-                onChange={handleChangePage}
-                sx={{
-                  "& .MuiPaginationItem-root": { color: "#8F85F3" },
-                  "& .Mui-selected": { bgcolor: "#D5D1FB" },
-                }}
-              />
+              <ShowingDataInformation length={totalElements} rowsPerPage={pageSize} page={page} />
+              <PaginationTable length={totalElements} rowsPerPage={pageSize} page={page} onChange={handleChangePage} />
             </Stack>
           </Box>
         </Collapse>

@@ -4,7 +4,7 @@ import { Link } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import ImageGrid from "../../../components/medium/ImageGrid";
 import CardDetail from "../../../components/small/card/CardDetail";
-import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
+import ModalDeleteConfirmation from "../../../components/medium/modal/ModalDeleteConfirmation";
 
 //hooks
 import useDetailGedung from "../hooks/useDetailGedung";

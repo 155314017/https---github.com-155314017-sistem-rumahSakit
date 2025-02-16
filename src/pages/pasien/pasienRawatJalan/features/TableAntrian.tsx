@@ -22,8 +22,8 @@ import bgImage from "../../../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import useTableAntrian from "../hooks/useTableAntrian";
-import BadgeStatusPasien from "../../../../components/small/badge/BadgeStatusPasien";
-import ModalConfirmationSkipPatient from "../../../../components/small/modal/ModalConfirmationSkipPatient";
+import BadgeStatusPasien from "../components/BadgeStatusPasien";
+import ModalConfirmationSkipPatient from "../../../../components/medium/modal/ModalConfirmationSkipPatient";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {

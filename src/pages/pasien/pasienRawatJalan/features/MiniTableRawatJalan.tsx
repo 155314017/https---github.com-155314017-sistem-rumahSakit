@@ -7,7 +7,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import useMiniTableRawatJalan from "../hooks/useMiniTableRawatJalan";
 import { useEffect } from "react";
 import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
-import ModalConfirmationSkipPatient from "../../../../components/small/modal/ModalConfirmationSkipPatient";
+import ModalConfirmationSkipPatient from "../../../../components/medium/modal/ModalConfirmationSkipPatient";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -270,31 +270,6 @@ export default function MiniTableRawatJalan(props: MiniTableRawatJalanProps) {
 
                 </Box>
 
-                {/* <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                    <Typography sx={{ color: "#A8A8BD" }}>
-                        Showing {((page - 1) * rowsPerPage) + 1} to {Math.min(page * rowsPerPage, datas.length)} of {datas.length} entries
-                    </Typography>
-                    <Pagination
-                        count={Math.ceil(datas.length / rowsPerPage)}
-                        variant="outlined"
-                        shape="rounded"
-                        page={page}
-                        onChange={handleChangePage}
-                        sx={{
-                            "& .MuiPaginationItem-root": {
-                                color: "#8F85F3",
-                                border: "none",
-                            },
-                            "& .Mui-selected": {
-                                backgroundColor: "#8F85F3",
-                                bgcolor: "#D5D1FB",
-                            },
-                            "& .MuiPaginationItem-ellipsis": {
-                                border: "none",
-                            },
-                        }}
-                    />
-                </Stack> */}
             </Box>
             <ModalConfirmationSkipPatient open={openModal} onClose={handleCloseModal} />
         </Box>

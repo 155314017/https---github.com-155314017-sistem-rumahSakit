@@ -20,12 +20,14 @@ import dayjs from "dayjs";
 import { Formik, Form, Field } from "formik";
 import CustomCalendar from "../components/CustomCalender";
 import DropdownListAPI from "../../../../components/small/dropdownlist/DropdownListAPI";
-import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
+import InformasiTicketAPI from "../../../../components/medium/InformasiTicketAPI";
 import useRegistrationOnline from "../hooks/useRegistrationOnline";
 import PasienCard from "../../../../components/small/card/PasienCard";
 import imgUmum from "../../../../assets/img/filling.png";
 import imgInsurance from "../../../../assets/img/injury-pana 1.png";
 import imgBPBJS from "../../../../assets/img/meidicine.png";
+import { getBorderStyle } from "../../../../style/ts/getBorderStyle";
+import { fieldFormStyle } from "../../../../style/ts/fieldFormStyle";
 
 
 export default function RegistrationOnline() {
@@ -45,7 +47,6 @@ export default function RegistrationOnline() {
         handleScheduleChange,
         handleDropdownPoli,
         handleDropdownDocter,
-        getBorderStyle,
         getPageStyle,
         initialValues,
         getValidationSchema,
@@ -241,7 +242,6 @@ export default function RegistrationOnline() {
                                                     </Typography>
                                                 </Box>
                                             )}
-                                            {/* mt={currentPage === 4 || currentPage === 2 ? '5%' : (currentPage === 3 ? 0 : '15%')} */}
 
                                             <Box display="flex" gap={0} flexDirection="row" ml={0} >
                                                 <Box display="flex" flexDirection="row" width="260px">
@@ -260,7 +260,7 @@ export default function RegistrationOnline() {
                                                             },
                                                         }}
                                                     >
-                                                        <Box sx={getBorderStyle(1)}>1</Box>
+                                                        <Box sx={getBorderStyle(1, currentPage)}>1</Box>
                                                         <Typography sx={{ ml: 1, textTransform: "none" }}>
                                                             Kategori pasien
                                                         </Typography>
@@ -283,7 +283,7 @@ export default function RegistrationOnline() {
                                                             },
                                                         }}
                                                     >
-                                                        <Box sx={getBorderStyle(2)}>2</Box>
+                                                        <Box sx={getBorderStyle(2, currentPage)}>2</Box>
                                                         <Typography sx={{ ml: 1, textTransform: "none" }}>
                                                             Isi data diri pasien
                                                         </Typography>
@@ -306,7 +306,7 @@ export default function RegistrationOnline() {
                                                             },
                                                         }}
                                                     >
-                                                        <Box sx={getBorderStyle(3)}>3</Box>
+                                                        <Box sx={getBorderStyle(3, currentPage)}>3</Box>
                                                         <Typography sx={{ ml: 1, textTransform: "none" }}>
                                                             Keluhan Pasien
                                                         </Typography>
@@ -376,7 +376,6 @@ export default function RegistrationOnline() {
                                     {currentPage === 2 && (
                                         <Box sx={{ textAlign: "left", width: "85%", ml: '5%' }} >
                                             <Typography
-
                                                 fontSize="20px"
                                                 fontWeight={600}
                                                 lineHeight="22px"
@@ -393,27 +392,8 @@ export default function RegistrationOnline() {
                                                     name="nik"
                                                     placeholder="Masukkan NIK"
                                                     variant="outlined"
-                                                    sx={{
-                                                        width: "100%",
-                                                        height: "48px",
-                                                        marginTop: "10px",
-                                                        "& .MuiOutlinedInput-root": {
-                                                            borderRadius: "8px",
-                                                            backgroundColor: touched.nik && errors.nik ? "#ffcccc" : "inherit",
-                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                borderColor: '#8F85F3',
-                                                            },
-                                                        },
-                                                        "& .MuiOutlinedInput-notchedOutline": {
-                                                            border: "1px solid #ccc",
-                                                        },
-                                                        "& .MuiOutlinedInput-input": {
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                        },
-                                                    }}
+                                                    sx={fieldFormStyle(touched, errors, "nik")}
                                                     error={touched.nik && Boolean(errors.nik)}
-                                                // helperText={touched.nik && errors.nik}
                                                 />
                                             </FormControl>
                                             <Button
@@ -487,7 +467,6 @@ export default function RegistrationOnline() {
                                                     }
                                                 }}
                                                 error={touched.nik && Boolean(errors.nik)}
-                                            // helperText={touched.nik && errors.nik}
                                             />
                                             <FormLabel>Email</FormLabel>
                                             <Field
@@ -543,11 +522,6 @@ export default function RegistrationOnline() {
                                                     return setFieldValue("phone", phone);
                                                 }}
                                             />
-                                            {/* {touched.phone && errors.phone && (
-                                            <Typography variant="caption" color="error">
-                                                {errors.phone}
-                                            </Typography>
-                                        )} */}
                                             <FormLabel>Nama lengkap Pasien</FormLabel>
                                             <Field
                                                 as={TextField}
@@ -568,7 +542,6 @@ export default function RegistrationOnline() {
                                                     }
                                                 }}
                                                 error={touched.email && Boolean(errors.email)}
-                                            // helperText={touched.email && errors.email}
                                             />
                                             <Box display="flex" justifyContent="space-between" gap={2}>
                                                 <FormControl sx={{ width: "50%" }}>
@@ -604,7 +577,6 @@ export default function RegistrationOnline() {
                                                                     sx: {
                                                                         bgcolor: "#EEEEF2",
                                                                         borderRadius: "8px",
-                                                                        // border: "1px solid #A8A8BD",
                                                                     },
                                                                 },
                                                             }}
@@ -783,11 +755,6 @@ export default function RegistrationOnline() {
                                                             value={values.phoneCp}
                                                             onChange={(val) => setFieldValue("phoneCp", val)}
                                                         />
-                                                        {/* {touched.phoneCp && errors.phoneCp && (
-                                                        <Typography variant="caption" color="error">
-                                                            {errors.phoneCp}
-                                                        </Typography>
-                                                    )} */}
                                                     </FormControl>
                                                     <FormControl>
                                                         <Typography>Email</Typography>
@@ -796,27 +763,8 @@ export default function RegistrationOnline() {
                                                             name="emailCp"
                                                             placeholder="Masukkan email"
                                                             variant="outlined"
-                                                            sx={{
-                                                                width: "100%",
-                                                                height: "48px",
-                                                                marginTop: "10px",
-                                                                "& .MuiOutlinedInput-root": {
-                                                                    borderRadius: "8px",
-                                                                    backgroundColor: touched.emailCp && errors.emailCp ? "#ffcccc" : "inherit",
-                                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                        borderColor: '#8F85F3',
-                                                                    },
-                                                                },
-                                                                "& .MuiOutlinedInput-notchedOutline": {
-                                                                    border: "1px solid #ccc",
-                                                                },
-                                                                "& .MuiOutlinedInput-input": {
-                                                                    padding: "10px",
-                                                                    fontSize: "16px",
-                                                                },
-                                                            }}
+                                                            sx={fieldFormStyle(touched, errors, "emailCp")}
                                                             error={touched.emailCp && Boolean(errors.emailCp)}
-                                                        // helperText={touched.emailCp && errors.emailCp}
                                                         />
                                                     </FormControl>
                                                 </Box>
@@ -839,27 +787,8 @@ export default function RegistrationOnline() {
                                                             name="typeOfVisit"
                                                             placeholder="Masukkan jenis kunjungan"
                                                             variant="outlined"
-                                                            sx={{
-                                                                width: "100%",
-                                                                height: "48px",
-                                                                marginTop: "10px",
-                                                                "& .MuiOutlinedInput-root": {
-                                                                    borderRadius: "8px",
-                                                                    backgroundColor: touched.typeOfVisit && errors.typeOfVisit ? "#ffcccc" : "inherit",
-                                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                        borderColor: '#8F85F3',
-                                                                    },
-                                                                },
-                                                                "& .MuiOutlinedInput-notchedOutline": {
-                                                                    border: "1px solid #ccc",
-                                                                },
-                                                                "& .MuiOutlinedInput-input": {
-                                                                    padding: "10px",
-                                                                    fontSize: "16px",
-                                                                },
-                                                            }}
+                                                            sx={fieldFormStyle(touched, errors, "typeOfVisit")}
                                                             error={touched.typeOfVisit && Boolean(errors.typeOfVisit)}
-                                                        // helperText={touched.typeOfVisit && errors.typeOfVisit}
                                                         />
                                                     </FormControl>
                                                     <Typography>Poli yang dituju</Typography>
@@ -906,18 +835,8 @@ export default function RegistrationOnline() {
                                                             multiline
                                                             rows={4}
                                                             variant="outlined"
-                                                            sx={{
-                                                                width: "100%",
-                                                                mt: 1,
-                                                                "& .MuiOutlinedInput-root": {
-                                                                    border: "1px solid #A8A8BD",
-                                                                    "&.Mui-focused fieldset": {
-                                                                        borderColor: "#6B63D1",
-                                                                    },
-                                                                },
-                                                            }}
+                                                            sx={fieldFormStyle(touched, errors, "symptoms")}
                                                             error={touched.symptoms && Boolean(errors.symptoms)}
-                                                        // helperText={touched.symptoms && errors.symptoms}
                                                         />
                                                     </FormControl>
                                                     {/* <Box mt={1}>

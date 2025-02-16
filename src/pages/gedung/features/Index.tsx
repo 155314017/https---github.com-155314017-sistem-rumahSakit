@@ -41,7 +41,7 @@ export default function Index() {
           {successEditBuilding && (
             <AlertSuccess label="Success edit building" />
           )}
-          <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
+          <Typography variant="h1" sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
             Gedung
           </Typography>
           <Grid container
@@ -72,9 +72,6 @@ export default function Index() {
               sx={{
                 display: 'flex',
                 width: '49%',
-                // '@media (max-width: 1194px)': {
-                //   width: '50%'
-                // }
               }}
             >
               <MediumCard

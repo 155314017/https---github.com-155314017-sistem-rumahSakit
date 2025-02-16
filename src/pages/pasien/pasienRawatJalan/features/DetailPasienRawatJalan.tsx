@@ -8,8 +8,8 @@ import imgString from "../../../../assets/img/String.png";
 import { Button, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import useDetailPasienRawatJalan from "../hooks/useDetailPasienRawatJalan";
-import ModalConfirmationSkipPatient from "../../../../components/small/modal/ModalConfirmationSkipPatient";
 import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
+import ModalConfirmationSkipPatient from "../../../../components/medium/modal/ModalConfirmationSkipPatient";
 
 
 export default function DetailPasienRawatJalan() {

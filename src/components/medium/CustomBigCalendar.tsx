@@ -41,7 +41,6 @@ import CardJadwalExclusion from '../small/card/CardJadwalExclusion';
 import DropdownList from '../small/dropdownlist/DropdownList';
 import DropdownListTime from '../small/dropdownlist/DropdownListTime';
 import { CloseOutlined } from '@mui/icons-material';
-import ModalUbahNoHp from '../small/modal/ModalUbahNoHp';
 import { ScheduleDataItem } from '../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices';
 import { ExclusionDataItem } from '../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices';
 import { EditScheduleService } from '../../services/Admin Tenant/ManageSchedule/EditScheduleService';
@@ -242,7 +241,6 @@ const CustomBigCalendar = forwardRef<TestKalenderRef, TestKalenderProps>(({ init
     const calendarRef = useRef<FullCalendar>(null);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const openMenu = Boolean(anchorEl);
-    const [openModalKodeBooking, setOpenModalKodeBooking] = useState(false);
     const [newEvent, setNewEvent] = useState({
         type: 'Praktek',
         startTime: '',
@@ -1275,8 +1273,6 @@ const CustomBigCalendar = forwardRef<TestKalenderRef, TestKalenderProps>(({ init
                             </Button>
                         </DialogActions>
                     </StyledDialog>
-
-                    <ModalUbahNoHp open={openModalKodeBooking} onClose={() => setOpenModalKodeBooking(false)} />
 
                     {/* Modal Pengecualian */}
                     <StyledDialog open={openExclusion} onClose={handleCloseExclusion}>

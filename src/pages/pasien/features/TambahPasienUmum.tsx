@@ -19,7 +19,7 @@ import DropdownListAPI from "../../../components/small/dropdownlist/DropdownList
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import InformasiTicketAPI from "../../../components/small/InformasiTicketAPI";
+import InformasiTicketAPI from "../../../components/medium/InformasiTicketAPI";
 import dayjs from "dayjs";
 import AlertWarning from "../../../components/small/alert/AlertWarning";
 import { Field, Formik, Form } from "formik";
