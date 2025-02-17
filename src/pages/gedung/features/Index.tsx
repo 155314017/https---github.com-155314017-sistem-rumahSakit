@@ -22,8 +22,7 @@ export default function Index() {
     setOrderBy,
     totalElements,
     handleSearchChange,
-    showTemporarySuccess,
-    fetchData
+    fetchData,
     showAlert
   } = useIndex();
 

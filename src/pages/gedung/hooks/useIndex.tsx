@@ -75,7 +75,6 @@ export default function useIndex() {
     error,
     isSuccess,
     message,
-    showTemporarySuccess,
     fetchData: refetch,
     showAlert,
   };
