@@ -11,8 +11,8 @@ import { createExclusions } from '../../../services/Admin Tenant/ManageSchedule/
 import { ScheduleDataItem } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices'
 import { ExclusionDataItem, GetExclusionByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices'
 import { FacilityServices } from '../../../services/Admin Tenant/ManageFacility/FacilityServices'
-import { GetSubFacilityById } from '../../../services/Admin Tenant/ManageFacility/GetSubFacilityByIdServices'
-import { editSubfacility } from '../../../services/Admin Tenant/ManageFacility/EditSubfacilityService'
+import { GetSubFacilityById } from '../../../services/Admin Tenant/ManageSubFacility/GetSubFacilityByIdServices'
+import { editSubfacility } from '../../../services/Admin Tenant/ManageSubFacility/EditSubfacilityService'
 
 
 type Facility = {

@@ -1,34 +1,12 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import { BaseResponse } from '../../../types/api.types'
+import { FacilityRequest } from '../../../types/Facility.types'
 
 // Define the interfaces for the request data structure
-export interface Schedule {
-  startDateTime: string // ISO 8601 format
-  endDateTime: string // ISO 8601 format
-}
 
-export interface Image {
-  imageName: string
-  imageType: string
-  imageData: string // Base64 encoded image
-}
 
-export interface FacilityRequest {
-  name: string
-  facilityDataId: string
-  description: string
-  cost: number
-  additionalInfo: string
-  schedules: { startDateTime: number; endDateTime: number }[]
-  images: { imageName: string; imageType: string; imageData: string }[]
-}
 
-export interface ApiResponse {
-  responseCode: string
-  statusCode: string
-  message: string
-  data: FacilityRequest
-}
 
 // Function to create a facility
 export const GetSubFacilityById = async (id: string | undefined): Promise<FacilityRequest> => {
@@ -37,7 +15,7 @@ export const GetSubFacilityById = async (id: string | undefined): Promise<Facili
   try {
     const token = Cookies.get('accessToken')
     // Make the POST request to create the facility
-    const response = await axios.get<ApiResponse>(
+    const response = await axios.get<BaseResponse<FacilityRequest>>(
       `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/subfacility/${id}`,
       {
         headers: {

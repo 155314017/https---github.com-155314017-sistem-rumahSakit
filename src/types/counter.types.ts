@@ -14,4 +14,10 @@ export interface CounterDataItem {
     schedules: { id: string; startDateTime: number; endDateTime: number }[]
     operationalSchedule?: string
   }
+
+  export interface CreateCounterRequest {
+    name: string;
+    location: string;
+    additionalInfo: string;
+   }
   

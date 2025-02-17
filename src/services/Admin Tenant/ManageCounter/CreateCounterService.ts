@@ -1,13 +1,9 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
 import { BaseResponse } from '../../../types/api.types';
-import { CounterDataItem } from "../../../types/counter.types";
+import { CounterDataItem, CreateCounterRequest } from "../../../types/counter.types";
 
-export interface CreateCounterRequest {
-  name: string;
-  location: string;
-  additionalInfo: string;
- }
+
 
 
 

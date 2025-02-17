@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PAGE_SIZE } from "./useIndex";
+import { deleteBuildingService } from "../../../services/Admin Tenant/ManageBuilding/DeleteBuildingService";
 
 export default function useTableGedung(
   onSuccessDelete: () => void,
@@ -24,6 +25,7 @@ export default function useTableGedung(
 
   const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
     event.preventDefault();
+    deleteBuildingService(buildingId);
     setDeletedItems(buildingId);
     setOpen(true);
     console.log(deletedItems)

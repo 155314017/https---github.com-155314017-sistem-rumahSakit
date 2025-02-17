@@ -46,7 +46,6 @@ export default function useIndex() {
   );
 
   useEffect(() => {
-    console.log('MASOK!')
     debounceFetchBuilding();
   }, [searchItem]);
 

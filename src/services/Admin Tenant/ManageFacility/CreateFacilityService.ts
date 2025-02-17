@@ -1,21 +1,9 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { BaseResponse } from '../../../types/api.types'
+import { FacilityDataItem } from '../../../types/Facility.types'
 
-export interface FacilityDataItem {
-  id: string
-  name: string
-  description: string
-  additionalInfo: string
-  masterBuildingId: string
-  cost: number
-  createdBy: string
-  createdDateTime: number
-  updatedBy: string | null
-  updatedDateTime: number | null
-  deletedBy: string | null
-  deletedDateTime: number | null
-}
+
 
 const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/`
 
