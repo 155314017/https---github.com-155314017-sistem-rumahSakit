@@ -22,7 +22,7 @@ export default function Index() {
     setOrderBy,
     totalElements,
     handleSearchChange,
-    showTemporarySuccess
+    showAlert
   } = useIndex();
 
   return (
@@ -69,7 +69,7 @@ export default function Index() {
           {/* table gedung  */}
           <TableGedung
             data={data}
-            onSuccessDelete={() => showTemporarySuccess('Gedung deleted successfully!')}
+            onSuccessDelete={() => showAlert('Gedung deleted successfully!')}
             setPageNumber={setPageNumber}
             setOrderBy={setOrderBy}
             totalElements={totalElements}

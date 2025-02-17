@@ -42,24 +42,24 @@ export default function useIndex() {
   };
 
   // membuat notif aler menggunakan useSuccessNotification 
-  const { isSuccess, message, showTemporarySuccess } = useSuccessNotification();
+  const { isSuccess, message, showAlert } = useSuccessNotification();
 
   useEffect(() => {
     const handleLocationState = async () => {
       if (location.state) {
         if (location.state.successAdd) {
-          await showTemporarySuccess("Building added successfully! ");
+          await showAlert("Building added successfully! ");
         } else if (location.state.successEdit) {
-          await showTemporarySuccess("Building edited successfully!");
+          await showAlert("Building edited successfully!");
         } else if (location.state.successDelete) {
-          await showTemporarySuccess("Building deleted successfully! 3");
+          await showAlert("Building deleted successfully! 3");
         }
         navigate(location.pathname, { replace: true, state: undefined });
       }
     };
 
     handleLocationState();
-  }, [location.state, navigate, showTemporarySuccess]);
+  }, [location.pathname, location.state, navigate, showAlert]);
 
   return {
     data,
@@ -75,6 +75,6 @@ export default function useIndex() {
     error,
     isSuccess,
     message,
-    showTemporarySuccess,
+    showAlert,
   };
 }

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PAGE_SIZE } from '../../gedung/hooks/useIndex';
 import { RoomServices } from '../../../services/Admin Tenant/ManageRoom/RoomServices';
-import { FacilityDataItem, FacilityServices } from '../../../services/Admin Tenant/ManageFacility/FacilityServices';
+import { FacilityServices } from '../../../services/Admin Tenant/ManageFacility/FacilityServices';
 import { DoctorDataItem, DoctorServices } from '../../../services/Admin Tenant/ManageDoctor/DoctorServices';
 import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
 import { AmbulanceServices } from '../../../services/Admin Tenant/ManageAmbulance/AmbulanceServices';
@@ -19,6 +19,8 @@ import { AmbulanceDataItem } from '../../../types/ambulance.types';
 import { ClinicDataItem } from '../../../types/clinic.types';
 import { CounterDataItem } from '../../../types/counter.types';
 import { PatientDataItem } from '../../../types/patient.types';
+import { FacilityDataItem } from '../../../types/Facility.types';
+import { useSuccessNotification } from '../../../hooks/useSuccessNotification';
 
 export default function useIndex() {
   const [pageNumber, setPageNumber] = useState(0);
@@ -99,25 +101,12 @@ export default function useIndex() {
     loadingClinic ||
     loadingCounter ||
     loadingPatient;
-
-  const [successLogin, setSuccessLogin] = useState(false);
-  const [successDeleteRoom, setSuccessDeleteRoom] = useState(false);
-  const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
-  const [successDeleteFacility, setSuccessDeleteFacility] = useState(false);
-  const [successDeleteAmbulance, setSuccessDeleteAmbulance] = useState(false);
-  const [successDeleteClinic, setSuccessDeleteClinic] = useState(false);
-  const [successDeleteCounter, setSuccessDeleteCounter] = useState(false);
-
-  const showTemporarySuccess = async (setSuccess: React.Dispatch<React.SetStateAction<boolean>>) => {
-    setSuccess(true);
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    setSuccess(false);
-  };
+  const { isSuccess, message, showAlert } = useSuccessNotification();
 
   useEffect(() => {
     if (location.state && location.state.statusLogin) {
       (async () => {
-        await showTemporarySuccess(setSuccessLogin);
+        await showAlert('Login successfully!', 3000);
         navigate(location.pathname, { replace: true, state: undefined });
       })();
     }
@@ -136,7 +125,6 @@ export default function useIndex() {
   }, []);
 
   useEffect(() => {
-    console.log('masokkkk')
     refetchBuildings();
   }, [orderByBuilding]);
 
@@ -166,13 +154,6 @@ export default function useIndex() {
     totalElementsCounter,
     totalElementsPatient,
     isLoading,
-    successLogin,
-    successDeleteRoom,
-    successDeleteBuilding,
-    successDeleteFacility,
-    successDeleteAmbulance,
-    successDeleteClinic,
-    successDeleteCounter,
     setPageNumber,
     setOrderByRoom,
     setOrderByFacility,
@@ -182,11 +163,8 @@ export default function useIndex() {
     setOrderCounter,
     setOrderPatient,
     refetchAll,
-    showTemporarySuccessDeleteRoom: () => showTemporarySuccess(setSuccessDeleteRoom),
-    showTemporarySuccessDeleteBuilding: () => showTemporarySuccess(setSuccessDeleteBuilding),
-    showTemporarySuccessDeleteFacility: () => showTemporarySuccess(setSuccessDeleteFacility),
-    showTemporarySuccessDeleteAmbulance: () => showTemporarySuccess(setSuccessDeleteAmbulance),
-    showTemporarySuccessDeleteClinic: () => showTemporarySuccess(setSuccessDeleteClinic),
-    showTemporarySuccessDeleteCounter: () => showTemporarySuccess(setSuccessDeleteCounter)
+    message,
+    isSuccess,
+    showAlert
   };
 }

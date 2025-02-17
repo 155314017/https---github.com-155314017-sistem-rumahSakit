@@ -32,7 +32,6 @@ export default function useDetailGedung(): UseDetailGedungReturn {
     GetBuildingById,
     [id],
     true,
-    // true
   );
 
   // Fetch image data using useFetchData hook

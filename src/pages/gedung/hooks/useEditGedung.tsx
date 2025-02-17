@@ -9,6 +9,7 @@ import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/G
 import { editImages } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
 import { useFetchData } from "../../../hooks/useFetchData";
 import { BuildingDataItem } from "../../../types/building.types";
+import { useSuccessNotification } from "../../../hooks/useSuccessNotification";
 
 type ImageData = {
     imageName: string;
@@ -22,8 +23,8 @@ interface FormValues {
 }
 
 export default function useEditGedung() {
-    const [successAlert, setSuccessAlert] = useState(false);
-    const [errorAlert, setErrorAlert] = useState(false);
+    // const [successAlert, setSuccessAlert] = useState(false);
+    // const [errorAlert, setErrorAlert] = useState(false);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [name, setName] = useState<string>('');
@@ -57,18 +58,7 @@ export default function useEditGedung() {
     const handleImageChange = (images: ImageData[]) => {
         setImagesData(images);
     };
-
-    const showTemporaryAlertSuccess = async () => {
-        setSuccessAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessAlert(false);
-    };
-
-    const showTemporaryAlertError = async () => {
-        setErrorAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setErrorAlert(false);
-    };
+    const { isSuccess, message, showAlert } = useSuccessNotification();
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
@@ -97,8 +87,7 @@ export default function useEditGedung() {
             try {
                 await EditBuildingService(data);
                 await editImages(id || "", imagesData);
-
-                showTemporaryAlertSuccess();
+                showAlert("Gedung berhasil diubah!", 3000);
                 formik.resetForm();
                 setImagesData([]);
                 navigate('/gedung', { state: { successEdit: true, message: 'Gedung berhasil diubah!' } })
@@ -112,7 +101,7 @@ export default function useEditGedung() {
                     } else {
                         console.error('Error message:', error.message);
                     }
-                    showTemporaryAlertError();
+                    showAlert("Error editing building", 3000);
                 } else {
                     console.error('Unexpected error:', error);
                 }
@@ -125,8 +114,8 @@ export default function useEditGedung() {
         imagesData,
         handleImageChange,
         loading,
-        successAlert,
-        errorAlert,
-        id
+        id,
+        message,
+        isSuccess
     }
 }
