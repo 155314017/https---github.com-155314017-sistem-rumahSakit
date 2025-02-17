@@ -15,7 +15,6 @@ export default function DetailRuangan() {
         roomType,
         deletedItems,
         open,
-        roomId,
         largeImage,
         smallImage,
         loading,
@@ -24,7 +23,8 @@ export default function DetailRuangan() {
         confirmationDelete,
         handleDeleteSuccess,
         navigate,
-        setOpen
+        setOpen,
+        id
     } = useDetailRuangan();
 
     return (
@@ -46,7 +46,7 @@ export default function DetailRuangan() {
                         { id: "jenisRuangan", label: "Jenis Ruangan" },
 
                     ]}
-                    data={[{ nomorRuangan: roomId, namaGedung: buildingName, jenisRuangan: roomType }]}
+                    data={[{ nomorRuangan: id, namaGedung: buildingName, jenisRuangan: roomType }]}
                     actions={() => (
                         <>
                             <ModalDeleteConfirmation
@@ -57,7 +57,7 @@ export default function DetailRuangan() {
                             />
                             <Link
                                 underline="hover"
-                                onClick={(event) => confirmationDelete(event, roomId)}
+                                onClick={(event) => confirmationDelete(event, id?.toString() || "")}
                                 sx={{ color: "#8F85F3" }}
                                 href="#">
                                 Hapus
@@ -66,7 +66,7 @@ export default function DetailRuangan() {
                                 underline="hover"
                                 sx={{ color: "#8F85F3" }}
                                 href="#"
-                                onClick={() => navigate(`/editRuangan/${roomId}`)}
+                                onClick={() => navigate(`/editRuangan/${id}`)}
                             >
                                 Ubah
                             </Link>
