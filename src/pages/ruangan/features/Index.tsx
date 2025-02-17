@@ -13,19 +13,20 @@ import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 
 //hooks
 import useIndex from "../hooks/useIndex";
+import { gridContainerStyle } from "../../../style/ts/gridContainerStyle";
 
 export default function Index() {
     const {
-        roomData,
-        successAddRoom,
-        successDeleteRoom,
-        successEditRoom,
+        dataRoom,
         isLoading,
-        showTemporarySuccessDelete,
+        showAlert,
+        message,
+        isSuccess,
+        // fetchData,
         totalElements,
+        dataIdBuilding,
         setPageNumber,
-        setOrderBy,
-        dataIdBuilding
+        setOrderBy
     } = useIndex();
 
     return (
@@ -35,41 +36,14 @@ export default function Index() {
             <Box p={2} sx={{ marginLeft: "130px" }}>
                 <Header />
                 <Box>
-                    {successAddRoom && (
-                        <AlertSuccess label="Success Adding Room" />
-                    )}
-                    {successDeleteRoom && (
-                        <AlertSuccess label="Success Delete Room" />
-                    )}
-                    {successEditRoom && (
-                        <AlertSuccess label="Success Edit Room" />
+                    {isSuccess && (
+                        <AlertSuccess label={message} />
                     )}
                     <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
                         Ruangan
                     </Typography>
                     <Grid container
-                        sx={{
-                            flex: 1,
-                            mb: 3,
-                            gap: 1,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            maxWidth: '50%',
-                            justifyContent: 'space-between',
-                            '@media (min-width: 1010px) and (max-width: 1194px)': {
-                                maxWidth: '55%'
-                            },
-                            '@media (min-width: 900px) and (max-width: 1010px)': {
-                                maxWidth: '60%'
-                            },
-                            '@media (min-width: 750px) and (max-width: 900px)': {
-                                maxWidth: '70%'
-                            },
-                            '@media  (max-width: 750px)': {
-                                maxWidth: '100%'
-                            }
-
-                        }}
+                        sx={gridContainerStyle}
                     >
                         <Box
                             sx={{
@@ -89,8 +63,8 @@ export default function Index() {
                         </Box>
                     </Grid>
                     <TableRuangan
-                        data={roomData}
-                        onSuccessDelete={showTemporarySuccessDelete}
+                        data={dataRoom}
+                        onSuccessDelete={() => showAlert('Room deleted successfully!', 300)}
                         setPageNumber={setPageNumber}
                         setOrderBy={setOrderBy}
                         totalElements={totalElements}

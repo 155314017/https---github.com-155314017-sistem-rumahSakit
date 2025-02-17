@@ -27,6 +27,7 @@ export function useFetchData<T>(
     try {
       const result = await serviceFn(...params)
       if (result.data) {
+        console.log('result: ', result.data.content)
         setData(withImages ? result : result.data.content)
         setTotalElements((prevTotalElements) =>
           result.data.totalElements !== prevTotalElements

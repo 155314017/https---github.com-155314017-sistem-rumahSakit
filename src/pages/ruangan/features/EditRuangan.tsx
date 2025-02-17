@@ -1,4 +1,4 @@
-import { Container, Box, Typography, Button, FormControl, CircularProgress, TextField } from "@mui/material";
+import { Container, Box, Typography, FormControl } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
@@ -8,6 +8,10 @@ import DropdownList from '../../../components/small/dropdownlist/DropdownList';
 
 //hooks
 import useEditRuangan from "../hooks/useEditRuangan";
+import CustomFrameTable from "../../../components/small/CustomFrameTable";
+import CustomTextField from "../../../components/inputComponent/CustomTextfield";
+import CustomButtonFilled from "../../../components/small/button/CustomButtonFilled";
+import { roomType } from "../../../data/roomType";
 
 
 
@@ -19,7 +23,6 @@ export default function EditRuangan() {
         errorAlert,
         loading,
         gedungOptions,
-        jenisRuangan,
         id
     } = useEditRuangan();
 
@@ -39,98 +42,16 @@ export default function EditRuangan() {
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
                     </Box>
-
-                    <Box
-                        position={"absolute"}
-                        sx={{
-                            top: 0,
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            display: "flex",
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#fff",
-                                    borderRadius: "0px 15px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-
-                        <Box
-                            sx={{
-                                width: "600px",
-                                height: "50px",
-                                bgcolor: "#F1F0FE",
-                                borderRadius: "0px 0px 22px 22px",
-                            }}
-                        />
-
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#fff",
-                                    borderRadius: "15px 0px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-                    </Box>
-
+                    <CustomFrameTable />
                     <ImageUploaderGroupAPI onChange={handleImageChange} parentId={id || ''} />
 
                     <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                         <Typography sx={{ fontSize: "16px" }}>Nama Ruangan<span style={{ color: "red" }}>*</span></Typography>
                         <FormControl fullWidth sx={{ my: 1 }}>
-                            <TextField
-                                variant="outlined"
-                                id="namaRuangan"
+                            <CustomTextField
                                 name="namaRuangan"
-                                size="small"
-                                placeholder={(formik.touched.namaRuangan && formik.errors.namaRuangan) ? formik.errors.namaRuangan : "Masukkan alamat gedung"}
-                                value={loading ? "" : formik.values.namaRuangan}
-                                onChange={formik.handleChange}
-                                onBlur={() => formik.setTouched({ ...formik.touched, namaRuangan: true })}
-                                error={formik.touched.namaRuangan && Boolean(formik.errors.namaRuangan)}
-                                disabled={loading}
-                                InputProps={{
-                                    endAdornment: loading ? <CircularProgress size={20} /> : null
-                                }}
-                                sx={{
-                                    width: "100%",
-                                    // height: "48px",
-                                    marginTop: "10px",
-                                    "& .MuiOutlinedInput-root": {
-                                        borderRadius: "8px",
-                                        backgroundColor: formik.touched.namaRuangan && formik.errors.namaRuangan ? "#ffcccc" : "inherit",
-                                        '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: '#8F85F3',
-                                        },
-                                    },
-                                    "& .MuiOutlinedInput-notchedOutline": {
-                                        border: "1px solid #ccc",
-                                    },
-                                    "& .MuiOutlinedInput-input": {
-                                        padding: "10px",
-                                        fontSize: "16px",
-                                    },
-                                }}
+                                formik={formik}
+                                placeholder="Masukkan nama gedung"
                             />
                         </FormControl>
 
@@ -147,7 +68,7 @@ export default function EditRuangan() {
 
                         <Typography sx={{ fontSize: "16px", mt: 1 }}>Jenis Ruangan<span style={{ color: "red" }}>*</span></Typography>
                         <DropdownList
-                            options={jenisRuangan}
+                            options={roomType}
                             placeholder={loading ? "" : "Pilih jenis ruangan"}
                             onChange={(selectedValue) => {
                                 formik.setFieldValue('jenisRuangan', selectedValue);
@@ -156,23 +77,12 @@ export default function EditRuangan() {
                             loading={loading}
                         />
 
-                        <Button
+                        <CustomButtonFilled
                             type="submit"
                             variant="contained"
-                            color="inherit"
-                            sx={{
-                                mt: 3,
-                                width: "100%",
-                                bgcolor: "#8F85F3",
-                                color: "#fff",
-                                textTransform: "none",
-                                borderRadius: "8px",
-                                ":hover": { bgcolor: "#a098f5" },
-                            }}
                             disabled={!formik.isValid || !formik.dirty}
-                        >
-                            Simpan
-                        </Button>
+                            text="Simpan"
+                        />
                     </Box>
 
                     {successAlert && <AlertSuccess label="Ruangan updated successfully" />}

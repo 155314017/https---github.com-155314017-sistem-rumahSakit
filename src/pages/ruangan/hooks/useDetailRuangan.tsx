@@ -5,21 +5,21 @@ import { GetRoomByIdServices } from "../../../services/Admin Tenant/ManageRoom/G
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
+import { RoomDataItem } from "../../../types/room.types";
+import { useFetchData } from "../../../hooks/useFetchData";
+import { BuildingDataItem } from "../../../types/building.types";
 
 export default function useDetailRuangan() {
     const [roomName, setRoomName] = useState<string>("");
     const [roomType, setRoomType] = useState<string>("");
     const [deletedItems, setDeletedItems] = useState("");
     const [open, setOpen] = useState(false);
-    const [roomId, setRoomId] = useState("");
     const { id } = useParams();
     const navigate = useNavigate();
     const [largeImage, setLargeImage] = useState<string>("");
     const [smallImage, setSmallImages] = useState<string[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [buildingId, setBuildingId] = useState<string>("")
-    const [buildingName, setBuildingName] = useState<string>("")
-
+    const [buildingId, setBuildingId] = useState<string>("");
+    const [buildingName, setBuildingName] = useState<string>("");
 
     const breadcrumbItems = [
         {
@@ -36,44 +36,57 @@ export default function useDetailRuangan() {
         },
     ];
 
-    const fetchRoomById = async () => {
-        setLoading(true);
-        try {
-            const response = await GetRoomByIdServices(id);
-            setRoomId(response.id);
-            setRoomName(response.name);
-            setRoomType(response.type);
-            setBuildingId(response.masterBuildingId);
-            if (response.id) {
-                const imageResponse = await GetImageByParentId(response.id);
-                const { largeImage, smallImages } = processImageResponse(imageResponse);
-                setLargeImage(largeImage);
-                setSmallImages(smallImages);
+    const { data: roomData, loading: roomLoading } = useFetchData<RoomDataItem>(
+        GetRoomByIdServices,
+        [id],
+        true,
+        false
+    );
+
+    const { data: buildingData, loading: buildingLoading, refetch: refetchBuilding } = useFetchData<BuildingDataItem>(
+        GetBuildingById,
+        [buildingId],
+        false,
+        false
+    );
+
+    const { data: imageData, loading: imageLoading, refetch: refetchImage } = useFetchData(
+        GetImageByParentId,
+        [roomData?.id],
+        false,
+        true
+    );
+
+    useEffect(() => {
+        if (roomData) {
+            setRoomName(roomData.name);
+            setRoomType(roomData.type);
+            setBuildingId(roomData.masterBuildingId);
+            if (roomData.id) {
+                refetchImage();
             }
-            setLoading(false);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-            setLoading(false);
         }
-    };
+    }, [roomData]);
 
     useEffect(() => {
-        fetchRoomById();
-    }, [id]);
-
+        if (buildingId) {
+            refetchBuilding();
+        }
+    }, [buildingId, refetchBuilding]);
 
     useEffect(() => {
-        const fetchDataBuildings = async () => {
-            try {
-                const response = await GetBuildingById(buildingId);
-                setBuildingName(response.name)
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-        fetchDataBuildings();
-    }, [buildingId]);
+        if (buildingData) {
+            setBuildingName(buildingData.name);
+        }
+    }, [buildingData]);
 
+    useEffect(() => {
+        if (imageData) {
+            const { largeImage, smallImages } = processImageResponse(imageData);
+            setLargeImage(largeImage);
+            setSmallImages(smallImages || []);
+        }
+    }, [imageData]);
 
     const handleDeleteSuccess = () => {
         setOpen(false);
@@ -91,16 +104,16 @@ export default function useDetailRuangan() {
         roomType,
         deletedItems,
         open,
-        roomId,
         largeImage,
         smallImage,
-        loading,
+        loading: roomLoading || imageLoading || buildingLoading,
         buildingName,
         breadcrumbItems,
         confirmationDelete,
         handleDeleteSuccess,
         navigate,
-        setOpen
-    }
-
+        setOpen,
+        id,
+        setBuildingName,
+    };
 }

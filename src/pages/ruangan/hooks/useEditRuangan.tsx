@@ -1,12 +1,14 @@
-import axios from "axios";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useFormik } from "formik";
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from "yup";
-import { GetBuildingById } from '../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices';
 import { editImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
 import { editRoom } from '../../../services/Admin Tenant/ManageRoom/EditRoomService';
+import { useFetchData } from '../../../hooks/useFetchData';
+// import { GetBuildingById } from '../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices';
 import { GetRoomByIdServices } from '../../../services/Admin Tenant/ManageRoom/GetRoomByIdServices';
+import { Building } from "../../../services/Admin Tenant/ManageBuilding/Building";
 
 interface FormValues {
     namaRuangan: string;
@@ -25,64 +27,44 @@ type Building = {
     name: string;
 };
 
-const jenisRuangan = [
-    { value: 1, label: "VIP" },
-    { value: 2, label: "Kelas 1" },
-    { value: 3, label: "Kelas 2" },
-    { value: 4, label: "Kelas 3" },
-    { value: 5, label: "BPJS" },
-];
-
 export default function useEditRuangan() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
     const { id } = useParams();
     const [gedungOptions, setGedungOptions] = useState<Building[]>([]);
     const [roomName, setRoomName] = useState<string>('');
     const [buildingName, setBuildingName] = useState('');
     const [roomType, setRoomType] = useState('');
-
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchGedungData = async () => {
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`, {
-                    timeout: 10000
-                });
-                setGedungOptions(response.data.data.content.map((item: Building) => ({
-                    id: item.id,
-                    name: item.name,
-                })));
-            } catch (error) {
-                console.error("Error fetching buildings:", error);
-            }
-        };
-        fetchGedungData();
-    }, []);
+    const { data: building, refetch: fetchBuilding } = useFetchData<Building[]>(
+        Building, [], false
+    );
+
+    const { data: roomData, loading: roomLoading } = useFetchData<any>(
+        GetRoomByIdServices, [id], true
+    );
 
 
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const response = await GetRoomByIdServices(id)
-                setRoomName(response.name);
-                setRoomType(response.type);
+        if (roomData) {
+            fetchBuilding()
+            setRoomName(roomData.name);
+            setRoomType(roomData.type);
+            setBuildingName(roomData.masterBuildingId);
+        }
+    }, [roomData, fetchBuilding]);
 
-                const buildingResponse = await GetBuildingById(response.masterBuildingId)
+    useEffect(() => {
+        if (building) {
+            setGedungOptions(building.map((item: Building) => ({
+                id: item.id,
+                name: item.name,
+            })));
+        }
+    }, [building]);
 
-                setBuildingName(buildingResponse.id);  // Store the building ID instead of name
-            } catch (error) {
-                console.error('Error fetching room data:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, [id]);
 
     const formik = useFormik<FormValues>({
         initialValues: {
@@ -110,20 +92,9 @@ export default function useEditRuangan() {
                 await editImages(id || "", imagesData);
 
                 setSuccessAlert(true);
-                navigate('/ruangan', { state: { successEdit: true, message: 'Ruangan berhasil di edit!' } })
+                navigate('/ruangan', { state: { successEdit: true, message: 'Ruangan berhasil di edit!' } });
             } catch (error) {
                 console.error('Error editing room:', error);
-                if (axios.isAxiosError(error)) {
-                    console.error('Axios error message:', error.message);
-                    console.error('Response data:', error.response?.data);
-                    if (error.response) {
-                        console.error('Response status:', error.response.status);
-                    } else {
-                        console.error('Error message:', error.message);
-                    }
-                } else {
-                    console.error('Unexpected error:', error);
-                }
                 setErrorAlert(true);
             }
         },
@@ -138,9 +109,8 @@ export default function useEditRuangan() {
         handleImageChange,
         successAlert,
         errorAlert,
-        loading,
+        loading: roomLoading,
         gedungOptions,
-        jenisRuangan,
         id
     }
 }
