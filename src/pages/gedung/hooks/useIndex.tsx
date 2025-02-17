@@ -3,7 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Building } from "../../../services/Admin Tenant/ManageBuilding/Building";
 import { BuildingDataItem } from "../../../types/building.types";
 import { useFetchData } from "../../../hooks/useFetchData";
-import useDebounce from "../../../hooks/useDebounce"; 
+import useDebounce from "../../../hooks/useDebounce";
+import { useSuccessNotification } from "../../../hooks/useSuccessNotification";
 
 export const PAGE_SIZE = 10;
 
@@ -28,12 +29,7 @@ export default function useIndex() {
     }
   }, [refetch]);
 
-  // useEffect(() => {
-  //   refetch();
-  // }, [pageNumber, orderBy, refetch]);
-
-  // Menggunakan useDebounce untuk debounced searchItem
-  const debouncedSearchItem = useDebounce(searchItem, 300); 
+  const debouncedSearchItem = useDebounce(searchItem, 300);
 
   useEffect(() => {
     if (debouncedSearchItem !== searchItem) {
@@ -45,58 +41,30 @@ export default function useIndex() {
     setSearchItem(newSearchValue);
   };
 
-  const [successAddBuilding, setSuccessAddBuilding] = useState(false);
-  const [successDeleteBuilding, setSuccessDeleteBuilding] = useState(false);
-  const [successEditBuilding, setSuccessEditBuilding] = useState(false);
+  // membuat notif aler menggunakan useSuccessNotification 
+  const { isSuccess, message, showTemporarySuccess } = useSuccessNotification();
 
   useEffect(() => {
     const handleLocationState = async () => {
       if (location.state) {
         if (location.state.successAdd) {
-          await showTemporaryAlertSuccess();
+          await showTemporarySuccess("Building added successfully! ");
         } else if (location.state.successEdit) {
-          await showTemporarySuccessEdit();
+          await showTemporarySuccess("Building edited successfully!");
         } else if (location.state.successDelete) {
-          await showTemporarySuccessDelete();
+          await showTemporarySuccess("Building deleted successfully! 3");
         }
         navigate(location.pathname, { replace: true, state: undefined });
-        // refetch();
       }
     };
 
     handleLocationState();
-  }, [location.state]);
-
-  
-  const showTemporaryAlertSuccess = async () => {
-    setSuccessAddBuilding(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setSuccessAddBuilding(false);
-  };
-
-  const showTemporarySuccessDelete = async () => {
-    refetch();
-    setSuccessDeleteBuilding(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setSuccessDeleteBuilding(false);
-  };
-
-  const showTemporarySuccessEdit = async () => {
-    setSuccessEditBuilding(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setSuccessEditBuilding(false);
-  };
+  }, [location.state, navigate, showTemporarySuccess]);
 
   return {
     data,
-    successAddBuilding,
-    successDeleteBuilding,
-    successEditBuilding,
     loading,
     refetch,
-    showTemporaryAlertSuccess,
-    showTemporarySuccessDelete,
-    showTemporarySuccessEdit,
     pageNumber,
     setPageNumber,
     orderBy,
@@ -105,5 +73,8 @@ export default function useIndex() {
     PAGE_SIZE,
     handleSearchChange,
     error,
+    isSuccess,
+    message,
+    showTemporarySuccess,
   };
 }

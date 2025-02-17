@@ -10,19 +10,19 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import useIndex from "../hooks/useIndex";
+import { gridContainerStyle } from "../../../style/ts/gridContainerStyle";
 
 export default function Index() {
   const {
     data,
-    successAddBuilding,
-    successDeleteBuilding,
-    successEditBuilding,
     loading,
-    showTemporarySuccessDelete,
     setPageNumber,
+    isSuccess,
+    message,
     setOrderBy,
     totalElements,
-    handleSearchChange
+    handleSearchChange,
+    showTemporarySuccess
   } = useIndex();
 
   return (
@@ -32,41 +32,17 @@ export default function Index() {
       <Box p={2} sx={{ marginLeft: "130px" }}>
         <Header />
         <Box>
-          {successAddBuilding && (
-            <AlertSuccess label="Success adding building" />
-          )}
-          {successDeleteBuilding && (
-            <AlertSuccess label="Success delete building" />
-          )}
-          {successEditBuilding && (
-            <AlertSuccess label="Success edit building" />
+          {/* alert notifikasi  */}
+          {isSuccess && (
+            <AlertSuccess label={message} />
           )}
           <Typography variant="h1" sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
             Gedung
           </Typography>
-          <Grid container
-            sx={{
-              flex: 1,
-              mb: 3,
-              gap: 1,
-              display: 'flex',
-              flexDirection: 'row',
-              maxWidth: '50%',
-              justifyContent: 'space-between',
-              '@media (min-width: 1010px) and (max-width: 1194px)': {
-                maxWidth: '55%'
-              },
-              '@media (min-width: 900px) and (max-width: 1010px)': {
-                maxWidth: '60%'
-              },
-              '@media (min-width: 750px) and (max-width: 900px)': {
-                maxWidth: '70%'
-              },
-              '@media  (max-width: 750px)': {
-                maxWidth: '100%'
-              }
 
-            }}
+          {/* grid layout card  */}
+          <Grid container
+            sx={gridContainerStyle}
           >
             <Box
               sx={{
@@ -89,9 +65,11 @@ export default function Index() {
               <CardAdd icon={AddBoxIcon} title="Tambah Gedung" link="/tambahGedung" />
             </Box>
           </Grid>
+
+          {/* table gedung  */}
           <TableGedung
             data={data}
-            onSuccessDelete={showTemporarySuccessDelete}
+            onSuccessDelete={() => showTemporarySuccess('Gedung deleted successfully!')}
             setPageNumber={setPageNumber}
             setOrderBy={setOrderBy}
             totalElements={totalElements}

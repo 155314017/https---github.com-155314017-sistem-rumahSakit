@@ -1,25 +1,25 @@
-import { useState } from 'react'
+import { useState } from "react";
 
 export const useSuccessNotification = () => {
-  const [isSuccess, setIsSuccess] = useState(false)
-  const [message, setMessage] = useState('')
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
 
   const showTemporarySuccess = async (
-    customMessage: string = 'Operation Successful',
+    customMessage: string = "Operation Successful", 
     duration: number = 3000
   ) => {
-    setMessage(customMessage)
-    setIsSuccess(true)
+    setMessage(customMessage);
+    setIsSuccess(true);
 
-    await new Promise((resolve) => setTimeout(resolve, duration))
+    await new Promise((resolve) => setTimeout(resolve, duration));
 
-    setIsSuccess(false)
-    setMessage('')
-  }
+    setIsSuccess(false);
+    setMessage(""); 
+  };
 
   return {
     isSuccess,
     message,
-    showTemporarySuccess
-  }
-}
+    showTemporarySuccess,
+  };
+};
