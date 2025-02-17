@@ -52,7 +52,6 @@ export default function useDetailGedung(): UseDetailGedungReturn {
 
   useEffect(() => {
     if (buildingData) {
-      console.log("Building data fetched:", buildingData);
       setName(buildingData.name);
       setAddress(buildingData.address);
       if (buildingData.id) {

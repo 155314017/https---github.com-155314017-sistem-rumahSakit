@@ -14,7 +14,6 @@ export function useFetchData<T>(
   serviceFn: (...args: any[]) => Promise<any>,
   params: any[] = [],
   autoFetch: boolean = false,
-  
   //kondisional, jika membutuhkan data beserta image maka true (biasanya di detail),
   // jika untuk keperluan table saja tanpa images tidak perlu diisi, otomatis false
   withImages: boolean = false

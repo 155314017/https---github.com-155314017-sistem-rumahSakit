@@ -1,10 +1,11 @@
 import { Container, Box } from "@mui/system";
-import { Typography, Button, FormControl, CircularProgress, TextField } from "@mui/material";
+import { Typography, FormControl, CircularProgress, TextField } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import ImageUploaderGroupAPI from "../../../components/inputComponent/ImageUploaderComponents/ImageGroupUploaderAPI";
 import useEditGedung from "../hooks/useEditGedung";
+import CustomButtonFilled from "../../../components/small/button/CustomButtonFilled";
 
 export default function EditGedung() {
     const { breadcrumbItems,
@@ -169,7 +170,7 @@ export default function EditGedung() {
                         </FormControl>
 
                         {/* Button */}
-                        <Button
+                        {/* <Button
                             type="submit"
                             variant="contained"
                             color="inherit"
@@ -189,7 +190,8 @@ export default function EditGedung() {
                             disabled={!formik.isValid || !formik.dirty}
                         >
                             Simpan
-                        </Button>
+                        </Button> */}
+                        <CustomButtonFilled disabled={!formik.isValid || !formik.dirty} text="Simpan" type="submit" variant="contained" />
                     </Box>
                 </Box>
             </Box>

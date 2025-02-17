@@ -58,7 +58,7 @@ export default function LoginPegawai() {
             `}
       </style>
       <Helmet>
-        <title>Login Pegawai - Sistem Rumah Sakit</title>
+        {/* <title>Login Pegawai - Sistem Rumah Sakit</title> */}
         <meta name="description" content="Halaman Login untuk Pegawai di Sistem Rumah Sakit, tempat pegawai dapat mengakses layanan rumah sakit secara mudah dan cepat." />
         <meta charSet="UTF-8" />
         <meta name="keywords" content="login pegawai, sistem rumah sakit, aplikasi rumah sakit, React, medical staff portal" />

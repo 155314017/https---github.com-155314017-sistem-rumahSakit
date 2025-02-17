@@ -51,7 +51,7 @@ export default function useEditGedung() {
             }
         };
         fetchData();
-    }, [id, buildingData]);
+    }, [buildingData.address, buildingData.name]);
 
 
     const handleImageChange = (images: ImageData[]) => {

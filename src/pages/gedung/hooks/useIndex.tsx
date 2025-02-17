@@ -67,6 +67,7 @@ export default function useIndex() {
     handleLocationState();
   }, [location.state]);
 
+  
   const showTemporaryAlertSuccess = async () => {
     setSuccessAddBuilding(true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
