@@ -6,6 +6,8 @@ import {
 } from '../../../services/Admin Tenant/ManageAmbulance/AmbulanceServices'
 import { AmbulanceDataItem } from '../../../types/ambulance.types'
 import { useFetchData } from '../../../hooks/useFetchData';
+import useDebounce from '../../../hooks/useDebounce';
+import { useSuccessNotification } from '../../../hooks/useSuccessNotification';
 
 export const PAGE_SIZE = 10;
 
@@ -13,9 +15,8 @@ export default function useIndex() {
   const [pageNumber, setPageNumber] = useState(0);
   const [orderBy, setOrderBy] = useState("createdDateTime=asc");
   // const [searchItem, setSearchItem] = useState("");
-  const [successAddAmbulance, setSuccessAddAmbulance] = useState(false)
-  const [successDeleteAmbulance, setSuccessDeleteAmbulance] = useState(false)
-  const [successEditAmbulance, setSuccessEditAmbulance] = useState(false)
+  
+  const [searchItem, setSearchItem] = useState("");
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -33,59 +34,61 @@ export default function useIndex() {
     }
   }, [refetch]);
 
+  const debouncedSearchItem = useDebounce(searchItem, 300);
+
 
   useEffect(() => {
-    const handleLocationState = async () => {
-      if (location.state) {
-        if (location.state.successAdd) {
-          await showTemporaryAlertSuccess();
-        } else if (location.state.successEdit) {
-          await showTemporarySuccessEdit();
-        } else if (location.state.successDelete) {
-          await showTemporarySuccessDelete();
+    if (debouncedSearchItem !== searchItem) {
+      refetch();
+    }
+  }, [debouncedSearchItem, refetch, searchItem]);
+
+  
+  const handleSearchChange = (newSearchValue: string) => {
+    setSearchItem(newSearchValue);
+  };
+
+  const { isSuccess, message, showAlert } = useSuccessNotification();
+
+
+  useEffect(() => {
+      const handleLocationState = async () => {
+        if (location.state) {
+          if (location.state.successAdd) {
+            await showAlert("Ambulance added successfully! ");
+          } else if (location.state.successEdit) {
+            await showAlert("Ambulance edited successfully!");
+          } else if (location.state.successDelete) {
+            await showAlert("Ambulance deleted successfully! 3");
+          }
+          navigate(location.pathname, { replace: true, state: undefined });
         }
-        navigate(location.pathname, { replace: true, state: undefined });
-        // refetch();
-      }
-    };
-
-    handleLocationState();
-  }, [location.state]);
+      };
+  
+      handleLocationState();
+    }, [location.pathname, location.state, navigate, showAlert]);
+  
 
 
 
 
-  const showTemporaryAlertSuccess = async () => {
-
-    setSuccessAddAmbulance(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    setSuccessAddAmbulance(false)
-  }
-
-  const showTemporarySuccessDelete = async () => {
-    refetch();
-    setSuccessDeleteAmbulance(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    setSuccessDeleteAmbulance(false)
-  }
-
-  const showTemporarySuccessEdit = async () => {
-
-    setSuccessEditAmbulance(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    setSuccessEditAmbulance(false)
-  }
+  
   return {
     data,
-    successAddAmbulance,
-    successDeleteAmbulance,
-    successEditAmbulance,
-    showTemporarySuccessDelete,
+    loading,
+    refetch,
+    pageNumber,
     setPageNumber,
+    orderBy,
     setOrderBy,
     totalElements,
+    PAGE_SIZE,
+    handleSearchChange,
     error,
-    loading
+    isSuccess,
+    message,
+    fetchData: refetch,
+    showAlert,
 
   }
 

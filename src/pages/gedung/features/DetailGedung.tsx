@@ -13,7 +13,6 @@ export default function DetailGedung() {
   const {
     name,
     address,
-    deletedItems,
     open,
     breadcrumbItems,
     largeImage,
@@ -57,8 +56,9 @@ export default function DetailGedung() {
               <ModalDeleteConfirmation
                 open={open}
                 onClose={() => setOpen(false)}
-                apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${deletedItems}`}
+                apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/`}
                 onDeleteSuccess={handleDeleteSuccess}
+                itemId={id || ""}
               />
               <Link
                 underline="hover"

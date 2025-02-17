@@ -6,93 +6,94 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import { getAmbulanceByIdService } from '../../../services/Admin Tenant/ManageAmbulance/GetAmbulanceByIdService'
+import { EditAmbulanceServices } from '../../../services/Admin Tenant/ManageAmbulance/EditAmbulanceServices'
+import { editImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils'
+import { AmbulanceDataItem } from '../../../types/ambulance.types'
+import { useFetchData } from '../../../hooks/useFetchData'
+import { useSuccessNotification } from '../../../hooks/useSuccessNotification'
 import { GetScheduleByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices'
 import { createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils'
 import { createExclusions } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils'
 import { ScheduleDataItem } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices'
 import { ExclusionDataItem, GetExclusionByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices'
-import { EditAmbulanceServices } from '../../../services/Admin Tenant/ManageAmbulance/EditAmbulanceServices'
-import { editImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils'
 
-
-type AmbulanceDataItem = {
-  id: string;
-  number: string;
-  status: string;
-  additionalInfo: string;
-  createdBy: string;
-  createdDateTime: number;
-  updatedBy: string | null;
-  updatedDateTime: number | null;
-  deletedBy: string | null;
-  deletedDateTime: number | null;
-  cost: number;
-}
 
 type ImageData = {
   imageName: string;
   imageType: string;
   imageData: string;
+};
+
+interface FormValues {
+  operationalCost: number
 }
 
+
 export default function useEditAmbulance() {
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [imagesData, setImagesData] = useState<ImageData[]>([])
-  const [errorAlert, setErrorAlert] = useState(false)
-  const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
   const { id } = useParams()
-  const [ambulanceData, setAmbulanceData] = useState<AmbulanceDataItem | null>(null);
-  const [scheduleDataPraktek, setScheduleDataPraktek] = useState<ScheduleDataItem[] | null>(null);
-  const [scheduleDataPengecualian, setScheduleDataPengecualian] = useState<ExclusionDataItem[] | null>(null);
-
-
+  const [operationalCost, setOperationalCost] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const navigate = useNavigate()
+  const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
 
-  interface FormValues {
-    operationalCost: number
-  }
+  const [scheduleDataPraktek, setScheduleDataPraktek] = useState<ScheduleDataItem[]>([]);
+  const [scheduleDataPengecualian, setScheduleDataPengecualian] = useState<ExclusionDataItem[]>([]);
+
+
+ 
 
 
   
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const ambulanceResponse = await getAmbulanceByIdService(id); 
-        const scheduleResponse = await GetScheduleByTypeId(id || "");
-        const exclusionResponse = await GetExclusionByTypeId(id || "");
-
-        if (ambulanceResponse) {
-          setAmbulanceData(ambulanceResponse);
-        }
-
-        if (scheduleResponse) { 
-          // Transform API data ke format yang sesuai dengan getKalenderData  
-          setScheduleDataPraktek(scheduleResponse);
-        }
-
-        if (exclusionResponse) {
-          setScheduleDataPengecualian(exclusionResponse);
-        }
-
-      } catch (error) {
-        console.error('Error:', error);
-      }
-
-    };
-    fetchData();
-  }, [id]);
+  const { data: ambulanceData } = useFetchData<AmbulanceDataItem>(
+          getAmbulanceByIdService,
+          [id],
+          true,
+          // true
+      );
 
 
-  const showTemporaryAlertError = async () => {
-    setErrorAlert(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    setErrorAlert(false)
-  }
+      useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+              
+              const scheduleResponse = await GetScheduleByTypeId(id || "");
+              const exclusionResponse = await GetExclusionByTypeId(id || "");
+
+              
+
+              if (scheduleResponse) { 
+                // Transform API data ke format yang sesuai dengan getKalenderData  
+                setScheduleDataPraktek(scheduleResponse);
+              }
+
+              if (exclusionResponse) {
+                setScheduleDataPengecualian(exclusionResponse);
+              }
+               setOperationalCost(ambulanceData.cost)
+            } catch (error) {
+                console.error('Error saat menghapus data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [ambulanceData.cost]);
+
+    const handleImageChange = (images: ImageData[]) => {
+            setImagesData(images);
+        };
+        const { isSuccess, message, showAlert } = useSuccessNotification();
+
+
+  
   
 
   const formik = useFormik<FormValues>({
     initialValues: {
-      operationalCost: ambulanceData?.cost || 0
+      operationalCost: operationalCost || 0
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
@@ -106,9 +107,7 @@ export default function useEditAmbulance() {
   })
   
 
-  const handleImageChange = (images: ImageData[]) => {
-    setImagesData(images)
-  }
+  
 
   const getPageStyle = (page: number) => {
     if (page === currentPage) {
@@ -213,14 +212,24 @@ export default function useEditAmbulance() {
         }
       });
     } catch (error) {
-      console.error('[DEBUG] Error saat menyimpan ambulance:', error);
-      if (axios.isAxiosError(error)) {
-        const responseData = error.response?.data;
-        console.error('[DEBUG] Detail error dari server:', responseData || error.message);
-      }
-      showTemporaryAlertError();
+        console.error('Error submitting form:', error);
+        if (axios.isAxiosError(error)) {
+            console.error('Axios error message:', error.message);
+            console.error('Response data:', error.response?.data);
+            if (error.response) {
+                console.error('Response status:', error.response.status);
+            } else {
+                console.error('Error message:', error.message);
+            }
+            showAlert("Error editing building", 3000);
+        } else {
+            console.error('Unexpected error:', error);
+        }
     }
-  };
+};
+  
+
+  
 
 
   const breadcrumbItems = [
@@ -230,21 +239,24 @@ export default function useEditAmbulance() {
   ]
   
   return {
-    formik,
-    handleImageChange,
-    imagesData,
-    errorAlert,
     breadcrumbItems,
+    formik,
+    imagesData,
+    handleImageChange,
+    loading,
     id,
-    currentPage,
+    message,
+    isSuccess,
+    scheduleDataPraktek,
+    scheduleDataPengecualian,
     setCurrentPage,
+    currentPage,
     getPageStyle,
     getBorderStyle,
     handleEditAmbulance,
-    kalenderRef,
     ambulanceData,
-    scheduleDataPraktek,
-    scheduleDataPengecualian
+    kalenderRef
+
   }
 }
 

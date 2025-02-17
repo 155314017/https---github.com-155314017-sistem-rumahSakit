@@ -12,6 +12,7 @@ import useTambahAmbulance from '../hooks/useTambahAmbulance'
 
 import 'dayjs/locale/id'
 import CustomBigCalendar from '../../../components/medium/CustomBigCalendar'
+import AlertWarning from '../../../components/small/alert/AlertWarning'
 
 
 export default function TambahAmbulance() {
@@ -24,7 +25,8 @@ export default function TambahAmbulance() {
     getBorderStyle,
     currentPage,
     handleSaveAmbulance,
-    kalenderRef
+    kalenderRef,
+    isSuccess
   } = useTambahAmbulance()
 
 
@@ -195,6 +197,9 @@ export default function TambahAmbulance() {
             )}
           </Box>
         </Box>
+        {isSuccess && (
+                        <AlertWarning teks="Error adding Ambulance" />
+                    )}
       </Container>
     </>
   )

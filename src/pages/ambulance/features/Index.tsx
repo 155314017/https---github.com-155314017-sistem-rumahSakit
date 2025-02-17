@@ -16,17 +16,19 @@ import TableAmbulance from '../../../pages/ambulance/features/TableAmbulance'
 
 //hooks
 import useIndex from "../hooks/useIndex";
+import { gridContainerStyle } from '../../../style/ts/gridContainerStyle'
 export default function Index() {
   const {
     data,
-    successAddAmbulance,
-    successDeleteAmbulance,
-    successEditAmbulance,
-    showTemporarySuccessDelete,
     loading,
     setPageNumber,
+    isSuccess,
+    message,
     setOrderBy,
     totalElements,
+    handleSearchChange,
+    fetchData,
+    showAlert
   } = useIndex()
   return (
     <Box>
@@ -35,33 +37,14 @@ export default function Index() {
       <Box p={2} sx={{ marginLeft: '130px' }}>
         <Header />
         <Box>
-          {successAddAmbulance && <AlertSuccess label="Success adding ambulance" />}
-          {successDeleteAmbulance && <AlertSuccess label="Success delete ambulance" />}
-          {successEditAmbulance && <AlertSuccess label="Success edit ambulance" />}
+          {/* alert notifikasi  */}
+          {isSuccess && (
+            <AlertSuccess label={message} />
+          )}
+          
           <Typography sx={{ fontSize: '32px', fontWeight: '700', py: 5 }}>Ambulance</Typography>
           <Grid container
-            sx={{
-              flex: 1,
-              mb: 3,
-              gap: 1,
-              display: 'flex',
-              flexDirection: 'row',
-              maxWidth: '50%',
-              justifyContent: 'space-between',
-              '@media (min-width: 1010px) and (max-width: 1194px)': {
-                maxWidth: '55%'
-              },
-              '@media (min-width: 900px) and (max-width: 1010px)': {
-                maxWidth: '60%'
-              },
-              '@media (min-width: 750px) and (max-width: 900px)': {
-                maxWidth: '70%'
-              },
-              '@media  (max-width: 750px)': {
-                maxWidth: '100%'
-              }
-
-            }}
+            sx={gridContainerStyle}
           >
             <Box
               sx={{
@@ -87,10 +70,12 @@ export default function Index() {
 
           <TableAmbulance
             data={data}
-            onSuccessDelete={showTemporarySuccessDelete}
+            onSuccessDelete={() => showAlert('Ambulance deleted successfully!')}
             setPageNumber={setPageNumber}
             setOrderBy={setOrderBy}
             totalElements={totalElements}
+            onSearchChange={handleSearchChange}
+            fetchData={fetchData}
           />
         </Box>
       </Box>

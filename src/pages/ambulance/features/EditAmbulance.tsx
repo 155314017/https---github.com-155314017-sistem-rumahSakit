@@ -10,22 +10,25 @@ import ImageUploaderGroupAPI from '../../../components/inputComponent/ImageUploa
 // hooks
 import useEditAmbulance from '../hooks/useEditAmbulance';
 import CustomBigCalendar from '../../../components/medium/CustomBigCalendar';
+import AlertSuccess from '../../../components/small/alert/AlertSuccess';
 
 export default function EditAmbulance() {
   const {
-    handleImageChange,
     breadcrumbItems,
     formik,
-    setCurrentPage,
-    getPageStyle,
-    getBorderStyle,
-    currentPage,
-    handleEditAmbulance,
-    kalenderRef,
-    ambulanceData,
+    handleImageChange,
+    id,
+    message,
+    isSuccess,
     scheduleDataPraktek,
     scheduleDataPengecualian,
-    id
+    setCurrentPage,
+    currentPage,
+    getPageStyle,
+    getBorderStyle,
+    handleEditAmbulance,
+    ambulanceData,
+    kalenderRef
   } = useEditAmbulance();
 
 
@@ -206,6 +209,9 @@ export default function EditAmbulance() {
           )}
         </Box>
       </Box>
+      {isSuccess && (
+                <AlertSuccess label={message} />
+            )}
     </Container>
   );
 }

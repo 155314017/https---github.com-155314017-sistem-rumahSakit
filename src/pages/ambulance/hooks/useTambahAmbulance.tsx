@@ -7,13 +7,14 @@ import * as Yup from 'yup'
 import { CreateAmbulanceService } from '../../../services/Admin Tenant/ManageAmbulance/CreateAmbulanceService'
 import { ImageData, uploadImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils'
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils'
+import { useSuccessNotification } from '../../../hooks/useSuccessNotification'
 
 
 export default function useTambahAmbulance() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [imagesData, setImagesData] = useState<ImageData[]>([])
-  const [errorAlert, setErrorAlert] = useState(false)
   const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
+  const { isSuccess, message, showAlert } = useSuccessNotification();
 
   const navigate = useNavigate()
 
@@ -22,11 +23,7 @@ export default function useTambahAmbulance() {
     operationalCost: number
   }
 
-  const showTemporaryAlertError = async () => {
-    setErrorAlert(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    setErrorAlert(false)
-  }
+ 
 
   const handleImageChange = (images: ImageData[]) => {
     setImagesData(images)
@@ -141,7 +138,7 @@ export default function useTambahAmbulance() {
         const responseData = error.response?.data;
         console.error('[DEBUG] Detail error dari server:', responseData || error.message);
       }
-      showTemporaryAlertError();
+      showAlert("Error Adding Ambulance", 3000)
     }
   };
 
@@ -156,7 +153,8 @@ export default function useTambahAmbulance() {
     currentPage,
     handleSaveAmbulance,
     kalenderRef,
-    errorAlert
+    isSuccess,
+    message
   }
 
 }

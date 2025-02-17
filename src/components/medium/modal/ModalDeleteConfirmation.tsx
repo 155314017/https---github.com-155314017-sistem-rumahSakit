@@ -23,7 +23,7 @@ interface ModalDeleteConfirmationProps {
     onDeleteSuccess: () => void;
     apiUrl: string;
     itemId: string;
-    fetchData: () => void
+    fetchData ?: () => void
 }
 
 const ModalDeleteConfirmation: React.FC<ModalDeleteConfirmationProps> = ({ open, onClose, apiUrl, onDeleteSuccess, itemId, fetchData }) => {
@@ -56,7 +56,7 @@ const ModalDeleteConfirmation: React.FC<ModalDeleteConfirmationProps> = ({ open,
                     }}>
                         Keluar
                     </Button>
-                    <Button onClick={() => handleDelete({ apiUrl, itemId, onDeleteSuccess, onClose, fetchData })} sx={{
+                    <Button onClick={() => handleDelete({ apiUrl, itemId, onDeleteSuccess, onClose, fetchData: fetchData??(() => {}) })} sx={{
                         bgcolor: '#8F85F3', color: '#ffff', border: '1px solid #8F85F3', padding: 1, px: 10, '&:hover': {
                             backgroundColor: "#ffff", color: '#8F85F3',
                         },

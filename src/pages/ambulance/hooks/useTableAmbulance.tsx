@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import useConfirmationDelete from '../../../hooks/useConfirmationDelete';
 
 
 
@@ -15,10 +16,12 @@ export default function useTableAmbulance(
   const [page, setPage] = useState(1)
   const [isCollapsed, setIsCollapsed] = useState(true)
   const [open, setOpen] = useState(false)
-  const [deletedItems, setDeletedItems] = useState('')
+  const [deletedItems, setDeletedItems] = useState<string | null>("");
   const [sort, setSort] = useState('')
 
   const navigate = useNavigate()
+
+  const { confirmationDelete } = useConfirmationDelete( setOpen, setDeletedItems);
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value)
@@ -55,13 +58,7 @@ export default function useTableAmbulance(
     setIsCollapsed(prev => !prev)
   }
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, ambulanceId: string) => {
-    event.preventDefault()
-
-    setDeletedItems(ambulanceId)
-
-    setOpen(true)
-  }
+  
 
   return {
     page,

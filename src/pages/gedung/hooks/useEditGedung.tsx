@@ -25,6 +25,7 @@ interface FormValues {
 export default function useEditGedung() {
     // const [successAlert, setSuccessAlert] = useState(false);
     // const [errorAlert, setErrorAlert] = useState(false);
+    
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [name, setName] = useState<string>('');
