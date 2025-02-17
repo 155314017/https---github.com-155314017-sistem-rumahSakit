@@ -66,13 +66,17 @@ interface TableAmbulanceProps {
   setPageNumber: (page: number) => void;
   setOrderBy: (order: string) => void;
   totalElements: number;
+  onSearchChange?: (value: string) => void;
+  fetchData?: () => void
 }
 const TableAmbulance: React.FC<TableAmbulanceProps> = ({ 
   data,
   onSuccessDelete,
   setPageNumber,
   setOrderBy,
-  totalElements
+  totalElements,
+  onSearchChange,
+  fetchData
  }) => {
   const { page,
     isCollapsed,
@@ -122,7 +126,7 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({
         <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
           <Box>
             <Box mt={3} display={'flex'} justifyContent={'space-between'} sx={{ gap: 3 }}>
-              <SearchBar />
+              <SearchBar onChange={onSearchChange} />
               <DropdownList
                 options={[
                   { value: 1, label: 'Nama Ambulance A-Z' },
@@ -268,8 +272,10 @@ const TableAmbulance: React.FC<TableAmbulanceProps> = ({
                             <ModalDeleteConfirmation
                               open={open}
                               onClose={() => setOpen(false)}
-                              apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/ambulance/${deletedItems}`}
+                              apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/ambulance`}
                               onDeleteSuccess={handleDeleteSuccess}
+                              itemId={deletedItems ?? ""}
+                              fetchData={fetchData ?? (() => {})}
                             />
                             <Link
                               onClick={() => navigate(`/editAmbulance/${data.id}`)}

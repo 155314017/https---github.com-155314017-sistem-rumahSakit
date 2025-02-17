@@ -1,97 +1,106 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getAmbulanceByIdService } from "../../../services/Admin Tenant/ManageAmbulance/GetAmbulanceByIdService";
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
-import { GetScheduleByTypeId, ScheduleDataItem } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
-import { OperationalSchedule, convertToOperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
+import { AmbulanceDataItem } from "../../../types/ambulance.types";
+import { useFetchData } from "../../../hooks/useFetchData";
 
 // Image data type
-type ImageData = {
-  imageName: string;
-  imageType: string;
-  imageData: string;
-};
-
-// Ambulance data type
-type AmbulanceDataItem = {
-  id: string;
-  number: string;
-  status: string;
-  additionalInfo: string;
-  createdBy: string;
-  createdDateTime: number;
-  updatedBy: string | null;
-  updatedDateTime: number | null;
-  deletedBy: string | null;
-  deletedDateTime: number | null;
-  cost: number;
-  images: ImageData[];
-  schedules: ScheduleDataItem[];
-  operationalSchedule?: OperationalSchedule;
+interface UseDetailAmbulanceReturn {
+  deletedItems: string;
+  open: boolean;
+  breadcrumbItems: { label: string; href: string }[];
+  largeImage: string;
+  smallImages: string[];
+  loading: boolean;
+  confirmationDelete: (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => void;
+  handleDeleteSuccess: () => void;
+  navigate: ReturnType<typeof useNavigate>;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  id: string | undefined;
+  ambulanceError: Error | null;
+  imageError: Error | null;
+  ambulanceDataItem: AmbulanceDataItem | null;
 }
-
-export default function useDetailAmbulance() {
+export default function useDetailAmbulance(): UseDetailAmbulanceReturn {
     const { id } = useParams();
-    const [largeImage, setLargeImage] = useState<string>("");
-    const [smallImage, setSmallImages] = useState<string[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [ambulanceData, setAmbulanceData] = useState<AmbulanceDataItem | null>(null);
-    const breadcrumbItems = [
-        {
-          label: "Dashboard",
-          href: "/dashboard",
-        },
-        {
-          label: "Ambulance",
-          href: "/ambulance",
-        },
-        {
-          label: "Detail Ambulance",
-          href: "/detailAmbulance",
-        },
-    ];
+    const navigate = useNavigate();
+    
+  const { data: ambulanceDataItem, loading: ambulanceLoading, error: ambulanceError } = useFetchData<AmbulanceDataItem>(
+      getAmbulanceByIdService,
+      [id],
+      true,
+    );
 
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const ambulanceResponse = await getAmbulanceByIdService(id); 
-        const scheduleResponse = await GetScheduleByTypeId(id || "");
-        
-        if (ambulanceResponse) {
-          const ambulanceData: AmbulanceDataItem = {
-            ...ambulanceResponse,
-            schedules: scheduleResponse,
-            operationalSchedule: convertToOperationalSchedule(scheduleResponse)
-          };
-          
-          setAmbulanceData(ambulanceData);
+    const { data: imageData, loading: imageLoading, error: imageError, refetch: refetchImage } = useFetchData(
+      GetImageByParentId,
+      [ambulanceDataItem?.id],
+      false,
+      true
+    );
+    
 
-          const imageResponse = await GetImageByParentId(ambulanceData.id);
-          const { largeImage, smallImages } = processImageResponse(imageResponse);
-          setLargeImage(largeImage);
-          setSmallImages(smallImages);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
+  const [largeImage, setLargeImage] = useState<string>("");
+  const [smallImages, setSmallImages] = useState<string[]>([]);
+  const [deletedItems, setDeletedItems] = useState("");
+  const [open, setOpen] = useState(false);
+    
+  useEffect(() => {
+    if (ambulanceDataItem) {
+      if (ambulanceDataItem.id) {
+        refetchImage();
       }
-    };
+    }
+  }, [ambulanceDataItem, refetchImage]);
 
-    useEffect(() => {
-      if (id) fetchData();
-    }, [id]);
+  useEffect(() => {
+    if (imageData) {
+      const { largeImage, smallImages } = processImageResponse(imageData);
+      setLargeImage(largeImage);
+      setSmallImages(smallImages || []);
+    }
+  }, [imageData]);
+
+  const breadcrumbItems = [
+    {
+      label: "Dashboard",
+      href: "/dashboard",
+    },
+    {
+      label: "Ambulance",
+      href: "/ambulance",
+    },
+    {
+      label: "Detail Ambulance",
+      href: "/detailAmbulance",
+    },];
     
-    
-    
-    
+    const handleDeleteSuccess = () => {
+      setOpen(false);
+      navigate('/gedung', { state: { successDelete: true, message: 'Gedung berhasil dihapus!' } });
+    };
+  
+    const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
+      event.preventDefault();
+      setDeletedItems(buildingId);
+      setOpen(true);
+    };
     
     return {
-    breadcrumbItems,
-    largeImage,
-    smallImage,
-    ambulanceData,
-    loading
+      deletedItems,
+      open,
+      breadcrumbItems,
+      largeImage,
+      smallImages,
+      loading: ambulanceLoading || imageLoading,
+      confirmationDelete,
+      handleDeleteSuccess,
+      navigate,
+      setOpen,
+      id,
+      ambulanceError,
+      imageError,
+      ambulanceDataItem,
     };
 }
