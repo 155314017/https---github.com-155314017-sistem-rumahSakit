@@ -84,9 +84,6 @@ export default function Index() {
               sx={{
                 display: 'flex',
                 width: '49%',
-                // '@media (max-width: 1194px)': {
-                //   width: '50%'
-                // }
               }}
             >
               <CardAdd icon={AddBoxIcon} title="Tambah Gedung" link="/tambahGedung" />
