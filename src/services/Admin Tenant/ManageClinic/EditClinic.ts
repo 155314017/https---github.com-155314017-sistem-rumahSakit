@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { BaseResponse } from "../../../types/api.types";
-import { ClinicData } from "./GetClinicByIdService";
+import { ClinicDataItem } from "../../../types/clinic.types";
 const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/`;
 
 // Function to edit an clinic service
@@ -12,7 +12,7 @@ export const EditClinicServices = async (
     description: string,
     additionalInfo: string,
     code: string
-  }): Promise<BaseResponse<ClinicData>> => {
+  }): Promise<BaseResponse<ClinicDataItem>> => {
   const token = Cookies.get("accessToken");
 
   if (!token) {
@@ -20,7 +20,7 @@ export const EditClinicServices = async (
   }
 
   try {
-    const response = await axios.put<BaseResponse<ClinicData>>(API_URL, data,
+    const response = await axios.put<BaseResponse<ClinicDataItem>>(API_URL, data,
       {
         headers: {
           'Content-Type': 'application/json',

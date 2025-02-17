@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PAGE_SIZE } from "./useIndex";
+import { deleteClinicService } from "../../../services/Admin Tenant/ManageClinic/DeleteClinicService";
 export default function useTableKlinik(
   onSuccessDelete: () => void,
   setPageNumber: (page: number) => void,
@@ -47,6 +48,7 @@ export default function useTableKlinik(
 
     event.preventDefault();
     setDeletedItems(clinicId);
+    deleteClinicService(clinicId);
     setOpen(true);
   };
 

@@ -1,44 +1,23 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { BaseResponse } from '../../../types/api.types'
+import { EditSubfacilityRequest, subFacilityDataItem } from '../../../types/subFacility.types'
 
-export interface Image {
-  imageName: string
-  imageType: string
-  imageData: string
-}
 
-type SubFacilityDataItem = {
-  id: string
-  name: string
-  additionalInfo: string
-  facilityDataId: string
-  createdBy: string
-  createdDateTime: number
-  updatedBy: string | null
-  updatedDateTime: number | null
-  deletedBy: string | null
-  deletedDateTime: number | null
-}
 
-export interface EditSubfacilityRequest {
-  name: string
-  facilityDataId: string
-  additionalInfo: string
-}
 
 const BASE_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/subfacility/`
 
 // Function to create a facility
 export const editSubfacility = async (
   subfacilityData: EditSubfacilityRequest
-): Promise<BaseResponse<SubFacilityDataItem>> => {
+): Promise<BaseResponse<subFacilityDataItem>> => {
   // Assuming 'accessToken' is stored in cookies
 
   try {
     const token = Cookies.get('accessToken')
     // Make the POST request to create the facility
-    const response = await axios.put<BaseResponse<SubFacilityDataItem>>(BASE_URL, subfacilityData, {
+    const response = await axios.put<BaseResponse<subFacilityDataItem>>(BASE_URL, subfacilityData, {
       headers: {
         'Content-Type': 'application/json',
         accessToken: `${token}`

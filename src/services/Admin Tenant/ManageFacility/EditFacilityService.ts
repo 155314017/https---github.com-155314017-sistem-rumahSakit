@@ -1,16 +1,9 @@
 import axios from 'axios';
-import { FacilityDataItem } from './FacilityServices';
 import { BaseResponse } from '../../../types/api.types';
 import Cookies from 'js-cookie';
+import { FacilityDataItem } from '../../../types/Facility.types';
 
-export interface EditFacilityRequest {
-    name: string;
-    masterBuildingId: string;
-    description: string;
-    cost: number;
-    additionalInfo: string;
-    facilityId: string;
-}
+
 
 const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/`;
 
