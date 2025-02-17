@@ -13,19 +13,19 @@ import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 
 //hooks
 import useIndex from "../hooks/useIndex";
+import { gridContainerStyle } from "../../../style/ts/gridContainerStyle";
 
 export default function Index() {
     const {
         data,
-        isLoading,
-        successAddClinic,
-        successDeleteClinic,
-        successEditClinic,
-        showTemporarySuccessDelete,
+        loading,
         setPageNumber,
+        isSuccess,
+        message,
         setOrderBy,
         totalElements,
-        fetchData
+        fetchData,
+        showAlert
     } = useIndex();
     return (
         <Box>
@@ -34,41 +34,15 @@ export default function Index() {
             <Box p={2} sx={{ marginLeft: "130px" }}>
                 <Header />
                 <Box>
-                    {successAddClinic && (
-                        <AlertSuccess label="Success adding clinic" />
-                    )}
-                    {successDeleteClinic && (
-                        <AlertSuccess label="Success delete clinic" />
-                    )}
-                    {successEditClinic && (
-                        <AlertSuccess label="Success edit clinic" />
+                    {/* alert notifikasi  */}
+                    {isSuccess && (
+                        <AlertSuccess label={message} />
                     )}
                     <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
                         Klinik
                     </Typography>
                     <Grid container
-                        sx={{
-                            flex: 1,
-                            mb: 3,
-                            gap: 1,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            maxWidth: '50%',
-                            justifyContent: 'space-between',
-                            '@media (min-width: 1010px) and (max-width: 1194px)': {
-                                maxWidth: '55%'
-                            },
-                            '@media (min-width: 900px) and (max-width: 1010px)': {
-                                maxWidth: '60%'
-                            },
-                            '@media (min-width: 750px) and (max-width: 900px)': {
-                                maxWidth: '70%'
-                            },
-                            '@media  (max-width: 750px)': {
-                                maxWidth: '100%'
-                            }
-
-                        }}
+                        sx={gridContainerStyle}
                     >
                         <Box
                             sx={{
@@ -76,7 +50,7 @@ export default function Index() {
                                 width: '49%'
                             }}
                         >
-                            <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString() || "0"} />
+                            <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={loading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString() || "0"} />
                         </Box>
                         <Box
                             sx={{
@@ -89,7 +63,7 @@ export default function Index() {
                     </Grid>
                     <TableKlinik
                         data={data}
-                        onSuccessDelete={showTemporarySuccessDelete}
+                        onSuccessDelete={() => showAlert('Clinic deleted successfuly')}
                         setPageNumber={setPageNumber}
                         setOrderBy={setOrderBy}
                         totalElements={totalElements}

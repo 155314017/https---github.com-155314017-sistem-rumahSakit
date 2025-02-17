@@ -22,7 +22,7 @@ export default function Index() {
         showAlert,
         message,
         isSuccess,
-        // fetchData,
+        fetchData,
         totalElements,
         dataIdBuilding,
         setPageNumber,
@@ -69,6 +69,7 @@ export default function Index() {
                         setOrderBy={setOrderBy}
                         totalElements={totalElements}
                         dataIdBuilding={dataIdBuilding}
+                        fetchData={fetchData}
                     />
                 </Box>
             </Box>

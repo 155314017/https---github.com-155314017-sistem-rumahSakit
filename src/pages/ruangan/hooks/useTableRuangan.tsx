@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 import { PAGE_SIZE } from "./useIndex";
+import useConfirmationDelete from "../../../hooks/useConfirmationDelete";
 export default function useTableRuangan(
   onSuccessDelete: () => void,
   setPageNumber: (page: number) => void,
@@ -10,11 +11,12 @@ export default function useTableRuangan(
   dataIdBuilding: string[]
 ) {
   const [buildings, setBuildings] = useState<string[]>([]);
-  const [deletedItems, setDeletedItems] = useState("");
+  const [deletedItems, setDeletedItems] = useState<string | null>("");
   const [sort, setSort] = useState('');
   const [open, setOpen] = React.useState<boolean>(false);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [page, setPage] = useState(1);
+  const {confirmationDelete} = useConfirmationDelete( setOpen, setDeletedItems )
 
   const navigate = useNavigate();
 
@@ -57,11 +59,7 @@ export default function useTableRuangan(
 
 
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
-    event.preventDefault();
-    setDeletedItems(buildingId);
-    setOpen(true);
-  };
+ 
 
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
@@ -109,5 +107,6 @@ export default function useTableRuangan(
     handleDeleteSuccess,
     navigate,
     pageSize: PAGE_SIZE,
+    setDeletedItems
   }
 }

@@ -1,3 +1,5 @@
+import { OperationalSchedule } from "../services/Admin Tenant/ManageSchedule/ScheduleUtils"
+
 export interface ClinicDataItem {
     id: string
     name: string
@@ -11,7 +13,7 @@ export interface ClinicDataItem {
     deletedDateTime: number | null
     images: string[]
     schedules: { id: string; startDateTime: number; endDateTime: number }[]
-    operationalSchedule?: string
+    operationalSchedule?: OperationalSchedule
     code: string
   }
   

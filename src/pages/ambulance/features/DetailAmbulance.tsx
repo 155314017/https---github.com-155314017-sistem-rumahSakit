@@ -74,7 +74,7 @@ export default function DetailAmbulance() {
       <Box mt={3}>
         <CardOperasional
           title="Jam Operasional"
-          data={ambulanceDataItem?.operational || {
+          data={ambulanceDataItem?.operationalSchedule || {
             senin: "-",
             selasa: "-",
             rabu: "-",

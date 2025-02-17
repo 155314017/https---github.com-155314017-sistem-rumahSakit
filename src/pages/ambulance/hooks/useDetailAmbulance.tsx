@@ -5,6 +5,8 @@ import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/G
 import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
 import { AmbulanceDataItem } from "../../../types/ambulance.types";
 import { useFetchData } from "../../../hooks/useFetchData";
+import { GetScheduleByTypeId } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
+import { convertToOperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 
 // Image data type
 interface UseDetailAmbulanceReturn {
@@ -45,11 +47,13 @@ export default function useDetailAmbulance(): UseDetailAmbulanceReturn {
   const [smallImages, setSmallImages] = useState<string[]>([]);
   const [deletedItems, setDeletedItems] = useState("");
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
     
   useEffect(() => {
     if (ambulanceDataItem) {
       if (ambulanceDataItem.id) {
         refetchImage();
+        fetchData();
       }
     }
   }, [ambulanceDataItem, refetchImage]);
@@ -61,6 +65,20 @@ export default function useDetailAmbulance(): UseDetailAmbulanceReturn {
       setSmallImages(smallImages || []);
     }
   }, [imageData]);
+
+  const fetchData = async () => {
+      setLoading(true);
+      try {
+        const scheduleResponse = await GetScheduleByTypeId(id || "");
+        if (ambulanceDataItem) {
+          ambulanceDataItem.operationalSchedule = convertToOperationalSchedule(scheduleResponse);
+        }
+      } catch (error) {
+        console.error("Error fetching schedule data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
   const breadcrumbItems = [
     {
@@ -78,7 +96,7 @@ export default function useDetailAmbulance(): UseDetailAmbulanceReturn {
     
     const handleDeleteSuccess = () => {
       setOpen(false);
-      navigate('/gedung', { state: { successDelete: true, message: 'Gedung berhasil dihapus!' } });
+      navigate('/ambulance', { state: { successDelete: true, message: 'Gedung berhasil dihapus!' } });
     };
   
     const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
@@ -93,7 +111,7 @@ export default function useDetailAmbulance(): UseDetailAmbulanceReturn {
       breadcrumbItems,
       largeImage,
       smallImages,
-      loading: ambulanceLoading || imageLoading,
+      loading: ambulanceLoading || imageLoading || loading,
       confirmationDelete,
       handleDeleteSuccess,
       navigate,
@@ -102,5 +120,6 @@ export default function useDetailAmbulance(): UseDetailAmbulanceReturn {
       ambulanceError,
       imageError,
       ambulanceDataItem,
+      
     };
 }

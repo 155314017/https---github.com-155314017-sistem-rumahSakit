@@ -11,8 +11,8 @@ export default function DetailKlinik() {
     const {
     breadcrumbItems,
     largeImage,
-    smallImage,
     loading,
+    smallImages,
     clinicData
     } = useDetailKlinik();
 
@@ -23,7 +23,7 @@ export default function DetailKlinik() {
                 onBackClick={() => window.history.back()}
             />
             <Box mt={3}>
-                <ImageGrid largeImage={largeImage} smallImages={smallImage} loading={loading} />
+                <ImageGrid largeImage={largeImage} smallImages={smallImages} loading={loading} />
             </Box>
 
             <Box mt={3}>
