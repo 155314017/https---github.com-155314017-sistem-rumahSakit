@@ -56,7 +56,6 @@ const StyledTableContainer = styled(TableContainer)`
 
 //hooks
 import useTableKlinik from "../hooks/useTableKlinik";
-import React from "react";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
 import { ClinicDataItem } from "../../../types/clinic.types";
 
@@ -66,6 +65,7 @@ interface TableKlinikgProps {
   setPageNumber: (page: number) => void;
   setOrderBy: (order: string) => void;
   totalElements: number;
+  fetchData: () => void;
 }
 
 const TableKlinik: React.FC<TableKlinikgProps> = ({ 
@@ -73,21 +73,22 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({
   onSuccessDelete,
   setPageNumber,
   setOrderBy,
-  totalElements }) => {
+  totalElements,
+  fetchData }) => {
   const {
     page,
     isCollapsed,
     open,
     setOpen,
     deletedItems,
-    confirmationDelete,
     handleDeleteSuccess,
     handleChangePage,
     urutkan,
     toggleCollapse,
     navigate,
     setSort,
-    pageSize
+    pageSize,
+    confirmationDelete,
   } = useTableKlinik(
   onSuccessDelete,
   setPageNumber,
@@ -263,8 +264,10 @@ const TableKlinik: React.FC<TableKlinikgProps> = ({
                             <ModalDeleteConfirmation
                               open={open}
                               onClose={() => setOpen(false)}
-                              apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/${deletedItems}`}
+                              apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic`}
                               onDeleteSuccess={handleDeleteSuccess}
+                              itemId={deletedItems ?? ""}
+                              fetchData={fetchData}
                             />
                             <Link
                               onClick={() => navigate(`/editKlinik/${data.id}`)}

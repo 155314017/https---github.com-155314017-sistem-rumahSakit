@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from "react";
+import{ useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PAGE_SIZE } from "./useIndex";
-import { deleteClinicService } from "../../../services/Admin Tenant/ManageClinic/DeleteClinicService";
+import useConfirmationDelete from "../../../hooks/useConfirmationDelete";
 export default function useTableKlinik(
   onSuccessDelete: () => void,
   setPageNumber: (page: number) => void,
@@ -12,11 +12,12 @@ export default function useTableKlinik(
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState<boolean>(false);
-  const [deletedItems, setDeletedItems] = useState("");
+  const [deletedItems, setDeletedItems] = useState<string | null>(null);
   const [sort, setSort] = useState('');
 
   const navigate = useNavigate();
 
+  const { confirmationDelete } = useConfirmationDelete( setOpen, setDeletedItems);
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
     setPageNumber(value - 1);
@@ -44,13 +45,7 @@ export default function useTableKlinik(
   ];
   
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, clinicId: string) => {
-
-    event.preventDefault();
-    setDeletedItems(clinicId);
-    deleteClinicService(clinicId);
-    setOpen(true);
-  };
+  
 
 
   const handleDeleteSuccess = () => {
@@ -69,14 +64,15 @@ export default function useTableKlinik(
     open,
     setOpen,
     deletedItems,
-    confirmationDelete,
     handleDeleteSuccess,
     handleChangePage,
+    setDeletedItems,
     pageSize: PAGE_SIZE,
     urutkan,
     toggleCollapse,
     navigate,
     setSort,
+    confirmationDelete,
     
   }
 }
