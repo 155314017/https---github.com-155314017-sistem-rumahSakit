@@ -1,14 +1,11 @@
 import { Container, Box } from "@mui/system";
 
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import ImageGrid from "../../../components/medium/imageComponent/ImageGrid";
+import ImageGrid from "../../../components/medium/ImageGrid";
 import CardDetailKlinik from "./CardDetailKlinik";
-import CardOperasionalKlinik from "../../../components/small/card/CardOperasional";
-
-
-
 //hooks
 import useDetailKlinik from "../hooks/useDetailKlinik";
+import CardOperasional from "../../../components/small/card/CardOperasional";
 
 export default function DetailKlinik() {
     const {
@@ -45,7 +42,7 @@ export default function DetailKlinik() {
             </Box>
 
             <Box mt={3}>
-                <CardOperasionalKlinik
+                <CardOperasional
                     title="Jam Operasional"
                     data={clinicData?.operationalSchedule || {
                         senin: "-",

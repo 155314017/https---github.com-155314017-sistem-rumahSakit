@@ -1,11 +1,11 @@
 import { Box, Button, Container, FormControl, OutlinedInput, Typography } from "@mui/material";
 import bgImage from "../../../assets/img/String.png";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageUploaderGroup';
+import ImageUploaderGroup from '../../../components/inputComponent/ImageUploaderComponents/ImageUploaderGroup';
 
 //hooks
-import TestKalender from "../../../components/medium/TestKalender";
 import useTambahKlinik from "../hooks/useTambahKlinik";
+import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
 export default function TambahKlinik() {
     const { 
         breadcrumbItems,
@@ -207,7 +207,7 @@ export default function TambahKlinik() {
                     )}
                     {currentPage === 2 && (
                         <>
-                            <TestKalender ref={kalenderRef} />
+                            <CustomBigCalendar ref={kalenderRef} />
                             <Button
                                 variant="contained"
                                 color="primary"

@@ -5,7 +5,7 @@ import bgImg from "../../../../assets/img/Bg-desktop.svg"
 import CloseIcon from '@mui/icons-material/Close';
 import { Formik, Form, Field } from "formik";
 import { Stack } from "@mui/system";
-import InformasiTicketAPI from "../../../../components/small/InformasiTicketAPI";
+import InformasiTicketAPI from "../../../../components/medium/InformasiTicketAPI";
 import 'dayjs/locale/id';
 import injuryImg from "../../../../assets/img/injury-pana 1.png"
 import medicineImg from "../../../../assets/img/meidicine.png"

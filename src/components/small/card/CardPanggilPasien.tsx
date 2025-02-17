@@ -4,9 +4,9 @@ import bgImage from "../../../assets/img/String.png";
 //icon
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import React, { useEffect, useState } from "react";
-import ModalConfirmationSkipPatient from "../modal/ModalConfirmationSkipPatient";
 import { useNavigate } from "react-router-dom";
 import AlertSuccess from "../alert/AlertSuccess";
+import ModalConfirmationSkipPatient from "../../medium/modal/ModalConfirmationSkipPatient";
 
 
 const CardPanggilPasien = () => {

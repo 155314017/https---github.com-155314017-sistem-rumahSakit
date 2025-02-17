@@ -5,13 +5,13 @@ import { Box, Container } from '@mui/system'
 import bgImage from "../../../assets/img/String.png"
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr'
 import BreadCrumbs from '../../../components/medium/BreadCrumbs'
-import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageUploaderGroup'
+import ImageUploaderGroup from '../../../components/inputComponent/ImageUploaderComponents/ImageUploaderGroup'
 
 // hooks
 import useTambahAmbulance from '../hooks/useTambahAmbulance'
 
 import 'dayjs/locale/id'
-import TestKalender from '../../../components/medium/TestKalender'
+import CustomBigCalendar from '../../../components/medium/CustomBigCalendar'
 
 
 export default function TambahAmbulance() {
@@ -27,7 +27,7 @@ export default function TambahAmbulance() {
     kalenderRef
   } = useTambahAmbulance()
 
-  
+
   return (
     <>
       <Container sx={{ py: 2, minWidth: '1500px' }}>
@@ -182,7 +182,7 @@ export default function TambahAmbulance() {
             )}
             {currentPage === 2 && (
               <>
-                <TestKalender ref={kalenderRef} />
+                <CustomBigCalendar ref={kalenderRef} />
                 <Button
                   variant="contained"
                   color="primary"

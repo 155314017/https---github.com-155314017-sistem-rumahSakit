@@ -2,9 +2,9 @@ import { Box, Button, Container, FormControl, OutlinedInput, Typography } from "
 import bgImage from "../../../assets/img/String.png";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 //hooks
-import TestKalender from "../../../components/medium/TestKalender";
 import useTambahSubFasilitas from "../hooks/useTambahSubFasilitas";
 import DropdownListAPI from "../../../components/small/dropdownlist/DropdownListAPI";
+import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
 export default function TambahSubFasilitas() {
     const { breadcrumbItems,
         formik,
@@ -181,7 +181,7 @@ export default function TambahSubFasilitas() {
                     )}
                     {currentPage === 2 && (
                         <>
-                            <TestKalender ref={kalenderRef} />
+                            <CustomBigCalendar ref={kalenderRef} />
                             <Button
                                 variant="contained"
                                 color="primary"

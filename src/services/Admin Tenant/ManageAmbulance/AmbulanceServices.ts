@@ -21,13 +21,12 @@ export const AmbulanceServices = async (
 
 
     if (response.status === 200) {
-      // Return the updated ambulance data items
       return response.data;
     } else {
       throw new Error(`API responded with status: ${response.status}`);
     }
   } catch (error) {
     console.error("Error fetching ambulance services:", error);
-    throw error; // Re-throw the error for handling by the caller
+    throw error;
   }
 };

@@ -3,7 +3,7 @@ import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import DropdownList from "../../../components/small/dropdownlist/DropdownList";
-import ImageUploaderGroup from '../../../components/medium/imageComponent/ImageUploaderGroup';
+import ImageUploaderGroup from '../../../components/inputComponent/ImageUploaderComponents/ImageUploaderGroup';
 import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
 
 //hooks

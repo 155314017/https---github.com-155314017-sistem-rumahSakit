@@ -1,18 +1,13 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { BaseResponse } from '../../../types/api.types'
-import { AmbulanceDataItem } from '../../../types/ambulance.types'
-
+import { AmbulanceDataItem, CreateAmbulanceRequest } from '../../../types/ambulance.types'
 
 const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/ambulance/`
 
-// Function to create an ambulance
-export const CreateAmbulanceService = async (data: {
-  number: string
-  status: string
-  cost: number
-  additionalInfo: string
-}): Promise<BaseResponse<AmbulanceDataItem>> => {
+export const CreateAmbulanceService = async (
+  data: CreateAmbulanceRequest
+): Promise<BaseResponse<AmbulanceDataItem>> => {
   const token = Cookies.get('accessToken')
 
   if (!token) {

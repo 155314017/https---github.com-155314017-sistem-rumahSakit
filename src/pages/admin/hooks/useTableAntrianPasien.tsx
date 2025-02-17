@@ -1,7 +1,7 @@
 
   import { useState } from "react";
 
-  import DataPegawai from "../../../dummyData/dataPegawai";
+  import DataPegawai from "../../../data/dummyData/dataPegawai";
   
   
   

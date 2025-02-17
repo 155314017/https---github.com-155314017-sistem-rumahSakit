@@ -4,11 +4,11 @@ import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr';
 import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
-import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/ImageGroupUploaderAPI';
+import ImageUploaderGroupAPI from '../../../components/inputComponent/ImageUploaderComponents/ImageGroupUploaderAPI';
 
 //hooks
 import useEditFasilitas from "../hooks/useEditFasilitas";
-import TestKalender from "../../../components/medium/TestKalender";
+import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
 
 export default function EditFasilitas() {
     const{
@@ -220,7 +220,7 @@ export default function EditFasilitas() {
 
                     {currentPage === 2 && (
                         <>
-                             <TestKalender 
+                             <CustomBigCalendar 
                                 ref={kalenderRef} 
                                 initialData={scheduleDataPraktek} 
                                 initialDataPengecualian={scheduleDataPengecualian}

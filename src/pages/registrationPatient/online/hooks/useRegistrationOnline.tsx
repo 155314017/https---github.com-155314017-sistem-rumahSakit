@@ -10,6 +10,8 @@ import axios from "axios";
 import GetPatientByUserIdServices from "../../../../services/Patient Tenant/GetPatientByUserIdServices";
 import GetUserByNIK from "../../../../services/Admin Tenant/ManageUser/GetUserByNIK";
 import dayjs from "dayjs";
+import { Clinic } from "../../../../services/Admin Tenant/ManageClinic/Clinic";
+import { DoctorServices } from "../../../../services/Admin Tenant/ManageDoctor/DoctorServices";
 
 type PatientData =
     {
@@ -96,10 +98,8 @@ export default function useRegistrationOnline() {
     useEffect(() => {
         const fetchClinicData = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/clinic/?pageNumber=0&pageSize=10&orderBy=createdDateTime=asc`, {
-                    timeout: 10000
-                });
-                setClinicOptions(response.data.data.content.map((item: Clinic) => ({
+                const response = await Clinic();
+                setClinicOptions(response.data.content.map((item: Clinic) => ({
                     id: item.id,
                     name: item.name,
                 })));
@@ -117,10 +117,8 @@ export default function useRegistrationOnline() {
     useEffect(() => {
         const fetchDoctorData = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/doctor/?pageNumber=0&pageSize=10&orderBy=id=asc`, {
-                    timeout: 10000
-                });
-                setDoctorOptions(response.data.data.content.map((item: Doctor) => ({
+                const response = await DoctorServices();
+                setDoctorOptions(response.map((item: Doctor) => ({
                     id: item.id,
                     name: item.name,
                 })));
@@ -150,44 +148,6 @@ export default function useRegistrationOnline() {
         setIdDoctor(value)
         setDocterName(label);
         setCalendarKey((prevKey) => prevKey + 1);
-    };
-
-    const getBorderStyle = (page: number) => {
-        if (page === currentPage) {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-            };
-        } else if (page < currentPage) {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#8F85F3",
-                color: "white",
-            };
-        } else {
-            return {
-                display: "flex",
-                border: "none",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "#A8A8BD",
-                bgcolor: '#EEEEF2 !important',
-            };
-        }
     };
 
     const getPageStyle = (page: number) => {
@@ -296,7 +256,7 @@ export default function useRegistrationOnline() {
             }
         } catch (err: any) {
             if (err.response?.status === 404) {
-                
+
                 setCurrentPage(3);
             } else {
                 console.error('Unexpected error:', err);
@@ -323,7 +283,6 @@ export default function useRegistrationOnline() {
         handleScheduleChange,
         handleDropdownPoli,
         handleDropdownDocter,
-        getBorderStyle,
         getPageStyle,
         initialValues,
         getValidationSchema,

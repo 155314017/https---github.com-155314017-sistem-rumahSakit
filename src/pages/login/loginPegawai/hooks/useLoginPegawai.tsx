@@ -103,7 +103,7 @@ export default function useLoginPegawai() {
   useEffect(() => {
     if (location.state && location.state.successLogOut) {
       showTemporarySuccessLogout()
-      navigate(location.pathname, { replace: true, state: undefined }) //clear state
+      navigate(location.pathname, { replace: true, state: undefined })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state, navigate])

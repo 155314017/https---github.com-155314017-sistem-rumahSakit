@@ -5,11 +5,11 @@ import 'dayjs/locale/id';
 // components
 import BreadCrumbs from '../../../components/medium/BreadCrumbs'
 import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyIdr'
-import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/ImageGroupUploaderAPI'
+import ImageUploaderGroupAPI from '../../../components/inputComponent/ImageUploaderComponents/ImageGroupUploaderAPI'
 
 // hooks
 import useEditAmbulance from '../hooks/useEditAmbulance';
-import TestKalender from '../../../components/medium/TestKalender';
+import CustomBigCalendar from '../../../components/medium/CustomBigCalendar';
 
 export default function EditAmbulance() {
   const {
@@ -175,11 +175,11 @@ export default function EditAmbulance() {
 
           {currentPage === 2 && (
             <>
-              <TestKalender 
-                ref={kalenderRef} 
-                initialData={scheduleDataPraktek} 
+              <CustomBigCalendar
+                ref={kalenderRef}
+                initialData={scheduleDataPraktek}
                 initialDataPengecualian={scheduleDataPengecualian}
-                typeId={id} 
+                typeId={id}
               />
               <Button
                 onClick={handleEditAmbulance}

@@ -2,9 +2,9 @@ import { Container, Box } from "@mui/system";
 import { Link } from "@mui/material";
 
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import ImageGrid from "../../../components/medium/imageComponent/ImageGrid";
+import ImageGrid from "../../../components/medium/ImageGrid";
 import CardDetail from "../../../components/small/card/CardDetail";
-import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
+import ModalDeleteConfirmation from "../../../components/medium/modal/ModalDeleteConfirmation";
 
 //hooks
 import useDetailGedung from "../hooks/useDetailGedung";
@@ -17,7 +17,7 @@ export default function DetailGedung() {
     open,
     breadcrumbItems,
     largeImage,
-    smallImage,
+    smallImages,
     loading,
     confirmationDelete,
     handleDeleteSuccess,
@@ -32,7 +32,7 @@ export default function DetailGedung() {
         onBackClick={() => window.history.back()}
       />
       <Box mt={3}>
-        <ImageGrid largeImage={largeImage} smallImages={smallImage} loading={loading} />
+        <ImageGrid largeImage={largeImage} smallImages={smallImages} loading={loading} />
       </Box>
 
       <Box mt={3}>

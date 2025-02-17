@@ -20,7 +20,7 @@ import bgImage from "../../../assets/img/String.png";
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
+import ModalDeleteConfirmation from '../../../components/medium/modal/ModalDeleteConfirmation'
 
 import { useNavigate } from "react-router-dom";
 

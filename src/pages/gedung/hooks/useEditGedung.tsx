@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { EditBuildingService } from "../../../services/Admin Tenant/ManageBuilding/EditBuildingService";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 import { editImages } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
+import { useFetchData } from "../../../hooks/useFetchData";
+import { BuildingDataItem } from "../../../types/building.types";
 
 type ImageData = {
     imageName: string;
@@ -27,16 +29,21 @@ export default function useEditGedung() {
     const [name, setName] = useState<string>('');
     const [address, setAddress] = useState<string>('');
     const { id } = useParams();
-
     const navigate = useNavigate();
+
+    const { data: buildingData } = useFetchData<BuildingDataItem>(
+        GetBuildingById,
+        [id],
+        true,
+        // true
+    );
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const response = await GetBuildingById(id);
-                setName(response.name);
-                setAddress(response.address);
+                setName(buildingData.name);
+                setAddress(buildingData.address);
             } catch (error) {
                 console.error('Error saat menghapus data:', error);
             } finally {
@@ -44,7 +51,7 @@ export default function useEditGedung() {
             }
         };
         fetchData();
-    }, [id]);
+    }, [buildingData.address, buildingData.name]);
 
 
     const handleImageChange = (images: ImageData[]) => {
@@ -112,14 +119,14 @@ export default function useEditGedung() {
             }
         },
     });
-  return{
-      breadcrumbItems,
-      formik,
-      imagesData,
-      handleImageChange,
-      loading,
-      successAlert,
-      errorAlert,
-      id
-  }
+    return {
+        breadcrumbItems,
+        formik,
+        imagesData,
+        handleImageChange,
+        loading,
+        successAlert,
+        errorAlert,
+        id
+    }
 }

@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import SideBar from "../../../components/SideBar/SideBar";
-import Header from "../../../components/medium/Header";
+import Header from "../../../components/header/Header";
 import CardAdd from "../../../components/small/card/CardAdd";
 import MediumCard from "../../../components/small/card/MediumCard";
 import TableGedung from "../../../pages/gedung/features/TableGedung";
@@ -41,7 +41,7 @@ export default function Index() {
           {successEditBuilding && (
             <AlertSuccess label="Success edit building" />
           )}
-          <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
+          <Typography variant="h1" sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
             Gedung
           </Typography>
           <Grid container
@@ -72,9 +72,6 @@ export default function Index() {
               sx={{
                 display: 'flex',
                 width: '49%',
-                // '@media (max-width: 1194px)': {
-                //   width: '50%'
-                // }
               }}
             >
               <MediumCard
@@ -87,9 +84,6 @@ export default function Index() {
               sx={{
                 display: 'flex',
                 width: '49%',
-                // '@media (max-width: 1194px)': {
-                //   width: '50%'
-                // }
               }}
             >
               <CardAdd icon={AddBoxIcon} title="Tambah Gedung" link="/tambahGedung" />

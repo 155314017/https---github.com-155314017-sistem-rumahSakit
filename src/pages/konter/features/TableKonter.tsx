@@ -19,12 +19,12 @@ import bgImage from "../../../assets/img/String.png";
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
 
 //hooks
 import useTableKonter from "../hooks/useTableKonter";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
 import { CounterDataItem } from "../../../types/counter.types";
+import ModalDeleteConfirmation from "../../../components/medium/modal/ModalDeleteConfirmation";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -62,12 +62,12 @@ interface TableKonterProps {
     setOrderBy: (order: string) => void;
     totalElements: number;
 }
-const TableKonter: React.FC<TableKonterProps> = ({data,
-  onSuccessDelete,
-  setPageNumber,
-  setOrderBy,
-  totalElements
- }) => {
+const TableKonter: React.FC<TableKonterProps> = ({ data,
+    onSuccessDelete,
+    setPageNumber,
+    setOrderBy,
+    totalElements
+}) => {
     const {
         page,
         isCollapsed,
@@ -83,9 +83,9 @@ const TableKonter: React.FC<TableKonterProps> = ({data,
         handleDeleteSuccess,
         pageSize
     } = useTableKonter(
-    onSuccessDelete,
-    setPageNumber,
-    setOrderBy
+        onSuccessDelete,
+        setPageNumber,
+        setOrderBy
     );
     return (
         <Box>

@@ -13,17 +13,18 @@ import {
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import loginImage from '../../../../assets/img/loginImg.png'
+import loginImage from '../../../../assets/img/loginImg.webp'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import AlertSuccess from '../../../../components/small/alert/AlertSuccess'
 import AlertWarning from '../../../../components/small/alert/AlertWarning'
 import CustomButton from '../../../../components/small/CustomButton'
-import LabelHandler from '../../../../components/small/LabelHandler'
 import logo from '../../../../assets/img/St.carolus.png'
-
+import { Helmet } from 'react-helmet';
 //hooks
 import useLoginPegawai from '../hooks/useLoginPegawai'
+import { fieldFormStyle } from '../../../../style/ts/fieldFormStyle'
+import CustomButtonFilled from '../../../../components/small/button/CustomButtonFilled'
 export default function LoginPegawai() {
   const {
     showPassword,
@@ -56,6 +57,28 @@ export default function LoginPegawai() {
             }
             `}
       </style>
+      <Helmet>
+        {/* <title>Login Pegawai - Sistem Rumah Sakit</title> */}
+        <meta name="description" content="Halaman Login untuk Pegawai di Sistem Rumah Sakit, tempat pegawai dapat mengakses layanan rumah sakit secara mudah dan cepat." />
+        <meta charSet="UTF-8" />
+        <meta name="keywords" content="login pegawai, sistem rumah sakit, aplikasi rumah sakit, React, medical staff portal" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {/* <!-- Open Graph Meta Tags --> */}
+        <meta property="og:title" content="Login Pegawai - Sistem Rumah Sakit" />
+        <meta property="og:description" content="Halaman Login untuk Pegawai di Sistem Rumah Sakit." />
+        <meta property="og:image" content="URL-Gambar-Logo-Rumah-Sakit.jpg" />
+        <meta property="og:url" content="URL-Halaman-Login" />
+        <meta property="og:type" content="website" />
+
+        {/* <!-- Twitter Card Meta Tags --> */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Login Pegawai - Sistem Rumah Sakit" />
+        <meta name="twitter:description" content="Halaman Login untuk Pegawai di Sistem Rumah Sakit." />
+        <meta name="twitter:image" content="URL-Gambar-Logo-Rumah-Sakit.jpg" />
+
+      </Helmet>
+
       <Box
         sx={{
           position: 'relative',
@@ -76,6 +99,7 @@ export default function LoginPegawai() {
             }}
             image={loginImage}
             alt="Login Image"
+            loading='lazy'
           />
         </Box>
 
@@ -142,25 +166,7 @@ export default function LoginPegawai() {
                         placeholder="Masukkan email, username, atau NIP"
                         variant="outlined"
                         fullWidth
-                        sx={{
-                          width: '100%',
-                          height: '48px',
-                          marginTop: '10px',
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: '8px',
-                            backgroundColor: touched.email && errors.email ? '#ffcccc' : 'inherit',
-                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                              borderColor: '#8F85F3',
-                            },
-                          },
-                          '& .MuiOutlinedInput-notchedOutline': {
-                            border: '1px solid #ccc'
-                          },
-                          '& .MuiOutlinedInput-input': {
-                            padding: '10px',
-                            fontSize: '16px'
-                          }
-                        }}
+                        sx={fieldFormStyle(touched, errors, 'email')}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           handleChange(e)
                         }}
@@ -195,24 +201,7 @@ export default function LoginPegawai() {
                               </InputAdornment>
                             )
                           }}
-                          sx={{
-                            height: '48px',
-                            '& .MuiOutlinedInput-root': {
-                              borderRadius: '8px',
-                              backgroundColor:
-                                touched.password && errors.password ? '#ffcccc' : 'inherit',
-                              '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#8F85F3',
-                              },
-                            },
-                            '& .MuiOutlinedInput-notchedOutline': {
-                              border: '1px solid #ccc'
-                            },
-                            '& .MuiOutlinedInput-input': {
-                              padding: '10px',
-                              fontSize: '16px'
-                            }
-                          }}
+                          sx={fieldFormStyle(touched, errors, 'password')}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             handleChange(e)
                           }}
@@ -248,9 +237,11 @@ export default function LoginPegawai() {
                           sx={{ marginRight: 'auto' }}
                         />
 
-                        <LabelHandler onClick={forgotPass} href="#" label="Lupa kata sandi?" />
+                        <a href={'#'} onClick={forgotPass} style={{ textDecoration: 'none', fontSize: '16px', color: '#8F85F3' }}>
+                          Lupa kata sandi?
+                        </a>
                       </Box>
-                      <Button
+                      {/* <Button
                         type="submit"
                         variant="contained"
                         color="primary"
@@ -265,7 +256,8 @@ export default function LoginPegawai() {
                         disabled={isChecked ? !isChecked : !isValid || !dirty}
                       >
                         Login
-                      </Button>
+                      </Button> */}
+                      <CustomButtonFilled type='submit' variant='contained' color='primary' text='Login' disabled={isChecked ? !isChecked : !isValid || !dirty} />
                     </Box>
                   </Form>
                 )}
@@ -334,30 +326,14 @@ export default function LoginPegawai() {
                             placeholder="example@mail.com"
                             variant="outlined"
                             fullWidth
-                            sx={{
-                              width: '100%',
-                              height: '48px',
-                              marginTop: '10px',
-                              '& .MuiOutlinedInput-root': {
-                                borderRadius: '8px',
-                                backgroundColor:
-                                  touched.email && errors.email ? '#ffcccc' : 'inherit'
-                              },
-                              '& .MuiOutlinedInput-notchedOutline': {
-                                border: '1px solid #ccc'
-                              },
-                              '& .MuiOutlinedInput-input': {
-                                padding: '10px',
-                                fontSize: '16px'
-                              }
-                            }}
+                            sx={fieldFormStyle(touched, errors, 'email')}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.email}
                             error={touched.email && Boolean(errors.email)}
                             helperText={touched.email && errors.email}
                           />
-                          <Button
+                          {/* <Button
                             type="submit"
                             variant="contained"
                             color="primary"
@@ -372,7 +348,9 @@ export default function LoginPegawai() {
                             disabled={!isValid || !dirty}
                           >
                             Setel ulang kata sandi
-                          </Button>
+                          </Button> */}
+
+                          <CustomButtonFilled type='submit' variant='contained' color='primary' text='Setel ulang kata sandi' disabled={!isValid || !dirty} />
 
                           <CustomButton onClick={loginComponent} label="Kembali ke halaman masuk" />
                         </Box>

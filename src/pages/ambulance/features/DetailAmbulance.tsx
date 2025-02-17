@@ -3,12 +3,12 @@ import { Link } from "@mui/material";
 
 // components
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import ImageGrid from "../../../components/medium/imageComponent/ImageGrid";
+import ImageGrid from "../../../components/medium/ImageGrid";
 import CardDetail from "../../../components/small/card/CardDetail";
 
 // hooks
 import useDetailAmbulance from "../hooks/useDetailAmbulance";
-import CardOperasionalKlinik from "../../../components/small/card/CardOperasional";
+import CardOperasional from "../../../components/small/card/CardOperasional";
 export default function DetailAmbulance() {
   const {
 
@@ -48,7 +48,7 @@ export default function DetailAmbulance() {
         />
       </Box>
       <Box mt={3}>
-        <CardOperasionalKlinik
+        <CardOperasional
           title="Jam Operasional"
           data={ambulanceData?.operationalSchedule || {
             senin: "-",

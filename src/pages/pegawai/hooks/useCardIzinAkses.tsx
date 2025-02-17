@@ -2,7 +2,7 @@ import { useState } from "react";
 
 
 
-import izinAkses from "../../../dummyData/izinAKses";
+import izinAkses from "../../../data/dummyData/izinAKses";
 
 
 

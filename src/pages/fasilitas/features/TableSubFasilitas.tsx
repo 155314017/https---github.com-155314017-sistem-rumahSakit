@@ -22,7 +22,7 @@ import bgImage from "../../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
-import ModalDeleteConfirmation from "../../../components/small/modal/ModalDeleteConfirmation";
+import ModalDeleteConfirmation from '../../../components/medium/modal/ModalDeleteConfirmation'
 import useTableSubFasilitas from "../hooks/useTableSubFasilitas";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
 

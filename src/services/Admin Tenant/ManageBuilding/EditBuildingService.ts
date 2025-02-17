@@ -5,7 +5,6 @@ import { BuildingDataItem, EditBuildingRequest } from "../../../types/building.t
 
 const API_URL = `${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/`;
 
-// Function to create a building
 export const EditBuildingService = async (
   data: EditBuildingRequest
 ): Promise<BuildingDataItem> => {
@@ -30,6 +29,6 @@ export const EditBuildingService = async (
     }
   } catch (error) {
     console.error("Error creating building:", error);
-    throw error;  // Re-throw the error for handling by the caller
+    throw error; 
   }
 };

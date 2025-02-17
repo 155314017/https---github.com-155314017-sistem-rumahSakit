@@ -3,7 +3,7 @@ import { Typography, Button, FormControl, TextField } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
-import ImageUploaderGroup from "../../../components/medium/imageComponent/ImageUploaderGroup";
+import ImageUploaderGroup from "../../../components/inputComponent/ImageUploaderComponents/ImageUploaderGroup";
 import useTambahGedung from "../hooks/useTambahGedung";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
 

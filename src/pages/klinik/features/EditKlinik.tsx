@@ -3,11 +3,11 @@ import { Container, Box } from "@mui/system";
 import { Typography, Button, FormControl, OutlinedInput } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
-import ImageUploaderGroupAPI from '../../../components/medium/imageComponent/ImageGroupUploaderAPI';
-import TestKalender from '../../../components/medium/TestKalender';
+import ImageUploaderGroupAPI from '../../../components/inputComponent/ImageUploaderComponents/ImageGroupUploaderAPI';
 
 //hooks
 import useEditKlinik from "../hooks/useEditKlinik";
+import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
 
 export default function EditKlinik() {
     const {
@@ -216,7 +216,7 @@ export default function EditKlinik() {
 
                     {currentPage === 2 && (
                         <>
-                            <TestKalender 
+                            <CustomBigCalendar 
                                 ref={kalenderRef} 
                                 initialData={scheduleDataPraktek} 
                                 initialDataPengecualian={scheduleDataPengecualian}

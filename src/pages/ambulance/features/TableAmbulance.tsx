@@ -21,7 +21,6 @@ import bgImage from '../../../assets/img/String.png'
 // icon
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
-import ModalDeleteConfirmation from '../../../components/small/modal/ModalDeleteConfirmation'
 import BadgeStatus from '../../../components/small/badge/BadgeStatus'
 
 //hooks
@@ -29,6 +28,7 @@ import useTableAmbulance from '../hooks/useTableAmbulance'
 import React from 'react'
 import CustomFrameTable from '../../../components/small/CustomFrameTable'
 import { AmbulanceDataItem } from '../../../types/ambulance.types'
+import ModalDeleteConfirmation from '../../../components/medium/modal/ModalDeleteConfirmation'
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {

@@ -5,9 +5,9 @@ import 'dayjs/locale/id';
 // components
 import BreadCrumbs from '../../../components/medium/BreadCrumbs'
 // hooks
-import TestKalender from '../../../components/medium/TestKalender';
 import useEditSubFasilitas from '../hooks/useEditSubFasilitas';
 import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
+import CustomBigCalendar from '../../../components/medium/CustomBigCalendar';
 
 export default function EditSubFasilitas() {
     const {
@@ -190,7 +190,7 @@ export default function EditSubFasilitas() {
 
                     {currentPage === 2 && (
                         <>
-                            <TestKalender
+                            <CustomBigCalendar
                                 ref={kalenderRef}
                                 initialData={scheduleDataPraktek}
                                 initialDataPengecualian={scheduleDataPengecualian}

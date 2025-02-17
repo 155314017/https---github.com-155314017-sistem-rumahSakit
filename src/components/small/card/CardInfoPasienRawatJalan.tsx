@@ -18,9 +18,7 @@ export default function CardBiodataPegawai({
     tanggalLahir,
     jenisKelamin,
     avatarUrl,
-
 }: CardBiodataPegawaiProps) {
-
      const [showAll, setShowAll] = useState(false);
     
         const toggleShowAll = () => {

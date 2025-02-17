@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import loginImage from "../../../../assets/img/loginImg.png";
+import loginImage from "../../../../assets/img/loginImg.webp";
 import { Formik, Form, Field } from "formik";
 import logo from "../../../../assets/img/St.carolus.png";
 import CustomButton from "../../../../components/small/CustomButton";

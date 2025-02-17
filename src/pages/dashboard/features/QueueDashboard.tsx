@@ -10,34 +10,19 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import MediumCard from '../../../components/small/card/MediumCard'
 import CardPanggilPasien from '../../../components/small/card/CardPanggilPasien';
 import CardPasienTerlewati from '../../../components/small/card/CardPasienTerlewati';
-import TableRawatJalan from '../../pasien/pasienRawatJalan/features/TableRawatJalan';
 import AlertSuccess from '../../../components/small/alert/AlertSuccess';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import TableAntrian from '../../pasien/pasienRawatJalan/features/TableAntrian';
+
+import useQueueDashboard from '../hooks/useQueueDashboard';
+import TableRawatJalan from '../../antrian/features/TableRawatJalan';
+import TableAntrian from '../../antrian/features/TableAntrian';
 
 export default function QueueDashboard({ selectedValue }: any) {
-    const [successSkipPatient, setSuccessSkipPatient] = useState(false);
-    const location = useLocation()
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (location.state && location.state.successSkip) {
-            showTemporarySuccessSkipPatient();
-            navigate(location.pathname);
-        }
-    }, [location.state, navigate]);
-
-    const showTemporarySuccessSkipPatient = async () => {
-        setSuccessSkipPatient(true)
-        await new Promise(resolve => setTimeout(resolve, 3000))
-        setSuccessSkipPatient(false)
-    }
-
-
+    const {
+        successSkipPatient
+    } = useQueueDashboard();
     return (
         <Box>
-            <Box>
+            <Box height={'fit-content'} >
                 {successSkipPatient && <AlertSuccess label="Pasien Berhasil Dilewati" />}
                 {selectedValue === 'Dasboard' ? <Typography sx={{ fontSize: '32px', fontWeight: '700', mb: 2, mt: 2 }}>Dashboard</Typography> : <Typography sx={{ fontSize: '32px', fontWeight: '700', mb: 2, mt: 2 }}>Rawat Jalan - {selectedValue}</Typography>}
 
@@ -72,9 +57,6 @@ export default function QueueDashboard({ selectedValue }: any) {
                 </Grid>
                 <Box mt={3} >
                     {selectedValue === 'Dasboard' ? <TableRawatJalan /> : <TableAntrian />}
-
-
-
                 </Box>
 
             </Box>
