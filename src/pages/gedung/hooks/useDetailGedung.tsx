@@ -54,7 +54,6 @@ export default function useDetailGedung(): UseDetailGedungReturn {
       setName(buildingData.name);
       setAddress(buildingData.address);
       if (buildingData.id) {
-        console.log("Fetching image data...");
         refetchImage();
       }
     }
