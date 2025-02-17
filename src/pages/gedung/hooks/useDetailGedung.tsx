@@ -32,7 +32,6 @@ export default function useDetailGedung(): UseDetailGedungReturn {
     GetBuildingById,
     [id],
     true,
-    // true
   );
 
   // Fetch image data using useFetchData hook
@@ -55,7 +54,6 @@ export default function useDetailGedung(): UseDetailGedungReturn {
       setName(buildingData.name);
       setAddress(buildingData.address);
       if (buildingData.id) {
-        console.log("Fetching image data...");
         refetchImage();
       }
     }

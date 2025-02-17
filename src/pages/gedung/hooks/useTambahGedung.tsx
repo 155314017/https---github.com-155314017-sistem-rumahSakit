@@ -6,22 +6,16 @@ import { useNavigate } from "react-router-dom";
 import { CreateBuildingService } from "../../../services/Admin Tenant/ManageBuilding/AddBuildingServices";
 import { uploadImages } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
 import { ImageItem } from "../../../types/images.types";
+import { useSuccessNotification } from "../../../hooks/useSuccessNotification";
 
 
 export default function useTambahGedung() {
-    const [errorAlert, setErrorAlert] = useState(false);
     const [imagesData, setImagesData] = useState<ImageItem[]>([]);
-
+    const { isSuccess, message, showAlert } = useSuccessNotification();
     const navigate = useNavigate();
 
     const handleImageChange = (images: ImageItem[]) => {
         setImagesData(images);
-    };
-
-    const showTemporaryAlertError = async () => {
-        setErrorAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setErrorAlert(false);
     };
 
     const breadcrumbItems = [
@@ -45,33 +39,27 @@ export default function useTambahGedung() {
                 address: values.alamatGedung,
                 additionalInfo: "",
             };
-
             try {
                 const { data: { id: buildingId } } = await CreateBuildingService(data);
-
                 if (!buildingId) {
                     throw new Error('Building ID tidak ditemukan');
                 }
-
                 await Promise.all([
                     uploadImages(buildingId, imagesData)
                 ]);
-
                 formik.resetForm();
                 setImagesData([]);
-
                 navigate('/gedung', {
                     state: {
                         successAdd: true,
                         message: 'Gedung berhasil ditambahkan!'
                     }
                 });
-
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     return error.response?.data;
                 }
-                showTemporaryAlertError();
+                showAlert("Error Adding Building", 3000);
             }
         },
     });
@@ -80,6 +68,7 @@ export default function useTambahGedung() {
         formik,
         handleImageChange,
         breadcrumbItems,
-        errorAlert
+        message,
+        isSuccess
     }
 }

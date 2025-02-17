@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { TextField } from "@mui/material";
+import { TextField, TextFieldProps } from "@mui/material";
 
 interface CustomTextFieldProps {
     name: string;
@@ -8,6 +8,7 @@ interface CustomTextFieldProps {
     multiline?: boolean;
     rows?: number;
     placeholder?: string;
+    InputProps?: TextFieldProps["InputProps"];
 }
 
 const CustomTextField: React.FC<CustomTextFieldProps> = ({
@@ -16,6 +17,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
     multiline = false,
     rows = 0,
     placeholder = "Masukkan teks",
+    InputProps = {},
     ...props
 }) => {
     // const [field, meta] = useField(name);
@@ -34,6 +36,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
             onChange={formik?.handleChange}
             onBlur={formik?.handleBlur}
             error={formik?.touched[name] && Boolean(formik?.errors[name])}
+            InputProps={InputProps}
             sx={{
                 width: "100%",
                 marginTop: "10px",

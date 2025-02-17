@@ -32,21 +32,8 @@ export default function Index() {
     dataRoom,
     dataFacility,
     dataDoctor,
-    successLogin,
-    successDeleteBuilding,
-    successDeleteRoom,
-    successDeleteFacility,
-    successDeleteAmbulance,
-    successDeleteClinic,
-    successDeleteCounter,
     isLoading,
-    showTemporarySuccessDeleteRoom,
     dataIdBuilding,
-    showTemporarySuccessDeleteBuilding,
-    showTemporarySuccessDeleteFacility,
-    showTemporarySuccessDeleteClinic,
-    showTemporarySuccessDeleteCounter,
-    showTemporarySuccessDeleteAmbulance,
     // showTemporarySuccessDeletePatient,
     dataBuilding,
     setPageNumber,
@@ -67,18 +54,14 @@ export default function Index() {
     dataClinic,
     dataCounter,
     dataPatient,
-
+    showAlert,
+    message,
+    isSuccess,
   } = useIndex()
   return (
     <Box>
       <Box sx={{ py: 5 }}>
-        {successDeleteBuilding && <AlertSuccess label="Success delete Building" />}
-        {successDeleteRoom && <AlertSuccess label="Success delete Room" />}
-        {successDeleteFacility && <AlertSuccess label="Success delete Facility" />}
-        {successDeleteAmbulance && <AlertSuccess label="Success delete Ambulance" />}
-        {successDeleteClinic && <AlertSuccess label="Success delete Clinic" />}
-        {successDeleteCounter && <AlertSuccess label="Success delete Counter" />}
-        {successLogin && <AlertSuccess label="Success Login" />}
+        {isSuccess && <AlertSuccess label={message} />}
         <Typography sx={{ fontSize: '32px', fontWeight: '700' }}>Dashboard</Typography>
       </Box>
 
@@ -171,21 +154,21 @@ export default function Index() {
       <Stack mt={3} spacing={3}>
         <TableGedung
           data={dataBuilding}
-          onSuccessDelete={showTemporarySuccessDeleteBuilding}
+          onSuccessDelete={() => showAlert("Success delete Building", 300)}
           setPageNumber={setPageNumber}
           setOrderBy={setOrderByBuilding}
           totalElements={totalElementsBuilding}
         />
-        <TableRuangan data={dataRoom} onSuccessDelete={showTemporarySuccessDeleteRoom} setPageNumber={setPageNumber} setOrderBy={setOrderByRoom} totalElements={totalElementsRoom} dataIdBuilding={dataIdBuilding} />
+        <TableRuangan data={dataRoom} onSuccessDelete={() => showAlert("Success delete Room", 300)} setPageNumber={setPageNumber} setOrderBy={setOrderByRoom} totalElements={totalElementsRoom} dataIdBuilding={dataIdBuilding} />
         <TablePegawai />
-        <TableFasilitas data={dataFacility} onSuccessDelete={showTemporarySuccessDeleteFacility} setPageNumber={setPageNumber} setOrderBy={setOrderByFacility} totalElements={totalElementsRoom} />
+        <TableFasilitas data={dataFacility} onSuccessDelete={() => showAlert("Success delete Fasilitas", 300)} setPageNumber={setPageNumber} setOrderBy={setOrderByFacility} totalElements={totalElementsRoom} />
         <TableDokter />
         <TableAmbulance
-          data={dataAmbulance} onSuccessDelete={showTemporarySuccessDeleteAmbulance} setPageNumber={setPageNumber} setOrderBy={setOrderAmbulance} totalElements={totalElementsAmbulance}
+          data={dataAmbulance} onSuccessDelete={() => showAlert("Success delete Building", 300)} setPageNumber={setPageNumber} setOrderBy={setOrderAmbulance} totalElements={totalElementsAmbulance}
         />
-        <TableKlinik data={dataClinic} onSuccessDelete={showTemporarySuccessDeleteClinic} setPageNumber={setPageNumber} setOrderBy={setOrderClinic} totalElements={totalElementsClinic} />
-        <TableKonter data={dataCounter} onSuccessDelete={showTemporarySuccessDeleteCounter} setPageNumber={setPageNumber} setOrderBy={setOrderCounter} totalElements={totalElementsCounter} />
-        <TablePasien data={dataPatient} onSuccessDelete={showTemporarySuccessDeleteCounter} setPageNumber={setPageNumber} setOrderBy={setOrderPatient} totalElements={totalElementsPatient} />
+        <TableKlinik data={dataClinic} onSuccessDelete={() => showAlert("Success delete Klinik", 300)} setPageNumber={setPageNumber} setOrderBy={setOrderClinic} totalElements={totalElementsClinic} />
+        <TableKonter data={dataCounter} onSuccessDelete={() => showAlert("Success delete Konter", 300)} setPageNumber={setPageNumber} setOrderBy={setOrderCounter} totalElements={totalElementsCounter} />
+        <TablePasien data={dataPatient} onSuccessDelete={() => showAlert("Success delete Pasien", 300)} setPageNumber={setPageNumber} setOrderBy={setOrderPatient} totalElements={totalElementsPatient} />
       </Stack>
     </Box>
 
