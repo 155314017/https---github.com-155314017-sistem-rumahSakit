@@ -260,7 +260,9 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({ fetchDatas, onSuc
                                                         >
                                                             Hapus
                                                         </Typography>
-                                                        <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/subfacility/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} />
+                                                        <ModalDeleteConfirmation open={open} onClose={() => setOpen(false)} apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/subfacility/${deletedItems}`} onDeleteSuccess={handleDeleteSuccess} itemId={""} fetchData={function (): void {
+                                                            throw new Error("Function not implemented.");
+                                                        }} />
                                                         <Typography
                                                             mr={2}
                                                             onClick={() => navigate(`/editSubFasilitas/${data.id}`)}

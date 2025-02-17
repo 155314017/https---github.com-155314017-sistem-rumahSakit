@@ -58,7 +58,7 @@ const StyledTableContainer = styled(TableContainer)`
 //hooks
 import useTableFasilitas from "../hooks/useTableFasilitas";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
-import { FacilityDataItem } from "../../../services/Admin Tenant/ManageFacility/FacilityServices";
+import { FacilityDataItem } from "../../../types/Facility.types";
 
 interface TableFacilityProps {
   data: FacilityDataItem[];
@@ -338,8 +338,9 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({
                               open={open}
                               onClose={() => setOpen(false)}
                               apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/facility/${deletedItems}`}
-                              onDeleteSuccess={handleDeleteSuccess}
-                            />
+                              onDeleteSuccess={handleDeleteSuccess} itemId={""} fetchData={function (): void {
+                                throw new Error("Function not implemented.");
+                              }} />
                             <Typography
                               mr={2}
                               onClick={() => navigate(`/editFasilitas/${data.id}`)}

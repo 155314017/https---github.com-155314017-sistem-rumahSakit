@@ -11,22 +11,22 @@ import ModalDeleteConfirmation from "../../../components/medium/modal/ModalDelet
 
 
 export default function DetailFasilitas() {
-  const {
-        
-    breadcrumbItems,
-    largeImage,
-    smallImage,
-    handleDeleteSuccess,
-    confirmationDelete,
-    loading,
-    deletedItems,
-    setOpen,
-    navigate,
-    open,
-    buildingName,
-    facilityData,   
-    id
-  } = useDetailFasilitas();
+    const {
+
+        breadcrumbItems,
+        largeImage,
+        smallImage,
+        handleDeleteSuccess,
+        confirmationDelete,
+        loading,
+        deletedItems,
+        setOpen,
+        navigate,
+        open,
+        buildingName,
+        facilityData,
+        id
+    } = useDetailFasilitas();
 
     return (
         <Container sx={{ py: 2 }}>
@@ -44,18 +44,20 @@ export default function DetailFasilitas() {
                     columns={[
                         { id: "namaFasilitas", label: "Nama Fasilitas" },
                         { id: "namaGedung", label: "Nama Gedung" },
-                        { id: "deskripsi", label: "Deskripsi" },    
+                        { id: "deskripsi", label: "Deskripsi" },
                         { id: "hargaFacilitas", label: "Biaya Penanganan" },
 
                     ]}
-                    data={[{ namaFasilitas: facilityData?.name,  namaGedung: buildingName, deskripsi: facilityData?.description, hargaFacilitas: facilityData?.cost, Harga: facilityData?.cost, jamOperational: facilityData?.operationalSchedule }]}
+                    data={[{ namaFasilitas: facilityData?.name, namaGedung: buildingName, deskripsi: facilityData?.description, hargaFacilitas: facilityData?.cost, Harga: facilityData?.cost, jamOperational: facilityData?.operationalSchedule }]}
                     actions={() => (
                         <>
                             <ModalDeleteConfirmation
                                 open={open}
                                 onClose={() => setOpen(false)}
                                 apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/${deletedItems}`}
-                                onDeleteSuccess={handleDeleteSuccess}
+                                onDeleteSuccess={handleDeleteSuccess} itemId={""} fetchData={function (): void {
+                                    throw new Error("Function not implemented.");
+                                }}
                             />
                             <Link
                                 underline="hover"

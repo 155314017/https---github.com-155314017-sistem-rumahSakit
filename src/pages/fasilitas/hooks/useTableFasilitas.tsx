@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
-import { FacilityDataItem } from "../../../services/Admin Tenant/ManageFacility/FacilityServices";
 import { Schedule } from "@mui/icons-material";
 import { GetScheduleByTypeId } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 import { PAGE_SIZE } from "./useIndex";
+import { FacilityDataItem } from "../../../types/Facility.types";
 
 export default function useTableFasilitas(
   onSuccessDelete: () => void,

@@ -17,18 +17,13 @@ import useIndex from "../hooks/useIndex";
 export default function Index() {
     const {
         dataFacility,
-        dataSubFacility,
-        fetchDataSubFacility,
-        successAddBuilding,
-        successDeleteBuilding,
-        successEditBuilding,
-        successAddSub,
-        successDeleteSub,
-        successEditSub,
+        totalElementsSubfacility,
+        refetchSub,
         isLoading,
+        message,
+        isSuccess,
+        showAlert,
         totalElementsFacility,
-        showTemporarySuccessDelete,
-        showTemporarySuccessDeleteSub,
         setOrderByFacility,
         setPageNumberFacility,
     } = useIndex()
@@ -39,26 +34,8 @@ export default function Index() {
             <Box p={2} sx={{ marginLeft: "130px" }}>
                 <Header />
                 <Box>
-                    {/* alert fasilitas */}
-                    {successAddBuilding && (
-                        <AlertSuccess label="Success adding Fasilitas" />
-                    )}
-                    {successDeleteBuilding && (
-                        <AlertSuccess label="Success delete Fasilitas" />
-                    )}
-                    {successEditBuilding && (
-                        <AlertSuccess label="Success edit Fasilitas" />
-                    )}
-
-                    {/* alert sub */}
-                    {successAddSub && (
-                        <AlertSuccess label="Success adding SubFasilitas" />
-                    )}
-                    {successDeleteSub && (
-                        <AlertSuccess label="Success delete SubFasilitas" />
-                    )}
-                    {successEditSub && (
-                        <AlertSuccess label="Success edit SubFasilitas" />
+                    {isSuccess && (
+                        <AlertSuccess label={message} />
                     )}
                     <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
                         Fasilitas
@@ -88,7 +65,7 @@ export default function Index() {
                             }}
                         >
                             <MediumCard icon={BusinessOutlinedIcon} title="Total Fasilitas" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : totalElementsFacility} />
-                            <MediumCard icon={BusinessOutlinedIcon} title="Total Sub Fasilitas" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : dataSubFacility.length.toString()} />
+                            <MediumCard icon={BusinessOutlinedIcon} title="Total Sub Fasilitas" subtitle={isLoading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : totalElementsSubfacility} />
                         </Box>
                         <Box
                             sx={{
@@ -108,12 +85,12 @@ export default function Index() {
                     <Box display={"flex"} flexDirection={"column"} gap={5} >
                         <TableFasilitas
                             data={dataFacility}
-                            onSuccessDelete={showTemporarySuccessDelete}
+                            onSuccessDelete={() => showAlert('Fasilitas deleted successfully!', 300)}
                             setPageNumber={setPageNumberFacility}
                             setOrderBy={setOrderByFacility}
                             totalElements={totalElementsFacility}
                         />
-                        <TableSubFasilitas fetchDatas={fetchDataSubFacility} onSuccessDelete={showTemporarySuccessDeleteSub} />
+                        <TableSubFasilitas fetchDatas={refetchSub} onSuccessDelete={() => showAlert('SubFasilitas deleted successfully!', 300)} />
                     </Box>
                 </Box>
             </Box>

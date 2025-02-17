@@ -1,17 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
-import { SubFacilityServices, SubFacilityDataItem } from "../../../services/Admin Tenant/ManageSubFacility/SubFacility";
+import { SubFacilityServices } from "../../../services/Admin Tenant/ManageSubFacility/SubFacility";
 import { useNavigate } from "react-router-dom";
 import { GetScheduleByTypeId } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
 import { getFacilityByIdService } from "../../../services/Admin Tenant/ManageFacility/GetFacilityByIdService";
+import { subFacilityDataItem } from "../../../types/subFacility.types";
 
 // Custom hook
 export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDelete: () => void) {
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
-  const [dataSubFacility, setDataSubFacility] = useState<SubFacilityDataItem[]>([]);
+  const [dataSubFacility, setDataSubFacility] = useState<subFacilityDataItem[]>([]);
   const [dataIdFacility, setDataIdFacility] = useState<string[]>([]);
   const [deletedItems, setDeletedItems] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
@@ -47,8 +48,8 @@ export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDe
       const allSchedules = [];
       const dataSchedules = [];
 
-      for (let index = 0; index < result.length; index++) {
-        const hasil = await GetScheduleByTypeId(result[index].id);
+      for (let index = 0; index < result.data.totalElements; index++) {
+        const hasil = await GetScheduleByTypeId(result.data.content[index].id);
         console.log('hasil: ', hasil);
         const schedules = [];
         const formattedSchedules = [];
@@ -69,18 +70,18 @@ export default function useTableSubFasilitas(fetchDatas: () => void, onSuccessDe
           });
         }
         allSchedules.push({
-          id: result[index].id,
+          id: result.data.content[index].id,
           schedules: schedules,
         });
 
         dataSchedules.push({
-          id: result[index].id,
+          id: result.data.content[index].id,
           operationalSchedule: formattedSchedules.join(' / '),
         });
       }
-      setDataSubFacility(result);
+      setDataSubFacility(result.data.content);
       setDataSchedules(dataSchedules);
-      const facilityIds = result.map((data) => data.facilityDataId);
+      const facilityIds = result.data.content.map((data: { facilityDataId: string }) => data.facilityDataId);
       setDataIdFacility(facilityIds);
       setIsLoading(false)
     } catch (error) {
