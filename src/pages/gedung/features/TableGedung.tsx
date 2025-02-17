@@ -61,6 +61,7 @@ interface TableGedungProps {
   setOrderBy: (order: string) => void;
   totalElements: number;
   onSearchChange?: (value: string) => void;
+  fetchData?: () => void
 }
 
 const TableGedung: React.FC<TableGedungProps> = ({
@@ -69,7 +70,8 @@ const TableGedung: React.FC<TableGedungProps> = ({
   setPageNumber,
   setOrderBy,
   totalElements,
-  onSearchChange
+  onSearchChange,
+  fetchData
 }) => {
   const {
     page,
@@ -77,13 +79,14 @@ const TableGedung: React.FC<TableGedungProps> = ({
     open,
     pageSize,
     handleChangePage,
-    confirmationDelete,
     handleDeleteSuccess,
     toggleCollapse,
     urutkan,
     setSort,
     setOpen,
     navigate,
+    confirmationDelete,
+    deletedItems,
   } = useTableGedung(
     onSuccessDelete,
     setPageNumber,
@@ -269,8 +272,11 @@ const TableGedung: React.FC<TableGedungProps> = ({
                           <ModalDeleteConfirmation
                             open={open}
                             onClose={() => setOpen(false)}
-                            apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${item.id}`}
+                            apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building`}
                             onDeleteSuccess={handleDeleteSuccess}
+                            itemId={deletedItems ?? ""}
+                            fetchData={fetchData ?? (() => {})}
+    
                           />
                           <Link
                             onClick={() => navigate(`/editGedung/${item.id}`)}

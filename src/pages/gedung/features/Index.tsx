@@ -22,6 +22,7 @@ export default function Index() {
     setOrderBy,
     totalElements,
     handleSearchChange,
+    fetchData,
     showAlert
   } = useIndex();
 
@@ -74,6 +75,7 @@ export default function Index() {
             setOrderBy={setOrderBy}
             totalElements={totalElements}
             onSearchChange={handleSearchChange}
+            fetchData={fetchData}
           />
         </Box>
       </Box>

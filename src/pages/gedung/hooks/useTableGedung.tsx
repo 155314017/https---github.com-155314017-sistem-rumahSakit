@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PAGE_SIZE } from "./useIndex";
-import { deleteBuildingService } from "../../../services/Admin Tenant/ManageBuilding/DeleteBuildingService";
+import useConfirmationDelete from "../../../hooks/useConfirmationDelete";
 
 export default function useTableGedung(
   onSuccessDelete: () => void,
@@ -11,25 +11,19 @@ export default function useTableGedung(
   const [page, setPage] = useState(1);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
-  const [deletedItems, setDeletedItems] = useState("");
+  const [deletedItems, setDeletedItems] = useState<string | null>("");
   const [sort, setSort] = useState('');
 
   const navigate = useNavigate();
 
 
-
+  const { confirmationDelete } = useConfirmationDelete( setOpen, setDeletedItems);
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
     setPageNumber(value - 1);
   };
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
-    event.preventDefault();
-    deleteBuildingService(buildingId);
-    setDeletedItems(buildingId);
-    setOpen(true);
-    console.log(deletedItems)
-  };
+  
 
   useEffect(() => {
     if (sort === "Nama Gedung A-Z") {
@@ -71,5 +65,7 @@ export default function useTableGedung(
     setSort,
     navigate,
     setOpen,
+    deletedItems,
+    setDeletedItems
   }
 }
