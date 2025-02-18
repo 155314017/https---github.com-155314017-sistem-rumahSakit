@@ -1,4 +1,4 @@
-import { Box, Button, Container, FormControl, OutlinedInput, Typography } from "@mui/material";
+import { Box, Container, FormControl, Typography } from "@mui/material";
 import bgImage from "../../../assets/img/String.png";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import ImageUploaderGroup from '../../../components/inputComponent/ImageUploaderComponents/ImageUploaderGroup';
@@ -8,18 +8,21 @@ import useTambahKlinik from "../hooks/useTambahKlinik";
 import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
 import AlertWarning from "../../../components/small/alert/AlertWarning";
+import PaginationTabs from "../../../components/small/stepper/PaginationTabs";
+import CustomTextField from "../../../components/inputComponent/CustomTextfield";
+import CustomButtonFilled from "../../../components/small/button/CustomButtonFilled";
 export default function TambahKlinik() {
-    const { 
+    const {
         breadcrumbItems,
         formik,
         handleImageChange,
         setCurrentPage,
-        getPageStyle,
-        getBorderStyle,
         currentPage,
         kalenderRef,
         handleSaveKlinik,
-        isSuccess
+        isSuccess,
+        tabs,
+        message
     } = useTambahKlinik();
     return (
         <Container sx={{ py: 2, minWidth: '1500px' }}>
@@ -35,40 +38,13 @@ export default function TambahKlinik() {
                     </Typography>
 
                     <Box
-                        sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, justifyContent: 'space-between', ml: 2 }}
+                        sx={{ width: '50%' }}
                     >
-                        <Box display={"flex"} flexDirection={"row"} width={"400px"}>
-                            <Box
-                                display={"flex"}
-                                flexDirection={"row"}
-                                alignItems="center"
-                                onClick={() => setCurrentPage(1)}
-                                sx={getPageStyle(1)}
-                                mx={2}
-                            >
-                                <Box sx={getBorderStyle(1)}>1</Box>
-                                <Typography sx={{ ml: 1 }}>
-                                    Informasi Klinik
-                                </Typography>
-                            </Box>
-                        </Box>
-
-                        <Box display={"flex"} flexDirection={"row"} width={"800px"}>
-                            <Box
-                                display={"flex"}
-                                flexDirection={"row"}
-                                alignItems="center"
-                                onClick={() => setCurrentPage(2)}
-                                sx={getPageStyle(2)}
-                                mx={2}
-                            >
-                                <Box sx={getBorderStyle(2)}>2</Box>
-                                <Typography sx={{ ml: 1 }}>
-                                    Jam Operasional
-                                </Typography>
-                            </Box>
-                        </Box>
-
+                        <PaginationTabs
+                            tabs={tabs}
+                            setCurrentPage={setCurrentPage}
+                            currentPage={currentPage}
+                        />
                     </Box>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
@@ -80,74 +56,37 @@ export default function TambahKlinik() {
                             <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
                                 <Typography sx={{ fontSize: "16px" }}>Nama Klinik<span style={{ color: "red" }}>*</span></Typography>
                                 <FormControl fullWidth sx={{ my: 1 }}>
-                                    <OutlinedInput
-                                        id="namaKlinik"
+                                    <CustomTextField
                                         name="namaKlinik"
-                                        size="small"
                                         placeholder="Masukkan Nama klinik"
-                                        value={formik.values.namaKlinik}
-                                        onChange={formik.handleChange}
-                                        onBlur={() => formik.setTouched({ ...formik.touched, namaKlinik: true })}
-                                        error={formik.touched.namaKlinik && Boolean(formik.errors.namaKlinik)}
+                                        formik={formik}
                                     />
-                                    {formik.touched.namaKlinik && formik.errors.namaKlinik && (
-                                        <Typography color="error">{formik.errors.namaKlinik}</Typography>
-                                    )}
                                 </FormControl>
 
                                 <Typography sx={{ fontSize: "16px" }}>Deskripsi Klinik<span style={{ color: "red" }}>*</span></Typography>
                                 <FormControl fullWidth sx={{ my: 1 }}>
-                                    <OutlinedInput
-                                        id="deskripsiKlinik"
+                                    <CustomTextField
                                         name="deskripsiKlinik"
-                                        size="small"
-                                        placeholder="Masukkan deskripsi klinik"
-                                        value={formik.values.deskripsiKlinik}
-                                        onChange={formik.handleChange}
-                                        onBlur={() => formik.setTouched({ ...formik.touched, deskripsiKlinik: true })}
-                                        error={formik.touched.deskripsiKlinik && Boolean(formik.errors.deskripsiKlinik)}
-                                        sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
+                                        placeholder="Masukkan Deskripsi klinik"
+                                        formik={formik}
                                     />
-                                    {formik.touched.deskripsiKlinik && formik.errors.deskripsiKlinik && (
-                                        <Typography color="error">{formik.errors.deskripsiKlinik}</Typography>
-                                    )}
                                 </FormControl>
 
                                 <Typography sx={{ fontSize: "16px" }}>Code Klinik<span style={{ color: "red" }}>*</span></Typography>
                                 <FormControl fullWidth sx={{ my: 1 }}>
-                                    <OutlinedInput
-                                        id="code"
+                                    <CustomTextField
                                         name="code"
-                                        size="small"
-                                        placeholder="Masukkan kode klinik"
-                                        value={formik.values.code}
-                                        onChange={formik.handleChange}
-                                        onBlur={() => formik.setTouched({ ...formik.touched, code: true })}
-                                        error={formik.touched.code && Boolean(formik.errors.code)}
+                                        placeholder="Masukkan Kode klinik"
+                                        formik={formik}
                                     />
-                                    {formik.touched.namaKlinik && formik.errors.namaKlinik && (
-                                        <Typography color="error">{formik.errors.namaKlinik}</Typography>
-                                    )}
                                 </FormControl>
-                                {/* Tombol Submit */}
-                                <Button
+                                <CustomButtonFilled
                                     type="submit"
                                     variant="contained"
-                                    color="inherit"
-                                    sx={{
-                                        mt: 8,
-                                        width: "100%",
-                                        bgcolor: "#8F85F3",
-                                        color: "#fff",
-                                        textTransform: "none",
-                                        borderRadius: "8px",
-                                        ":hover": { bgcolor: "#a098f5" },
-                                    }}
-                                    disabled={!formik.isValid || !formik.dirty} // Opsional
+                                    disabled={!formik.isValid || !formik.dirty}
                                     onClick={() => setCurrentPage(2)}
-                                >
-                                    Selanjutnya
-                                </Button>
+                                    text="Selanjutnya"
+                                />
                                 {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
                             </Box>
                         </>
@@ -155,20 +94,18 @@ export default function TambahKlinik() {
                     {currentPage === 2 && (
                         <>
                             <CustomBigCalendar ref={kalenderRef} />
-                            <Button
+                            <CustomButtonFilled
+                                type="submit"
                                 variant="contained"
-                                color="primary"
                                 onClick={handleSaveKlinik}
-                                sx={{ marginTop: '20px', width: '100%', bgcolor: '#8F85F3' }}
-                            >
-                                Simpan
-                            </Button>
+                                text="Simpan"
+                            />
                         </>)}
                 </Box>
             </Box>
             {isSuccess && (
-                            <AlertWarning teks="Error adding clinic" />
-                        )}
+                <AlertWarning teks={message} />
+            )}
         </Container >
     )
 }

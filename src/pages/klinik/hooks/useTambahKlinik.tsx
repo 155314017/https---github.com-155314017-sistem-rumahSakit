@@ -17,10 +17,6 @@ export default function useTambahKlinik() {
   const navigate = useNavigate();
   const { isSuccess, message, showAlert } = useSuccessNotification();
 
-  
-
-  
-
   const breadcrumbItems = [
     { label: "Dashboard", href: "/dashboard" },
     { label: "Klinik", href: "/klinik" },
@@ -38,60 +34,13 @@ export default function useTambahKlinik() {
       deskripsiKlinik: Yup.string().required('Deskripsi Klinik is required'),
       code: Yup.string().required('Code Klinik is required'),
     }),
-    onSubmit: async (values) => {      
+    onSubmit: async (values) => {
       console.log(values);
     },
   });
 
   const handleImageChange = (images: ImageData[]) => {
     setImagesData(images);
-  };
-
-  const getPageStyle = (page: number) => {
-    if (page === currentPage) {
-      return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
-    } else if (page < currentPage) {
-      return { color: "#8F85F3", cursor: "pointer" };
-    } else {
-      return { color: "black", cursor: "pointer" };
-    }
-  };
-
-  const getBorderStyle = (page: number) => {
-    if (page === currentPage) {
-      return {
-        display: "flex",
-        border: "1px solid #8F85F3",
-        width: "38px",
-        height: "38px",
-        borderRadius: "8px",
-        justifyContent: "center",
-        alignItems: "center",
-      };
-    } else if (page < currentPage) {
-      return {
-        display: "flex",
-        border: "1px solid #8F85F3",
-        width: "38px",
-        height: "38px",
-        borderRadius: "8px",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#8F85F3",
-        color: "white",
-      };
-    } else {
-      return {
-        display: "flex",
-        border: "1px solid #8F85F3",
-        width: "38px",
-        height: "38px",
-        borderRadius: "8px",
-        justifyContent: "center",
-        alignItems: "center",
-        color: "#8F85F3",
-      };
-    }
   };
 
   const handleSaveKlinik = async () => {
@@ -103,7 +52,7 @@ export default function useTambahKlinik() {
 
       // Data untuk CreateClinic
       const klinikData = {
-        name: formik.values.namaKlinik ,
+        name: formik.values.namaKlinik,
         description: formik.values.deskripsiKlinik,
         additionalInfo: '',
         code: formik.values.code
@@ -139,18 +88,23 @@ export default function useTambahKlinik() {
       showAlert("Error Adding Clinic", 3000)
     }
   };
+
+  const tabs = [
+    { pageNumber: 1, label: 'Informasi Klinik' },
+    { pageNumber: 2, label: 'Jam Operasional' },
+  ];
+
   return {
     breadcrumbItems,
     formik,
     handleImageChange,
     setCurrentPage,
-    getPageStyle,
-    getBorderStyle,
     currentPage,
     kalenderRef,
     handleSaveKlinik,
     operationalTime,
     isSuccess,
-    message
+    message,
+    tabs
   }
 }

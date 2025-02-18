@@ -23,8 +23,6 @@ export default function useTableKlinik(
     setPageNumber(value - 1);
   };
 
-
-
   useEffect(() => {
     if (sort == "Nama klinik A-Z") {
       setOrderBy('name=asc');
@@ -44,15 +42,9 @@ export default function useTableKlinik(
     { value: 4, label: "Nomor Klinik 9-1" },
   ];
   
-
-  
-
-
   const handleDeleteSuccess = () => {
     onSuccessDelete();
   };
-
-  
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);

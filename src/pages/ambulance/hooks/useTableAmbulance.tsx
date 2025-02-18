@@ -2,12 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useConfirmationDelete from '../../../hooks/useConfirmationDelete';
-
-
-
 export const PAGE_SIZE = 10;
-
-
 export default function useTableAmbulance(
   onSuccessDelete: () => void,
   setPageNumber: (page: number) => void,
@@ -18,20 +13,12 @@ export default function useTableAmbulance(
   const [open, setOpen] = useState(false)
   const [deletedItems, setDeletedItems] = useState<string | null>("");
   const [sort, setSort] = useState('')
-
   const navigate = useNavigate()
-
-  const { confirmationDelete } = useConfirmationDelete( setOpen, setDeletedItems);
-
+  const { confirmationDelete } = useConfirmationDelete(setOpen, setDeletedItems);
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value)
     setPageNumber(value - 1)
   }
-
-  
-
-
-  
   useEffect(() => {
     if (sort === "Nama Ambulance A-Z") {
       setOrderBy('name=asc');
@@ -43,23 +30,13 @@ export default function useTableAmbulance(
       setOrderBy('createdDateTime=desc');
     }
   }, [sort, setOrderBy]);
-  
-
-  
-
   const handleDeleteSuccess = () => {
     onSuccessDelete()
     onSuccessDelete()
   }
-
-
-
   const toggleCollapse = () => {
     setIsCollapsed(prev => !prev)
   }
-
-  
-
   return {
     page,
     isCollapsed,
