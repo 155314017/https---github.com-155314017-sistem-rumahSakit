@@ -63,7 +63,7 @@ export default function Index() {
                     </Grid>
                     <TableKlinik
                         data={data}
-                        onSuccessDelete={() => showAlert('Clinic deleted successfuly')}
+                        onSuccessDelete={() => {showAlert('Clinic deleted successfuly'); fetchData();} }
                         setPageNumber={setPageNumber}
                         setOrderBy={setOrderBy}
                         totalElements={totalElements}

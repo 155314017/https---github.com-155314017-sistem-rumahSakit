@@ -22,7 +22,8 @@ export default function DetailAmbulance() {
     handleDeleteSuccess,
     navigate,
     setOpen,
-    id
+    id,
+    deletedItems
   } = useDetailAmbulance()
   return (
     <Container sx={{ py: 2 }}>
@@ -49,7 +50,7 @@ export default function DetailAmbulance() {
                 onClose={() => setOpen(false)}
                 apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/ambulance`}
                 onDeleteSuccess={handleDeleteSuccess}
-                itemId={id || ""}
+                itemId={deletedItems || ""}
               />
               <Link
                 underline="hover"
