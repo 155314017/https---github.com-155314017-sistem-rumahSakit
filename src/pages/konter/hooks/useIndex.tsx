@@ -32,11 +32,11 @@ export default function useIndex() {
     const handleLocationState = async () => {
       if (location.state) {
         if (location.state.successAdd) {
-          await showAlert("Building added successfully! ");
+          await showAlert("Counter added successfully! ");
         } else if (location.state.successEdit) {
-          await showAlert("Building edited successfully!");
+          await showAlert("Counter edited successfully!");
         } else if (location.state.successDelete) {
-          await showAlert("Building deleted successfully! 3");
+          await showAlert("Counter deleted successfully!");
         }
         navigate(location.pathname, { replace: true, state: undefined });
       }
@@ -56,6 +56,7 @@ export default function useIndex() {
     PAGE_SIZE,
     message,
     isSuccess,
-    showAlert
+    showAlert,
+    refetch
   }
 }

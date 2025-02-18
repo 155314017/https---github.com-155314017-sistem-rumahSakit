@@ -21,7 +21,7 @@ export default function useTableKonter(
     setPage(value);
     setPageNumber(value - 1);
   }
- 
+
 
   useEffect(() => {
     if (sort == "Nama Konter A-Z") {
@@ -41,14 +41,6 @@ export default function useTableKonter(
     { value: 3, label: "Nomor Konter 1-9" },
     { value: 4, label: "Nomor Konter 9-1" },
   ];
-  
-
-
- 
-
-  
-
-
 
   const toggleCollapse = () => {
     setIsCollapsed((prev) => !prev);
@@ -78,6 +70,6 @@ export default function useTableKonter(
     setSort,
     handleDeleteSuccess,
     setPageNumber,
-    pageSize : PAGE_SIZE
+    pageSize: PAGE_SIZE
   }
 }

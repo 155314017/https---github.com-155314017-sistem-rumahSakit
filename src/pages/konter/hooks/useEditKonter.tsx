@@ -165,6 +165,10 @@ export default function useEditKonter() {
     }
   };
 
+  const tabs = [
+    { pageNumber: 1, label: 'Informasi Konter' },
+    { pageNumber: 2, label: 'Jam Operasional' },
+  ];
 
   return {
     formik,
@@ -176,7 +180,7 @@ export default function useEditKonter() {
     currentPage,
     setCurrentPage,
     getPageStyle,
-    // getBorderStyle,
+    tabs,
     handleEditCounter,
     kalenderRef,
     counterData,

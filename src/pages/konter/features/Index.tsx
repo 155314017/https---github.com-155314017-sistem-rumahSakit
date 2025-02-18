@@ -23,7 +23,8 @@ export default function Index() {
         totalElements,
         isSuccess,
         message,
-        showAlert
+        showAlert,
+        refetch
     } = useIndex();
     return (
         <Box>
@@ -60,7 +61,7 @@ export default function Index() {
                     </Grid>
                     <TableKonter
                         data={data}
-                        onSuccessDelete={() => showAlert('Counter deleted successfully!', 300)}
+                        onSuccessDelete={() => { showAlert('Counter deleted successfully!'); refetch() }}
                         setPageNumber={setPageNumber}
                         setOrderBy={setOrderBy}
                         totalElements={totalElements}

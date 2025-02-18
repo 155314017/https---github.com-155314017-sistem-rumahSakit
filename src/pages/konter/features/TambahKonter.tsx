@@ -1,4 +1,4 @@
-import { Box, Button, Container, FormControl, OutlinedInput, Typography } from "@mui/material";
+import { Box, Container, FormControl, Typography } from "@mui/material";
 import bgImage from "../../../assets/img/String.png";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import ImageUploaderGroup from '../../../components/inputComponent/ImageUploaderComponents/ImageUploaderGroup';
@@ -10,6 +10,7 @@ import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
 import CustomButtonFilled from "../../../components/small/button/CustomButtonFilled";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
 import PaginationTabs from "../../../components/small/stepper/PaginationTabs";
+import CustomTextField from "../../../components/inputComponent/CustomTextfield";
 export default function TambahKonter() {
     const {
         breadcrumbItems,
@@ -37,11 +38,13 @@ export default function TambahKonter() {
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
                     </Box>
-                    <PaginationTabs
-                        tabs={tabs}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-                    />
+                    <Box width={'50%'} >
+                        <PaginationTabs
+                            tabs={tabs}
+                            currentPage={currentPage}
+                            setCurrentPage={setCurrentPage}
+                        />
+                    </Box>
 
                     {currentPage === 1 && (
                         <>
@@ -49,57 +52,26 @@ export default function TambahKonter() {
                             <Box component="form" noValidate autoComplete="off" mt={3}>
                                 <Typography sx={{ fontSize: "16px" }}>Nama Konter<span style={{ color: "red" }}>*</span></Typography>
                                 <FormControl fullWidth sx={{ my: 1 }}>
-                                    <OutlinedInput
-                                        id="namaKonter"
+                                    <CustomTextField
                                         name="namaKonter"
-                                        size="small"
-                                        placeholder="Masukkan Nama konter"
-                                        value={formik.values.namaKonter}
-                                        onChange={formik.handleChange}
-                                        onBlur={() => formik.setTouched({ ...formik.touched, namaKonter: true })}
-                                        error={formik.touched.namaKonter && Boolean(formik.errors.namaKonter)}
+                                        placeholder="Masukkan Nama Konter"
+                                        formik={formik}
                                     />
-                                    {formik.touched.namaKonter && formik.errors.namaKonter && (
-                                        <Typography color="error">{formik.errors.namaKonter}</Typography>
-                                    )}
                                 </FormControl>
-
-
 
                                 <Typography sx={{ fontSize: "16px", mt: 1 }}>Lokasi Konter<span style={{ color: "red" }}>*</span></Typography>
                                 <FormControl fullWidth sx={{ my: 1 }}>
-                                    <OutlinedInput
-                                        id="lokasiKonter"
+                                    <CustomTextField
                                         name="lokasiKonter"
-                                        size="small"
-                                        placeholder="Masukkan lokasi konter"
-                                        value={formik.values.lokasiKonter}
-                                        onChange={formik.handleChange}
-                                        onBlur={() => formik.setTouched({ ...formik.touched, lokasiKonter: true })}
-                                        error={formik.touched.lokasiKonter && Boolean(formik.errors.lokasiKonter)}
-                                        sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
+                                        placeholder="Masukkan Lokasi Konter"
+                                        formik={formik}
                                     />
-                                    {formik.touched.lokasiKonter && formik.errors.lokasiKonter && (
-                                        <Typography color="error">{formik.errors.lokasiKonter}</Typography>
-                                    )}
                                 </FormControl>
-
-                                <Button
+                                <CustomButtonFilled
                                     variant="contained"
-                                    color="inherit"
-                                    sx={{
-                                        mt: 8,
-                                        width: "100%",
-                                        bgcolor: "#8F85F3",
-                                        color: "#fff",
-                                        textTransform: "none",
-                                        borderRadius: "8px",
-                                        ":hover": { bgcolor: "#a098f5" },
-                                    }}
                                     onClick={() => setCurrentPage(2)}
-                                >
-                                    Selanjutnya
-                                </Button>
+                                    text="Selanjutnya"
+                                />
                             </Box>
                         </>
                     )}

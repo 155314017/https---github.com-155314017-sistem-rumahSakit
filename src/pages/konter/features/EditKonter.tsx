@@ -8,10 +8,10 @@ import "dayjs/locale/id";
 //hooks
 import useEditKonter from "../hooks/useEditKonter";
 import CustomBigCalendar from '../../../components/medium/CustomBigCalendar';
-import { getBorderStyle } from '../../../style/ts/getBorderStyle';
 import CustomTextField from '../../../components/inputComponent/CustomTextfield';
 import CustomButtonFilled from '../../../components/small/button/CustomButtonFilled';
 import CustomFrameTable from '../../../components/small/CustomFrameTable';
+import PaginationTabs from '../../../components/small/stepper/PaginationTabs';
 
 export default function EditKonter() {
     const {
@@ -19,13 +19,13 @@ export default function EditKonter() {
         breadcrumbItems,
         formik,
         setCurrentPage,
-        getPageStyle,
         currentPage,
         handleEditCounter,
         kalenderRef,
         id,
         scheduleDataPraktek,
         scheduleDataPengecualian,
+        tabs
     } = useEditKonter();
 
     return (
@@ -43,39 +43,13 @@ export default function EditKonter() {
                     </Typography>
 
                     <Box
-                        sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, justifyContent: 'space-between', ml: 2 }}
+                        sx={{ width: '50%' }}
                     >
-                        <Box display={"flex"} flexDirection={"row"} width={"400px"}>
-                            <Box
-                                display={"flex"}
-                                flexDirection={"row"}
-                                alignItems="center"
-                                onClick={() => setCurrentPage(1)}
-                                sx={getPageStyle(1)}
-                                mx={2}
-                            >
-                                <Box sx={getBorderStyle(1, currentPage)}>1</Box>
-                                <Typography sx={{ ml: 1 }}>
-                                    Informasi Konter
-                                </Typography>
-                            </Box>
-                        </Box>
-
-                        <Box display={"flex"} flexDirection={"row"} width={"800px"}>
-                            <Box
-                                display={"flex"}
-                                flexDirection={"row"}
-                                alignItems="center"
-                                onClick={() => setCurrentPage(2)}
-                                sx={getPageStyle(2)}
-                                mx={2}
-                            >
-                                <Box sx={getBorderStyle(2, currentPage)}>2</Box>
-                                <Typography sx={{ ml: 1 }}>
-                                    Jam Operasional
-                                </Typography>
-                            </Box>
-                        </Box>
+                        <PaginationTabs
+                            tabs={tabs}
+                            setCurrentPage={setCurrentPage}
+                            currentPage={currentPage}
+                        />
                     </Box>
 
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
@@ -90,6 +64,7 @@ export default function EditKonter() {
                             <ImageUploaderGroupAPI onChange={handleImageChange} parentId={id || ''} />
                             <Box component="form" noValidate autoComplete="off" mt={3}>
                                 <Typography sx={{ fontSize: "16px" }}>Nama Konter<span style={{ color: "red" }}>*</span></Typography>
+
                                 <FormControl fullWidth sx={{ my: 1 }}>
                                     <CustomTextField
                                         name='namaKonter'
