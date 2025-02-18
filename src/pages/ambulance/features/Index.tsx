@@ -70,7 +70,7 @@ export default function Index() {
 
           <TableAmbulance
             data={data}
-            onSuccessDelete={() => showAlert('Ambulance deleted successfully!')}
+            onSuccessDelete={() => {showAlert('Ambulance deleted successfully!'); fetchData()}}
             setPageNumber={setPageNumber}
             setOrderBy={setOrderBy}
             totalElements={totalElements}
