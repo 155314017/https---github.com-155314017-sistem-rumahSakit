@@ -59,8 +59,7 @@ export default function DetailKonter() {
                                 open={open}
                                 onClose={() => setOpen(false)}
                                 apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/counter/${deletedItems}`}
-                                onDeleteSuccess={handleDeleteSuccess}
-                            />
+                                onDeleteSuccess={handleDeleteSuccess} itemId={""} />
                             <Link
                                 underline="hover"
                                 sx={{ color: "#8F85F3" }}

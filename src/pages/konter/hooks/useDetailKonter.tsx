@@ -2,28 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetImageByParentId } from "../../../services/Admin Tenant/ManageImage/GetImageByParentIdService";
 import { GetScheduleByTypeId, ScheduleDataItem } from "../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices";
-import { OperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 import { convertToOperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 import { GetCounterByIdServices } from "../../../services/Admin Tenant/ManageCounter/GetCounterById";
 import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
-
-
-
-// Clinic data type
-type CounterDataItem = {
-  id: string;
-  name: string;
-  location: string;
-  additionalInfo: string;
-  createdBy: string;
-  createdDateTime: number;
-  updatedBy: string | null;
-  updatedDateTime: number | null;
-  deletedBy: string | null;
-  deletedDateTime: number | null;
-  schedules: ScheduleDataItem[];
-  operationalSchedule?: OperationalSchedule;
-};
+import { useFetchData } from "../../../hooks/useFetchData"; // Import your custom hook
+import { CounterDataItem } from "../../../types/counter.types";
 
 export default function useDetailKonter() {
   const [deletedItems, setDeletedItems] = useState<string>("");
@@ -32,53 +15,56 @@ export default function useDetailKonter() {
   const navigate = useNavigate();
   const [largeImage, setLargeImage] = useState<string>("");
   const [smallImage, setSmallImages] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
   const [counterData, setCounterData] = useState<CounterDataItem | null>(null);
 
   const breadcrumbItems = [
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-    },
-    {
-      label: "Konter",
-      href: "/konter",
-    },
-    {
-      label: "Detail Konter",
-      href: "/detailKonter",
-    },
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "Konter", href: "/konter" },
+    { label: "Detail Konter", href: "/detailKonter" },
   ];
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const counterResponse = await GetCounterByIdServices(id);
-      const scheduleResponse = await GetScheduleByTypeId(id || "");
 
-      if (counterResponse) {
-        const counterData: CounterDataItem = {
-          ...counterResponse,
-          schedules: scheduleResponse,
-          operationalSchedule: convertToOperationalSchedule(scheduleResponse)
-        };
+  const { data: counterDataResponse, loading: loadingCounterData, error: counterError } = useFetchData<CounterDataItem>(
+    GetCounterByIdServices,
+    [id],
+    true
+  );
 
-        setCounterData(counterData);
+  const { data: scheduleResponse, loading: loadingScheduleData, error: scheduleError } = useFetchData(
+    GetScheduleByTypeId,
+    [id],
+    true
+  );
 
-        const imageResponse = await GetImageByParentId(counterResponse.id);
-        const { largeImage, smallImages } = processImageResponse(imageResponse);
-        setLargeImage(largeImage);
-        setSmallImages(smallImages);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: imageData, refetch: refetchImage } = useFetchData(
+    GetImageByParentId,
+    [counterDataResponse.id],
+    false,
+    true
+  );
 
   useEffect(() => {
-    if (id) fetchData();
-  }, [id]);
+    if (counterDataResponse && scheduleResponse) {
+      const counterData: CounterDataItem = {
+        ...counterDataResponse,
+        schedules: scheduleResponse as ScheduleDataItem[],
+        operationalSchedule: convertToOperationalSchedule(scheduleResponse as ScheduleDataItem[]),
+      };
+      setCounterData(counterData);
+    }
+    if (counterDataResponse.id) {
+      refetchImage();
+    }
+  }, [counterDataResponse, scheduleResponse]);
+
+  useEffect(() => {
+    if (imageData) {
+      const { largeImage, smallImages } = processImageResponse(imageData);
+      setLargeImage(largeImage);
+      setSmallImages(smallImages);
+    }
+
+  }, [imageData])
+
 
   const handleDeleteSuccess = () => {
     setOpen(false);
@@ -91,20 +77,20 @@ export default function useDetailKonter() {
     setOpen(true);
   };
 
-
-
   return {
     breadcrumbItems,
     largeImage,
     smallImage,
     handleDeleteSuccess,
     confirmationDelete,
-    loading,
+    loading: loadingCounterData || loadingScheduleData,
     deletedItems,
     setOpen,
     navigate,
     open,
     counterData,
-    id
+    id,
+    counterError,
+    scheduleError,
   };
 }
