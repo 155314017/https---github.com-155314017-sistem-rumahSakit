@@ -9,6 +9,7 @@ interface CustomTextFieldProps {
     rows?: number;
     placeholder?: string;
     InputProps?: TextFieldProps["InputProps"];
+    disabled?: boolean;
 }
 
 const CustomTextField: React.FC<CustomTextFieldProps> = ({
@@ -18,6 +19,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
     rows = 0,
     placeholder = "Masukkan teks",
     InputProps = {},
+    disabled = false,
     ...props
 }) => {
     // const [field, meta] = useField(name);
@@ -25,6 +27,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
     return (
         <TextField
             // {...field}
+            disabled={disabled}
             {...props}
             name={name}
             multiline={multiline}
@@ -42,7 +45,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
                 marginTop: "10px",
                 "& .MuiOutlinedInput-root": {
                     borderRadius: "8px",
-                    backgroundColor: formik?.touched[name] && formik?.errors[name] ? "#ffcccc" : "inherit",
+                    backgroundColor: disabled ? "#EEEEF2" : (formik?.touched[name] && formik?.errors[name] ? "#ffcccc" : "inherit"),
                     '&:focus-within .MuiOutlinedInput-notchedOutline': {
                         borderColor: '#8F85F3',
                     },

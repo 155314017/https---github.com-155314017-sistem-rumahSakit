@@ -19,6 +19,7 @@ const Login = async (email: string, password: string) => {
     );
     Cookies.set('accessToken', response.data.data.tokenValue)
     sessionStorage.setItem('username', email);
+    
     return response.data;
   } catch (error: any) {
     const customError: CustomError = new Error(

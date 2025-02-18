@@ -5,7 +5,6 @@ import {
     Typography,
     Button,
     FormControl,
-    OutlinedInput,
     Table,
     TableHead,
     TableRow,
@@ -32,6 +31,8 @@ import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
 import { getBorderStyle } from "../../../style/ts/getBorderStyle";
 import { KalenderData } from "../../../types/scheduling.types";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
+import CustomTextField from "../../../components/inputComponent/CustomTextfield";
+import CustomButtonFilled from "../../../components/small/button/CustomButtonFilled";
 
 export default function TambahPegawai() {
     const {
@@ -143,91 +144,32 @@ export default function TambahPegawai() {
                             {/* NIP */}
                             <Typography sx={{ fontSize: "16px" }}>NIP (Nomor Induk Pegawai) </Typography>
                             <FormControl fullWidth sx={{ my: 1 }}>
-                                <OutlinedInput
-                                    id="nip"
+                                <CustomTextField
                                     name="nip"
-                                    size="small"
                                     placeholder="Masukkan NIP"
+                                    formik={formik}
                                     disabled
-                                    sx={{ bgcolor: '#EEEEF2' }}
-                                    value={formik.values.nip}
-                                    onChange={formik.handleChange}
-                                    onBlur={() => formik.setTouched({ ...formik.touched, nip: true })}
-                                    error={formik.touched.nip && Boolean(formik.errors.nip)}
                                 />
                             </FormControl>
 
                             {/* NIK */}
                             <Typography sx={{ fontSize: "16px" }}>NIK (Nomor Induk KTP) </Typography>
                             <FormControl fullWidth sx={{ my: 1 }}>
-                                <OutlinedInput
-                                    id="nik"
+                                <CustomTextField
                                     name="nik"
-                                    size="small"
                                     placeholder="Masukkan NIK"
-                                    sx={{
-                                        width: "100%",
-                                        height: "48px",
-                                        marginTop: "10px",
-                                        borderRadius: "8px",
-                                        backgroundColor: formik.touched.nik && formik.errors.nik ? "#ffcccc" : "inherit",
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            border: "1px solid #ccc",
-                                        },
-                                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: '#8F85F3',
-                                        },
-                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: '#8F85F3',
-                                        },
-                                        "& .MuiOutlinedInput-input": {
-                                            padding: "10px",
-                                            fontSize: "16px",
-                                        },
-                                    }}
-                                    value={formik.values.nik}
-                                    onChange={formik.handleChange}
-                                    onBlur={() => formik.setTouched({ ...formik.touched, nik: true })}
-                                    error={formik.touched.nik && Boolean(formik.errors.nik)}
+                                    formik={formik}
                                 />
                             </FormControl>
 
                             {/* Nama Pegawai */}
                             <Typography sx={{ fontSize: "16px" }}>Nama Pegawai<span style={{ color: "red" }}>*</span></Typography>
                             <FormControl fullWidth sx={{ my: 1 }}>
-                                <OutlinedInput
-                                    id="namaPegawai"
+                                <CustomTextField
                                     name="namaPegawai"
-                                    size="small"
-                                    sx={{
-                                        width: "100%",
-                                        height: "48px",
-                                        marginTop: "10px",
-                                        borderRadius: "8px",
-                                        backgroundColor: formik.touched.namaPegawai && formik.errors.namaPegawai ? "#ffcccc" : "inherit",
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            border: "1px solid #ccc",
-                                        },
-                                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: '#8F85F3',
-                                        },
-                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: '#8F85F3',
-                                        },
-                                        "& .MuiOutlinedInput-input": {
-                                            padding: "10px",
-                                            fontSize: "16px",
-                                        },
-                                    }}
                                     placeholder="Masukkan Nama Pegawai"
-                                    value={formik.values.namaPegawai}
-                                    onChange={formik.handleChange}
-                                    onBlur={() => formik.setTouched({ ...formik.touched, namaPegawai: true })}
-                                    error={formik.touched.namaPegawai && Boolean(formik.errors.namaPegawai)}
+                                    formik={formik}
                                 />
-                                {/* {formik.touched.namaPegawai && formik.errors.namaPegawai && (
-                                    <Typography color="error">{formik.errors.namaPegawai}</Typography>
-                                )} */}
                             </FormControl>
 
                             {/* Tanggal Lahir */}
@@ -275,35 +217,12 @@ export default function TambahPegawai() {
                             {/* Alamat Tinggal */}
                             <Typography sx={{ fontSize: "16px" }}>Alamat Tempat Tinggal<span style={{ color: "red" }}>*</span></Typography>
                             <FormControl fullWidth sx={{ my: 1 }}>
-                                <OutlinedInput
-                                    id="alamatTinggal"
+                                <CustomTextField
                                     name="alamatTinggal"
-                                    size="small"
-                                    sx={{
-                                        width: "100%",
-                                        height: "48px",
-                                        marginTop: "10px",
-                                        borderRadius: "8px",
-                                        backgroundColor: formik.touched.alamatTinggal && formik.errors.alamatTinggal ? "#ffcccc" : "inherit",
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            border: "1px solid #ccc",
-                                        },
-                                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: '#8F85F3',
-                                        },
-                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: '#8F85F3',
-                                        },
-                                        "& .MuiOutlinedInput-input": {
-                                            padding: "10px",
-                                            fontSize: "16px",
-                                        },
-                                    }}
+                                    formik={formik}
                                     placeholder="Masukkan alamat tempat tinggal pegawai"
-                                    value={formik.values.alamatTinggal}
-                                    onChange={formik.handleChange}
-                                    onBlur={() => formik.setTouched({ ...formik.touched, alamatTinggal: true })}
-                                    error={formik.touched.alamatTinggal && Boolean(formik.errors.alamatTinggal)}
+                                    multiline
+                                    rows={3}
                                 />
                             </FormControl>
 
@@ -343,77 +262,21 @@ export default function TambahPegawai() {
                             {/* Status */}
                             <Typography mt={2} >Status perkawinan<span style={{ color: 'red' }} >*</span></Typography>
                             <FormControl sx={{ width: '100%' }} >
-                                <OutlinedInput
-                                    id="status"
+                                <CustomTextField
                                     name="status"
-                                    size="small"
-                                    placeholder="Masukkan status pegawai"
-                                    sx={{
-                                        width: "100%",
-                                        height: "48px",
-                                        marginTop: "10px",
-                                        borderRadius: "8px",
-                                        backgroundColor: formik.touched.status && formik.errors.status ? "#ffcccc" : "inherit",
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            border: "1px solid #ccc",
-                                        },
-                                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: '#8F85F3',
-                                        },
-                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: '#8F85F3',
-                                        },
-                                        "& .MuiOutlinedInput-input": {
-                                            padding: "10px",
-                                            fontSize: "16px",
-                                        },
-                                    }}
-                                    value={formik.values.status}
-                                    onChange={formik.handleChange}
-                                    onBlur={() => formik.setTouched({ ...formik.touched, status: true })}
-                                    error={formik.touched.status && Boolean(formik.errors.status)}
+                                    placeholder="Masukkan status perkawinan"
+                                    formik={formik}
                                 />
-                                {/* {formik.touched.status && formik.errors.status && (
-                                    <Typography color="error">{formik.errors.status}</Typography>
-                                )} */}
                             </FormControl>
 
                             {/* Email */}
                             <Typography mt={2} >Email<span style={{ color: 'red' }} >*</span></Typography>
                             <FormControl sx={{ width: '100%' }} >
-                                <OutlinedInput
-                                    id="email"
+                                <CustomTextField
                                     name="email"
-                                    size="small"
                                     placeholder="Masukkan email pegawai"
-                                    sx={{
-                                        width: "100%",
-                                        height: "48px",
-                                        marginTop: "10px",
-                                        borderRadius: "8px",
-                                        backgroundColor: formik.touched.email && formik.errors.email ? "#ffcccc" : "inherit",
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            border: "1px solid #ccc",
-                                        },
-                                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: '#8F85F3',
-                                        },
-                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: '#8F85F3',
-                                        },
-                                        "& .MuiOutlinedInput-input": {
-                                            padding: "10px",
-                                            fontSize: "16px",
-                                        },
-                                    }}
-                                    value={formik.values.email}
-                                    onChange={formik.handleChange}
-                                    onBlur={() => formik.setTouched({ ...formik.touched, email: true })}
-                                    error={formik.touched.email && Boolean(formik.errors.email)}
+                                    formik={formik}
                                 />
-                                {/* {formik.touched.email && formik.errors.email && (
-                                    <Typography color="error">{formik.errors.email}</Typography>
-                                )} */}
                             </FormControl>
 
                             {/* No. Handphone */}
@@ -490,23 +353,13 @@ export default function TambahPegawai() {
                             />
 
                             {/* Tombol Submit */}
-                            <Button
+
+                            <CustomButtonFilled
                                 type="submit"
                                 variant="contained"
-                                color="inherit"
-                                sx={{
-                                    mt: 8,
-                                    width: "100%",
-                                    bgcolor: "#8F85F3",
-                                    color: "#fff",
-                                    textTransform: "none",
-                                    borderRadius: "8px",
-                                    ":hover": { bgcolor: "#a098f5" },
-                                }}
                                 disabled={!formik.isValid || !formik.dirty}
-                            >
-                                Selanjutnya
-                            </Button>
+                                text="Selanjutnya"
+                            />
                         </Box>
                     )}
 
@@ -710,22 +563,13 @@ export default function TambahPegawai() {
                                             </TableBody>
                                         </Table>
                                     </StyledTableContainer>
-                                    <Button
-                                        onClick={handleSubmitPage3}
+
+                                    <CustomButtonFilled
                                         variant="contained"
-                                        color="inherit"
-                                        sx={{
-                                            mt: 8,
-                                            width: "100%",
-                                            bgcolor: "#8F85F3",
-                                            color: "#fff",
-                                            textTransform: "none",
-                                            borderRadius: "8px",
-                                            ":hover": { bgcolor: "#a098f5" },
-                                        }}
-                                    >
-                                        Selanjutnya
-                                    </Button>
+                                        type={undefined}
+                                        onClick={handleSubmitPage3}
+                                    />
+
                                 </Box>
                             </Box>
                         </Box>
