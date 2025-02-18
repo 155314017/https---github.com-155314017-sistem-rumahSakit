@@ -67,10 +67,7 @@ export default function useDetailFasilitas() {
   );
 
   useEffect(() => {
-    console.log('halo')
-    console.log('fasilitas: ', facilityData)
     if (facilityDataResponse && scheduleResponse) {
-      console.log('yaa')
       const facilityData: FacilityDataItem = {
         ...facilityDataResponse,
         schedules: scheduleResponse as ScheduleDataItem[],

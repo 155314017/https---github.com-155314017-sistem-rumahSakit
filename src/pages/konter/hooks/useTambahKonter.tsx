@@ -26,19 +26,6 @@ export default function useTambahKonter() {
     const { isSuccess, message, showAlert } = useSuccessNotification();
     const navigate = useNavigate();
 
-    // const showTemporaryAlertSuccess = async () => {
-    //     setSuccessAlert(true);
-    //     await new Promise((resolve) => setTimeout(resolve, 3000));
-    //     setSuccessAlert(false);
-    // };
-
-    // const showTemporaryAlertError = async () => {
-    //     setErrorAlert(true);
-    //     await new Promise((resolve) => setTimeout(resolve, 3000));
-    //     setErrorAlert(false);
-    // };
-
-
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
         { label: "Konter", href: "/konter" },
@@ -60,16 +47,6 @@ export default function useTambahKonter() {
 
     const handleImageChange = (images: ImageData[]) => {
         setImagesData(images);
-    };
-
-    const getPageStyle = (page: number) => {
-        if (page === currentPage) {
-            return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
-        } else if (page < currentPage) {
-            return { color: "#8F85F3", cursor: "pointer" };
-        } else {
-            return { color: "black", cursor: "pointer" };
-        }
     };
 
     const handleSaveKonter = async () => {
@@ -137,7 +114,6 @@ export default function useTambahKonter() {
         jenisKonter,
         currentPage,
         setCurrentPage,
-        getPageStyle,
         kalenderRef,
         handleSaveKonter,
         message,

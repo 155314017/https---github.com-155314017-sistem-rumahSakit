@@ -7,6 +7,9 @@ import { ImageData } from '../../../services/Admin Tenant/ManageImage/ImageUtils
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 import { createSubFacilityServices } from "../../../services/Admin Tenant/ManageSubFacility/CreateSubfacilityService";
 import { FacilityServices } from "../../../services/Admin Tenant/ManageFacility/FacilityServices";
+import { useFetchData } from "../../../hooks/useFetchData";
+import { FacilityDataItem } from "../../../types/Facility.types";
+import { useSuccessNotification } from "../../../hooks/useSuccessNotification";
 type Facility = {
     id: string;
     name: string;
@@ -14,44 +17,29 @@ type Facility = {
 
 export default function useTambahSubFasilitas() {
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [successAlert, setSuccessAlert] = useState(false);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
-    const [errorAlert, setErrorAlert] = useState(false);
     const [operationalTime] = useState<string | null>(null);
     const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
     const [facilityOptions, setFacilityOptions] = useState<Facility[]>([]);
+    const { isSuccess, message, showAlert } = useSuccessNotification();
     const navigate = useNavigate();
 
+    const { data: facilityData } = useFetchData<FacilityDataItem[]>(
+        FacilityServices,
+        [],
+        true
+    );
+
     useEffect(() => {
-        const fetchFacilityData = async () => {
-            try {
-                const response = await FacilityServices();
-                setFacilityOptions(response.map((item: Facility) => ({
-                    id: item.id,
-                    name: item.name,
-                })));
-            } catch (error) {
-                if (axios.isAxiosError(error)) {
-                    console.error("Axios error:", error.message);
-                } else {
-                    console.error("Unexpected error:", error);
-                }
-            }
-        };
-        fetchFacilityData();
-    }, []);
+        if (facilityData) {
+            setFacilityOptions(facilityData.map((item: Facility) => ({
+                id: item.id,
+                name: item.name,
+            })));
+        }
+    }, [facilityData])
 
-    const showTemporaryAlertError = async () => {
-        setErrorAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setErrorAlert(false);
-    };
 
-    const showTemporaryAlertSuccess = async () => {
-        setSuccessAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessAlert(false);
-    };
 
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
@@ -75,53 +63,6 @@ export default function useTambahSubFasilitas() {
 
     const handleImageChange = (images: ImageData[]) => {
         setImagesData(images);
-    };
-
-    const getPageStyle = (page: number) => {
-        if (page === currentPage) {
-            return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
-        } else if (page < currentPage) {
-            return { color: "#8F85F3", cursor: "pointer" };
-        } else {
-            return { color: "black", cursor: "pointer" };
-        }
-    };
-
-    const getBorderStyle = (page: number) => {
-        if (page === currentPage) {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-            };
-        } else if (page < currentPage) {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#8F85F3",
-                color: "white",
-            };
-        } else {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "#8F85F3",
-            };
-        }
     };
 
     const handleSaveKlinik = async () => {
@@ -156,25 +97,28 @@ export default function useTambahSubFasilitas() {
                 const responseData = error.response?.data;
                 console.error('[DEBUG] Detail error dari server:', responseData || error.message);
             }
-            showTemporaryAlertError();
+            showAlert("Subfacility failed added!", 3000);
         }
     };
+    const tabs = [
+        { pageNumber: 1, label: 'Informasi SubFasiitas' },
+        { pageNumber: 2, label: 'Jam Operasional' },
+    ];
     return {
         breadcrumbItems,
         formik,
         imagesData,
         setImagesData,
         handleImageChange,
-        successAlert,
-        errorAlert,
         operationalTime,
-        showTemporaryAlertSuccess,
         currentPage,
         setCurrentPage,
-        getPageStyle,
-        getBorderStyle,
         kalenderRef,
         handleSaveKlinik,
-        facilityOptions
+        facilityOptions,
+        showAlert,
+        message,
+        isSuccess,
+        tabs
     }
 }

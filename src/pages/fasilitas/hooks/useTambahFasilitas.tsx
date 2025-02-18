@@ -7,6 +7,9 @@ import { createFacility } from '../../../services/Admin Tenant/ManageFacility/Cr
 import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 import { uploadImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
+import { useFetchData } from '../../../hooks/useFetchData';
+import { BuildingDataItem } from '../../../types/building.types';
+import { useSuccessNotification } from '../../../hooks/useSuccessNotification';
 
 type Building = {
     id: string;
@@ -23,46 +26,29 @@ type ImageData = {
 export default function useTambahFasilitas() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [imagesData, setImagesData] = useState<ImageData[]>([])
-    const [errorAlert, setErrorAlert] = useState(false)
-    const [successAlert, setSuccessAlert] = useState(false)
     const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
     const [gedungOptions, setGedungOptions] = useState<Building[]>([]);
     const [operationalCost, setOperationalCost] = useState<number>(0);
+    const { isSuccess, message, showAlert } = useSuccessNotification();
     const navigate = useNavigate();
 
+    const { data: buildingData } = useFetchData<BuildingDataItem[]>(
+        Building,
+        [],
+        true
+    );
+
     useEffect(() => {
-        const fetchGedungData = async () => {
-            try {
-                const response = await Building();
-                setGedungOptions(response.data.content.map((item: Building) => ({
-                    id: item.id,
-                    name: item.name,
-                })));
-            } catch (error) {
-                if (axios.isAxiosError(error)) {
-                    console.error("Axios error:", error.message);
-                } else {
-                    console.error("Unexpected error:", error);
-                }
-            }
-        };
-        fetchGedungData();
-    }, []);
+        if (buildingData) {
+            setGedungOptions(buildingData.map((item: BuildingDataItem) => ({
+                id: item.id,
+                name: item.name,
+            })));
+        }
+    }, [buildingData])
 
     const handleImageChange = (images: ImageData[]) => {
         setImagesData(images);
-    };
-
-    const showTemporaryAlertError = async () => {
-        setErrorAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setErrorAlert(false);
-    };
-
-    const showTemporaryAlertSuccess = async () => {
-        setSuccessAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessAlert(false);
     };
 
     const breadcrumbItems = [
@@ -70,53 +56,6 @@ export default function useTambahFasilitas() {
         { label: "Fasilitas", href: "/fasilitas" },
         { label: "Tambah Fasilitas", href: "/tambahFasilitas" },
     ];
-
-    const getPageStyle = (page: number) => {
-        if (page === currentPage) {
-            return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
-        } else if (page < currentPage) {
-            return { color: "#8F85F3", cursor: "pointer" };
-        } else {
-            return { color: "black", cursor: "pointer" };
-        }
-    };
-
-    const getBorderStyle = (page: number) => {
-        if (page === currentPage) {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-            };
-        } else if (page < currentPage) {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#8F85F3",
-                color: "white",
-            };
-        } else {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "#8F85F3",
-            };
-        }
-    };
 
     const formik = useFormik({
         initialValues: {
@@ -161,7 +100,7 @@ export default function useTambahFasilitas() {
 
             formik.resetForm();
             setImagesData([]);
-            showTemporaryAlertSuccess();
+            showAlert("Fasilitas successfully added!", 3000);
 
             navigate('/fasilitas', {
                 state: {
@@ -175,9 +114,14 @@ export default function useTambahFasilitas() {
                 const responseData = error.response?.data;
                 console.error('[DEBUG] Detail error dari server:', responseData || error.message);
             }
-            showTemporaryAlertError();
+            showAlert("Fasilitas failed to add!", 3000);
         }
     };
+
+    const tabs = [
+        { pageNumber: 1, label: 'Informasi Fasilitas' },
+        { pageNumber: 2, label: 'Jam Operasional' },
+    ];
 
     return {
         breadcrumbItems,
@@ -186,15 +130,15 @@ export default function useTambahFasilitas() {
         setImagesData,
         gedungOptions,
         handleImageChange,
-        errorAlert,
-        successAlert,
         kalenderRef,
         currentPage,
         setCurrentPage,
-        getPageStyle,
-        getBorderStyle,
         handleSaveFasilitas,
         operationalCost,
-        setOperationalCost
+        setOperationalCost,
+        tabs,
+        message,
+        showAlert,
+        isSuccess
     }
 }
