@@ -11,8 +11,10 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { ExclusionDataItem, GetExclusionByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices';
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 import { GetScheduleByTypeId, ScheduleDataItem } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices';
-import { ClinicData, getClinicByIdService } from '../../../services/Admin Tenant/ManageClinic/GetClinicByIdService';
+import {  getClinicByIdService } from '../../../services/Admin Tenant/ManageClinic/GetClinicByIdService';
 import { editImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
+import { ClinicDataItem } from '../../../types/clinic.types';
+import { useFetchData } from '../../../hooks/useFetchData';
 
 dayjs.extend(customParseFormat);
 
@@ -30,10 +32,49 @@ export default function useEditKlinik() {
   const { id } = useParams()
   const [scheduleDataPraktek, setScheduleDataPraktek] = useState<ScheduleDataItem[] | null>(null);
   const [scheduleDataPengecualian, setScheduleDataPengecualian] = useState<ExclusionDataItem[] | null>(null);
-  const [clinicData, setClinicData] = useState<ClinicData | null>(null);
+  const [clinicData, setClinicData] = useState<ClinicDataItem | null>(null);
 
 
   const navigate = useNavigate();
+
+  const { data: clinicDataResponse, refetch: refetch } = useFetchData<ClinicDataItem>(
+      getClinicByIdService,
+      [id],
+      true
+    );
+  
+  
+    const { data: scheduleResponse } = useFetchData(
+      GetScheduleByTypeId,
+      [id],
+      true
+    );
+  
+    const { data: scheduleExclusionResponse } = useFetchData(
+      GetExclusionByTypeId,
+      [id],
+      true
+    );
+
+    const hasFetched = useRef(false);
+  useEffect(() => {
+    if (!hasFetched.current) {
+      refetch();
+      hasFetched.current = true;
+    }
+  }, [refetch]);
+
+  useEffect(() => {
+    if (clinicDataResponse) {
+      setClinicData(clinicDataResponse);
+    }
+    if (scheduleResponse) {
+      setScheduleDataPraktek(Array.isArray(scheduleResponse) ? scheduleResponse : []);
+    }
+    if (scheduleExclusionResponse) {
+      setScheduleDataPengecualian(Array.isArray(scheduleExclusionResponse) ? scheduleExclusionResponse : []);
+    }
+  })
 
   const getPageStyle = (page: number) => {
     if (page === currentPage) {
@@ -82,33 +123,7 @@ export default function useEditKlinik() {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const clinicResponse = await getClinicByIdService(id); 
-        const scheduleResponse = await GetScheduleByTypeId(id || "");
-        const exclusionResponse = await GetExclusionByTypeId(id || "");
-
-        if (clinicResponse) {
-          setClinicData(clinicResponse);
-        }
-
-        if (scheduleResponse) { 
-          // Transform API data ke format yang sesuai dengan getKalenderData  
-          setScheduleDataPraktek(scheduleResponse);
-        }
-
-        if (exclusionResponse) {
-          setScheduleDataPengecualian(exclusionResponse);
-        }
-
-      } catch (error) {
-        console.error('Error:', error);
-      }
-
-    };
-    fetchData();
-  }, [id]);
+  
 
 
   const handleImageChange = (images: ImageData[]) => {
