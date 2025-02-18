@@ -1,5 +1,5 @@
 import { Container, Box } from '@mui/system';
-import { Typography, Button, FormControl, OutlinedInput } from '@mui/material';
+import { Typography, FormControl, } from '@mui/material';
 import bgImage from '../../../assets/img/String.png';
 import 'dayjs/locale/id';
 // components
@@ -8,24 +8,28 @@ import BreadCrumbs from '../../../components/medium/BreadCrumbs'
 import useEditSubFasilitas from '../hooks/useEditSubFasilitas';
 import DropdownListAPI from '../../../components/small/dropdownlist/DropdownListAPI';
 import CustomBigCalendar from '../../../components/medium/CustomBigCalendar';
+import CustomFrameTable from '../../../components/small/CustomFrameTable';
+import PaginationTabs from '../../../components/small/stepper/PaginationTabs';
+import CustomTextField from '../../../components/inputComponent/CustomTextfield';
+import CustomButtonFilled from '../../../components/small/button/CustomButtonFilled';
+import AlertSuccess from '../../../components/small/alert/AlertSuccess';
 
 export default function EditSubFasilitas() {
     const {
         breadcrumbItems,
         formik,
         setCurrentPage,
-        getPageStyle,
-        getBorderStyle,
         currentPage,
         handleEditSubFasilitas,
         kalenderRef,
         id,
         facilityOptions,
         scheduleDataPraktek,
-        scheduleDataPengecualian
+        scheduleDataPengecualian,
+        tabs,
+        isSuccess,
+        message
     } = useEditSubFasilitas();
-
-
 
     return (
         <Container sx={{ py: 2, minWidth: '1500px' }}>
@@ -33,63 +37,7 @@ export default function EditSubFasilitas() {
 
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#FAFAFA", overflow: "hidden" }}>
-                    {/* Bentuk lengkung atas */}
-                    <Box
-                        position={"absolute"}
-                        sx={{
-                            top: 0,
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            display: "flex",
-                        }}
-                    >
-                        {/* Lengkung kiri */}
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#FAFAFA",
-                                    borderRadius: "0px 15px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-
-                        {/* Kotak tengah */}
-                        <Box
-                            sx={{
-                                width: "600px",
-                                height: "50px",
-                                bgcolor: "#F1F0FE",
-                                borderRadius: "0px 0px 22px 22px",
-                            }}
-                        />
-
-                        {/* Lengkung kanan */}
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#FAFAFA",
-                                    borderRadius: "15px 0px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-                    </Box>
-
+                    <CustomFrameTable />
                     <Typography fontSize="20px" fontWeight="700">
                         Edit SubFasilitas
                     </Typography>
@@ -97,37 +45,11 @@ export default function EditSubFasilitas() {
                     <Box
                         sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, justifyContent: 'space-between', ml: 2 }}
                     >
-                        <Box display={"flex"} flexDirection={"row"} width={"400px"}>
-                            <Box
-                                display={"flex"}
-                                flexDirection={"row"}
-                                alignItems="center"
-                                onClick={() => setCurrentPage(1)}
-                                sx={getPageStyle(1)}
-                                mx={2}
-                            >
-                                <Box sx={getBorderStyle(1)}>1</Box>
-                                <Typography sx={{ ml: 1 }}>
-                                    Informasi SubFasilitas
-                                </Typography>
-                            </Box>
-                        </Box>
-
-                        <Box display={"flex"} flexDirection={"row"} width={"800px"}>
-                            <Box
-                                display={"flex"}
-                                flexDirection={"row"}
-                                alignItems="center"
-                                onClick={() => setCurrentPage(2)}
-                                sx={getPageStyle(2)}
-                                mx={2}
-                            >
-                                <Box sx={getBorderStyle(2)}>2</Box>
-                                <Typography sx={{ ml: 1 }}>
-                                    Jam Operasional
-                                </Typography>
-                            </Box>
-                        </Box>
+                        <PaginationTabs
+                            currentPage={currentPage}
+                            setCurrentPage={setCurrentPage}
+                            tabs={tabs}
+                        />
                     </Box>
 
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
@@ -143,19 +65,11 @@ export default function EditSubFasilitas() {
                             <Box component="form" noValidate autoComplete="off" mt={3}>
                                 <Typography sx={{ fontSize: "16px" }}>Nama Sub Fasilitas<span style={{ color: "red" }}>*</span></Typography>
                                 <FormControl fullWidth sx={{ my: 1 }}>
-                                    <OutlinedInput
-                                        id="namaSubFasilitas"
-                                        name="namaSubFasilitas"
-                                        size="small"
-                                        placeholder="Masukkan nama fasilitas"
-                                        value={formik.values.namaSubFasilitas}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        error={formik.touched.namaSubFasilitas && Boolean(formik.errors.namaSubFasilitas)}
+                                    <CustomTextField
+                                        name='namaSubFasilitas'
+                                        placeholder='Masukkan nama Subfasilitas'
+                                        formik={formik}
                                     />
-                                    {formik.touched.namaSubFasilitas && formik.errors.namaSubFasilitas && (
-                                        <Typography color="error">{formik.errors.namaSubFasilitas}</Typography>
-                                    )}
                                 </FormControl>
 
                                 <Typography sx={{ fontSize: "16px", mt: 2 }}>Pilih Fasilitas<span style={{ color: "red" }}>*</span></Typography>
@@ -168,22 +82,11 @@ export default function EditSubFasilitas() {
                                     }}
                                     loading={false}
                                 />
-                                <Button
-                                    variant="contained"
-                                    color="inherit"
-                                    sx={{
-                                        mt: 8,
-                                        width: "100%",
-                                        bgcolor: "#8F85F3",
-                                        color: "#fff",
-                                        textTransform: "none",
-                                        borderRadius: "8px",
-                                        ":hover": { bgcolor: "#a098f5" },
-                                    }}
+                                <CustomButtonFilled
+                                    variant='contained'
                                     onClick={() => setCurrentPage(2)}
-                                >
-                                    Selanjutnya
-                                </Button>
+                                    text='Selanjutnya'
+                                />
                             </Box>
                         </>
                     )}
@@ -196,31 +99,18 @@ export default function EditSubFasilitas() {
                                 initialDataPengecualian={scheduleDataPengecualian}
                                 typeId={id}
                             />
-                            <Button
+                            <CustomButtonFilled
+                                variant='contained'
                                 onClick={handleEditSubFasilitas}
-                                variant="contained"
-
-                                color="inherit"
-                                sx={{
-                                    mt: 3,
-                                    width: '100%',
-                                    bgcolor: '#8F85F3',
-                                    color: '#fff',
-                                    textTransform: 'none',
-                                    borderRadius: '8px',
-                                    boxShadow: 'none',
-                                    ':hover': {
-                                        bgcolor: '#a098f5',
-                                        boxShadow: 'none',
-                                    },
-                                }}
-                            >
-                                Simpan
-                            </Button>
+                                text='Simpan'
+                            />
                         </>
                     )}
                 </Box>
             </Box>
+            {isSuccess && (
+                <AlertSuccess label={message} />
+            )}
         </Container>
     );
 }

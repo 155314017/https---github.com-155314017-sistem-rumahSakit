@@ -13,7 +13,9 @@ import { ExclusionDataItem, GetExclusionByTypeId } from '../../../services/Admin
 import { FacilityServices } from '../../../services/Admin Tenant/ManageFacility/FacilityServices'
 import { GetSubFacilityById } from '../../../services/Admin Tenant/ManageSubFacility/GetSubFacilityByIdServices'
 import { editSubfacility } from '../../../services/Admin Tenant/ManageSubFacility/EditSubfacilityService'
-
+import { useFetchData } from '../../../hooks/useFetchData'
+import { subFacilityDataItem } from '../../../types/subFacility.types'
+import { useSuccessNotification } from '../../../hooks/useSuccessNotification'
 
 type Facility = {
     id: string;
@@ -29,7 +31,6 @@ type ImageData = {
 export default function useEditSubFasilitas() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [imagesData, setImagesData] = useState<ImageData[]>([])
-    const [errorAlert, setErrorAlert] = useState(false)
     const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
     const { id } = useParams()
     const [scheduleDataPraktek, setScheduleDataPraktek] = useState<ScheduleDataItem[] | null>(null);
@@ -37,7 +38,7 @@ export default function useEditSubFasilitas() {
     const [facilityOptions, setFacilityOptions] = useState<Facility[]>([]);
     const [name, setName] = useState<string>('');
     const [facilityId, setFacilityId] = useState<string>('');
-
+    const { isSuccess, message, showAlert } = useSuccessNotification();
 
     const navigate = useNavigate()
 
@@ -46,63 +47,48 @@ export default function useEditSubFasilitas() {
         masterFacilityId: string,
     }
 
+    const { data: scheduleResponse } = useFetchData(
+        GetScheduleByTypeId,
+        [id],
+        true
+    );
+
+    const { data: scheduleExclusionResponse } = useFetchData(
+        GetExclusionByTypeId,
+        [id],
+        true
+    );
+
+    const { data: facilityDataResponse } = useFetchData<subFacilityDataItem>(
+        GetSubFacilityById,
+        [id],
+        true
+    );
+
+    const { data: facilitygData } = useFetchData<Facility[]>(
+        FacilityServices,
+        [],
+        true
+    );
 
     useEffect(() => {
-        const fetchDataSchedule = async () => {
-            try {
-                const scheduleResponse = await GetScheduleByTypeId(id || "");
-                const exclusionResponse = await GetExclusionByTypeId(id || "");
-                if (scheduleResponse) {
-                    setScheduleDataPraktek(scheduleResponse);
-                }
-
-                if (exclusionResponse) {
-                    setScheduleDataPengecualian(exclusionResponse);
-                }
-
-            } catch (error) {
-                console.error('Error:', error);
-            }
-
-        };
-        fetchDataSchedule();
-    }, [id]);
-
-    useEffect(() => {
-        const fetchGedungData = async () => {
-            try {
-                const response = await FacilityServices();
-                setFacilityOptions(response.map((item: Facility) => ({
-                    id: item.id,
-                    name: item.name,
-                })));
-            } catch (error) {
-                console.error("Error fetching buildings:", error);
-            }
-        };
-        fetchGedungData();
-    }, []);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-
-                const response = await GetSubFacilityById(id);
-                setName(response.name || " ");
-                setFacilityId(response.facilityDataId);
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        };
-        fetchData();
-    }, [id]);
-
-    const showTemporaryAlertError = async () => {
-        setErrorAlert(true)
-        await new Promise(resolve => setTimeout(resolve, 3000))
-        setErrorAlert(false)
-    }
-
+        if (facilityDataResponse) {
+            setName(facilityDataResponse.name);
+            setFacilityId(facilityDataResponse.facilityDataId);
+        }
+        if (scheduleResponse) {
+            setScheduleDataPraktek(Array.isArray(scheduleResponse) ? scheduleResponse : []);
+        }
+        if (scheduleExclusionResponse) {
+            setScheduleDataPengecualian(Array.isArray(scheduleExclusionResponse) ? scheduleExclusionResponse : []);
+        }
+        if (facilitygData) {
+            setFacilityOptions(facilitygData.map((item: Facility) => ({
+                id: item.id,
+                name: item.name,
+            })));
+        }
+    }, [facilityDataResponse])
 
     const formik = useFormik<FormValues>({
         initialValues: {
@@ -123,53 +109,6 @@ export default function useEditSubFasilitas() {
     const handleImageChange = (images: ImageData[]) => {
         setImagesData(images)
     }
-
-    const getPageStyle = (page: number) => {
-        if (page === currentPage) {
-            return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
-        } else if (page < currentPage) {
-            return { color: "#8F85F3", cursor: "pointer" };
-        } else {
-            return { color: "black", cursor: "pointer" };
-        }
-    };
-
-    const getBorderStyle = (page: number) => {
-        if (page === currentPage) {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-            };
-        } else if (page < currentPage) {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#8F85F3",
-                color: "white",
-            };
-        } else {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "#8F85F3",
-            };
-        }
-    };
 
     const handleEditSubFasilitas = async () => {
         try {
@@ -222,7 +161,7 @@ export default function useEditSubFasilitas() {
                 const responseData = error.response?.data;
                 console.error('[DEBUG] Detail error dari server:', responseData || error.message);
             }
-            showTemporaryAlertError();
+            showAlert("SubFacility failed to update!", 3000);
         }
     };
 
@@ -233,22 +172,28 @@ export default function useEditSubFasilitas() {
         { label: 'Edit SubFasilitas', href: `/editFasilitas/${id}` }
     ]
 
+    const tabs = [
+        { pageNumber: 1, label: 'Informasi SubFasilitas' },
+        { pageNumber: 2, label: 'Jam Operasional' },
+    ];
+
+
     return {
         formik,
         handleImageChange,
         imagesData,
-        errorAlert,
         breadcrumbItems,
         id,
         currentPage,
         setCurrentPage,
-        getPageStyle,
-        getBorderStyle,
         handleEditSubFasilitas,
         kalenderRef,
         scheduleDataPraktek,
         scheduleDataPengecualian,
-        facilityOptions
+        facilityOptions,
+        tabs,
+        message,
+        isSuccess
     }
 }
 

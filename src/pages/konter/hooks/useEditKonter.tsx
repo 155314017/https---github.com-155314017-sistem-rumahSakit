@@ -68,7 +68,7 @@ export default function useEditKonter() {
     if (scheduleExclusionResponse) {
       setScheduleDataPengecualian(Array.isArray(scheduleExclusionResponse) ? scheduleExclusionResponse : []);
     }
-  })
+  }, [])
 
   const handleImageChange = (images: ImageData[]) => {
     setImagesData(images);

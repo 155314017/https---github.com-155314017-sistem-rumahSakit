@@ -9,7 +9,6 @@ import {
   TableCell,
   TableBody,
   IconButton,
-  Pagination,
   Collapse,
 } from "@mui/material";
 import SearchBar from "../../../components/small/SearchBar";
@@ -59,6 +58,8 @@ const StyledTableContainer = styled(TableContainer)`
 import useTableFasilitas from "../hooks/useTableFasilitas";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
 import { FacilityDataItem } from "../../../types/Facility.types";
+import ShowingDataInformation from "../../../components/tableComponents/ShowingDataInformation";
+import PaginationTable from "../../../components/tableComponents/PaginationTable";
 
 interface TableFacilityProps {
   data: FacilityDataItem[];
@@ -79,7 +80,6 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({
     page,
     isCollapsed,
     open,
-    dataFacility,
     deletedItems,
     buildings,
     toggleCollapse,
@@ -377,22 +377,17 @@ const TableFasilitas: React.FC<TableFacilityProps> = ({
               </StyledTableContainer>
             </Box>
             <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
-              <Typography sx={{ color: "#A8A8BD" }}>
-                Showing {((page - 1) * pageSize) + 1} to{" "}
-                {Math.min(page * pageSize, dataFacility.length)} of{" "}
-                {dataFacility.length} entries
-              </Typography>
-              <Pagination
-                count={Math.max(1, Math.ceil(totalElements / pageSize))}
-                shape="rounded"
+              <ShowingDataInformation
+                length={totalElements}
+                rowsPerPage={pageSize}
+                page={page}
+              />
+              <PaginationTable
+                length={totalElements}
+                rowsPerPage={pageSize}
                 page={page}
                 onChange={handleChangePage}
-                sx={{
-                  "& .MuiPaginationItem-root": { color: "#8F85F3" },
-                  "& .Mui-selected": { bgcolor: "#D5D1FB" },
-                }}
               />
-
             </Stack>
           </Box>
         </Collapse>

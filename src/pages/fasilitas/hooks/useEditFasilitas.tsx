@@ -14,6 +14,8 @@ import { editImages, ImageData } from '../../../services/Admin Tenant/ManageImag
 import { EditFacilityServices } from '../../../services/Admin Tenant/ManageFacility/EditFacilityService';
 import { Building } from '../../../services/Admin Tenant/ManageBuilding/Building';
 import { EditFacilityRequest, FacilityDataItem } from '../../../types/Facility.types';
+import { useFetchData } from '../../../hooks/useFetchData';
+import { useSuccessNotification } from '../../../hooks/useSuccessNotification';
 
 type Building = {
   id: string;
@@ -23,13 +25,13 @@ type Building = {
 export default function useEditFasilitas() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [imagesData, setImagesData] = useState<ImageData[]>([])
-  const [errorAlert, setErrorAlert] = useState(false)
   const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
   const { id } = useParams()
   const [fasilitasData, setFasilitasData] = useState<FacilityDataItem | null>(null);
   const [scheduleDataPraktek, setScheduleDataPraktek] = useState<ScheduleDataItem[] | null>(null);
   const [scheduleDataPengecualian, setScheduleDataPengecualian] = useState<ExclusionDataItem[] | null>(null);
   const [gedungOptions, setGedungOptions] = useState<Building[]>([]);
+  const { isSuccess, message, showAlert } = useSuccessNotification();
 
   const navigate = useNavigate()
 
@@ -40,48 +42,59 @@ export default function useEditFasilitas() {
     operationalCost: number;
   }
 
+  const { data: facilityDataResponse, refetch: refetch } = useFetchData<FacilityDataItem>(
+    getFacilityByIdService,
+    [id],
+    true
+  );
+
+  const { data: buildingData, refetch: refetchBuilding } = useFetchData<Building[]>(
+    Building,
+    [],
+    false
+  );
+
+
+  const { data: scheduleResponse } = useFetchData(
+    GetScheduleByTypeId,
+    [id],
+    true
+  );
+
+  const { data: scheduleExclusionResponse } = useFetchData(
+    GetExclusionByTypeId,
+    [id],
+    true
+  );
+
+  const hasFetched = useRef(false);
   useEffect(() => {
-    const fetchDataFacility = async () => {
-      try {
-        const fasilitasResponse = await getFacilityByIdService(id);
-        const scheduleResponse = await GetScheduleByTypeId(id || "");
-        const exclusionResponse = await GetExclusionByTypeId(id || "");
-        const response = await Building();
-        setGedungOptions(response.data.content.map((item: Building) => ({
-          id: item.id,
-          name: item.name,
-        })));
-        console.log("Schedule Response from API:", scheduleResponse);
-        console.log("Exclusion Response from API:", exclusionResponse);
-        if (fasilitasResponse) {
-          setFasilitasData(fasilitasResponse);
-        }
+    if (!hasFetched.current) {
+      refetch();
+      refetchBuilding();
+      hasFetched.current = true;
+    }
+  }, [refetch]);
 
-        if (scheduleResponse) {
-          setScheduleDataPraktek(scheduleResponse);
-        }
+  useEffect(() => {
+    if (facilityDataResponse) {
+      setFasilitasData(facilityDataResponse);
+      setGedungOptions(buildingData.map((item: Building) => ({
+        id: item.id,
+        name: item.name,
+      })));
+    }
+    if (scheduleResponse) {
+      setScheduleDataPraktek(Array.isArray(scheduleResponse) ? scheduleResponse : []);
+    }
+    if (scheduleExclusionResponse) {
+      setScheduleDataPengecualian(Array.isArray(scheduleExclusionResponse) ? scheduleExclusionResponse : []);
+    }
+  }, [])
 
-        if (exclusionResponse) {
-          setScheduleDataPengecualian(exclusionResponse);
-        }
-
-
-      } catch (error) {
-        console.error('Error:', error);
-      }
-
-    };
-    fetchDataFacility();
-  }, [id]);
 
   const handleImageChange = (images: ImageData[]) => {
     setImagesData(images);
-  };
-
-  const showTemporaryAlertError = async () => {
-    setErrorAlert(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setErrorAlert(false);
   };
 
   const breadcrumbItems = [
@@ -108,53 +121,6 @@ export default function useEditFasilitas() {
     }
   });
 
-
-  const getPageStyle = (page: number) => {
-    if (page === currentPage) {
-      return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
-    } else if (page < currentPage) {
-      return { color: "#8F85F3", cursor: "pointer" };
-    } else {
-      return { color: "black", cursor: "pointer" };
-    }
-  };
-
-  const getBorderStyle = (page: number) => {
-    if (page === currentPage) {
-      return {
-        display: "flex",
-        border: "1px solid #8F85F3",
-        width: "38px",
-        height: "38px",
-        borderRadius: "8px",
-        justifyContent: "center",
-        alignItems: "center",
-      };
-    } else if (page < currentPage) {
-      return {
-        display: "flex",
-        border: "1px solid #8F85F3",
-        width: "38px",
-        height: "38px",
-        borderRadius: "8px",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#8F85F3",
-        color: "white",
-      };
-    } else {
-      return {
-        display: "flex",
-        border: "1px solid #8F85F3",
-        width: "38px",
-        height: "38px",
-        borderRadius: "8px",
-        justifyContent: "center",
-        alignItems: "center",
-        color: "#8F85F3",
-      };
-    }
-  };
 
   const handleEditFasilitas = async () => {
     try {
@@ -209,30 +175,32 @@ export default function useEditFasilitas() {
         const responseData = error.response?.data;
         console.error('[DEBUG] Detail error dari server:', responseData || error.message);
       }
-      showTemporaryAlertError();
+      showAlert("Fasilitas failed to update!", 3000);
     }
   };
 
+  const tabs = [
+    { pageNumber: 1, label: 'Informasi Failitas' },
+    { pageNumber: 2, label: 'Jam Operasional' },
+  ];
 
   return {
     formik,
     handleImageChange,
     imagesData,
-    errorAlert,
+    showAlert,
+    message,
+    isSuccess,
     breadcrumbItems,
     id,
     currentPage,
     setCurrentPage,
-    getPageStyle,
-    getBorderStyle,
     handleEditFasilitas,
     kalenderRef,
     fasilitasData,
     scheduleDataPraktek,
     scheduleDataPengecualian,
-    gedungOptions
-
-
-
+    gedungOptions,
+    tabs
   }
 }
