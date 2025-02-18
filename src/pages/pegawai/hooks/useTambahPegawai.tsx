@@ -68,10 +68,12 @@ export default function useTambahPegawai() {
     ];
 
     const rolePegawai = [
-        { value: 1, label: "Dokter Spesialis" },
-        { value: 2, label: "Dokter Umum" },
-        { value: 3, label: "Customer Services" },
-        { value: 4, label: "Manajemen" },
+        { value: 1, label: "DOKTER" },
+        { value: 2, label: "PERAWAT" },
+        { value: 3, label: "COUNTER" },
+        { value: 4, label: "LAB" },
+        { value: 5, label: "FARMASI" },
+        { value: 6, label: "KASIR" },
     ];
 
    
@@ -89,7 +91,6 @@ export default function useTambahPegawai() {
             rolePegawai: '',
             jenisSpesialis: '',
             namaKlinik: '',
-            tipeAntrian: '',
             biayaPenanganan: '',
         },
         validationSchema: Yup.object({
@@ -114,9 +115,9 @@ export default function useTambahPegawai() {
                 .min(10, 'Nomor telepon minimal 10 digit')
                 .max(15, 'Nomor telepon maksimal 15 digit'), // Perbaiki max digit
             rolePegawai: Yup.string().required('Role Pegawai diperlukan'),
-            jenisSpesialis: Yup.string().required('Jenis Spesialisasi diperlukan'),
-            tipeAntrian: Yup.string().required('Tipe Antrian diperlukan'),
-            biayaPenanganan: Yup.number().required('Biaya Penanganan diperlukan'),
+            // jenisSpesialis: Yup.string().required('Jenis Spesialisasi diperlukan'),
+            // tipeAntrian: Yup.string().required('Tipe Antrian diperlukan'),
+            // biayaPenanganan: Yup.number().required('Biaya Penanganan diperlukan'),
         }),
         onSubmit: (values) => {
             console.log('Form submitted:', values);

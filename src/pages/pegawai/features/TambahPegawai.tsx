@@ -15,6 +15,7 @@ import {
     Radio,
     RadioGroup,
     Checkbox,
+    TextField,
 } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
@@ -29,6 +30,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TestKalender from "../../../components/medium/TestKalender";
 import { useRef } from "react";
+import { Field } from "formik";
 
 interface PraktekData {
     id: string;
@@ -164,7 +166,7 @@ export default function TambahPegawai() {
                     <Box
                         sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, justifyContent: 'space-between', ml: 2 }}
                     >
-                        <Box display={"flex"} flexDirection={"row"} width={"290px"}>
+                        <Box display={"flex"} flexDirection={"row"} width={"full"}>
                             <Box
                                 display={"flex"}
                                 flexDirection={"row"}
@@ -180,22 +182,25 @@ export default function TambahPegawai() {
                             </Box>
                         </Box>
 
-                        <Box display={"flex"} flexDirection={"row"} width={"290px"}>
-                            <Box
-                                display={"flex"}
-                                flexDirection={"row"}
-                                alignItems="center"
-                                onClick={() => setCurrentPage(2)}
-                                sx={getPageStyle(2)}
-                                mx={2}
-                            >
-                                <Box sx={getBorderStyle(2)}>2</Box>
-                                <Typography sx={{ ml: 1 }}>
-                                    Jadwal Dokter
-                                </Typography>
+                        {formik.values.rolePegawai == "DOKTER" && <>
+                            <Box display={"flex"} flexDirection={"row"} width={"full"}>
+                                <Box
+                                    display={"flex"}
+                                    flexDirection={"row"}
+                                    alignItems="center"
+                                    onClick={() => setCurrentPage(2)}
+                                    sx={getPageStyle(2)}
+                                    mx={2}
+                                >
+                                    <Box sx={getBorderStyle(2)}>2</Box>
+                                    <Typography sx={{ ml: 1 }}>
+                                        Jadwal Dokter
+                                    </Typography>
+                                </Box>
                             </Box>
-                        </Box>
-                        <Box display={"flex"} flexDirection={"row"} width={"290px"}>
+                        </>
+                        }
+                        <Box display={"flex"} flexDirection={"row"} width={"full"}>
                             <Box
                                 display={"flex"}
                                 flexDirection={"row"}
@@ -204,7 +209,7 @@ export default function TambahPegawai() {
                                 sx={getPageStyle(3)} // Perbaiki halaman 3
                                 mx={2}
                             >
-                                <Box sx={getBorderStyle(3)}>3</Box>
+                                <Box sx={getBorderStyle(3)}>{formik.values.rolePegawai == "DOKTER" ? 3 : 2}</Box>
                                 <Typography sx={{ ml: 1 }}>
                                     Hak Akses Pegawai
                                 </Typography>
@@ -217,9 +222,20 @@ export default function TambahPegawai() {
                     </Box>
 
                     {currentPage === 1 && (
-                        <Box component="form" noValidate autoComplete="off" mt={3} onSubmit={formik.handleSubmit}>
+                        <Box component="form" noValidate autoComplete="off" mt={3}>
                             <Typography fontWeight={600} fontSize={"16px"} mb={4} >1. Biodata</Typography>
 
+                            {/* Role Pegawai */}
+                            <Typography mt={2} >Role Pegawai<span style={{ color: 'red' }} >*</span></Typography>
+                            <DropdownList
+                                onChange={value => formik.setFieldValue('rolePegawai', value)}
+                                placeholder='Pilih role pegawai'
+                                options={rolePegawai}
+                                loading={false}
+                            />
+                            {/* {formik.touched.rolePegawai && formik.errors.rolePegawai && (
+                                <Typography color="error">{formik.errors.rolePegawai}</Typography>
+                            )} */}
                             {/* NIP */}
                             <Typography sx={{ fontSize: "16px" }}>NIP (Nomor Induk Pegawai) </Typography>
                             <FormControl fullWidth sx={{ my: 1 }}>
@@ -361,7 +377,7 @@ export default function TambahPegawai() {
                                     size="small"
                                     sx={{
                                         width: "100%",
-                                        height: "48px",
+                                        height: "fit-content",
                                         marginTop: "10px",
                                         borderRadius: "8px",
                                         backgroundColor: formik.touched.alamatTinggal && formik.errors.alamatTinggal ? "#ffcccc" : "inherit",
@@ -384,11 +400,15 @@ export default function TambahPegawai() {
                                     onChange={formik.handleChange}
                                     onBlur={() => formik.setTouched({ ...formik.touched, alamatTinggal: true })}
                                     error={formik.touched.alamatTinggal && Boolean(formik.errors.alamatTinggal)}
+                                    multiline={true}
+                                    minRows={2}
+                                    maxRows={5}
                                 />
-                                {/* {formik.touched.alamatTinggal && formik.errors.alamatTinggal && (
+                            </FormControl>
+                            {/* {formik.touched.alamatTinggal && formik.errors.alamatTinggal && (
                                     <Typography color="error">{formik.errors.alamatTinggal}</Typography>
                                 )} */}
-                            </FormControl>
+
 
                             {/* Jenis Kelamin */}
                             <Typography>Jenis Kelamin<span style={{ color: 'red' }} >*</span></Typography>
@@ -530,62 +550,41 @@ export default function TambahPegawai() {
                                 <Typography color="error">{formik.errors.nomorHandphone}</Typography>
                             )} */}
 
-                            {/* Role Pegawai */}
-                            <Typography mt={2} >Role Pegawai<span style={{ color: 'red' }} >*</span></Typography>
-                            <DropdownList
-                                onChange={value => formik.setFieldValue('rolePegawai', value)}
-                                placeholder='Pilih role pegawai'
-                                options={rolePegawai}
-                                loading={false}
-                            />
-                            {/* {formik.touched.rolePegawai && formik.errors.rolePegawai && (
-                                <Typography color="error">{formik.errors.rolePegawai}</Typography>
-                            )} */}
-
-                            {/* Jenis Spesialisasi */}
-                            <Typography mt={2} >Jenis Spesialisasi<span style={{ color: 'red' }} >*</span></Typography>
-                            <DropdownList
-                                onChange={value => formik.setFieldValue('jenisSpesialis', value)}
-                                placeholder='Pilih jenis spesialisasi'
-                                options={rolePegawai}
-                                loading={false}
-                            />
-                            {/* {formik.touched.jenisSpesialis && formik.errors.jenisSpesialis && (
-                                <Typography color="error">{formik.errors.jenisSpesialis}</Typography>
-                            )} */}
-
                             {/* Klinik */}
-                            <Typography mt={2} >Klinik<span style={{ color: 'red' }} >*</span></Typography>
-                            <DropdownList
-                                onChange={value => formik.setFieldValue('namaKlinik', value)}
-                                placeholder='Pilih klinik'
-                                options={rolePegawai}
-                                loading={false}
-                            />
-                            {/* {formik.touched.namaKlinik && formik.errors.namaKlinik && (
+                            {formik.values.rolePegawai == "DOKTER" &&
+                                <>
+                                    <Typography mt={2} >Klinik<span style={{ color: 'red' }} >*</span></Typography>
+                                    <DropdownList
+                                        onChange={value => formik.setFieldValue('namaKlinik', value)}
+                                        placeholder='Pilih klinik'
+                                        options={rolePegawai}
+                                        loading={false}
+                                    />
+                                    {/* {formik.touched.namaKlinik && formik.errors.namaKlinik && (
                                 <Typography color="error">{formik.errors.namaKlinik}</Typography>
                             )} */}
 
-                            {/* Tipe Antrian */}
-                            <Typography mt={2} >Tipe Antrian<span style={{ color: 'red' }} >*</span></Typography>
-                            <DropdownList
-                                onChange={value => formik.setFieldValue('tipeAntrian', value)}
-                                placeholder='Pilih tipe antrian'
-                                options={rolePegawai}
-                                loading={false}
-                            />
-                            {/* {formik.touched.tipeAntrian && formik.errors.tipeAntrian && (
-                                <Typography color="error">{formik.errors.tipeAntrian}</Typography>
+                                    {/* Jenis Spesialisasi */}
+                                    <Typography mt={2} >Jenis Spesialisasi<span style={{ color: 'red' }} >*</span></Typography>
+                                    <DropdownList
+                                        onChange={value => formik.setFieldValue('jenisSpesialis', value)}
+                                        placeholder='Pilih jenis spesialisasi'
+                                        options={rolePegawai}
+                                        loading={false}
+                                    />
+                                    {/* {formik.touched.jenisSpesialis && formik.errors.jenisSpesialis && (
+                                <Typography color="error">{formik.errors.jenisSpesialis}</Typography>
                             )} */}
 
-                            {/* Biaya Penanganan */}
-                            <Typography sx={{ fontSize: '16px', mt: 2 }}>
-                                Biaya Tarif<span style={{ color: 'red' }}>*</span>
-                            </Typography>
-                            <InputCurrencyIdr
-                                onChange={value => formik.setFieldValue('biayaPenanganan', value)}
-                                defaultValue={0}
-                            />
+                                    {/* Biaya Penanganan */}
+                                    <Typography sx={{ fontSize: '16px', mt: 2 }}>
+                                        Biaya Tarif<span style={{ color: 'red' }}>*</span>
+                                    </Typography>
+                                    <InputCurrencyIdr
+                                        onChange={value => formik.setFieldValue('biayaPenanganan', value)}
+                                        defaultValue={0}
+                                    />
+                                </>}
                             {/* {formik.touched.biayaPenanganan && formik.errors.biayaPenanganan && (
                                 <Typography color="error">{formik.errors.biayaPenanganan}</Typography>
                             )} */}
@@ -593,6 +592,7 @@ export default function TambahPegawai() {
                             {/* Tombol Submit */}
                             <Button
                                 type="submit"
+                                onClick={() => formik.values.rolePegawai == "DOKTER" ? setCurrentPage(2) : setCurrentPage(3)}
                                 variant="contained"
                                 color="inherit"
                                 sx={{
@@ -604,7 +604,7 @@ export default function TambahPegawai() {
                                     borderRadius: "8px",
                                     ":hover": { bgcolor: "#a098f5" },
                                 }}
-                                disabled={!formik.isValid || !formik.dirty} 
+                            // disabled={!formik.isValid || !formik.dirty}
                             >
                                 Selanjutnya
                             </Button>
@@ -767,6 +767,24 @@ export default function TambahPegawai() {
                                                                         />
                                                                     }
                                                                     label="View"
+                                                                />
+                                                                <FormControlLabel
+                                                                    sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
+                                                                    control={
+                                                                        <Checkbox
+                                                                            sx={{
+                                                                                color: '#A8A8BD',
+                                                                                borderRadius: '4px',
+                                                                                '&.Mui-checked': {
+                                                                                    color: '#7367F0',
+                                                                                },
+                                                                            }}
+                                                                            checked={menuActions[index].view}
+                                                                            onChange={handleIndividualCheckboxChange(index, 'view')}
+                                                                            disabled={!checkedItems[index + 1]}
+                                                                        />
+                                                                    }
+                                                                    label="Create"
                                                                 />
                                                                 <FormControlLabel
                                                                     sx={{ color: '#747487', fontWeight: 400, fontSize: '16px' }}
