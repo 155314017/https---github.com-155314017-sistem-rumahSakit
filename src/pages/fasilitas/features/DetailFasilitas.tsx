@@ -54,8 +54,8 @@ export default function DetailFasilitas() {
                             <ModalDeleteConfirmation
                                 open={open}
                                 onClose={() => setOpen(false)}
-                                apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/${deletedItems}`}
-                                onDeleteSuccess={handleDeleteSuccess} itemId={""} fetchData={function (): void {
+                                apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room`}
+                                onDeleteSuccess={handleDeleteSuccess} itemId={deletedItems} fetchData={function (): void {
                                     throw new Error("Function not implemented.");
                                 }}
                             />

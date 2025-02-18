@@ -67,6 +67,7 @@ export default function useTambahSubFasilitas() {
 
     const handleSaveKlinik = async () => {
         try {
+            console.log('Form submitted:', formik.values);
             const kalenderData = kalenderRef.current?.getData() || { praktek: [], exclusion: [] };
             validateInput(kalenderData);
             const klinikData = {

@@ -86,7 +86,7 @@ export default function TambahSubFasilitas() {
                                 text="Simpan"
                                 type={undefined}
                                 disabled={!formik.isValid || !formik.dirty}
-                                onClick={() => handleSaveKlinik}
+                                onClick={() => handleSaveKlinik()}
                             />
                         </>)}
                 </Box>

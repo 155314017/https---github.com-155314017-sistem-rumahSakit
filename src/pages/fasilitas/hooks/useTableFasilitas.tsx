@@ -6,6 +6,7 @@ import { GetScheduleByTypeId } from "../../../services/Admin Tenant/ManageSchedu
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
 import { PAGE_SIZE } from "./useIndex";
 import { FacilityDataItem } from "../../../types/Facility.types";
+import useConfirmationDelete from "../../../hooks/useConfirmationDelete";
 
 export default function useTableFasilitas(
   onSuccessDelete: () => void,
@@ -17,7 +18,7 @@ export default function useTableFasilitas(
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [open, setOpen] = useState<boolean>(false);
   const [dataFacility, setDataFacility] = useState<FacilityDataItem[]>([]);
-  const [deletedItems, setDeletedItems] = useState("");
+  const [deletedItems, setDeletedItems] = useState<string | null>(null);
   const [dataIdBuilding, setDataIdBuilding] = useState<string[]>([]);
   const [buildings, setBuildings] = useState<string[]>([]);
   const [dataSchedules, setDataSchedules] = useState<any[]>([])
@@ -127,11 +128,7 @@ export default function useTableFasilitas(
     setIsCollapsed((prev) => !prev);
   };
 
-  const confirmationDelete = (event: React.MouseEvent<HTMLAnchorElement>, buildingId: string) => {
-    event.preventDefault();
-    setDeletedItems(buildingId);
-    setOpen(true);
-  };
+  const { confirmationDelete } = useConfirmationDelete( setOpen, setDeletedItems);
 
 
   const handleDeleteSuccess = () => {
