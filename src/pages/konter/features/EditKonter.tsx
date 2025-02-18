@@ -1,5 +1,5 @@
 import { Container, Box } from '@mui/system';
-import { Typography, Button, FormControl, OutlinedInput } from "@mui/material";
+import { Typography, FormControl } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
 import ImageUploaderGroupAPI from '../../../components/inputComponent/ImageUploaderComponents/ImageGroupUploaderAPI';
@@ -8,6 +8,10 @@ import "dayjs/locale/id";
 //hooks
 import useEditKonter from "../hooks/useEditKonter";
 import CustomBigCalendar from '../../../components/medium/CustomBigCalendar';
+import { getBorderStyle } from '../../../style/ts/getBorderStyle';
+import CustomTextField from '../../../components/inputComponent/CustomTextfield';
+import CustomButtonFilled from '../../../components/small/button/CustomButtonFilled';
+import CustomFrameTable from '../../../components/small/CustomFrameTable';
 
 export default function EditKonter() {
     const {
@@ -16,7 +20,6 @@ export default function EditKonter() {
         formik,
         setCurrentPage,
         getPageStyle,
-        getBorderStyle,
         currentPage,
         handleEditCounter,
         kalenderRef,
@@ -34,63 +37,7 @@ export default function EditKonter() {
 
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#FAFAFA", overflow: "hidden" }}>
-                    {/* Bentuk lengkung atas */}
-                    <Box
-                        position={"absolute"}
-                        sx={{
-                            top: 0,
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            display: "flex",
-                        }}
-                    >
-                        {/* Lengkung kiri */}
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#FAFAFA",
-                                    borderRadius: "0px 15px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-
-                        {/* Kotak tengah */}
-                        <Box
-                            sx={{
-                                width: "600px",
-                                height: "50px",
-                                bgcolor: "#F1F0FE",
-                                borderRadius: "0px 0px 22px 22px",
-                            }}
-                        />
-
-                        {/* Lengkung kanan */}
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#FAFAFA",
-                                    borderRadius: "15px 0px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-                    </Box>
-
+                    <CustomFrameTable />
                     <Typography fontSize="20px" fontWeight="700">
                         Edit Konter
                     </Typography>
@@ -107,7 +54,7 @@ export default function EditKonter() {
                                 sx={getPageStyle(1)}
                                 mx={2}
                             >
-                                <Box sx={getBorderStyle(1)}>1</Box>
+                                <Box sx={getBorderStyle(1, currentPage)}>1</Box>
                                 <Typography sx={{ ml: 1 }}>
                                     Informasi Konter
                                 </Typography>
@@ -123,7 +70,7 @@ export default function EditKonter() {
                                 sx={getPageStyle(2)}
                                 mx={2}
                             >
-                                <Box sx={getBorderStyle(2)}>2</Box>
+                                <Box sx={getBorderStyle(2, currentPage)}>2</Box>
                                 <Typography sx={{ ml: 1 }}>
                                     Jam Operasional
                                 </Typography>
@@ -144,88 +91,44 @@ export default function EditKonter() {
                             <Box component="form" noValidate autoComplete="off" mt={3}>
                                 <Typography sx={{ fontSize: "16px" }}>Nama Konter<span style={{ color: "red" }}>*</span></Typography>
                                 <FormControl fullWidth sx={{ my: 1 }}>
-                                    <OutlinedInput
-                                        id="namaKonter"
-                                        name="namaKonter"
-                                        size="small"
-                                        placeholder="Masukkan Nama konter"
-                                        value={formik.values.namaKonter}
-                                        onChange={formik.handleChange}
-                                        onBlur={() => formik.setTouched({ ...formik.touched, namaKonter: true })}
-                                        error={formik.touched.namaKonter && Boolean(formik.errors.namaKonter)}
+                                    <CustomTextField
+                                        name='namaKonter'
+                                        placeholder='Masukkan Nama Konter'
+                                        formik={formik}
                                     />
-                                    {formik.touched.namaKonter && formik.errors.namaKonter && (
-                                        <Typography color="error">{formik.errors.namaKonter}</Typography>
-                                    )}
                                 </FormControl>
 
                                 <Typography sx={{ fontSize: "16px", mt: 1 }}>Lokasi Konter<span style={{ color: "red" }}>*</span></Typography>
                                 <FormControl fullWidth sx={{ my: 1 }}>
-                                    <OutlinedInput
-                                        id="lokasiKonter"
-                                        name="lokasiKonter"
-                                        size="small"
-                                        placeholder="Masukkan lokasi konter"
-                                        value={formik.values.lokasiKonter}
-                                        onChange={formik.handleChange}
-                                        onBlur={() => formik.setTouched({ ...formik.touched, lokasiKonter: true })}
-                                        error={formik.touched.lokasiKonter && Boolean(formik.errors.lokasiKonter)}
-                                        sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
+                                    <CustomTextField
+                                        name='lokasiKonter'
+                                        placeholder='Masukkan Lokasi Konter'
+                                        formik={formik}
                                     />
-                                    {formik.touched.lokasiKonter && formik.errors.lokasiKonter && (
-                                        <Typography color="error">{formik.errors.lokasiKonter}</Typography>
-                                    )}
                                 </FormControl>
 
-                                <Button
-                                    variant="contained"
-                                    color="inherit"
-                                    sx={{
-                                        mt: 8,
-                                        width: "100%",
-                                        bgcolor: "#8F85F3",
-                                        color: "#fff",
-                                        textTransform: "none",
-                                        borderRadius: "8px",
-                                        ":hover": { bgcolor: "#a098f5" },
-                                    }}
+                                <CustomButtonFilled
+                                    variant='contained'
                                     onClick={() => setCurrentPage(2)}
-                                >
-                                    Selanjutnya
-                                </Button>
+                                />
+
                             </Box>
                         </>
                     )}
 
                     {currentPage === 2 && (
                         <>
-                            <CustomBigCalendar 
-                                ref={kalenderRef} 
-                                initialData={scheduleDataPraktek} 
+                            <CustomBigCalendar
+                                ref={kalenderRef}
+                                initialData={scheduleDataPraktek}
                                 initialDataPengecualian={scheduleDataPengecualian}
-                                typeId={id} 
+                                typeId={id}
                             />
-                            <Button
-                                type="button"
+                            <CustomButtonFilled
+                                type='button'
+                                variant='contained'
                                 onClick={handleEditCounter}
-                                variant="contained"
-                                color="inherit"
-                                sx={{
-                                    mt: 3,
-                                    width: '100%',
-                                    bgcolor: '#8F85F3',
-                                    color: '#fff',
-                                    textTransform: 'none',
-                                    borderRadius: '8px',
-                                    boxShadow: 'none',
-                                    ':hover': {
-                                        bgcolor: '#a098f5',
-                                        boxShadow: 'none',
-                                    },
-                                }}
-                            >
-                                Simpan
-                            </Button>
+                            />
                         </>
                     )}
                 </Box>

@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 import { ImageData, uploadImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
 import { createCounter } from '../../../services/Admin Tenant/ManageCounter/CreateCounterService';
+import { useSuccessNotification } from '../../../hooks/useSuccessNotification';
 
 const jenisKonter = [
     { value: 1, label: "Asuransi" },
@@ -16,28 +17,26 @@ const jenisKonter = [
 
 export default function useTambahKonter() {
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [successAlert, setSuccessAlert] = useState(false);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
     const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
     const [operationalTime, setOperationalTime] = useState<string | null>(null);
     const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
-    const [errorAlert, setErrorAlert] = useState(false);
-
+    const { isSuccess, message, showAlert } = useSuccessNotification();
     const navigate = useNavigate();
 
-    const showTemporaryAlertSuccess = async () => {
-        setSuccessAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessAlert(false);
-    };
+    // const showTemporaryAlertSuccess = async () => {
+    //     setSuccessAlert(true);
+    //     await new Promise((resolve) => setTimeout(resolve, 3000));
+    //     setSuccessAlert(false);
+    // };
 
-    const showTemporaryAlertError = async () => {
-        setErrorAlert(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setErrorAlert(false);
-    };
+    // const showTemporaryAlertError = async () => {
+    //     setErrorAlert(true);
+    //     await new Promise((resolve) => setTimeout(resolve, 3000));
+    //     setErrorAlert(false);
+    // };
 
 
     const breadcrumbItems = [
@@ -70,43 +69,6 @@ export default function useTambahKonter() {
             return { color: "#8F85F3", cursor: "pointer" };
         } else {
             return { color: "black", cursor: "pointer" };
-        }
-    };
-
-    const getBorderStyle = (page: number) => {
-        if (page === currentPage) {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-            };
-        } else if (page < currentPage) {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#8F85F3",
-                color: "white",
-            };
-        } else {
-            return {
-                display: "flex",
-                border: "1px solid #8F85F3",
-                width: "38px",
-                height: "38px",
-                borderRadius: "8px",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "#8F85F3",
-            };
         }
     };
 
@@ -151,9 +113,14 @@ export default function useTambahKonter() {
                 const responseData = error.response?.data;
                 console.error('[DEBUG] Detail error dari server:', responseData || error.message);
             }
-            showTemporaryAlertError();
+            showAlert('Failed to add counter!', 300);
         }
     };
+
+    const tabs = [
+        { pageNumber: 1, label: 'Informasi Konter' },
+        { pageNumber: 2, label: 'Jam Operasional' },
+    ];
 
     return {
         breadcrumbItems,
@@ -167,15 +134,15 @@ export default function useTambahKonter() {
         operationalTime,
         setOperationalTime,
         handleImageChange,
-        successAlert,
-        errorAlert,
         jenisKonter,
-        showTemporaryAlertSuccess,
         currentPage,
         setCurrentPage,
         getPageStyle,
-        getBorderStyle,
         kalenderRef,
-        handleSaveKonter
+        handleSaveKonter,
+        message,
+        showAlert,
+        isSuccess,
+        tabs
     }
 }

@@ -4,12 +4,14 @@ import * as Yup from "yup";
 import axios from 'axios';
 import "dayjs/locale/id";
 import { useNavigate, useParams } from 'react-router-dom';
-import { CounterDataItem, GetCounterByIdServices } from '../../../services/Admin Tenant/ManageCounter/GetCounterById';
+import { GetCounterByIdServices } from '../../../services/Admin Tenant/ManageCounter/GetCounterById';
 import { ExclusionDataItem, GetExclusionByTypeId } from '../../../services/Admin Tenant/ManageSchedule/GetExclusionByTypeIdServices';
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
 import { GetScheduleByTypeId, ScheduleDataItem } from '../../../services/Admin Tenant/ManageSchedule/GetScheduleByTypeIdServices';
 import { editImages, ImageData } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
 import { EditCounterServices } from '../../../services/Admin Tenant/ManageCounter/EditCounterService';
+import { CounterDataItem } from '../../../types/counter.types';
+import { useFetchData } from '../../../hooks/useFetchData';
 
 
 export default function useEditKonter() {
@@ -29,32 +31,44 @@ export default function useEditKonter() {
     lokasiKonter: string;
   }
 
+  const { data: counterDataResponse, refetch: refetch } = useFetchData<CounterDataItem>(
+    GetCounterByIdServices,
+    [id],
+    true
+  );
+
+
+  const { data: scheduleResponse } = useFetchData(
+    GetScheduleByTypeId,
+    [id],
+    true
+  );
+
+  const { data: scheduleExclusionResponse } = useFetchData(
+    GetExclusionByTypeId,
+    [id],
+    true
+  );
+
+  const hasFetched = useRef(false);
   useEffect(() => {
-    const fetchDataCounter = async () => {
-      try {
-        const counterResponse = await GetCounterByIdServices(id);
-        const scheduleResponse = await GetScheduleByTypeId(id || "");
-        const exclusionResponse = await GetExclusionByTypeId(id || "");
-        if (counterResponse) {
-          setCounterData(counterResponse);
-        }
+    if (!hasFetched.current) {
+      refetch();
+      hasFetched.current = true;
+    }
+  }, [refetch]);
 
-        if (scheduleResponse) {
-          setScheduleDataPraktek(scheduleResponse);
-        }
-
-        if (exclusionResponse) {
-          setScheduleDataPengecualian(exclusionResponse);
-        }
-
-      } catch (error) {
-        console.error('Error:', error);
-      }
-
-    };
-    fetchDataCounter();
-  }, [id]);
-
+  useEffect(() => {
+    if (counterDataResponse) {
+      setCounterData(counterDataResponse);
+    }
+    if (scheduleResponse) {
+      setScheduleDataPraktek(Array.isArray(scheduleResponse) ? scheduleResponse : []);
+    }
+    if (scheduleExclusionResponse) {
+      setScheduleDataPengecualian(Array.isArray(scheduleExclusionResponse) ? scheduleExclusionResponse : []);
+    }
+  })
 
   const handleImageChange = (images: ImageData[]) => {
     setImagesData(images);
@@ -93,43 +107,6 @@ export default function useEditKonter() {
       return { color: "#8F85F3", cursor: "pointer" };
     } else {
       return { color: "black", cursor: "pointer" };
-    }
-  };
-
-  const getBorderStyle = (page: number) => {
-    if (page === currentPage) {
-      return {
-        display: "flex",
-        border: "1px solid #8F85F3",
-        width: "38px",
-        height: "38px",
-        borderRadius: "8px",
-        justifyContent: "center",
-        alignItems: "center",
-      };
-    } else if (page < currentPage) {
-      return {
-        display: "flex",
-        border: "1px solid #8F85F3",
-        width: "38px",
-        height: "38px",
-        borderRadius: "8px",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#8F85F3",
-        color: "white",
-      };
-    } else {
-      return {
-        display: "flex",
-        border: "1px solid #8F85F3",
-        width: "38px",
-        height: "38px",
-        borderRadius: "8px",
-        justifyContent: "center",
-        alignItems: "center",
-        color: "#8F85F3",
-      };
     }
   };
 
@@ -199,7 +176,7 @@ export default function useEditKonter() {
     currentPage,
     setCurrentPage,
     getPageStyle,
-    getBorderStyle,
+    // getBorderStyle,
     handleEditCounter,
     kalenderRef,
     counterData,

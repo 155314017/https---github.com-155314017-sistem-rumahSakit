@@ -7,19 +7,21 @@ import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 //hooks
 import useTambahKonter from "../hooks/useTambahKonter";
 import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
+import CustomButtonFilled from "../../../components/small/button/CustomButtonFilled";
+import CustomFrameTable from "../../../components/small/CustomFrameTable";
+import PaginationTabs from "../../../components/small/stepper/PaginationTabs";
 export default function TambahKonter() {
     const {
         breadcrumbItems,
-        formik,       
+        formik,
         handleImageChange,
-        successAlert,
-        errorAlert,
         setCurrentPage,
-        getPageStyle,
-        getBorderStyle,
         currentPage,
+        tabs,
         kalenderRef,
-        handleSaveKonter
+        handleSaveKonter,
+        isSuccess,
+        message
     } = useTambahKonter();
 
     return (
@@ -30,98 +32,16 @@ export default function TambahKonter() {
             />
             <Box mt={3} >
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#FAFAFA", overflow: "hidden" }}>
-                    <Box
-                        position={"absolute"}
-                        sx={{
-                            top: 0,
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            display: "flex",
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#fff",
-                                    borderRadius: "0px 15px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-
-                        <Box
-                            sx={{
-                                width: "600px",
-                                height: "50px",
-                                bgcolor: "#F1F0FE",
-                                borderRadius: "0px 0px 22px 22px",
-                            }}
-                        />
-
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#fff",
-                                    borderRadius: "15px 0px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-                    </Box>
+                    <CustomFrameTable />
                     <Typography fontSize="20px" fontWeight="700">Tambah Konter</Typography>
                     <Box position="absolute" sx={{ top: 0, right: 0 }}>
                         <img src={bgImage} alt="bg-image" />
                     </Box>
-
-                    <Box
-                        sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, justifyContent: 'space-between', ml: 2 }}
-                    >
-                        <Box display={"flex"} flexDirection={"row"} width={"400px"}>
-                            <Box
-                                display={"flex"}
-                                flexDirection={"row"}
-                                alignItems="center"
-                                onClick={() => setCurrentPage(1)}
-                                sx={getPageStyle(1)}
-                                mx={2}
-                            >
-                                <Box sx={getBorderStyle(1)}>1</Box>
-                                <Typography sx={{ ml: 1 }}>
-                                    Informasi Konter
-                                </Typography>
-                            </Box>
-                        </Box>
-
-                        <Box display={"flex"} flexDirection={"row"} width={"800px"}>
-                            <Box
-                                display={"flex"}
-                                flexDirection={"row"}
-                                alignItems="center"
-                                onClick={() => setCurrentPage(2)}
-                                sx={getPageStyle(2)}
-                                mx={2}
-                            >
-                                <Box sx={getBorderStyle(2)}>2</Box>
-                                <Typography sx={{ ml: 1 }}>
-                                    Jam Operasional
-                                </Typography>
-                            </Box>
-                        </Box>
-                    </Box>
+                    <PaginationTabs
+                        tabs={tabs}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                    />
 
                     {currentPage === 1 && (
                         <>
@@ -144,7 +64,7 @@ export default function TambahKonter() {
                                     )}
                                 </FormControl>
 
-                             
+
 
                                 <Typography sx={{ fontSize: "16px", mt: 1 }}>Lokasi Konter<span style={{ color: "red" }}>*</span></Typography>
                                 <FormControl fullWidth sx={{ my: 1 }}>
@@ -187,23 +107,17 @@ export default function TambahKonter() {
                     {currentPage === 2 && (
                         <>
                             <CustomBigCalendar ref={kalenderRef} />
-                            <Button
+                            <CustomButtonFilled
                                 variant="contained"
-                                color="primary"
                                 onClick={handleSaveKonter}
-                                sx={{ marginTop: '20px', width: '100%', bgcolor: '#8F85F3' }}
-                            >
-                                Simpan
-                            </Button>
+                                text="Simpan"
+                            />
                         </>
                     )}
                 </Box>
             </Box>
-            {successAlert && (
-                <AlertSuccess label="Success adding counter" />
-            )}
-            {errorAlert && (
-                <AlertSuccess label="Error adding counter" />
+            {isSuccess && (
+                <AlertSuccess label={message} />
             )}
         </Container>
     )

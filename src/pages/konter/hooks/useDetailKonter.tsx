@@ -5,7 +5,7 @@ import { GetScheduleByTypeId, ScheduleDataItem } from "../../../services/Admin T
 import { convertToOperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 import { GetCounterByIdServices } from "../../../services/Admin Tenant/ManageCounter/GetCounterById";
 import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
-import { useFetchData } from "../../../hooks/useFetchData"; // Import your custom hook
+import { useFetchData } from "../../../hooks/useFetchData";
 import { CounterDataItem } from "../../../types/counter.types";
 
 export default function useDetailKonter() {
