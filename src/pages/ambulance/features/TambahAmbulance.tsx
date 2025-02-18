@@ -13,6 +13,7 @@ import useTambahAmbulance from '../hooks/useTambahAmbulance'
 import 'dayjs/locale/id'
 import CustomBigCalendar from '../../../components/medium/CustomBigCalendar'
 import AlertWarning from '../../../components/small/alert/AlertWarning'
+import CustomFrameTable from '../../../components/small/CustomFrameTable'
 
 
 export default function TambahAmbulance() {
@@ -47,51 +48,9 @@ export default function TambahAmbulance() {
                 display: "flex",
               }}
             >
-              {/* Lengkung kiri */}
-              <Box
-                sx={{
-                  width: "50px",
-                  height: "30px",
-                  bgcolor: "#F1F0FE",
-                }}
-              >
-                <Box
-                  sx={{
-                    width: "50px",
-                    height: "30px",
-                    bgcolor: "#FAFAFA",
-                    borderRadius: "0px 15px 0px 0px ",
-                  }}
-                />
-              </Box>
-
-              {/* Kotak tengah */}
-              <Box
-                sx={{
-                  width: "600px",
-                  height: "50px",
-                  bgcolor: "#F1F0FE",
-                  borderRadius: "0px 0px 22px 22px",
-                }}
-              />
-
-              {/* Lengkung kanan */}
-              <Box
-                sx={{
-                  width: "50px",
-                  height: "30px",
-                  bgcolor: "#F1F0FE",
-                }}
-              >
-                <Box
-                  sx={{
-                    width: "50px",
-                    height: "30px",
-                    bgcolor: "#FAFAFA",
-                    borderRadius: "15px 0px 0px 0px ",
-                  }}
-                />
-              </Box>
+              <CustomFrameTable />
+              
+              
             </Box>
             <Typography fontSize="20px" fontWeight="700">
               Tambah Ambulance

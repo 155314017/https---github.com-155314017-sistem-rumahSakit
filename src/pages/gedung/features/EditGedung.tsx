@@ -40,6 +40,7 @@ export default function EditGedung() {
                             <CustomTextField
                                 name="namaGedung"
                                 formik={formik}
+                                placeholder="Masukkan Nama Gedung"
                             />
                         </FormControl>
 
@@ -53,6 +54,7 @@ export default function EditGedung() {
                                 formik={formik}
                                 multiline
                                 rows={3}
+                                placeholder="Masukkan Alamat Gedung"
                             />
                         </FormControl>
 

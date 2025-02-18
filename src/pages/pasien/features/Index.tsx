@@ -1,5 +1,5 @@
 import { Box, Grid } from "@mui/system";
-import { Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import SideBar from "../../../components/SideBar/SideBar";
 import Header from "../../../components/header/Header";
 import MediumCard from "../../../components/small/card/MediumCard";
@@ -13,15 +13,20 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 //hooks
 import useIndex from "../hooks/useIndex";
 import ModalKategoriPasien from "../../../components/medium/modal/ModalKategoriPasien";
+import AlertSuccess from "../../../components/small/alert/AlertSuccess";
+import { gridContainerStyle } from "../../../style/ts/gridContainerStyle";
 export default function Index() {
     const {
         data,
-        open,
-        setOpen,
-        showTemporarySuccessDelete,
-        setOrderBy,
+        loading,
         setPageNumber,
-        totalElements
+        setOrderBy,
+        totalElements,
+        isSuccess,
+        message,
+        showAlert,
+        setOpen,
+        open
     } = useIndex();
     return (
         <Box>
@@ -30,19 +35,15 @@ export default function Index() {
             <Box p={2} sx={{ marginLeft: "130px" }}>
                 <Header />
                 <Box>
+                {/* alert notifikasi  */}
+                {isSuccess && (
+                    <AlertSuccess label={message} />
+                )}
                     <Typography sx={{ fontSize: "32px", fontWeight: "700", py: 5 }}>
                         Pasien
                     </Typography>
                     <Grid container
-                        sx={{
-                            flex: 1,
-                            mb: 3,
-                            gap: 1,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            maxWidth: '50%',
-                            justifyContent: 'space-between'
-                        }}
+                        sx={gridContainerStyle}
                     >
                         <Box
                             sx={{
@@ -50,7 +51,7 @@ export default function Index() {
                                 width: '49%'
                             }}
                         >
-                            <MediumCard icon={BusinessOutlinedIcon} title="Total Pasien" subtitle={data.length.toString()} />
+                            <MediumCard icon={BusinessOutlinedIcon} title="Total Pasien" subtitle={loading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : totalElements.toString() || "0"}/>
                         </Box>
                         <Box
                             sx={{
@@ -68,7 +69,7 @@ export default function Index() {
                     </Grid>
                     <TablePasien
                         data={data}
-                        onSuccessDelete={showTemporarySuccessDelete}
+                        onSuccessDelete={() => showAlert("Success delete patient")}
                         setPageNumber={setPageNumber}
                         setOrderBy={setOrderBy}
                         totalElements={totalElements}

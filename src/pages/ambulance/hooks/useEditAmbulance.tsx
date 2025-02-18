@@ -32,11 +32,10 @@ interface FormValues {
 export default function useEditAmbulance() {
   const [imagesData, setImagesData] = useState<ImageData[]>([])
   const { id } = useParams()
-  const [operationalCost, setOperationalCost] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const navigate = useNavigate()
   const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
+  const [ambulanceData, setAmbulanceData] = useState<AmbulanceDataItem | null>(null);
 
   const [scheduleDataPraktek, setScheduleDataPraktek] = useState<ScheduleDataItem[]>([]);
   const [scheduleDataPengecualian, setScheduleDataPengecualian] = useState<ExclusionDataItem[]>([]);
@@ -46,46 +45,49 @@ export default function useEditAmbulance() {
 
 
   
-  const { data: ambulanceData } = useFetchData<AmbulanceDataItem>(
+  const { data: ambulanceDataResponse, refetch } = useFetchData<AmbulanceDataItem>(
           getAmbulanceByIdService,
           [id],
           true,
           // true
       );
+  const { data: scheduleResponse } = useFetchData(
+        GetScheduleByTypeId,
+        [id],
+        true
+      );
+    
+  const { data: scheduleExclusionResponse } = useFetchData(
+        GetExclusionByTypeId,
+        [id],
+        true
+      );
 
 
-      useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-              
-              const scheduleResponse = await GetScheduleByTypeId(id || "");
-              const exclusionResponse = await GetExclusionByTypeId(id || "");
+      const hasFetched = useRef(false);
+  useEffect(() => {
+    if (!hasFetched.current) {
+      refetch();
+      hasFetched.current = true;
+    }
+  }, [refetch]);
 
-              
-
-              if (scheduleResponse) { 
-                // Transform API data ke format yang sesuai dengan getKalenderData  
-                setScheduleDataPraktek(scheduleResponse);
-              }
-
-              if (exclusionResponse) {
-                setScheduleDataPengecualian(exclusionResponse);
-              }
-               setOperationalCost(ambulanceData.cost)
-            } catch (error) {
-                console.error('Error saat menghapus data:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, [ambulanceData.cost]);
+  useEffect(() => {
+    if (ambulanceDataResponse) {
+      setAmbulanceData(ambulanceDataResponse);
+    }
+    if (scheduleResponse) {
+      setScheduleDataPraktek(Array.isArray(scheduleResponse) ? scheduleResponse : []);
+    }
+    if (scheduleExclusionResponse) {
+      setScheduleDataPengecualian(Array.isArray(scheduleExclusionResponse) ? scheduleExclusionResponse : []);
+    }
+  })
 
     const handleImageChange = (images: ImageData[]) => {
             setImagesData(images);
         };
-        const { isSuccess, message, showAlert } = useSuccessNotification();
+    const { isSuccess, message, showAlert } = useSuccessNotification();
 
 
   
@@ -93,7 +95,7 @@ export default function useEditAmbulance() {
 
   const formik = useFormik<FormValues>({
     initialValues: {
-      operationalCost: operationalCost || 0
+      operationalCost: ambulanceData?.cost || 0
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
@@ -243,7 +245,6 @@ export default function useEditAmbulance() {
     formik,
     imagesData,
     handleImageChange,
-    loading,
     id,
     message,
     isSuccess,
@@ -255,7 +256,7 @@ export default function useEditAmbulance() {
     getBorderStyle,
     handleEditAmbulance,
     ambulanceData,
-    kalenderRef
+    kalenderRef,
 
   }
 }

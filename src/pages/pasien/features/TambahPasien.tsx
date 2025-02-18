@@ -9,6 +9,7 @@ import InputCurrencyIdr from '../../../components/inputComponent/InputCurrencyId
 
 //hooks
 import useTambahPasien from '../hooks/useTambahPasien';
+import CustomTextField from "../../../components/inputComponent/CustomTextfield";
 
 
 
@@ -66,6 +67,13 @@ export default function TambahPasien() {
                                 onBlur={() => formik.setTouched({ ...formik.touched, deskripsiKlinik: true })}
                                 error={formik.touched.deskripsiKlinik && Boolean(formik.errors.deskripsiKlinik)}
                                 sx={{ height: '107px', alignItems: 'flex-start', borderRadius: '8px' }}
+                            />
+                            <CustomTextField
+                                name="deskripsiKlinik"
+                                formik={formik}
+                                multiline
+                                rows={3}
+                                placeholder="Masukkan deskripsi"
                             />
                             {formik.touched.deskripsiKlinik && formik.errors.deskripsiKlinik && (
                                 <Typography color="error">{formik.errors.deskripsiKlinik}</Typography>
