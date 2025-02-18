@@ -4,8 +4,8 @@ import StepperTab from './StepperTab';
 
 interface PaginationTabsProps {
     tabs: { pageNumber: number, label: string }[];
-    setCurrentPage: (page: number) => void; // Terima setCurrentPage sebagai prop
-    currentPage: number; // Terima currentPage sebagai prop untuk mengetahui halaman aktif
+    setCurrentPage: (page: number) => void; 
+    currentPage: number;
 }
 
 const PaginationTabs: React.FC<PaginationTabsProps> = ({ tabs, setCurrentPage, currentPage }) => {
@@ -17,7 +17,7 @@ const PaginationTabs: React.FC<PaginationTabsProps> = ({ tabs, setCurrentPage, c
                     pageNumber={tab.pageNumber}
                     label={tab.label}
                     currentPage={currentPage}
-                    onClick={setCurrentPage} // Panggil setCurrentPage pada klik tab
+                    onClick={setCurrentPage} 
                 />
             ))}
         </Box>
