@@ -15,7 +15,6 @@ import {
     Radio,
     RadioGroup,
     Checkbox,
-    TextField,
 } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
@@ -30,7 +29,6 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TestKalender from "../../../components/medium/TestKalender";
 import { useRef } from "react";
-import { Field } from "formik";
 
 interface PraktekData {
     id: string;
