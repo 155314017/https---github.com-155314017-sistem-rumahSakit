@@ -7,37 +7,12 @@ import { GetScheduleByTypeId, ScheduleDataItem } from "../../../services/Admin T
 import { convertToOperationalSchedule } from "../../../services/Admin Tenant/ManageSchedule/ScheduleUtils";
 import { processImageResponse } from "../../../services/Admin Tenant/ManageImage/ImageUtils";
 import { GetBuildingById } from "../../../services/Admin Tenant/ManageBuilding/GetBuildingByIdServices";
+import { FacilityDataItem } from "../../../types/Facility.types";
+import { useFetchData } from "../../../hooks/useFetchData";
+import { BuildingDataItem } from "../../../types/building.types";
+import { ImageDataItems } from "../../../types/images.types";
 
 
-// Clinic data type
-export interface FacilityDataItem {
-  id: string;
-  name: string;
-  description: string;
-  additionalInfo: string;
-  createdBy: string;
-  createdDateTime: number;
-  updatedBy: string | null;
-  updatedDateTime: number | null;
-  deletedBy: string | null;
-  deletedDateTime: number | null;
-  masterBuildingId: string;
-  cost: number;
-  schedules: ScheduleDataItem[];
-  operationalSchedule?: OperationalSchedule;
-}
-
-
-
-type OperationalSchedule = {
-  senin: string;
-  selasa: string;
-  rabu: string;
-  kamis: string;
-  jumat: string;
-  sabtu: string;
-  minggu: string;
-};
 
 
 export default function useDetailFasilitas() {
@@ -47,10 +22,9 @@ export default function useDetailFasilitas() {
   const navigate = useNavigate();
   const [largeImage, setLargeImage] = useState<string>("");
   const [smallImage, setSmallImages] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [facilityData, setFacilityData] = useState<FacilityDataItem | null>(null);
   const [buildingName, setBuildingName] = useState('');
   const [buildingId, setBuildingId] = useState('');
+  const [facilityData, setFacilityData] = useState<FacilityDataItem>();
 
   const breadcrumbItems = [
     {
@@ -67,49 +41,66 @@ export default function useDetailFasilitas() {
     },
   ];
 
-  const fetchDataFacility = async () => {
-    setLoading(true);
-    try {
-      const facilityResponse = await getFacilityByIdService(id || "");
-      const scheduleResponse = await GetScheduleByTypeId(id || "");
+  const { data: facilityDataResponse, loading: loading } = useFetchData<FacilityDataItem>(
+    getFacilityByIdService,
+    [id],
+    true
+  );
 
-      if (facilityResponse) {
-        const facilityDataWithSchedule: FacilityDataItem = {
-          ...facilityResponse,
-          schedules: scheduleResponse,
-          operationalSchedule: convertToOperationalSchedule(scheduleResponse)
-        };
+  const { data: scheduleResponse, loading: loadingScheduleData } = useFetchData(
+    GetScheduleByTypeId,
+    [id],
+    true
+  );
 
-        setBuildingId(facilityResponse.masterBuildingId || '');
-        setFacilityData(facilityDataWithSchedule);
+  const { data: imageData, refetch: refetchImage } = useFetchData<ImageDataItems>(
+    GetImageByParentId,
+    [facilityDataResponse.id],
+    false,
+    true
+  );
 
-        const imageResponse = await GetImageByParentId(facilityResponse.id);
-        const { largeImage, smallImages } = processImageResponse(imageResponse);
-        setLargeImage(largeImage);
-        setSmallImages(smallImages);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
+  const { data: buildingDataResponse, loading: loadingBuilding, refetch: refetchBuilding } = useFetchData<BuildingDataItem>(
+    GetBuildingById,
+    [buildingId],
+    false
+  );
+
+  useEffect(() => {
+    console.log('halo')
+    console.log('fasilitas: ', facilityData)
+    if (facilityDataResponse && scheduleResponse) {
+      console.log('yaa')
+      const facilityData: FacilityDataItem = {
+        ...facilityDataResponse,
+        schedules: scheduleResponse as ScheduleDataItem[],
+        operationalSchedule: convertToOperationalSchedule(scheduleResponse as ScheduleDataItem[]),
+      };
+      console.log(facilityDataResponse)
+      setFacilityData(facilityData);
+      setBuildingId(facilityDataResponse.masterBuildingId);
     }
-  };
+    if (facilityDataResponse.id) {
+      refetchImage();
+    }
+  }, [facilityDataResponse, scheduleResponse]);
+
 
   useEffect(() => {
-    if (id) fetchDataFacility();
-  }, [id]);
+    if (imageData) {
+      const { largeImage, smallImages } = processImageResponse(imageData);
+      setLargeImage(largeImage);
+      setSmallImages(smallImages);
+    }
+
+  }, [imageData])
 
   useEffect(() => {
-    const fetchDataBuildings = async () => {
-      try {
-        const response = await GetBuildingById(buildingId)
-        setBuildingName(response.name)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchDataBuildings();
-  }, [buildingId]);
+    if (buildingId) {
+      refetchBuilding();
+      setBuildingName(buildingDataResponse.name);
+    }
+  }, [buildingId])
 
   const handleDeleteSuccess = () => {
     setOpen(false);
@@ -129,7 +120,7 @@ export default function useDetailFasilitas() {
     handleDeleteSuccess,
     confirmationDelete,
     open,
-    loading,
+    loading: loadingBuilding || loading || loadingScheduleData,
     deletedItems,
     facilityData,
     buildingName,
