@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Box,
   Stack,
@@ -11,16 +12,30 @@ import {
   Link,
   IconButton,
   Collapse,
+  Paper,
+  CircularProgress,
 } from "@mui/material";
 import SearchBar from "../../../components/small/SearchBar";
 import DropdownList from "../../../components/small/dropdownlist/DropdownList";
 import { styled } from "@mui/material/styles";
 import bgImage from "../../../assets/img/String.png";
 import { BuildingDataItem } from "../../../types/building.types";
+import { Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { useGedungContext } from "../../../contexts/gedung/gedungContext";
+import { fetchBuildingsRequest, fetchBuildingsSuccess, fetchBuildingsFailure, deleteBuilding } from "../../../contexts/gedung/gedungActions";
+import { Building } from "../../../services/Admin Tenant/ManageBuilding/Building";
+import { deleteBuildingService } from "../../../services/Admin Tenant/ManageBuilding/DeleteBuildingService";
 
 // Icons
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+
+// Components
+import CustomFrameTable from "../../../components/small/CustomFrameTable";
+import PaginationTable from "../../../components/tableComponents/PaginationTable";
+import ModalDeleteConfirmation from "../../../components/medium/modal/ModalDeleteConfirmation";
+import ShowingDataInformation from "../../../components/tableComponents/ShowingDataInformation";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -28,68 +43,97 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const StyledTableContainer = styled(TableContainer)`
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: #8f85f3;
-      border-radius: 10px;
-      border: 2px solid #f1f1f1;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background-color: #6c63ff;
-      cursor: pointer;
-    }
-  `;
+const StyledTableContainer = styled(TableContainer)({
+  "&::-webkit-scrollbar": {
+    width: "8px"
+  },
+  "&::-webkit-scrollbar-track": {
+    borderRadius: "10px"
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "#8f85f3",
+    borderRadius: "10px",
+    border: "2px solid #f1f1f1"
+  },
+  "&::-webkit-scrollbar-thumb:hover": {
+    backgroundColor: "#6c63ff",
+    cursor: "pointer"
+  }
+});
 
 //hooks
 import useTableGedung from "../hooks/useTableGedung";
-import React from "react";
-import CustomFrameTable from "../../../components/small/CustomFrameTable";
-import PaginationTable from "../../../components/tableComponents/PaginationTable";
-import ModalDeleteConfirmation from "../../../components/medium/modal/ModalDeleteConfirmation";
-import ShowingDataInformation from "../../../components/tableComponents/ShowingDataInformation";
 
 interface TableGedungProps {
-  data: BuildingDataItem[];
-  onSuccessDelete: () => void;
+  onSearchChange?: (value: string) => void;
   setPageNumber: (page: number) => void;
   setOrderBy: (order: string) => void;
-  totalElements: number;
-  onSearchChange?: (value: string) => void;
 }
 
-const TableGedung: React.FC<TableGedungProps> = ({
-  data,
-  onSuccessDelete,
+const TableGedung = ({ 
+  onSearchChange,
   setPageNumber,
-  setOrderBy,
-  totalElements,
-  onSearchChange
-}) => {
+  setOrderBy 
+}: TableGedungProps): JSX.Element => {
+  const navigate = useNavigate();
+  const { state, dispatch } = useGedungContext();
+  const { buildings, loading, error } = state;
+
   const {
     page,
-    isCollapsed,
-    open,
     pageSize,
     handleChangePage,
     confirmationDelete,
     handleDeleteSuccess,
+    open,
+    setOpen,
+    isCollapsed,
     toggleCollapse,
     urutkan,
-    setSort,
-    setOpen,
-    navigate,
+    setSort
   } = useTableGedung(
-    onSuccessDelete,
+    () => fetchData(),
     setPageNumber,
-    setOrderBy,
-
+    setOrderBy
   );
+
+  const fetchData = async () => {
+    dispatch(fetchBuildingsRequest());
+    try {
+      const response = await Building(page - 1, pageSize, "createdDateTime=asc");
+      if (response && response.data && response.data.content) {
+        dispatch(fetchBuildingsSuccess(response.data.content));
+      }
+    } catch (err) {
+      dispatch(fetchBuildingsFailure(err instanceof Error ? err.message : 'An error occurred'));
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [page, pageSize]);
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteBuildingService(id);
+      dispatch(deleteBuilding(id));
+      handleDeleteSuccess();
+    } catch (err) {
+      console.error("Error deleting building:", err);
+    }
+  };
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return <Box>Error: {error}</Box>;
+  }
 
   return (
     <Box>
@@ -136,7 +180,6 @@ const TableGedung: React.FC<TableGedungProps> = ({
                 placeholder="Urutkan"
                 onChange={(value) => {
                   setSort(value);
-                  console.log(value)
                 }}
                 loading={false}
               />
@@ -197,8 +240,8 @@ const TableGedung: React.FC<TableGedungProps> = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data.length > 0 ? (
-                    data.map((item, index) => (
+                  {buildings.length > 0 ? (
+                    buildings.map((building, index) => (
                       <StyledTableRow key={index}>
                         <TableCell
                           sx={[
@@ -224,7 +267,7 @@ const TableGedung: React.FC<TableGedungProps> = ({
                             },
                           ]}
                         >
-                          {item.name}
+                          {building.name}
                         </TableCell>
                         <TableCell
                           sx={[
@@ -239,7 +282,7 @@ const TableGedung: React.FC<TableGedungProps> = ({
                             },
                           ]}
                           align="left"
-                        >{item.address}</TableCell>
+                        >{building.address}</TableCell>
                         <TableCell
                           sx={[
                             {
@@ -255,7 +298,7 @@ const TableGedung: React.FC<TableGedungProps> = ({
                           align="center"
                         >
                           <Link
-                            onClick={(event) => confirmationDelete(event, item.id)}
+                            onClick={(event) => confirmationDelete(event, building.id)}
                             href="#"
                             mr={2}
                             underline="hover"
@@ -269,11 +312,11 @@ const TableGedung: React.FC<TableGedungProps> = ({
                           <ModalDeleteConfirmation
                             open={open}
                             onClose={() => setOpen(false)}
-                            apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${item.id}`}
+                            apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building/${building.id}`}
                             onDeleteSuccess={handleDeleteSuccess}
                           />
                           <Link
-                            onClick={() => navigate(`/editGedung/${item.id}`)}
+                            onClick={() => navigate(`/gedung/edit/${building.id}`)}
                             mr={2}
                             underline="hover"
                             sx={{
@@ -285,7 +328,7 @@ const TableGedung: React.FC<TableGedungProps> = ({
                             Ubah
                           </Link>
                           <Link
-                            onClick={() => navigate(`/detailGedung/${item.id}`)}
+                            onClick={() => navigate(`/gedung/detail/${building.id}`)}
                             mr={2}
                             underline="hover"
                             sx={{
@@ -310,14 +353,14 @@ const TableGedung: React.FC<TableGedungProps> = ({
             </StyledTableContainer>
 
             <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center">
-              <ShowingDataInformation length={totalElements} rowsPerPage={pageSize} page={page} />
-              <PaginationTable length={totalElements} rowsPerPage={pageSize} page={page} onChange={handleChangePage} />
+              <ShowingDataInformation length={buildings.length} rowsPerPage={pageSize} page={page} />
+              <PaginationTable length={buildings.length} rowsPerPage={pageSize} page={page} onChange={handleChangePage} />
             </Stack>
           </Box>
         </Collapse>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default TableGedung
+export default TableGedung;
