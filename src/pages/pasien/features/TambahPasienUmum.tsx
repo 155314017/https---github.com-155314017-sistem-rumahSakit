@@ -6,10 +6,7 @@ import {
     FormControl,
     FormControlLabel,
     RadioGroup,
-    TextField,
-    OutlinedInput,
     FormLabel,
-    FormHelperText,
     Checkbox,
 } from "@mui/material";
 import FileUploader from '../../../components/inputComponent/FileUploader';
@@ -22,10 +19,11 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import InformasiTicketAPI from "../../../components/medium/InformasiTicketAPI";
 import dayjs from "dayjs";
 import AlertWarning from "../../../components/small/alert/AlertWarning";
-import { Field, Formik, Form } from "formik";
+import {  Formik, Form } from "formik";
 import CustomTimePicker from "../../../components/medium/CustomTimePicker";
 import CardAntrianCounter from "../../../components/small/card/CardAntrianCounter";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
+import CustomTextField from "../../../components/inputComponent/CustomTextfield";
 
 export default function TambahPasienUmum() {
     const {
@@ -162,33 +160,11 @@ export default function TambahPasienUmum() {
                                         <>
 
                                             <Typography sx={{ fontSize: '16px', fontWeight: 400, lineHeight: '18px', fontFamily: 'roboto', mb: 2 }}>NIK (Nomor induk kependudukan) Pasien <span style={{ color: 'red' }}>*</span></Typography>
-                                            <OutlinedInput
-                                                sx={{
-                                                    borderRadius: '8px',
-                                                    height: '48px',
-                                                    '& .MuiInputBase-root': {
-                                                        height: '48px',
-                                                    },
-                                                    '& .MuiInputBase-input': {
-                                                        height: '15px',
-                                                    },
-                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                        borderColor: '#A8A8BD',
-                                                        border: '3px solid #8F85F3',
-
-                                                    },
-                                                    backgroundColor: formik.touched.nikCari && formik.errors.nikCari ? '#ffcccc' : '#fff',
-
-                                                }}
-                                                placeholder='Masukkan NIK ktp'
-                                                value={formik.values.nikCari}
-                                                onChange={formik.handleChange}
+                                            <CustomTextField
                                                 name="nikCari"
-                                                onBlur={formik.handleBlur}
+                                                formik={formik}
+                                                placeholder="Masukkan NIK"
                                             />
-                                            {formik.touched.nikCari && formik.errors.nikCari && (
-                                                <FormHelperText sx={{ color: 'red', mt: '1px' }}>{formik.errors.nikCari}</FormHelperText>
-                                            )}
                                             <Button
                                                 type="button"
                                                 // onClick={() => patientPage ? setPatientPage(true) : setCurrentPage(2)}
@@ -250,7 +226,7 @@ export default function TambahPasienUmum() {
                                                 changePage2();
                                             }}
                                         >
-                                            {({ errors, touched, handleChange, handleBlur, values, setFieldValue }) => (
+                                            {({ errors, touched, values, setFieldValue }) => (
                                                 <Form>
                                                     <Box>
                                                         <Typography sx={{ fontSize: "20px", fontWeight: 600, lineHeight: "22px", fontFamily: "roboto", marginBottom: "16px" }}>
@@ -280,57 +256,20 @@ export default function TambahPasienUmum() {
                                                             <Box display={"flex"} flexDirection="column" alignItems="flex-start" gap={"5px"} width={'99%'}>
                                                                 <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto", marginTop: "10px" }}>NIK (Nomor induk kependudukan) Pasien <span style={{ color: "red" }}>*</span></Typography>
                                                                 <FormControl fullWidth error={touched.nik && Boolean(errors.nik)}>
-                                                                    <OutlinedInput
-                                                                        name="nik"
-                                                                        placeholder="Masukkan NIK (Nomor induk kependudukan)"
-                                                                        sx={{
-                                                                            bgcolor: pasienBaru ? '#FFFFFF' : '#E8E8E8',
-                                                                            borderRadius: '8px',
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                borderRadius: '3px solid #8F85F3',
-                                                                                backgroundColor: touched.nik && errors.nik ? '#ffcccc' : 'inherit',
-                                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                                    borderColor: '3px solid #8F85F3',
-                                                                                },
-                                                                            },
-                                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                                borderColor: '#A8A8BD',
-                                                                                border: '3px solid #8F85F3',
-
-                                                                            },
-                                                                        }}
-                                                                        onChange={handleChange}
-                                                                        onBlur={handleBlur}
-                                                                        value={values.nik}
-                                                                        disabled={!pasienBaru}
-                                                                    />
-                                                                    {touched.nik && errors.nik && (
-                                                                        <FormHelperText>{errors.nik}</FormHelperText>
-                                                                    )}
+                                                                <CustomTextField
+                                                                    name="nik"
+                                                                    formik={formik}
+                                                                    placeholder="Masukkan NIK"
+                                                                />
                                                                 </FormControl>
 
                                                                 <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto", marginTop: "10px" }}>Email <span style={{ color: "red" }}>*</span></Typography>
                                                                 <FormControl fullWidth error={touched.email && Boolean(errors.email)}>
-                                                                    <OutlinedInput
+                                                                <CustomTextField
                                                                         name="email"
-                                                                        value={values.email}
-                                                                        onChange={handleChange}
-                                                                        onBlur={handleBlur}
-                                                                        disabled={!pasienBaru}
-                                                                        sx={{
-                                                                            borderRadius: '8px',
-                                                                            bgcolor: pasienBaru ? '#FFFFFF' : '#E8E8E8',
-                                                                            
-                                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                                borderColor: '#A8A8BD',
-                                                                                border: '3px solid #8F85F3',
-
-                                                    },
-                                                                        }}
+                                                                        formik={formik}
+                                                                        placeholder="Masukkan nama gedung"
                                                                     />
-                                                                    {/* {touched.email && errors.email && (
-                                                                        <FormHelperText error>{errors.email}</FormHelperText>
-                                                                    )} */}
                                                                 </FormControl>
 
                                                                 <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto", marginTop: "10px" }}>No Handphone pasien <span style={{ color: "red" }}>*</span></Typography>
@@ -387,48 +326,22 @@ export default function TambahPasienUmum() {
 
                                                                 <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto" }}>Nama lengkap pasien <span style={{ color: "red" }}>*</span></Typography>
                                                                 <FormControl fullWidth>
-                                                                    <OutlinedInput
-                                                                        sx={{
-                                                                            borderRadius: '8px',
-                                                                            bgcolor:pasienBaru ? '#FFFFFF' : '#E8E8E8',
-                                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                                borderColor: '#8F85F3',
-                                                                            },
-                                                                        }}
-                                                                        name="fullname"
-                                                                        value={values.fullname || ""}
-                                                                        onChange={handleChange}
-                                                                        disabled={!pasienBaru}
-                                                                    />
+                                                                <CustomTextField
+                                                                    name="fullName"
+                                                                    formik={formik}
+                                                                    placeholder="Masukkan nama"
+                                                                />
                                                                 </FormControl>
 
                                                                 <Box display={'flex'} justifyContent={'space-between'} sx={{ height: '75px', width: '100%', marginTop: "10px" }}>
                                                                     <FormControl sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '49%', height: '100%' }}>
                                                                         <FormLabel>Tempat Lahir <span style={{ color: "red" }}>*</span></FormLabel>
-                                                                        <OutlinedInput
+                                                                        <CustomTextField
                                                                             name="birthPlace"
-                                                                            placeholder="Tempat Lahir"
-                                                                            fullWidth
-                                                                            sx={{
-                                                                                borderRadius: '8px',
-                                                                                height: '75px',
-                                                                                bgcolor: pasienBaru ? '#FFFFFF' : '#E8E8E8',
-                                                                                '& .MuiOutlinedInput-root': {
-                                                                                    borderRadius: '8px',
-                                                                                    backgroundColor: touched.birthPlace && errors.birthPlace ? "#ffcccc" : 'inherit',
-                                                                                },
-                                                                                    '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                                        borderColor: '#A8A8BD',
-                                                                                        border: '3px solid #8F85F3',
-                                                                                },
-                                                                            }}
-                                                                            
-                                                                            onBlur={handleBlur}
-                                                                            value={values.birthPlace}
-                                                                            onChange={handleChange}
-                                                                            error={touched.birthPlace && Boolean(errors.birthPlace)}
-                                                                            disabled={!pasienBaru}
+                                                                            formik={formik}
+                                                                            placeholder="Masukkan nama gedung"
                                                                         />
+                                                                        
                                                                     </FormControl>
 
                                                                     < FormControl sx={{ width: '49%', height: '75px' }}>
@@ -491,31 +404,15 @@ export default function TambahPasienUmum() {
                                                                 <Typography sx={{ fontSize: "16px", fontWeight: 400, lineHeight: "18px", fontFamily: "roboto", marginTop: "10px" }}>
                                                                     Alamat tempat tinggal Pasien<span style={{ color: "red" }}>*</span>
                                                                 </Typography>
-                                                                <FormControl fullWidth>
-                                                                    <Field
-                                                                        name="address"
-                                                                        as={TextField}
-                                                                        placeholder="Masukkan tempat tinggal penanggung jawab"
-                                                                        variant="outlined"
-                                                                        fullWidth
-                                                                        size="medium"
-                                                                        sx={{
 
-                                                                            marginBottom: '8px',
-                                                                            alignItems: 'flex-start',
-                                                                            bgcolor: pasienBaru ? '#FFFFFF' : '#E8E8E8',
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                borderRadius: '8px',
-                                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                                    borderColor: '#8F85F3',
-                                                                                },
-                                                                            },
-                                                                        }}
-                                                                        value={patientData?.address}
-                                                                        multiline
-                                                                        minRows={2}
-                                                                        disabled={!pasienBaru}
-                                                                    />
+                                                                <FormControl fullWidth>
+                                                                <CustomTextField
+                                                                    name="address"
+                                                                    formik={formik}
+                                                                    placeholder="Masukkan Alamat tempat tinggal"
+                                                                    multiline
+                                                                />
+                                                                    
                                                                 </FormControl>
 
                                                                 <Box
@@ -625,7 +522,6 @@ export default function TambahPasienUmum() {
                                                 {
                                                     errors,
                                                     touched,
-                                                    handleChange,
                                                     handleBlur,
                                                     values,
                                                     isValid,
@@ -689,34 +585,11 @@ export default function TambahPasienUmum() {
                                                             </FormControl>
                                                             <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', fontFamily: 'roboto' }} >Email<span style={{ color: "red" }}>*</span></Typography>
                                                             <FormControl>
-                                                                <TextField
-                                                                    placeholder="Masukkan email"
-                                                                    variant="outlined"
-                                                                    sx={{
-                                                                        width: '100%',
-                                                                        height: 'auto',
-                                                                        marginTop: '10px',
-                                                                        '& .MuiOutlinedInput-root': {
-                                                                            borderRadius: '8px',
-                                                                            backgroundColor: touched.email && errors.email ? '#ffcccc' : 'inherit',
-                                                                            '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                                borderColor: '#8F85F3',
-                                                                            },
-                                                                        },
-                                                                        '& .MuiOutlinedInput-notchedOutline': {
-                                                                            border: '1px solid #ccc',
-                                                                        },
-                                                                        '& .MuiOutlinedInput-input': {
-                                                                            padding: '10px',
-                                                                            fontSize: '16px',
-                                                                        },
-                                                                    }}
-                                                                    name="email"
-                                                                    value={values.email}
-                                                                    error={touched.email && Boolean(errors.email)}
-                                                                    onChange={handleChange}
-                                                                    onBlur={handleBlur}
-                                                                />
+                                                            <CustomTextField
+                                                                name="email"
+                                                                formik={formik}
+                                                                placeholder="Masukkan email"
+                                                            />
                                                                 {/* {touched.email && errors.email && (
                                                                                     <FormHelperText error>{errors.email}</FormHelperText>
                                                                                 )} */}
@@ -740,36 +613,11 @@ export default function TambahPasienUmum() {
                                                                 </Typography>
                                                                 <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px' }} >Jenis Kunjungan<span style={{ color: "red" }}>*</span></Typography>
                                                                 <FormControl sx={{ marginBottom: '10px' }}>
-                                                                    <TextField
-                                                                        placeholder="Masukkan jenis kunjungan"
-                                                                        variant="outlined"
-                                                                        sx={{
-                                                                            width: '100%',
-                                                                            height: 'auto',
-                                                                            marginTop: '10px',
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                borderRadius: '8px',
-                                                                                backgroundColor: touched.jenisKunjungan && errors.jenisKunjungan ? '#ffcccc' : 'inherit',
-                                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                                    borderColor: '#8F85F3',
-                                                                                },
-                                                                            },
-                                                                            '& .MuiOutlinedInput-notchedOutline': {
-                                                                                border: '1px solid #ccc',
-                                                                            },
-                                                                            '& .MuiOutlinedInput-input': {
-                                                                                padding: '10px',
-                                                                                fontSize: '16px',
-                                                                            },
-                                                                        }}
-                                                                        name="jenisKunjungan"
-                                                                        value={values.jenisKunjungan}
-                                                                        onChange={handleChange}
-                                                                        onBlur={handleBlur}
-                                                                    />
-                                                                    {/* {touched.jenisKunjungan && errors.jenisKunjungan && (
-                                                                                        <FormHelperText error>{errors.jenisKunjungan}</FormHelperText>
-                                                                                    )} */}
+                                                                <CustomTextField
+                                                                    name="jenisKunjungan"
+                                                                    formik={formik}
+                                                                    placeholder="Masukkan jenis kunjungan"
+                                                                />
                                                                 </FormControl>
 
 
@@ -814,41 +662,13 @@ export default function TambahPasienUmum() {
                                                                 </Box>
                                                                 <Typography sx={{ fontWeight: 400, fontSize: '16px', lineHeight: '18px', fontFamily: 'roboto' }} >Keluhan Pasien<span style={{ color: "red" }}>*</span></Typography>
                                                                 <FormControl sx={{ marginBottom: '10px' }}>
-                                                                    <TextField
-
-                                                                        value={values.complaint}
-                                                                        onChange={handleChange}
-                                                                        onBlur={handleBlur}
-                                                                        name="complaint"
-                                                                        placeholder="Masukkan keluhan pasien"
-                                                                        fullWidth
-                                                                        required
-                                                                        multiline
-                                                                        rows={3}
-                                                                        variant="outlined"
-                                                                        sx={{
-                                                                            width: '100%',
-                                                                            height: 'auto',
-                                                                            marginTop: '10px',
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                borderRadius: '8px',
-                                                                                backgroundColor: touched.complaint && errors.complaint ? '#ffcccc' : 'inherit',
-                                                                                '&:focus-within .MuiOutlinedInput-notchedOutline': {
-                                                                                    borderColor: '#8F85F3',
-                                                                                },
-                                                                            },
-                                                                            '& .MuiOutlinedInput-notchedOutline': {
-                                                                                border: '1px solid #ccc',
-                                                                            },
-                                                                            '& .MuiOutlinedInput-input': {
-                                                                                padding: '10px',
-                                                                                fontSize: '16px',
-                                                                            },
-                                                                        }}
-                                                                    />
-                                                                    {/* {touched.complaint && errors.complaint && (
-                                                                                        <FormHelperText error>{errors.complaint}</FormHelperText>
-                                                                                    )} */}
+                                                                <CustomTextField
+                                                                    name="complaint"
+                                                                    formik={formik}
+                                                                    placeholder="Masukkan keluhan pasien"
+                                                                    multiline
+                                                                />
+                                                                    
                                                                 </FormControl>
 
                                                                 <Box mt={1}>

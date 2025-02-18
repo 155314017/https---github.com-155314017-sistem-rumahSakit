@@ -11,6 +11,7 @@ import ImageUploaderGroupAPI from '../../../components/inputComponent/ImageUploa
 import useEditAmbulance from '../hooks/useEditAmbulance';
 import CustomBigCalendar from '../../../components/medium/CustomBigCalendar';
 import AlertSuccess from '../../../components/small/alert/AlertSuccess';
+import CustomFrameTable from '../../../components/small/CustomFrameTable';
 
 export default function EditAmbulance() {
   const {
@@ -39,62 +40,7 @@ export default function EditAmbulance() {
 
       <Box mt={3}>
         <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#FAFAFA", overflow: "hidden" }}>
-          {/* Bentuk lengkung atas */}
-          <Box
-            position={"absolute"}
-            sx={{
-              top: 0,
-              left: "50%",
-              transform: "translateX(-50%)",
-              display: "flex",
-            }}
-          >
-            {/* Lengkung kiri */}
-            <Box
-              sx={{
-                width: "50px",
-                height: "30px",
-                bgcolor: "#F1F0FE",
-              }}
-            >
-              <Box
-                sx={{
-                  width: "50px",
-                  height: "30px",
-                  bgcolor: "#FAFAFA",
-                  borderRadius: "0px 15px 0px 0px ",
-                }}
-              />
-            </Box>
-
-            {/* Kotak tengah */}
-            <Box
-              sx={{
-                width: "600px",
-                height: "50px",
-                bgcolor: "#F1F0FE",
-                borderRadius: "0px 0px 22px 22px",
-              }}
-            />
-
-            {/* Lengkung kanan */}
-            <Box
-              sx={{
-                width: "50px",
-                height: "30px",
-                bgcolor: "#F1F0FE",
-              }}
-            >
-              <Box
-                sx={{
-                  width: "50px",
-                  height: "30px",
-                  bgcolor: "#FAFAFA",
-                  borderRadius: "15px 0px 0px 0px ",
-                }}
-              />
-            </Box>
-          </Box>
+          <CustomFrameTable />
 
           <Typography fontSize="20px" fontWeight="700">
             Edit Ambulance

@@ -4,7 +4,6 @@ import {
     Typography,
     Button,
     FormControl,
-    OutlinedInput,
     FormControlLabel,
     Radio,
     RadioGroup,
@@ -12,7 +11,6 @@ import {
     InputLabel,
     Select,
     MenuItem,
-    TextField,
 } from "@mui/material";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import bgImage from "../../../assets/img/String.png";
@@ -23,6 +21,8 @@ import { doctors } from '../../../data/dummyData/dummyData';
 
 //hooks
 import useEditPasienUmum from "../hooks/useEditPasienUmum";
+import CustomFrameTable from "../../../components/small/CustomFrameTable";
+import CustomTextField from "../../../components/inputComponent/CustomTextfield";
 export default function EditPasienUmum() {
     const {
         formik,
@@ -40,62 +40,7 @@ export default function EditPasienUmum() {
             />
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#fff", overflow: "hidden", height: 'fit-content' }}>
-                    {/* membuat bentuk lengkung atas */}
-                    <Box
-                        position={"absolute"}
-                        sx={{
-                            top: 0,
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            display: "flex",
-                        }}
-                    >
-                        {/* lengkung kiri */}
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#fff",
-                                    borderRadius: "0px 15px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-
-                        {/* kotak tengah */}
-                        <Box
-                            sx={{
-                                width: "600px",
-                                height: "50px",
-                                bgcolor: "#F1F0FE",
-                                borderRadius: "0px 0px 22px 22px",
-                            }}
-                        />
-
-                        {/* lengkung kanan */}
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#fff",
-                                    borderRadius: "15px 0px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-                    </Box>
+                    <CustomFrameTable />
                     {/* ---------- */}
                     <Typography fontSize="20px" fontWeight="700">Edit pasien Umum </Typography>
                     <Box
@@ -169,16 +114,10 @@ export default function EditPasienUmum() {
 
                             <Typography sx={{ fontSize: "16px", mt: 6 }}>Nama Pegawai<span style={{ color: "red" }}>*</span></Typography>
                             <FormControl fullWidth sx={{ my: 1 }}>
-                                <OutlinedInput
-                                    id="namaKlinik"
-                                    name="namaKlinik"
-                                    size="small"
-                                    placeholder="Masukkan Nama Pegawai"
-                                    value={formik.values.namaKlinik}
-                                    onChange={formik.handleChange}
-                                    onBlur={() => formik.setTouched({ ...formik.touched, namaKlinik: true })}
-                                    error={formik.touched.namaKlinik && Boolean(formik.errors.namaKlinik)}
-                                />
+                                    <CustomTextField
+                                        name="namaPegawai"
+                                        formik={formik}
+                                    />
                                 {formik.touched.namaKlinik && formik.errors.namaKlinik && (
                                     <Typography color="error">{formik.errors.namaKlinik}</Typography>
                                 )}
@@ -241,32 +180,9 @@ export default function EditPasienUmum() {
                                         <Box sx={{ display: "flex", flexDirection: "column" }}>
                                             <FormControl>
                                                 <Typography>Jenis Kunjungan</Typography>
-                                                <TextField
-                                                    variant="outlined"
-                                                    sx={{
-                                                        width: "100%",
-                                                        borderRadius: "8px",
-                                                        mb: 2,
-                                                        padding: "0",
-                                                        "& .MuiOutlinedInput-root": {
-                                                            height: "44px",
-                                                            padding: "0 12px",
-                                                            border: "1px solid #8F85F3",
-                                                            "& input": {
-                                                                height: "44px",
-                                                                padding: "0",
-                                                            },
-                                                            "& fieldset": {
-                                                                borderColor: "#8F85F3",
-                                                            },
-                                                            "&:hover fieldset": {
-                                                                borderColor: "#7A73E3",
-                                                            },
-                                                            "&.Mui-focused fieldset": {
-                                                                borderColor: "#6B63D1",
-                                                            },
-                                                        },
-                                                    }}
+                                                <CustomTextField
+                                                    name="jenisKunjungan"
+                                                    formik={formik}
                                                 />
                                             </FormControl>
                                             <Typography>Poli yang dituju</Typography>
@@ -315,12 +231,11 @@ export default function EditPasienUmum() {
 
                                             <FormControl>
                                                 <Typography sx={{ textTransform: "capitalize" }}>keluhan pasien</Typography>
-                                                <TextField
-                                                    id="outlined-multiline-static"
+                                                <CustomTextField
+                                                    name="namaKeluhanPasien"
+                                                    formik={formik}
                                                     multiline
-                                                    rows={4}
-                                                    variant="outlined"
-                                                    sx={{ maxHeight: "107px", maxWidth: "100%" }}
+                                                    placeholder="Masukkan keluhan pasien"
                                                 />
                                             </FormControl>
 
