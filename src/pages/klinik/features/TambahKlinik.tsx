@@ -6,6 +6,8 @@ import ImageUploaderGroup from '../../../components/inputComponent/ImageUploader
 //hooks
 import useTambahKlinik from "../hooks/useTambahKlinik";
 import CustomBigCalendar from "../../../components/medium/CustomBigCalendar";
+import CustomFrameTable from "../../../components/small/CustomFrameTable";
+import AlertWarning from "../../../components/small/alert/AlertWarning";
 export default function TambahKlinik() {
     const { 
         breadcrumbItems,
@@ -16,7 +18,8 @@ export default function TambahKlinik() {
         getBorderStyle,
         currentPage,
         kalenderRef,
-        handleSaveKlinik
+        handleSaveKlinik,
+        isSuccess
     } = useTambahKlinik();
     return (
         <Container sx={{ py: 2, minWidth: '1500px' }}>
@@ -26,63 +29,7 @@ export default function TambahKlinik() {
             />
             <Box mt={3}>
                 <Box position="relative" p={3} sx={{ borderRadius: "24px", bgcolor: "#FAFAFA", overflow: "hidden" }}>
-                    {/* Membuat bentuk lengkung atas */}
-
-                    <Box
-                        position={"absolute"}
-                        sx={{
-                            top: 0,
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            display: "flex",
-                        }}
-                    >
-                        {/* Lengkung kiri */}
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#FAFAFA",
-                                    borderRadius: "0px 15px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-
-                        {/* Kotak tengah */}
-                        <Box
-                            sx={{
-                                width: "600px",
-                                height: "50px",
-                                bgcolor: "#F1F0FE",
-                                borderRadius: "0px 0px 22px 22px",
-                            }}
-                        />
-
-                        {/* Lengkung kanan */}
-                        <Box
-                            sx={{
-                                width: "50px",
-                                height: "30px",
-                                bgcolor: "#F1F0FE",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    width: "50px",
-                                    height: "30px",
-                                    bgcolor: "#FAFAFA",
-                                    borderRadius: "15px 0px 0px 0px ",
-                                }}
-                            />
-                        </Box>
-                    </Box>
+                    <CustomFrameTable />
                     <Typography fontSize="20px" fontWeight="700">
                         Tambah Klinik
                     </Typography>
@@ -219,6 +166,9 @@ export default function TambahKlinik() {
                         </>)}
                 </Box>
             </Box>
+            {isSuccess && (
+                            <AlertWarning teks="Error adding clinic" />
+                        )}
         </Container >
     )
 }

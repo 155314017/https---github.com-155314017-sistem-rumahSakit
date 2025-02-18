@@ -6,21 +6,18 @@ import * as Yup from "yup";
 import { createClinic } from '../../../services/Admin Tenant/ManageClinic/CreateClinic';
 import { ImageData, uploadImages } from '../../../services/Admin Tenant/ManageImage/ImageUtils';
 import { createExclusions, createSchedules, KalenderData, validateInput } from '../../../services/Admin Tenant/ManageSchedule/ScheduleUtils';
+import { useSuccessNotification } from "../../../hooks/useSuccessNotification";
 
 
 export default function useTambahKlinik() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [imagesData, setImagesData] = useState<ImageData[]>([]);
-  const [errorAlert, setErrorAlert] = useState(false);
   const [operationalTime] = useState<string | null>(null);
   const kalenderRef = useRef<{ getData: () => KalenderData }>(null);
   const navigate = useNavigate();
+  const { isSuccess, message, showAlert } = useSuccessNotification();
 
-  const showTemporaryAlertError = async () => {
-    setErrorAlert(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setErrorAlert(false);
-  };
+  
 
   
 
@@ -139,7 +136,7 @@ export default function useTambahKlinik() {
         const responseData = error.response?.data;
         console.error('[DEBUG] Detail error dari server:', responseData || error.message);
       }
-      showTemporaryAlertError();
+      showAlert("Error Adding Clinic", 3000)
     }
   };
   return {
@@ -153,7 +150,7 @@ export default function useTambahKlinik() {
     kalenderRef,
     handleSaveKlinik,
     operationalTime,
-    errorAlert,
-    
+    isSuccess,
+    message
   }
 }

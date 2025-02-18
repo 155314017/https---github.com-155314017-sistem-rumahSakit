@@ -75,6 +75,6 @@ export default function useIndex() {
         totalElements,
         dataIdBuilding,
         setPageNumber,
-        setOrderBy
+        setOrderBy,
     }
 }

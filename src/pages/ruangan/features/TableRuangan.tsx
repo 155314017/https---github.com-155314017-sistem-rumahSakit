@@ -68,7 +68,8 @@ interface TableRuanganProps {
   setPageNumber: (page: number) => void;
   setOrderBy: (order: string) => void;
   totalElements: number;
-  dataIdBuilding: string[]
+  dataIdBuilding: string[];
+  fetchData?: () => void
 }
 
 const TableRuangan: React.FC<TableRuanganProps> = ({
@@ -77,7 +78,8 @@ const TableRuangan: React.FC<TableRuanganProps> = ({
   setPageNumber,
   setOrderBy,
   totalElements,
-  dataIdBuilding
+  dataIdBuilding,
+  fetchData
 }) => {
   const {
     page,
@@ -321,8 +323,10 @@ const TableRuangan: React.FC<TableRuanganProps> = ({
                             <ModalDeleteConfirmation
                               open={open}
                               onClose={() => setOpen(false)}
-                              apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/${deletedItems}`}
+                              apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room`}
                               onDeleteSuccess={handleDeleteSuccess}
+                              itemId={deletedItems ?? ""}
+                              fetchData={fetchData ?? (() => {})}
                             />
                             <Typography
                               onClick={() => navigate(`/editRuangan/${item.id}`)}

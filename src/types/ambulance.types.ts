@@ -1,3 +1,5 @@
+import { OperationalSchedule } from "../services/Admin Tenant/ManageSchedule/ScheduleUtils"
+
 export interface AmbulanceDataItem {
   id: string
   number: string
@@ -10,6 +12,7 @@ export interface AmbulanceDataItem {
   deletedBy: string | null
   deletedDateTime: number | null
   cost: number
+  operationalSchedule?: OperationalSchedule
 }
 
 export interface CreateAmbulanceRequest {

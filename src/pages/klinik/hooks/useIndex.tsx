@@ -1,89 +1,91 @@
 
 
 
-import { useCallback, useEffect, useState } from "react";
-import { Clinic } from "../../../services/Admin Tenant/ManageClinic/Clinic";
+import {  useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ClinicDataItem } from "../../../types/clinic.types";
+import { useFetchData } from "../../../hooks/useFetchData";
+import useDebounce from "../../../hooks/useDebounce";
+import { useSuccessNotification } from "../../../hooks/useSuccessNotification";
+import { Clinic } from "../../../services/Admin Tenant/ManageClinic/Clinic";
 
 export const PAGE_SIZE = 10;
 
 export default function useIndex() {
-    const [data, setData] = useState<ClinicDataItem[]>([]);
-    const [successAddClinic, setSuccessAddClinic] = useState(false);
-    const [successDeleteClinic, setSuccessDeleteClinic] = useState(false);
-    const [successEditClinic, setSuccessEditClinic] = useState(false);
-    const [isLoading, setIsLoading] = useState(false)
     const [pageNumber, setPageNumber] = useState(0);
     const [orderBy, setOrderBy] = useState("createdDateTime=asc");
-    const [totalElements, setTotalElements] = useState(0);
+    const [searchItem, setSearchItem] = useState("");
     const location = useLocation();
     const navigate = useNavigate();
 
 
-    const fetchData = useCallback( async () => {
-        setIsLoading(true)
-        try {
-            const result = await Clinic(pageNumber, PAGE_SIZE, orderBy);
-            setTotalElements(result.data.totalElements);
-            setData(result.data.content);
-        } catch (error) {
-            console.error('Failed to fetch data from API' + error);
-        } finally {
-            setIsLoading(false)
+    const { data, totalElements, loading, error, refetch } = useFetchData<ClinicDataItem[]>(
+        Clinic,
+        [pageNumber, PAGE_SIZE, orderBy, searchItem],
+        false
+      );
+
+
+    const hasFetched = useRef(false);
+      useEffect(() => {
+        if (!hasFetched.current) {
+          refetch();
+          hasFetched.current = true;
         }
-    }, [pageNumber, orderBy]);
+      }, [refetch]);
 
 
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
+      const debouncedSearchItem = useDebounce(searchItem, 300);
+
+      useEffect(() => {
+        if (debouncedSearchItem !== searchItem) {
+          refetch();
+        }
+      }, [debouncedSearchItem, refetch, searchItem]);
+
+
+      const handleSearchChange = (newSearchValue: string) => {
+        setSearchItem(newSearchValue);
+      }
+
+      const { isSuccess, message, showAlert } = useSuccessNotification();
+
 
     useEffect(() => {
         const handleLocationState = async () => {
           if (location.state) {
             if (location.state.successAdd) {
-              await showTemporaryAlertSuccess();
+              await showAlert("Clinic added successfully! ")
             } else if (location.state.successEdit) {
-              await showTemporarySuccessEdit();
+              await showAlert("Clinic edited successfully!");
             } else if (location.state.successDelete) {
-              await showTemporarySuccessDelete();
+              await showAlert("Clinic deleted successfully! ");
             }
             navigate(location.pathname, { replace: true, state: undefined });
-            fetchData();
           }
         };
     
         handleLocationState();
       }, [location.state]);
 
-    const showTemporaryAlertSuccess = async () => {
-        setSuccessAddClinic(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessAddClinic(false);
-    };
+    
 
-    const showTemporarySuccessDelete = async () => {
-        setSuccessDeleteClinic(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessDeleteClinic(false);
-    };
-
-    const showTemporarySuccessEdit = async () => {
-        setSuccessEditClinic(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setSuccessEditClinic(false);
-    };
+    
   return {
-    data, 
-    isLoading, 
-    fetchData, 
-    successAddClinic, 
-    successDeleteClinic, 
-    successEditClinic, 
-    showTemporarySuccessDelete,
+    data,
+    loading,
+    refetch,
+    pageNumber,
     setPageNumber,
+    orderBy,
+    setOrderBy,
     totalElements,
-    setOrderBy
+    PAGE_SIZE,
+    handleSearchChange,
+    error,
+    isSuccess,
+    message,
+    fetchData: refetch,
+    showAlert,
   }
 }

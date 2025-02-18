@@ -54,6 +54,7 @@ export default function DetailRuangan() {
                                 onClose={() => setOpen(false)}
                                 apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room/${deletedItems}`}
                                 onDeleteSuccess={handleDeleteSuccess}
+                                itemId={id || ""}
                             />
                             <Link
                                 underline="hover"
