@@ -36,8 +36,8 @@ import {
 import { styled } from '@mui/material/styles';
 import { DateCalendar, DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import CardJadwalPraktek from '../small/card/CardSchedulePractice';
-import CardJadwalExclusion from '../small/card/CardScheduleExclusion';
+import CardSchedulePractice from '../small/card/CardSchedulePractice';
+import CardScheduleExclusion from '../small/card/CardScheduleExclusion';
 import DropdownList from '../small/dropdownlist/DropdownList';
 import DropdownListTime from '../small/dropdownlist/DropdownListTime';
 import { CloseOutlined } from '@mui/icons-material';
@@ -1023,9 +1023,9 @@ const CustomBigCalendar = forwardRef<TestKalenderRef, TestKalenderProps>(({ init
                                     />
                                 </Box>
                             </LocalizationProvider>
-                            <CardJadwalPraktek sessions={sessions} />
+                            <CardSchedulePractice sessions={sessions} />
                             {exclusionEvents.map((event) => (
-                                <CardJadwalExclusion key={event.id} event={event} />
+                                <CardScheduleExclusion key={event.id} event={event} />
                             ))}
                         </Box>
 

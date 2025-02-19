@@ -3,7 +3,7 @@ import { Avatar, Typography } from '@mui/material';
 import { useState } from 'react';
 
 
-interface CardBiodataPegawaiProps {
+interface CardOutpatientInformationProps {
     nomorMR: string;
     namaLengkap: string;
     jenisKelamin: string;
@@ -12,13 +12,13 @@ interface CardBiodataPegawaiProps {
     onUbahData?: () => void;
     onHapusData?: () => void;
 }
-export default function CardBiodataPegawai({
+export default function CardOutpatientInformation({
     nomorMR,
     namaLengkap,
     tanggalLahir,
     jenisKelamin,
     avatarUrl,
-}: CardBiodataPegawaiProps) {
+}: CardOutpatientInformationProps) {
      const [showAll, setShowAll] = useState(false);
     
         const toggleShowAll = () => {

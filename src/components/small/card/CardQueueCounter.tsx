@@ -5,13 +5,13 @@ import html2canvas from "html2canvas";
 import { useState } from "react";
 import PrintIcon from "@mui/icons-material/Print";
 
-interface CardAntrianCounterProps {
+interface CardQueueCounterProps {
   nomorAntrian: string | number;
   tanggalReservasi: string;
   onClose: () => void;
 }
 
-const CardAntrianCounter: FC<CardAntrianCounterProps> = ({ nomorAntrian,tanggalReservasi, onClose }) => {
+const CardQueueCounter: FC<CardQueueCounterProps> = ({ nomorAntrian,tanggalReservasi, onClose }) => {
   const [showAlert, setShowAlert] = useState(false);
 
   const handleDownload = async () => {
@@ -216,4 +216,4 @@ const CardAntrianCounter: FC<CardAntrianCounterProps> = ({ nomorAntrian,tanggalR
   );
 };
 
-export default CardAntrianCounter;
+export default CardQueueCounter;

@@ -28,7 +28,7 @@ import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
 import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
-import CardAntrianCounter from "../../../../components/small/card/CardQueueCounter";
+import CardQueueCounter from "../../../../components/small/card/CardQueueCounter";
 import CustomTimePicker from "../../../../components/medium/CustomTimePicker";
 
 
@@ -918,7 +918,7 @@ export default function TambahPasienUmumOffline() {
                     {
                         needAdmin && !mainPages && (
                             <Box marginLeft={"0%"} marginTop={"10%"} zIndex={1500} >
-                                <CardAntrianCounter
+                                <CardQueueCounter
                                     nomorAntrian={queueData?.queueNumber || queueNumber}
                                     tanggalReservasi={tanggalReserve}
                                     onClose={() => navigate("/registrasi/offline")}

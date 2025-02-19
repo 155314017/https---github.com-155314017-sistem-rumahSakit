@@ -9,7 +9,7 @@ import AlertSuccess from "../alert/AlertSuccess";
 import ModalConfirmationSkipPatient from "../../medium/modal/ModalConfirmationSkipPatient";
 
 
-const CardPanggilPasien = () => {
+const CardPatientCall = () => {
     const [openModal, setOpenModal] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
@@ -210,4 +210,4 @@ const CardPanggilPasien = () => {
     )
 };
 
-export default CardPanggilPasien;
+export default CardPatientCall;

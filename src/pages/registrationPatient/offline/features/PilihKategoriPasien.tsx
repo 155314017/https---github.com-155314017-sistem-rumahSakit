@@ -11,8 +11,8 @@ import injuryImg from "../../../../assets/img/injury-pana 1.png"
 import medicineImg from "../../../../assets/img/meidicine.png"
 import qrcodeImg from "../../../../assets/img/qrcode.png"
 import fillingImg from "../../../../assets/img/filling.png"
-import CardAntrianCounter from "../../../../components/small/card/CardQueueCounter";
-import PasienCard from "../../../../components/small/card/PasienCard";
+import CardQueueCounter from "../../../../components/small/card/CardQueueCounter";
+import CardPatient from "../../../../components/small/card/CardPatient";
 import usePilihKategoriPasien from "../hooks/usePilihKategoriPasien";
 import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
@@ -238,7 +238,7 @@ export default function PilihKategoriPasien() {
 
                         <Stack direction="column" width={'100%'} spacing={0}>
                             {/* Kode Booking */}
-                            <PasienCard
+                            <CardPatient
                                 avatarSrc={qrcodeImg}
                                 description="Berfungsi untuk pasien yang sudah melakukan pendaftaran online untuk check-in nomor antrian."
                                 title="Masukkan Kode Booking"
@@ -253,7 +253,7 @@ export default function PilihKategoriPasien() {
 
 
                             {/* Pasien Umum */}
-                            <PasienCard
+                            <CardPatient
                                 href="/tambahPasien/umum/offline"
                                 avatarSrc={fillingImg}
                                 title="Pasien Umum"
@@ -262,7 +262,7 @@ export default function PilihKategoriPasien() {
                             />
 
                             {/* Pasien Umum */}
-                            <PasienCard
+                            <CardPatient
                                 href="/tambahPasien/umum/offline"
                                 avatarSrc={injuryImg}
                                 title="Pasien Asuransi"
@@ -271,7 +271,7 @@ export default function PilihKategoriPasien() {
                             />
 
                             {/* Pasien BPJS */}
-                            <PasienCard
+                            <CardPatient
                                 avatarSrc={medicineImg}
                                 title="Pasien non BPJS kesehatan"
                                 description="Pasien yang berobat di rumah sakit dengan biaya yang di cover oleh pemerintah."
@@ -305,7 +305,7 @@ export default function PilihKategoriPasien() {
                 </Box>
 
                 {tiketAntrianKonter && (
-                    <CardAntrianCounter
+                    <CardQueueCounter
                         nomorAntrian={queueData?.queueNumber || 0}
                         tanggalReservasi={tanggalReservasi || ""}
                         onClose={() => {

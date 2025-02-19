@@ -9,7 +9,7 @@ interface Props {
     onClick: () => void;
 }
 
-export default function CardRawatJalan({ title, text, onClick }: Props) {
+export default function CardOutpatient({ title, text, onClick }: Props) {
     return (
         <Card
             onClick={onClick}

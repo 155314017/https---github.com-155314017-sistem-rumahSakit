@@ -1,6 +1,6 @@
 import { Container, Box } from "@mui/system";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import CardInfoPasienRawatJalan from "../../../components/small/card/CardOutpatientInformation";
+import CardOutpatientInformation from "../../../components/small/card/CardOutpatientInformation";
 import CardRekamMedis from "../components/CardRekamMedis";
 import CardAppointmentCard from "../components/CardAppointmentCard";
 import profilePict from "../../../assets/img/meme.jpg";
@@ -12,7 +12,7 @@ import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import ModalConfirmationSkipPatient from "../../../components/medium/modal/ModalConfirmationSkipPatient";
 
 
-export default function DetailPasienRawatJalan() {
+export default function OutpatientDetails() {
     const {
         breadcrumbItems,
         handleClose,
@@ -46,7 +46,7 @@ export default function DetailPasienRawatJalan() {
                         gap={3}
                         sx={{ flexShrink: 0, width: '25%' }}
                     >
-                        <CardInfoPasienRawatJalan
+                        <CardOutpatientInformation
                             namaLengkap="Haji Rashford"
                             jenisKelamin="Lanang"
                             nomorMR="12123"

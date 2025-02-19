@@ -21,7 +21,7 @@ import dayjs from "dayjs";
 import AlertWarning from "../../../components/small/alert/AlertWarning";
 import {  Formik, Form } from "formik";
 import CustomTimePicker from "../../../components/medium/CustomTimePicker";
-import CardAntrianCounter from "../../../components/small/card/CardQueueCounter";
+import CardQueueCounter from "../../../components/small/card/CardQueueCounter";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import CustomTextField from "../../../components/inputComponent/CustomTextfield";
 
@@ -721,7 +721,7 @@ export default function TambahPasienUmum() {
                     {
                         needAdmin && !mainPages && (
                             <Box marginLeft={"20%"} marginTop={"10%"} zIndex={1500} >
-                                <CardAntrianCounter
+                                <CardQueueCounter
                                     nomorAntrian={queueData?.queueNumber || queueNumber}
                                     tanggalReservasi={tanggalReserve}
                                     onClose={() => navigate("/offline/tambahPasien")}

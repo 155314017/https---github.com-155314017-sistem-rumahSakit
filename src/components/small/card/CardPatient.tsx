@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Avatar, Box, Card, Typography } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-interface PasienCardProps {
+interface CardPatientProps {
     title: string;
     description: string;
     onClick?: () => void;
@@ -13,7 +13,7 @@ interface PasienCardProps {
     href?: string;
 }
 
-const PasienCard: React.FC<PasienCardProps> = ({
+const CardPatient: React.FC<CardPatientProps> = ({
     title,
     description,
     onClick,
@@ -93,4 +93,4 @@ const PasienCard: React.FC<PasienCardProps> = ({
     );
 };
 
-export default PasienCard;
+export default CardPatient;

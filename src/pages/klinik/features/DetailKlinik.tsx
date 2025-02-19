@@ -4,7 +4,7 @@ import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import ImageGrid from "../../../components/medium/ImageGrid";
 //hooks
 import useDetailKlinik from "../hooks/useDetailKlinik";
-import CardOperasional from "../../../components/small/card/CardOperation";
+import CardOperasional from "../../../components/small/card/CardOperational";
 import CardDetail from "../../../components/small/card/CardDetail";
 import ModalDeleteConfirmation from "../../../components/medium/modal/ModalDeleteConfirmation";
 import { Link } from "@mui/material";

@@ -20,7 +20,7 @@ import Fasilitas from './pages/fasilitas/features/Index';
 import TambahFasilitas from './pages/fasilitas/features/TambahFasilitas';
 import TambahRuangan from './pages/ruangan/features/TambahRuangan';
 import Pegawai from './pages/pegawai/features/Index';
-import DetailPegawai from './pages/pegawai/features/DetailPegawai';
+import DetailPegawai from './pages/pegawai/features/EmployeeDetail';
 import TambahPegawai from './pages/pegawai/features/TambahPegawai';
 import Dokter from './pages/dokter/features/Index';
 import Pasien from './pages/pasien/features/Index';
@@ -42,12 +42,12 @@ import PrivateRoute from './services/Admin Tenant/Auth/PrivateRoute';
 import PilihKategoriPasien from './pages/registrationPatient/offline/features/PilihKategoriPasien';
 import TambahPasienUmumOffline from './pages/registrationPatient/offline/features/TambahPasienUmumOffline';
 import DetailFasilitas from './pages/fasilitas/features/DetailFasilitas';
-import DetailDokter from './pages/dokter/features/DetailDokter';
+import DetailDokter from './pages/dokter/features/DoctorDetail';
 import RegistrationOnline from './pages/registrationPatient/online/features/RegistrationOnline';
 import NotFoundPage from './pages/NotFoundPage';
 import HomeAdmin from './pages/home/homeAdmin';
 import HomeQueue from './pages/home/homeQueue';
-import DetailPasienRawatJalan from './pages/antrian/features/DetailPasienRawatJalan';
+import OutpatientDetails from './pages/antrian/features/OutpatientDetails';
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -138,7 +138,7 @@ createRoot(document.getElementById('root')!).render(
 
 
         {/* not found route  */}
-        <Route path="/detailRawat" element={<DetailPasienRawatJalan />} />
+        <Route path="/detailRawat" element={<OutpatientDetails />} />
 
         {/* not found route  */}
         <Route path="*" element={<NotFoundPage />} />

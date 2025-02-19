@@ -51,7 +51,7 @@ const StyledTableContainer = styled(TableContainer)`
   }
 `;
 
-export default function CardIzinAkses() {
+export default function CardAccessPermit() {
     const {
         datas,
         displayedData,

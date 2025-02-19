@@ -22,7 +22,7 @@ import CustomCalendar from "../components/CustomCalender";
 import DropdownListAPI from "../../../../components/small/dropdownlist/DropdownListAPI";
 import InformasiTicketAPI from "../../../../components/medium/InformationTicketAPI";
 import useRegistrationOnline from "../hooks/useRegistrationOnline";
-import PasienCard from "../../../../components/small/card/PasienCard";
+import CardPatient from "../../../../components/small/card/CardPatient";
 import imgUmum from "../../../../assets/img/filling.png";
 import imgInsurance from "../../../../assets/img/injury-pana 1.png";
 import imgBPBJS from "../../../../assets/img/meidicine.png";
@@ -350,21 +350,21 @@ export default function RegistrationOnline() {
                                                 maxWidth: "90%",
                                             }}
                                         >
-                                            <PasienCard
+                                            <CardPatient
                                                 onClick={() => setCurrentPage(2)}
                                                 avatarSrc={imgUmum}
                                                 title="Pasien Umum"
                                                 widthContent="85%"
                                                 description="Pasien yang berobat di rumah sakit dengan membayar sendiri seluruh biaya perawatan dan pengobatan yang dibutuhkan."
                                             />
-                                            <PasienCard
+                                            <CardPatient
                                                 onClick={() => setCurrentPage(2)}
                                                 avatarSrc={imgInsurance}
                                                 title="Pasien Asuransi"
                                                 widthContent="85%"
                                                 description="Pasien yang berobat di rumah sakit dengan biaya yang di cover oleh pihak asuransi."
                                             />
-                                            <PasienCard
+                                            <CardPatient
                                                 onClick={() => setCurrentPage(2)}
                                                 avatarSrc={imgBPBJS}
                                                 title="Pasien BPBJS"

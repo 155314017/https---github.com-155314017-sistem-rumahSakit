@@ -12,7 +12,7 @@ import {
 
 import bgImage from "../../../assets/img/String.png";
 
-interface DetailCardProps {
+interface CardDetailProps {
   title: string | undefined;
   columns: Array<{ id: string; label: string }>;
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -21,7 +21,7 @@ interface DetailCardProps {
   actions?: (row: Record<string, any>) => JSX.Element;
 }
 
-const CardDetail: React.FC<DetailCardProps> = ({
+const CardDetail: React.FC<CardDetailProps> = ({
   title,
   columns,
   data,

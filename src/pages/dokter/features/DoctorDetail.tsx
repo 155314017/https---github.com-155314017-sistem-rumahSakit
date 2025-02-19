@@ -1,12 +1,12 @@
 import { Container, Box } from "@mui/system";
 
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import CardIzinAkses from "../../../components/small/card/CardAccessPermit";
-import CardBiodataPegawai from "../../../components/small/card/CardBiodataEmployee";
-import CardJamPraktek from "../../../components/small/card/CardPracticeHours";
+import CardAccessPermit from "../../../components/small/card/CardAccessPermit";
+import CardBiodataEmployee from "../../../components/small/card/CardBiodataEmployee";
+import CardPracticeHours from "../../../components/small/card/CardPracticeHours";
 import useDetailDokter from "../hooks/useDetailDokter";
 
-export default function DetailDokter() {
+export default function DoctorDetail() {
    const {
     breadcrumbItems,
     doctorData,
@@ -23,7 +23,7 @@ export default function DetailDokter() {
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 10 }} >
 
                 <Box mt={3} width={'30%'} display={'flex'} flexDirection={'column'} gap={3} >
-                    <CardBiodataPegawai 
+                    <CardBiodataEmployee
                     tanggalDitambahkan= {doctorData?.employeeData?.updatedBy || "Data Tidak Ditemukan"}
                     namaPegawai= {doctorData?.employeeData?.name || "Data Tidak Ditemukan"}
                     jenisKelamin= {doctorData?.employeeData?.gender || "Data Tidak Ditemukan"}
@@ -37,7 +37,7 @@ export default function DetailDokter() {
                     onHapusData={() => handleDeleteSuccess()}
                     
                     />
-                    <CardJamPraktek 
+                    <CardPracticeHours
                     title="Jam Operasional"
                     data={doctorData?.operationalSchedule || {
                         senin: "-",
@@ -51,7 +51,7 @@ export default function DetailDokter() {
                     />
                 </Box>
                 <Box mt={3} >
-                    <CardIzinAkses />
+                    <CardAccessPermit />
                 </Box>
 
             </Box>

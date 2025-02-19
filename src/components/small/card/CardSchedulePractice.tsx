@@ -26,11 +26,11 @@ interface Session {
     notes: string;
 }
 
-interface CardJadwalPraktekProps {
+interface CardSchedulePracticeProps {
     sessions: Session[];
 }
 
-const CardJadwalPraktek: React.FC<CardJadwalPraktekProps> = ({ sessions }) => {
+const CardSchedulePractice: React.FC<CardSchedulePracticeProps> = ({ sessions }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const handleToggleCollapse = () => {
@@ -89,4 +89,4 @@ const CardJadwalPraktek: React.FC<CardJadwalPraktekProps> = ({ sessions }) => {
     );
 }
 
-export default CardJadwalPraktek;
+export default CardSchedulePractice;

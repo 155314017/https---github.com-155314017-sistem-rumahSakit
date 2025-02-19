@@ -14,7 +14,7 @@ interface DetailCardProps {
     };
 }
 
-const CardJamPraktek: React.FC<DetailCardProps> = ({  data }) => {
+const CardPracticeHours: React.FC<DetailCardProps> = ({  data }) => {
     return (
         <div>
         <Box
@@ -127,4 +127,4 @@ const CardJamPraktek: React.FC<DetailCardProps> = ({  data }) => {
     )
 };
 
-export default CardJamPraktek;
+export default CardPracticeHours;

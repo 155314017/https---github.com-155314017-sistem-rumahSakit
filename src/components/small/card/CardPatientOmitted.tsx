@@ -3,7 +3,7 @@ import bgImage from "../../../assets/img/String.png";
 import { useState } from "react";
 import MiniTableRawatJalan from "../../../pages/antrian/features/MiniTableRawatJalan";
 
-export default function CardPasienTerlewati() {
+export default function CardPatientOmitted() {
     const [showAll, setShowAll] = useState(false);
 
     const toggleShowAll = () => {

@@ -20,11 +20,11 @@ interface Event {
     borderColor?: string;
 }
 
-interface CardJadwalExclusionProps {
+interface CardScheduleExclusionProps {
     event: Event;
 }
 
-const CardJadwalExclusion: React.FC<CardJadwalExclusionProps> = ({ event }) => {
+const CardScheduleExclusion: React.FC<CardScheduleExclusionProps> = ({ event }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const handleToggleCollapse = () => {
@@ -89,4 +89,4 @@ const CardJadwalExclusion: React.FC<CardJadwalExclusionProps> = ({ event }) => {
     );
 }
 
-export default CardJadwalExclusion;
+export default CardScheduleExclusion;

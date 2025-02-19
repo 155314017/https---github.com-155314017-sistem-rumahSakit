@@ -8,8 +8,8 @@ import CardAdd from '../../../components/small/card/CardAdd'
 import AddSharpIcon from '@mui/icons-material/AddSharp';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import MediumCard from '../../../components/small/card/MediumCard'
-import CardPanggilPasien from '../../../components/small/card/CardPatientCall';
-import CardPasienTerlewati from '../../../components/small/card/CardPatientOmitted';
+import CardPatientCall from '../../../components/small/card/CardPatientCall';
+import CardPatientOmitted from '../../../components/small/card/CardPatientOmitted';
 import AlertSuccess from '../../../components/small/alert/AlertSuccess';
 
 import useQueueDashboard from '../hooks/useQueueDashboard';
@@ -40,7 +40,7 @@ export default function QueueDashboard({ selectedValue }: any) {
                                 subtitle={'200 Orang'}
                             />
                         </Box>
-                        {selectedValue === 'Dasboard' && <CardPanggilPasien />}
+                        {selectedValue === 'Dasboard' && <CardPatientCall />}
                     </Box>
 
                     <Box display={'flex'} flexDirection={'column'} gap={2} width={'49%'} >
@@ -52,7 +52,7 @@ export default function QueueDashboard({ selectedValue }: any) {
                             />
                             <CardAdd icon={AddSharpIcon} title="Tambah pasien" link="/tambahRuangan" />
                         </Box>
-                        {selectedValue === 'Dasboard' && <CardPasienTerlewati />}
+                        {selectedValue === 'Dasboard' && <CardPatientOmitted />}
                     </Box>
                 </Grid>
                 <Box mt={3} >

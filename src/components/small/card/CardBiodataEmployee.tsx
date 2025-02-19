@@ -2,7 +2,7 @@ import { Box } from '@mui/system'
 import { Avatar, Typography } from '@mui/material';
 
 
-interface CardBiodataPegawaiProps {
+interface CardBiodataEmployeeProps {
     tanggalDitambahkan: string | number;
     namaPegawai: string;
     jenisKelamin: string;
@@ -15,7 +15,7 @@ interface CardBiodataPegawaiProps {
     onUbahData?: () => void;
     onHapusData?: () => void;
   }
-export default function CardBiodataPegawai({
+export default function CardBiodataEmployee({
     tanggalDitambahkan,
     namaPegawai,
     jenisKelamin,
@@ -28,7 +28,7 @@ export default function CardBiodataPegawai({
     onUbahData,
     onHapusData
     
-}: CardBiodataPegawaiProps) {
+}: CardBiodataEmployeeProps) {
     return (
         <Box
             position={"relative"}
