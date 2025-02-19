@@ -1,6 +1,6 @@
 import { Container, Box } from "@mui/system";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import CardInfoPasienRawatJalan from "../../../components/small/card/CardInfoPasienRawatJalan";
+import CardInfoPasienRawatJalan from "../../../components/small/card/CardOutpatientInformation";
 import CardRekamMedis from "../components/CardRekamMedis";
 import CardAppointmentCard from "../components/CardAppointmentCard";
 import profilePict from "../../../assets/img/meme.jpg";

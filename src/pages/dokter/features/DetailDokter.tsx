@@ -1,9 +1,9 @@
 import { Container, Box } from "@mui/system";
 
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import CardIzinAkses from "../../../components/small/card/CardIzinAkses";
-import CardBiodataPegawai from "../../../components/small/card/CardBiodataPegawai";
-import CardJamPraktek from "../../../components/small/card/CardJamPraktek";
+import CardIzinAkses from "../../../components/small/card/CardAccessPermit";
+import CardBiodataPegawai from "../../../components/small/card/CardBiodataEmployee";
+import CardJamPraktek from "../../../components/small/card/CardPracticeHours";
 import useDetailDokter from "../hooks/useDetailDokter";
 
 export default function DetailDokter() {

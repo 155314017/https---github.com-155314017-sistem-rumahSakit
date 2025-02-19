@@ -5,13 +5,13 @@ import bgImg from "../../../../assets/img/Bg-desktop.svg"
 import CloseIcon from '@mui/icons-material/Close';
 import { Formik, Form, Field } from "formik";
 import { Stack } from "@mui/system";
-import InformasiTicketAPI from "../../../../components/medium/InformasiTicketAPI";
+import InformasiTicketAPI from "../../../../components/medium/InformationTicketAPI";
 import 'dayjs/locale/id';
 import injuryImg from "../../../../assets/img/injury-pana 1.png"
 import medicineImg from "../../../../assets/img/meidicine.png"
 import qrcodeImg from "../../../../assets/img/qrcode.png"
 import fillingImg from "../../../../assets/img/filling.png"
-import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
+import CardAntrianCounter from "../../../../components/small/card/CardQueueCounter";
 import PasienCard from "../../../../components/small/card/PasienCard";
 import usePilihKategoriPasien from "../hooks/usePilihKategoriPasien";
 import AlertWarning from "../../../../components/small/alert/AlertWarning";

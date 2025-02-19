@@ -20,7 +20,7 @@ import dayjs from "dayjs";
 import { Formik, Form, Field } from "formik";
 import CustomCalendar from "../components/CustomCalender";
 import DropdownListAPI from "../../../../components/small/dropdownlist/DropdownListAPI";
-import InformasiTicketAPI from "../../../../components/medium/InformasiTicketAPI";
+import InformasiTicketAPI from "../../../../components/medium/InformationTicketAPI";
 import useRegistrationOnline from "../hooks/useRegistrationOnline";
 import PasienCard from "../../../../components/small/card/PasienCard";
 import imgUmum from "../../../../assets/img/filling.png";

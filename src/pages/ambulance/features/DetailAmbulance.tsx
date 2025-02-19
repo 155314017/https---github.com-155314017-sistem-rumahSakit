@@ -8,7 +8,7 @@ import CardDetail from "../../../components/small/card/CardDetail";
 
 // hooks
 import useDetailAmbulance from "../hooks/useDetailAmbulance";
-import CardOperasional from "../../../components/small/card/CardOperasional";
+import CardOperasional from "../../../components/small/card/CardOperation";
 import ModalDeleteConfirmation from "../../../components/medium/modal/ModalDeleteConfirmation";
 export default function DetailAmbulance() {
   const {

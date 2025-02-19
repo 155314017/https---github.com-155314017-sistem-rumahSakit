@@ -12,7 +12,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 
 //hooks
 import useIndex from "../hooks/useIndex";
-import ModalKategoriPasien from "../../../components/medium/modal/ModalKategoriPasien";
+import ModalKategoriPasien from "../../../components/medium/modal/ModalPatientCategory";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import { gridContainerStyle } from "../../../style/ts/gridContainerStyle";
 export default function Index() {

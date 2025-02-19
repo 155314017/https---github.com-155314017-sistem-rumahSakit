@@ -8,8 +8,8 @@ import CardAdd from '../../../components/small/card/CardAdd'
 import AddSharpIcon from '@mui/icons-material/AddSharp';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import MediumCard from '../../../components/small/card/MediumCard'
-import CardPanggilPasien from '../../../components/small/card/CardPanggilPasien';
-import CardPasienTerlewati from '../../../components/small/card/CardPasienTerlewati';
+import CardPanggilPasien from '../../../components/small/card/CardPatientCall';
+import CardPasienTerlewati from '../../../components/small/card/CardPatientOmitted';
 import AlertSuccess from '../../../components/small/alert/AlertSuccess';
 
 import useQueueDashboard from '../hooks/useQueueDashboard';

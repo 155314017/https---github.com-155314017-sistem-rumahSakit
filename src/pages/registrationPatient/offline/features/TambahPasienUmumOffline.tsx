@@ -22,13 +22,13 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import useTambahPasienUmumOffline from "../hooks/useTambahPasienUmumOffline";
 import DropdownListAPI from "../../../../components/small/dropdownlist/DropdownListAPI";
-import InformasiTicketAPI from "../../../../components/medium/InformasiTicketAPI";
+import InformasiTicketAPI from "../../../../components/medium/InformationTicketAPI";
 import bgImg from "../../../../assets/img/Bg-desktop.svg"
 import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
 import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
-import CardAntrianCounter from "../../../../components/small/card/CardAntrianCounter";
+import CardAntrianCounter from "../../../../components/small/card/CardQueueCounter";
 import CustomTimePicker from "../../../../components/medium/CustomTimePicker";
 
 

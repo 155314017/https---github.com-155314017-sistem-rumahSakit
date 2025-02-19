@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PrintIcon from "@mui/icons-material/Print";
 import AlertSuccess from "../small/alert/AlertSuccess";
-import ModalUbahNoHp from "./modal/ModalUbahNoHp";
+import ModalUbahNoHp from "./modal/ModalChangePhoneNumber";
 type InformasiTicketProps = {
   nomorAntrian?: string | number;
   namaDokter: string | undefined;

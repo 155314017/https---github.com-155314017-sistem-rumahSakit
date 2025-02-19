@@ -5,7 +5,7 @@ import ImageGrid from "../../../components/medium/ImageGrid";
 import { Link } from "@mui/material";
 import CardDetail from "../../../components/small/card/CardDetail";
 import useDetailFasilitas from "../hooks/useDetailFasilitas";
-import CardOperasional from "../../../components/small/card/CardOperasional";
+import CardOperasional from "../../../components/small/card/CardOperation";
 import ModalDeleteConfirmation from "../../../components/medium/modal/ModalDeleteConfirmation";
 
 

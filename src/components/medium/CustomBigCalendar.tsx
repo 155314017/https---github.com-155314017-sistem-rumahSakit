@@ -36,8 +36,8 @@ import {
 import { styled } from '@mui/material/styles';
 import { DateCalendar, DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import CardJadwalPraktek from '../small/card/CardJadwalPraktek';
-import CardJadwalExclusion from '../small/card/CardJadwalExclusion';
+import CardJadwalPraktek from '../small/card/CardSchedulePractice';
+import CardJadwalExclusion from '../small/card/CardScheduleExclusion';
 import DropdownList from '../small/dropdownlist/DropdownList';
 import DropdownListTime from '../small/dropdownlist/DropdownListTime';
 import { CloseOutlined } from '@mui/icons-material';
