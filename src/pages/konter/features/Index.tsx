@@ -8,7 +8,7 @@ import CardAdd from "../../../components/small/card/CardAdd";
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import TableKonter from "../../../pages/konter/features/TableKonter";
+import TableKonter from "./TableCounter";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 
 //hooks

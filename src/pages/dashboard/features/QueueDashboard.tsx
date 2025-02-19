@@ -13,8 +13,8 @@ import CardPatientOmitted from '../../../components/small/card/CardPatientOmitte
 import AlertSuccess from '../../../components/small/alert/AlertSuccess';
 
 import useQueueDashboard from '../hooks/useQueueDashboard';
-import TableRawatJalan from '../../antrian/features/TableRawatJalan';
-import TableAntrian from '../../antrian/features/TableAntrian';
+import TableRawatJalan from '../../antrian/features/TableOutpatient';
+import TableAntrian from '../../antrian/features/TableQueue';
 
 export default function QueueDashboard({ selectedValue }: any) {
     const {

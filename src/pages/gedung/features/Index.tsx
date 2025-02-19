@@ -3,7 +3,7 @@ import SideBar from "../../../components/SideBar/SideBar";
 import Header from "../../../components/header/Header";
 import CardAdd from "../../../components/small/card/CardAdd";
 import MediumCard from "../../../components/small/card/MediumCard";
-import TableGedung from "../../../pages/gedung/features/TableGedung";
+import TableGedung from "./TableBuilding";
 
 // icon
 import AddBoxIcon from '@mui/icons-material/AddBox';

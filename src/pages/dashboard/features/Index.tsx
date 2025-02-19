@@ -14,15 +14,15 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices'
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart'
 
 // table
-import TableRuangan from '../../../pages/ruangan/features/TableRuangan'
-import TablePegawai from '../../../pages/pegawai/features/TablePegawai'
-import TableGedung from '../../../pages/gedung/features/TableGedung'
-import TableFasilitas from '../../../pages/fasilitas/features/TableFasilitas'
+import TableRuangan from '../../ruangan/features/TableRoom'
+import TablePegawai from '../../pegawai/features/TableEmployee'
+import TableGedung from '../../gedung/features/TableBuilding'
+import TableFasilitas from '../../fasilitas/features/TableFacility'
 import TableDokter from '../../../pages/dokter/features/TableDokter'
 import TableAmbulance from '../../../pages/ambulance/features/TableAmbulance'
-import TableKlinik from '../../../pages/klinik/features/TableKlinik'
-import TableKonter from '../../../pages/konter/features/TableKonter'
-import TablePasien from '../../../pages/pasien/features/TablePasien'
+import TableKlinik from '../../klinik/features/TableClinic'
+import TableKonter from '../../konter/features/TableCounter'
+import TablePasien from '../../pasien/features/TablePatient'
 import AlertSuccess from '../../../components/small/alert/AlertSuccess'
 
 //hooks

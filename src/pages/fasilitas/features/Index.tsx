@@ -7,8 +7,8 @@ import CardAdd from "../../../components/small/card/CardAdd";
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import TableFasilitas from "../../../pages/fasilitas/features/TableFasilitas";
-import TableSubFasilitas from "../../../pages/fasilitas/features/TableSubFasilitas";
+import TableFasilitas from "./TableFacility";
+import TableSubFasilitas from "./TableSubFacility";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 
 //hooks

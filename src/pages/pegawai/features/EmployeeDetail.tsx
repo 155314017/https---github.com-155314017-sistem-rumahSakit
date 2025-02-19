@@ -4,14 +4,14 @@ import BreadCrumbs from "../../../components/medium/BreadCrumbs";
 import CardAccessPermit from "../../../components/small/card/CardAccessPermit";
 import CardBiodataEmployee from "../../../components/small/card/CardBiodataEmployee";
 import CardPracticeHours from "../../../components/small/card/CardPracticeHours";
-import useDetailPegawai from "../hooks/useDetailPegawai";
+import useDetailEmployee from "../hooks/useDetailEmployee";
 
 export default function EmployeeDetail() {
     const {
         breadcrumbItems,
         employeeData,
         handleDeleteSuccess,
-    } = useDetailPegawai();
+    } = useDetailEmployee();
 
 
     return (

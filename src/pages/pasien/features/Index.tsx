@@ -4,7 +4,7 @@ import SideBar from "../../../components/SideBar/SideBar";
 import Header from "../../../components/header/Header";
 import MediumCard from "../../../components/small/card/MediumCard";
 import CardAddOnClick from "../../../components/small/card/CardAddOnClick";
-import TablePasien from "../../../pages/pasien/features/TablePasien";
+import TablePasien from "./TablePatient";
 
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';

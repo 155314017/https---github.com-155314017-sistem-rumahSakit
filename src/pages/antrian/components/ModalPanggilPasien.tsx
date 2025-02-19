@@ -15,11 +15,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import dummy from "../../../assets/img/Dummy2.png";
 
 
-interface ModalPanggilPasienProps {
+interface ModalCallPatientProps {
   onClose: () => void;
   countdown: number;
 }
-const ModalPanggilPasien: React.FC<ModalPanggilPasienProps> = ({ onClose, countdown }) => {
+const ModalCallPatient: React.FC<ModalCallPatientProps> = ({ onClose, countdown }) => {
   const [actionType, setActionType] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -227,4 +227,4 @@ const ModalPanggilPasien: React.FC<ModalPanggilPasienProps> = ({ onClose, countd
   );
 };
 
-export default ModalPanggilPasien;
+export default ModalCallPatient;

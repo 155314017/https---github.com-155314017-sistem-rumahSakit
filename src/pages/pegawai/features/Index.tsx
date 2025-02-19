@@ -8,7 +8,7 @@ import CardAdd from "../../../components/small/card/CardAdd";
 // icon
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import TablePegawai from "../../../pages/pegawai/features/TablePegawai";
+import TablePegawai from "./TableEmployee";
 
 export default function Pegawai() {
     return (

@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import bgImage from "../../../assets/img/String.png";
 import { useState } from "react";
-import MiniTableRawatJalan from "../../../pages/antrian/features/MiniTableRawatJalan";
+import MiniTableRawatJalan from "../../../pages/antrian/features/MiniTableOutpatient";
 
 export default function CardPatientOmitted() {
     const [showAll, setShowAll] = useState(false);

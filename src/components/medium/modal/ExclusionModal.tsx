@@ -15,7 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { DateCalendar } from "@mui/x-date-pickers";
 import DropdownList from "../dropdownlist/DropdownList";
 import type { Dayjs } from "dayjs";
-import type { Exclusion } from "../../../pages/pegawai/hooks/useTambahPegawai";
+import type { Exclusion } from "../../../pages/pegawai/hooks/useAddEmployee";
 import DropdownListTime from "../dropdownlist/DropdownListTime";
 
 interface ExclusionModalProps {
