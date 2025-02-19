@@ -2,7 +2,6 @@ import {
   Box,
   Stack,
   Typography,
-  TableContainer,
   Table,
   TableHead,
   TableRow,
@@ -14,7 +13,6 @@ import {
 } from "@mui/material";
 import SearchBar from "../../../components/small/SearchBar";
 import DropdownList from "../../../components/small/dropdownlist/DropdownList";
-import { styled } from "@mui/material/styles";
 import bgImage from "../../../assets/img/String.png";
 import { BuildingDataItem } from "../../../types/building.types";
 
@@ -22,29 +20,7 @@ import { BuildingDataItem } from "../../../types/building.types";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-}));
 
-const StyledTableContainer = styled(TableContainer)`
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: #8f85f3;
-      border-radius: 10px;
-      border: 2px solid #f1f1f1;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background-color: #6c63ff;
-      cursor: pointer;
-    }
-  `;
 
 //hooks
 import useTableGedung from "../hooks/useTableGedung";
@@ -53,6 +29,8 @@ import CustomFrameTable from "../../../components/small/CustomFrameTable";
 import PaginationTable from "../../../components/tableComponents/PaginationTable";
 import ModalDeleteConfirmation from "../../../components/medium/modal/ModalDeleteConfirmation";
 import ShowingDataInformation from "../../../components/tableComponents/ShowingDataInformation";
+import StyledTableContainer from "../../../components/tableComponents/StyledTableContainer";
+import StyledTableRow from "../../../components/tableComponents/StyledTableRow";
 
 interface TableGedungProps {
   data: BuildingDataItem[];
@@ -275,8 +253,8 @@ const TableGedung: React.FC<TableGedungProps> = ({
                             apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/building`}
                             onDeleteSuccess={handleDeleteSuccess}
                             itemId={deletedItems ?? ""}
-                            fetchData={fetchData ?? (() => {})}
-    
+                            fetchData={fetchData ?? (() => { })}
+
                           />
                           <Link
                             onClick={() => navigate(`/editGedung/${item.id}`)}

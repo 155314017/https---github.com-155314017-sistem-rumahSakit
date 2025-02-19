@@ -241,22 +241,6 @@ export default function LoginPegawai() {
                           Lupa kata sandi?
                         </a>
                       </Box>
-                      {/* <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        sx={{
-                          width: '100%',
-                          height: '48px',
-                          marginTop: '20px',
-                          backgroundColor: '#8F85F3',
-                          ':hover': { backgroundColor: '#D5D1FB' }
-                        }}
-                        disabled={isChecked ? !isChecked : !isValid || !dirty}
-                      >
-                        Login
-                      </Button> */}
                       <CustomButtonFilled type='submit' variant='contained' color='primary' text='Login' disabled={isChecked ? !isChecked : !isValid || !dirty} />
                     </Box>
                   </Form>
@@ -333,22 +317,6 @@ export default function LoginPegawai() {
                             error={touched.email && Boolean(errors.email)}
                             helperText={touched.email && errors.email}
                           />
-                          {/* <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                            sx={{
-                              width: '100%',
-                              height: '48px',
-                              marginTop: '20px',
-                              backgroundColor: '#8F85F3',
-                              ':hover': { backgroundColor: '#D5D1FB' }
-                            }}
-                            disabled={!isValid || !dirty}
-                          >
-                            Setel ulang kata sandi
-                          </Button> */}
 
                           <CustomButtonFilled type='submit' variant='contained' color='primary' text='Setel ulang kata sandi' disabled={!isValid || !dirty} />
 
