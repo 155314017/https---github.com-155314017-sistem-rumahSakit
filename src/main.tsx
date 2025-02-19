@@ -2,46 +2,46 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './index.css'
-import Gedung from '../src/pages/gedung/features/Index';
+import Building from '../src/pages/gedung/features/Index';
 import Ambulance from './pages/ambulance/features/Index';
 import DetailAmbulance from './pages/ambulance/features/DetailAmbulance';
-import TambahAmbulance from './pages/ambulance/features/AddAmbulance';
-import DetailGedung from './pages/gedung/features/DetailBuilding.tsx';
-import TambahGedung from './pages/gedung/features/AddBuilding.tsx';
-import Klinik from './pages/klinik/features/Index';
-import DetailKlinik from './pages/klinik/features/DetailClinic.tsx';
-import TambahKlinik from './pages/klinik/features/AddClinic.tsx';
-import Konter from './pages/konter/features/Index';
-import DetailKonter from './pages/konter/features/DetailCounter.tsx';
-import TambahKonter from './pages/konter/features/AddCounter.tsx';
-import Ruangan from './pages/ruangan/features/Index';
-import DetailRuangan from './pages/ruangan/features/DetailRoom.tsx';
-import Fasilitas from './pages/fasilitas/features/Index';
-import TambahFasilitas from './pages/fasilitas/features/AddFacility.tsx';
-import TambahRuangan from './pages/ruangan/features/AddRoom.tsx';
-import Pegawai from './pages/pegawai/features/Index';
-import DetailPegawai from './pages/pegawai/features/EmployeeDetail';
-import TambahPegawai from './pages/pegawai/features/AddEmployee.tsx';
+import AddAmbulance from './pages/ambulance/features/AddAmbulance';
+import DetailBuilding from './pages/gedung/features/DetailBuilding.tsx';
+import AddBuilding from './pages/gedung/features/AddBuilding.tsx';
+import Clinic from './pages/klinik/features/Index';
+import DetailClinic from './pages/klinik/features/DetailClinic.tsx';
+import AddClinic from './pages/klinik/features/AddClinic.tsx';
+import Counter from './pages/konter/features/Index';
+import DetailCounter from './pages/konter/features/DetailCounter.tsx';
+import AddCounter from './pages/konter/features/AddCounter.tsx';
+import Room from './pages/ruangan/features/Index';
+import DetailRoom from './pages/ruangan/features/DetailRoom.tsx';
+import Facility from './pages/fasilitas/features/Index';
+import AddFacility from './pages/fasilitas/features/AddFacility.tsx';
+import AddRoom from './pages/ruangan/features/AddRoom.tsx';
+import Employee from './pages/pegawai/features/Index';
+import DetailEmployee from './pages/pegawai/features/EmployeeDetail';
+import AddEmployee from './pages/pegawai/features/AddEmployee.tsx';
 import Dokter from './pages/dokter/features/Index';
 import Pasien from './pages/pasien/features/Index';
-import TambahPasienBPJS from './pages/pasien/features/AddPatientBPJS.tsx';
-import TambahPasienUmum from './pages/pasien/features/AddGeneralPatients.tsx';
+import AddPasienBPJS from './pages/pasien/features/AddPatientBPJS.tsx';
+import AddGeneralPatient from './pages/pasien/features/AddGeneralPatients.tsx';
 import EditPasienBPJS from './pages/pasien/features/EditPatientBPJS.tsx';
-import EditPasienUmum from './pages/pasien/features/EditGeneralPatients.tsx';
-import LoginPegawai from './pages/login/loginPegawai/features/LoginEmployee.tsx';
-import AturUlangKataSandiPegawai from './pages/login/loginPegawai/features/ResetEmployeePassword.tsx';
-import TambahSubFasilitas from './pages/fasilitas/features/AddSubFacility.tsx';
-import EditRuangan from './pages/ruangan/features/EditRoom.tsx';
-import EditGedung from './pages/gedung/features/EditBuilding.tsx';
+import EditGeneralPatient from './pages/pasien/features/EditGeneralPatients.tsx';
+import LoginEmployee from './pages/login/loginPegawai/features/LoginEmployee.tsx';
+import ResetEmployeePassword from './pages/login/loginPegawai/features/ResetEmployeePassword.tsx';
+import AddSubFacility from './pages/fasilitas/features/AddSubFacility.tsx';
+import EditRoom from './pages/ruangan/features/EditRoom.tsx';
+import EditBuilding from './pages/gedung/features/EditBuilding.tsx';
 import EditAmbulance from './pages/ambulance/features/EditAmbulance';
-import EditFasilitas from './pages/fasilitas/features/EditFacility.tsx';
-import EditSUbFasilitas from './pages/fasilitas/features/EditSubFacility.tsx';
-import EditKlinik from './pages/klinik/features/EditClinic.tsx';
-import EditKonter from './pages/konter/features/EditCounter.tsx';
+import EditFacility from './pages/fasilitas/features/EditFacility.tsx';
+import EditSUbFacility from './pages/fasilitas/features/EditSubFacility.tsx';
+import EditClinic from './pages/klinik/features/EditClinic.tsx';
+import EditCounter from './pages/konter/features/EditCounter.tsx';
 import PrivateRoute from './services/Admin Tenant/Auth/PrivateRoute';
-import PilihKategoriPasien from './pages/registrationPatient/offline/features/SelectPatientCategory.tsx';
-import TambahPasienUmumOffline from './pages/registrationPatient/offline/features/AddPatientsGeneralOffline.tsx';
-import DetailFasilitas from './pages/fasilitas/features/DetailFacility.tsx';
+import SelectPatientCategory from './pages/registrationPatient/offline/features/SelectPatientCategory.tsx';
+import AddGeneralPatientOffline from './pages/registrationPatient/offline/features/AddPatientsGeneralOffline.tsx';
+import DetailFacility from './pages/fasilitas/features/DetailFacility.tsx';
 import DetailDokter from './pages/dokter/features/DoctorDetail';
 import RegistrationOnline from './pages/registrationPatient/online/features/RegistrationOnline';
 import NotFoundPage from './pages/NotFoundPage';
@@ -61,10 +61,10 @@ createRoot(document.getElementById('root')!).render(
 
           {/* User Management Section  */}
 
-          {/* Page Pegawai  */}
-          <Route path="/pegawai" element={<Pegawai />} />
-          <Route path="/detailPegawai/:id" element={<DetailPegawai />} />
-          <Route path="/tambahPegawai" element={<TambahPegawai />} />
+          {/* Page Employee  */}
+          <Route path="/pegawai" element={<Employee />} />
+          <Route path="/detailPegawai/:id" element={<DetailEmployee />} />
+          <Route path="/tambahPegawai" element={<AddEmployee />} />
 
           {/* Page Dokter  */}
           <Route path="/dokter" element={<Dokter />} />
@@ -72,65 +72,65 @@ createRoot(document.getElementById('root')!).render(
 
 
           {/* Health Manage  */}
-          {/* Gedung */}
-          <Route path="/gedung" element={<Gedung />} />
-          <Route path="/detailGedung/:id" element={<DetailGedung />} />
-          <Route path="/tambahGedung" element={<TambahGedung />} />
-          <Route path="/editGedung/:id" element={<EditGedung />} />
+          {/* Building */}
+          <Route path="/gedung" element={<Building />} />
+          <Route path="/detailBuilding/:id" element={<DetailBuilding />} />
+          <Route path="/tambahBuilding" element={<AddBuilding />} />
+          <Route path="/editBuilding/:id" element={<EditBuilding />} />
 
-          {/* Page Ruangan */}
-          <Route path="/ruangan" element={<Ruangan />} />
-          <Route path="/detailRuangan/:id" element={<DetailRuangan />} />
-          <Route path="/tambahRuangan" element={<TambahRuangan />} />
-          <Route path="/editRuangan/:id" element={<EditRuangan />} />
+          {/* Page Room */}
+          <Route path="/ruangan" element={<Room />} />
+          <Route path="/detailRoom/:id" element={<DetailRoom />} />
+          <Route path="/tambahRoom" element={<AddRoom />} />
+          <Route path="/editRoom/:id" element={<EditRoom />} />
 
           {/* Ambulance */}
           <Route path="/ambulance" element={<Ambulance />} />
           <Route path="/detailAmbulance/:id" element={<DetailAmbulance />} />
-          <Route path="/tambahAmbulance" element={<TambahAmbulance />} />
+          <Route path="/tambahAmbulance" element={<AddAmbulance />} />
           <Route path="/editAmbulance/:id" element={<EditAmbulance />} />
 
-          {/* Page Fasilitas */}
-          <Route path="/fasilitas" element={<Fasilitas />} />
-          <Route path="/detailFasilitas/:id" element={<DetailFasilitas />} />
-          <Route path="/tambahFasilitas" element={<TambahFasilitas />} />
-          <Route path="/tambahSubFasilitas" element={<TambahSubFasilitas />} />
-          <Route path="/editSubFasilitas/:id" element={<EditSUbFasilitas />} />
-          <Route path="/editFasilitas/:id" element={<EditFasilitas />} />
+          {/* Page Facility */}
+          <Route path="/fasilitas" element={<Facility />} />
+          <Route path="/detailFacility/:id" element={<DetailFacility />} />
+          <Route path="/tambahFacility" element={<AddFacility />} />
+          <Route path="/tambahSubFacility" element={<AddSubFacility />} />
+          <Route path="/editSubFacility/:id" element={<EditSUbFacility />} />
+          <Route path="/editFacility/:id" element={<EditFacility />} />
 
-          {/* Page Klinik */}
-          <Route path="/klinik" element={<Klinik />} />
-          <Route path="/detailKlinik/:id" element={<DetailKlinik />} />
-          <Route path="/tambahKlinik" element={<TambahKlinik />} />
-          <Route path="/editKlinik/:id" element={<EditKlinik />} />
+          {/* Page Clinic */}
+          <Route path="/klinik" element={<Clinic />} />
+          <Route path="/detailClinic/:id" element={<DetailClinic />} />
+          <Route path="/tambahClinic" element={<AddClinic />} />
+          <Route path="/editClinic/:id" element={<EditClinic />} />
 
-          {/* Page Konter */}
-          <Route path="/konter" element={<Konter />} />
-          <Route path="/detailKonter/:id" element={<DetailKonter />} />
-          <Route path="/tambahKonter" element={<TambahKonter />} />
-          <Route path="/editKonter/:id" element={<EditKonter />} />
+          {/* Page Counter */}
+          <Route path="/konter" element={<Counter />} />
+          <Route path="/detailCounter/:id" element={<DetailCounter />} />
+          <Route path="/tambahCounter" element={<AddCounter />} />
+          <Route path="/editCounter/:id" element={<EditCounter />} />
 
           {/* Page Pasien  */}
           <Route path="/pasien" element={<Pasien />} />
-          <Route path="/tambahPasien/BPJS" element={<TambahPasienBPJS />} />
-          <Route path="/tambahPasien/Umum" element={<TambahPasienUmum />} />
+          <Route path="/tambahPasien/BPJS" element={<AddPasienBPJS />} />
+          <Route path="/tambahPasien/Umum" element={<AddGeneralPatient />} />
           <Route path="/editPasien/BPJS" element={<EditPasienBPJS />} />
-          <Route path="/editPasien/Umum" element={<EditPasienUmum />} />
+          <Route path="/editPasien/Umum" element={<EditGeneralPatient />} />
           {/* <Route path="/about" element={<About />} /> */}
         </Route>
 
         {/* registrasi pasien  */}
-        <Route path="/registrasi/offline" element={<PilihKategoriPasien />} />
-        <Route path="/tambahPasien/umum/offline" element={<TambahPasienUmumOffline />} />
+        <Route path="/registrasi/offline" element={<SelectPatientCategory />} />
+        <Route path="/tambahPasien/umum/offline" element={<AddGeneralPatientOffline />} />
 
         <Route path="/registrasi/online" element={<RegistrationOnline />} />
 
         {/* login pegawai/admin  */}
-        <Route path="/" element={<LoginPegawai />} />
-        <Route path="/login/pegawai" element={<LoginPegawai />} />
+        <Route path="/" element={<LoginEmployee />} />
+        <Route path="/login/pegawai" element={<LoginEmployee />} />
 
         {/* reset pass admin/pegawai  */}
-        <Route path="/reset/password/pegawai" element={<AturUlangKataSandiPegawai />} />
+        <Route path="/reset/password/pegawai" element={<ResetEmployeePassword />} />
 
 
         {/* dashboard antrian  */}
