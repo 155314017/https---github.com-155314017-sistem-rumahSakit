@@ -1,5 +1,5 @@
 import { Container, Box } from '@mui/system';
-import { Typography, Button } from '@mui/material';
+import { Typography } from '@mui/material';
 import bgImage from '../../../assets/img/String.png';
 import 'dayjs/locale/id';
 // components
@@ -12,6 +12,8 @@ import useEditAmbulance from '../hooks/useEditAmbulance';
 import CustomBigCalendar from '../../../components/medium/CustomBigCalendar';
 import AlertSuccess from '../../../components/small/alert/AlertSuccess';
 import CustomFrameTable from '../../../components/small/CustomFrameTable';
+import CustomButtonFilled from '../../../components/small/button/CustomButtonFilled';
+import PaginationTabs from '../../../components/small/stepper/PaginationTabs';
 
 export default function EditAmbulance() {
   const {
@@ -25,11 +27,10 @@ export default function EditAmbulance() {
     scheduleDataPengecualian,
     setCurrentPage,
     currentPage,
-    getPageStyle,
-    getBorderStyle,
     handleEditAmbulance,
     ambulanceData,
-    kalenderRef
+    kalenderRef,
+    tabs
   } = useEditAmbulance();
 
 
@@ -49,37 +50,11 @@ export default function EditAmbulance() {
           <Box
             sx={{ display: "flex", flexDirection: "row", mt: 2, mb: 2, justifyContent: 'space-between', ml: 2 }}
           >
-            <Box display={"flex"} flexDirection={"row"} width={"400px"}>
-              <Box
-                display={"flex"}
-                flexDirection={"row"}
-                alignItems="center"
-                onClick={() => setCurrentPage(1)}
-                sx={getPageStyle(1)}
-                mx={2}
-              >
-                <Box sx={getBorderStyle(1)}>1</Box>
-                <Typography sx={{ ml: 1 }}>
-                  Informasi Ambulance
-                </Typography>
-              </Box>
-            </Box>
-
-            <Box display={"flex"} flexDirection={"row"} width={"800px"}>
-              <Box
-                display={"flex"}
-                flexDirection={"row"}
-                alignItems="center"
-                onClick={() => setCurrentPage(2)}
-                sx={getPageStyle(2)}
-                mx={2}
-              >
-                <Box sx={getBorderStyle(2)}>2</Box>
-                <Typography sx={{ ml: 1 }}>
-                  Jam Operasional
-                </Typography>
-              </Box>
-            </Box>
+            <PaginationTabs
+              tabs={tabs}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
           </Box>
 
           <Box position="absolute" sx={{ top: 0, right: 0 }}>
@@ -102,22 +77,11 @@ export default function EditAmbulance() {
                   }}
                   defaultValue={ambulanceData?.cost || 0}
                 />
-                <Button
-                  variant="contained"
-                  color="inherit"
-                  sx={{
-                    mt: 8,
-                    width: "100%",
-                    bgcolor: "#8F85F3",
-                    color: "#fff",
-                    textTransform: "none",
-                    borderRadius: "8px",
-                    ":hover": { bgcolor: "#a098f5" },
-                  }}
+                <CustomButtonFilled
                   onClick={() => setCurrentPage(2)}
-                >
-                  Selanjutnya
-                </Button>
+                  variant="contained"
+                  text='Selanjutnya'
+                />
               </Box>
             </>
           )}
@@ -130,34 +94,18 @@ export default function EditAmbulance() {
                 initialDataPengecualian={scheduleDataPengecualian}
                 typeId={id}
               />
-              <Button
+              <CustomButtonFilled
                 onClick={handleEditAmbulance}
                 variant="contained"
-
-                color="inherit"
-                sx={{
-                  mt: 3,
-                  width: '100%',
-                  bgcolor: '#8F85F3',
-                  color: '#fff',
-                  textTransform: 'none',
-                  borderRadius: '8px',
-                  boxShadow: 'none',
-                  ':hover': {
-                    bgcolor: '#a098f5',
-                    boxShadow: 'none',
-                  },
-                }}
-              >
-                Simpan
-              </Button>
+                text='Simpan'
+              />
             </>
           )}
         </Box>
       </Box>
       {isSuccess && (
-                <AlertSuccess label={message} />
-            )}
+        <AlertSuccess label={message} />
+      )}
     </Container>
   );
 }

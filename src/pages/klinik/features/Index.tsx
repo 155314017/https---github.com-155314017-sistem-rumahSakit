@@ -50,7 +50,8 @@ export default function Index() {
                                 width: '49%'
                             }}
                         >
-                            <MediumCard icon={BusinessOutlinedIcon} title="Total Ruangan" subtitle={loading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString() || "0"} />
+                            <MediumCard icon={BusinessOutlinedIcon} title="Total Klinik
+                            " subtitle={loading ? <CircularProgress size={25} sx={{ mt: '10px', color: '#8F85F3' }} /> : data.length.toString() || "0"} />
                         </Box>
                         <Box
                             sx={{

@@ -40,31 +40,26 @@ export default function useEditAmbulance() {
   const [scheduleDataPraktek, setScheduleDataPraktek] = useState<ScheduleDataItem[]>([]);
   const [scheduleDataPengecualian, setScheduleDataPengecualian] = useState<ExclusionDataItem[]>([]);
 
-
- 
-
-
-  
   const { data: ambulanceDataResponse, refetch } = useFetchData<AmbulanceDataItem>(
-          getAmbulanceByIdService,
-          [id],
-          true,
-          // true
-      );
+    getAmbulanceByIdService,
+    [id],
+    true,
+    // true
+  );
   const { data: scheduleResponse } = useFetchData(
-        GetScheduleByTypeId,
-        [id],
-        true
-      );
-    
+    GetScheduleByTypeId,
+    [id],
+    true
+  );
+
   const { data: scheduleExclusionResponse } = useFetchData(
-        GetExclusionByTypeId,
-        [id],
-        true
-      );
+    GetExclusionByTypeId,
+    [id],
+    true
+  );
 
 
-      const hasFetched = useRef(false);
+  const hasFetched = useRef(false);
   useEffect(() => {
     if (!hasFetched.current) {
       refetch();
@@ -84,14 +79,14 @@ export default function useEditAmbulance() {
     }
   })
 
-    const handleImageChange = (images: ImageData[]) => {
-            setImagesData(images);
-        };
-    const { isSuccess, message, showAlert } = useSuccessNotification();
+  const handleImageChange = (images: ImageData[]) => {
+    setImagesData(images);
+  };
+  const { isSuccess, message, showAlert } = useSuccessNotification();
 
 
-  
-  
+
+
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -107,56 +102,6 @@ export default function useEditAmbulance() {
       console.log(values);
     }
   })
-  
-
-  
-
-  const getPageStyle = (page: number) => {
-    if (page === currentPage) {
-      return { color: "#8F85F3", cursor: "pointer", fontWeight: "bold" };
-    } else if (page < currentPage) {
-      return { color: "#8F85F3", cursor: "pointer" };
-    } else {
-      return { color: "black", cursor: "pointer" };
-    }
-  };
-
-  const getBorderStyle = (page: number) => {
-    if (page === currentPage) {
-      return {
-        display: "flex",
-        border: "1px solid #8F85F3",
-        width: "38px",
-        height: "38px",
-        borderRadius: "8px",
-        justifyContent: "center",
-        alignItems: "center",
-      };
-    } else if (page < currentPage) {
-      return {
-        display: "flex",
-        border: "1px solid #8F85F3",
-        width: "38px",
-        height: "38px",
-        borderRadius: "8px",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#8F85F3",
-        color: "white",
-      };
-    } else {
-      return {
-        display: "flex",
-        border: "1px solid #8F85F3",
-        width: "38px",
-        height: "38px",
-        borderRadius: "8px",
-        justifyContent: "center",
-        alignItems: "center",
-        color: "#8F85F3",
-      };
-    }
-  };
 
   const handleEditAmbulance = async () => {
     try {
@@ -181,13 +126,13 @@ export default function useEditAmbulance() {
       await editImages(ambulanceId, imagesData);
       // Pisahkan data praktek yang baru (yang memiliki id dengan format 'session-')
       const newPraktekData = kalenderData.praktek.filter(item => item.id.startsWith('session-'));
-      
+
       // Pisahkan data exclusion yang baru (yang memiliki id dengan format 'exclusion-')
       const newExclusionData = kalenderData.exclusion.filter(item => item.id.startsWith('exclusion-'));
 
       // Proses data baru secara parallel jika ada
       const promises = [];
-      
+
       if (newPraktekData.length > 0) {
         console.log('Creating new praktek schedules:', newPraktekData);
         promises.push(createSchedules(ambulanceId, newPraktekData));
@@ -206,40 +151,41 @@ export default function useEditAmbulance() {
       // Reset state dan redirect
       formik.resetForm();
       setImagesData([]);
-      
+
       navigate('/ambulance', {
         state: {
           successAdd: true,
-          message: 'Ambulance berhasil diperbarui!'
+          message: 'Ambulance berhasi l diperbarui!'
         }
       });
     } catch (error) {
-        console.error('Error submitting form:', error);
-        if (axios.isAxiosError(error)) {
-            console.error('Axios error message:', error.message);
-            console.error('Response data:', error.response?.data);
-            if (error.response) {
-                console.error('Response status:', error.response.status);
-            } else {
-                console.error('Error message:', error.message);
-            }
-            showAlert("Error editing building", 3000);
+      console.error('Error submitting form:', error);
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error message:', error.message);
+        console.error('Response data:', error.response?.data);
+        if (error.response) {
+          console.error('Response status:', error.response.status);
         } else {
-            console.error('Unexpected error:', error);
+          console.error('Error message:', error.message);
         }
+        showAlert("Error editing building", 3000);
+      } else {
+        console.error('Unexpected error:', error);
+      }
     }
-};
-  
+  };
 
-  
-
+  const tabs = [
+    { pageNumber: 1, label: 'Informasi Ambulance' },
+    { pageNumber: 2, label: 'Jam Operasional' },
+  ];
 
   const breadcrumbItems = [
     { label: 'Dashboard', href: '/dashboard' },
     { label: 'Ambulance', href: '/ambulance' },
     { label: 'Edit Ambulance', href: `/editAmbulance/${id}` }
   ]
-  
+
   return {
     breadcrumbItems,
     formik,
@@ -252,11 +198,10 @@ export default function useEditAmbulance() {
     scheduleDataPengecualian,
     setCurrentPage,
     currentPage,
-    getPageStyle,
-    getBorderStyle,
     handleEditAmbulance,
     ambulanceData,
     kalenderRef,
+    tabs
 
   }
 }

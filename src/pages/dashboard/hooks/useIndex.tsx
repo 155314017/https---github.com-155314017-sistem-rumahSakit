@@ -165,6 +165,7 @@ export default function useIndex() {
     refetchAll,
     message,
     isSuccess,
-    showAlert
+    showAlert,
+    refetchClinic,
   };
 }

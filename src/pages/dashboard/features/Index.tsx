@@ -57,6 +57,7 @@ export default function Index() {
     showAlert,
     message,
     isSuccess,
+    refetchClinic,
   } = useIndex()
   return (
     <Box>
@@ -166,7 +167,7 @@ export default function Index() {
         <TableAmbulance
           data={dataAmbulance} onSuccessDelete={() => showAlert("Success delete Building", 300)} setPageNumber={setPageNumber} setOrderBy={setOrderAmbulance} totalElements={totalElementsAmbulance}
         />
-        <TableKlinik data={dataClinic} onSuccessDelete={() => showAlert("Success delete Klinik", 300)} setPageNumber={setPageNumber} setOrderBy={setOrderClinic} totalElements={totalElementsClinic} />
+        <TableKlinik data={dataClinic} onSuccessDelete={() => showAlert("Success delete Klinik", 300)} setPageNumber={setPageNumber} setOrderBy={setOrderClinic} totalElements={totalElementsClinic} fetchData={refetchClinic} />
         <TableKonter data={dataCounter} onSuccessDelete={() => showAlert("Success delete Konter", 300)} setPageNumber={setPageNumber} setOrderBy={setOrderCounter} totalElements={totalElementsCounter} />
         <TablePasien data={dataPatient} onSuccessDelete={() => showAlert("Success delete Pasien", 300)} setPageNumber={setPageNumber} setOrderBy={setOrderPatient} totalElements={totalElementsPatient} />
       </Stack>
