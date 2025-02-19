@@ -2,7 +2,6 @@ import {
   Box,
   Stack,
   Typography,
-  TableContainer,
   Table,
   TableHead,
   TableRow,
@@ -14,7 +13,6 @@ import {
 } from "@mui/material";
 import SearchBar from "../../../components/small/SearchBar";
 import DropdownList from "../../../components/small/dropdownlist/DropdownList";
-import { styled } from "@mui/material/styles";
 
 // icon
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
@@ -29,38 +27,11 @@ import useTableRuangan from "../hooks/useTableRuangan";
 import React from "react";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
 import { RoomDataItem } from "../../../types/room.types";
+import StyledTableContainer from "../../../components/tableComponents/StyledTableContainer";
+import StyledTableRow from "../../../components/tableComponents/StyledTableRow";
 
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
 
-const StyledTableContainer = styled(TableContainer)`
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-  
-    ::-webkit-scrollbar-track {
-      border-radius: 10px;
-    }
-  
-    ::-webkit-scrollbar-thumb {
-      background-color: #8f85f3;
-      border-radius: 10px;
-      border: 2px solid #f1f1f1;
-    }
-  
-    ::-webkit-scrollbar-thumb:hover {
-      background-color: #6c63ff;
-      cursor: pointer;
-    }
-  `;
 
 interface TableRuanganProps {
   data: RoomDataItem[];
@@ -326,7 +297,7 @@ const TableRuangan: React.FC<TableRuanganProps> = ({
                               apiUrl={`${import.meta.env.VITE_APP_BACKEND_URL_BASE}/v1/manage/room`}
                               onDeleteSuccess={handleDeleteSuccess}
                               itemId={deletedItems ?? ""}
-                              fetchData={fetchData ?? (() => {})}
+                              fetchData={fetchData ?? (() => { })}
                             />
                             <Typography
                               onClick={() => navigate(`/editRuangan/${item.id}`)}

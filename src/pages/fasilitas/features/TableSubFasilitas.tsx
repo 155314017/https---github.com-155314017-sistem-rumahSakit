@@ -2,20 +2,17 @@ import {
     Box,
     Stack,
     Typography,
-    TableContainer,
     Table,
     TableHead,
     TableRow,
     TableCell,
     TableBody,
     IconButton,
-    Pagination,
     Collapse,
     CircularProgress
 } from "@mui/material";
 import SearchBar from "../../../components/small/SearchBar";
 import DropdownList from "../../../components/small/dropdownlist/DropdownList";
-import { styled } from "@mui/material/styles";
 import bgImage from "../../../assets/img/String.png";
 
 // icon
@@ -25,38 +22,10 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import ModalDeleteConfirmation from '../../../components/medium/modal/ModalDeleteConfirmation'
 import useTableSubFasilitas from "../hooks/useTableSubFasilitas";
 import CustomFrameTable from "../../../components/small/CustomFrameTable";
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    "&:last-child td, &:last-child th": {
-        border: 0,
-    },
-}));
-
-const StyledTableContainer = styled(TableContainer)`
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #8f85f3;
-    border-radius: 10px;
-    border: 2px solid #f1f1f1;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: #6c63ff;
-    cursor: pointer;
-  }
-`;
-
+import ShowingDataInformation from "../../../components/tableComponents/ShowingDataInformation";
+import PaginationTable from "../../../components/tableComponents/PaginationTable";
+import StyledTableContainer from "../../../components/tableComponents/StyledTableContainer";
+import StyledTableRow from "../../../components/tableComponents/StyledTableRow";
 interface TableSubFasilitasProps {
     fetchDatas: () => void;
     onSuccessDelete: () => void;
@@ -304,33 +273,16 @@ const TableSubFasilitas: React.FC<TableSubFasilitasProps> = ({ fetchDatas, onSuc
                             </StyledTableContainer>
                         </Box>
                         <Stack spacing={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                            <Typography sx={{ color: "#A8A8BD" }}>
-                                Showing {((page - 1) * rowsPerPage) + 1} to{" "}
-                                {Math.min(page * rowsPerPage, dataSubFacility.length)} of{" "}
-                                {dataSubFacility.length} entries
-                            </Typography>
-                            <Pagination
-                                count={Math.ceil(dataSubFacility.length / rowsPerPage)}
-                                variant="outlined"
-                                shape="rounded"
+                            <ShowingDataInformation
+                                length={dataSubFacility.length}
                                 page={page}
+                                rowsPerPage={rowsPerPage}
+                            />
+                            <PaginationTable
+                                length={dataSubFacility.length}
+                                page={page}
+                                rowsPerPage={rowsPerPage}
                                 onChange={handleChangePage}
-                                sx={{
-                                    "& .MuiPaginationItem-root": {
-                                        color: "#8F85F3",
-                                        border: 'none',
-                                    },
-                                    "& .Mui-selected": {
-                                        backgroundColor: "#8F85F3",
-                                        bgcolor: '#D5D1FB',
-                                    },
-                                    "& .MuiPaginationItem-ellipsis": {
-                                        border: 'none',
-                                    },
-                                    "& .MuiPaginationItem-text": {
-                                        border: 'none',
-                                    },
-                                }}
                             />
 
                         </Stack>

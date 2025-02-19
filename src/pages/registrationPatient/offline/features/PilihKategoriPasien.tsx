@@ -1,4 +1,4 @@
-import { Box, CardMedia, IconButton, Button, CircularProgress, Typography, TextField } from "@mui/material";
+import { Box, CardMedia, IconButton, CircularProgress, Typography, TextField } from "@mui/material";
 import register from "../../../../assets/img/registerImg.jpg";
 import bgImg from "../../../../assets/img/Bg-desktop.svg"
 // import ModalKodeBooking from "../../../../components/small/modal/ModalKodeBooking";
@@ -16,6 +16,7 @@ import PasienCard from "../../../../components/small/card/PasienCard";
 import usePilihKategoriPasien from "../hooks/usePilihKategoriPasien";
 import AlertWarning from "../../../../components/small/alert/AlertWarning";
 import BreadCrumbBasic from "../../../../components/medium/BreadCrumbBasic";
+import CustomButtonFilled from "../../../../components/small/button/CustomButtonFilled";
 
 export default function PilihKategoriPasien() {
     const {
@@ -175,27 +176,15 @@ export default function PilihKategoriPasien() {
                                         </Field>
 
                                         <Box sx={{ mt: 3, textAlign: "right" }}>
-                                            <Button
+                                            <CustomButtonFilled
                                                 type="submit"
-                                                style={{
-                                                    padding: "10px 20px",
-                                                    backgroundColor: isValid && dirty ? "#8F85F3" : "#A8A8A8",
-                                                    color: "white",
-                                                    border: "none",
-                                                    borderRadius: "8px",
-                                                    cursor: isValid && dirty ? "pointer" : "not-allowed",
-                                                    fontWeight: 600,
-                                                    width: "100%",
-                                                }}
                                                 disabled={!isValid || !dirty}
-                                            >
-                                                {isLoading ? (
+                                                text={isLoading ? (
                                                     <CircularProgress size={25} sx={{ color: "white" }} />
                                                 ) : (
                                                     "Submit"
                                                 )}
-
-                                            </Button>
+                                            />
                                         </Box>
                                     </Form>
                                 )}

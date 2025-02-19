@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from '@mui/material';
 
 interface CustomButtonFilledProps {
     type?: "button" | "submit";
     disabled?: boolean;
-    variant?: "contained" | "outlined" | "text"; 
+    variant?: "contained" | "outlined" | "text";
     color?: "primary" | "secondary" | "error" | "info" | "success" | "warning";
     size?: "small" | "medium" | "large";
-    text?: string;
-    onClick?: () => void; 
+    text?: any;
+    onClick?: () => void;
     fullWidth?: boolean;
 }
 
@@ -19,7 +20,7 @@ export default function CustomButtonFilled({
     size = "medium",
     text = "Lanjutkan",
     onClick,
-    fullWidth = true, 
+    fullWidth = true,
 }: CustomButtonFilledProps) {
     return (
         <Button
