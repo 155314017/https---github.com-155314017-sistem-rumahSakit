@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PrintIcon from "@mui/icons-material/Print";
 import AlertSuccess from "../small/alert/AlertSuccess";
-import ModalUbahNoHp from "./modal/ModalChangePhoneNumber";
+import ModalChangePhoneNumber from "./modal/ModalChangePhoneNumber";
 type InformasiTicketProps = {
   nomorAntrian?: string | number;
   namaDokter: string | undefined;
@@ -231,7 +231,7 @@ const InformasiTicketAPI = ({
         sx={{ overflow: "hidden", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", }}
       >
         {showModal && (
-          <ModalUbahNoHp hitFunction={showTemporaryAlertSuccessChangePhone} open={showModal} onClose={() => setShowModal(false)} patienDataSent={patientData} registrationId={registrationId} onBookingCodeUpdate={handleBookingCodeUpdate} />
+          <ModalChangePhoneNumber hitFunction={showTemporaryAlertSuccessChangePhone} open={showModal} onClose={() => setShowModal(false)} patienDataSent={patientData} registrationId={registrationId} onBookingCodeUpdate={handleBookingCodeUpdate} />
         )}
         {onClose && (
           <IconButton

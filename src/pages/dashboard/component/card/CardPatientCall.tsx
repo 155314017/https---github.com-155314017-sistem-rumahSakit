@@ -1,12 +1,12 @@
 import { Box, Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
-import bgImage from "../../../assets/img/String.png";
+import bgImage from "../../../../assets/img/String.png";
 
 //icon
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AlertSuccess from "../alert/AlertSuccess";
-import ModalConfirmationSkipPatient from "../../medium/modal/ModalConfirmationSkipPatient";
+import AlertSuccess from "../../../../components/small/alert/AlertSuccess";
+import ModalConfirmationSkipPatient from "../../../../components/medium/modal/ModalConfirmationSkipPatient";
 
 
 const CardPatientCall = () => {

@@ -11,7 +11,7 @@ import PatientCheckIn from "../../../services/Patient Tenant/PatientCheckIn";
 import dayjs from "dayjs";
 import { GetDoctorServices } from "../../../services/Admin Tenant/ManageDoctor/GetDoctorService";
 import { getClinic } from "../../../services/Admin Tenant/ManageClinic/GetClinic";
-import ModalInformasiTiket from "./ModalInformationTicket";
+import ModalInformationTicket from "./ModalInformationTicket";
 
 const style = {
     position: "absolute" as const,
@@ -248,7 +248,7 @@ ${dayjs().hour(dataSchedule.data.data.endTime[0]).minute(dataSchedule.data.data.
 
             </Modal>
             {infoTicket && (
-                // <ModalInformasiTiket 
+                // <ModalInformationTicket 
                 //     open={infoTicket}
                 //     clinic={dataKodeBooking.namaKlinik}
                 //     jadwalKonsul={dataKodeBooking.jadwalKonsul}
@@ -257,7 +257,7 @@ ${dayjs().hour(dataSchedule.data.data.endTime[0]).minute(dataSchedule.data.data.
                 //     nomorAntrian={queueData.queueNumber || 0}
                 //     onClose={() => setInfoTicket(false)}
                 // />
-                <ModalInformasiTiket
+                <ModalInformationTicket
                     open={infoTicket}
                     clinic={'dataKodeBooking.namaKlinik'}
                     jadwalKonsul={'dataKodeBooking.jadwalKonsul'}

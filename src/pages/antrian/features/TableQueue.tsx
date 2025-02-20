@@ -22,7 +22,7 @@ import bgImage from "../../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import useTableAntrian from "../hooks/useTableQueue";
-import BadgeStatusPasien from "../components/BadgeStatusPasien";
+import BadgeStatusPasien from "../components/badge/BadgeStatusPasien";
 import ModalConfirmationSkipPatient from "../../../components/medium/modal/ModalConfirmationSkipPatient";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({

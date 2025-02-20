@@ -31,7 +31,7 @@ const changePhoneSchema = Yup.object().shape({
 
 
 
-const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void; patienDataSent?: any; registrationId?: string; hitFunction?: () => void; onBookingCodeUpdate?: (newBookingCode: string) => void }> = ({ open, onClose, patienDataSent, registrationId, hitFunction, onBookingCodeUpdate }) => {
+const ModalChangePhoneNumber: React.FC<{ open: boolean; onClose: () => void; patienDataSent?: any; registrationId?: string; hitFunction?: () => void; onBookingCodeUpdate?: (newBookingCode: string) => void }> = ({ open, onClose, patienDataSent, registrationId, hitFunction, onBookingCodeUpdate }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [patientData, setPatientData] = useState<any>({});
 
@@ -185,4 +185,4 @@ const ModalUbahNoHp: React.FC<{ open: boolean; onClose: () => void; patienDataSe
     );
 };
 
-export default ModalUbahNoHp;
+export default ModalChangePhoneNumber;

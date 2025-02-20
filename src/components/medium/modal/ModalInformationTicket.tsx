@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
 import my from "../../../assets/img/String.png";
 import logo from "../../../assets/img/St.carolus.png";
-interface ModalInformasiTiketProps {
+interface ModalInformationTicketProps {
     open: boolean;
     onClose: () => void;
     nomorAntrian: number;
@@ -30,7 +30,7 @@ const style = {
     overflow: 'hidden',
 };
 
-const ModalInformasiTiket: React.FC<ModalInformasiTiketProps> = ({
+const ModalInformationTicket: React.FC<ModalInformationTicketProps> = ({
     open, onClose, nomorAntrian, namaDokter, clinic, tanggalReservasi, jadwalKonsul
 }) => {
     return (
@@ -141,7 +141,7 @@ const ModalInformasiTiket: React.FC<ModalInformasiTiketProps> = ({
     );
 };
 
-export default ModalInformasiTiket;
+export default ModalInformationTicket;
 
 const dataTextStyle = {
     color: "#0A0A0D",

@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { Avatar, Button, Card, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Stack } from '@mui/system';
-import ModalKodeBooking from './ModalKodeBooking';
+import ModalKodeBooking from '../../../../components/medium/modal/ModalKodeBooking';
 
 const style = {
     position: 'absolute',
@@ -24,12 +24,12 @@ const style = {
     borderRadius: '16px',
 };
 
-interface ModalKategoriPasienProps {
+interface ModalPatientCategoryProps {
     open: boolean;
     onClose: () => void;
 }
 
-const ModalKategoriPasien: React.FC<ModalKategoriPasienProps> = ({ open, onClose }) => {
+const ModalPatientCategory: React.FC<ModalPatientCategoryProps> = ({ open, onClose }) => {
     const [openModalKodeBooking, setOpenModalKodeBooking] = useState(false);
     const [openModalPilihPembayaran, setOpenModalPilihPembayaran] = useState(false);
 
@@ -191,7 +191,7 @@ const ModalKategoriPasien: React.FC<ModalKategoriPasienProps> = ({ open, onClose
     );
 };
 
-export default ModalKategoriPasien;
+export default ModalPatientCategory;
 
 const cardStyle = {
     display: "flex",

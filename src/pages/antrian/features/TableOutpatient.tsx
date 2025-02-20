@@ -23,7 +23,7 @@ import bgImage from "../../../assets/img/String.png";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import useTableRawatJalan from "../hooks/useTableOutpatient";
-import BadgeStatusPasien from "../components/BadgeStatusPasien";
+import BadgeStatusPasien from "../components/badge/BadgeStatusPasien";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import PaginationTable from "../../../components/tableComponents/PaginationTable";

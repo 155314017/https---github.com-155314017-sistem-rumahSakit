@@ -3,7 +3,7 @@ import { CircularProgress, Typography } from "@mui/material";
 import SideBar from "../../../components/SideBar/SideBar";
 import Header from "../../../components/header/Header";
 import MediumCard from "../../../components/small/card/MediumCard";
-import CardAddOnClick from "../../../components/small/card/CardAddOnClick";
+import CardAddOnClick from "../component/card/CardAddOnClick";
 import TablePasien from "./TablePatient";
 
 // icon
@@ -12,7 +12,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 
 //hooks
 import useIndex from "../hooks/useIndex";
-import ModalKategoriPasien from "../../../components/medium/modal/ModalPatientCategory";
+import ModalPatientCategory from "../component/modal/ModalPatientCategory";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import { gridContainerStyle } from "../../../style/ts/gridContainerStyle";
 export default function Index() {
@@ -77,7 +77,7 @@ export default function Index() {
                 </Box>
             </Box>
 
-            <ModalKategoriPasien open={open} onClose={() => setOpen(false)} />
+            <ModalPatientCategory open={open} onClose={() => setOpen(false)} />
         </Box>
     )
 }

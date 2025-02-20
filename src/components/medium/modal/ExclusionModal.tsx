@@ -13,10 +13,10 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { DateCalendar } from "@mui/x-date-pickers";
-import DropdownList from "../dropdownlist/DropdownList";
+import DropdownList from "../../small/dropdownlist/DropdownList";
 import type { Dayjs } from "dayjs";
 import type { Exclusion } from "../../../pages/pegawai/hooks/useAddEmployee";
-import DropdownListTime from "../dropdownlist/DropdownListTime";
+import DropdownListTime from "../../small/dropdownlist/DropdownListTime";
 
 interface ExclusionModalProps {
     open: boolean;

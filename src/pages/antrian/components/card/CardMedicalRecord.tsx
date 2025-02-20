@@ -3,13 +3,13 @@ import { Formik, Form, Field } from "formik";
 import { Box } from "@mui/system";
 import { Button, FormControl, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import DropdownList from "../../../components/small/dropdownlist/DropdownList";
-import TableRiwayatKunjungan from "../features/TableVisitHistory";
+import DropdownList from "../../../../components/small/dropdownlist/DropdownList";
+import TableRiwayatKunjungan from "../../features/TableVisitHistory";
 import CardRiwayatKunjungan from "./CardVisitHistory";
 import CardDetailInformasiKunjungan from "./CardDetailsVisitInformation";
-import EndAdornmentCustom from "../../../components/small/EndAdornmentCustom";
-import CustomFrameTable from "../../../components/small/CustomFrameTable";
-import TableBerkasPasien from "../features/TablePatientFiles";
+import EndAdornmentCustom from "../../../../components/small/EndAdornmentCustom";
+import CustomFrameTable from "../../../../components/small/CustomFrameTable";
+import TableBerkasPasien from "../../features/TablePatientFiles";
 
 export default function CardMedicalRecord() {
     const [currentPage, setCurrentPage] = useState(1);

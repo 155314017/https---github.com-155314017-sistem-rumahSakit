@@ -1,13 +1,13 @@
 import { Container, Box } from "@mui/system";
 import BreadCrumbs from "../../../components/medium/BreadCrumbs";
-import CardOutpatientInformation from "../../../components/small/card/CardOutpatientInformation";
-import CardRekamMedis from "../components/CardMedicalRecord";
-import CardAppointmentCard from "../components/CardAppointmentCard";
+import CardOutpatientInformation from "../components/card/CardOutpatientInformation";
+import CardRekamMedis from "../components/card/CardMedicalRecord";
+import CardAppointmentCard from "../components/card/CardAppointmentCard";
 import profilePict from "../../../assets/img/meme.jpg";
 import imgString from "../../../assets/img/String.png";
 import { Button, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import useDetailPasienRawatJalan from "../hooks/useOutpatientDetails";
+import useOutpatientDetails from "../hooks/useOutpatientDetails";
 import AlertSuccess from "../../../components/small/alert/AlertSuccess";
 import ModalConfirmationSkipPatient from "../../../components/medium/modal/ModalConfirmationSkipPatient";
 
@@ -26,7 +26,7 @@ export default function OutpatientDetails() {
         isCounting,
         countdown,
         alertPanggil
-    } = useDetailPasienRawatJalan();
+    } = useOutpatientDetails();
 
     return (
         <>
