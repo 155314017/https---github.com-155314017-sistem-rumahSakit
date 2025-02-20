@@ -74,15 +74,15 @@ createRoot(document.getElementById('root')!).render(
           {/* Health Manage  */}
           {/* Building */}
           <Route path="/gedung" element={<Building />} />
-          <Route path="/detailBuilding/:id" element={<DetailBuilding />} />
-          <Route path="/tambahBuilding" element={<AddBuilding />} />
-          <Route path="/editBuilding/:id" element={<EditBuilding />} />
+          <Route path="/detailGedung/:id" element={<DetailBuilding />} />
+          <Route path="/tambahGedung" element={<AddBuilding />} />
+          <Route path="/editGedung/:id" element={<EditBuilding />} />
 
           {/* Page Room */}
           <Route path="/ruangan" element={<Room />} />
-          <Route path="/detailRoom/:id" element={<DetailRoom />} />
-          <Route path="/tambahRoom" element={<AddRoom />} />
-          <Route path="/editRoom/:id" element={<EditRoom />} />
+          <Route path="/detailRuangan/:id" element={<DetailRoom />} />
+          <Route path="/tambahRuangan" element={<AddRoom />} />
+          <Route path="/editRuangan/:id" element={<EditRoom />} />
 
           {/* Ambulance */}
           <Route path="/ambulance" element={<Ambulance />} />
@@ -92,11 +92,11 @@ createRoot(document.getElementById('root')!).render(
 
           {/* Page Facility */}
           <Route path="/fasilitas" element={<Facility />} />
-          <Route path="/detailFacility/:id" element={<DetailFacility />} />
-          <Route path="/tambahFacility" element={<AddFacility />} />
-          <Route path="/tambahSubFacility" element={<AddSubFacility />} />
-          <Route path="/editSubFacility/:id" element={<EditSUbFacility />} />
-          <Route path="/editFacility/:id" element={<EditFacility />} />
+          <Route path="/detailFasilitas/:id" element={<DetailFacility />} />
+          <Route path="/tambahFasilitas" element={<AddFacility />} />
+          <Route path="/tambahSubFasilitas" element={<AddSubFacility />} />
+          <Route path="/editSubFasilitas/:id" element={<EditSUbFacility />} />
+          <Route path="/editFasilitas/:id" element={<EditFacility />} />
 
           {/* Page Clinic */}
           <Route path="/klinik" element={<Clinic />} />
